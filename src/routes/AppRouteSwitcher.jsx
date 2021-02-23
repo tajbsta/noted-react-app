@@ -1,30 +1,23 @@
-import React, { lazy } from "react";
+import React from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
-
-const LandingPage = lazy(() => import("../pages/LandingPage"));
-const RegisterPage = lazy(() => import("../pages/RegisterPage"));
-const DashboardPage = lazy(() => import("../pages/DashboardPage"));
-const AuthorizePage = lazy(() => import("../pages/AuthorizePage"));
+import routes from "../constants/routes";
+import AppLayout from "../layouts/AppLayout";
 
 function AppRouteSwitcher() {
   return (
     <Switch>
-      <Route path="/" exact render={(props) => <LandingPage {...props} />} />
-      <Route
-        path="/join"
-        exact
-        render={(props) => <RegisterPage {...props} />}
-      />
-      <Route
-        path="/request-permission"
-        exact
-        render={(props) => <AuthorizePage {...props} />}
-      />
-      <Route
-        path="/dashboard"
-        exact
-        render={(props) => <DashboardPage {...props} />}
-      />
+      {routes.map(({ path, component: Component }) => (
+        <Route
+          key={path}
+          path={path}
+          exact
+          render={(props) => (
+            <AppLayout>
+              <Component {...props} />
+            </AppLayout>
+          )}
+        />
+      ))}
       <Redirect to="/" />
     </Switch>
   );
