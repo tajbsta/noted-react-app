@@ -3,7 +3,7 @@ import { Switch, Redirect, Route } from "react-router-dom";
 
 const LandingPage = lazy(() => import("../pages/LandingPage"));
 const RegisterPage = lazy(() => import("../pages/RegisterPage"));
-const DashboardPage = lazy(() => import("../pages/DasboardPage"));
+const DashboardPage = lazy(() => import("../pages/DashboardPage"));
 const AuthorizePage = lazy(() => import("../pages/AuthorizePage"));
 
 function AppRouteSwitcher() {
