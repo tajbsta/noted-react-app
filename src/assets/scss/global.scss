@@ -1,35 +1,19 @@
-// :root {
-// 	--pdblue: #{$pdblue};
-// 	--white: #{$white};
-// 	--pblue: #{$pblue};
-// 	--ppink: #{$ppink};
-// 	--gray1: #{$gray1};
-// 	--gray2: #{$gray2};
-// 	--gray3: #{$gray3};
-// 	--gray4: #{$gray4};
-// 	--gray5: #{$gray5};
-// 	--gray6: #{$gray6};
-// 	--green: #{$green};
-// 	--yellow: #{$yellow};
-// 	--pink2: #{$pink2};
-// 	--lblue: #{$lblue};
-// 	--resume-bg: #{$resume-bg};
-// 	--chat-btn-bg: #{$chat-btn-bg};
-// 	--pblue-50: #{rgba($pblue, 0.5)};
-// 	--ppink-50: #{rgba($ppink, 0.5)};
-// }
+* {
+  // border: 1px solid red;
+  // background-color: #f7f5f7;
+}
 
 .loading {
-	display: inline-block;
-	width: 30px;
-	height: 30px;
-	border: 2px solid rgba($primary, 0.2);
-	border-radius: 50%;
-	border-top-color: $primary;
-	animation: spin 1s ease-in-out infinite;
-	-webkit-animation: spin 1s ease-in-out infinite;
-	left: calc(50% - 15px);
-	top: calc(50% - 15px);
-	position: fixed;
-	z-index: 1;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 2px solid rgba($primary, 0.2);
+  border-radius: 50%;
+  border-top-color: $primary;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+  left: calc(50% - 15px);
+  top: calc(50% - 15px);
+  position: fixed;
+  z-index: 1;
 }
