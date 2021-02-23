@@ -1,0 +1,29 @@
+#Authorize {
+    .header-body{
+        border-bottom: none !important;
+    }
+    
+    .col-6 {
+        margin: 30px;
+
+        h1, h4{
+            color: #570197;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .text-underline {
+            text-decoration: underline;
+        }
+    }
+
+    .btn-authorize {
+        background-color: #6AAE6A;
+        border-color: #6AAE6A;
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
