@@ -1,5 +1,6 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from "react";
-import { LogIn, Mail } from "react-feather";
+import { Mail } from "react-feather";
 import GoogleLogin from "react-google-login";
 import { Link } from "react-router-dom";
 
@@ -18,7 +19,7 @@ export default function RegisterPage() {
             <form className="mb-3">
               <GoogleLogin
                 clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
-                render={(renderProps) => (
+                render={() => (
                   <div
                     className="form-group"
                     style={{
@@ -96,7 +97,7 @@ export default function RegisterPage() {
               </div>
             </form>
             <h3>
-              Already a member?{" "}
+              Already a member?
               <Link
                 to="login"
                 className="text-success text-decoration-underline"
