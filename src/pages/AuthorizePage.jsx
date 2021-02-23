@@ -1,5 +1,4 @@
 import React from "react";
-import AppLayout from "../layouts/AppLayout";
 import { Button, Col, Container, Row } from "react-bootstrap";
 
 export default function AuthorizePage() {

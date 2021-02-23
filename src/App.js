@@ -1,8 +1,9 @@
-import { Suspense } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import './assets/scss/theme.scss';
+/* eslint-disable react/react-in-jsx-scope */
+import { Suspense } from "react";
+import { BrowserRouter, Route } from "react-router-dom";
+import "./assets/scss/theme.scss";
 import "./assets/scss/App.scss";
-import AppRouteSwitcher from './routes/AppRouteSwitcher';
+import AppRouteSwitcher from "./routes/AppRouteSwitcher";
 
 function App() {
   return (
