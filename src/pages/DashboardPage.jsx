@@ -1,6 +1,7 @@
 import React, { lazy, useState } from "react";
 import { isEmpty } from "lodash";
 import PickUpButton from "../components/Dashboard/PickUpButton";
+import Row from "../components/Row";
 
 const HorizontalLine = lazy(() => import("../components/HorizontalLine"));
 
@@ -43,16 +44,16 @@ function DashboardPage() {
           </h5>
         </div>
         <HorizontalLine width="90%" />
-        <div className="card-body">
-          <div className="container mb-4">
-            <div className="row">
-              <div className="col-sm-7">
+        <div className="card-body p-0">
+          <div className="container">
+            <Row marginTop={3}>
+              <div className="col-7">
                 <div className="row card-text mb-0 sofia-pro card-value">0</div>
                 <div className="row card-text card-label">Total Returns</div>
               </div>
-            </div>
-            <div className="row mt-4 mb-3">
-              <div className="col-sm-5">
+            </Row>
+            <Row marginTop={3} className="p-0">
+              <div className="col-5">
                 <div className="row card-text mb-0 sofia-pro card-value">
                   $0
                 </div>
@@ -60,15 +61,16 @@ function DashboardPage() {
                   In Cash Back
                 </div>
               </div>
-              <div className="col-sm-6 ml-3">
+              <div className="col-6 ml-3">
                 <div className="row mb-0 sofia-pro card-value">$0</div>
                 <div className="row card-text small sofia-pro card-label">
                   In Store Credits
                 </div>
               </div>
-            </div>
-            <div className="row mt-4">
-              <div className="col-sm-12 p-0">
+            </Row>
+            <hr />
+            <Row marginTop={3} className="p-0">
+              <div className="col-12 p-0">
                 <div className="col-sm-8">
                   <div className="row mb-0 sofia-pro card-value">$0</div>
                   <div className="row card-text small sofia-pro card-label">
@@ -76,30 +78,30 @@ function DashboardPage() {
                   </div>
                 </div>
               </div>
+            </Row>
+            <div
+              className="pr-3 pl-3 mt-3"
+              style={{
+                opacity: isEmpty(scans) ? 0.37 : 1,
+              }}
+            >
+              <PickUpButton
+                leadingText="Pickup now"
+                timeWindow="now"
+                price="24.99"
+                backgroundColor="#570097"
+                textColor="white"
+                opacity="0.8"
+                onClick={() => {}}
+              />
+              <PickUpButton
+                leadingText="Pickup later"
+                price="24.99"
+                backgroundColor="#faf5fc"
+                textColor="#570097"
+                opacity="0.8"
+              />
             </div>
-          </div>
-          <hr />
-          <div
-            style={{
-              opacity: isEmpty(scans) ? 0.37 : 1,
-            }}
-          >
-            <PickUpButton
-              leadingText="Pickup now"
-              timeWindow="now"
-              price="24.99"
-              backgroundColor="#570097"
-              textColor="white"
-              opacity="0.8"
-              onClick={() => {}}
-            />
-            <PickUpButton
-              leadingText="Pickup later"
-              price="24.99"
-              backgroundColor="#faf5fc"
-              textColor="#570097"
-              opacity="0.8"
-            />
           </div>
         </div>
       </div>

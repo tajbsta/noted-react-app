@@ -13,7 +13,7 @@ function PickUpButton({
   return (
     <div className="row">
       <button
-        className="btn btn-md mb-3 col-sm-12 pd-3 pick-up-btn"
+        className="btn btn-md mb-3 col-sm-12 pick-up-btn"
         style={{
           alignSelf: "center",
           letterSpacing: 1,
