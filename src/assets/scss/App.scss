@@ -5,9 +5,15 @@
   ===========================================================================
 */
 
+@font-face {
+  font-family: "Sofia Pro";
+  src: url("../fonts/SofiaPro/Sofia\ Pro\ Regular.otf") format("opentype");
+}
+
 /* Pages styling */
 @import "./pages/landing.scss";
 @import "./pages/register.scss";
 @import "./pages/authorize.scss";
 @import "./pages/brandlogo.scss";
 @import "./pages/navbar.scss";
+@import "./pages/dashboard.scss";

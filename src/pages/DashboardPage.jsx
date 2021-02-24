@@ -10,14 +10,14 @@ function DashboardPage() {
   const renderEmptyScans = () => (
     <>
       <p
-        className="text-center"
+        className="text-center sofia-pro"
         style={{
-          color: "#690098",
+          color: "#E8E7E9",
         }}
       >
         No Scan Yet
       </p>
-      <p className="small text-muted mb-1 text-center">
+      <p className="small text-muted mb-1 text-center sofia-pro">
         Launchday is a SaaS website builder with a focus on quality, easy to
         build product sites.
       </p>
@@ -28,11 +28,8 @@ function DashboardPage() {
           justifyContent: "center",
         }}
       >
-        <button
-          className="btn btn-md btn-success mb-3 display-3"
-          style={{ letterSpacing: 1 }}
-        >
-          <span>Launch Scan</span>
+        <button className="btn shadow-sm launch-scan-btn p-0 sofia-pro">
+          <span className="mt-2">Launch Scan</span>
         </button>
       </div>
     </>
@@ -48,12 +45,11 @@ function DashboardPage() {
   }) => (
     <div className="row">
       <button
-        className="btn btn-md mb-3 col-sm-12 pd-3"
+        className="btn btn-md mb-3 col-sm-12 pd-3 pick-up-btn"
         style={{
           alignSelf: "center",
           letterSpacing: 1,
           background,
-          color,
           opacity,
         }}
       >
@@ -67,10 +63,11 @@ function DashboardPage() {
             }}
           >
             <p
-              className="mt-0 mb-0 ml-3"
+              className="mt-0 mb-0 ml-3 pick-up-btn-lead"
               style={{
                 fontWeight: "500",
                 fontSize: 14.5,
+                color,
               }}
             >
               {leadingText || ""}
@@ -81,11 +78,21 @@ function DashboardPage() {
               className="mt-0 mb-0"
               style={{
                 fontSize: 11,
+                color,
               }}
             >
               ${price || ""}
             </p>
-            <p className="mt-0 mb-0 h5">{timeWindow || ""}</p>
+            {timeWindow && (
+              <p
+                className="mt-0 mb-0 h5"
+                style={{
+                  color,
+                }}
+              >
+                {timeWindow}
+              </p>
+            )}
           </div>
         </div>
       </button>
@@ -93,68 +100,75 @@ function DashboardPage() {
   );
 
   const renderRightCard = () => (
-    <div className="col-sm-3">
+    <div
+      className="col right-card"
+      style={{
+        maxWidth: "248px",
+      }}
+    >
       <div className="card shadow-sm">
         <div className="p-0 ml-1 d-inline-flex align-center">
-          <h5
-            className="card-title mb-0 p-3"
-            style={{
-              alignSelf: "center",
-            }}
-          >
+          <h5 className="card-title mb-0 p-3 sofia-pro card-title">
             No Articles
           </h5>
         </div>
         <HorizontalLine width="90%" />
-        <div
-          className="card-body"
-          style={{
-            paddingLeft: "10%",
-            paddingRight: "10%",
-            paddingBottom: "0",
-          }}
-        >
+        <div className="card-body">
           <div className="container mb-4">
             <div className="row">
               <div className="col-sm-7">
-                <div className="row card-text h3 mb-0">$0</div>
-                <div className="row card-text">Total Returns</div>
+                <div className="row card-text mb-0 sofia-pro card-value">0</div>
+                <div className="row card-text card-label">Total Returns</div>
               </div>
             </div>
             <div className="row mt-4 mb-3">
               <div className="col-sm-5">
-                <div className="row card-text h3 mb-0">$0</div>
-                <div className="row card-text small">In Cash Back</div>
+                <div className="row card-text mb-0 sofia-pro card-value">
+                  $0
+                </div>
+                <div className="row small sofia-pro card-label">
+                  In Cash Back
+                </div>
               </div>
-              <div className="col-sm-7">
-                <div className="row card-text h3 mb-0">$0</div>
-                <div className="row card-text small">In Store Credits</div>
+              <div className="col-sm-6 ml-3">
+                <div className="row mb-0 sofia-pro card-value">$0</div>
+                <div className="row card-text small sofia-pro card-label">
+                  In Store Credits
+                </div>
               </div>
             </div>
-            <HorizontalLine width="100%" />
             <div className="row mt-4">
-              <div className="col-sm-12">
-                <div className="row card-text h3 mb-0">$0</div>
-                <div className="row card-text small">Total Donations</div>
+              <div className="col-sm-12 p-0">
+                <div className="col-sm-8">
+                  <div className="row mb-0 sofia-pro card-value">$0</div>
+                  <div className="row card-text small sofia-pro card-label">
+                    Total Donations
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          {renderPickUpButton({
-            leadingText: "Pickup now",
-            timeWindow: "now",
-            price: "24.99",
-            backgroundColor: "#cd90d9",
-            textColor: "white",
-            opacity: 0.8,
-          })}
-          {renderPickUpButton({
-            leadingText: "Pickup later",
-            timeWindow: "now",
-            price: "24.99",
-            backgroundColor: "#faf5fc",
-            textColor: "#cd90d9",
-            opacity: 0.8,
-          })}
+          <div
+            style={{
+              opacity: isEmpty(scans) ? 0.37 : 1,
+            }}
+          >
+            {renderPickUpButton({
+              leadingText: "Pickup now",
+              timeWindow: "now",
+              price: "24.99",
+              backgroundColor: "#570097",
+              textColor: "white",
+              opacity: 0.8,
+            })}
+            {renderPickUpButton({
+              leadingText: "Pickup later",
+              price: "24.99",
+              backgroundColor: "#faf5fc",
+              textColor: "#570097",
+              opacity: 0.8,
+            })}
+          </div>
         </div>
       </div>
     </div>

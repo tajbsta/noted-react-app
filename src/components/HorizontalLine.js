@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 function HorizontalLine({ width }) {
   return (
     <hr
-      className="mt-0"
+      className="mt-0 mb-0"
       style={{
         alignSelf: "center",
         width,
