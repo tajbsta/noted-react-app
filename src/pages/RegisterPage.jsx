@@ -8,6 +8,11 @@ export default function RegisterPage() {
   const responseGoogle = (response) => {
     console.log(response);
   };
+
+  const policyStyle = {
+    textDecoration: "underline",
+  };
+
   return (
     <div>
       <div classNameName="container">
@@ -89,15 +94,42 @@ export default function RegisterPage() {
                 </i>
                 Join with email
               </button>
-              <div className="text-center">
-                <small className="text-muted text-center">
-                  By joining Noted you agree to our Terms of Service and
-                  Privacy. Protected by Google's Privacy and Terms.
+              <div className="text-left">
+                <small className="text-muted text-left">
+                  By joining Noted you agree to our{" "}
+                  <a
+                    href="https://www.notedreturns.com/terms-and-conditions"
+                    style={policyStyle}
+                  >
+                    Terms of Service
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="https://www.notedreturns.com/privacy-policy"
+                    style={policyStyle}
+                  >
+                    Privacy
+                  </a>
+                  . Protected by Google's{" "}
+                  <a
+                    href="https://policies.google.com/privacy"
+                    style={policyStyle}
+                  >
+                    Privacy
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="https://policies.google.com/terms"
+                    style={policyStyle}
+                  >
+                    Terms
+                  </a>
+                  .
                 </small>
               </div>
             </form>
             <h3>
-              Already a member?
+              Already a member?{" "}
               <Link
                 to="login"
                 className="text-success text-decoration-underline"
