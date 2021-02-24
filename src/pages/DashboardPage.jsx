@@ -1,5 +1,6 @@
 import React, { lazy, useState } from "react";
 import { isEmpty } from "lodash";
+import PickUpButton from "../components/Dashboard/PickUpButton";
 
 const HorizontalLine = lazy(() => import("../components/HorizontalLine"));
 
@@ -26,70 +27,6 @@ function DashboardPage() {
         </button>
       </div>
     </>
-  );
-
-  const renderPickUpButton = ({
-    leadingText = "",
-    backgroundColor: background,
-    textColor: color,
-    price,
-    timeWindow,
-    opacity,
-  }) => (
-    <div className="row">
-      <button
-        className="btn btn-md mb-3 col-sm-12 pd-3 pick-up-btn"
-        style={{
-          alignSelf: "center",
-          letterSpacing: 1,
-          background,
-          opacity,
-        }}
-      >
-        <div className="row">
-          <div
-            className="col-sm-8"
-            style={{
-              display: "flex",
-              justifyItems: "center",
-              alignItems: "center",
-            }}
-          >
-            <p
-              className="mt-0 mb-0 ml-3 pick-up-btn-lead"
-              style={{
-                fontWeight: "500",
-                fontSize: 14.5,
-                color,
-              }}
-            >
-              {leadingText || ""}
-            </p>
-          </div>
-          <div className="col-sm-4 small">
-            <p
-              className="mt-0 mb-0"
-              style={{
-                fontSize: 11,
-                color,
-              }}
-            >
-              ${price || ""}
-            </p>
-            {timeWindow && (
-              <p
-                className="mt-0 mb-0 h5"
-                style={{
-                  color,
-                }}
-              >
-                {timeWindow}
-              </p>
-            )}
-          </div>
-        </div>
-      </button>
-    </div>
   );
 
   const renderRightCard = () => (
@@ -141,26 +78,28 @@ function DashboardPage() {
               </div>
             </div>
           </div>
+          <hr />
           <div
             style={{
               opacity: isEmpty(scans) ? 0.37 : 1,
             }}
           >
-            {renderPickUpButton({
-              leadingText: "Pickup now",
-              timeWindow: "now",
-              price: "24.99",
-              backgroundColor: "#570097",
-              textColor: "white",
-              opacity: 0.8,
-            })}
-            {renderPickUpButton({
-              leadingText: "Pickup later",
-              price: "24.99",
-              backgroundColor: "#faf5fc",
-              textColor: "#570097",
-              opacity: 0.8,
-            })}
+            <PickUpButton
+              leadingText="Pickup now"
+              timeWindow="now"
+              price="24.99"
+              backgroundColor="#570097"
+              textColor="white"
+              opacity="0.8"
+              onClick={() => {}}
+            />
+            <PickUpButton
+              leadingText="Pickup later"
+              price="24.99"
+              backgroundColor="#faf5fc"
+              textColor="#570097"
+              opacity="0.8"
+            />
           </div>
         </div>
       </div>
