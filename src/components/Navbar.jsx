@@ -1,5 +1,7 @@
 import React, { lazy } from "react";
 import { Container, Navbar } from "react-bootstrap";
+import ProfileIcon from "../assets/icons/Profile.svg";
+import DropwDownIcon from "../assets/icons/InvertedTriangle.svg";
 const BrandLogoSvg = lazy(() => import("./BrandLogoSvg"));
 
 const Topnav = () => {
@@ -16,6 +18,14 @@ const Topnav = () => {
           placeholder="Search purchases"
         />
       </Container>
+      <div className="mr-5">
+        <div className="btn p-0">
+          <img src={ProfileIcon} />
+        </div>
+        <div className="btn p-0">
+          <img src={DropwDownIcon} />
+        </div>
+      </div>
     </Navbar>
   );
 };
