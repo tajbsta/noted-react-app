@@ -9,14 +9,7 @@ function DashboardPage() {
 
   const renderEmptyScans = () => (
     <>
-      <p
-        className="text-center sofia-pro"
-        style={{
-          color: "#E8E7E9",
-        }}
-      >
-        No Scan Yet
-      </p>
+      <p className="text-center sofia-pro noted-purple">No Scan Yet</p>
       <p className="small text-muted mb-1 text-center sofia-pro">
         Launchday is a SaaS website builder with a focus on quality, easy to
         build product sites.
