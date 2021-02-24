@@ -4,20 +4,14 @@ const BrandLogoSvg = lazy(() => import("./BrandLogoSvg"));
 
 const Topnav = () => {
   return (
-    <Navbar
-      expand="lg shadow-sm"
-      style={{
-        background: "white",
-      }}
-    >
-      <Container>
-        <Navbar.Brand href="home">
-          <BrandLogoSvg />
-        </Navbar.Brand>
-
+    <Navbar expand="lg shadow-sm navigation-bar">
+      <Navbar.Brand href="home" className="ml-4 mr-1">
+        <BrandLogoSvg />
+      </Navbar.Brand>
+      <Container className="ml-3">
         <input
           type="email"
-          className="form-control ml-4 search"
+          className="form-control search"
           aria-describedby="emailHelp"
           placeholder="Search purchases"
         />

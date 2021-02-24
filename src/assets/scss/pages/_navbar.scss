@@ -1,3 +1,6 @@
+.navigation-bar {
+  background-color: white;
+}
 .search {
   border: none;
   background: #f7f5f7;
@@ -7,6 +10,7 @@
   font-size: 16px;
   line-height: 21px;
   color: #8b888c;
+  width: 61vw;
 }
 .search::placeholder {
   color: #8d888d;
