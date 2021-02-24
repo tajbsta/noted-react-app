@@ -88,12 +88,14 @@ export default function RegisterPage() {
                   placeholder="Your email..."
                 />
               </div>
-              <button className="btn btn-lg btn-block btn-success mb-3">
-                <i className="fe fe-mail mr-3">
-                  <Mail />
-                </i>
-                Join with email
-              </button>
+              <Link to="/request-permission">
+                <button className="btn btn-lg btn-block btn-success mb-3">
+                  <i className="fe fe-mail mr-3">
+                    <Mail />
+                  </i>
+                  Join with email
+                </button>
+              </Link>
               <div className="text-left">
                 <small className="text-muted text-left">
                   By joining Noted you agree to our{" "}
