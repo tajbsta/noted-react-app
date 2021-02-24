@@ -1,6 +1,5 @@
 import { lazy } from "react";
 
-const LandingPage = lazy(() => import("../pages/LandingPage"));
 const RegisterPage = lazy(() => import("../pages/RegisterPage"));
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
 const AuthorizePage = lazy(() => import("../pages/AuthorizePage"));
@@ -8,7 +7,7 @@ const AuthorizePage = lazy(() => import("../pages/AuthorizePage"));
 export default [
   {
     path: "/",
-    component: LandingPage,
+    component: RegisterPage,
   },
   {
     path: "/join",
