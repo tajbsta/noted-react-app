@@ -6,8 +6,8 @@ import AuthorizeImg from "../static/img/Authorize.svg";
 export default function AuthorizePage() {
   return (
     <div id="Authorize">
-      <Container className="main-body mt-n5">
-        <Row className="text-left align-items-end">
+      <Container className="main-body" fluid="lg">
+        <Row md="2" className="text-left align-items-end">
           <Col xs="6" className="info">
             <h1 className="bold text-title">Everything is automatic</h1>
             <h4 className="text-noted">
