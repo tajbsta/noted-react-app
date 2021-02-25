@@ -14,14 +14,14 @@ export default function RegisterPage() {
   };
 
   return (
-    <div>
+    <div id="RegisterPage">
       <div classNameName="container">
         <div className="row justify-content-center">
-          <div className="col-12 col-md-5 col-xl-4 my-5">
+          <div className="text-need col-md-5 col-xl-4">
             <p className="text-center">Need to return or donate</p>
             <p className="text-center">purchases made in the past?</p>
             <p className="text-center">Let's go!</p>
-            <form className="mb-3">
+            <form>
               <GoogleLogin
                 clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
                 render={() => (
@@ -81,6 +81,11 @@ export default function RegisterPage() {
                   Join With Apple
                 </button>
               </div>
+              <div>
+                <p className="line-break">
+                  <span>or</span>
+                </p>
+              </div>
               <div className="form-group">
                 <input
                   type="email"
@@ -88,8 +93,8 @@ export default function RegisterPage() {
                   placeholder="Your email..."
                 />
               </div>
-              <Link to="/request-permission">
-                <button className="btn btn-lg btn-block btn-success mb-3">
+              <Link to="/request-permission" className="link">
+                <button className="btn btn-lg btn-block btn-green mb-3">
                   <i className="fe fe-mail mr-3">
                     <Mail />
                   </i>
@@ -130,13 +135,10 @@ export default function RegisterPage() {
                 </small>
               </div>
             </form>
-            <h3>
+            <h3 className="text-already">
               Already a member?{" "}
-              <Link
-                to="login"
-                className="text-success text-decoration-underline"
-                style={{}}
-              >
+              <Link to="login" className="text-decoration-underline text-login">
+                {" "}
                 Log in
               </Link>
             </h3>

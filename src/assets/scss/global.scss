@@ -3,9 +3,15 @@
   // background-color: gray;
 }
 
-.btn-success {
+.btn-green {
   background-color: #6aaf6a;
   border-color: #6aaf6a;
+  color: #fff;
+  &:hover {
+    background-color: #76c476;
+    border-color: #76c476;
+    color: #fff !important;
+  }
 }
 
 .loading {

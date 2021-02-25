@@ -4,7 +4,7 @@
     vertical-align: middle;
     border-bottom: none !important;
     margin: auto;
-    padding-top: 100px;
+    padding-top: 120px;
 
     @media (max-width: 414px) {
       padding-top: 30px;
@@ -84,6 +84,7 @@
     h1,
     h4 {
       color: #570097;
+      font-family: "Sofia Pro";
     }
 
     .bold {
@@ -103,10 +104,11 @@
   }
 
   .btn-authorize {
+    font-family: "Sofia Pro";
     margin-top: 35px;
     padding-left: 29.5px;
     padding-right: 29.5px;
-    padding-top: 10px;
+    padding-top: 16px;
     padding-bottom: 10px;
     font-size: 16px;
     line-height: 19px;
