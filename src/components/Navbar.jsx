@@ -12,9 +12,9 @@ const Topnav = () => {
       </Navbar.Brand>
       <Container className="ml-3">
         <input
-          type="email"
+          type="name"
           className="form-control search"
-          aria-describedby="emailHelp"
+          aria-describedby="name"
           placeholder="Search purchases"
         />
       </Container>

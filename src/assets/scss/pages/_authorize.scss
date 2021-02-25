@@ -4,20 +4,27 @@
     vertical-align: middle;
     border-bottom: none !important;
     margin: auto;
-    padding-top: 120px;
+    // padding-top: 120px;
 
     @media (max-width: 414px) {
       padding-top: 30px;
     }
   }
 
+  // .container-lg {
+  //   max-width: 70%;
+  // }
+
   .row {
+    min-height: 68vh;
     @media (max-width: 414px) {
       display: block;
     }
   }
 
   .col-6 {
+    flex: none;
+    max-width: 50%;
     @media (max-width: 414px) {
       flex: none;
       max-width: 100%;
