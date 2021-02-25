@@ -106,3 +106,5 @@ dist
 # installation locks
 package-lock.json
 yarn.lock
+
+build
