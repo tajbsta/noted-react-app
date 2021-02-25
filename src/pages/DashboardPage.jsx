@@ -1,14 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import LeftCard from "../components/Dashboard/LeftCard";
 import RightCard from "../components/Dashboard/RightCard";
 
-function DashboardPage() {
-  // eslint-disable-next-line no-unused-vars
-  const [scans, setscans] = useState([]);
+const mockData = [
+  {
+    distributor: "Nordstom",
+    productName: "Long Sleeve White Shirt",
+    price: 58.29,
+    compensationType: "Cash back",
+  },
+  {
+    distributor: "Balenciaga",
+    productName: "White Jumper",
+    price: "240.00",
+    compensationType: "Cash back",
+  },
+];
 
-  useEffect(() => {
-    setscans([]);
-  }, []);
+function DashboardPage() {
+  const [scans] = useState([...mockData]);
 
   return (
     <div>

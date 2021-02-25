@@ -1,6 +1,6 @@
 import React from "react";
 
-function EmptyScan() {
+function EmptyScan({ onScanLaunch }) {
   return (
     <>
       <p className="text-center sofia-pro noted-purple">No Scan Yet</p>
@@ -15,7 +15,10 @@ function EmptyScan() {
           justifyContent: "center",
         }}
       >
-        <button className="btn shadow-sm launch-scan-btn p-0 sofia-pro">
+        <button
+          className="btn shadow-sm launch-scan-btn p-0 sofia-pro"
+          onClick={() => onScanLaunch()}
+        >
           <span className="mt-2">Launch Scan</span>
         </button>
       </div>
