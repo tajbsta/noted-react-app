@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function BrandLogoSvg() {
+function BrandLogoSvg() {
   return (
     <div>
       <svg
@@ -27,3 +27,5 @@ export default function BrandLogoSvg() {
     </div>
   );
 }
+
+export default BrandLogoSvg;
