@@ -9,7 +9,7 @@ import "./assets/scss/App.scss";
 IMPORTS ROUTES
 */
 import AppRouteSwitcher from "./routes/AppRouteSwitcher";
-import store from "./store.js";
+import store from "./store";
 
 function App() {
   return (
