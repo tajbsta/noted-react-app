@@ -32,7 +32,7 @@ export default function AuthorizePage() {
               <a href="#">Learn more about security</a>
             </h4>
             <Link to="/dashboard">
-              <Button className="btn btn-success btn-authorize">
+              <Button className="btn btn-green btn-authorize">
                 Authorize Noted
               </Button>
             </Link>
