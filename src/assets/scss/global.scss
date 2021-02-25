@@ -9,8 +9,11 @@
   color: #fff;
   &:hover {
     background-color: #76c476;
-    border-color: #76c476;
+    border-color: #76c476 !important;
     color: #fff !important;
+  }
+  &:active {
+    background-color: #6aaf6a !important;
   }
 }
 

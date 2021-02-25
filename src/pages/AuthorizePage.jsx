@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import AuthorizeImg from "../static/img/Authorize.svg";
+import AuthorizeImg from "../assets/img/Authorize.svg";
 
 export default function AuthorizePage() {
   return (
