@@ -9,9 +9,26 @@
     font-family: "Sofia Pro";
   }
 
+  h3 {
+    // error message
+    color: red;
+  }
+
   .row {
     margin-right: 0px;
     margin-left: 0px;
+
+    .btn-google {
+      margin-top: 44px;
+    }
+
+    .form-group-signup {
+      width: 440px;
+    }
+    .form-control-lg {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
   }
 
   .text-need {
@@ -29,9 +46,6 @@
     }
   }
 
-  form {
-    margin-top: 64px;
-  }
   span {
     background: #f2f2f2;
     padding: 0 10px;
