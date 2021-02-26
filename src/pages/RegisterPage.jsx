@@ -3,15 +3,31 @@ import React from "react";
 import { Mail } from "react-feather";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useDispatch } from "react-redux";
+import { login } from "../actions/auth.action";
 
-export default function RegisterPage() {
-  const policyStyle = {
-    textDecoration: "underline",
+const policyStyle = {
+  textDecoration: "underline",
+};
+
+export default function RegisterPage({ history }) {
+  const dispatch = useDispatch();
+
+  const onLogin = () => {
+    dispatch(
+      login({
+        email: "email@email.com",
+        password: "asfasdsagasgasasfofkl3kl423",
+        jwtToken: "samplejwttokenbutshort",
+        loggedIn: true,
+      })
+    );
+    history.push("/dashboard");
   };
 
   return (
     <div id="RegisterPage">
-      <div classNameName="container">
+      <div className="container">
         <div className="row justify-content-center">
           <div className="text-need col-md-5 col-xl-4">
             <p className="text-center">Need to return or donate</p>
@@ -32,6 +48,7 @@ export default function RegisterPage() {
                   color: "#690098",
                   fontWeight: "normal",
                 }}
+                onClick={onLogin}
               >
                 <div className="avatar avatar-xs mr-2">
                   <img
