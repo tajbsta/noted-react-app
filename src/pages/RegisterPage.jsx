@@ -3,6 +3,20 @@ import React from "react";
 import { Mail } from "react-feather";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import Amplify, { Auth } from "aws-amplify";
+
+const signUp = ({ email, password }) => {
+  console.log("===signup in cognito");
+  Auth.signUp({
+    username: email,
+    password,
+    attributes: {
+      email,
+    },
+  })
+    .then((user) => console.log("Success", user))
+    .catch((err) => console.log("Error", err));
+};
 
 export default function RegisterPage() {
   const policyStyle = {
@@ -11,7 +25,7 @@ export default function RegisterPage() {
 
   return (
     <div id="RegisterPage">
-      <div classNameName="container">
+      <div>
         <div className="row justify-content-center">
           <div className="text-need col-md-5 col-xl-4">
             <p className="text-center">Need to return or donate</p>
@@ -42,7 +56,7 @@ export default function RegisterPage() {
                 Join With Google
               </button>
             </div>
-            <div
+            {/* <div
               className="form-group"
               style={{
                 display: "flex",
@@ -66,7 +80,7 @@ export default function RegisterPage() {
                 </div>
                 Join With Apple
               </button>
-            </div>
+            </div> */}
             <div>
               <p className="line-break">
                 <span>or</span>
@@ -87,8 +101,10 @@ export default function RegisterPage() {
                 return errors;
               }}
               onSubmit={(values, { setSubmitting }) => {
+                console.log("values", values);
                 setTimeout(() => {
-                  alert(JSON.stringify(values, null, 2));
+                  // alert(JSON.stringify(values, null, 2));
+                  signUp(values);
                   setSubmitting(false);
                 }, 400);
               }}
@@ -103,12 +119,12 @@ export default function RegisterPage() {
                     name="email"
                     placeholder="Your email..."
                   />
-                  {/* <Field
+                  <Field
                     className="form-control form-control-lg"
                     type="password"
                     name="password"
                     placeholder="Your password..."
-                  /> */}
+                  />
                   {/* <Link to="/request-permission" className="link"> */}
                   <button
                     className="btn btn-lg btn-block btn-green mb-3"
