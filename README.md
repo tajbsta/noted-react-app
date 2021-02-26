@@ -1,9 +1,11 @@
-# noted-frontend
+# noted-react-app (NPM BASED)
 
-## Available Scripts
+To Start Development you need to:
 
-In the project directory, you can run:
+1. Install all dependencies
+### `npm install`
 
+2. Start Development Mode
 ### `npm start`
 
 Runs the app in the development mode.\
@@ -11,3 +13,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
+
+3. To build for a production ready release, make sure you are in `main` branch. Run:
+### `npm run build`
