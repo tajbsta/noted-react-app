@@ -1,0 +1,44 @@
+@mixin mediaQueries($deviceType) {
+	@if $deviceType == lg {
+		@media screen and (min-width: 1921px) {
+			@content;
+		}
+		@media screen and (min-device-width: 1921px) {
+			@content;
+		}
+	}
+	@else if $deviceType == desktop {
+		@media screen and (min-width : 1069px) and (max-width : 1920px) {
+			@content;
+		}
+		@media screen and (min-device-width : 1069px) and (max-device-width : 1920px) {
+			@content;
+		}
+	}
+	@else if $deviceType == pad {
+		@media screen and (min-width : 768px) and (max-width: 1023px) {
+			@content;
+		}
+		@media screen and (min-device-width : 768px) and (max-device-width: 1023px) {
+			@content;
+		}
+	}
+    @else if $deviceType == padpro {
+		@media screen and (min-device-width: 1024px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
+			@content;
+		}
+	}
+	@else if $deviceType == mobile {
+		@media screen and (max-width: 767px) {
+			@content;
+		}
+	}
+	@else if $deviceType == xsmobile {
+		@media screen and (max-width: 375px) {
+			@content;
+		}
+		@media screen and (max-width: 320px) {
+			@content;
+		}
+	}
+}

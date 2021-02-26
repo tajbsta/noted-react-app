@@ -1,0 +1,79 @@
+.noted-purple {
+  color: #570097;
+}
+
+.launch-scan-btn {
+  width: 177px;
+  height: 48px;
+  background: #6aaf6a;
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  height: 48px;
+  border-radius: 8px;
+}
+
+.launch-scan-btn:hover {
+  background: white;
+  color: #6aaf6a;
+}
+
+.right-card {
+  .card-label {
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+  .card-value {
+    font-size: 23px;
+    line-height: 27px;
+    color: #21003a;
+  }
+  .card-title {
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018;
+  }
+  .card-body {
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 0;
+  }
+  .pick-up-btn {
+    height: 52px;
+    padding: 6px;
+    .pick-up-btn-lead {
+      font-family: "Sofia Pro";
+      font-size: 16px;
+      line-height: 19px;
+    }
+  }
+}
+
+.left-card {
+  .distributor-name {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19.6;
+  }
+  .product-name {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18.79;
+  }
+  .product-price {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 18.2;
+  }
+  .product-compensation-type {
+    font-size: 12px !important;
+    line-height: 14px !important;
+  }
+}

@@ -1,0 +1,31 @@
+// 
+// user-variables.scss
+// Use this to overwrite Bootstrap and Dashkit variables
+//
+
+// Example of a variable override to change Dashkit's background color
+// Remove the "//" to comment it in and see it in action!
+
+// CRA 4 fails to compile issue: https://github.com/facebook/create-react-app/issues/10022
+// $body-bg: #FFFFFF;
+
+//text colors
+// $pdblue: #1A1A3B;
+// $white: #FFFFFF;
+// $pblue: #1434E1;
+// $ppink: #FF325B;
+// $gray1: #333333;
+// $gray2: #666666;
+// $gray3: #BDBDBD;
+// $gray4: #E0E0E0;
+// $gray5: #F2F2F2;
+// $gray6: #E5E5E5;
+// $green: #6FF34B;
+// $yellow: #FCE622;
+// $pink2: #F73E64;
+// $lblue: #00DCFF;
+// $resume-bg: #F3F2ED;
+// $chat-btn-bg: #1434E1;
+
+$path-to-fonts: '/static/fonts' !default;
+$path-to-img: '/static/img' !default;

@@ -1,0 +1,33 @@
+* {
+  // border: 1px solid red;
+  // background-color: gray;
+}
+
+.btn-green {
+  background-color: #6aaf6a;
+  border-color: #6aaf6a;
+  color: #fff;
+  &:hover {
+    background-color: #76c476;
+    border-color: #76c476 !important;
+    color: #fff !important;
+  }
+  &:active {
+    background-color: #6aaf6a !important;
+  }
+}
+
+.loading {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 2px solid rgba($primary, 0.2);
+  border-radius: 50%;
+  border-top-color: $primary;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+  left: calc(50% - 15px);
+  top: calc(50% - 15px);
+  position: fixed;
+  z-index: 1;
+}
