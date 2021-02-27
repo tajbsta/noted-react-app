@@ -3,6 +3,24 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Amplify, { Auth } from 'aws-amplify';
+// import awsconfig from './aws-exports';
+
+Amplify.configure({
+  Auth: {
+    // REQUIRED - Amazon Cognito Region
+    region: 'us-west-2',
+
+    // OPTIONAL - Amazon Cognito User Pool ID
+    userPoolId: 'us-west-2_bIpESrJw9',
+
+    // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
+    userPoolWebClientId: '1r849tupi2iilvde33jeeuv658',
+
+    // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
+    mandatorySignIn: false,
+  }
+});
 
 ReactDOM.render(
   <React.StrictMode>

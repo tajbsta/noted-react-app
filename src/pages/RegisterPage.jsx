@@ -1,33 +1,33 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import { Mail } from "react-feather";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useDispatch } from "react-redux";
-import { login } from "../actions/auth.action";
+import Amplify, { Auth } from "aws-amplify";
 
-const policyStyle = {
-  textDecoration: "underline",
-};
+export default function RegisterPage() {
+  let history = useHistory();
 
-export default function RegisterPage({ history }) {
-  const dispatch = useDispatch();
+  const signUp = ({ email, password }) => {
+    console.log("===signup in cognito");
+    Auth.signUp({
+      username: email,
+      password,
+      attributes: {
+        email,
+      },
+    })
+      .then((user) => console.log("Success", user))
+      .catch((err) => history.push("/request-permission"));
+  };
 
-  const onLogin = () => {
-    dispatch(
-      login({
-        email: "email@email.com",
-        password: "asfasdsagasgasasfofkl3kl423",
-        jwtToken: "samplejwttokenbutshort",
-        loggedIn: true,
-      })
-    );
-    history.push("/dashboard");
+  const policyStyle = {
+    textDecoration: "underline",
   };
 
   return (
     <div id="RegisterPage">
-      <div className="container">
+      <div>
         <div className="row justify-content-center">
           <div className="text-need col-md-5 col-xl-4">
             <p className="text-center">Need to return or donate</p>
@@ -48,7 +48,6 @@ export default function RegisterPage({ history }) {
                   color: "#690098",
                   fontWeight: "normal",
                 }}
-                onClick={onLogin}
               >
                 <div className="avatar avatar-xs mr-2">
                   <img
@@ -59,7 +58,7 @@ export default function RegisterPage({ history }) {
                 Join With Google
               </button>
             </div>
-            <div
+            {/* <div
               className="form-group"
               style={{
                 display: "flex",
@@ -83,7 +82,7 @@ export default function RegisterPage({ history }) {
                 </div>
                 Join With Apple
               </button>
-            </div>
+            </div> */}
             <div>
               <p className="line-break">
                 <span>or</span>
@@ -95,17 +94,19 @@ export default function RegisterPage({ history }) {
               validate={(values) => {
                 const errors = {};
                 if (!values.email) {
-                  errors.email = "Required";
+                  // errors.email = "Required";
                 } else if (
                   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
                 ) {
-                  errors.email = "Invalid email address";
+                  // errors.email = "Invalid email address";
                 }
                 return errors;
               }}
               onSubmit={(values, { setSubmitting }) => {
+                console.log("values", values);
                 setTimeout(() => {
-                  alert(JSON.stringify(values, null, 2));
+                  // alert(JSON.stringify(values, null, 2));
+                  signUp(values);
                   setSubmitting(false);
                 }, 400);
               }}
@@ -120,14 +121,15 @@ export default function RegisterPage({ history }) {
                     name="email"
                     placeholder="Your email..."
                   />
-                  {/* <Field
+                  <Field
                     className="form-control form-control-lg"
                     type="password"
                     name="password"
                     placeholder="Your password..."
-                  /> */}
+                  />
                   {/* <Link to="/request-permission" className="link"> */}
                   <button
+                    onClick={signUp}
                     className="btn btn-lg btn-block btn-green mb-3"
                     type="submit"
                     disabled={isSubmitting}

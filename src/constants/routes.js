@@ -16,9 +16,11 @@ export default [
   {
     path: "/request-permission",
     component: AuthorizePage,
+    isSecured: true
   },
   {
     path: "/dashboard",
     component: DashboardPage,
+    isSecured: true
   },
 ];
