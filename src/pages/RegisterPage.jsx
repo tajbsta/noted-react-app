@@ -1,24 +1,26 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import { Mail } from "react-feather";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Amplify, { Auth } from "aws-amplify";
 
-const signUp = ({ email, password }) => {
-  console.log("===signup in cognito");
-  Auth.signUp({
-    username: email,
-    password,
-    attributes: {
-      email,
-    },
-  })
-    .then((user) => console.log("Success", user))
-    .catch((err) => console.log("Error", err));
-};
-
 export default function RegisterPage() {
+  let history = useHistory();
+
+  const signUp = ({ email, password }) => {
+    console.log("===signup in cognito");
+    Auth.signUp({
+      username: email,
+      password,
+      attributes: {
+        email,
+      },
+    })
+      .then((user) => console.log("Success", user))
+      .catch((err) => history.push("/request-permission"));
+  };
+
   const policyStyle = {
     textDecoration: "underline",
   };
@@ -92,11 +94,11 @@ export default function RegisterPage() {
               validate={(values) => {
                 const errors = {};
                 if (!values.email) {
-                  errors.email = "Required";
+                  // errors.email = "Required";
                 } else if (
                   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
                 ) {
-                  errors.email = "Invalid email address";
+                  // errors.email = "Invalid email address";
                 }
                 return errors;
               }}
@@ -127,6 +129,7 @@ export default function RegisterPage() {
                   />
                   {/* <Link to="/request-permission" className="link"> */}
                   <button
+                    onClick={signUp}
                     className="btn btn-lg btn-block btn-green mb-3"
                     type="submit"
                     disabled={isSubmitting}
