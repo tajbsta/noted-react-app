@@ -18,16 +18,16 @@ const mockData = [
 ];
 
 function DashboardPage() {
-  const [scans] = useState([...mockData]);
+  const [scannedItems] = useState([...mockData]);
 
   return (
     <div>
       <div className="container mt-6">
         <div className="row">
           {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
-          <LeftCard scans={scans} />
+          <LeftCard scannedItems={scannedItems} />
           {/*CONTAINS ACCOUNT AUDIT RIGHT CARD OF DASHBOARD PAGE*/}
-          <RightCard scans={scans} />
+          <RightCard scannedItems={scannedItems} />
         </div>
       </div>
     </div>
