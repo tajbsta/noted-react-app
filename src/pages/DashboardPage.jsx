@@ -1,43 +1,64 @@
 import React, { useState } from 'react';
-import LeftCard from '../components/Dashboard/LeftCard';
+import Donate from '../components/Dashboard/Donate';
+import LastCall from '../components/Dashboard/LastCall';
+import Returnable from '../components/Dashboard/Returnable';
 import RightCard from '../components/Dashboard/RightCard';
-import { EXCELLENT, FAIR, GREAT } from '../constants/returns/scores';
-
-const mockData = [
-  {
-    distributor: 'Nordstom',
-    productName: 'Long Sleeve White Shirt',
-    price: 58.29,
-    compensationType: 'Cash back',
-    returnScore: EXCELLENT,
-  },
-  {
-    distributor: 'Balenciaga',
-    productName: 'White Jumper',
-    price: 240.0,
-    compensationType: 'Store Credits',
-    returnScore: GREAT,
-  },
-  {
-    distributor: 'Nike',
-    productName: 'Metcon 6',
-    price: 130.0,
-    compensationType: 'Cash back',
-    returnScore: FAIR,
-  },
-];
+import { lastCallMockdata, returnableMockData } from '../_mock';
 
 function DashboardPage() {
-  const [scannedItems] = useState([...mockData]);
+  const [scannedItems] = useState([...lastCallMockdata, ...returnableMockData]);
 
   return (
     <div>
       <div className='container mt-6'>
-        <div className='row'>
-          {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
-          <LeftCard scannedItems={scannedItems} />
-          {/*CONTAINS ACCOUNT AUDIT RIGHT CARD OF DASHBOARD PAGE*/}
-          <RightCard scannedItems={scannedItems} />
+        <div
+          className='row'
+          style={{
+            minWidth: '89vw',
+          }}
+        >
+          <div className='col-sm-8'>
+            {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
+            <LastCall scannedItems={scannedItems} />
+            <Returnable scannedItems={scannedItems} />
+            <Donate scannedItems={scannedItems} />
+
+            <div>
+              <div className='row justify-center'>
+                <div className='col-sm-7 text-center'>
+                  <div className='text-muted text-center'>
+                    These are all the purchases we found in the past 90 days
+                    from your address alexijones@gmail.com
+                  </div>
+                </div>
+              </div>
+              <div className='row justify-center mt-3'>
+                <div className='col-sm-6 text-center'>
+                  <div className='text-muted text-center'>
+                    Can’t find one?
+                    <span className='noted-purple'>Add it manually</span>
+                  </div>
+                </div>
+              </div>
+              <div className='row justify-center mt-2'>
+                <div className='col-sm-6 text-center'>
+                  <div className='text-center noted-purple'>
+                    Add new email address
+                  </div>
+                </div>
+              </div>
+              <div className='row justify-center mt-2'>
+                <div className='col-sm-6 text-center'>
+                  <div className='text-center noted-purple'>
+                    Scan for older items
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='col-sm-3'>
+            <RightCard scannedItems={scannedItems} />
+          </div>
         </div>
       </div>
     </div>

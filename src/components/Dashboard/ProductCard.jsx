@@ -41,7 +41,7 @@ function ProductCard({
             }}
           />
           <div
-            className='col-sm-5'
+            className='col-sm-5 ml-5'
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -60,9 +60,13 @@ function ProductCard({
               <ReturnScore score={returnScore} />
             </div>
             <img
-              src='https://i.pinimg.com/originals/bd/c8/1a/bdc81a948abd4361288cf3a2d709261e.jpg'
+              src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
               alt=''
-              className='avatar-img avatar-sm ml-3 rounded-circle'
+              className='avatar-img ml-2 rounded-circle noted-border'
+              style={{
+                width: 31,
+                height: 31,
+              }}
             />
           </div>
         </Row>
