@@ -4,6 +4,7 @@ const initialState = {
   email: "",
   password: "",
   jwtToken: "",
+  loggedIn: false,
 };
 
 function auth(state = initialState, { type, auth }) {
@@ -11,13 +12,10 @@ function auth(state = initialState, { type, auth }) {
     case SIGN_IN:
       return {
         ...state,
-        auth,
+        ...auth,
       };
     case SIGN_OUT:
-      return {
-        ...state,
-        auth: {},
-      };
+      return {};
     default:
       return state;
   }
