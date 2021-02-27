@@ -1,6 +1,6 @@
 import React from "react";
 
-function EmptyScan({ onScanLaunch }: any) {
+function EmptyScan({ onScanLaunch }) {
   return (
     <>
       <p className="text-center sofia-pro noted-purple">No Scan Yet</p>

@@ -1,10 +1,9 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { RouteComponentProps } from "react-router";
 import AuthorizeImg from "../assets/img/Authorize.svg";
 
-const AuthorizePage: FunctionComponent<RouteComponentProps> = () => {
+export default function AuthorizePage() {
   return (
     <div id="Authorize">
       <Container className="main-body" fluid="lg">
@@ -30,7 +29,7 @@ const AuthorizePage: FunctionComponent<RouteComponentProps> = () => {
               any of your personal info to anyone.
             </h4>
             <h4 className="text-underline">
-              <a href="/">Learn more about security</a>
+              <a href="#">Learn more about security</a>
             </h4>
             <Link to="/dashboard">
               <Button className="btn btn-green btn-authorize">
@@ -40,13 +39,11 @@ const AuthorizePage: FunctionComponent<RouteComponentProps> = () => {
           </Col>
           <Col xs="6">
             <div className="authorize-img">
-              <img src={AuthorizeImg} alt="authorize-img" />
+              <img src={AuthorizeImg} />
             </div>
           </Col>
         </Row>
       </Container>
     </div>
   );
-};
-
-export default AuthorizePage;
+}

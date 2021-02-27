@@ -4,7 +4,7 @@ import HorizontalLine from "../HorizontalLine";
 import Row from "../Row";
 import PickUpButton from "./PickUpButton";
 
-function RightCard({ scans }: any) {
+function RightCard({ scans }) {
   return (
     <div
       className="col right-card"
@@ -28,20 +28,18 @@ function RightCard({ scans }: any) {
               </div>
             </Row>
             <Row marginTop={3} className="p-0">
-              <div>
-                <div className="col-5">
-                  <div className="row card-text mb-0 sofia-pro card-value">
-                    $0
-                  </div>
-                  <div className="row small sofia-pro card-label">
-                    In Cash Back
-                  </div>
+              <div className="col-5">
+                <div className="row card-text mb-0 sofia-pro card-value">
+                  $0
                 </div>
-                <div className="col-6 ml-3">
-                  <div className="row mb-0 sofia-pro card-value">$0</div>
-                  <div className="row card-text small sofia-pro card-label">
-                    In Store Credits
-                  </div>
+                <div className="row small sofia-pro card-label">
+                  In Cash Back
+                </div>
+              </div>
+              <div className="col-6 ml-3">
+                <div className="row mb-0 sofia-pro card-value">$0</div>
+                <div className="row card-text small sofia-pro card-label">
+                  In Store Credits
                 </div>
               </div>
             </Row>

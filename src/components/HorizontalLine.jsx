@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-function HorizontalLine({ width }: any) {
+function HorizontalLine({ width }) {
   return (
     <hr
       className="mt-0 mb-0"

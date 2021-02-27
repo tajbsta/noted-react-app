@@ -9,7 +9,7 @@ function PickUpButton({
   timeWindow,
   opacity,
   onClick,
-}: any) {
+}) {
   return (
     <div className="row">
       <button
@@ -34,7 +34,7 @@ function PickUpButton({
             <p
               className="mt-0 mb-0 ml-3 pick-up-btn-lead"
               style={{
-                fontWeight: 500,
+                fontWeight: "500",
                 fontSize: 14.5,
                 color,
               }}

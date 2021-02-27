@@ -1,10 +1,8 @@
-import React, { FunctionComponent, useState } from "react";
-import { RouteComponentProps } from "react-router";
+import React, { useState } from "react";
 import LeftCard from "../components/Dashboard/LeftCard";
 import RightCard from "../components/Dashboard/RightCard";
-import iReturns from "../models/iReturns";
 
-const mockData: Array<iReturns> = [
+const mockData = [
   {
     distributor: "Nordstom",
     productName: "Long Sleeve White Shirt",
@@ -14,12 +12,12 @@ const mockData: Array<iReturns> = [
   {
     distributor: "Balenciaga",
     productName: "White Jumper",
-    price: 240,
+    price: "240.00",
     compensationType: "Cash back",
   },
 ];
 
-const DashboardPage: FunctionComponent<RouteComponentProps> = () => {
+function DashboardPage() {
   const [scans] = useState([...mockData]);
 
   return (
@@ -34,6 +32,6 @@ const DashboardPage: FunctionComponent<RouteComponentProps> = () => {
       </div>
     </div>
   );
-};
+}
 
 export default DashboardPage;

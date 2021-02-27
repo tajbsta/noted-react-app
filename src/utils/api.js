@@ -7,7 +7,7 @@ const instance = axios.create({ baseURL: REACT_APP_API_URI });
 
 instance.defaults.paramsSerializer = (params) => qs.stringify(params);
 
-export function attachToken(token: string) {
+export function attachToken(token) {
   instance.defaults.headers.common.Authorization = `Bearer ${token}`;
 }
 

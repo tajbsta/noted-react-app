@@ -1,13 +1,12 @@
 import { isEmpty } from "lodash";
 import React, { useState } from "react";
 import { EXCELLENT } from "../../constants/returns/scores";
-import iReturns from "../../models/iReturns";
 import ReturnScore from "../ReturnsScore";
 import Row from "../Row";
 import EmptyScan from "./EmptyScan";
 import Scanning from "./Scanning";
 
-function LeftCard({ scans }: { scans: Array<iReturns> }) {
+function LeftCard({ scans }) {
   const [scanning, setScanning] = useState(false);
 
   const onScanLaunch = () => {
@@ -18,11 +17,8 @@ function LeftCard({ scans }: { scans: Array<iReturns> }) {
   };
 
   const productDetails = ({
-    productName,
-    distributor,
-    price,
-    compensationType,
-  }: iReturns) => (
+    scan: { productName, distributor, price, compensationType },
+  }) => (
     <div className="col-sm-4 p-0 mt-1">
       <Row>
         <h4 className="mb-0 sofia-pro mb-1 distributor-name">{distributor}</h4>
@@ -66,20 +62,18 @@ function LeftCard({ scans }: { scans: Array<iReturns> }) {
           <div className="card shadow-sm" key={scan.productName}>
             <div className="card-body pt-3 pb-3 p-0 m-0">
               <Row>
-                <>
-                  <div className="form-check col-sm-1 align-self-center">
-                    <input type="checkbox" value="" id="flexCheckDefault" />
-                  </div>
-                  <div
-                    className="col-sm-1 mr-3"
-                    style={{
-                      backgroundImage: "url('https://via.placeholder.com/150')",
-                      backgroundSize: "cover",
-                    }}
-                  ></div>
-                  {productDetails(scan)}
-                  <ReturnScore score={EXCELLENT} />
-                </>
+                <div className="form-check col-sm-1 align-self-center">
+                  <input type="checkbox" value="" id="flexCheckDefault" />
+                </div>
+                <div
+                  className="col-sm-1 mr-3"
+                  style={{
+                    backgroundImage: "url('https://via.placeholder.com/150')",
+                    backgroundSize: "cover",
+                  }}
+                ></div>
+                {productDetails({ scan })}
+                <ReturnScore score={EXCELLENT} />
               </Row>
             </div>
           </div>
