@@ -73,8 +73,11 @@ function Donate({ scannedItems }) {
       ) : (
         [...scannedItems].map((scannedItem) => (
           <ProductCard
-            key={scannedItem.productName}
+            key={scannedItem.id}
             scannedItem={scannedItem}
+            selected={selected.includes(scannedItem.id)}
+            addSelected={addSelected}
+            removeSelected={removeSelected}
           />
         ))
       )}
