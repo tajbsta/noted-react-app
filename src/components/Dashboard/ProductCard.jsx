@@ -1,9 +1,12 @@
-import React from 'react';
-import ReturnScore from '../ReturnsScore';
-import Row from '../Row';
-import ProductDetails from './ProductDetails';
+import React from "react";
+import ReturnScore from "../ReturnsScore";
+import Row from "../Row";
+import ProductDetails from "./ProductDetails";
 
 function ProductCard({
+  selected,
+  addSelected,
+  removeSelected,
   scannedItem: {
     distributor,
     productName,
@@ -11,23 +14,37 @@ function ProductCard({
     returnScore,
     price,
     compensationType,
+    id,
   },
 }) {
+  console.log(selected);
+  const handleSelection = (e) => {
+    if (selected) {
+      removeSelected(id);
+      return;
+    }
+    addSelected(id);
+  };
+
   return (
     <div
-      className='card shadow-sm scanned-item-card mb-3 p-0'
+      className="card shadow-sm scanned-item-card mb-3 p-0"
       key={productName}
     >
-      <div className='card-body pt-3 pb-3 p-0 m-0'>
+      <div className="card-body pt-3 pb-3 p-0 m-0">
         <Row>
-          <div className='row align-items-center p-4'>
-            <input type='checkbox' value='' id='flexCheckDefault' />
+          <div className="row align-items-center p-4">
+            <input
+              type="checkbox"
+              checked={selected}
+              onChange={handleSelection}
+            />
           </div>
           <div
-            className='col-sm-1 ml-1 mr-3'
+            className="col-sm-1 ml-1 mr-3"
             style={{
               backgroundImage: "url('https://via.placeholder.com/150')",
-              backgroundSize: 'cover',
+              backgroundSize: "cover",
             }}
           />
           <ProductDetails
@@ -41,28 +58,28 @@ function ProductCard({
             }}
           />
           <div
-            className='col-sm-5 ml-5'
+            className="col-sm-5 ml-5"
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyItems: 'center',
+              display: "flex",
+              alignItems: "center",
+              justifyItems: "center",
             }}
           >
             <div
-              className='col-sm-11 text-right p-0 noted-red sofia-pro'
+              className="col-sm-11 text-right p-0 noted-red sofia-pro"
               style={{
-                color: '#FF1C29',
+                color: "#FF1C29",
               }}
             >
               2 days left
             </div>
-            <div className='col-sm-1 p-0 ml-3 '>
+            <div className="col-sm-1 p-0 ml-3 ">
               <ReturnScore score={returnScore} />
             </div>
             <img
-              src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
-              alt=''
-              className='avatar-img ml-2 rounded-circle noted-border'
+              src="https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png"
+              alt=""
+              className="avatar-img ml-2 rounded-circle noted-border"
               style={{
                 width: 31,
                 height: 31,
