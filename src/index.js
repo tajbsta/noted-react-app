@@ -8,17 +8,17 @@ import authListener from './utils/authListener';
 
 Amplify.configure({
   Auth: {
-    // REQUIRED - Amazon Cognito Region
-    region: 'us-west-2',
-
-    // OPTIONAL - Amazon Cognito User Pool ID
-    userPoolId: 'us-west-2_bIpESrJw9',
-
-    // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-    userPoolWebClientId: '1r849tupi2iilvde33jeeuv658',
-
-    // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
+    region: process.env.REACT_APP_REGION,
+    userPoolId: process.env.REACT_APP_USER_POOL_ID,
+    userPoolWebClientId: process.env.REACT_APP_USER_POOL_CLIENT_ID,
     mandatorySignIn: false,
+    oauth: {
+      domain: process.env.REACT_APP_OAUTH_DOMAIN,
+      scope: ['email', 'profile', 'openid'],
+      redirectSignIn: process.env.REACT_APP_OAUTH_REDIRECT_SIGN_IN,
+      redirectSignOut: process.env.REACT_APP_OAUTH_REDIRECT_SIGN_OUT,
+      responseType: 'code'
+    }
   }
 });
 
