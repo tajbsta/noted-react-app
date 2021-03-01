@@ -94,4 +94,19 @@
     font-size: 16px;
     line-height: 19px;
   }
+
+  .text-forgot {
+    font-family: "Sofia Pro";
+    font-weight: normal;
+    font-size: 16px;
+    display: flex;
+    flex-direction: row-reverse;
+    line-height: 18.75px;
+
+    a {
+      color: #6aaf6a;
+      position: relative;
+      bottom: 10px;
+    }
+  }
 }
