@@ -3,6 +3,7 @@ import { Container, Navbar } from "react-bootstrap";
 import ProfileIcon from "../assets/icons/Profile.svg";
 import DropwDownIcon from "../assets/icons/InvertedTriangle.svg";
 import { useSelector } from "react-redux";
+import { get } from "lodash";
 const BrandLogoSvg = lazy(() => import("./BrandLogoSvg"));
 
 const Topnav = () => {
@@ -12,7 +13,7 @@ const Topnav = () => {
       <Navbar.Brand href="home" className="ml-4 mr-1">
         <BrandLogoSvg />
       </Navbar.Brand>
-      {user && (
+      {get(user, "username", "").length > 0 && (
         <>
           <Container className="ml-3">
             <input
