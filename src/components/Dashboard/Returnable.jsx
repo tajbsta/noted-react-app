@@ -20,7 +20,7 @@ function Returnable({ scannedItems }) {
 
   const removeSelected = (id) => {
     if (selected.includes(id)) {
-      setSelected([...scannedItems.filter((item) => item.id !== id)]);
+      setSelected([...selected.filter((itemId) => itemId !== id)]);
     }
   };
 
@@ -80,7 +80,7 @@ function Returnable({ scannedItems }) {
             addSelected={addSelected}
             removeSelected={removeSelected}
             selected={selected.includes(scannedItem.id)}
-            key={scannedItem.productName}
+            key={scannedItem.id}
             scannedItem={scannedItem}
           />
         ))

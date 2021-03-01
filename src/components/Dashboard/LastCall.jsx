@@ -15,12 +15,12 @@ function LastCall({ scannedItems }) {
     if (selected.includes(id)) {
       return;
     }
-
     setSelected([...selected, scannedItems.find((item) => item.id === id).id]);
   };
 
   const removeSelected = (id) => {
     if (selected.includes(id)) {
+      console.log(scannedItems.filter((item) => item.id !== id));
       setSelected([...scannedItems.filter((item) => item.id !== id)]);
     }
   };

@@ -17,7 +17,6 @@ function ProductCard({
     id,
   },
 }) {
-  console.log(selected);
   const handleSelection = (e) => {
     if (selected) {
       removeSelected(id);
