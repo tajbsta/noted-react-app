@@ -14,9 +14,14 @@ const Topnav = () => {
     location: { pathname },
   } = useHistory();
   const user = useSelector(({ auth: { user } }) => user);
-  console.log(pathname);
+  const showShadow = pathname === "/" ? "" : "shadow-sm";
   return (
-    <Navbar expand="lg shadow-sm navigation-bar">
+    <Navbar
+      expand={`lg navigation-bar ${showShadow}`}
+      style={{
+        border: "none",
+      }}
+    >
       <Navbar.Brand href="home" className="ml-4 mr-1">
         <BrandLogoSvg />
       </Navbar.Brand>
