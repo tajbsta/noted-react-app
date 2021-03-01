@@ -1,21 +1,28 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from "react";
+import React, { useState } from "react";
 import { Mail } from "react-feather";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Form, FormGroup, FormControl } from "react-bootstrap";
 import Amplify, { Auth } from "aws-amplify";
-import { login } from "../actions/auth.action";
+import { login, signUp } from "../actions/auth.action";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   let history = useHistory();
+  const [error, setError] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const dispatch = useDispatch();
 
-  const login = ({ email, password }) => {
-    // console.log({ email, password });
+  const register = () => {
+    console.log({ email, password });
+    setError(null);
+    setIsSubmitting(true);
 
-    console.log("===signI in cognito");
-    Auth.signIn({
+    console.log("===signup in cognito");
+    Auth.signUp({
       username: email,
       password,
       attributes: {
@@ -23,10 +30,14 @@ export default function LoginPage() {
       },
     })
       .then((data) => {
-        dispatch(login(data.user));
+        dispatch(signUp(data.user));
         history.push("/request-permission");
       })
-      .catch((err) => console.log("Error", err)); // TODO: handle validation
+      .catch((error) => {
+        console.log("Error", error);
+        setError(error.message);
+        setIsSubmitting(false);
+      }); // TODO: handle validation
   };
 
   function validateEmail(value) {
@@ -59,6 +70,7 @@ export default function LoginPage() {
               }}
             >
               <button
+                onClick={() => Auth.federatedSignIn({ provider: "Google" })}
                 className="btn btn-md btn-block btn-google"
                 style={{
                   background: "white",
@@ -81,45 +93,38 @@ export default function LoginPage() {
                 <span>or</span>
               </p>
             </div>
-            <Formik
-              className="form-group-signup"
-              //   initialValues={{ email: "", password: "" }}
-              //   onSubmit={(values, { setSubmitting }) => {
-              //     // signUp(values);
-              //     setSubmitting(false);
-              //   }}
-            >
-              {({ isSubmitting }) => (
-                <Form>
-                  <ErrorMessage name="email" component="h3" />
-                  <ErrorMessage name="password" component="h3" />
-                  <Field
-                    className="form-control form-control-lg"
-                    type="email"
-                    name="email"
-                    placeholder="Your email..."
-                    validate={validateEmail}
-                  />
-                  <Field
-                    className="form-control form-control-lg"
-                    type="password"
-                    name="password"
-                    placeholder="Your password..."
-                  />
-                  <button
-                    // onClick={signUp}
-                    className="btn btn-lg btn-block btn-green mb-3"
-                    type="submit"
-                    disabled={isSubmitting}
-                  >
-                    <i className="fe fe-mail mr-3">
-                      <Mail />
-                    </i>
-                    Sign in with email
-                  </button>
-                </Form>
-              )}
-            </Formik>
+            <Form>
+              {error && <div>{error.message}</div>}
+              <Form.Group>
+                <Form.Control
+                  className="form-control form-control-lg"
+                  type="email"
+                  name="email"
+                  placeholder="Your email..."
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Control
+                  className="form-control form-control-lg"
+                  type="password"
+                  name="password"
+                  placeholder="Your password..."
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Form.Group>
+              <button
+                className="btn btn-lg btn-block btn-green mb-3"
+                type="submit"
+                disabled={isSubmitting}
+                onClick={register}
+              >
+                <i className="fe fe-mail mr-3">
+                  <Mail />
+                </i>
+                Sign In
+              </button>
+            </Form>
             <div className="text-left">
               <small className="text-muted text-left">
                 By joining Noted you agree to our{" "}
@@ -151,7 +156,7 @@ export default function LoginPage() {
               </small>
             </div>
             <h3 className="text-already">
-              Don't have an account?{" "}
+              Not a member yet?{" "}
               <Link to="join" className="text-decoration-underline text-login">
                 {" "}
                 Sign Up
