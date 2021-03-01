@@ -2,6 +2,15 @@
   color: #570097;
 }
 
+.noted-border {
+  border: 1px solid #f0f0f0;
+}
+
+.justify-center {
+  display: flex;
+  justify-content: center;
+}
+
 .launch-scan-btn {
   width: 177px;
   height: 48px;
@@ -30,24 +39,29 @@
     mix-blend-mode: normal;
     opacity: 0.6;
   }
+
   .card-value {
     font-size: 23px;
     line-height: 27px;
     color: #21003a;
   }
+
   .card-title {
     font-size: 12px;
     line-height: 14px;
     color: #0e0018;
   }
+
   .card-body {
     padding-left: 10%;
     padding-right: 10%;
     padding-bottom: 0;
   }
+
   .pick-up-btn {
     height: 52px;
     padding: 6px;
+
     .pick-up-btn-lead {
       font-family: "Sofia Pro";
       font-size: 16px;
@@ -62,18 +76,41 @@
     font-size: 14px;
     line-height: 19.6;
   }
+
   .product-name {
     font-size: 14px;
     font-weight: 400;
     line-height: 18.79;
   }
+
   .product-price {
     font-weight: 700;
     font-size: 14px;
     line-height: 18.2;
   }
+
   .product-compensation-type {
     font-size: 12px !important;
     line-height: 14px !important;
+  }
+
+  .scanned-item-card {
+    background: #ffffff;
+    border: 1px solid #eae8eb;
+    border-radius: 8px;
+  }
+
+  .noted-red {
+    color: #ff1c29 !important;
+  }
+
+  .purchase-types {
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
+  }
+
+  .purchase-type-checkbox-container {
+    max-width: 5px;
   }
 }

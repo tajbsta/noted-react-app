@@ -12,7 +12,15 @@ function ReturnScore({ score }) {
     setValidScore(returnScore);
   }, []);
 
-  return <img src={validScore.icon} alt="" />;
+  return (
+    <img
+      src={validScore.icon}
+      alt=""
+      style={{
+        width: 18,
+      }}
+    />
+  );
 }
 
 export default ReturnScore;
