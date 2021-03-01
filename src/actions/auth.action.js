@@ -1,13 +1,15 @@
-import { SIGN_IN } from "../constants/actions/auth";
+import { SIGN_IN, SIGN_UP } from "../constants/actions/auth";
 
-export const login = ({ email, password, jwtToken, loggedIn }) => {
+export function login(data) {
   return {
-    type: SIGN_IN,
-    auth: {
-      email,
-      password,
-      jwtToken,
-      loggedIn,
-    },
-  };
-};
+    type: SIGN_UP,
+    data
+  }
+}
+
+export function signUp(data) {
+  return {
+    type: SIGN_UP,
+    data
+  }
+}

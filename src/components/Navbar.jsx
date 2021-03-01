@@ -6,13 +6,13 @@ import { useSelector } from "react-redux";
 const BrandLogoSvg = lazy(() => import("./BrandLogoSvg"));
 
 const Topnav = () => {
-  const loggedIn = useSelector(({ auth: { loggedIn } }) => loggedIn);
+  const user = useSelector(({ auth: { user } }) => user);
   return (
     <Navbar expand="lg shadow-sm navigation-bar">
       <Navbar.Brand href="home" className="ml-4 mr-1">
         <BrandLogoSvg />
       </Navbar.Brand>
-      {loggedIn && (
+      {user && (
         <>
           <Container className="ml-3">
             <input

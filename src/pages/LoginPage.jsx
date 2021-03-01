@@ -55,12 +55,12 @@ export default function RegisterPage() {
   };
 
   return (
-    <div id="RegisterPage">
+    <div id="LoginPage">
       <div>
         <div className="row justify-content-center">
           <div className="text-need col-md-5 col-xl-4">
-            <p className="text-center">Need to return or donate</p>
-            <p className="text-center">purchases made in the past?</p>
+            {/* <p className="text-center">Need to return or donate</p>
+            <p className="text-center">purchases made in the past?</p> */}
             <p className="text-center">Let's go!</p>
             <div
               className="form-group"
@@ -85,7 +85,7 @@ export default function RegisterPage() {
                     src="https://i.pinimg.com/originals/39/21/6d/39216d73519bca962bd4a01f3e8f4a4b.png"
                   />
                 </div>
-                Join With Google
+                Sign In With Google
               </button>
             </div>
             <div>
@@ -122,7 +122,7 @@ export default function RegisterPage() {
                 <i className="fe fe-mail mr-3">
                   <Mail />
                 </i>
-                Join with email
+                Sign In
               </button>
             </Form>
             <div className="text-left">
@@ -156,10 +156,10 @@ export default function RegisterPage() {
               </small>
             </div>
             <h3 className="text-already">
-              Already a member?{" "}
-              <Link to="login" className="text-decoration-underline text-login">
+              Not a member yet?{" "}
+              <Link to="join" className="text-decoration-underline text-login">
                 {" "}
-                Log in
+                Sign Up
               </Link>
             </h3>
           </div>

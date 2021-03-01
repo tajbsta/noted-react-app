@@ -1,0 +1,97 @@
+#LoginPage {
+  margin: auto;
+  h1,
+  h4,
+  p,
+  small,
+  a,
+  button {
+    font-family: "Sofia Pro";
+  }
+
+  h3 {
+    // error message
+    color: red;
+  }
+
+  .row {
+    margin-right: 0px;
+    margin-left: 0px;
+
+    .btn-google {
+      margin-top: 44px;
+    }
+
+    .form-control-lg {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .text-need {
+    width: 400px;
+    height: 84px;
+    top: 127px;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0px;
+    color: #21003a;
+    font-family: "Sofia Pro";
+
+    @media (max-width: 414px) {
+      top: 47px;
+    }
+  }
+
+  span {
+    background: #f2f2f2;
+    padding: 0 10px;
+    color: #dbd3e0;
+  }
+
+  .line-break {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #ece4f2;
+    line-height: 0.1em;
+    margin: 10px 0 20px;
+    background: #ece4f2;
+    font-size: 14px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    font-family: "Sofia Pro";
+  }
+
+  .text-muted {
+    width: 440px;
+    height: 32px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #aaa5ad !important;
+    font-family: "Sofia Pro";
+  }
+
+  small,
+  a {
+    color: #aaa5ad;
+  }
+
+  .text-already {
+    margin-top: 48px;
+    color: #21003a;
+    font-size: 16px;
+    line-height: 19px;
+    // font-weight: bold;
+    font-family: "Sofia Pro";
+  }
+
+  .text-login {
+    font-family: "Sofia Pro";
+    font-weight: normal;
+    color: #6aaf6a;
+    font-size: 16px;
+    line-height: 19px;
+  }
+}

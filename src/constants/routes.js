@@ -1,8 +1,9 @@
 import { lazy } from "react";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
+import AuthorizePage from "../pages/AuthorizePage";
 
-const RegisterPage = lazy(() => import("../pages/RegisterPage"));
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
-const AuthorizePage = lazy(() => import("../pages/AuthorizePage"));
 
 export default [
   {
@@ -12,6 +13,10 @@ export default [
   {
     path: "/join",
     component: RegisterPage,
+  },
+  {
+    path: "/login",
+    component: LoginPage,
   },
   {
     path: "/request-permission",

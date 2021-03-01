@@ -1,6 +1,6 @@
-import { isEqual } from 'lodash';
-import React, { useEffect, useState } from 'react';
-import { RETURN_SCORES } from '../constants/returns/scores';
+import { isEqual } from "lodash";
+import React, { useEffect, useState } from "react";
+import { RETURN_SCORES } from "../constants/returns/scores";
 
 function ReturnScore({ score }) {
   const [validScore, setValidScore] = useState({});
@@ -15,7 +15,7 @@ function ReturnScore({ score }) {
   return (
     <img
       src={validScore.icon}
-      alt=''
+      alt=""
       style={{
         width: 18,
       }}
