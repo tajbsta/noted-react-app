@@ -30,6 +30,9 @@ function ProductCard({
     <div
       className="card shadow-sm scanned-item-card mb-3 p-0"
       key={productName}
+      style={{
+        border: selected ? "1px solid purple" : "none",
+      }}
     >
       <div className="card-body pt-3 pb-3 p-0 m-0">
         <Row>
