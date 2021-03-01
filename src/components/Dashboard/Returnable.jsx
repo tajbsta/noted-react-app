@@ -8,13 +8,14 @@ import Scanning from "./Scanning";
 function Returnable({ scannedItems }) {
   const [scanning, setScanning] = useState(false);
   const [selected, setSelected] = useState([]);
-  const [selectedAll, setSelectedAll] = useState(false);
+  const [selectedAll, setSelectedAll] = useState(
+    scannedItems.length === selected.length
+  );
 
   const addSelected = (id) => {
     if (selected.includes(id)) {
       return;
     }
-
     setSelected([...selected, scannedItems.find((item) => item.id === id).id]);
   };
 
@@ -47,7 +48,7 @@ function Returnable({ scannedItems }) {
         <div className="ml-3 p-0 purchase-type-checkbox-container">
           <input
             type="checkbox"
-            checked={selectedAll}
+            checked={selected.length === scannedItems.length}
             onChange={handleSelectAll}
           />
         </div>

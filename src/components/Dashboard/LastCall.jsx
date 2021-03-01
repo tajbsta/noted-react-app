@@ -9,7 +9,9 @@ import QuestionMarkSvg from "../../assets/icons/QuestionMark.svg";
 function LastCall({ scannedItems }) {
   const [scanning, setScanning] = useState(false);
   const [selected, setSelected] = useState([]);
-  const [selectedAll, setSelectedAll] = useState(false);
+  const [selectedAll, setSelectedAll] = useState(
+    scannedItems.length === selected.length
+  );
 
   const addSelected = (id) => {
     if (selected.includes(id)) {
@@ -20,8 +22,7 @@ function LastCall({ scannedItems }) {
 
   const removeSelected = (id) => {
     if (selected.includes(id)) {
-      console.log(scannedItems.filter((item) => item.id !== id));
-      setSelected([...scannedItems.filter((item) => item.id !== id)]);
+      setSelected([...selected.filter((itemId) => itemId !== id)]);
     }
   };
 
@@ -50,7 +51,7 @@ function LastCall({ scannedItems }) {
           <input
             type="checkbox"
             onChange={handleSelectAll}
-            checked={selectedAll}
+            checked={selected.length === scannedItems.length}
           />
         </div>
         <h4

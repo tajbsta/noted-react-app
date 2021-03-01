@@ -20,7 +20,7 @@ function Donate({ scannedItems }) {
 
   const removeSelected = (id) => {
     if (selected.includes(id)) {
-      setSelected([...scannedItems.filter((item) => item.id !== id)]);
+      setSelected([...selected.filter((itemId) => itemId !== id)]);
     }
   };
 
@@ -45,7 +45,11 @@ function Donate({ scannedItems }) {
     <div className="col-sm-12 mt-4">
       <Row className="mb-2">
         <div className="ml-3 p-0 purchase-type-checkbox-container">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            onChange={handleSelectAll}
+            checked={selected.length === scannedItems.length}
+          />
         </div>
         <h4
           className="sofia-pro purchase-types purchase-type-title mb-0"
