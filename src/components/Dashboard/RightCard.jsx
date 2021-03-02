@@ -6,25 +6,25 @@ import Row from '../Row';
 import PickUpButton from './PickUpButton';
 
 function RightCard({ scannedItems }) {
-  const totalReturns = scanned.length;
+  const totalReturns = scannedItems.length;
 
-  const inCashBack = scanned
+  const inCashBack = scannedItems
     .map(({ price, compensationType }) => {
       if (compensationType === 'Cash back') {
         return price;
       }
       return 0;
     })
-    .reduce((acc, curr) => (acc += curr));
+    .reduce((acc, curr) => (acc += curr), 0);
 
-  const inStoreCredits = scanned
+  const inStoreCredits = scannedItems
     .map(({ price, compensationType }) => {
       if (compensationType === 'Store Credits') {
         return price;
       }
       return 0;
     })
-    .reduce((acc, curr) => (acc += curr));
+    .reduce((acc, curr) => (acc += curr), 0);
 
   /**
    * This is temporary
@@ -32,7 +32,7 @@ function RightCard({ scannedItems }) {
    * So calculation is based off of the last 3 items in dummy data
    */
 
-  const donations = scanned.slice(3, 6).length;
+  const donations = scannedItems.slice(3, 6).length;
 
   return (
     <div
@@ -49,8 +49,8 @@ function RightCard({ scannedItems }) {
         </div>
         <HorizontalLine width='90%' />
         <div className='card-body p-0'>
-          <div className='container'>
-            <Row marginTop={3}>
+          <div className='container p-2'>
+            <Row marginTop={3} marginLeft={2}>
               <div className='col-7'>
                 <div className='row card-text mb-0 sofia-pro card-value'>
                   {totalReturns}
@@ -58,7 +58,7 @@ function RightCard({ scannedItems }) {
                 <div className='row card-text card-label'>Total Returns</div>
               </div>
             </Row>
-            <Row marginTop={3} className='p-0'>
+            <Row marginTop={3} marginLeft={2} className='p-0'>
               <div className='col-5'>
                 <div className='row card-text mb-0 sofia-pro card-value'>
                   ${inCashBack}
@@ -77,7 +77,7 @@ function RightCard({ scannedItems }) {
               </div>
             </Row>
             <hr />
-            <Row marginTop={3} className='p-0'>
+            <Row marginTop={3} marginLeft={2} className='p-0'>
               <div className='col-12 p-0'>
                 <div className='col-sm-8'>
                   <div className='row mb-0 sofia-pro card-value'>
