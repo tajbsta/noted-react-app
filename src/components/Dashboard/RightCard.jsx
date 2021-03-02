@@ -1,10 +1,39 @@
 import { isEmpty } from 'lodash';
 import React from 'react';
+import { scanned } from '../../_mock';
 import HorizontalLine from '../HorizontalLine';
 import Row from '../Row';
 import PickUpButton from './PickUpButton';
 
-function RightCard({ scans }) {
+function RightCard({ scannedItems }) {
+  const totalReturns = scanned.length;
+
+  const inCashBack = scanned
+    .map(({ price, compensationType }) => {
+      if (compensationType === 'Cash back') {
+        return price;
+      }
+      return 0;
+    })
+    .reduce((acc, curr) => (acc += curr));
+
+  const inStoreCredits = scanned
+    .map(({ price, compensationType }) => {
+      if (compensationType === 'Store Credits') {
+        return price;
+      }
+      return 0;
+    })
+    .reduce((acc, curr) => (acc += curr));
+
+  /**
+   * This is temporary
+   * I dont know how donations work
+   * So calculation is based off of the last 3 items in dummy data
+   */
+
+  const donations = scanned.slice(3, 6).length;
+
   return (
     <div
       className='col right-card mt-4'
@@ -15,7 +44,7 @@ function RightCard({ scans }) {
       <div className='card shadow-sm'>
         <div className='p-0 ml-1 d-inline-flex align-center'>
           <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
-            No Articles
+            {scannedItems.length > 0 ? 'Total past 90 days' : ' No Articles'}
           </h5>
         </div>
         <HorizontalLine width='90%' />
@@ -23,21 +52,25 @@ function RightCard({ scans }) {
           <div className='container'>
             <Row marginTop={3}>
               <div className='col-7'>
-                <div className='row card-text mb-0 sofia-pro card-value'>0</div>
+                <div className='row card-text mb-0 sofia-pro card-value'>
+                  {totalReturns}
+                </div>
                 <div className='row card-text card-label'>Total Returns</div>
               </div>
             </Row>
             <Row marginTop={3} className='p-0'>
               <div className='col-5'>
                 <div className='row card-text mb-0 sofia-pro card-value'>
-                  $0
+                  ${inCashBack}
                 </div>
                 <div className='row small sofia-pro card-label'>
                   In Cash Back
                 </div>
               </div>
               <div className='col-6 ml-3'>
-                <div className='row mb-0 sofia-pro card-value'>$0</div>
+                <div className='row mb-0 sofia-pro card-value'>
+                  ${inStoreCredits}
+                </div>
                 <div className='row card-text small sofia-pro card-label'>
                   In Store Credits
                 </div>
@@ -47,7 +80,9 @@ function RightCard({ scans }) {
             <Row marginTop={3} className='p-0'>
               <div className='col-12 p-0'>
                 <div className='col-sm-8'>
-                  <div className='row mb-0 sofia-pro card-value'>$0</div>
+                  <div className='row mb-0 sofia-pro card-value'>
+                    {donations}
+                  </div>
                   <div className='row card-text small sofia-pro card-label'>
                     Total Donations
                   </div>
@@ -57,7 +92,7 @@ function RightCard({ scans }) {
             <div
               className='pr-3 pl-3 mt-3'
               style={{
-                opacity: isEmpty(scans) ? 0.37 : 1,
+                opacity: isEmpty(scannedItems) ? 0.37 : 1,
               }}
             >
               <PickUpButton

@@ -1,12 +1,14 @@
-import { isEmpty } from "lodash";
-import React, { useState } from "react";
-import Row from "../Row";
-import EmptyScan from "./EmptyScan";
-import ProductCard from "./ProductCard";
-import Scanning from "./Scanning";
-import QuestionMarkSvg from "../../assets/icons/QuestionMark.svg";
+import { isEmpty } from 'lodash';
+import React, { useState } from 'react';
+import Row from '../Row';
+import EmptyScan from './EmptyScan';
+import ProductCard from './ProductCard';
+import Scanning from './Scanning';
+import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
+import { useHistory } from 'react-router-dom';
 
 function LastCall({ scannedItems }) {
+  const { push } = useHistory();
   const [scanning, setScanning] = useState(false);
   const [selected, setSelected] = useState([]);
   const [selectedAll, setSelectedAll] = useState(
@@ -44,39 +46,39 @@ function LastCall({ scannedItems }) {
   };
 
   return (
-    <div className="col-sm-12">
-      <h3 className="sofia-pro">Your online purchases - Last 90 Days</h3>
-      <Row className="mb-2">
-        <div className="ml-3 p-0 purchase-type-checkbox-container">
+    <div className='col-sm-12'>
+      <h3 className='sofia-pro'>Your online purchases - Last 90 Days</h3>
+      <Row className='mb-2'>
+        <div className='ml-3 p-0 purchase-type-checkbox-container'>
           <input
-            type="checkbox"
+            type='checkbox'
             onChange={handleSelectAll}
             checked={selected.length === scannedItems.length}
           />
         </div>
         <h4
-          className="sofia-pro purchase-types purchase-type-title mb-0"
+          className='sofia-pro purchase-types purchase-type-title mb-0'
           style={{
-            display: "flex",
-            alignItems: "center",
+            display: 'flex',
+            alignItems: 'center',
             marginLeft: 16,
-            textAlign: "center",
+            textAlign: 'center',
           }}
         >
           Last call!
         </h4>
         <img
-          className="ml-3 mb-2"
+          className='ml-3 mb-2'
           src={QuestionMarkSvg}
-          alt=""
+          alt=''
           style={{
             opacity: 0.6,
           }}
         />
       </Row>
       {isEmpty(scannedItems) ? (
-        <div className="card shadow-sm">
-          <div className="card-body p-4">
+        <div className='card shadow-sm'>
+          <div className='card-body p-4'>
             {scanning && <Scanning />}
             {isEmpty(scannedItems) && !scanning ? (
               <EmptyScan onScanLaunch={onScanLaunch} />
@@ -94,6 +96,9 @@ function LastCall({ scannedItems }) {
               selected={selected.includes(scannedItem.id)}
               addSelected={addSelected}
               removeSelected={removeSelected}
+              onClick={() => {
+                push(`/view-scan?scanId=${scannedItem.id}`);
+              }}
             />
           );
         })
