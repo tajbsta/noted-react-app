@@ -4,6 +4,7 @@ import RegisterPage from "../pages/RegisterPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import AuthorizePage from "../pages/AuthorizePage";
+import ViewScanPage from "../pages/ViewScanPage";
 
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
 
@@ -31,11 +32,16 @@ export default [
   {
     path: "/request-permission",
     component: AuthorizePage,
-    isSecured: true
+    isSecured: true,
   },
   {
     path: "/dashboard",
     component: DashboardPage,
-    isSecured: true
+    // isSecured: true
+  },
+  {
+    path: "/view-scan",
+    component: ViewScanPage,
+    // isSecure: true
   },
 ];

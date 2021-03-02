@@ -136,3 +136,4 @@ amplifytools.xcconfig
 .secret-*
 .eslintcache
 package-lock.json
+.env.local

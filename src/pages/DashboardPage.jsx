@@ -1,13 +1,12 @@
-
 import React, { useState } from 'react';
 import Donate from '../components/Dashboard/Donate';
 import LastCall from '../components/Dashboard/LastCall';
 import Returnable from '../components/Dashboard/Returnable';
 import RightCard from '../components/Dashboard/RightCard';
-import { lastCallMockdata, returnableMockData } from '../_mock';
+import { scanned } from '../_mock';
 
 function DashboardPage() {
-  const [scannedItems] = useState([...lastCallMockdata, ...returnableMockData]);
+  const [scannedItems] = useState([...scanned]);
 
   return (
     <div>
@@ -20,9 +19,9 @@ function DashboardPage() {
         >
           <div className='col-sm-8'>
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
-            <LastCall scannedItems={scannedItems} />
-            <Returnable scannedItems={scannedItems} />
-            <Donate scannedItems={scannedItems} />
+            <LastCall scannedItems={scannedItems.slice(0, 3)} />
+            <Returnable scannedItems={scannedItems.slice(3, 6)} />
+            <Donate scannedItems={scannedItems.slice(0, 3)} />
 
             <div>
               <div className='row justify-center'>
