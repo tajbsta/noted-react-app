@@ -6,12 +6,14 @@ import { useDispatch } from "react-redux";
 import { Form, FormGroup, FormControl } from "react-bootstrap";
 import Amplify, { Auth } from "aws-amplify";
 import { login, signUp } from "../actions/auth.action";
+import { signUpErrors } from "../library/errors.libary";
+import { get } from "lodash";
 
 export default function RegisterPage() {
   let history = useHistory();
   const [error, setError] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const dispatch = useDispatch();
@@ -21,23 +23,40 @@ export default function RegisterPage() {
     setError(null);
     setIsSubmitting(true);
 
-    console.log("===signup in cognito");
-    Auth.signUp({
-      username: email,
-      password,
-      attributes: {
-        email,
-      },
-    })
-      .then((data) => {
-        dispatch(signUp(data.user));
-        history.push("/request-permission");
+    if (validatePassword(password)) {
+      setError("Password does not match the requirementss");
+      throw new Error();
+    } else {
+      console.log("===signup in cognito");
+      Auth.signUp({
+        username: email,
+        password,
+        attributes: {
+          email,
+        },
       })
-      .catch((error) => {
-        console.log("Error", error);
-        setError(error.message);
-        setIsSubmitting(false);
-      }); // TODO: handle validation
+        .then((data) => {
+          dispatch(signUp(data.user));
+          history.push("/request-permission");
+        })
+        .catch((error) => {
+          console.log(error);
+          setError(
+            get(
+              signUpErrors.find(({ code }) => code === error.code),
+              "message",
+              "An error occured signing up"
+            )
+          );
+          setIsSubmitting(false);
+        }); // TODO: handle validation
+    }
+  };
+
+  const validatePassword = (value) => {
+    return RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$"
+    ).test(value);
   };
 
   function validateEmail(value) {
@@ -96,7 +115,11 @@ export default function RegisterPage() {
               </p>
             </div>
             <Form>
-              {error && <div>{error.message}</div>}
+              {error && (
+                <div className="alert alert-danger" role="alert">
+                  <h4>{error}</h4>
+                </div>
+              )}
               <Form.Group>
                 <Form.Control
                   className="form-control form-control-lg"
@@ -118,7 +141,9 @@ export default function RegisterPage() {
               <button
                 className="btn btn-lg btn-block btn-green mb-3 btn-submit"
                 type="submit"
-                disabled={isSubmitting}
+                disabled={
+                  isSubmitting || email.length === 0 || password.length === 0
+                }
                 onClick={register}
               >
                 <i className="fe fe-mail">
