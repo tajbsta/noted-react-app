@@ -1,9 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState } from "react";
-import { Mail, ArrowRight } from "react-feather";
+import { ArrowRight } from "react-feather";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Form, FormGroup, FormControl } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import Amplify, { Auth } from "aws-amplify";
 import { login, signUp } from "../actions/auth.action";
 
@@ -16,7 +16,7 @@ export default function RegisterPage() {
 
   const dispatch = useDispatch();
 
-  const register = () => {
+  const login = () => {
     console.log({ email, password });
     setError(null);
     setIsSubmitting(true);
@@ -77,6 +77,8 @@ export default function RegisterPage() {
                   boxShadow: "0px 0px 4px 0.5px rgba(0,0,0,0.1)",
                   color: "#690098",
                   fontWeight: "normal",
+                  fontSize: "16px",
+                  paddingTop: "10px",
                 }}
               >
                 <div className="avatar avatar-xs mr-2">
@@ -114,17 +116,20 @@ export default function RegisterPage() {
                 />
               </Form.Group>
               <h3 className="text-forgot">
-                <Link to="join" className="text-decoration-underline">
+                <Link
+                  to="forgot-password"
+                  className="text-decoration-underline"
+                >
                   Forgot Password?
                 </Link>
               </h3>
               <button
-                className="btn btn-lg btn-block btn-green mb-3"
+                className="btn btn-lg btn-block btn-green mb-3 btn-submit"
                 type="submit"
                 disabled={isSubmitting}
-                onClick={register}
+                onClick={login}
               >
-                <i className="fe fe-mail mr-3">
+                <i className="fe fe-arrow-right">
                   <ArrowRight />
                 </i>
                 Sign In
