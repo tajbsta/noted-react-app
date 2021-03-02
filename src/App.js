@@ -18,12 +18,7 @@ function App() {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={null}>
-        <div
-          className='App'
-          style={{
-            background: 'white',
-          }}
-        >
+        <div className='App'>
           <BrowserRouter>
             <Suspense fallback={<div className='loading' />}>
               <Route render={(props) => <AppRouteSwitcher {...props} />} />
