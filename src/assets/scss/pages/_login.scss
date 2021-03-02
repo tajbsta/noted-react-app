@@ -25,6 +25,7 @@
     .form-control-lg {
       margin-top: 20px;
       margin-bottom: 20px;
+      font-size: 16px;
     }
   }
 
@@ -62,6 +63,16 @@
     font-family: "Sofia Pro";
   }
 
+  .btn-submit {
+    font-size: 16px;
+
+    .fe-arrow-right {
+      position: relative;
+      bottom: 3px;
+      padding-right: 19px;
+    }
+  }
+
   .text-muted {
     width: 440px;
     height: 32px;
@@ -93,5 +104,20 @@
     color: #6aaf6a;
     font-size: 16px;
     line-height: 19px;
+  }
+
+  .text-forgot {
+    font-family: "Sofia Pro";
+    font-weight: normal;
+    font-size: 16px;
+    display: flex;
+    flex-direction: row-reverse;
+    line-height: 18.75px;
+
+    a {
+      color: #6aaf6a;
+      position: relative;
+      bottom: 10px;
+    }
   }
 }

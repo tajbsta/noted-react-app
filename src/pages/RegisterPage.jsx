@@ -77,6 +77,8 @@ export default function RegisterPage() {
                   boxShadow: "0px 0px 4px 0.5px rgba(0,0,0,0.1)",
                   color: "#690098",
                   fontWeight: "normal",
+                  fontSize: "16px",
+                  paddingTop: "10px",
                 }}
               >
                 <div className="avatar avatar-xs mr-2">
@@ -85,7 +87,7 @@ export default function RegisterPage() {
                     src="https://i.pinimg.com/originals/39/21/6d/39216d73519bca962bd4a01f3e8f4a4b.png"
                   />
                 </div>
-                Join With Google
+                Join with Google
               </button>
             </div>
             <div>
@@ -114,12 +116,12 @@ export default function RegisterPage() {
                 />
               </Form.Group>
               <button
-                className="btn btn-lg btn-block btn-green mb-3"
+                className="btn btn-lg btn-block btn-green mb-3 btn-submit"
                 type="submit"
                 disabled={isSubmitting}
                 onClick={register}
               >
-                <i className="fe fe-mail mr-3">
+                <i className="fe fe-mail">
                   <Mail />
                 </i>
                 Join with email

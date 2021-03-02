@@ -1,9 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState } from "react";
-import { Mail } from "react-feather";
+import { ArrowRight } from "react-feather";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Form, FormGroup, FormControl } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import Amplify, { Auth } from "aws-amplify";
 import { login, signUp } from "../actions/auth.action";
 
@@ -16,7 +16,7 @@ export default function RegisterPage() {
 
   const dispatch = useDispatch();
 
-  const register = () => {
+  const login = () => {
     console.log({ email, password });
     setError(null);
     setIsSubmitting(true);
@@ -59,8 +59,8 @@ export default function RegisterPage() {
       <div>
         <div className="row justify-content-center">
           <div className="text-need col-md-5 col-xl-4">
-            {/* <p className="text-center">Need to return or donate</p>
-            <p className="text-center">purchases made in the past?</p> */}
+            <p className="text-center">Need to return or donate</p>
+            <p className="text-center">purchases made in the past?</p>
             <p className="text-center">Let's go!</p>
             <div
               className="form-group"
@@ -77,6 +77,8 @@ export default function RegisterPage() {
                   boxShadow: "0px 0px 4px 0.5px rgba(0,0,0,0.1)",
                   color: "#690098",
                   fontWeight: "normal",
+                  fontSize: "16px",
+                  paddingTop: "10px",
                 }}
               >
                 <div className="avatar avatar-xs mr-2">
@@ -85,7 +87,7 @@ export default function RegisterPage() {
                     src="https://i.pinimg.com/originals/39/21/6d/39216d73519bca962bd4a01f3e8f4a4b.png"
                   />
                 </div>
-                Sign In With Google
+                Continue with Google
               </button>
             </div>
             <div>
@@ -113,14 +115,22 @@ export default function RegisterPage() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </Form.Group>
+              <h3 className="text-forgot">
+                <Link
+                  to="forgot-password"
+                  className="text-decoration-underline"
+                >
+                  Forgot Password?
+                </Link>
+              </h3>
               <button
-                className="btn btn-lg btn-block btn-green mb-3"
+                className="btn btn-lg btn-block btn-green mb-3 btn-submit"
                 type="submit"
                 disabled={isSubmitting}
-                onClick={register}
+                onClick={login}
               >
-                <i className="fe fe-mail mr-3">
-                  <Mail />
+                <i className="fe fe-arrow-right">
+                  <ArrowRight />
                 </i>
                 Sign In
               </button>
@@ -156,10 +166,10 @@ export default function RegisterPage() {
               </small>
             </div>
             <h3 className="text-already">
-              Not a member yet?{" "}
+              Not a member?{" "}
               <Link to="join" className="text-decoration-underline text-login">
                 {" "}
-                Sign Up
+                Sign up now
               </Link>
             </h3>
           </div>

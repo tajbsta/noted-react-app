@@ -74,6 +74,7 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
+.env.local
 .env.development
 .env.production
 .env.staging
@@ -133,3 +134,5 @@ amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
+.eslintcache
+package-lock.json

@@ -18,7 +18,7 @@ function AppRouteSwitcher() {
             path={path}
             exact
             component={Component}
-            isLoggedIn={user}
+            isLoggedIn={true}
           />
         ) : (
           <Route
