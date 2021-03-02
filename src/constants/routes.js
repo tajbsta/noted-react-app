@@ -2,6 +2,7 @@ import { lazy } from "react";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import AuthorizePage from "../pages/AuthorizePage";
+import ViewScanPage from "../pages/ViewScanPage";
 
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
 
@@ -21,11 +22,16 @@ export default [
   {
     path: "/request-permission",
     component: AuthorizePage,
-    isSecured: true
+    isSecured: true,
   },
   {
     path: "/dashboard",
     component: DashboardPage,
-    isSecured: true
+    // isSecured: true
+  },
+  {
+    path: "/view-scan",
+    component: ViewScanPage,
+    // isSecure: true
   },
 ];

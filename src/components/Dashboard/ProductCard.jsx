@@ -4,6 +4,7 @@ import Row from "../Row";
 import ProductDetails from "./ProductDetails";
 
 function ProductCard({
+  selectable = true,
   selected,
   addSelected,
   removeSelected,
@@ -35,13 +36,15 @@ function ProductCard({
     >
       <div className="card-body pt-3 pb-3 p-0 m-0">
         <Row>
-          <div className="row align-items-center p-4">
-            <input
-              type="checkbox"
-              checked={selected}
-              onChange={handleSelection}
-            />
-          </div>
+          {selectable && (
+            <div className="row align-items-center p-4">
+              <input
+                type="checkbox"
+                checked={selected}
+                onChange={handleSelection}
+              />
+            </div>
+          )}
           <div
             className="col-sm-1 ml-1 mr-3"
             style={{

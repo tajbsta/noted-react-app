@@ -1,0 +1,84 @@
+.pick-up-message {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #0e0018;
+}
+.pick-up-day {
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 600;
+  color: #0e0018;
+}
+.pick-up-time {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 21px;
+  color: #0e0018;
+}
+.pick-up-edit-or-btn {
+  text-decoration: underline;
+}
+.pick-up-edit-or-btn:hover {
+  cursor: pointer;
+}
+.products-to-return {
+  font-size: 14px;
+  line-height: 16px;
+  color: #2e1d3a;
+}
+.box-size-description {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  color: #0e0018;
+  mix-blend-mode: normal;
+  opacity: 0.6;
+}
+
+.more-pick-up-info {
+  font-size: 14px;
+  line-height: 16px;
+  color: #570097;
+}
+
+.pick-up-price {
+  font-size: 22px;
+  line-height: 26px;
+  color: #21003a;
+}
+.return-type {
+  font-size: 12px;
+  line-height: 14px;
+  color: #0e0018;
+  mix-blend-mode: normal;
+  opacity: 0.6;
+}
+.pick-up-reminder {
+  width: 80%;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  color: #0e0018;
+  mix-blend-mode: normal;
+  opacity: 0.6;
+}
+.back-to-products-btn {
+  background: #6aaf6a;
+  border: none;
+  border-radius: 8px;
+  width: 160px;
+  height: 40px;
+}
+.back-to-products-text {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16px;
+  height: 40px;
+  color: #ffffff;
+}
