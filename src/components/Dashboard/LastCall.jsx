@@ -1,15 +1,11 @@
-import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 import Row from '../Row';
-import EmptyScan from './EmptyScan';
 import ProductCard from './ProductCard';
-import Scanning from './Scanning';
 import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';
 
-function LastCall({ scannedItems }) {
+function LastCall({ scannedItems, typeTitle }) {
   const { push } = useHistory();
-  const [scanning, setScanning] = useState(false);
   const [selected, setSelected] = useState([]);
   const [selectedAll, setSelectedAll] = useState(
     scannedItems.length === selected.length
@@ -38,16 +34,8 @@ function LastCall({ scannedItems }) {
     setSelectedAll(true);
   };
 
-  const onScanLaunch = () => {
-    setScanning(true);
-    setTimeout(() => {
-      setScanning(false);
-    }, 3000);
-  };
-
   return (
-    <div className='col-sm-12'>
-      <h3 className='sofia-pro'>Your online purchases - Last 90 Days</h3>
+    <>
       <Row className='mb-2'>
         <div className='ml-3 p-0 purchase-type-checkbox-container'>
           <input
@@ -65,7 +53,7 @@ function LastCall({ scannedItems }) {
             textAlign: 'center',
           }}
         >
-          Last call!
+          {typeTitle}
         </h4>
         <img
           className='ml-3 mb-2'
@@ -76,34 +64,21 @@ function LastCall({ scannedItems }) {
           }}
         />
       </Row>
-      {isEmpty(scannedItems) ? (
-        <div className='card shadow-sm'>
-          <div className='card-body p-4'>
-            {scanning && <Scanning />}
-            {isEmpty(scannedItems) && !scanning ? (
-              <EmptyScan onScanLaunch={onScanLaunch} />
-            ) : (
-              <></>
-            )}
-          </div>
-        </div>
-      ) : (
-        [...scannedItems].map((scannedItem) => {
-          return (
-            <ProductCard
-              key={scannedItem.id}
-              scannedItem={scannedItem}
-              selected={selected.includes(scannedItem.id)}
-              addSelected={addSelected}
-              removeSelected={removeSelected}
-              onClick={() => {
-                push(`/view-scan?scanId=${scannedItem.id}`);
-              }}
-            />
-          );
-        })
-      )}
-    </div>
+      {[...scannedItems].map((scannedItem) => {
+        return (
+          <ProductCard
+            key={scannedItem.id}
+            scannedItem={scannedItem}
+            selected={selected.includes(scannedItem.id)}
+            addSelected={addSelected}
+            removeSelected={removeSelected}
+            onClick={() => {
+              push(`/view-scan?scanId=${scannedItem.id}`);
+            }}
+          />
+        );
+      })}
+    </>
   );
 }
 
