@@ -76,7 +76,7 @@ export default function RegisterPage() {
   return (
     <div id="RegisterPage">
       <div>
-        <div className="row justify-content-center">
+        <div className="row justify-content-center index-container">
           <div className="text-need col-md-5 col-xl-4">
             <p className="text-center">Need to return or donate</p>
             <p className="text-center">purchases made in the past?</p>
