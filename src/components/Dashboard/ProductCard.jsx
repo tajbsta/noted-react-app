@@ -1,13 +1,15 @@
-import React from "react";
-import ReturnScore from "../ReturnsScore";
-import Row from "../Row";
-import ProductDetails from "./ProductDetails";
+import React from 'react';
+import ReturnScore from '../ReturnsScore';
+import Row from '../Row';
+import ProductDetails from './ProductDetails';
 
 function ProductCard({
   selectable = true,
   selected,
   addSelected,
   removeSelected,
+  clickable = true,
+  onClick = () => {},
   scannedItem: {
     distributor,
     productName,
@@ -16,6 +18,7 @@ function ProductCard({
     price,
     compensationType,
     id,
+    image,
   },
 }) {
   const handleSelection = (e) => {
@@ -28,30 +31,39 @@ function ProductCard({
 
   return (
     <div
-      className="card shadow-sm scanned-item-card mb-3 p-0"
+      className={`card shadow-sm scanned-item-card mb-3 p-0 ${
+        clickable && 'btn'
+      }`}
       key={productName}
       style={{
-        border: selected ? "1px solid purple" : "none",
+        border: selected ? '1px solid purple' : 'none',
       }}
+      onClick={clickable ? onClick : () => {}}
     >
-      <div className="card-body pt-3 pb-3 p-0 m-0">
+      <div className='card-body pt-3 pb-3 p-0 m-0'>
         <Row>
           {selectable && (
-            <div className="row align-items-center p-4">
+            <div className='row align-items-center p-4'>
               <input
-                type="checkbox"
+                type='checkbox'
                 checked={selected}
                 onChange={handleSelection}
+                style={{
+                  zIndex: 99999,
+                }}
               />
             </div>
           )}
           <div
-            className="col-sm-1 ml-1 mr-3"
+            className='col-sm-1 ml-1 mr-3'
             style={{
-              backgroundImage: "url('https://via.placeholder.com/150')",
-              backgroundSize: "cover",
+              display: 'flex',
+              alignItems: 'center',
             }}
-          />
+          >
+            <img src={image} alt='' />
+          </div>
+
           <ProductDetails
             scannedItem={{
               distributor,
@@ -63,33 +75,35 @@ function ProductCard({
             }}
           />
           <div
-            className="col-sm-5 ml-5"
+            className='col-sm-12 return-details-container'
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyItems: "center",
+              display: 'flex',
+              alignItems: 'center',
+              justifyItems: 'center',
             }}
           >
             <div
-              className="col-sm-11 text-right p-0 noted-red sofia-pro"
+              className='col-sm-6 noted-red sofia-pro return-time-left'
               style={{
-                color: "#FF1C29",
+                color: '#FF1C29',
               }}
             >
               2 days left
             </div>
-            <div className="col-sm-1 p-0 ml-3 ">
+            <div className='col-sm-3 return-score'>
               <ReturnScore score={returnScore} />
             </div>
-            <img
-              src="https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png"
-              alt=""
-              className="avatar-img ml-2 rounded-circle noted-border"
-              style={{
-                width: 31,
-                height: 31,
-              }}
-            />
+            <div className='col-sm-3 return-item-brand'>
+              <img
+                src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                alt=''
+                className='avatar-img ml-2 rounded-circle noted-border'
+                style={{
+                  width: 35,
+                  height: 35,
+                }}
+              />
+            </div>
           </div>
         </Row>
       </div>

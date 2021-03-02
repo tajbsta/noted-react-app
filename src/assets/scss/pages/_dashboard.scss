@@ -71,6 +71,12 @@
 }
 
 .left-card {
+  position: absolute;
+  width: 840px;
+  height: 80px;
+  left: 160px;
+  top: 200px;
+
   .distributor-name {
     font-weight: 700;
     font-size: 14px;
@@ -113,4 +119,39 @@
   .purchase-type-checkbox-container {
     max-width: 5px;
   }
+}
+
+.return-time-left {
+  width: 20%;
+  position: absolute;
+  height: 19px;
+  right: 8.46%;
+  top: calc(50% - 19px/2 + 4px);
+}
+
+.return-score {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 16.67%;
+  width: 5%;
+  right: 8%;
+
+}
+
+.return-item-brand {
+  display: flex;
+  align-items: center;
+  width: 10%;
+  position: absolute;
+  right: 0%;
+  top: 16.67%;
+  bottom: 16.67%;
+}
+
+.return-details-container {
+  position: absolute;
+  align-self: center;
+  height: 20%;
+
 }
