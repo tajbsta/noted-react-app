@@ -112,17 +112,22 @@ function ViewScanPage() {
                     the payment.
                   </p>
                 )}
-                <hr className="mt-1" />
-                <div
-                  className="btn btn-primary"
-                  style={{
-                    background: "#570097",
-                    border: "none",
-                  }}
-                  onClick={() => setconfirmed(true)}
-                >
-                  Confirm Order
-                </div>
+
+                {!confirmed && (
+                  <>
+                    <hr className="mt-1" />
+                    <div
+                      className="btn btn-primary"
+                      style={{
+                        background: "#570097",
+                        border: "none",
+                      }}
+                      onClick={() => setconfirmed(true)}
+                    >
+                      Confirm Order
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
