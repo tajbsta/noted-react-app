@@ -24,6 +24,7 @@ const Topnav = () => {
   const {
     location: { pathname },
   } = useHistory();
+  console.log(pathname);
   const user = useSelector(({ auth: { user } }) => user);
   const showShadow = [
     "/",
@@ -47,7 +48,6 @@ const Topnav = () => {
           "/forgot-password",
           "/reset-password",
           "/request-permission/",
-          "/",
         ].includes(pathname)
           ? "#F2F2F2"
           : "",
@@ -59,7 +59,7 @@ const Topnav = () => {
       >
         <BrandLogoSvg />
       </Navbar.Brand>
-      {pathname === "/dashboard" && (
+      {["/dashboard", "/view-scan"].includes(pathname) && (
         <>
           <Container className="ml-3">
             <input
@@ -69,12 +69,16 @@ const Topnav = () => {
               placeholder="Search purchases"
             />
           </Container>
-          <div className="mr-5">
-            <div className="btn p-0">
-              <img src={ProfileIcon} />
+          <div className="row">
+            <div className="col-6">
+              <div className="btn p-0">
+                <img src={ProfileIcon} />
+              </div>
             </div>
-            <div className="btn p-0">
-              <img src={DropwDownIcon} />
+            <div className="col-6">
+              <div className="btn p-0">
+                <img src={DropwDownIcon} />
+              </div>
             </div>
           </div>
         </>

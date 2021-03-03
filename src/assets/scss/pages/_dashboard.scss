@@ -187,43 +187,44 @@
   min-height: 232px;
   max-height: 232px;
 
-// Bottom Footer
-.line-break {
-  width: 100%;
-  text-align: center;
-  border-bottom: 1px solid #e8e7e9;
-  line-height: 0.1em;
-  margin: 10px 0 20px;
-  background: #e8e7e9;
-  font-size: 14px;
-  margin-top: 24px;
-  margin-bottom: 24px;
-  font-family: "Sofia Pro";
-  margin-top: 32px;
-}
+  // Bottom Footer
+  .line-break {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #e8e7e9;
+    line-height: 0.1em;
+    margin: 10px 0 20px;
+    background: #e8e7e9;
+    font-size: 14px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    font-family: "Sofia Pro";
+    margin-top: 32px;
+  }
 
-.text-bottom-title {
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0px;
-  text-align: center;
-  margin-bottom: 24px;
-  color: #b1adb3 !important;
-}
+  .text-bottom-title {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0px;
+    text-align: center;
+    margin-bottom: 24px;
+    color: #b1adb3 !important;
+  }
 
-.text-cant-find {
-  font-size: 14px;
-  line-height: 16px;
-  text-align: center;
-  height: 19px;
-  margin-bottom: 11px;
-  color: #b1adb3 !important;
-}
+  .text-cant-find {
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    height: 19px;
+    margin-bottom: 11px;
+    color: #b1adb3 !important;
+  }
 
-.text-new-email {
-  margin-bottom: 11px;
-}
+  .text-new-email {
+    margin-bottom: 11px;
+  }
 
-.bottom {
-  padding-bottom: 74px;
+  .bottom {
+    padding-bottom: 74px;
+  }
 }
