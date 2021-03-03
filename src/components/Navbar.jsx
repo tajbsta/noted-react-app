@@ -9,6 +9,17 @@ import { get } from "lodash";
 
 const BrandLogoSvg = lazy(() => import("./BrandLogoSvg"));
 
+const pageLocation = global.location.pathname;
+
+const guestViews = [
+  "/",
+  "/login",
+  "/join",
+  "forgot-password",
+  "reset-password",
+  "/request-permission",
+];
+
 const Topnav = () => {
   const {
     location: { pathname },
@@ -42,7 +53,10 @@ const Topnav = () => {
           : "",
       }}
     >
-      <Navbar.Brand href="/" className="ml-4 mr-1">
+      <Navbar.Brand
+        href={`${guestViews.indexOf(pageLocation) != -1 ? "/" : "/dashboard"}`}
+        className="ml-4 mr-1"
+      >
         <BrandLogoSvg />
       </Navbar.Brand>
       {pathname === "/dashboard" && (
