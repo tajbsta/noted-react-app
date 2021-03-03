@@ -5,9 +5,9 @@ import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import AuthorizePage from "../pages/AuthorizePage";
 import ViewScanPage from "../pages/ViewScanPage";
-import Code from "../pages/Code";
 
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
+const Code = lazy(() => import("../pages/Code"));
 
 export default [
   {

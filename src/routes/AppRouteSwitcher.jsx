@@ -7,7 +7,7 @@ import AppLayout from "../layouts/AppLayout";
 import PrivateRoute from "./PrivateRoute";
 
 function AppRouteSwitcher() {
-  const user = useSelector(({ auth: { user } }) => user);
+  const username = useSelector(({ auth: { username } }) => username);
 
   return (
     <Switch>
@@ -18,7 +18,7 @@ function AppRouteSwitcher() {
             path={path}
             exact
             component={Component}
-            isLoggedIn={true}
+            isLoggedIn={!!username}
           />
         ) : (
           <Route

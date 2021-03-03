@@ -46,6 +46,7 @@ const Topnav = () => {
           "/",
           "/join",
           "/login",
+          "/code",
           "/forgot-password",
           "/reset-password",
           "/request-permission/",

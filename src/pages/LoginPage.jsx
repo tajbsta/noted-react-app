@@ -5,7 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Form } from "react-bootstrap";
 import Amplify, { Auth } from "aws-amplify";
-import { login, signUp } from "../actions/auth.action";
+import { setUser } from "../actions/auth.action";
 
 export default function RegisterPage() {
   let history = useHistory();
@@ -30,7 +30,7 @@ export default function RegisterPage() {
       },
     })
       .then((data) => {
-        dispatch(signUp(data.user));
+        dispatch(setUser(data.user));
         history.push("/request-permission");
       })
       .catch((error) => {
