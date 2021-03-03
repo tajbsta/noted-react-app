@@ -78,13 +78,12 @@ function DashboardPage() {
                     typeTitle="Donate"
                   />
                 </div>
-
                 <div>
                   <div className="row justify-center">
                     <div className="col-sm-7 text-center">
                       <div className="text-muted text-center">
                         These are all the purchases we found in the past 90 days
-                        from your address alexijones@gmail.com
+                        from your address alexisjones@gmail.com
                       </div>
                     </div>
                   </div>
@@ -121,7 +120,7 @@ function DashboardPage() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

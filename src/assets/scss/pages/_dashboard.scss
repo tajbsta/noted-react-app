@@ -11,24 +11,29 @@
   justify-content: center;
 }
 
+.dashboard-row {
+  justify-content: space-evenly;
+}
+
+.text-curious {
+  font-size: 14px;
+}
+
+.text-list {
+  margin-bottom: 23px;
+}
+
 .launch-scan-btn {
   width: 177px;
   height: 48px;
-  background: #6aaf6a;
   border-radius: 8px;
   font-size: 16px;
   line-height: 19px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #ffffff;
   height: 48px;
   border-radius: 8px;
-}
-
-.launch-scan-btn:hover {
-  background: white;
-  color: #6aaf6a;
 }
 
 .right-card {
@@ -40,15 +45,31 @@
     opacity: 0.6;
   }
 
+  .total-returns {
+    margin-bottom: 16px;
+  }
+
+  .total-returns {
+    margin-bottom: 16px;
+  }
+
+  .total-donations {
+    margin-bottom: 10px;
+  }
+
   .card-value {
-    font-size: 23px;
+    font-size: 22px;
     line-height: 27px;
     color: #21003a;
   }
 
+  .text-potential-value {
+    width: 124px;
+  }
+
   .card-title {
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 14px;
+    line-height: 16.41px;
     color: #0e0018;
   }
 
@@ -56,6 +77,10 @@
     padding-left: 10%;
     padding-right: 10%;
     padding-bottom: 0;
+  }
+
+  .pickup-value {
+    font-size: 16px;
   }
 
   .pick-up-btn {
@@ -146,6 +171,11 @@
   right: 0%;
   top: 16.67%;
   bottom: 16.67%;
+
+  img {
+    position: relative;
+    top: 3px;
+  }
 }
 
 .return-details-container {
@@ -156,4 +186,44 @@
 .payment-details-card-body {
   min-height: 232px;
   max-height: 232px;
+
+// Bottom Footer
+.line-break {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #e8e7e9;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+  background: #e8e7e9;
+  font-size: 14px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  font-family: "Sofia Pro";
+  margin-top: 32px;
+}
+
+.text-bottom-title {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: center;
+  margin-bottom: 24px;
+  color: #b1adb3 !important;
+}
+
+.text-cant-find {
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  height: 19px;
+  margin-bottom: 11px;
+  color: #b1adb3 !important;
+}
+
+.text-new-email {
+  margin-bottom: 11px;
+}
+
+.bottom {
+  padding-bottom: 74px;
 }
