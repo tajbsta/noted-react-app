@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReturnScore from '../ReturnsScore';
 import Row from '../Row';
+import EmptyScan from './EmptyScan';
 import ProductDetails from './ProductDetails';
 
 function ProductCard({
@@ -21,12 +22,21 @@ function ProductCard({
     image,
   },
 }) {
+  const [scanning, setScanning] = useState(false);
+
   const handleSelection = (e) => {
     if (selected) {
       removeSelected(id);
       return;
     }
     addSelected(id);
+  };
+
+  const onScanLaunch = () => {
+    setScanning(true);
+    setTimeout(() => {
+      setScanning(false);
+    }, 3000);
   };
 
   return (
@@ -38,7 +48,6 @@ function ProductCard({
       style={{
         border: selected ? '1px solid purple' : 'none',
       }}
-      onClick={clickable ? onClick : () => {}}
     >
       <div className='card-body pt-3 pb-3 p-0 m-0'>
         <Row>
@@ -60,6 +69,7 @@ function ProductCard({
               display: 'flex',
               alignItems: 'center',
             }}
+            onClick={clickable ? onClick : () => {}}
           >
             <img src={image} alt='' />
           </div>
@@ -81,6 +91,7 @@ function ProductCard({
               alignItems: 'center',
               justifyItems: 'center',
             }}
+            onClick={clickable ? onClick : () => {}}
           >
             <div
               className='col-sm-6 noted-red sofia-pro return-time-left'

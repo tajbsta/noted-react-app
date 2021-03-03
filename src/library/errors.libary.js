@@ -11,10 +11,10 @@ export const signUpErrors = [
   },
   {
     code: INVALID_PASSWORD,
-    message: "The password you entered is not strong enough",
+    message: "Password must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character",
   },
   {
     code: INVALID_PARAMETER,
-    message: "This password does not meet the requirements",
+    message: "Password must contain 8 characters",
   },
 ];
