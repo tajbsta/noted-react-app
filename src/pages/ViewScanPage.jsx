@@ -119,6 +119,7 @@ function ViewScanPage() {
                     background: "#570097",
                     border: "none",
                   }}
+                  onClick={() => setconfirmed(true)}
                 >
                   Confirm Order
                 </div>
