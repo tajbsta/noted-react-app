@@ -1,52 +1,67 @@
-import React, { useState } from 'react';
-import Row from '../Row';
+import React, { useState } from "react";
+import Row from "../Row";
 
-function PickUpDetails({ scan }) {
-  const [scanning, setScanning] = useState(false);
-
-  const onScanLaunch = () => {
-    setScanning(true);
-    setTimeout(() => {
-      setScanning(false);
-    }, 3000);
-  };
-
+function PickUpDetails() {
   return (
-    <div className='card shadow-sm'>
-      <div className='card-body pt-4 pb-3 pl-4 m-0'>
-        <Row>
-          <div className='col-sm-12 p-0'>
-            <p className='pick-up-message sofia-pro'>
-              Your pick-up request has been received and a member of Noted’s
-              pick-up team will arrive at your address on:
+    <div className="row">
+      <div className="col-sm-4">
+        <div className="card shadow-sm">
+          <div className="card-body payment-details-card-body pt-4 pb-3 pl-4 m-0">
+            <Row>
+              <div className="col-sm-12 p-0">
+                <p className="pick-up-message sofia-pro">Pick-up Address</p>
+              </div>
+            </Row>
+            <h4 className="p-0 m-0 sofia-pro">Alexis Jones`</h4>
+            <h4 className="p-0 m-0 sofia-pro">1 Titans Way</h4>
+            <h4 className="p-0 m-0 sofia-pro">Nashville, TN 37213</h4>
+            <h4 className="p-0 m-0 sofia-pro">United States</h4>
+            <p className="sofia-pro mt-3">Tel: 123-4567-7890</p>
+            <p className="sofia-pro noted-purple mt-3">
+              Add pick-up instructions
             </p>
           </div>
-        </Row>
-        <h4 className='p-0 m-0 pick-up-day sofia-pro'>Today</h4>
-        <Row>
-          <h5 className='sofia-pro pick-up-time'>Between 2pm and 3pm</h5>
-        </Row>
-
-        <Row>
-          <div className='col-sm-9 p-0'>
-            <p className='pick-up-message sofia-pro mb-0'>
-              We have sent you a confirmation by email.
-            </p>
-            <p className='sofia-pro pick-up-message'>
-              If you wish to cancel or modify this order:
-              <span className='ml-1 noted-purple sofia-pro pick-up-edit-or-btn'>
-                Edit order
-              </span>
-            </p>
+        </div>
+      </div>
+      {/* PAYMENT DETAILS */}
+      <div className="col-sm-4">
+        <div className="card shadow-sm">
+          <div className="card-body payment-details-card-body pt-4 pb-3 pl-4 m-0">
+            <Row>
+              <div className="col-sm-12 p-0">
+                <p className="pick-up-message sofia-pro">Payment Method</p>
+              </div>
+            </Row>
+            <Row>
+              <div className="col-sm-12 mb-4">Ending in 9456</div>
+            </Row>
+            <h3 className="sofia-pro mb-0 mt-2">Card Address</h3>
+            <h4 className="p-0 m-0 sofia-pro">Alexis Jones</h4>
+            <h4 className="p-0 m-0 sofia-pro">1 Titans Way</h4>
+            <h4 className="p-0 m-0 sofia-pro">Nashville, TN 37213</h4>
+            <h4 className="p-0 m-0 sofia-pro">United States</h4>
           </div>
-          <div className='col-sm-3'>
-            <button className='back-to-products-btn'>
-              <span className='sofia-pro mb-0 back-to-products-text '>
-                Back to My Products
-              </span>
-            </button>
+        </div>
+      </div>
+      {/* RETURN SCHEDULE */}
+      <div className="col-sm-4">
+        <div className="card shadow-sm">
+          <div className="card-body payment-details-card-body pt-4 pb-3 pl-4 m-0">
+            <Row>
+              <div className="col-sm-12 p-0">
+                <p className="pick-up-message sofia-pro">Pick up</p>
+              </div>
+            </Row>
+            <h4 className="sofia-pro mb-5">Today</h4>
+            <h4 className="p-0 m-0 sofia-pro">Between 2pm and 3pm</h4>
+            <h4 className="p-0 m-0 sofia-pro noted-purple mt-2">Edit</h4>
+            <hr />
+            <h4 className="p-0 m-0 sofia-pro noted-purple mt-2">
+              Schedule another date
+            </h4>
+            <h5 className="sofia-pro text-muted">(-$10.99)</h5>
           </div>
-        </Row>
+        </div>
       </div>
     </div>
   );

@@ -126,7 +126,7 @@
   position: absolute;
   height: 19px;
   right: 8.46%;
-  top: calc(50% - 19px/2 + 4px);
+  top: calc(50% - 19px / 2 + 4px);
 }
 
 .return-score {
@@ -136,7 +136,6 @@
   top: 16.67%;
   width: 5%;
   right: 8%;
-
 }
 
 .return-item-brand {
@@ -153,5 +152,8 @@
   position: absolute;
   align-self: center;
   height: 20%;
-
+}
+.payment-details-card-body {
+  min-height: 232px;
+  max-height: 232px;
 }
