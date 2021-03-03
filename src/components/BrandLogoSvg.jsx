@@ -1,12 +1,27 @@
 import React from "react";
 
+const pageLocation = global.location.pathname;
+
+const guestViews = [
+  "/",
+  "/login",
+  "/join",
+  "forgot-password",
+  "reset-password",
+  "/request-permission",
+];
+
 function BrandLogoSvg() {
   return (
     <div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 341.85 85.59"
-        className="main-brand-logo"
+        className={`${
+          guestViews.indexOf(pageLocation) != -1
+            ? "main-brand-logo"
+            : "dashboard-logo"
+        }`}
       >
         <path
           d="M51.88 85.59V43.1a21.66 21.66 0 00-.75-5.77 14.38 14.38 0 00-2.57-5.16 11.14 11.14 0 00-2-2 .33.33 0 01-.14-.29 5.68 5.68 0 00-1.7-3.9l-6.21-6.18-2.93-2.93-.18-.19.2-.21c3-3 5.95-6 8.94-8.94a6.09 6.09 0 001.69-2.73.17.17 0 000-.07h.23a39.9 39.9 0 014.42.27 30.46 30.46 0 017.31 1.69 23.62 23.62 0 018.73 5.55 25.36 25.36 0 014.53 6.35 34.42 34.42 0 012.84 8.11c.35 1.61.61 3.23.8 4.86a50.94 50.94 0 01.33 5.38 2 2 0 000 .24v48.41zM0 6.46h23.6v5.7a.46.46 0 01-.16.34A5.89 5.89 0 0022 14.55a5.75 5.75 0 001.28 6.19l7.85 7.86.19.2-.13.06A11.32 11.32 0 0025.15 35 17.3 17.3 0 0024 39a27.24 27.24 0 00-.38 4.77v41.82H0z"

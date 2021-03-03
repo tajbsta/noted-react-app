@@ -24,7 +24,7 @@ export default function RegisterPage() {
     setIsSubmitting(true);
 
     if (validatePassword(password)) {
-      setError("Password does not match the requirementss");
+      setError("Password does not match the requirements");
       throw new Error();
     } else {
       console.log("===signup in cognito");

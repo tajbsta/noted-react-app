@@ -42,7 +42,7 @@ const Topnav = () => {
           : "",
       }}
     >
-      <Navbar.Brand href="home" className="ml-4 mr-1">
+      <Navbar.Brand href="/" className="ml-4 mr-1">
         <BrandLogoSvg />
       </Navbar.Brand>
       {pathname === "/dashboard" && (
