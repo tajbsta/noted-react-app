@@ -6,9 +6,9 @@ const guestViews = [
   "/",
   "/login",
   "/join",
-  "forgot-password",
-  "reset-password",
-  "/request-permission",
+  "/forgot-password",
+  "/reset-password",
+  "/request-permission/",
 ];
 
 function BrandLogoSvg() {
