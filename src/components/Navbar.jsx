@@ -49,7 +49,7 @@ const Topnav = () => {
           "/request-permission/",
           "/",
         ].includes(pathname)
-          ? "#F2F2F2"
+          ? "#FAF8FA"
           : "",
       }}
     >
