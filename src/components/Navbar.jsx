@@ -18,6 +18,7 @@ const guestViews = [
   "/forgot-password",
   "/reset-password",
   "/request-permission/",
+  "/request-permission",
 ];
 
 const Topnav = () => {
@@ -32,6 +33,7 @@ const Topnav = () => {
     "/forgot-password",
     "/reset-password",
     "/request-permission/",
+    "/request-permission",
   ].includes(pathname)
     ? ""
     : "shadow-sm";
@@ -47,7 +49,7 @@ const Topnav = () => {
           "/forgot-password",
           "/reset-password",
           "/request-permission/",
-          "/",
+          "/request-permission",
         ].includes(pathname)
           ? "#FAF8FA"
           : "",
