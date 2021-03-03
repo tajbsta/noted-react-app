@@ -117,7 +117,7 @@ export default function RegisterPage() {
             <Form>
               {error && (
                 <div className="alert alert-danger" role="alert">
-                  <h4>{error}</h4>
+                  <h4 className="text-center text-alert">{error}</h4>
                 </div>
               )}
               <Form.Group>
