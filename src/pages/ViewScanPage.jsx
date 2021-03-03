@@ -20,11 +20,11 @@ function ViewScanPage() {
       <div className='container mt-6'>
         <div
           className='row'
-          style={{
-            minWidth: '89vw',
-          }}
+          // style={{
+          //   minWidth: '89vw',
+          // }}
         >
-          <div className='col-sm-8'>
+          <div className='col-sm-8 w-840'>
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
             <h3 className='sofia-pro'>Pick-up confirmed</h3>
             <PickUpDetails />

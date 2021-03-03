@@ -1,3 +1,4 @@
+#DashboardPage {
 .noted-purple {
   color: #570097;
 }
@@ -11,25 +12,24 @@
   justify-content: center;
 }
 
+.text-curious {
+  font-size: 14px;
+}
+
 .launch-scan-btn {
   width: 177px;
   height: 48px;
-  background: #6aaf6a;
   border-radius: 8px;
   font-size: 16px;
   line-height: 19px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #ffffff;
   height: 48px;
   border-radius: 8px;
 }
 
-.launch-scan-btn:hover {
-  background: white;
-  color: #6aaf6a;
-}
+
 
 .right-card {
   .card-label {
@@ -67,6 +67,14 @@
       font-size: 16px;
       line-height: 19px;
     }
+  }
+}
+
+.card-scan-container {
+  width: 840px;
+
+  .text-16 {
+    font-size: 16px;
   }
 }
 
@@ -154,4 +162,5 @@
   align-self: center;
   height: 20%;
 
+}
 }

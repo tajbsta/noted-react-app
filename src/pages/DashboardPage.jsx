@@ -21,18 +21,18 @@ function DashboardPage() {
   };
 
   return (
-    <div>
+    <div id="DashboardPage">
       <div className='container mt-6'>
         <div
           className='row'
-          style={{
-            minWidth: '89vw',
-          }}
+          // style={{
+          //   minWidth: '89vw',
+          // }}
         >
-          <div className='col-sm-8 mt-4'>
+          <div className='col-sm-8 mt-4 w-840'>
             {isEmpty(scannedItems) && !scanning && (
               <>
-                <h3 className='sofia-pro'>
+                <h3 className='sofia-pro text-16'>
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className={`card shadow-sm scanned-item-card mb-2 p-5 `}>
@@ -42,7 +42,7 @@ function DashboardPage() {
             )}
             {scanning && (
               <>
-                <h3 className='sofia-pro'>
+                <h3 className='sofia-pro text-16'>
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className={`card shadow-sm scanned-item-card mb-2 p-5 `}>

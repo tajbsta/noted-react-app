@@ -17,7 +17,7 @@ function Scanning() {
             <img src={ScanningIcon} />
           </div>
         </Row>
-        <p className='text-center sofia-pro noted-purple'>Scan running...</p>
+        <p className='text-center sofia-pro noted-purple text-16'>Scan running...</p>
         <p className='small text-muted mb-1 text-center sofia-pro'>
           Go have some coffee - we&apos;ll email ya when it&apos;s done!
         </p>
