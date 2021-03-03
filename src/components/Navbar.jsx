@@ -24,7 +24,6 @@ const Topnav = () => {
   const {
     location: { pathname },
   } = useHistory();
-  console.log(pathname);
   const user = useSelector(({ auth: { user } }) => user);
   const showShadow = [
     "/",

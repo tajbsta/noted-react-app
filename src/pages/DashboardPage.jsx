@@ -4,24 +4,31 @@ import EmptyScan from "../components/Dashboard/EmptyScan";
 import LastCall from "../components/Dashboard/LastCall";
 import RightCard from "../components/Dashboard/RightCard";
 import Scanning from "../components/Dashboard/Scanning";
-import { scanned } from "../_mock";
+import api from "../utils/api";
 
 function DashboardPage() {
   const [scanning, setScanning] = useState(false);
 
   const [scannedItems, settScannedItems] = useState([]);
 
-  const onScanLaunch = () => {
-    console.log("Scanning");
+  async function loadScans() {
     settScannedItems([]);
     setScanning(true);
-    setTimeout(() => {
-      settScannedItems([...scanned]);
-      setScanning(false);
-    }, 3000);
-  };
+    api
+      .get("scans/90d088ea-e2a0-44f6-b0f4-3ad4d8bf9b48")
+      .then(({ data }) => {
+        settScannedItems([...data]);
+        console.log(data);
+        setScanning(false);
+      })
+      .catch((err) => {
+        setScanning(false);
+      });
+  }
 
-  console.log(scanning);
+  const onScanLaunch = () => {
+    loadScans();
+  };
 
   return (
     <div>
@@ -62,21 +69,18 @@ function DashboardPage() {
                 </h3>
                 <div className="col-sm-12">
                   <LastCall
-                    scannedItems={scannedItems.slice(0, 3)}
+                    scannedItems={scannedItems}
                     typeTitle="Last Call!"
                   />
                 </div>
                 <div className="col-sm-12 mt-4">
                   <LastCall
-                    scannedItems={scannedItems.slice(3, 6)}
+                    scannedItems={scannedItems}
                     typeTitle="Returnable Items"
                   />
                 </div>
                 <div className="col-sm-12 mt-4">
-                  <LastCall
-                    scannedItems={scannedItems.slice(0, 3)}
-                    typeTitle="Donate"
-                  />
+                  <LastCall scannedItems={scannedItems} typeTitle="Donate" />
                 </div>
                 <div>
                   <div className="row justify-center">
