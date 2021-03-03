@@ -23,10 +23,12 @@ html {
 @import "./pages/forgotpass.scss";
 @import "./pages/resetpass.scss";
 @import "./pages/authorize.scss";
-@import "./pages/brandlogo.scss";
-@import "./pages/navbar.scss";
 @import "./pages/dashboard.scss";
 @import "./pages/viewscan.scss";
+
+/* Components in Pages styling */
+@import "./pages/components/brandlogo.scss";
+@import "./pages/components/navbar.scss";
 
 html,
 body {
