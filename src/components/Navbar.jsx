@@ -25,32 +25,13 @@ const Topnav = () => {
     location: { pathname },
   } = useHistory();
   const user = useSelector(({ auth: { user } }) => user);
-  const showShadow = [
-    "/",
-    "/join",
-    "/login",
-    "/forgot-password",
-    "/reset-password",
-    "/request-permission/",
-  ].includes(pathname)
-    ? ""
-    : "shadow-sm";
+  const showShadow = guestViews.includes(pathname) ? "" : "shadow-sm";
   return (
     <Navbar
       expand={`lg ${showShadow}`}
       style={{
         border: "none",
-        backgroundColor: [
-          "/",
-          "/join",
-          "/login",
-          "/forgot-password",
-          "/reset-password",
-          "/request-permission/",
-          "/",
-        ].includes(pathname)
-          ? "#F2F2F2"
-          : "",
+        backgroundColor: guestViews.includes(pathname) ? "#F2F2F2" : "",
       }}
     >
       <Navbar.Brand
