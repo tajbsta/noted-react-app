@@ -24,12 +24,12 @@ function DashboardPage() {
     <>
       <div className="container mt-6">
         <div
-          className="row"
-          style={{
-            minWidth: "89vw",
-          }}
+          className="row dashboard-row"
+          // style={{
+          //   minWidth: "89vw",
+          // }}
         >
-          <div className="col-sm-8 mt-4 w-840 bottom">
+          <div className="col-sm-9 mt-4 w-840 bottom">
             {isEmpty(scannedItems) && !scanning && (
               <>
                 <h3 className="sofia-pro text-16 text-16">
@@ -54,7 +54,7 @@ function DashboardPage() {
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
             {!isEmpty(scannedItems) && (
               <>
-                <h3 className="sofia-pro mt-0 ml-3">
+                <h3 className="sofia-pro mt-0 ml-3 text-18 text-list">
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className="col-sm-12">
@@ -90,7 +90,7 @@ function DashboardPage() {
                     <div className="col-sm-7 text-center">
                       <div className="text-muted text-center text-bottom-title">
                         These are all the purchases we found in the past 90 days
-                        from your address alexijones@gmail.com
+                        from your address alexisjones@gmail.com
                       </div>
                     </div>
                   </div>

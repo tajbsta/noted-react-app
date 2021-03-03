@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React from "react";
 
 function PickUpButton({
-  leadingText = '',
+  leadingText = "",
   backgroundColor: background,
   textColor: color,
   price,
@@ -11,50 +11,50 @@ function PickUpButton({
   onClick,
 }) {
   return (
-    <div className='row'>
+    <div className="row">
       <button
-        className='btn btn-md mb-2 col-sm-12 pick-up-btn'
+        className="btn btn-md mb-2 col-sm-12 pick-up-btn"
         style={{
-          alignSelf: 'center',
+          alignSelf: "center",
           letterSpacing: 1,
           background,
           opacity,
         }}
         onClick={onClick}
       >
-        <div className='row'>
+        <div className="row">
           <div
-            className='col-sm-8'
+            className="col-sm-8"
             style={{
-              display: 'flex',
-              justifyItems: 'center',
-              alignItems: 'center',
+              display: "flex",
+              justifyItems: "center",
+              alignItems: "center",
             }}
           >
             <p
-              className='mt-0 mb-0 ml-3 pick-up-btn-lead'
+              className="mt-0 mb-0 ml-3 pick-up-btn-lead"
               style={{
-                fontWeight: '500',
-                fontSize: 14.5,
+                fontWeight: "500",
+                fontSize: 16,
                 color,
               }}
             >
-              {leadingText || ''}
+              {leadingText || ""}
             </p>
           </div>
-          <div className='col-sm-4 small'>
+          <div className="col-sm-4 small">
             <p
-              className='mt-0 mb-0'
+              className="mt-0 mb-0"
               style={{
-                fontSize: 11,
+                fontSize: 13,
                 color,
               }}
             >
-              ${price || ''}
+              ${price || ""}
             </p>
             {timeWindow && (
               <p
-                className='mt-0 mb-0 h5'
+                className="mt-0 mb-0 h5"
                 style={{
                   color,
                 }}
