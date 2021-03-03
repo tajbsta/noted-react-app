@@ -9,40 +9,35 @@ import { get } from "lodash";
 
 const BrandLogoSvg = lazy(() => import("./BrandLogoSvg"));
 
+const pageLocation = global.location.pathname;
+
+const guestViews = [
+  "/",
+  "/login",
+  "/join",
+  "forgot-password",
+  "reset-password",
+  "/request-permission",
+];
+
 const Topnav = () => {
   const {
     location: { pathname },
   } = useHistory();
   const user = useSelector(({ auth: { user } }) => user);
-  const showShadow = [
-    "/",
-    "/join",
-    "/login",
-    "/forgot-password",
-    "/reset-password",
-    "/request-permission/",
-  ].includes(pathname)
-    ? ""
-    : "shadow-sm";
+  const showShadow = guestViews.includes(pathname) ? "" : "shadow-sm";
   return (
     <Navbar
       expand={`lg ${showShadow}`}
       style={{
         border: "none",
-        backgroundColor: [
-          "/",
-          "/join",
-          "/login",
-          "/forgot-password",
-          "/reset-password",
-          "/request-permission/",
-          "/",
-        ].includes(pathname)
-          ? "#F2F2F2"
-          : "",
+        backgroundColor: guestViews.includes(pathname) ? "#F2F2F2" : "",
       }}
     >
-      <Navbar.Brand href="home" className="ml-4 mr-1">
+      <Navbar.Brand
+        href={`${guestViews.indexOf(pageLocation) != -1 ? "/" : "/dashboard"}`}
+        className="ml-4 mr-1"
+      >
         <BrandLogoSvg />
       </Navbar.Brand>
       {pathname === "/dashboard" && (
