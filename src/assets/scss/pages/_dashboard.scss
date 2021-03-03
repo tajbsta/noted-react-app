@@ -11,8 +11,16 @@
   justify-content: center;
 }
 
+.dashboard-row {
+  justify-content: space-evenly;
+}
+
 .text-curious {
   font-size: 14px;
+}
+
+.text-list {
+  margin-bottom: 23px;
 }
 
 .launch-scan-btn {
@@ -37,15 +45,31 @@
     opacity: 0.6;
   }
 
+  .total-returns {
+    margin-bottom: 16px;
+  }
+
+  .total-returns {
+    margin-bottom: 16px;
+  }
+
+  .total-donations {
+    margin-bottom: 10px;
+  }
+
   .card-value {
-    font-size: 23px;
+    font-size: 22px;
     line-height: 27px;
     color: #21003a;
   }
 
+  .text-potential-value {
+    width: 124px;
+  }
+
   .card-title {
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 14px;
+    line-height: 16.41px;
     color: #0e0018;
   }
 
@@ -53,6 +77,10 @@
     padding-left: 10%;
     padding-right: 10%;
     padding-bottom: 0;
+  }
+
+  .pickup-value {
+    font-size: 16px;
   }
 
   .pick-up-btn {
@@ -143,6 +171,11 @@
   right: 0%;
   top: 16.67%;
   bottom: 16.67%;
+
+  img {
+    position: relative;
+    top: 3px;
+  }
 }
 
 .return-details-container {

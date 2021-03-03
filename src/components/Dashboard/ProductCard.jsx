@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import ReturnScore from '../ReturnsScore';
-import Row from '../Row';
-import EmptyScan from './EmptyScan';
-import ProductDetails from './ProductDetails';
+import React, { useState } from "react";
+import ReturnScore from "../ReturnsScore";
+import Row from "../Row";
+import EmptyScan from "./EmptyScan";
+import ProductDetails from "./ProductDetails";
 
 function ProductCard({
   selectable = true,
@@ -42,19 +42,19 @@ function ProductCard({
   return (
     <div
       className={`card shadow-sm scanned-item-card mb-3 p-0 ${
-        clickable && 'btn'
+        clickable && "btn"
       }`}
       key={productName}
       style={{
-        border: selected ? '1px solid purple' : 'none',
+        border: selected ? "1px solid purple" : "none",
       }}
     >
-      <div className='card-body pt-3 pb-3 p-0 m-0'>
+      <div className="card-body pt-3 pb-3 p-0 m-0">
         <Row>
           {selectable && (
-            <div className='row align-items-center p-4'>
+            <div className="row align-items-center p-4">
               <input
-                type='checkbox'
+                type="checkbox"
                 checked={selected}
                 onChange={handleSelection}
                 style={{
@@ -64,14 +64,14 @@ function ProductCard({
             </div>
           )}
           <div
-            className='col-sm-1 ml-1 mr-3'
+            className="col-sm-1 ml-1 mr-3"
             style={{
-              display: 'flex',
-              alignItems: 'center',
+              display: "flex",
+              alignItems: "center",
             }}
             onClick={clickable ? onClick : () => {}}
           >
-            <img src={image} alt='' />
+            <img src={image} alt="" />
           </div>
 
           <ProductDetails
@@ -85,30 +85,30 @@ function ProductCard({
             }}
           />
           <div
-            className='col-sm-12 return-details-container'
+            className="col-sm-12 return-details-container"
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyItems: 'center',
+              display: "flex",
+              alignItems: "center",
+              justifyItems: "center",
             }}
             onClick={clickable ? onClick : () => {}}
           >
             <div
-              className='col-sm-6 noted-red sofia-pro return-time-left'
+              className="col-sm-6 noted-red sofia-pro return-time-left"
               style={{
-                color: '#FF1C29',
+                color: "#FF1C29",
               }}
             >
               2 days left
             </div>
-            <div className='col-sm-3 return-score'>
+            <div className="col-sm-3 return-score">
               <ReturnScore score={returnScore} />
             </div>
-            <div className='col-sm-3 return-item-brand'>
+            <div className="col-sm-3 return-item-brand">
               <img
-                src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
-                alt=''
-                className='avatar-img ml-2 rounded-circle noted-border'
+                src="https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png"
+                alt=""
+                className="avatar-img ml-2 rounded-circle noted-border brand-img"
                 style={{
                   width: 35,
                   height: 35,
