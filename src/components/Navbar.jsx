@@ -78,7 +78,7 @@ const Topnav = () => {
               placeholder="Search purchases"
             />
           </Container>
-          <div className="row">
+          <div className="row select-dropdown">
             <div className="col-6">
               <div className="btn p-0">
                 <img src={ProfileIcon} />
