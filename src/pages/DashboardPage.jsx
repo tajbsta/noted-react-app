@@ -1,15 +1,21 @@
-import { isEmpty } from "lodash";
+import { get, isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import EmptyScan from "../components/Dashboard/EmptyScan";
-import LastCall from "../components/Dashboard/LastCall";
+import ReturnCategory from "../components/Dashboard/ReturnCategory";
 import RightCard from "../components/Dashboard/RightCard";
 import Scanning from "../components/Dashboard/Scanning";
 import api from "../utils/api";
 
 function DashboardPage() {
   const [scanning, setScanning] = useState(false);
-
   const [scannedItems, settScannedItems] = useState([]);
+
+  const customerEmail = get(
+    useSelector((state) => state),
+    "auth.user.username",
+    ""
+  );
 
   async function loadScans() {
     settScannedItems([]);
@@ -71,26 +77,29 @@ function DashboardPage() {
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className="col-sm-12">
-                  <LastCall
+                  <ReturnCategory
                     scannedItems={scannedItems}
                     typeTitle="Last Call!"
                   />
                 </div>
                 <div className="col-sm-12 mt-4">
-                  <LastCall
+                  <ReturnCategory
                     scannedItems={scannedItems}
                     typeTitle="Returnable Items"
                   />
                 </div>
                 <div className="col-sm-12 mt-4">
-                  <LastCall scannedItems={scannedItems} typeTitle="Donate" />
+                  <ReturnCategory
+                    scannedItems={scannedItems}
+                    typeTitle="Donate"
+                  />
                 </div>
                 <div>
                   <div className="row justify-center">
                     <div className="col-sm-7 text-center">
                       <div className="text-muted text-center">
                         These are all the purchases we found in the past 90 days
-                        from your address alexisjones@gmail.com
+                        from your address {customerEmail}
                       </div>
                     </div>
                   </div>
