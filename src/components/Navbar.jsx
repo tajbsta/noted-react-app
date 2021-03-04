@@ -9,6 +9,18 @@ import { get } from "lodash";
 
 const BrandLogoSvg = lazy(() => import("./BrandLogoSvg"));
 
+const pageLocation = global.location.pathname;
+
+const guestViews = [
+  "/",
+  "/login",
+  "/join",
+  "/forgot-password",
+  "/reset-password",
+  "/request-permission/",
+  "/request-permission",
+];
+
 const Topnav = () => {
   let history = useHistory();
   const pageLocation = history.location.pathname;
@@ -51,12 +63,12 @@ const Topnav = () => {
           "/",
           "/join",
           "/login",
-          "/code",
-          "/code/",
           "/forgot-password",
           "/reset-password",
           "/request-permission/",
           "/request-permission",
+          "/code",
+          "/code/",
         ].includes(pathname)
           ? "#FAF8FA"
           : "",
@@ -68,7 +80,7 @@ const Topnav = () => {
       >
         <BrandLogoSvg />
       </Navbar.Brand>
-      {pathname === "/dashboard" && (
+      {["/dashboard", "/view-scan"].includes(pathname) && (
         <>
           <Container className="ml-3">
             <input
@@ -78,12 +90,16 @@ const Topnav = () => {
               placeholder="Search purchases"
             />
           </Container>
-          <div className="mr-5">
-            <div className="btn p-0">
-              <img src={ProfileIcon} />
+          <div className="row">
+            <div className="col-6">
+              <div className="btn p-0">
+                <img src={ProfileIcon} />
+              </div>
             </div>
-            <div className="btn p-0">
-              <img src={DropwDownIcon} />
+            <div className="col-6">
+              <div className="btn p-0">
+                <img src={DropwDownIcon} />
+              </div>
             </div>
           </div>
         </>
