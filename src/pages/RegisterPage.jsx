@@ -5,7 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Form, FormGroup, FormControl } from "react-bootstrap";
 import Amplify, { Auth } from "aws-amplify";
-import { login, signUp } from "../actions/auth.action";
+import { setUser } from "../actions/auth.action";
 import { signUpErrors } from "../library/errors.libary";
 import { get } from "lodash";
 
@@ -35,8 +35,7 @@ export default function RegisterPage() {
           email,
         },
       })
-        .then((data) => {
-          dispatch(signUp(data.user));
+        .then(() => {
           history.push("/request-permission");
         })
         .catch((error) => {
@@ -45,7 +44,7 @@ export default function RegisterPage() {
             get(
               signUpErrors.find(({ code }) => code === error.code),
               "message",
-              "An error occured signing up"
+              "An error occurred signing up"
             )
           );
           setIsSubmitting(false);

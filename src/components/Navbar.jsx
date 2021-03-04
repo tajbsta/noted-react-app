@@ -9,19 +9,22 @@ import { get } from "lodash";
 
 const BrandLogoSvg = lazy(() => import("./BrandLogoSvg"));
 
-const pageLocation = global.location.pathname;
-
-const guestViews = [
-  "/",
-  "/login",
-  "/join",
-  "/forgot-password",
-  "/reset-password",
-  "/request-permission/",
-  "/request-permission",
-];
-
 const Topnav = () => {
+  let history = useHistory();
+  const pageLocation = history.location.pathname;
+  // console.log(pageLocation);
+
+  const guestViews = [
+    "/",
+    "/login",
+    "/join",
+    "/forgot-password",
+    "/reset-password",
+    "/request-permission/",
+    "/request-permission",
+    "/code",
+    "/code/",
+  ];
   const {
     location: { pathname },
   } = useHistory();
@@ -34,6 +37,8 @@ const Topnav = () => {
     "/reset-password",
     "/request-permission/",
     "/request-permission",
+    "/code",
+    "/code/",
   ].includes(pathname)
     ? ""
     : "shadow-sm";
@@ -46,6 +51,8 @@ const Topnav = () => {
           "/",
           "/join",
           "/login",
+          "/code",
+          "/code/",
           "/forgot-password",
           "/reset-password",
           "/request-permission/",
