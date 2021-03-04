@@ -8,30 +8,11 @@ import PickUpButton from "./PickUpButton";
 function RightCard({ scannedItems }) {
   const totalReturns = scannedItems.length;
 
-  const inCashBack = scannedItems
-    .map(({ price, compensationType }) => {
-      if (compensationType === "Cash back") {
-        return price;
-      }
-      return 0;
+  const potentialReturnValue = scannedItems
+    .map(({ amount }) => {
+      return Number(amount);
     })
     .reduce((acc, curr) => (acc += curr), 0);
-
-  const inStoreCredits = scannedItems
-    .map(({ price, compensationType }) => {
-      if (compensationType === "Store Credits") {
-        return price;
-      }
-      return 0;
-    })
-    .reduce((acc, curr) => (acc += curr), 0);
-
-  /**
-   * This is temporary
-   * I dont know how donations work
-   * So calculation is based off of the last 3 items in dummy data
-   */
-
   const donations = scannedItems.slice(3, 6).length;
 
   return (
@@ -61,7 +42,7 @@ function RightCard({ scannedItems }) {
             <Row marginTop={3} marginLeft={2} className="p-0">
               <div className="col-5">
                 <div className="row card-text mb-0 sofia-pro card-value">
-                  ${inCashBack}
+                  ${Number(potentialReturnValue).toFixed(2)}
                 </div>
                 <div className="row small sofia-pro card-label text-potential-value">
                   Potential Return Value
