@@ -31,11 +31,11 @@ export default function AuthorizePage() {
             <h4 className="text-underline">
               <a href="#">Learn more about security</a>
             </h4>
-            <Link to="/dashboard">
+            <a href="/dashboard">
               <Button className="btn btn-green btn-authorize">
                 Authorize Noted
               </Button>
-            </Link>
+            </a>
           </Col>
           <Col xs="6">
             <div className="authorize-img">
