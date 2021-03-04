@@ -10,9 +10,10 @@ function RightCard({ scannedItems }) {
 
   const potentialReturnValue = scannedItems
     .map(({ amount }) => {
-      return Number(amount);
+      return Number(amount) | 0;
     })
     .reduce((acc, curr) => (acc += curr), 0);
+
   const donations = scannedItems.slice(3, 6).length;
 
   return (

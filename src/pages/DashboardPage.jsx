@@ -23,21 +23,26 @@ function DashboardPage() {
     useSelector((state) => get(state, "scans", [])) || [];
 
   async function loadScans() {
-    settScannedItems([]);
-    settScannedItems([...localScannedItems]);
-    setScanning(false);
-    // api
-    //   .get("scans/8a57189b-7814-4203-8dc0-35e6f428e046")
-    //   .then(({ data }) => {
-    //     setScanning(false);
-    //   })
-    //   .catch((err) => {
-    //     setScanning(false);
-    //   });
+    setScanning(true);
+    api
+      .get("scans/8a57189b-7814-4203-8dc0-35e6f428e046")
+      .then(({ data }) => {
+        settScannedItems([...data.slice(0, 5)]);
+        dispatch(storeScan({ scannedItems: [...data.slice(0, 5)] }));
+        setScanning(false);
+      })
+      .catch((err) => {
+        setScanning(false);
+      });
   }
 
   useEffect(() => {
-    loadScans();
+    settScannedItems([]);
+    settScannedItems([...localScannedItems]);
+    setScanning(false);
+    if (isEmpty(localScannedItems)) {
+      loadScans();
+    }
   }, []);
 
   const onScanLaunch = () => {
