@@ -49,9 +49,9 @@ function DashboardPage() {
       <div className="container mt-6">
         <div
           className="row"
-          style={{
-            minWidth: "89vw",
-          }}
+          // style={{
+          //   minWidth: "89vw",
+          // }}
         >
           <div className="col-sm-8 mt-4">
             {isEmpty(scannedItems) && !scanning && (
