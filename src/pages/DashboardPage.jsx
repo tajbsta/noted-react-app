@@ -1,6 +1,7 @@
 import { get, isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { storeScan } from "../actions/scans.action";
 import EmptyScan from "../components/Dashboard/EmptyScan";
 import ReturnCategory from "../components/Dashboard/ReturnCategory";
 import RightCard from "../components/Dashboard/RightCard";
@@ -8,6 +9,7 @@ import Scanning from "../components/Dashboard/Scanning";
 import api from "../utils/api";
 
 function DashboardPage() {
+  const dispatch = useDispatch();
   const [scanning, setScanning] = useState(false);
   const [scannedItems, settScannedItems] = useState([]);
 
@@ -17,18 +19,21 @@ function DashboardPage() {
     ""
   );
 
+  const localScannedItems =
+    useSelector((state) => get(state, "scans", [])) || [];
+
   async function loadScans() {
     settScannedItems([]);
-    setScanning(true);
-    api
-      .get("scans/8a57189b-7814-4203-8dc0-35e6f428e046")
-      .then(({ data }) => {
-        settScannedItems([...data.splice(0, 5)]);
-        setScanning(false);
-      })
-      .catch((err) => {
-        setScanning(false);
-      });
+    settScannedItems([...localScannedItems]);
+    setScanning(false);
+    // api
+    //   .get("scans/8a57189b-7814-4203-8dc0-35e6f428e046")
+    //   .then(({ data }) => {
+    //     setScanning(false);
+    //   })
+    //   .catch((err) => {
+    //     setScanning(false);
+    //   });
   }
 
   useEffect(() => {
@@ -107,13 +112,15 @@ function DashboardPage() {
                     <div className="col-sm-6 text-center">
                       <div className="text-muted text-center">
                         Can’t find one?
-                        <span className="noted-purple">Add it manually</span>
+                        <span className="noted-purple btn sofia-pro">
+                          Add it manually
+                        </span>
                       </div>
                     </div>
                   </div>
                   <div className="row justify-center mt-2">
                     <div className="col-sm-6 text-center">
-                      <div className="text-center noted-purple">
+                      <div className="text-center noted-purple btn sofia-pro">
                         Add new email address
                       </div>
                     </div>
@@ -121,7 +128,7 @@ function DashboardPage() {
                   <div className="row justify-center mt-2 btn">
                     <div className="col-sm-6 text-center">
                       <a onClick={onScanLaunch}>
-                        <div className="text-center noted-purple">
+                        <div className="text-center noted-purple btn sofia-pro">
                           Scan for older items
                         </div>
                       </a>
