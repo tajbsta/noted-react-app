@@ -1,5 +1,5 @@
 import { isEmpty } from "lodash";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EmptyScan from "../components/Dashboard/EmptyScan";
 import LastCall from "../components/Dashboard/LastCall";
 import RightCard from "../components/Dashboard/RightCard";
@@ -15,16 +15,19 @@ function DashboardPage() {
     settScannedItems([]);
     setScanning(true);
     api
-      .get("scans/90d088ea-e2a0-44f6-b0f4-3ad4d8bf9b48")
+      .get("scans/8a57189b-7814-4203-8dc0-35e6f428e046")
       .then(({ data }) => {
-        settScannedItems([...data]);
-        console.log(data);
+        settScannedItems([...data.splice(0, 5)]);
         setScanning(false);
       })
       .catch((err) => {
         setScanning(false);
       });
   }
+
+  useEffect(() => {
+    loadScans();
+  }, []);
 
   const onScanLaunch = () => {
     loadScans();
