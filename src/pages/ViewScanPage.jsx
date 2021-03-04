@@ -22,9 +22,9 @@ function ViewScanPage() {
       <div className="container mt-6">
         <div
           className="row"
-          style={{
-            minWidth: "89vw",
-          }}
+          // style={{
+          //   minWidth: "89vw",
+          // }}
         >
           <div className="col-sm-8">
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}

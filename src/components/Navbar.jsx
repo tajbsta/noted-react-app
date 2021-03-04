@@ -9,8 +9,6 @@ import { get } from "lodash";
 
 const BrandLogoSvg = lazy(() => import("./BrandLogoSvg"));
 
-const pageLocation = global.location.pathname;
-
 const Topnav = () => {
   let history = useHistory();
   const pageLocation = history.location.pathname;
@@ -53,12 +51,12 @@ const Topnav = () => {
           "/",
           "/join",
           "/login",
-          "/code",
-          "/code/",
           "/forgot-password",
           "/reset-password",
           "/request-permission/",
           "/request-permission",
+          "/code",
+          "/code/",
         ].includes(pathname)
           ? "#FAF8FA"
           : "",
