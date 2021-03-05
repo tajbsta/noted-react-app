@@ -18,6 +18,14 @@ export default function Code() {
       const loginMethod = "Google";
       const username = res.getAccessToken().decodePayload().username;
 
+      console.log({
+        accessToken,
+        idToken,
+        refreshToken,
+        loginMethod,
+        username,
+      });
+
       dispatch(
         setUser({
           accessToken,
@@ -30,6 +38,7 @@ export default function Code() {
 
       history.push("/request-permission");
     } catch (error) {
+      console.log(error);
       // No current user
       history.push("/");
     }

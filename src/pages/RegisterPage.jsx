@@ -18,41 +18,39 @@ export default function RegisterPage() {
 
   const dispatch = useDispatch();
 
-  const register = () => {
-    console.log({ email, password });
-    setError(null);
-    setIsSubmitting(true);
+  const register = async () => {
+    try {
+      setError(null);
+      setIsSubmitting(true);
 
-    if (validatePassword(password)) {
-      setError("Password does not match the requirements");
-      throw new Error();
-    } else {
-      console.log("===signup in cognito");
-      Auth.signUp({
-        username: email,
-        password,
-        attributes: {
-          email,
-        },
-      })
-        .then(() => {
-          history.push("/request-permission");
-        })
-        .catch((error) => {
-          console.log(error);
-          setError(
-            get(
-              signUpErrors.find(({ code }) => code === error.code),
-              "message",
-              "An error occurred signing up"
-            )
-          );
-          setIsSubmitting(false);
-        }); // TODO: handle validation
+      if (!isValidPassword(password)) {
+        setError("Password does not match the requirements");
+      } else {
+        await Auth.signUp({
+          username: email,
+          password,
+          attributes: {
+            email,
+          },
+        });
+
+        await Auth.signIn(email, password);
+
+        history.push("/code");
+      }
+    } catch (error) {
+      setError(
+        get(
+          signUpErrors.find(({ code }) => code === error.code),
+          "message",
+          "An error occurred signing up"
+        )
+      );
+      setIsSubmitting(false);
     }
   };
 
-  const validatePassword = (value) => {
+  const isValidPassword = (value) => {
     return RegExp(
       "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$"
     ).test(value);
