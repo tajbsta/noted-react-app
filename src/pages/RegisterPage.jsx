@@ -23,21 +23,17 @@ export default function RegisterPage() {
       setError(null);
       setIsSubmitting(true);
 
-      if (!isValidPassword(password)) {
-        setError("Password does not match the requirements");
-      } else {
-        await Auth.signUp({
-          username: email,
-          password,
-          attributes: {
-            email,
-          },
-        });
+      await Auth.signUp({
+        username: email,
+        password,
+        attributes: {
+          email,
+        },
+      });
 
-        await Auth.signIn(email, password);
+      await Auth.signIn(email, password);
 
-        history.push("/code");
-      }
+      history.push("/code");
     } catch (error) {
       setError(
         get(
@@ -48,12 +44,6 @@ export default function RegisterPage() {
       );
       setIsSubmitting(false);
     }
-  };
-
-  const isValidPassword = (value) => {
-    return RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$"
-    ).test(value);
   };
 
   function validateEmail(value) {

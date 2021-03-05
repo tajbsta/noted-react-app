@@ -1,9 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import AuthorizeImg from "../assets/img/Authorize.svg";
+import axios from "axios";
 
 export default function AuthorizePage() {
+  const [authUrl, setAuthUrl] = useState(null);
+
+  const getAuthUrl = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_SCRAPER_API_URI}google/geturl?callback_url=${process.env.REACT_APP_OAUTH_REDIRECT_SIGN_IN}`
+      );
+
+      setAuthUrl(res.data.url);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const openAuthUrl = () => {
+    window.location.href = authUrl;
+  };
+
+  useEffect(() => {
+    getAuthUrl();
+  }, []);
   return (
     <div id="Authorize">
       <Container className="main-body" fluid="lg">
@@ -31,11 +53,12 @@ export default function AuthorizePage() {
             <h4 className="text-underline">
               <a href="#">Learn more about security</a>
             </h4>
-            <a href="/dashboard">
-              <Button className="btn btn-green btn-authorize">
-                Authorize noted
-              </Button>
-            </a>
+            <Button
+              onClick={openAuthUrl}
+              className="btn btn-green btn-authorize"
+            >
+              Authorize noted
+            </Button>
           </Col>
           <Col xs="6">
             <div className="authorize-img">

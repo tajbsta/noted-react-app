@@ -9,7 +9,7 @@ import { setUser } from "../actions/auth.action";
 import { signInErrors } from "../library/errors.library";
 import { get } from "lodash";
 
-export default function RegisterPage() {
+export default function LoginPage() {
   let history = useHistory();
   const [error, setError] = useState(null);
   const [email, setEmail] = useState(null);
@@ -23,15 +23,9 @@ export default function RegisterPage() {
       setError(null);
       setIsSubmitting(true);
       await Auth.signIn(email, password);
-      history.push("/code");
+      history.push("/code?method=cognito");
     } catch (error) {
-      setError(
-        get(
-          signInErrors.find(({ code }) => code === error.code),
-          "message",
-          "An error occurred signing up"
-        )
-      );
+      console.log("Error signing in", error);
       setIsSubmitting(false);
     }
   };
