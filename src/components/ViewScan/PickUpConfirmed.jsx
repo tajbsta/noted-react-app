@@ -9,7 +9,7 @@ function PickUpConfirmed() {
         <Row>
           <div className="col-sm-12 p-0">
             <p className="pick-up-message sofia-pro">
-              Your pick-up request has been received and a member of Noted’s
+              Your pick-up request has been received and a member of noted’s
               pick-up team will arrive at your address on:
             </p>
           </div>

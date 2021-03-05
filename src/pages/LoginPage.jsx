@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { Form } from "react-bootstrap";
 import Amplify, { Auth } from "aws-amplify";
 import { setUser } from "../actions/auth.action";
+import { signInErrors } from "../library/errors.library";
+import { get } from "lodash";
 
 export default function RegisterPage() {
   let history = useHistory();
@@ -16,39 +18,34 @@ export default function RegisterPage() {
 
   const dispatch = useDispatch();
 
-  const login = () => {
-    console.log({ email, password });
-    setError(null);
-    setIsSubmitting(true);
+  const login = async () => {
+    try {
+      setError(null);
+      setIsSubmitting(true);
 
-    console.log("===signup in cognito");
-    Auth.signUp({
-      username: email,
-      password,
-      attributes: {
-        email,
-      },
-    })
-      .then((data) => {
-        dispatch(setUser(data.user));
-        history.push("/request-permission");
-      })
-      .catch((error) => {
-        console.log("Error", error);
-        setError(error.message);
-        setIsSubmitting(false);
-      }); // TODO: handle validation
+      if (!isValidPassword(password)) {
+        setError("Password does not match the requirements");
+      } else {
+        await Auth.signIn(email, password);
+        history.push("/code");
+      }
+    } catch (error) {
+      setError(
+        get(
+          signInErrors.find(({ code }) => code === error.code),
+          "message",
+          "An error occurred signing up"
+        )
+      );
+      setIsSubmitting(false);
+    }
   };
 
-  function validateEmail(value) {
-    let error;
-    if (!value) {
-      error = "Required";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-      error = "Invalid email address";
-    }
-    return error;
-  }
+  const isValidPassword = (value) => {
+    return RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$"
+    ).test(value);
+  };
 
   const policyStyle = {
     textDecoration: "underline",
@@ -137,7 +134,7 @@ export default function RegisterPage() {
             </Form>
             <div className="text-left">
               <small className="text-muted text-left">
-                By joining Noted you agree to our{" "}
+                By joining noted you agree to our{" "}
                 <a
                   href="https://www.notedreturns.com/terms-and-conditions"
                   style={policyStyle}

@@ -29,37 +29,13 @@ const Topnav = () => {
     location: { pathname },
   } = useHistory();
   const user = useSelector(({ auth: { user } }) => user);
-  const showShadow = [
-    "/",
-    "/join",
-    "/login",
-    "/forgot-password",
-    "/reset-password",
-    "/request-permission/",
-    "/request-permission",
-    "/code",
-    "/code/",
-  ].includes(pathname)
-    ? ""
-    : "shadow-sm";
+  const showShadow = guestViews.includes(pathname) ? "" : "shadow-sm";
   return (
     <Navbar
       expand={`lg ${showShadow}`}
       style={{
         border: "none",
-        backgroundColor: [
-          "/",
-          "/join",
-          "/login",
-          "/forgot-password",
-          "/reset-password",
-          "/request-permission/",
-          "/request-permission",
-          "/code",
-          "/code/",
-        ].includes(pathname)
-          ? "#FAF8FA"
-          : "",
+        backgroundColor: guestViews.includes(pathname) ? "#FAF8FA" : "",
       }}
     >
       <Navbar.Brand
@@ -78,7 +54,7 @@ const Topnav = () => {
               placeholder="Search purchases"
             />
           </Container>
-          <div className="row">
+          <div className="row select-dropdown">
             <div className="col-6">
               <div className="btn p-0">
                 <img src={ProfileIcon} />

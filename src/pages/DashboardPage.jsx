@@ -52,16 +52,11 @@ function DashboardPage() {
   return (
     <div>
       <div className="container mt-6">
-        <div
-          className="row"
-          // style={{
-          //   minWidth: "89vw",
-          // }}
-        >
-          <div className="col-sm-8 mt-4">
+        <div className="row">
+          <div className="col-sm-9 mt-4 w-840 bottom">
             {isEmpty(scannedItems) && !scanning && (
               <>
-                <h3 className="sofia-pro">
+                <h3 className="sofia-pro text-16">
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className={`card shadow-sm scanned-item-card mb-2 p-5 `}>
@@ -71,7 +66,7 @@ function DashboardPage() {
             )}
             {scanning && (
               <>
-                <h3 className="sofia-pro">
+                <h3 className="sofia-pro text-16">
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className={`card shadow-sm scanned-item-card mb-2 p-5 `}>
@@ -83,7 +78,7 @@ function DashboardPage() {
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
             {!isEmpty(scannedItems) && (
               <>
-                <h3 className="sofia-pro mt-0 ml-3">
+                <h3 className="sofia-pro mt-0 ml-3 text-18 text-list">
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className="col-sm-12">
@@ -98,6 +93,11 @@ function DashboardPage() {
                     typeTitle="Returnable Items"
                   />
                 </div>
+                <div>
+                  <p className="line-break">
+                    <span></span>
+                  </p>
+                </div>
                 <div className="col-sm-12 mt-4">
                   <ReturnCategory
                     scannedItems={scannedItems}
@@ -105,9 +105,14 @@ function DashboardPage() {
                   />
                 </div>
                 <div>
+                  <p className="line-break">
+                    <span></span>
+                  </p>
+                </div>
+                <div>
                   <div className="row justify-center">
                     <div className="col-sm-7 text-center">
-                      <div className="text-muted text-center">
+                      <div className="text-muted text-center text-bottom-title">
                         These are all the purchases we found in the past 90 days
                         from your address {customerEmail}
                       </div>
@@ -115,25 +120,25 @@ function DashboardPage() {
                   </div>
                   <div className="row justify-center mt-3">
                     <div className="col-sm-6 text-center">
-                      <div className="text-muted text-center">
+                      <div className="text-muted text-center text-cant-find">
                         Can’t find one?
-                        <span className="noted-purple btn sofia-pro">
-                          Add it manually
+                        <span className="noted-purple">
+                          &nbsp; Add it manually
                         </span>
                       </div>
                     </div>
                   </div>
                   <div className="row justify-center mt-2">
                     <div className="col-sm-6 text-center">
-                      <div className="text-center noted-purple btn sofia-pro">
+                      <div className="text-center noted-purple text-new-email">
                         Add new email address
                       </div>
                     </div>
                   </div>
-                  <div className="row justify-center mt-2 btn">
+                  <div className="row justify-center mt-2">
                     <div className="col-sm-6 text-center">
                       <a onClick={onScanLaunch}>
-                        <div className="text-center noted-purple btn sofia-pro">
+                        <div className="text-center noted-purple sofia-pro">
                           Scan for older items
                         </div>
                       </a>
