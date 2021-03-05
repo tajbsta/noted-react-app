@@ -29,37 +29,13 @@ const Topnav = () => {
     location: { pathname },
   } = useHistory();
   const user = useSelector(({ auth: { user } }) => user);
-  const showShadow = [
-    "/",
-    "/join",
-    "/login",
-    "/forgot-password",
-    "/reset-password",
-    "/request-permission/",
-    "/request-permission",
-    "/code",
-    "/code/",
-  ].includes(pathname)
-    ? ""
-    : "shadow-sm";
+  const showShadow = guestViews.includes(pathname) ? "" : "shadow-sm";
   return (
     <Navbar
       expand={`lg ${showShadow}`}
       style={{
         border: "none",
-        backgroundColor: [
-          "/",
-          "/join",
-          "/login",
-          "/code",
-          "/code/",
-          "/forgot-password",
-          "/reset-password",
-          "/request-permission/",
-          "/request-permission",
-        ].includes(pathname)
-          ? "#FAF8FA"
-          : "",
+        backgroundColor: guestViews.includes(pathname) ? "#FAF8FA" : "",
       }}
     >
       <Navbar.Brand
@@ -68,7 +44,7 @@ const Topnav = () => {
       >
         <BrandLogoSvg />
       </Navbar.Brand>
-      {pathname === "/dashboard" && (
+      {["/dashboard", "/view-scan"].includes(pathname) && (
         <>
           <Container className="ml-3">
             <input
@@ -78,12 +54,16 @@ const Topnav = () => {
               placeholder="Search purchases"
             />
           </Container>
-          <div className="mr-5">
-            <div className="btn p-0">
-              <img src={ProfileIcon} />
+          <div className="row select-dropdown">
+            <div className="col-6">
+              <div className="btn p-0">
+                <img src={ProfileIcon} />
+              </div>
             </div>
-            <div className="btn p-0">
-              <img src={DropwDownIcon} />
+            <div className="col-6">
+              <div className="btn p-0">
+                <img src={DropwDownIcon} />
+              </div>
             </div>
           </div>
         </>

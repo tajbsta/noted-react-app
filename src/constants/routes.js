@@ -47,6 +47,6 @@ export default [
   {
     path: "/view-scan",
     component: ViewScanPage,
-    isSecure: true
+    isSecure: true,
   },
 ];

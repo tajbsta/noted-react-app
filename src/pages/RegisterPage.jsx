@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { Form, FormGroup, FormControl } from "react-bootstrap";
 import Amplify, { Auth } from "aws-amplify";
 import { setUser } from "../actions/auth.action";
-import { signUpErrors } from "../library/errors.libary";
+import { signUpErrors } from "../library/errors.library";
 import { get } from "lodash";
 
 export default function RegisterPage() {
@@ -23,21 +23,17 @@ export default function RegisterPage() {
       setError(null);
       setIsSubmitting(true);
 
-      if (!isValidPassword(password)) {
-        setError("Password does not match the requirements");
-      } else {
-        await Auth.signUp({
-          username: email,
-          password,
-          attributes: {
-            email,
-          },
-        });
+      await Auth.signUp({
+        username: email,
+        password,
+        attributes: {
+          email,
+        },
+      });
 
-        await Auth.signIn(email, password);
+      await Auth.signIn(email, password);
 
-        history.push("/code");
-      }
+      history.push("/code");
     } catch (error) {
       setError(
         get(
@@ -48,12 +44,6 @@ export default function RegisterPage() {
       );
       setIsSubmitting(false);
     }
-  };
-
-  const isValidPassword = (value) => {
-    return RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$"
-    ).test(value);
   };
 
   function validateEmail(value) {
@@ -151,7 +141,7 @@ export default function RegisterPage() {
             </Form>
             <div className="text-left">
               <small className="text-muted text-left">
-                By joining Noted you agree to our{" "}
+                By joining noted you agree to our{" "}
                 <a
                   href="https://www.notedreturns.com/terms-and-conditions"
                   style={policyStyle}

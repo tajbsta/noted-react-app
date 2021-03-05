@@ -1,38 +1,62 @@
-import { isEmpty } from "lodash";
-import React, { useState } from "react";
-import Donate from "../components/Dashboard/Donate";
+import { get, isEmpty } from "lodash";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { storeScan } from "../actions/scans.action";
 import EmptyScan from "../components/Dashboard/EmptyScan";
-import LastCall from "../components/Dashboard/LastCall";
-import Returnable from "../components/Dashboard/Returnable";
+import ReturnCategory from "../components/Dashboard/ReturnCategory";
 import RightCard from "../components/Dashboard/RightCard";
 import Scanning from "../components/Dashboard/Scanning";
-import { scanned } from "../_mock";
+import api from "../utils/api";
 
 function DashboardPage() {
+  const dispatch = useDispatch();
   const [scanning, setScanning] = useState(false);
-
   const [scannedItems, settScannedItems] = useState([]);
-  const onScanLaunch = () => {
+
+  const customerEmail = get(
+    useSelector((state) => state),
+    "auth.user.username",
+    ""
+  );
+
+  const localScannedItems =
+    useSelector((state) => get(state, "scans", [])) || [];
+
+  async function loadScans() {
     setScanning(true);
-    setTimeout(() => {
-      settScannedItems([...scanned]);
-      setScanning(false);
-    }, 3000);
+    api
+      .get("scans/8a57189b-7814-4203-8dc0-35e6f428e046")
+      .then(({ data }) => {
+        settScannedItems([...data.slice(0, 5)]);
+        dispatch(storeScan({ scannedItems: [...data.slice(0, 5)] }));
+        setScanning(false);
+      })
+      .catch((err) => {
+        setScanning(false);
+      });
+  }
+
+  useEffect(() => {
+    settScannedItems([]);
+    settScannedItems([...localScannedItems]);
+    setScanning(false);
+    if (isEmpty(localScannedItems)) {
+      loadScans();
+    }
+  }, []);
+
+  const onScanLaunch = () => {
+    loadScans();
   };
 
   return (
-    <>
+    <div>
       <div className="container mt-6">
-        <div
-          className="row dashboard-row"
-          // style={{
-          //   minWidth: "89vw",
-          // }}
-        >
+        <div className="row">
           <div className="col-sm-9 mt-4 w-840 bottom">
             {isEmpty(scannedItems) && !scanning && (
               <>
-                <h3 className="sofia-pro text-16 text-16">
+                <h3 className="sofia-pro text-16">
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className={`card shadow-sm scanned-item-card mb-2 p-5 `}>
@@ -42,7 +66,7 @@ function DashboardPage() {
             )}
             {scanning && (
               <>
-                <h3 className="sofia-pro text-16 text-16">
+                <h3 className="sofia-pro text-16">
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className={`card shadow-sm scanned-item-card mb-2 p-5 `}>
@@ -58,14 +82,14 @@ function DashboardPage() {
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className="col-sm-12">
-                  <LastCall
-                    scannedItems={scannedItems.slice(0, 3)}
+                  <ReturnCategory
+                    scannedItems={scannedItems}
                     typeTitle="Last Call!"
                   />
                 </div>
                 <div className="col-sm-12 mt-4">
-                  <LastCall
-                    scannedItems={scannedItems.slice(3, 6)}
+                  <ReturnCategory
+                    scannedItems={scannedItems}
                     typeTitle="Returnable Items"
                   />
                 </div>
@@ -75,8 +99,8 @@ function DashboardPage() {
                   </p>
                 </div>
                 <div className="col-sm-12 mt-4">
-                  <LastCall
-                    scannedItems={scannedItems.slice(0, 3)}
+                  <ReturnCategory
+                    scannedItems={scannedItems}
                     typeTitle="Donate"
                   />
                 </div>
@@ -90,7 +114,7 @@ function DashboardPage() {
                     <div className="col-sm-7 text-center">
                       <div className="text-muted text-center text-bottom-title">
                         These are all the purchases we found in the past 90 days
-                        from your address alexisjones@gmail.com
+                        from your address {customerEmail}
                       </div>
                     </div>
                   </div>
@@ -113,9 +137,11 @@ function DashboardPage() {
                   </div>
                   <div className="row justify-center mt-2">
                     <div className="col-sm-6 text-center">
-                      <div className="text-center noted-purple">
-                        Scan for older items
-                      </div>
+                      <a onClick={onScanLaunch}>
+                        <div className="text-center noted-purple sofia-pro">
+                          Scan for older items
+                        </div>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -127,7 +153,7 @@ function DashboardPage() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
