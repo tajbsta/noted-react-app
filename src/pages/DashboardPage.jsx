@@ -78,7 +78,7 @@ function DashboardPage() {
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
             {!isEmpty(scannedItems) && (
               <>
-                <h3 className="sofia-pro mt-0 ml-3">
+                <h3 className="sofia-pro mt-0 ml-3 text-18 text-list">
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className="col-sm-12">
@@ -138,7 +138,7 @@ function DashboardPage() {
                   <div className="row justify-center mt-2">
                     <div className="col-sm-6 text-center">
                       <a onClick={onScanLaunch}>
-                        <div className="text-center noted-purple btn sofia-pro">
+                        <div className="text-center noted-purple sofia-pro">
                           Scan for older items
                         </div>
                       </a>

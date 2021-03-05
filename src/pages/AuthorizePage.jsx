@@ -33,7 +33,7 @@ export default function AuthorizePage() {
             </h4>
             <a href="/dashboard">
               <Button className="btn btn-green btn-authorize">
-                Authorize Noted
+                Authorize noted
               </Button>
             </a>
           </Col>
