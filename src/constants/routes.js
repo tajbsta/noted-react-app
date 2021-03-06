@@ -42,7 +42,7 @@ export default [
   {
     path: "/dashboard",
     component: DashboardPage,
-    isSecured: true
+    // isSecured: true
   },
   {
     path: "/view-scan",

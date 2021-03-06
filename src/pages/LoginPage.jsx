@@ -8,12 +8,16 @@ import Amplify, { Auth } from "aws-amplify";
 import { setUser } from "../actions/auth.action";
 import { signInErrors } from "../library/errors.library";
 import { get } from "lodash";
+import {
+  EMAIL_REGEX_FORMAT,
+  PASSWORD_REGEX_FORMAT,
+} from "../constants/errors/regexFormats";
 
 export default function RegisterPage() {
   let history = useHistory();
   const [error, setError] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const dispatch = useDispatch();
@@ -41,11 +45,12 @@ export default function RegisterPage() {
     }
   };
 
-  const isValidPassword = (value) => {
-    return RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$"
-    ).test(value);
-  };
+  const isValidEmail = (value) => RegExp(EMAIL_REGEX_FORMAT, "i").test(value);
+
+  const isValidPassword = (value) =>
+    RegExp(PASSWORD_REGEX_FORMAT, "g").test(value);
+
+  console.log(isValidPassword(password));
 
   const policyStyle = {
     textDecoration: "underline",
@@ -96,6 +101,7 @@ export default function RegisterPage() {
               {error && <div>{error.message}</div>}
               <Form.Group>
                 <Form.Control
+                  isInvalid={email.length > 0 && !isValidEmail(email)}
                   className="form-control form-control-lg"
                   type="email"
                   name="email"
@@ -105,6 +111,7 @@ export default function RegisterPage() {
               </Form.Group>
               <Form.Group>
                 <Form.Control
+                  isInvalid={password.length > 0 && !isValidPassword(password)}
                   className="form-control form-control-lg"
                   type="password"
                   name="password"
