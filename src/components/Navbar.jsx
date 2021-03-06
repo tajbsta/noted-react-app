@@ -2,15 +2,17 @@ import React, { lazy } from "react";
 import { Container, Navbar } from "react-bootstrap";
 import ProfileIcon from "../assets/icons/Profile.svg";
 import DropwDownIcon from "../assets/icons/InvertedTriangle.svg";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-
+import { Auth } from 'aws-amplify';
+import { unsetUser } from "../actions/auth.action";
 import { get } from "lodash";
 
 const BrandLogoSvg = lazy(() => import("./BrandLogoSvg"));
 
 const Topnav = () => {
   let history = useHistory();
+  const dispatch = useDispatch();
   const pageLocation = history.location.pathname;
   // console.log(pageLocation);
 
@@ -30,6 +32,17 @@ const Topnav = () => {
   } = useHistory();
   const user = useSelector(({ auth: { user } }) => user);
   const showShadow = guestViews.includes(pathname) ? "" : "shadow-sm";
+
+  const logout = async () => {
+      try {
+        await Auth.signOut();
+        dispatch(unsetUser())
+        history.push("/login");
+    } catch (error) {
+        console.log('Error Signing Out: ', error);
+    }
+  }
+
   return (
     <Navbar
       expand={`lg ${showShadow}`}
@@ -56,9 +69,9 @@ const Topnav = () => {
           </Container>
           <div className="row select-dropdown">
             <div className="col-6">
-              <div className="btn p-0">
+              <button className="btn p-0" onClick={logout}>
                 <img src={ProfileIcon} />
-              </div>
+              </button>
             </div>
             <div className="col-6">
               <div className="btn p-0">
