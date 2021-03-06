@@ -10,7 +10,7 @@ export default function AuthorizePage() {
   const getAuthUrl = async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_SCRAPER_API_URI}google/geturl?callback_url=${process.env.REACT_APP_OAUTH_REDIRECT_SIGN_IN}`
+        `${process.env.REACT_APP_SCRAPER_API_URI}google/geturl?callback_url=${process.env.REACT_APP_OAUTH_REDIRECT_SIGN_IN}verify`
       );
 
       setAuthUrl(res.data.url);
