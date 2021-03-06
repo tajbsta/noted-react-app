@@ -4,7 +4,7 @@ import ProfileIcon from "../assets/icons/Profile.svg";
 import DropwDownIcon from "../assets/icons/InvertedTriangle.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Auth } from 'aws-amplify';
+import { Auth } from "aws-amplify";
 import { unsetUser } from "../actions/auth.action";
 import { get } from "lodash";
 
@@ -34,14 +34,14 @@ const Topnav = () => {
   const showShadow = guestViews.includes(pathname) ? "" : "shadow-sm";
 
   const logout = async () => {
-      try {
-        await Auth.signOut();
-        dispatch(unsetUser())
-        history.push("/login");
+    try {
+      await Auth.signOut();
+      dispatch(unsetUser());
+      history.push("/login");
     } catch (error) {
-        console.log('Error Signing Out: ', error);
+      console.log("Error Signing Out: ", error);
     }
-  }
+  };
 
   return (
     <Navbar

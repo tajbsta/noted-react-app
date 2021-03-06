@@ -1,11 +1,10 @@
-import React from 'react';
-import { Switch, Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { Switch, Redirect, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import routes from '../constants/routes';
-import AppLayout from '../layouts/AppLayout';
-import PrivateRoute from './PrivateRoute';
-import PublicRoute from './PublicRoute';
+import routes from "../constants/routes";
+import AppLayout from "../layouts/AppLayout";
+import PrivateRoute from "./PrivateRoute";
 
 function AppRouteSwitcher() {
   const username = useSelector(({ auth: { username } }) => username);
@@ -22,16 +21,19 @@ function AppRouteSwitcher() {
             isLoggedIn={!!username}
           />
         ) : (
-          <PublicRoute
+          <Route
             key={path}
             path={path}
             exact
-            component={Component}
-            isLoggedIn={!!username}
+            render={(props) => (
+              <AppLayout>
+                <Component {...props} />
+              </AppLayout>
+            )}
           />
         )
       )}
-      <Redirect to='/' />
+      <Redirect to="/" />
     </Switch>
   );
 }

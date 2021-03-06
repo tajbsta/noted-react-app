@@ -45,7 +45,7 @@ export default function Code() {
         })
       );
 
-      if (query.code) {
+      if (query.code && history.location.pathname.includes("/code/verify")) {
         console.log({ code: query.code });
         history.push("/dashboard");
       } else {

@@ -35,6 +35,10 @@ export default [
     component: Code,
   },
   {
+    path: '/code/verify',
+    component: Code,
+  },
+  {
     path: '/request-permission',
     component: AuthorizePage,
     isSecured: true,
