@@ -13,7 +13,7 @@ import {
   PASSWORD_REGEX_FORMAT,
 } from "../constants/errors/regexFormats";
 
-export default function RegisterPage() {
+export default function LoginPage() {
   let history = useHistory();
   const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
@@ -26,21 +26,10 @@ export default function RegisterPage() {
     try {
       setError(null);
       setIsSubmitting(true);
-
-      if (!isValidPassword(password)) {
-        setError("Password does not match the requirements");
-      } else {
-        await Auth.signIn(email, password);
-        history.push("/code");
-      }
+      await Auth.signIn(email, password);
+      history.push("/code?method=cognito");
     } catch (error) {
-      setError(
-        get(
-          signInErrors.find(({ code }) => code === error.code),
-          "message",
-          "An error occurred signing up"
-        )
-      );
+      console.log("Error signing in", error);
       setIsSubmitting(false);
     }
   };
