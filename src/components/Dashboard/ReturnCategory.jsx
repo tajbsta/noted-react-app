@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import Row from "../Row";
-import ProductCard from "./ProductCard";
-import QuestionMarkSvg from "../../assets/icons/QuestionMark.svg";
-import { useHistory } from "react-router-dom";
+import React, { useState } from 'react';
+import Row from '../Row';
+import ProductCard from './ProductCard';
+import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
+import { useHistory } from 'react-router-dom';
 
 function ReturnCategory({ scannedItems, typeTitle }) {
   const { push } = useHistory();
@@ -33,35 +33,35 @@ function ReturnCategory({ scannedItems, typeTitle }) {
 
   return (
     <>
-      <Row className="mb-2">
-        <div className="ml-3 p-0 purchase-type-checkbox-container">
+      <Row className='mb-2'>
+        <div className='ml-3 p-0 purchase-type-checkbox-container'>
           <input
-            type="checkbox"
+            type='checkbox'
             onChange={handleSelectAll}
             checked={selected.length === scannedItems.length}
           />
         </div>
         <h4
-          className="sofia-pro purchase-types purchase-type-title mb-0"
+          className='sofia-pro purchase-types purchase-type-title mb-0'
           style={{
-            display: "flex",
-            alignItems: "center",
+            display: 'flex',
+            alignItems: 'center',
             marginLeft: 16,
-            textAlign: "center",
+            textAlign: 'center',
           }}
         >
           {typeTitle}
         </h4>
         <img
-          className="ml-3 mb-2 "
+          className='ml-3 mb-2 '
           src={QuestionMarkSvg}
-          alt=""
+          alt=''
           style={{
             opacity: 0.6,
           }}
-          data-toggle="tooltip"
-          data-placement="top"
-          title="Tooltip on top"
+          data-toggle='tooltip'
+          data-placement='top'
+          title='Tooltip message here :)'
         />
       </Row>
       {[...scannedItems].map((scannedItem) => {

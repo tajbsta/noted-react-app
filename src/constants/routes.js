@@ -1,51 +1,51 @@
-import { lazy } from "react";
-import LoginPage from "../pages/LoginPage";
-import RegisterPage from "../pages/RegisterPage";
-import ForgotPasswordPage from "../pages/ForgotPasswordPage";
-import ResetPasswordPage from "../pages/ResetPasswordPage";
-import ViewScanPage from "../pages/ViewScanPage";
-import Code from "../pages/Code";
+import { lazy } from 'react';
+import LoginPage from '../pages/LoginPage';
+import RegisterPage from '../pages/RegisterPage';
+import ForgotPasswordPage from '../pages/ForgotPasswordPage';
+import ResetPasswordPage from '../pages/ResetPasswordPage';
+import ViewScanPage from '../pages/ViewScanPage';
+import Code from '../pages/Code';
 
-const DashboardPage = lazy(() => import("../pages/DashboardPage"));
-const AuthorizePage = lazy(() => import("../pages/AuthorizePage"));
+const DashboardPage = lazy(() => import('../pages/DashboardPage'));
+const AuthorizePage = lazy(() => import('../pages/AuthorizePage'));
 
 export default [
   {
-    path: "/",
+    path: '/',
     component: RegisterPage,
   },
   {
-    path: "/join",
+    path: '/join',
     component: RegisterPage,
   },
   {
-    path: "/login",
+    path: '/login',
     component: LoginPage,
   },
   {
-    path: "/forgot-password",
+    path: '/forgot-password',
     component: ForgotPasswordPage,
   },
   {
-    path: "/reset-password",
+    path: '/reset-password',
     component: ResetPasswordPage,
   },
   {
-    path: "/code",
+    path: '/code',
     component: Code,
   },
   {
-    path: "/request-permission",
+    path: '/request-permission',
     component: AuthorizePage,
     isSecured: true,
   },
   {
-    path: "/dashboard",
+    path: '/dashboard',
     component: DashboardPage,
-    isSecured: true
+    isSecured: true,
   },
   {
-    path: "/view-scan",
+    path: '/view-scan',
     component: ViewScanPage,
     isSecure: true,
   },
