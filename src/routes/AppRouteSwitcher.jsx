@@ -1,36 +1,20 @@
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
-import routes from '../constants/routes';
-import AppLayout from '../layouts/AppLayout';
-import PrivateRoute from './PrivateRoute';
-import PublicRoute from './PublicRoute';
+import publicRoutes from '../constants/publicRoutes';
+import privateRoutes from '../constants/privateRoutes';
+import PrivateLayout from '../layouts/PrivateLayout';
+import PublicLayout from '../layouts/PublicLayout';
 
 function AppRouteSwitcher() {
-  const username = useSelector(({ auth: { username } }) => username);
-
   return (
     <Switch>
-      {routes.map(({ path, component: Component, isSecured }) =>
-        isSecured ? (
-          <PrivateRoute
-            key={path}
-            path={path}
-            exact
-            component={Component}
-            isLoggedIn={!!username}
-          />
-        ) : (
-          <PublicRoute
-            key={path}
-            path={path}
-            exact
-            component={Component}
-            isLoggedIn={!!username}
-          />
-        )
-      )}
+      {publicRoutes.map(({ path, component: Component }) => (
+        <PublicLayout key={path} path={path} exact component={Component} />
+      ))}
+      {privateRoutes.map(({ path, component: Component }) => (
+        <PrivateLayout key={path} path={path} exact component={Component} />
+      ))}
       <Redirect to='/' />
     </Switch>
   );

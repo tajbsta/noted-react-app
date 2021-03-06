@@ -1,4 +1,4 @@
-import { SET_USER, SIGN_OUT } from "../constants/actions/auth";
+import { SET_USER, SIGN_OUT } from '../constants/actions/auth';
 
 const initialState = {
   // email: "",
@@ -10,24 +10,19 @@ const initialState = {
   idToken: null,
   refreshToken: null,
   loginMethod: null,
-  username: null
+  username: null,
 };
 
 function auth(state = initialState, { type, data }) {
+  console.log(type);
   switch (type) {
     case SET_USER:
       return {
         ...state,
-        ...data
+        ...data,
       };
     case SIGN_OUT:
-      return {
-        accessToken: null,
-        idToken: null,
-        refreshToken: null,
-        loginMethod: null,
-        username: null
-      };
+      return {};
     default:
       return state;
   }
