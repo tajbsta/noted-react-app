@@ -1,67 +1,75 @@
-import React, { lazy } from "react";
-import { Container, Navbar } from "react-bootstrap";
-import ProfileIcon from "../assets/icons/Profile.svg";
-import DropwDownIcon from "../assets/icons/InvertedTriangle.svg";
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import React, { lazy } from 'react';
+import { Container, Navbar } from 'react-bootstrap';
+import ProfileIcon from '../assets/icons/Profile.svg';
+import DropwDownIcon from '../assets/icons/InvertedTriangle.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-import { get } from "lodash";
+import { get } from 'lodash';
+import { logout } from '../actions/auth.action';
 
-const BrandLogoSvg = lazy(() => import("./BrandLogoSvg"));
+const BrandLogoSvg = lazy(() => import('./BrandLogoSvg'));
 
 const Topnav = () => {
   let history = useHistory();
+  const dispatch = useDispatch();
   const pageLocation = history.location.pathname;
-  // console.log(pageLocation);
 
   const guestViews = [
-    "/",
-    "/login",
-    "/join",
-    "/forgot-password",
-    "/reset-password",
-    "/request-permission/",
-    "/request-permission",
-    "/code",
-    "/code/",
+    '/',
+    '/login',
+    '/join',
+    '/forgot-password',
+    '/reset-password',
+    '/request-permission/',
+    '/request-permission',
+    '/code',
+    '/code/',
   ];
   const {
     location: { pathname },
   } = useHistory();
   const user = useSelector(({ auth: { user } }) => user);
-  const showShadow = guestViews.includes(pathname) ? "" : "shadow-sm";
+  const showShadow = guestViews.includes(pathname) ? '' : 'shadow-sm';
   return (
     <Navbar
       expand={`lg ${showShadow}`}
       style={{
-        border: "none",
-        backgroundColor: guestViews.includes(pathname) ? "#FAF8FA" : "",
+        border: 'none',
+        backgroundColor: guestViews.includes(pathname) ? '#FAF8FA' : '',
       }}
     >
       <Navbar.Brand
-        href={`${guestViews.indexOf(pageLocation) != -1 ? "/" : "/dashboard"}`}
-        className="ml-4 mr-1"
+        href={`${guestViews.indexOf(pageLocation) != -1 ? '/' : '/dashboard'}`}
+        className='ml-4 mr-1'
       >
         <BrandLogoSvg />
       </Navbar.Brand>
-      {["/dashboard", "/view-scan"].includes(pathname) && (
+      {['/dashboard', '/view-scan'].includes(pathname) && (
         <>
-          <Container className="ml-3">
+          <Container className='ml-3'>
             <input
-              type="name"
-              className="form-control search"
-              aria-describedby="name"
-              placeholder="Search purchases"
+              type='name'
+              className='form-control search'
+              aria-describedby='name'
+              placeholder='Search purchases'
             />
           </Container>
-          <div className="row select-dropdown">
-            <div className="col-6">
-              <div className="btn p-0">
+          <div className='row select-dropdown'>
+            <div className='col-6'>
+              <div
+                className='btn p-0'
+                onClick={() => {
+                  dispatch(logout());
+                  history.push('/');
+                }}
+              >
                 <img src={ProfileIcon} />
               </div>
             </div>
-            <div className="col-6">
-              <div className="btn p-0">
+
+            <div className='col-6'>
+              <div className='btn p-0'>
                 <img src={DropwDownIcon} />
               </div>
             </div>
