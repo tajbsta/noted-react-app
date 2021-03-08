@@ -4,12 +4,9 @@ import ProductCard from './ProductCard';
 import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';
 
-function LastCall({ scannedItems, typeTitle }) {
+function ReturnCategory({ scannedItems, typeTitle }) {
   const { push } = useHistory();
   const [selected, setSelected] = useState([]);
-  const [selectedAll, setSelectedAll] = useState(
-    scannedItems.length === selected.length
-  );
 
   const addSelected = (id) => {
     if (selected.includes(id)) {
@@ -25,13 +22,13 @@ function LastCall({ scannedItems, typeTitle }) {
   };
 
   const handleSelectAll = () => {
-    if (selectedAll) {
+    if (selected.length === scannedItems.length) {
       setSelected([]);
-      setSelectedAll(!selectedAll);
-      return;
     }
-    setSelected([...scannedItems.map(({ id }) => id)]);
-    setSelectedAll(true);
+
+    if (selected.length !== scannedItems.length) {
+      setSelected([...scannedItems.map(({ id }) => id)]);
+    }
   };
 
   return (
@@ -56,12 +53,15 @@ function LastCall({ scannedItems, typeTitle }) {
           {typeTitle}
         </h4>
         <img
-          className='ml-3 mb-2'
+          className='ml-3 mb-2 '
           src={QuestionMarkSvg}
           alt=''
           style={{
             opacity: 0.6,
           }}
+          data-toggle='tooltip'
+          data-placement='top'
+          title='Tooltip message here :)'
         />
       </Row>
       {[...scannedItems].map((scannedItem) => {
@@ -82,4 +82,4 @@ function LastCall({ scannedItems, typeTitle }) {
   );
 }
 
-export default LastCall;
+export default ReturnCategory;

@@ -5,73 +5,83 @@ import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Form, FormGroup, FormControl } from "react-bootstrap";
 import Amplify, { Auth } from "aws-amplify";
-import { login, signUp } from "../actions/auth.action";
-import { signUpErrors } from "../library/errors.libary";
+import { setUser } from "../actions/auth.action";
+import { signUpErrors } from "../library/errors.library";
 import { get } from "lodash";
+import { PASSWORD_REGEX_FORMAT } from "../constants/errors/regexFormats";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 
 export default function RegisterPage() {
-  let history = useHistory();
+  const history = useHistory();
   const [error, setError] = useState(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const dispatch = useDispatch();
+  const registerSchema = Yup.object({
+    email: Yup.string()
+      .email("Enter a valid email address")
+      .required("Email is required"),
+    password: Yup.string()
+      .required(
+        "Your password must be 8-20 characters long and must contain a letter, symbol and a number"
+      )
+      .matches(PASSWORD_REGEX_FORMAT, {
+        message:
+          "Your password must be 8-20 characters long and must contain a letter, symbol and a number",
+      })
+      .resolve(),
+  });
 
-  const register = () => {
-    console.log({ email, password });
-    setError(null);
-    setIsSubmitting(true);
+  const { errors, handleChange, values } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: registerSchema,
+  });
 
-    if (validatePassword(password)) {
-      setError("Password does not match the requirements");
-      throw new Error();
-    } else {
-      console.log("===signup in cognito");
-      Auth.signUp({
+  const { email, password } = values;
+
+  const register = async () => {
+    try {
+      setError(null);
+      setIsSubmitting(true);
+
+      await Auth.signUp({
         username: email,
         password,
         attributes: {
           email,
         },
-      })
-        .then((data) => {
-          dispatch(signUp(data.user));
-          history.push("/request-permission");
-        })
-        .catch((error) => {
-          console.log(error);
-          setError(
-            get(
-              signUpErrors.find(({ code }) => code === error.code),
-              "message",
-              "An error occured signing up"
-            )
-          );
-          setIsSubmitting(false);
-        }); // TODO: handle validation
+      });
+
+      await Auth.signIn(email, password);
+
+      history.push("/code");
+    } catch (error) {
+      console.log(Object.values(error));
+      setError(
+        get(
+          signUpErrors.find(({ code }) => code === error.code),
+          "message",
+          "An error occurred signing up"
+        )
+      );
+      setIsSubmitting(false);
     }
   };
-
-  const validatePassword = (value) => {
-    return RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$"
-    ).test(value);
-  };
-
-  function validateEmail(value) {
-    let error;
-    if (!value) {
-      error = "Required";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-      error = "Invalid email address";
-    }
-    return error;
-  }
 
   const policyStyle = {
     textDecoration: "underline",
   };
+
+  const renderLocalPasswordValidationError = () => (
+    <small className="form-text p-0 m-0 noted-red">{errors.password}</small>
+  );
+
+  const renderLocalEmailValidationError = () => (
+    <small className="form-text p-0 m-0 noted-red">{errors.email}</small>
+  );
 
   return (
     <div id="RegisterPage">
@@ -122,21 +132,31 @@ export default function RegisterPage() {
               )}
               <Form.Group>
                 <Form.Control
+                  isValid={!errors.email && email.length > 0}
+                  isInvalid={errors.email && email.length > 0}
                   className="form-control form-control-lg"
                   type="email"
                   name="email"
                   placeholder="Your email..."
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleChange}
                 />
+                {email.length > 0 &&
+                  errors.email &&
+                  renderLocalEmailValidationError()}
               </Form.Group>
               <Form.Group>
                 <Form.Control
-                  className="form-control form-control-lg"
+                  isValid={!errors.password && password.length > 0}
+                  isInvalid={errors.password && password.length > 0}
+                  className="form-control form-control-lg mb-0"
                   type="password"
                   name="password"
                   placeholder="Your password..."
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handleChange}
                 />
+                {password.length > 0 &&
+                  errors.password &&
+                  renderLocalPasswordValidationError()}
               </Form.Group>
               <button
                 className="btn btn-lg btn-block btn-green mb-3 btn-submit"
@@ -154,7 +174,7 @@ export default function RegisterPage() {
             </Form>
             <div className="text-left">
               <small className="text-muted text-left">
-                By joining Noted you agree to our{" "}
+                By joining noted you agree to our{" "}
                 <a
                   href="https://www.notedreturns.com/terms-and-conditions"
                   style={policyStyle}
@@ -166,7 +186,7 @@ export default function RegisterPage() {
                   href="https://www.notedreturns.com/privacy-policy"
                   style={policyStyle}
                 >
-                  Privacy
+                  Privacy Policy
                 </a>
                 . Protected by Google's{" "}
                 <a

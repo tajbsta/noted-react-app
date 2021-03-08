@@ -2,6 +2,7 @@ import {
   USERNAME_EXISTS,
   INVALID_PASSWORD,
   INVALID_PARAMETER,
+  INVALID_CREDENTIALS,
 } from "../constants/errors/errorCodes";
 
 export const signUpErrors = [
@@ -11,10 +12,18 @@ export const signUpErrors = [
   },
   {
     code: INVALID_PASSWORD,
-    message: "Password must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character",
+    message:
+      "Password must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character",
   },
   {
     code: INVALID_PARAMETER,
     message: "Password must contain 8 characters",
+  },
+];
+
+export const signInErrors = [
+  {
+    code: INVALID_CREDENTIALS,
+    message: "Invalid username or password. Please try again.",
   },
 ];

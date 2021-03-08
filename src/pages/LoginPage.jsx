@@ -5,50 +5,37 @@ import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Form } from "react-bootstrap";
 import Amplify, { Auth } from "aws-amplify";
-import { login, signUp } from "../actions/auth.action";
+import { setUser } from "../actions/auth.action";
+import { signInErrors } from "../library/errors.library";
+import { get } from "lodash";
 
-export default function RegisterPage() {
+export default function LoginPage() {
   let history = useHistory();
   const [error, setError] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const dispatch = useDispatch();
 
-  const login = () => {
-    console.log({ email, password });
-    setError(null);
-    setIsSubmitting(true);
-
-    console.log("===signup in cognito");
-    Auth.signUp({
-      username: email,
-      password,
-      attributes: {
-        email,
-      },
-    })
-      .then((data) => {
-        dispatch(signUp(data.user));
-        history.push("/request-permission");
-      })
-      .catch((error) => {
-        console.log("Error", error);
-        setError(error.message);
-        setIsSubmitting(false);
-      }); // TODO: handle validation
-  };
-
-  function validateEmail(value) {
-    let error;
-    if (!value) {
-      error = "Required";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-      error = "Invalid email address";
+  const login = async () => {
+    try {
+      setError(null);
+      setIsSubmitting(true);
+      await Auth.signIn(email, password);
+      history.push("/code?method=cognito");
+    } catch (error) {
+      console.log("Error signing in", error.code);
+      setError(
+        get(
+          signInErrors.find(({ code }) => code === error.code),
+          "message",
+          "An error occurred signing up"
+        )
+      );
+      setIsSubmitting(false);
     }
-    return error;
-  }
+  };
 
   const policyStyle = {
     textDecoration: "underline",
@@ -96,7 +83,11 @@ export default function RegisterPage() {
               </p>
             </div>
             <Form>
-              {error && <div>{error.message}</div>}
+              {error && (
+                <div className="alert alert-danger" role="alert">
+                  <h4 className="text-center text-alert">{error}</h4>
+                </div>
+              )}
               <Form.Group>
                 <Form.Control
                   className="form-control form-control-lg"
@@ -137,7 +128,7 @@ export default function RegisterPage() {
             </Form>
             <div className="text-left">
               <small className="text-muted text-left">
-                By joining Noted you agree to our{" "}
+                By joining noted you agree to our{" "}
                 <a
                   href="https://www.notedreturns.com/terms-and-conditions"
                   style={policyStyle}
@@ -149,7 +140,7 @@ export default function RegisterPage() {
                   href="https://www.notedreturns.com/privacy-policy"
                   style={policyStyle}
                 >
-                  Privacy
+                  Privacy Policy
                 </a>
                 . Protected by Google's{" "}
                 <a

@@ -1,4 +1,4 @@
-# Logs
+ Logs
 logs
 *.log
 npm-debug.log*
@@ -74,11 +74,11 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
-.env.local
-.env.development
-.env.production
-.env.staging
-.env.local
+# .env.local
+# .env.development
+# .env.production
+# .env.staging
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
@@ -136,4 +136,3 @@ amplifytools.xcconfig
 .secret-*
 .eslintcache
 package-lock.json
-.env.local

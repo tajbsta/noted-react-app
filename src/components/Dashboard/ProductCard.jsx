@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { GREAT } from "../../constants/returns/scores";
 import ReturnScore from "../ReturnsScore";
 import Row from "../Row";
 import EmptyScan from "./EmptyScan";
@@ -12,15 +13,16 @@ function ProductCard({
   clickable = true,
   onClick = () => {},
   scannedItem: {
-    distributor,
-    productName,
-    scannedItem,
-    returnScore,
-    price,
+    vendorTag,
+    itemName,
+    returnScore = GREAT,
+    amount,
     compensationType,
     id,
-    image,
+    imageUrl,
+    orderDate,
   },
+  scannedItem,
 }) {
   const [scanning, setScanning] = useState(false);
 
@@ -32,19 +34,12 @@ function ProductCard({
     addSelected(id);
   };
 
-  const onScanLaunch = () => {
-    setScanning(true);
-    setTimeout(() => {
-      setScanning(false);
-    }, 3000);
-  };
-
   return (
     <div
       className={`card shadow-sm scanned-item-card mb-3 p-0 ${
         clickable && "btn"
       }`}
-      key={productName}
+      key={itemName}
       style={{
         border: selected ? "1px solid purple" : "none",
       }}
@@ -71,17 +66,26 @@ function ProductCard({
             }}
             onClick={clickable ? onClick : () => {}}
           >
-            <img src={image} alt="" />
+            <img
+              className="mr-2"
+              src={imageUrl}
+              alt=""
+              style={{
+                maxWidth: 50,
+                maxHeight: 50,
+                objectFit: "contain",
+              }}
+            />
           </div>
 
           <ProductDetails
             scannedItem={{
-              distributor,
-              productName,
+              vendorTag,
+              itemName,
               scannedItem,
               returnScore,
-              price,
-              compensationType,
+              amount,
+              compensationType: "",
             }}
           />
           <div

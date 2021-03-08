@@ -183,6 +183,10 @@
   align-self: center;
   height: 20%;
 }
+.payment-details-card-body {
+  min-height: 232px;
+  max-height: 232px;
+}
 
 // Bottom Footer
 .line-break {
@@ -222,5 +226,5 @@
 }
 
 .bottom {
-  padding-bottom: 74px;
+  padding-bottom: 163px;
 }

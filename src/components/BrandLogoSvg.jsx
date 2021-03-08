@@ -1,18 +1,22 @@
 import React from "react";
-
-const pageLocation = global.location.pathname;
-
-const guestViews = [
-  "/",
-  "/login",
-  "/join",
-  "/forgot-password",
-  "/reset-password",
-  "/request-permission/",
-  "/request-permission",
-];
+import { useHistory } from "react-router-dom";
 
 function BrandLogoSvg() {
+  let history = useHistory();
+
+  const pageLocation = history.location.pathname;
+
+  const guestViews = [
+    "/",
+    "/login",
+    "/join",
+    "/forgot-password",
+    "/reset-password",
+    "/request-permission/",
+    "/request-permission",
+    "/code",
+    "/code/",
+  ];
   return (
     <div>
       <svg

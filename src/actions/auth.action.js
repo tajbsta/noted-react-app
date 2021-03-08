@@ -1,15 +1,20 @@
-import { SIGN_IN, SIGN_UP } from "../constants/actions/auth";
+import { SET_USER, SIGN_OUT, SIGN_UP } from '../constants/actions/auth';
 
-export function login(data) {
+export function setUser(data) {
   return {
-    type: SIGN_UP,
-    data
-  }
+    type: SET_USER,
+    data,
+  };
 }
 
-export function signUp(data) {
+export function logout() {
   return {
-    type: SIGN_UP,
-    data
-  }
+    type: SIGN_OUT,
+  };
+}
+
+export function unsetUser() {
+  return {
+    type: SIGN_OUT,
+  };
 }
