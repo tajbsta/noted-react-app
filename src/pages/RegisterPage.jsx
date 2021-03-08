@@ -12,13 +12,33 @@ import {
   EMAIL_REGEX_FORMAT,
   PASSWORD_REGEX_FORMAT,
 } from '../constants/errors/regexFormats';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
 
 export default function RegisterPage() {
   let history = useHistory();
   const [error, setError] = useState(null);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const registerSchema = Yup.object({
+    email: Yup.string()
+      .email('Enter a valid email address')
+      .required('Email is required'),
+    password: Yup.string()
+      .required(' Your password must be 8-20 characters long')
+      .matches(PASSWORD_REGEX_FORMAT)
+      .resolve(),
+  });
+
+  const { errors, handleChange, values } = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: registerSchema,
+  });
+
+  const { email, password } = values;
 
   const register = async () => {
     try {
@@ -37,6 +57,7 @@ export default function RegisterPage() {
 
       history.push('/code');
     } catch (error) {
+      console.log(Object.values(error));
       setError(
         get(
           signUpErrors.find(({ code }) => code === error.code),
@@ -47,11 +68,6 @@ export default function RegisterPage() {
       setIsSubmitting(false);
     }
   };
-
-  const isValidEmail = (value) => RegExp(EMAIL_REGEX_FORMAT, 'i').test(value);
-
-  const isValidPassword = (value) =>
-    RegExp(PASSWORD_REGEX_FORMAT, 'g').test(value);
 
   const policyStyle = {
     textDecoration: 'underline',
@@ -64,9 +80,7 @@ export default function RegisterPage() {
   );
 
   const renderLocalEmailValidationError = () => (
-    <small className='form-text p-0 m-0 noted-red'>
-      Insert validation email error here
-    </small>
+    <small className='form-text p-0 m-0 noted-red'>{errors.email}</small>
   );
 
   return (
@@ -118,39 +132,37 @@ export default function RegisterPage() {
               )}
               <Form.Group>
                 <Form.Control
-                  isInvalid={email.length > 0 && !isValidEmail(email)}
+                  isValid={!errors.email && email.length > 0}
+                  isInvalid={errors.email && email.length > 0}
                   className='form-control form-control-lg'
                   type='email'
                   name='email'
                   placeholder='Your email...'
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleChange}
                 />
                 {email.length > 0 &&
-                  !isValidEmail(email) &&
+                  errors.email &&
                   renderLocalEmailValidationError()}
               </Form.Group>
               <Form.Group>
                 <Form.Control
-                  isInvalid={password.length > 0 && !isValidPassword(password)}
+                  isValid={!errors.password && password.length > 0}
+                  isInvalid={errors.password && password.length > 0}
                   className='form-control form-control-lg mb-0'
                   type='password'
                   name='password'
                   placeholder='Your password...'
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handleChange}
                 />
                 {password.length > 0 &&
-                  !isValidPassword(password) &&
+                  errors.password &&
                   renderLocalPasswordValidationError()}
               </Form.Group>
               <button
                 className='btn btn-lg btn-block btn-green mb-3 btn-submit'
                 type='submit'
                 disabled={
-                  isSubmitting ||
-                  email.length === 0 ||
-                  password.length === 0 ||
-                  !isValidPassword(password) ||
-                  !isValidEmail(email)
+                  isSubmitting || email.length === 0 || password.length === 0
                 }
                 onClick={register}
               >
