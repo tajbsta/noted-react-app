@@ -2,6 +2,32 @@
   background-color: #faf8fa !important;
 }
 
+.background-color {
+  background-color: #f7f5f7;
+}
+
+.input-group.input-group-merge > .form-control:focus {
+  background-color: #f7f5f7;
+}
+
+.input-group {
+  width: 840px;
+}
+
+.input-group-lg > .form-control {
+  font-size: 16px;
+}
+
+.input-group.input-group-merge > .input-group-prepend > .input-group-text {
+  border-top-left-radius: none !important;
+  border-bottom-left-radius: none !important;
+  border: none;
+}
+
+.form-control {
+  border: none;
+}
+
 .dropdown-menu {
   left: -85px !important;
   text-align: center !important;

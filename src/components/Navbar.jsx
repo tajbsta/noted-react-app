@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { Container, Navbar } from "react-bootstrap";
 import ProfileIcon from "../assets/icons/Profile.svg";
 import DropwDownIcon from "../assets/icons/InvertedTriangle.svg";
+import Search from "../assets/icons/Search.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
@@ -60,12 +61,28 @@ const Topnav = () => {
       {["/dashboard", "/view-scan"].includes(pathname) && (
         <>
           <Container className="ml-3">
-            <input
+            <form>
+              <div className="input-group input-group-lg input-group-merge background-color">
+                <input
+                  type="text"
+                  className="form-control form-control-prepended list-search background-color sofia-pro text-16 color"
+                  placeholder="Search purchases"
+                />
+                <div className="input-group-prepend">
+                  <div className="input-group-text background-color">
+                    <span className="fe fe-search">
+                      <img src={Search} />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </form>
+            {/* <input
               type="name"
               className="form-control search"
               aria-describedby="name"
               placeholder="Search purchases"
-            />
+            /> */}
           </Container>
           <button
             className="navbar-toggler"
@@ -90,7 +107,7 @@ const Topnav = () => {
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
-                  <img src={ProfileIcon} width="25" height="25" />
+                  <img src={ProfileIcon} width="30" height="30" />
                 </a>
                 <div
                   className="dropdown-menu"
