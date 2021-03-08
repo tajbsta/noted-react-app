@@ -3,6 +3,7 @@ import AuthorizePage from '../pages/AuthorizePage';
 
 const DashboardPage = lazy(() => import('../pages/DashboardPage'));
 const ViewScanPage = lazy(() => import('../pages/ViewScanPage'));
+const ScanningPage = lazy(() => import('../pages/ScanningPage'));
 
 export default [
   {
@@ -20,4 +21,5 @@ export default [
     component: ViewScanPage,
     isSecure: true,
   },
+  { path: '/scanning', component: ScanningPage, isSecured: true },
 ];
