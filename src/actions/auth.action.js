@@ -12,3 +12,9 @@ export function logout() {
     type: SIGN_OUT,
   };
 }
+
+export function unsetUser() {
+  return {
+    type: SIGN_OUT,
+  };
+}
