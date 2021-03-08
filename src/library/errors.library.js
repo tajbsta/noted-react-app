@@ -24,6 +24,6 @@ export const signUpErrors = [
 export const signInErrors = [
   {
     code: INVALID_CREDENTIALS,
-    message: "Invalid username or password",
+    message: "Invalid username or password. Please try again.",
   },
 ];
