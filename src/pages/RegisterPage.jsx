@@ -22,8 +22,13 @@ export default function RegisterPage() {
       .email('Enter a valid email address')
       .required('Email is required'),
     password: Yup.string()
-      .required(' Your password must be 8-20 characters long')
-      .matches(PASSWORD_REGEX_FORMAT)
+      .required(
+        'Your password must be 8-20 characters long and must contain a letter, symbol and a number'
+      )
+      .matches(PASSWORD_REGEX_FORMAT, {
+        message:
+          'Your password must be 8-20 characters long and must contain a letter, symbol and a number',
+      })
       .resolve(),
   });
 
@@ -71,9 +76,7 @@ export default function RegisterPage() {
   };
 
   const renderLocalPasswordValidationError = () => (
-    <small className='form-text p-0 m-0 noted-red'>
-      Your password must be 8-20 characters long
-    </small>
+    <small className='form-text p-0 m-0 noted-red'>{errors.password}</small>
   );
 
   const renderLocalEmailValidationError = () => (
