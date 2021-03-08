@@ -8,15 +8,12 @@ import Amplify, { Auth } from 'aws-amplify';
 import { setUser } from '../actions/auth.action';
 import { signUpErrors } from '../library/errors.library';
 import { get } from 'lodash';
-import {
-  EMAIL_REGEX_FORMAT,
-  PASSWORD_REGEX_FORMAT,
-} from '../constants/errors/regexFormats';
+import { PASSWORD_REGEX_FORMAT } from '../constants/errors/regexFormats';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 
 export default function RegisterPage() {
-  let history = useHistory();
+  const history = useHistory();
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
