@@ -58,15 +58,15 @@ $dark: $black !default;
 $theme-colors: () !default;
 $theme-colors: map-merge(
   (
-    'primary': $primary,
-    'secondary': $secondary,
-    'success': $success,
-    'info': $info,
-    'warning': $warning,
-    'danger': $danger,
-    'light': $light,
-    'dark': $dark,
-    'white': $white,
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+    "light": $light,
+    "dark": $dark,
+    "white": $white,
   ),
   $theme-colors
 );
@@ -79,7 +79,7 @@ $yiq-text-dark: $gray-900 !default;
 $yiq-text-light: $white !default;
 
 // Characters which are escaped by the escape-svg function
-$escaped-characters: (('<', '%3c'), ('>', '%3e'), ('#', '%23')) !default;
+$escaped-characters: (("<", "%3c"), (">", "%3e"), ("#", "%23")) !default;
 
 // Options
 //
@@ -102,38 +102,38 @@ $spacers: map-merge(
       $spacer * 0.125,
     ),
     // 3px
-      2:
+    2:
       (
         $spacer * 0.25,
       ),
     // 6px
-      3:
+    3:
       (
         $spacer * 0.5,
       ),
     // 12px
-      4: $spacer,
+    4: $spacer,
     // 24px
-      5:
+    5:
       (
         $spacer * 1.5,
       ),
     // 36px
-      6:
+    6:
       (
         $spacer * 3,
       ),
     // 72px
-      7:
+    7:
       (
         $spacer * 4.5,
       ),
     // 108px
-      8:
+    8:
       (
         $spacer * 9,
       )
-      // 216px,,
+      // 216px,,,
   ),
   $spacers
 );
@@ -162,7 +162,7 @@ $body-color: $black !default;
 //
 // Style anchor elements.
 
-$link-color: theme-color('primary') !default;
+$link-color: theme-color("primary") !default;
 $link-hover-color: darken($link-color, 15%) !default;
 $link-hover-decoration: none !default;
 
@@ -196,7 +196,7 @@ $caret-width: 0.25em !default;
 // Font, line-height, and color for body text, headings, and more.
 
 // stylelint-disable value-keyword-case
-$font-family-sans-serif: 'Cerebri Sans', sans-serif !default;
+$font-family-sans-serif: "Cerebri Sans", sans-serif !default;
 $font-family-base: $font-family-sans-serif !default;
 // stylelint-enable value-keyword-case
 
@@ -336,7 +336,7 @@ $input-placeholder-color: $gray-500 !default;
 $input-height-inner-sm: ($font-size-sm * $input-btn-line-height-sm) +
   ($input-btn-padding-y-sm * 2) !default;
 
-$form-group-margin-bottom: 1.375rem !default;
+$form-group-margin-bottom: 16px !default;
 
 $input-group-addon-bg: $input-bg !default;
 $input-group-addon-color: $text-muted !default;
@@ -383,7 +383,7 @@ $nav-tabs-link-hover-border-color: transparent transparent transparent !default;
 $nav-tabs-link-active-color: $body-color !default;
 $nav-tabs-link-active-bg: transparent !default;
 $nav-tabs-link-active-border-color: transparent transparent
-  theme-color('primary') !default;
+  theme-color("primary") !default;
 
 $nav-pills-link-active-bg: $component-active-bg !default;
 
@@ -537,7 +537,7 @@ $breadcrumb-margin-bottom: 0 !default;
 $breadcrumb-bg: transparent !default;
 $breadcrumb-divider-color: $gray-400 !default;
 $breadcrumb-active-color: $gray-600 !default;
-$breadcrumb-divider: '' !default;
+$breadcrumb-divider: "" !default;
 
 // Close
 
@@ -554,18 +554,18 @@ $code-color: $blue !default;
 
 // Paths
 
-$path-to-fonts: 'fonts' !default;
-$path-to-img: 'img' !default;
+$path-to-fonts: "fonts" !default;
+$path-to-img: "img" !default;
 
 // Components
 
 $border-sizing: () !default;
 $border-sizing: map-merge(
   (
-    '2': 2,
-    '3': 3,
-    '4': 4,
-    '5': 5,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
   ),
   $border-sizing
 );
@@ -718,7 +718,7 @@ $nav-tabs-sm-link-margin-x: 0.5rem !default;
 
 $navbar-vertical-width: 250px !default;
 $navbar-vertical-width-sm: 66px !default;
-$navbar-vertical-expand-breakpoint: 'md' !default; // Doesn't affect the actual breakpoint at which the navbar expands. Used for positioning of other elements only (e.g. `.select-alert`)
+$navbar-vertical-expand-breakpoint: "md" !default; // Doesn't affect the actual breakpoint at which the navbar expands. Used for positioning of other elements only (e.g. `.select-alert`)
 
 $navbar-vertical-padding-x: 1.5rem !default;
 $navbar-vertical-padding-x-sm: 0.75rem !default;
@@ -737,8 +737,8 @@ $navbar-vibrant-active-color: $white !default;
 $navbar-vibrant-brand-filter: brightness(0) invert(1) !default;
 $navbar-vibrant-toggler-icon-bg: str-replace(
   url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='#{$navbar-vibrant-color}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"),
-  '#',
-  '%23'
+  "#",
+  "%23"
 ) !default;
 
 $navbar-dark-bg: $gray-800-dark !default;

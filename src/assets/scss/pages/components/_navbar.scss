@@ -2,8 +2,18 @@
   background-color: #faf8fa !important;
 }
 
+.dropdown-menu {
+  left: -85px !important;
+  text-align: center !important;
+}
+
 .select-dropdown {
   margin: 0;
+}
+
+.navbar-collapse {
+  position: relative;
+  right: 1%;
 }
 
 .search {
