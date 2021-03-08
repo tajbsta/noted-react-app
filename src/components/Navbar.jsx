@@ -15,7 +15,6 @@ const Topnav = () => {
   let history = useHistory();
   const dispatch = useDispatch();
   const pageLocation = history.location.pathname;
-  // console.log(pageLocation);
 
   const guestViews = [
     "/",

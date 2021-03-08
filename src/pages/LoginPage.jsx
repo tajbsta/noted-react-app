@@ -7,6 +7,7 @@ import { Form } from "react-bootstrap";
 import Amplify, { Auth } from "aws-amplify";
 import { setUser } from "../actions/auth.action";
 import { signInErrors } from "../library/errors.library";
+import { get } from "lodash";
 
 export default function LoginPage() {
   let history = useHistory();
@@ -24,7 +25,14 @@ export default function LoginPage() {
       await Auth.signIn(email, password);
       history.push("/code?method=cognito");
     } catch (error) {
-      console.log("Error signing in", error);
+      console.log("Error signing in", error.code);
+      setError(
+        get(
+          signInErrors.find(({ code }) => code === error.code),
+          "message",
+          "An error occurred signing up"
+        )
+      );
       setIsSubmitting(false);
     }
   };
@@ -75,7 +83,11 @@ export default function LoginPage() {
               </p>
             </div>
             <Form>
-              {error && <div>{error.message}</div>}
+              {error && (
+                <div className="alert alert-danger" role="alert">
+                  <h4 className="text-center text-alert">{error}</h4>
+                </div>
+              )}
               <Form.Group>
                 <Form.Control
                   className="form-control form-control-lg"
