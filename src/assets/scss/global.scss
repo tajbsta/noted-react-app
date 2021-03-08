@@ -31,6 +31,10 @@
   &:active {
     background-color: #6aaf6a !important;
   }
+  &:focus {
+    background-color: #6aaf6a !important;
+    border-color: #6aaf6a !important;
+  }
 }
 
 .loading {

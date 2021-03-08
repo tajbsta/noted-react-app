@@ -3,14 +3,21 @@ import { Link } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import AuthorizeImg from "../assets/img/Authorize.svg";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function AuthorizePage() {
+  const idToken = useSelector(({ auth: { idToken } }) => idToken);
   const [authUrl, setAuthUrl] = useState(null);
 
   const getAuthUrl = async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_SCRAPER_API_URI}google/geturl?callback_url=${process.env.REACT_APP_OAUTH_REDIRECT_SIGN_IN}verify`
+        `${process.env.REACT_APP_SCRAPER_API_URI}google/geturl?callback_url=${process.env.REACT_APP_OAUTH_REDIRECT_SIGN_IN}verify`,
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
       );
 
       setAuthUrl(res.data.url);
