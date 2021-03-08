@@ -128,7 +128,7 @@ export default function LoginPage() {
                   href="https://www.notedreturns.com/privacy-policy"
                   style={policyStyle}
                 >
-                  Privacy
+                  Privacy Policy
                 </a>
                 . Protected by Google's{" "}
                 <a
