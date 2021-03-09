@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Spinner } from "react-bootstrap";
 import qs from "qs";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
@@ -61,5 +62,9 @@ export default function Code() {
     console.log("code");
     verifyUser();
   }, []);
-  return <div></div>;
+  return (
+    <div id="Code">
+      <Spinner animation="border" size="lg" className="spinner" />
+    </div>
+  );
 }
