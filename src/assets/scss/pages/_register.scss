@@ -37,7 +37,7 @@
 
     .form-control-lg {
       margin-top: 20px;
-      margin-bottom: 16px;
+      margin-bottom: 5px;
       font-size: 16px;
     }
   }
@@ -126,4 +126,9 @@
   .index-container {
     background-color: #faf8fa;
   }
+}
+
+.error-msg {
+  margin-top: 5px !important;
+  line-height: 22px;
 }

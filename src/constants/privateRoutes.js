@@ -1,13 +1,9 @@
 import { lazy } from 'react';
-import LoginPage from '../pages/LoginPage';
-import RegisterPage from '../pages/RegisterPage';
-import ForgotPasswordPage from '../pages/ForgotPasswordPage';
-import ResetPasswordPage from '../pages/ResetPasswordPage';
-import Code from '../pages/Code';
+import AuthorizePage from '../pages/AuthorizePage';
 
 const DashboardPage = lazy(() => import('../pages/DashboardPage'));
-const AuthorizePage = lazy(() => import('../pages/AuthorizePage'));
 const ViewScanPage = lazy(() => import('../pages/ViewScanPage'));
+const ScanningPage = lazy(() => import('../pages/ScanningPage'));
 
 export default [
   {
@@ -25,4 +21,5 @@ export default [
     component: ViewScanPage,
     isSecure: true,
   },
+  { path: '/scanning', component: ScanningPage, isSecured: true },
 ];

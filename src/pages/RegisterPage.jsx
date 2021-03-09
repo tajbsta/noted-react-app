@@ -76,7 +76,9 @@ export default function RegisterPage() {
   };
 
   const renderLocalPasswordValidationError = () => (
-    <small className="form-text p-0 m-0 noted-red">{errors.password}</small>
+    <small className="form-text p-0 m-0 noted-red error-msg">
+      {errors.password}
+    </small>
   );
 
   const renderLocalEmailValidationError = () => (
