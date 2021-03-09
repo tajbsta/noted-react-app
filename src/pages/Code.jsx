@@ -5,12 +5,15 @@ import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../actions/auth.action";
+import { scraperStart } from "../utils/scrapeService";
 
 export default function Code() {
   const history = useHistory();
   const dispatch = useDispatch();
 
   const verifyUser = async () => {
+    const isAuthRedirect = history.location.pathname.includes("/code/verify");
+
     try {
       const query = qs.parse(history.location.search, {
         ignoreQueryPrefix: true,
@@ -46,16 +49,21 @@ export default function Code() {
         })
       );
 
-      if (query.code && history.location.pathname.includes("/code/verify")) {
-        console.log({ code: query.code });
+      if (isAuthRedirect) {
+        await scraperStart(query.code);
         history.push("/dashboard");
       } else {
         history.push("/request-permission");
       }
     } catch (error) {
       console.log(error);
-      // No current user
-      history.push("/");
+
+      if (isAuthRedirect) {
+        history.push("/request-permission?auth=error");
+      } else {
+        // No current user
+        history.push("/");
+      }
     }
   };
   useEffect(() => {

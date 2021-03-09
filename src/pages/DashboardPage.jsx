@@ -6,7 +6,7 @@ import EmptyScan from "../components/Dashboard/EmptyScan";
 import ReturnCategory from "../components/Dashboard/ReturnCategory";
 import RightCard from "../components/Dashboard/RightCard";
 import Scanning from "../components/Dashboard/Scanning";
-import api from "../utils/api";
+import { api } from "../utils/api";
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -23,17 +23,20 @@ function DashboardPage() {
     useSelector((state) => get(state, "scans", [])) || [];
 
   async function loadScans() {
-    setScanning(true);
-    api
-      .get("scans/8a57189b-7814-4203-8dc0-35e6f428e046")
-      .then(({ data }) => {
-        settScannedItems([...data.slice(0, 5)]);
-        dispatch(storeScan({ scannedItems: [...data.slice(0, 5)] }));
-        setScanning(false);
-      })
-      .catch((err) => {
-        setScanning(false);
-      });
+    try {
+      setScanning(true);
+      const client = await api();
+
+      const { data } = await client.get(
+        "scans/8a57189b-7814-4203-8dc0-35e6f428e046"
+      );
+
+      settScannedItems([...data.slice(0, 5)]);
+      dispatch(storeScan({ scannedItems: [...data.slice(0, 5)] }));
+      setScanning(false);
+    } catch (error) {
+      setScanning(false);
+    }
   }
 
   useEffect(() => {
