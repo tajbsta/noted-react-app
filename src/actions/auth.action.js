@@ -1,4 +1,4 @@
-import { SET_USER, SIGN_OUT, SIGN_UP } from '../constants/actions/auth';
+import { SET_USER, SIGN_OUT, SIGN_UP, SET_GOOGLE_AUTH_CODE } from '../constants/actions/auth';
 
 export function setUser(data) {
   return {
@@ -16,5 +16,12 @@ export function logout() {
 export function unsetUser() {
   return {
     type: SIGN_OUT,
+  };
+}
+
+export function setGoogleAuthCode(code) {
+  return {
+    type: SET_GOOGLE_AUTH_CODE,
+    googleAuthCode: code
   };
 }

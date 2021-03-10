@@ -5,7 +5,7 @@ function ProductDetails({
   scannedItem: { itemName, vendorTag, amount, compensationType },
 }) {
   return (
-    <div className="col-sm-4 p-0 mt-1">
+    <div className="col-sm-4 p-0 mt-1 p-details">
       <Row>
         <h4 className="mb-0 sofia-pro mb-1 distributor-name">{vendorTag}</h4>
       </Row>
