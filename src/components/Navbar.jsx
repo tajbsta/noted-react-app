@@ -7,6 +7,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { unsetUser } from "../actions/auth.action";
+import { unsetScan } from "../actions/scans.action";
+
 import { get } from "lodash";
 
 const BrandLogoSvg = lazy(() => import("./BrandLogoSvg"));
@@ -30,17 +32,21 @@ const Topnav = () => {
   const {
     location: { pathname },
   } = useHistory();
-  const user = useSelector(({ auth: { user } }) => user);
+  const username = useSelector(({ auth: { username } }) => username);
   const showShadow = guestViews.includes(pathname) ? "" : "shadow-sm";
 
   const logout = async () => {
-    try {
-      await Auth.signOut();
-      dispatch(unsetUser());
-      history.push("/login");
-    } catch (error) {
-      console.log("Error Signing Out: ", error);
-    }
+    dispatch(await unsetUser());
+    dispatch(await unsetScan());
+    Auth.signOut()
+      .then(async (data) => {
+        setTimeout(() => {
+          history.push("/login");
+        }, 400);
+      })
+      .catch((error) => {
+        console.log("Error Signing Out: ", error);
+      });
   };
 
   return (
@@ -76,12 +82,6 @@ const Topnav = () => {
                 </div>
               </div>
             </form>
-            {/* <input
-              type="name"
-              className="form-control search"
-              aria-describedby="name"
-              placeholder="Search purchases"
-            /> */}
           </Container>
           <button
             className="navbar-toggler"

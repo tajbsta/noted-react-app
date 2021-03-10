@@ -6,35 +6,71 @@ import { storeScan } from "../actions/scans.action";
 import EmptyScan from "../components/Dashboard/EmptyScan";
 import RightCard from "../components/Dashboard/RightCard";
 import Scanning from "../components/Dashboard/Scanning";
-import { api } from "../utils/api";
+import { scraperStart } from "../utils/scrapeService";
+import Amplify, { API, graphqlOperation } from "aws-amplify";
 
 function ScanningPage() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const googleAuthCode = useSelector(
+    ({ auth: { googleAuthCode } }) => googleAuthCode
+  );
   const [scanning, setScanning] = useState(false);
-  const [scannedItems, settScannedItems] = useState([]);
 
-  async function loadScans() {
-    try {
-      setScanning(true);
-      const client = await api();
+  // Returns scan ID
+  async function startScan() {
+    const res = await scraperStart(googleAuthCode);
 
-      const { data } = await client.get(
-        "scans/8a57189b-7814-4203-8dc0-35e6f428e046"
-      );
-
-      settScannedItems([...data.slice(0, 5)]);
-      dispatch(storeScan({ scannedItems: [...data.slice(0, 5)] }));
-      setScanning(false);
-      history.push("/dashboard");
-    } catch (error) {
-      setScanning(false);
-    }
+    return res.data.body.id;
   }
 
-  const onScanLaunch = () => {
-    loadScans();
+  // const subscribeScraping = async (id) => {
+  //   const onUpdateScrapeAttempt = /* GraphQL */ `
+  //     subscription MySubscription {
+  //       onUpdateScrapeAttempt(id: $id) {
+  //         datetimestampcreated
+  //         id
+  //         itemcount
+  //         percentage
+  //         reademail
+  //         totalamount
+  //         totalmessagecount
+  //         userid
+  //         scrapestatus
+  //       }
+  //     }
+  //   `;
+
+  //   await API.graphql(
+  //     graphqlOperation(onUpdateScrapeAttempt, { id })
+  //   ).subscribe({
+  //     next: ({ provider, value }) => console.log({ provider, value }),
+  //     error: (error) => console.warn(error),
+  //   });
+  // };
+
+  const onScanLaunch = async () => {
+    try {
+      setScanning(true);
+      const id = await startScan();
+
+      // await subscribeScraping(id);
+
+      setTimeout(() => {
+        history.push("/dashboard");
+      }, 5000);
+    } catch (error) {
+      console.log(error.message);
+      // TODO: Display error
+      setScanning(false);
+    }
   };
+
+  useEffect(() => {
+    if (!googleAuthCode) {
+      history.push("/request-permission");
+    }
+  }, []);
 
   return (
     <div>
@@ -63,7 +99,11 @@ function ScanningPage() {
             )}
           </div>
           <div className="col-sm-3">
-            <RightCard scannedItems={scannedItems} />
+            <RightCard
+              totalReturns={0}
+              potentialReturnValue={0}
+              donations={0}
+            />
           </div>
         </div>
       </div>

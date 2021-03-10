@@ -41,7 +41,7 @@ function ProductCard({
       }`}
       key={itemName}
       style={{
-        border: selected ? "1px solid purple" : "none",
+        border: selected ? "1px solid rgba(87, 0, 151, 0.8)" : "none",
       }}
     >
       <div className="card-body pt-3 pb-3 p-0 m-0">
@@ -67,7 +67,7 @@ function ProductCard({
             onClick={clickable ? onClick : () => {}}
           >
             <img
-              className="mr-2"
+              className="product-img"
               src={imageUrl}
               alt=""
               style={{

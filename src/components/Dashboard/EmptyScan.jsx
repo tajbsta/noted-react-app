@@ -1,5 +1,6 @@
 import React from "react";
 
+// Launch Scan Button Page
 function EmptyScan({ onScanLaunch }) {
   return (
     <>
@@ -19,7 +20,7 @@ function EmptyScan({ onScanLaunch }) {
         >
           <button
             className="btn shadow-sm launch-scan-btn btn-green p-0 sofia-pro"
-            onClick={() => onScanLaunch()}
+            onClick={onScanLaunch}
           >
             <span className="mt-2">Launch Scan</span>
           </button>
