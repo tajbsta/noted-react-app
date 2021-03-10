@@ -19,6 +19,9 @@ Amplify.configure({
       redirectSignOut: process.env.REACT_APP_OAUTH_REDIRECT_SIGN_OUT,
       responseType: "code",
     },
+    aws_appsync_graphqlEndpoint: process.env.REACT_APP_APPSYNC,
+    aws_appsync_authenticationType: process.env.REACT_APPSYNC_AUTHENTICATION_TYPE,
+    aws_appsync_region: process.env.REACT_APP_REGION
   },
 });
 

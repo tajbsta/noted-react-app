@@ -4,8 +4,7 @@ import qs from "qs";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../actions/auth.action";
-import { scraperStart } from "../utils/scrapeService";
+import { setUser, setGoogleAuthCode } from "../actions/auth.action";
 
 export default function Code() {
   const history = useHistory();
@@ -25,32 +24,24 @@ export default function Code() {
 
       const res = await Auth.currentSession();
 
-      const accessToken = res.getAccessToken().getJwtToken();
-      const idToken = res.getIdToken().getJwtToken();
-      const refreshToken = res.getRefreshToken().getToken();
       const loginMethod = query.method || "google";
       const username = res.getAccessToken().decodePayload().username;
 
       console.log({
-        accessToken,
-        idToken,
-        refreshToken,
         loginMethod,
         username,
       });
 
       dispatch(
         setUser({
-          accessToken,
-          idToken,
-          refreshToken,
           loginMethod,
           username,
         })
       );
 
       if (isAuthRedirect) {
-        await scraperStart(query.code);
+        // await scraperStart(query.code);
+        dispatch(setGoogleAuthCode(query.code));
         history.push("/dashboard");
       } else {
         history.push("/request-permission");

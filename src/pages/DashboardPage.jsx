@@ -84,13 +84,13 @@ function DashboardPage() {
                 <h3 className="sofia-pro mt-0 ml-3 text-18 text-list">
                   Your online purchases - Last 90 Days
                 </h3>
-                <div className="col-sm-12">
+                <div>
                   <ReturnCategory
                     scannedItems={scannedItems}
                     typeTitle="Last Call!"
                   />
                 </div>
-                <div className="col-sm-12 mt-4">
+                <div className="mt-4 returnable-items">
                   <ReturnCategory
                     scannedItems={scannedItems}
                     typeTitle="Returnable Items"
@@ -101,7 +101,7 @@ function DashboardPage() {
                     <span></span>
                   </p>
                 </div>
-                <div className="col-sm-12 mt-4">
+                <div className="mt-4">
                   <ReturnCategory
                     scannedItems={scannedItems}
                     typeTitle="Donate"
@@ -115,7 +115,7 @@ function DashboardPage() {
                 <div>
                   <div className="row justify-center">
                     <div className="col-sm-7 text-center">
-                      <div className="text-muted text-center text-bottom-title">
+                      <div className="text-muted text-center sofia-pro line-height-16 text-bottom-title">
                         These are all the purchases we found in the past 90 days
                         from your address {customerEmail}
                       </div>
@@ -123,9 +123,9 @@ function DashboardPage() {
                   </div>
                   <div className="row justify-center mt-3">
                     <div className="col-sm-6 text-center">
-                      <div className="text-muted text-center text-cant-find">
+                      <div className="text-muted text-center text-cant-find sofia-pro">
                         Can’t find one?
-                        <span className="noted-purple">
+                        <span className="noted-purple sofia-pro line-height-16">
                           &nbsp; Add it manually
                         </span>
                       </div>
@@ -133,7 +133,7 @@ function DashboardPage() {
                   </div>
                   <div className="row justify-center mt-2">
                     <div className="col-sm-6 text-center">
-                      <div className="text-center noted-purple text-new-email">
+                      <div className="text-center noted-purple sofia-pro line-height-16 text-new-email">
                         Add new email address
                       </div>
                     </div>
@@ -141,7 +141,7 @@ function DashboardPage() {
                   <div className="row justify-center mt-2">
                     <div className="col-sm-6 text-center">
                       <a onClick={onScanLaunch}>
-                        <div className="text-center noted-purple sofia-pro">
+                        <div className="text-center noted-purple line-height-16 sofia-pro">
                           Scan for older items
                         </div>
                       </a>

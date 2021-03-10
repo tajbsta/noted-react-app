@@ -7,6 +7,7 @@ import EmptyScan from "../components/Dashboard/EmptyScan";
 import RightCard from "../components/Dashboard/RightCard";
 import Scanning from "../components/Dashboard/Scanning";
 import { api } from "../utils/api";
+import Amplify, { API, graphqlOperation } from "aws-amplify";
 
 function ScanningPage() {
   const history = useHistory();
