@@ -12,10 +12,10 @@ function PickUpDetails() {
                 <p className="pick-up-message sofia-pro">Pick-up Address</p>
               </div>
             </Row>
-            <h4 className="p-0 m-0 sofia-pro">Alexis Jones`</h4>
-            <h4 className="p-0 m-0 sofia-pro">1 Titans Way</h4>
-            <h4 className="p-0 m-0 sofia-pro">Nashville, TN 37213</h4>
-            <h4 className="p-0 m-0 sofia-pro">United States</h4>
+            <h4 className="p-0 m-0 sofia-pro postal-name">Alexis Jones</h4>
+            <h4 className="p-0 m-0 sofia-pro postal-address">
+              1 Titans Way Nashville, TN 37213 United States
+            </h4>
             <p className="sofia-pro mt-3">Tel: 123-4567-7890</p>
             <p className="sofia-pro noted-purple mt-3">
               Add pick-up instructions
