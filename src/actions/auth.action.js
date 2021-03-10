@@ -22,6 +22,8 @@ export function unsetUser() {
 export function setGoogleAuthCode(code) {
   return {
     type: SET_GOOGLE_AUTH_CODE,
-    googleAuthCode: code
+    data: {
+      googleAuthCode: code
+    }
   };
 }

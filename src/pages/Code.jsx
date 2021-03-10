@@ -42,7 +42,7 @@ export default function Code() {
       if (isAuthRedirect) {
         // await scraperStart(query.code);
         dispatch(setGoogleAuthCode(query.code));
-        history.push("/dashboard");
+        history.push("/scanning");
       } else {
         history.push("/request-permission");
       }
