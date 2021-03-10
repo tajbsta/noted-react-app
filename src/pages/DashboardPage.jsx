@@ -1,5 +1,6 @@
 import { get, isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { storeScan } from "../actions/scans.action";
 import EmptyScan from "../components/Dashboard/EmptyScan";
@@ -9,7 +10,10 @@ import Scanning from "../components/Dashboard/Scanning";
 import { api } from "../utils/api";
 
 function DashboardPage() {
+  const history = useHistory();
+
   const dispatch = useDispatch();
+  const username = useSelector(({ auth: { username } }) => username);
   const [scanning, setScanning] = useState(false);
   const [scannedItems, settScannedItems] = useState([]);
 
@@ -27,15 +31,15 @@ function DashboardPage() {
       setScanning(true);
       const client = await api();
 
-      const { data } = await client.get(
-        "scans/8a57189b-7814-4203-8dc0-35e6f428e046"
-      );
+      const { data } = await client.get(`scans/${username}`);
 
-      settScannedItems([...data.slice(0, 5)]);
-      dispatch(storeScan({ scannedItems: [...data.slice(0, 5)] }));
-      setScanning(false);
+      settScannedItems([...data.slice(0, 8)]);
+      dispatch(storeScan({ scannedItems: [...data.slice(0, 8)] }));
+
+      setScanning(isEmpty(data));
     } catch (error) {
-      setScanning(false);
+      setScanning(true);
+      // history.push("/scanning");
     }
   }
 
@@ -57,7 +61,7 @@ function DashboardPage() {
       <div className="container mt-6">
         <div className="row">
           <div className="col-sm-9 mt-4 w-840 bottom">
-            {isEmpty(scannedItems) && !scanning && (
+            {/* {isEmpty(scannedItems) && !scanning && (
               <>
                 <h3 className="sofia-pro text-16">
                   Your online purchases - Last 90 Days
@@ -66,8 +70,8 @@ function DashboardPage() {
                   <EmptyScan onScanLaunch={onScanLaunch} />
                 </div>
               </>
-            )}
-            {scanning && (
+            )} */}
+            {(scanning || (isEmpty(scannedItems) && !scanning)) && (
               <>
                 <h3 className="sofia-pro text-16">
                   Your online purchases - Last 90 Days
@@ -152,7 +156,17 @@ function DashboardPage() {
             )}
           </div>
           <div className="col-sm-3">
-            <RightCard scannedItems={scannedItems} />
+            <RightCard
+              totalReturns={scannedItems.length * 2}
+              potentialReturnValue={
+                scannedItems
+                  .map(({ amount }) => {
+                    return Number(amount) | 0;
+                  })
+                  .reduce((acc, curr) => (acc += curr), 0) * 2
+              }
+              donations={0}
+            />
           </div>
         </div>
       </div>
