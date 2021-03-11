@@ -36,7 +36,7 @@ function ProductCard({
 
   return (
     <div
-      className={`card shadow-sm scanned-item-card mb-3 p-0 ${
+      className={`card shadow-sm scanned-item-card w-840 mb-3 p-0 ${
         clickable && "btn"
       }`}
       key={itemName}

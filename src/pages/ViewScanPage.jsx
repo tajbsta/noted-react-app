@@ -16,7 +16,7 @@ function ViewScanPage() {
 
   useEffect(() => {
     const scan = scans.find((item) => scanId === item.id);
-    console.log(scan);
+    // console.log(scan);
     setScanItems([scan]);
   }, []);
 
@@ -28,7 +28,9 @@ function ViewScanPage() {
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed ? (
               <>
-                <h3 className="sofia-pro text-18">Pick-up confirmed</h3>
+                <h3 className="sofia-pro text-18 section-title">
+                  Pick-up confirmed
+                </h3>
                 <PickUpConfirmed />
               </>
             ) : (
@@ -37,7 +39,7 @@ function ViewScanPage() {
                 <PickUpDetails />
               </>
             )}
-            <h3 className="sofia-pro products-return text-18">
+            <h3 className="sofia-pro products-return text-18 section-title">
               Your products to return
             </h3>
             {scanItems.map((item) => (
@@ -49,7 +51,7 @@ function ViewScanPage() {
                 clickable={false}
               />
             ))}
-            <h3 className="sofia-pro miss-out">
+            <h3 className="sofia-pro miss-out section-title">
               Don&apos;t miss out on other returns
             </h3>
             <div className="row align-items-center p-4 all-checkbox">
@@ -68,11 +70,9 @@ function ViewScanPage() {
               }}
             >
               <div
-                className="card shadow-sm p-3"
-                style={{
-                  width: 248,
-                  height: 369,
-                }}
+                className={`card shadow-sm p-3 pick-up-card ${
+                  confirmed == true ? "h-292" : "h-363"
+                }`}
               >
                 <h3 className="sofia-pro products-to-return mb-1">
                   1 product to return
@@ -84,38 +84,44 @@ function ViewScanPage() {
                   More info
                 </h3>
                 <hr className="line-break-1" />
-                <h2 className="sofia-pro mb-0 donate-quantity">1</h2>
-                <h5 className="sofia-pro text-muted">Donation</h5>
-                <hr className="line-break-2" />
-                {/* <h3 className="sofia-pro pick-up-price mb-0">$58.29</h3> */}
-                {/* <h3 className="return-type sofia-pro">In cash back</h3> */}
 
-                <div className="row">
-                  <div className="col">
-                    <h5 className="sofia-pro text-muted">Return total cost</h5>
-                  </div>
-                  <div className="col">
-                    <h5 className="sofia-pro text-right">$24.99</h5>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <h5 className="sofia-pro text-muted">Taxes</h5>
-                  </div>
-                  <div className="col">
-                    <h5 className="sofia-pro text-right">$0</h5>
-                  </div>
-                </div>
                 {confirmed && (
-                  <p className="pick-up-reminder sofia-pro">
-                    Once the pick-up has been confirmed we’ll take care of
-                    contacting your merchants. They will then be in charge of
-                    the payment.
-                  </p>
+                  <div>
+                    <h3 className="sofia-pro pick-up-price mb-0">$58.29</h3>
+                    <h3 className="return-type sofia-pro">
+                      Potential Return Value
+                    </h3>
+                    <p className="pick-up-reminder sofia-pro">
+                      Once the pick-up has been confirmed we’ll take care of
+                      contacting your merchants. They will then be in charge of
+                      the payment.
+                    </p>
+                  </div>
                 )}
 
                 {!confirmed && (
                   <>
+                    <h2 className="sofia-pro mb-0 donate-quantity">1</h2>
+                    <h5 className="sofia-pro text-muted">Donation</h5>
+                    <hr className="line-break-2" />
+                    <div className="row">
+                      <div className="col">
+                        <h5 className="sofia-pro text-muted">
+                          Return total cost
+                        </h5>
+                      </div>
+                      <div className="col">
+                        <h5 className="sofia-pro text-right">$24.99</h5>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                        <h5 className="sofia-pro text-muted">Taxes</h5>
+                      </div>
+                      <div className="col">
+                        <h5 className="sofia-pro text-right">$0</h5>
+                      </div>
+                    </div>
                     <hr className="line-break-3" />
                     <div className="row">
                       <div className="col">
