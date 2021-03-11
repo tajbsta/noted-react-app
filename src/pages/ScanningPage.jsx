@@ -73,26 +73,26 @@ function ScanningPage() {
   }, []);
 
   return (
-    <div>
+    <div id="ScanningPage">
       <div className="container mt-6">
         <div className="row">
           <div className="col-sm-9 mt-4 w-840 bottom">
             {!scanning && (
               <>
-                <h3 className="sofia-pro text-16">
+                <h3 className="sofia-pro text-18 mb-4">
                   Your online purchases - Last 90 Days
                 </h3>
-                <div className={`card shadow-sm scanned-item-card mb-2 p-5 `}>
+                <div className="card shadow-sm scanned-item-card mb-2 p-3">
                   <EmptyScan onScanLaunch={onScanLaunch} />
                 </div>
               </>
             )}
             {scanning && (
               <>
-                <h3 className="sofia-pro text-16">
+                <h3 className="sofia-pro text-18 mb-4">
                   Your online purchases - Last 90 Days
                 </h3>
-                <div className={`card shadow-sm scanned-item-card mb-2 p-5 `}>
+                <div className="card shadow-sm scanned-item-card mb-2 p-4">
                   <Scanning />
                 </div>
               </>
