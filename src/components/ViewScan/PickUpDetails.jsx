@@ -8,6 +8,7 @@ function PickUpDetails() {
 
   return (
     <div className="row">
+      {/* ADDRESS DETAILS */}
       <div className="col-sm-4">
         <div className="card shadow-sm">
           {!emptyAddress && (
