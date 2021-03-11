@@ -5,10 +5,10 @@ function EmptyScan({ onScanLaunch }) {
   return (
     <>
       <div className="card-body">
-        <p className="text-center sofia-pro noted-purple text-16">
-          No Scan Yet
+        <p className="text-center sofia-pro noted-purple text-16 mb-1">
+          No scan yet
         </p>
-        <p className="small text-muted mb-1 text-center sofia-pro text-curious">
+        <p className="small text-muted mb-1 text-center sofia-pro text-14">
           Curious to see how much you can earn back and/or donate?
         </p>
         <div
