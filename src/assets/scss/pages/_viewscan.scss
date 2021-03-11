@@ -269,3 +269,30 @@
     color: #ffffff;
   }
 }
+
+// Empty States
+#EmptyState {
+  padding-top: 52px;
+
+  .empty-header {
+    color: #2e1d3a;
+  }
+  .empty-sub {
+    color: #0e0018;
+  }
+
+  .margin-bottom {
+    margin-bottom: 8px;
+  }
+
+  .btn-add-empty {
+    margin-top: 24px;
+    color: #fff;
+    border-radius: 6px;
+    padding: 12px;
+    background: #570097;
+    border: none;
+    width: 215px;
+    height: 40px;
+  }
+}

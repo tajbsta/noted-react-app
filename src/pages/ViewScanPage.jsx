@@ -44,7 +44,6 @@ function ViewScanPage() {
             </h3>
             {scanItems.map((item) => (
               <ProductCard
-                className="ScanningProductCard"
                 scannedItem={item}
                 key={item.id}
                 selectable={false}
