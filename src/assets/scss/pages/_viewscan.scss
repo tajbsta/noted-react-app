@@ -1,10 +1,43 @@
 #ViewScanPage {
+  padding-bottom: 73px;
+
+  p,
+  div,
+  a,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Sofia Pro";
+  }
+
+  .card {
+    margin-bottom: 0px;
+  }
+
+  .title-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .btn-edit {
+    cursor: pointer;
+    color: #570097;
+  }
+
+  .btn-add-instructions {
+    cursor: pointer;
+    color: #570097;
+  }
+
   .pick-up-message {
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
     line-height: 24px;
-    color: #0e0018;
+    color: #2e1d3a;
   }
 
   .payment-details-card-body {
@@ -12,11 +45,45 @@
     max-height: 232px;
   }
 
+  .postal-name {
+    color: #0e0018;
+  }
+
   .postal-address {
+    color: #0e0018;
     font-size: 14px;
     line-height: 18px;
     width: 120px;
-    height: 72px;
+  }
+
+  .tel {
+    color: #0e0018;
+  }
+
+  // Card details
+  .end {
+    display: inline-flex;
+
+    .img-container {
+      margin-right: 8px;
+
+      .img-fluid {
+        height: 32px;
+        width: 40px;
+        left: 0px;
+        top: 0px;
+        border-radius: 4px;
+      }
+    }
+
+    .text {
+      position: relative;
+      top: 8px;
+    }
+  }
+
+  .c-add {
+    color: #0e0018;
   }
 
   .pick-up-day {
@@ -34,6 +101,10 @@
     color: #0e0018;
   }
 
+  .text-price-sched {
+    color: #2e1d3a !important;
+  }
+
   .call-to-action-container {
     position: absolute;
   }
@@ -46,13 +117,16 @@
     cursor: pointer;
   }
 
+  // Start of Right Card
   .products-to-return {
     font-size: 14px;
     line-height: 16px;
-    color: #2e1d3a;
+    color: #0e0018;
   }
 
   .box-size-description {
+    width: 176px;
+    margin-bottom: 8px;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -60,6 +134,63 @@
     color: #0e0018;
     mix-blend-mode: normal;
     opacity: 0.6;
+  }
+
+  .line-break-1 {
+    margin-top: 11px !important;
+    margin-bottom: 16px !important;
+    color: #e8e7e9;
+  }
+  .donate-quantity {
+    color: #21003a;
+  }
+
+  .text-muted {
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018 !important;
+    margin-bottom: 0px;
+  }
+
+  .line-break-2 {
+    margin-top: 12px !important;
+    margin-bottom: 18px !important;
+    color: #e8e7e9;
+  }
+
+  .line-break-3 {
+    margin-top: 12px !important;
+    margin-bottom: 23px !important;
+    color: #e8e7e9;
+  }
+
+  .total-now {
+    color: #2e1d3a;
+  }
+
+  .btn-confirm {
+    margin-top: 13px;
+    color: #fff;
+    border-radius: 6px;
+    padding: 12px;
+  }
+  // End of Right Card
+
+  // Your Products to return section
+  .products-return {
+    margin-top: 39px;
+  }
+  //  ProductCard stylings inside productcard.scss
+
+  // Don't miss out section
+  .miss-out {
+    margin-top: 55px;
+    margin-bottom: 17px;
+  }
+
+  .all-checkbox {
+    padding-top: 0px !important;
+    padding-bottom: 13px !important;
   }
 
   .more-pick-up-info {

@@ -47,7 +47,7 @@ function ProductCard({
       <div className="card-body pt-3 pb-3 p-0 m-0">
         <Row>
           {selectable && (
-            <div className="row align-items-center p-4">
+            <div className="row align-items-center p-4 product-checkbox">
               <input
                 type="checkbox"
                 checked={selected}
@@ -59,7 +59,7 @@ function ProductCard({
             </div>
           )}
           <div
-            className="col-sm-1 ml-1 mr-3"
+            className="col-sm-1 product-img-container"
             style={{
               display: "flex",
               alignItems: "center",

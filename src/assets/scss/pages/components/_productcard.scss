@@ -1,0 +1,36 @@
+//Product Cards
+.p-details {
+  margin-left: 28px;
+}
+
+.product-checkbox {
+  padding-right: 16px !important;
+}
+
+.distributor-name {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.product-name {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+}
+
+.product-price {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 15px;
+}
+
+.product-img-container {
+  margin-left: 16px;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+
+  .product-img {
+    justify-content: center;
+  }
+}

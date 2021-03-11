@@ -28,28 +28,31 @@ function ViewScanPage() {
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed ? (
               <>
-                <h3 className="sofia-pro">Pick-up confirmed</h3>
+                <h3 className="sofia-pro text-18">Pick-up confirmed</h3>
                 <PickUpConfirmed />
               </>
             ) : (
               <>
-                <h3 className="sofia-pro">Pick-up details</h3>
+                <h3 className="sofia-pro text-18">Pick-up details</h3>
                 <PickUpDetails />
               </>
             )}
-            <h3 className="sofia-pro">Your products to return</h3>
+            <h3 className="sofia-pro products-return text-18">
+              Your products to return
+            </h3>
             {scanItems.map((item) => (
               <ProductCard
+                className="ScanningProductCard"
                 scannedItem={item}
                 key={item.id}
                 selectable={false}
                 clickable={false}
               />
             ))}
-            <h3 className="sofia-pro mt-6">
+            <h3 className="sofia-pro miss-out">
               Don&apos;t miss out on other returns
             </h3>
-            <div className="row align-items-center p-4">
+            <div className="row align-items-center p-4 all-checkbox">
               <input type="checkbox" />
               <h4 className="sofia-pro noted-purple ml-4 mb-0 p-0">Add all</h4>
             </div>
@@ -62,13 +65,13 @@ function ViewScanPage() {
               className="col right-card"
               style={{
                 maxWidth: "248px",
-                marginTop: "5vh",
               }}
             >
               <div
                 className="card shadow-sm p-3"
                 style={{
                   width: 248,
+                  height: 369,
                 }}
               >
                 <h3 className="sofia-pro products-to-return mb-1">
@@ -80,10 +83,10 @@ function ViewScanPage() {
                 <h3 className="noted-purple sofia-pro more-pick-up-info mb-0">
                   More info
                 </h3>
-                <hr />
-                <h2 className="sofia-pro mb-0">1</h2>
+                <hr className="line-break-1" />
+                <h2 className="sofia-pro mb-0 donate-quantity">1</h2>
                 <h5 className="sofia-pro text-muted">Donation</h5>
-                <hr className="mt-0" />
+                <hr className="line-break-2" />
                 {/* <h3 className="sofia-pro pick-up-price mb-0">$58.29</h3> */}
                 {/* <h3 className="return-type sofia-pro">In cash back</h3> */}
 
@@ -113,9 +116,19 @@ function ViewScanPage() {
 
                 {!confirmed && (
                   <>
-                    <hr className="mt-1" />
+                    <hr className="line-break-3" />
+                    <div className="row">
+                      <div className="col">
+                        <h5 className="sofia-pro text-muted">
+                          Total to pay now
+                        </h5>
+                      </div>
+                      <div className="col">
+                        <h5 className="sofia-pro text-right total-now">$0</h5>
+                      </div>
+                    </div>
                     <div
-                      className="btn btn-primary"
+                      className="btn btn-confirm text-16"
                       style={{
                         background: "#570097",
                         border: "none",
