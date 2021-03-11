@@ -1,0 +1,33 @@
+#PaymentForm {
+  .form-label {
+    font-size: 14px;
+    color: #2e1d3a;
+  }
+
+  .form-control {
+    border: 1px solid #ece4f2;
+  }
+
+  .exp-form {
+    display: inline-flex;
+
+    .separator {
+      display: flex;
+      align-items: center;
+
+      h4 {
+        margin-bottom: 0px !important;
+      }
+    }
+  }
+
+  .btn-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn-save {
+    background: #570097;
+    width: 110px;
+  }
+}
