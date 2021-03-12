@@ -4,6 +4,7 @@ import ReturnScore from "../ReturnsScore";
 import Row from "../Row";
 import EmptyScan from "./EmptyScan";
 import ProductDetails from "./ProductDetails";
+import OnHoverProductCard from "./OnHoverProductCard";
 
 function ProductCard({
   selectable = true,
@@ -25,6 +26,7 @@ function ProductCard({
   scannedItem,
 }) {
   const [scanning, setScanning] = useState(false);
+  const [isHover, setIsHover] = useState(false);
 
   const handleSelection = (e) => {
     if (selected) {
@@ -43,6 +45,8 @@ function ProductCard({
       style={{
         border: selected ? "1px solid rgba(87, 0, 151, 0.8)" : "none",
       }}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
       <div className="card-body pt-3 pb-3 p-0 m-0">
         <Row>
@@ -97,17 +101,24 @@ function ProductCard({
             }}
             onClick={clickable ? onClick : () => {}}
           >
-            <div
-              className="col-sm-6 noted-red sofia-pro return-time-left"
-              style={{
-                color: "#FF1C29",
-              }}
-            >
-              2 days left
-            </div>
-            <div className="col-sm-3 return-score">
-              <ReturnScore score={returnScore} />
-            </div>
+            {isHover && <OnHoverProductCard />}
+
+            {!isHover && (
+              <>
+                <div
+                  className="col-sm-6 noted-red sofia-pro return-time-left"
+                  style={{
+                    color: "#FF1C29",
+                  }}
+                >
+                  2 days left
+                </div>
+                <div className="col-sm-3 return-score">
+                  <ReturnScore score={returnScore} />
+                </div>
+              </>
+            )}
+
             <div className="col-sm-3 return-item-brand">
               <img
                 src="https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png"
