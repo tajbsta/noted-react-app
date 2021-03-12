@@ -53,7 +53,7 @@ const Topnav = () => {
   };
 
   const submitSearch = (keyword) => {
-    dispatch(searchScans(keyword));
+    dispatch(searchScans(keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')));
   };
 
   const onSearchSubmit = (e) => {
