@@ -1,0 +1,90 @@
+#ReturnPolicyModal {
+  .modal-content {
+    background: #ffffff;
+    border: 1px solid #eae8eb;
+    box-shadow: 0px 4px 30px rgba(78, 72, 103, 0.08);
+    border-radius: 8px;
+    height: 382px;
+    width: 680px;
+    left: 0px;
+    top: 0px;
+    border-radius: 8px;
+  }
+
+  .modal-header {
+    border: none;
+
+    .modal-title {
+      font-size: 18px !important;
+      line-height: 24px;
+      color: #2e1d3a;
+      position: absolute;
+      height: 24px;
+      left: 8.24%;
+      right: 76.03%;
+      top: calc(50% - 24px / 2 - 139px);
+    }
+  }
+
+  .brand {
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
+    position: absolute;
+    left: 8.24%;
+    right: 8.24%;
+    top: 20.42%;
+    bottom: 73.3%;
+  }
+
+  .text-score {
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
+    position: absolute;
+    left: 25.24%;
+    right: 8.24%;
+    top: 20.42%;
+    bottom: 73.3%;
+  }
+
+  .info {
+    font-size: 14px;
+    line-height: 22px;
+    color: #2e1d3a;
+    width: 568px;
+    margin-bottom: 16px;
+    position: absolute;
+    left: 8.24%;
+    right: 8.24%;
+    top: 31.94%;
+    bottom: 39.27%;
+  }
+
+  .view-link {
+    font-size: 14px;
+    line-height: 16px;
+    color: #570097;
+    position: absolute;
+    height: 19px;
+    left: 8.24%;
+    top: calc(60% - 19px / 2 + 66.5px);
+  }
+
+  .modal-footer {
+    border: none;
+  }
+
+  .btn-ok {
+    background: #570097;
+    border-radius: 6px;
+    border: none;
+    width: 110px;
+    font-family: "Sofia Pro";
+
+    &:focus {
+      outline: none !important;
+      box-shadow: none;
+    }
+  }
+}

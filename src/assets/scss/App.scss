@@ -32,6 +32,9 @@ html {
 @import "./pages/components/addressform.scss";
 @import "./pages/components/paymentform.scss";
 
+/* Modals */
+@import "./pages/components/modals/returnpolicy.scss";
+
 html,
 body {
   background-color: #faf8fa;

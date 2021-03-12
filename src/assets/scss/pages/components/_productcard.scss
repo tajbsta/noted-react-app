@@ -84,6 +84,12 @@
       font-size: 12px;
       text-decoration-line: underline;
       color: #570097;
+      padding: 0;
+
+      &:focus {
+        outline: none !important;
+        box-shadow: none;
+      }
     }
   }
 }
