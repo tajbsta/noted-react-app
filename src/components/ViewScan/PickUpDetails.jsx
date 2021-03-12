@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Row from "../Row";
-import { Button, Col, Container } from "react-bootstrap";
+import EmptyAddress from "./EmptyAddress";
+import EmptyPayment from "./EmptyPayment";
 
 function PickUpDetails() {
   const [emptyAddress, setEmptyAddress] = useState(true);
@@ -39,29 +39,7 @@ function PickUpDetails() {
           )}
 
           {emptyAddress && (
-            <div
-              id="EmptyState"
-              className="card-body payment-details-card-body pb-3 pl-4 m-0"
-            >
-              <div className="d-flex justify-content-center">
-                <div className="p-0">
-                  <p className="empty-header sofia-pro text-14 line-height-16 margin-bottom">
-                    Pick-up Address
-                  </p>
-                </div>
-              </div>
-              <div>
-                <h4 className="p-0 m-0 sofia-pro text-center empty-sub">
-                  Adding a pick-up address is necessary to proceed.
-                </h4>
-              </div>
-              <div
-                className="btn btn-add-empty text-16"
-                onClick={() => setEmptyAddress(false)}
-              >
-                Add Pick-up Address
-              </div>
-            </div>
+            <EmptyAddress onClick={() => setEmptyAddress(false)} />
           )}
         </div>
       </div>
@@ -87,7 +65,7 @@ function PickUpDetails() {
                   <img
                     className="img-fluid"
                     style={{ width: "38px" }}
-                    src="https://www.flaticon.com/svg/vstatic/svg/633/633611.svg?token=exp=1615466950~hmac=677a11f8938480b839926ee63f628354"
+                    src="https://www.svgrepo.com/show/46490/credit-card.svg"
                     alt="..."
                   />
                 </div>
@@ -106,29 +84,7 @@ function PickUpDetails() {
           )}
 
           {emptyPayment && (
-            <div
-              id="EmptyState"
-              className="card-body payment-details-card-body pb-3 pl-4 m-0"
-            >
-              <div className="d-flex justify-content-center">
-                <div className="p-0">
-                  <p className="empty-header sofia-pro text-14 line-height-16 margin-bottom">
-                    Payment Method
-                  </p>
-                </div>
-              </div>
-              <div>
-                <h4 className="p-0 m-0 sofia-pro text-center empty-sub">
-                  Adding a payment method is necessary to proceed
-                </h4>
-              </div>
-              <div
-                className="btn btn-add-empty text-16"
-                onClick={() => setEmptyPayment(false)}
-              >
-                Add Payment Method
-              </div>
-            </div>
+            <EmptyPayment onClick={() => setEmptyPayment(false)} />
           )}
         </div>
       </div>
