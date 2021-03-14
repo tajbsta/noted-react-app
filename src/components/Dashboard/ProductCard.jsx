@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { GREAT } from "../../constants/returns/scores";
-import ReturnScore from "../ReturnsScore";
-import Row from "../Row";
-import EmptyScan from "./EmptyScan";
-import ProductDetails from "./ProductDetails";
-import OnHoverProductCard from "./OnHoverProductCard";
+import React, { useState } from 'react';
+import { GREAT } from '../../constants/returns/scores';
+import ReturnScore from '../ReturnsScore';
+import Row from '../Row';
+import EmptyScan from './EmptyScan';
+import ProductDetails from './ProductDetails';
+import OnHoverProductCard from './OnHoverProductCard';
 
 function ProductCard({
   selectable = true,
@@ -39,11 +39,11 @@ function ProductCard({
   return (
     <div
       className={`card shadow-sm scanned-item-card w-840 mb-3 p-0 ${
-        clickable && "btn"
+        clickable && 'btn'
       }`}
       key={itemName}
       style={{
-        border: selected ? "1px solid rgba(87, 0, 151, 0.8)" : "none",
+        border: selected ? '1px solid rgba(87, 0, 151, 0.8)' : 'none',
       }}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
@@ -65,10 +65,9 @@ function ProductCard({
           <div
             className="col-sm-1 product-img-container"
             style={{
-              display: "flex",
-              alignItems: "center",
+              display: 'flex',
+              alignItems: 'center',
             }}
-            onClick={clickable ? onClick : () => {}}
           >
             <img
               className="product-img"
@@ -77,7 +76,7 @@ function ProductCard({
               style={{
                 maxWidth: 50,
                 maxHeight: 50,
-                objectFit: "contain",
+                objectFit: 'contain',
               }}
             />
           </div>
@@ -89,17 +88,16 @@ function ProductCard({
               scannedItem,
               returnScore,
               amount,
-              compensationType: "",
+              compensationType: '',
             }}
           />
           <div
             className="col-sm-12 return-details-container"
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyItems: "center",
+              display: 'flex',
+              alignItems: 'center',
+              justifyItems: 'center',
             }}
-            onClick={clickable ? onClick : () => {}}
           >
             {isHover && <OnHoverProductCard />}
 
@@ -108,7 +106,7 @@ function ProductCard({
                 <div
                   className="col-sm-6 noted-red sofia-pro return-time-left"
                   style={{
-                    color: "#FF1C29",
+                    color: '#FF1C29',
                   }}
                 >
                   2 days left

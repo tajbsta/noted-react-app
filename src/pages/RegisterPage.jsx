@@ -55,7 +55,7 @@ export default function RegisterPage() {
         },
       });
 
-      await Auth.signIn(email, password);
+      await Auth.signIn(email, password).then((data) => console.log(data));
 
       history.push('/code');
     } catch (error) {
