@@ -1,18 +1,34 @@
 import axios from "axios";
-import qs from "qs";
+import { getUser } from "./auth";
 
-const { REACT_APP_API_URI } = process.env;
+// import qs from "qs";
 
-const instance = axios.create({ baseURL: REACT_APP_API_URI });
+const { REACT_APP_API_URI, REACT_APP_SCRAPER_API_URI } = process.env;
 
-instance.defaults.paramsSerializer = (params) => qs.stringify(params);
+// const instance = axios.create({ baseURL: REACT_APP_API_URI });
 
-export function attachToken(token) {
-  instance.defaults.headers.common.Authorization = `Bearer ${token}`;
+// instance.defaults.paramsSerializer = (params) => qs.stringify(params);
+
+// export function attachToken(token) {
+//   instance.defaults.headers.common.Authorization = `Bearer ${token}`;
+// }
+
+// export function detachToken() {
+//   delete instance.defaults.headers.common.Authorization;
+// }
+
+export const api = async () => {
+  const user = await getUser();
+
+  return axios.create({
+    baseURL: REACT_APP_API_URI, headers: { 'Authorization': `Bearer ${user.idToken}` }
+  })
 }
 
-export function detachToken() {
-  delete instance.defaults.headers.common.Authorization;
-}
+export const scraperApi = async () => {
+  const user = await getUser();
 
-export default instance;
+  return axios.create({
+    baseURL: REACT_APP_SCRAPER_API_URI, headers: { 'Authorization': `Bearer ${user.idToken}` }
+  })
+}

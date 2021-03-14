@@ -1,4 +1,3 @@
-import { lazy } from 'react';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage';
@@ -30,4 +29,8 @@ export default [
     path: '/code',
     component: Code,
   },
+  {
+    path: '/code/verify',
+    component: Code,
+  }
 ];

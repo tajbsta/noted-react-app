@@ -15,12 +15,12 @@
   justify-content: space-evenly;
 }
 
-.text-curious {
-  font-size: 14px;
-}
-
 .text-list {
   margin-bottom: 23px;
+}
+
+.line-height-16 {
+  line-height: 16.41px;
 }
 
 .launch-scan-btn {
@@ -102,47 +102,13 @@
   left: 160px;
   top: 200px;
 
-  .distributor-name {
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 19.6;
-  }
-
-  .product-name {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 18.79;
-  }
-
-  .product-price {
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 18.2;
-  }
-
   .product-compensation-type {
     font-size: 12px !important;
     line-height: 14px !important;
   }
 
-  .scanned-item-card {
-    background: #ffffff;
-    border: 1px solid #eae8eb;
-    border-radius: 8px;
-  }
-
   .noted-red {
     color: #ff1c29 !important;
-  }
-
-  .purchase-types {
-    font-size: 14px;
-    line-height: 16px;
-    color: #2e1d3a;
-  }
-
-  .purchase-type-checkbox-container {
-    max-width: 5px;
   }
 }
 
@@ -183,10 +149,6 @@
   align-self: center;
   height: 20%;
 }
-.payment-details-card-body {
-  min-height: 232px;
-  max-height: 232px;
-}
 
 // Bottom Footer
 .line-break {
@@ -216,7 +178,6 @@
   font-size: 14px;
   line-height: 16px;
   text-align: center;
-  height: 19px;
   margin-bottom: 11px;
   color: #b1adb3 !important;
 }
@@ -227,4 +188,9 @@
 
 .bottom {
   padding-bottom: 163px;
+}
+
+// Return Category
+.returnable-items {
+  margin-top: 29px !important;
 }

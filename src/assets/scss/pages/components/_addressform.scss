@@ -1,0 +1,25 @@
+#AddressForm {
+  .form-label {
+    font-size: 14px;
+    color: #2e1d3a;
+  }
+
+  .form-control {
+    border: 1px solid #ece4f2;
+  }
+
+  .add-pick-up {
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-done {
+    background: #570097;
+    width: 110px;
+  }
+}

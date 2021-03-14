@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { GREAT } from "../../constants/returns/scores";
-import ReturnScore from "../ReturnsScore";
-import Row from "../Row";
-import EmptyScan from "./EmptyScan";
-import ProductDetails from "./ProductDetails";
+import React, { useState } from 'react';
+import { GREAT } from '../../constants/returns/scores';
+import ReturnScore from '../ReturnsScore';
+import Row from '../Row';
+import EmptyScan from './EmptyScan';
+import ProductDetails from './ProductDetails';
+import OnHoverProductCard from './OnHoverProductCard';
 
 function ProductCard({
   selectable = true,
@@ -25,6 +26,7 @@ function ProductCard({
   scannedItem,
 }) {
   const [scanning, setScanning] = useState(false);
+  const [isHover, setIsHover] = useState(false);
 
   const handleSelection = (e) => {
     if (selected) {
@@ -36,18 +38,20 @@ function ProductCard({
 
   return (
     <div
-      className={`card shadow-sm scanned-item-card mb-3 p-0 ${
-        clickable && "btn"
+      className={`card shadow-sm scanned-item-card w-840 mb-3 p-0 ${
+        clickable && 'btn'
       }`}
       key={itemName}
       style={{
-        border: selected ? "1px solid purple" : "none",
+        border: selected ? '1px solid rgba(87, 0, 151, 0.8)' : 'none',
       }}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
       <div className="card-body pt-3 pb-3 p-0 m-0">
         <Row>
           {selectable && (
-            <div className="row align-items-center p-4">
+            <div className="row align-items-center p-4 product-checkbox">
               <input
                 type="checkbox"
                 checked={selected}
@@ -59,21 +63,20 @@ function ProductCard({
             </div>
           )}
           <div
-            className="col-sm-1 ml-1 mr-3"
+            className="col-sm-1 product-img-container"
             style={{
-              display: "flex",
-              alignItems: "center",
+              display: 'flex',
+              alignItems: 'center',
             }}
-            onClick={clickable ? onClick : () => {}}
           >
             <img
-              className="mr-2"
+              className="product-img"
               src={imageUrl}
               alt=""
               style={{
                 maxWidth: 50,
                 maxHeight: 50,
-                objectFit: "contain",
+                objectFit: 'contain',
               }}
             />
           </div>
@@ -85,29 +88,35 @@ function ProductCard({
               scannedItem,
               returnScore,
               amount,
-              compensationType: "",
+              compensationType: '',
             }}
           />
           <div
             className="col-sm-12 return-details-container"
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyItems: "center",
+              display: 'flex',
+              alignItems: 'center',
+              justifyItems: 'center',
             }}
-            onClick={clickable ? onClick : () => {}}
           >
-            <div
-              className="col-sm-6 noted-red sofia-pro return-time-left"
-              style={{
-                color: "#FF1C29",
-              }}
-            >
-              2 days left
-            </div>
-            <div className="col-sm-3 return-score">
-              <ReturnScore score={returnScore} />
-            </div>
+            {isHover && <OnHoverProductCard />}
+
+            {!isHover && (
+              <>
+                <div
+                  className="col-sm-6 noted-red sofia-pro return-time-left"
+                  style={{
+                    color: '#FF1C29',
+                  }}
+                >
+                  2 days left
+                </div>
+                <div className="col-sm-3 return-score">
+                  <ReturnScore score={returnScore} />
+                </div>
+              </>
+            )}
+
             <div className="col-sm-3 return-item-brand">
               <img
                 src="https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png"

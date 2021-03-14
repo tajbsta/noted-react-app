@@ -1,0 +1,27 @@
+#ReturnCategory {
+  .category-title {
+    display: flex;
+    line-height: 16px;
+  }
+
+  .checkbox {
+    position: relative;
+    bottom: -1px;
+  }
+
+  .purchase-types {
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
+    margin-left: 16px;
+  }
+
+  .question-mark {
+    margin-left: 13.6px;
+    margin-bottom: 14px;
+  }
+
+  .purchase-type-checkbox-container {
+    max-width: 5px;
+  }
+}

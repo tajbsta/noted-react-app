@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import Row from '../Row';
-import ProductCard from './ProductCard';
-import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from "react";
+import Row from "../Row";
+import ProductCard from "./ProductCard";
+import QuestionMarkSvg from "../../assets/icons/QuestionMark.svg";
+import { useHistory } from "react-router-dom";
 
 function ReturnCategory({ scannedItems, typeTitle }) {
   const { push } = useHistory();
@@ -32,37 +32,32 @@ function ReturnCategory({ scannedItems, typeTitle }) {
   };
 
   return (
-    <>
-      <Row className='mb-2'>
-        <div className='ml-3 p-0 purchase-type-checkbox-container'>
-          <input
-            type='checkbox'
-            onChange={handleSelectAll}
-            checked={selected.length === scannedItems.length}
+    <div id="ReturnCategory">
+      <Row>
+        <div className="category-title">
+          <div className="ml-3 p-0 purchase-type-checkbox-container">
+            <input
+              className="checkbox"
+              type="checkbox"
+              onChange={handleSelectAll}
+              checked={selected.length === scannedItems.length}
+            />
+          </div>
+          <h4 className="sofia-pro purchase-types purchase-type-title">
+            {typeTitle}
+          </h4>
+          <img
+            className="question-mark"
+            src={QuestionMarkSvg}
+            alt=""
+            style={{
+              opacity: 0.6,
+            }}
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Tooltip message here :)"
           />
         </div>
-        <h4
-          className='sofia-pro purchase-types purchase-type-title mb-0'
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            marginLeft: 16,
-            textAlign: 'center',
-          }}
-        >
-          {typeTitle}
-        </h4>
-        <img
-          className='ml-3 mb-2 '
-          src={QuestionMarkSvg}
-          alt=''
-          style={{
-            opacity: 0.6,
-          }}
-          data-toggle='tooltip'
-          data-placement='top'
-          title='Tooltip message here :)'
-        />
       </Row>
       {[...scannedItems].map((scannedItem) => {
         return (
@@ -78,7 +73,7 @@ function ReturnCategory({ scannedItems, typeTitle }) {
           />
         );
       })}
-    </>
+    </div>
   );
 }
 

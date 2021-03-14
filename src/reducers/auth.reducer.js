@@ -1,14 +1,7 @@
-import { SET_USER, SIGN_OUT } from '../constants/actions/auth';
+import { SET_USER, SIGN_OUT, SET_GOOGLE_AUTH_CODE } from '../constants/actions/auth';
 
 const initialState = {
-  // email: "",
-  // password: "",
-  // jwtToken: "",
-  // loggedIn: false,
-  // user: null
-  accessToken: null,
-  idToken: null,
-  refreshToken: null,
+  googleAuthCode: null,
   loginMethod: null,
   username: null,
 };
@@ -21,8 +14,13 @@ function auth(state = initialState, { type, data }) {
         ...state,
         ...data,
       };
+    case SET_GOOGLE_AUTH_CODE:
+      return {
+        ...state,
+        googleAuthCode: data.googleAuthCode,
+      };
     case SIGN_OUT:
-      return {};
+      return initialState;
     default:
       return state;
   }
