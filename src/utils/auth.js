@@ -12,11 +12,12 @@ export const getUser = async () => {
         accessToken,
         idToken,
         refreshToken,
-        username: tokenInfo.username
+        userId: tokenInfo.username
     }
 }
 
-export const getUsername = async () => {
+// Cognito userId
+export const getUserId = async () => {
     const user = await getUser()
-    return user.username
+    return user.userId
 }
