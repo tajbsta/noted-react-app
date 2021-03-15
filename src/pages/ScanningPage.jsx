@@ -1,13 +1,13 @@
-import { get, isEmpty } from "lodash";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { storeScan } from "../actions/scans.action";
-import EmptyScan from "../components/Dashboard/EmptyScan";
-import RightCard from "../components/Dashboard/RightCard";
-import Scanning from "../components/Dashboard/Scanning";
-import { scraperStart } from "../utils/scrapeService";
-import Amplify, { API, graphqlOperation } from "aws-amplify";
+import { get, isEmpty } from 'lodash';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { storeScan } from '../actions/scans.action';
+import EmptyScan from '../components/Dashboard/EmptyScan';
+import RightCard from '../components/Dashboard/RightCard';
+import Scanning from '../components/Dashboard/Scanning';
+import { scraperStart } from '../utils/scrapeService';
+import Amplify, { API, graphqlOperation } from 'aws-amplify';
 
 function ScanningPage() {
   const history = useHistory();
@@ -57,7 +57,7 @@ function ScanningPage() {
       // await subscribeScraping(id);
 
       setTimeout(() => {
-        history.push("/dashboard");
+        history.push('/dashboard');
       }, 5000);
     } catch (error) {
       console.log(error.message);
@@ -68,37 +68,37 @@ function ScanningPage() {
 
   useEffect(() => {
     if (!googleAuthCode) {
-      history.push("/request-permission");
+      history.push('/request-permission');
     }
   }, []);
 
   return (
-    <div id="ScanningPage">
-      <div className="container mt-6">
-        <div className="row">
-          <div className="col-sm-9 mt-4 w-840 bottom">
+    <div id='ScanningPage'>
+      <div className='container mt-6'>
+        <div className='row'>
+          <div className='col-sm-9 mt-4 w-840 bottom'>
             {!scanning && (
               <>
-                <h3 className="sofia-pro text-18 mb-4">
+                <h3 className='sofia-pro text-18 mb-4'>
                   Your online purchases - Last 90 Days
                 </h3>
-                <div className="card shadow-sm scanned-item-card mb-2 p-3">
+                <div className='card shadow-sm scanned-item-card mb-2 p-3'>
                   <EmptyScan onScanLaunch={onScanLaunch} />
                 </div>
               </>
             )}
             {scanning && (
               <>
-                <h3 className="sofia-pro text-18 mb-4">
+                <h3 className='sofia-pro text-18 mb-4'>
                   Your online purchases - Last 90 Days
                 </h3>
-                <div className="card shadow-sm scanned-item-card mb-2 p-4">
+                <div className='card shadow-sm scanned-item-card mb-2 p-4'>
                   <Scanning />
                 </div>
               </>
             )}
           </div>
-          <div className="col-sm-3">
+          <div className='col-sm-3'>
             <RightCard
               totalReturns={0}
               potentialReturnValue={0}
