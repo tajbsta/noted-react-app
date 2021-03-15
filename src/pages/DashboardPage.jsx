@@ -30,6 +30,8 @@ function DashboardPage() {
   const [scannedItems, setScannedItems] = useState([]);
   const [searchedScans, setSearchedScans] = useState([]);
 
+  console.log(search);
+
   const customerEmail = get(
     useSelector((state) => state),
     'auth.user.username',
@@ -70,6 +72,8 @@ function DashboardPage() {
 
     if (search.length > 0) {
       setSearchedScans([...filtered]);
+    } else {
+      setSearchedScans([]);
     }
   }, [search]);
 
@@ -86,6 +90,15 @@ function DashboardPage() {
     loadScans();
   };
 
+  const showScanning = () => scanning || (isEmpty(scannedItems) && !scanning);
+
+  const showReturns = () =>
+    !isEmpty(scannedItems) && isEmpty(searchedScans) && isEmpty(search);
+
+  const showSearchScans = () => !isEmpty(searchedScans) && search.length > 0;
+
+  console.log(isEmpty(searchedScans));
+
   return (
     <div>
       <div className='container mt-6'>
@@ -101,7 +114,7 @@ function DashboardPage() {
                 </div>
               </>
             )} */}
-            {(scanning || (isEmpty(scannedItems) && !scanning)) && (
+            {showScanning() && (
               <>
                 <h3 className='sofia-pro text-16'>
                   Your online purchases - Last 90 Days
@@ -113,81 +126,79 @@ function DashboardPage() {
             )}
 
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
-            {!isEmpty(scannedItems) &&
-              isEmpty(searchedScans) &&
-              !(search.length > 0) && (
-                <>
-                  <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
-                    Your online purchases - Last 90 Days
-                  </h3>
-                  <div>
-                    <ReturnCategory
-                      scannedItems={scannedItems}
-                      typeTitle='Last Call!'
-                    />
+            {showReturns() && (
+              <>
+                <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
+                  Your online purchases - Last 90 Days
+                </h3>
+                <div>
+                  <ReturnCategory
+                    scannedItems={scannedItems}
+                    typeTitle='Last Call!'
+                  />
+                </div>
+                <div className='mt-4 returnable-items'>
+                  <ReturnCategory
+                    scannedItems={scannedItems}
+                    typeTitle='Returnable Items'
+                  />
+                </div>
+                <div>
+                  <p className='line-break'>
+                    <span></span>
+                  </p>
+                </div>
+                <div className='mt-4'>
+                  <ReturnCategory
+                    scannedItems={scannedItems}
+                    typeTitle='Donate'
+                  />
+                </div>
+                <div>
+                  <p className='line-break'>
+                    <span></span>
+                  </p>
+                </div>
+                <div>
+                  <div className='row justify-center'>
+                    <div className='col-sm-7 text-center'>
+                      <div className='text-muted text-center sofia-pro line-height-16 text-bottom-title'>
+                        These are all the purchases we found in the past 90 days
+                        from your address {customerEmail}
+                      </div>
+                    </div>
                   </div>
-                  <div className='mt-4 returnable-items'>
-                    <ReturnCategory
-                      scannedItems={scannedItems}
-                      typeTitle='Returnable Items'
-                    />
+                  <div className='row justify-center mt-3'>
+                    <div className='col-sm-6 text-center'>
+                      <div className='text-muted text-center text-cant-find sofia-pro'>
+                        Can’t find one?
+                        <span className='noted-purple sofia-pro line-height-16'>
+                          &nbsp; Add it manually
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <p className='line-break'>
-                      <span></span>
-                    </p>
+                  <div className='row justify-center mt-2'>
+                    <div className='col-sm-6 text-center'>
+                      <div className='text-center noted-purple sofia-pro line-height-16 text-new-email'>
+                        Add new email address
+                      </div>
+                    </div>
                   </div>
-                  <div className='mt-4'>
-                    <ReturnCategory
-                      scannedItems={scannedItems}
-                      typeTitle='Donate'
-                    />
-                  </div>
-                  <div>
-                    <p className='line-break'>
-                      <span></span>
-                    </p>
-                  </div>
-                  <div>
-                    <div className='row justify-center'>
-                      <div className='col-sm-7 text-center'>
-                        <div className='text-muted text-center sofia-pro line-height-16 text-bottom-title'>
-                          These are all the purchases we found in the past 90
-                          days from your address {customerEmail}
+                  <div className='row justify-center mt-2'>
+                    <div className='col-sm-6 text-center'>
+                      <a onClick={onScanLaunch}>
+                        <div className='text-center noted-purple line-height-16 sofia-pro'>
+                          Scan for older items
                         </div>
-                      </div>
-                    </div>
-                    <div className='row justify-center mt-3'>
-                      <div className='col-sm-6 text-center'>
-                        <div className='text-muted text-center text-cant-find sofia-pro'>
-                          Can’t find one?
-                          <span className='noted-purple sofia-pro line-height-16'>
-                            &nbsp; Add it manually
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='row justify-center mt-2'>
-                      <div className='col-sm-6 text-center'>
-                        <div className='text-center noted-purple sofia-pro line-height-16 text-new-email'>
-                          Add new email address
-                        </div>
-                      </div>
-                    </div>
-                    <div className='row justify-center mt-2'>
-                      <div className='col-sm-6 text-center'>
-                        <a onClick={onScanLaunch}>
-                          <div className='text-center noted-purple line-height-16 sofia-pro'>
-                            Scan for older items
-                          </div>
-                        </a>
-                      </div>
+                      </a>
                     </div>
                   </div>
-                </>
-              )}
+                </div>
+              </>
+            )}
             {/* RENDERS SEARCH RESULTS */}
-            {!isEmpty(searchedScans) && search.length > 0 && (
+            {showSearchScans() && (
               <>
                 <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
                   Search Results
