@@ -16,15 +16,6 @@ import { clearSearchQuery, searchScans } from '../actions/runtime.action';
 function DashboardPage() {
   const history = useHistory();
 
-  // useEffect(() => {
-  //   async function loadAuth() {
-  //     const user = await Auth.currentAuthenticatedUser();
-  //     console.log(await Auth.userAttributes(user));
-  //   }
-
-  //   loadAuth();
-  // }, []);
-
   const dispatch = useDispatch();
   const { search } = useSelector(({ runtime: { search } }) => ({ search }));
 
@@ -56,10 +47,8 @@ function DashboardPage() {
       setLoading(false);
 
       setItems([...data.slice(0, 8)]);
-      // dispatch(storeScan({ scannedItems: [...data.slice(0, 8)] }));
     } catch (error) {
       setLoading(false);
-      // setIsScanning(true);
       history.push('/scanning');
     }
   }
@@ -81,12 +70,7 @@ function DashboardPage() {
   }, [search]);
 
   useEffect(() => {
-    // setScannedItems([]);
-    // setScannedItems([...localScannedItems]);
-    // setIsScanning(false);
-    // if (isEmpty(localScannedItems)) {
     loadScans();
-    // }
   }, []);
 
   const onScanLaunch = () => {
