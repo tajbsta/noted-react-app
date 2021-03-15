@@ -8,6 +8,7 @@ import ReturnCategory from '../components/Dashboard/ReturnCategory';
 import RightCard from '../components/Dashboard/RightCard';
 import Scanning from '../components/Dashboard/Scanning';
 import { api } from '../utils/api';
+import {getUsername} from '../utils/auth';
 import Auth from '@aws-amplify/auth';
 import { clearSearchQuery, searchScans } from '../actions/runtime.action';
 
@@ -46,9 +47,10 @@ function DashboardPage() {
     try {
       setScanning(true);
       const client = await api();
+      const username = await getUsername();
 
       const { data } = await client.get(
-        `scans/9dfd011c-6e99-4af1-a4a2-5f207fe2f390`
+        `scans/${username}`
       );
 
       setScannedItems([...data.slice(0, 8)]);
