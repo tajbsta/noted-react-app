@@ -38,6 +38,12 @@
   margin: 0;
 }
 
+.navbar {
+  @media (max-width: 768px) {
+    height: 64px;
+  }
+}
+
 .navbar-collapse {
   position: relative;
   right: 1%;
@@ -46,7 +52,7 @@
 .search {
   border: none;
   background: #f7f5f7;
-  font-family: "Sofia Pro";
+  font-family: 'Sofia Pro';
   font-style: normal;
   font-weight: normal;
   font-size: 16px;

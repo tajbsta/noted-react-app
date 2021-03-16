@@ -38,6 +38,7 @@ export default function AddressForm({
                       <Form.Group>
                         <Form.Label>Full Name</Form.Label>
                         <Form.Control
+                          className='form-control-lg'
                           onChange={handleChange}
                           type='name'
                           name='fullName'
@@ -50,6 +51,7 @@ export default function AddressForm({
                       <Form.Group>
                         <Form.Label>State</Form.Label>
                         <Form.Control
+                          className='form-control-md'
                           as='select'
                           value={state || ''}
                           name='state'
@@ -71,6 +73,7 @@ export default function AddressForm({
                       <Form.Group>
                         <Form.Label>Zip Code</Form.Label>
                         <Form.Control
+                          className='form-control-sm'
                           onChange={handleChange}
                           type='zip code'
                           value={zipCode || ''}
@@ -86,6 +89,7 @@ export default function AddressForm({
                       <Form.Group>
                         <Form.Label>Address Line 1</Form.Label>
                         <Form.Control
+                          className='form-control-lg'
                           onChange={handleChange}
                           type='name'
                           value={line1 || ''}
@@ -97,6 +101,7 @@ export default function AddressForm({
                       <Form.Group>
                         <Form.Label>Phone</Form.Label>
                         <Form.Control
+                          className='form-control-lg'
                           onChange={handleChange}
                           value={formatPhoneNumber(phoneNumber) || ''}
                           name='phoneNumber'
@@ -111,6 +116,7 @@ export default function AddressForm({
                       <Form.Group>
                         <Form.Label>Address Line 2</Form.Label>
                         <Form.Control
+                          className='form-control-lg'
                           type='name'
                           value={line2 || ''}
                           name='line2'
@@ -121,7 +127,7 @@ export default function AddressForm({
 
                     <Col className='add-pick-up'>
                       <div>
-                        <h4 className='noted-purple'>
+                        <h4 className='noted-purple text-instructions'>
                           Add pick-up instructions
                         </h4>
                       </div>

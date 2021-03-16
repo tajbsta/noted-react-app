@@ -6,7 +6,7 @@
   small,
   a,
   button {
-    font-family: "Sofia Pro";
+    font-family: 'Sofia Pro';
   }
 
   h3 {
@@ -38,7 +38,7 @@
     line-height: 28px;
     letter-spacing: 0px;
     color: #21003a;
-    font-family: "Sofia Pro";
+    font-family: 'Sofia Pro';
 
     @media (max-width: 414px) {
       top: 47px;
@@ -61,7 +61,7 @@
     font-size: 14px;
     margin-top: 24px;
     margin-bottom: 24px;
-    font-family: "Sofia Pro";
+    font-family: 'Sofia Pro';
   }
 
   .text-alert {
@@ -86,7 +86,7 @@
     font-size: 14px;
     line-height: 16px;
     color: #aaa5ad !important;
-    font-family: "Sofia Pro";
+    font-family: 'Sofia Pro';
   }
 
   small,
@@ -100,11 +100,15 @@
     font-size: 16px;
     line-height: 19px;
     // font-weight: bold;
-    font-family: "Sofia Pro";
+    font-family: 'Sofia Pro';
+
+    @media only screen and (max-width: 540px) {
+      padding-bottom: 48px;
+    }
   }
 
   .text-login {
-    font-family: "Sofia Pro";
+    font-family: 'Sofia Pro';
     font-weight: normal;
     color: #6aaf6a;
     font-size: 16px;
@@ -112,7 +116,7 @@
   }
 
   .text-forgot {
-    font-family: "Sofia Pro";
+    font-family: 'Sofia Pro';
     font-weight: normal;
     font-size: 16px;
     display: flex;

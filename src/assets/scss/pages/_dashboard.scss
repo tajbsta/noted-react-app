@@ -36,17 +36,46 @@
   border-radius: 8px;
 }
 
+.spinner-container {
+  display: flex;
+  align-items: center;
+
+  .dashboard-spinner {
+    color: #570097;
+  }
+}
+
+// START OF RIGHT CARD
 .right-card {
+  @media (max-width: 540px) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
   .card-label {
     font-size: 12px;
     line-height: 14px;
     color: #0e0018;
     mix-blend-mode: normal;
     opacity: 0.6;
+
+    @media (max-width: 540px) {
+      width: 89px !important;
+    }
   }
 
-  .total-returns {
-    margin-bottom: 16px;
+  .mobile-container {
+    @media (max-width: 540px) {
+      display: inline-flex;
+      width: 100%;
+    }
+
+    .return-value-container {
+      @media (max-width: 540px) {
+        display: flex;
+        justify-content: center;
+      }
+    }
   }
 
   .total-returns {
@@ -88,12 +117,13 @@
     padding: 6px;
 
     .pick-up-btn-lead {
-      font-family: "Sofia Pro";
+      font-family: 'Sofia Pro';
       font-size: 16px;
       line-height: 19px;
     }
   }
 }
+// END OF RIGHT CARD
 
 .left-card {
   position: absolute;
@@ -150,6 +180,12 @@
   height: 20%;
 }
 
+// Search Results
+.empty-search {
+  font-size: 16px;
+  margin-top: 65px;
+}
+
 // Bottom Footer
 .line-break {
   width: 100%;
@@ -161,7 +197,7 @@
   font-size: 14px;
   margin-top: 24px;
   margin-bottom: 24px;
-  font-family: "Sofia Pro";
+  font-family: 'Sofia Pro';
   margin-top: 32px;
 }
 
@@ -188,6 +224,10 @@
 
 .bottom {
   padding-bottom: 163px;
+
+  @media (max-width: 540px) {
+    padding-bottom: 0px;
+  }
 }
 
 // Return Category
