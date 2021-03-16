@@ -15,6 +15,15 @@ export default function AddressForm({
   handleChange,
   setShowEditAddress,
 }) {
+  const disableSubmit = isFormEmpty({
+    fullName,
+    state,
+    zipCode,
+    line1,
+    line2,
+    phoneNumber,
+  });
+
   return (
     <div>
       <div className='container mt-0'>
@@ -32,7 +41,7 @@ export default function AddressForm({
                           onChange={handleChange}
                           type='name'
                           name='fullName'
-                          value={fullName}
+                          value={fullName || ''}
                           isInvalid={errors.fullName}
                         />
                       </Form.Group>
@@ -42,7 +51,7 @@ export default function AddressForm({
                         <Form.Label>State</Form.Label>
                         <Form.Control
                           as='select'
-                          value={state}
+                          value={state || ''}
                           name='state'
                           onChange={handleChange}
                           placeholder='Select State'
@@ -64,7 +73,7 @@ export default function AddressForm({
                         <Form.Control
                           onChange={handleChange}
                           type='zip code'
-                          value={zipCode}
+                          value={zipCode || ''}
                           name='zipCode'
                           maxLength={6}
                         />
@@ -79,7 +88,7 @@ export default function AddressForm({
                         <Form.Control
                           onChange={handleChange}
                           type='name'
-                          value={line1}
+                          value={line1 || ''}
                           name='line1'
                         />
                       </Form.Group>
@@ -89,7 +98,7 @@ export default function AddressForm({
                         <Form.Label>Phone</Form.Label>
                         <Form.Control
                           onChange={handleChange}
-                          value={formatPhoneNumber(phoneNumber)}
+                          value={formatPhoneNumber(phoneNumber) || ''}
                           name='phoneNumber'
                           maxLength={13}
                         />
@@ -103,7 +112,7 @@ export default function AddressForm({
                         <Form.Label>Address Line 2</Form.Label>
                         <Form.Control
                           type='name'
-                          value={line2}
+                          value={line2 || ''}
                           name='line2'
                           onChange={handleChange}
                         />
@@ -120,14 +129,7 @@ export default function AddressForm({
 
                     <Col className='btn-container'>
                       <Button
-                        disabled={isFormEmpty({
-                          fullName,
-                          state,
-                          zipCode,
-                          line1,
-                          line2,
-                          phoneNumber,
-                        })}
+                        disabled={disableSubmit}
                         className='btn-done'
                         onClick={() => setShowEditAddress(false)}
                       >

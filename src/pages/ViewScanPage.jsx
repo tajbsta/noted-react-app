@@ -10,12 +10,15 @@ function ViewScanPage() {
 
   const scans = useSelector((state) => get(state, 'scans', []));
 
-  const { inReturn } = useSelector(({ runtime: { forReturn, lastCall } }) => ({
-    inReturn: [...forReturn, ...lastCall],
-  }));
+  const { inReturn, inDonation } = useSelector(
+    ({ runtime: { forReturn, lastCall, forDonation } }) => ({
+      inReturn: [...forReturn, ...lastCall],
+      inDonation: [...forDonation],
+    })
+  );
 
   const potentialReturnValue = [...inReturn]
-    .map(({ amount }) => amount)
+    .map(({ amount }) => parseFloat(amount))
     .reduce((acc, curr) => (acc += curr), 0);
 
   const forgottenReturns = [...scans].filter(({ id }) => {
@@ -24,11 +27,13 @@ function ViewScanPage() {
 
   const returnFee = Math.floor(Math.random() * 30) + 20;
 
-  const tax = Math.floor(Math.random() * 0.2) + 0.1;
+  const tax = Math.floor(Math.random() * 0.212343) + 0.1234403;
 
   const taxes = returnFee * tax;
 
-  const totalPayment = returnFee + taxes;
+  const totalPayment = (returnFee + taxes).toFixed(2);
+
+  const totalDonations = inDonation.length;
 
   return (
     <div id='ViewScanPage'>
@@ -96,7 +101,7 @@ function ViewScanPage() {
                 {confirmed && (
                   <div>
                     <h3 className='sofia-pro pick-up-price mb-0'>
-                      ${potentialReturnValue.toFixed(2)}
+                      ${potentialReturnValue.toFixed(2) || 0.0}
                     </h3>
                     <h3 className='return-type sofia-pro'>
                       Potential Return Value
@@ -111,7 +116,9 @@ function ViewScanPage() {
 
                 {!confirmed && (
                   <>
-                    <h2 className='sofia-pro mb-0 donate-quantity'>1</h2>
+                    <h2 className='sofia-pro mb-0 donate-quantity'>
+                      {totalDonations}
+                    </h2>
                     <h5 className='sofia-pro text-muted'>Donation</h5>
                     <hr className='line-break-2' />
                     <div className='row'>
