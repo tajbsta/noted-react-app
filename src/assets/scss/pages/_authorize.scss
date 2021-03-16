@@ -184,6 +184,10 @@
       height: 287px;
       margin-bottom: 24px;
 
+      @media (max-width: 540px) {
+        padding-top: 14px;
+      }
+
       // Ipad
       @media (max-width: 768px) {
         width: 56%;
