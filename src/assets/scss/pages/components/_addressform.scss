@@ -2,24 +2,62 @@
   .form-label {
     font-size: 14px;
     color: #2e1d3a;
+    mix-blend-mode: normal;
+    opacity: 0.6;
   }
 
   .form-control {
     border: 1px solid #ece4f2;
   }
 
+  .form-control-lg {
+    height: 38px;
+    width: 352px;
+    left: 0px;
+    top: 22px;
+    border-radius: 4px;
+  }
+
+  .form-control-md {
+    height: 38px;
+    width: 200px;
+    left: 0px;
+    top: 22px;
+    border-radius: 4px;
+  }
+
+  .form-control-sm {
+    height: 38px;
+    width: 139px;
+    left: 0px;
+    top: 22px;
+    border-radius: 4px;
+  }
+
   .add-pick-up {
     display: flex;
     align-items: center;
+
+    .text-instructions {
+      position: absolute;
+      top: 50%;
+    }
   }
 
   .btn-container {
     display: flex;
-    align-items: center;
+    justify-content: flex-end;
   }
 
   .btn-done {
     background: #570097;
     width: 110px;
+    position: absolute;
+    top: 35%;
+    border-color: #570097 !important;
+
+    &:disabled {
+      border-color: #570097 !important;
+    }
   }
 }
