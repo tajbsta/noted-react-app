@@ -1,6 +1,18 @@
 #ViewScanPage {
   padding-bottom: 73px;
 
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+
   p,
   div,
   a,
@@ -62,6 +74,13 @@
     font-size: 14px;
     line-height: 18px;
     width: 120px;
+  }
+
+  .line1 {
+    color: #0e0018;
+    font-size: 14px;
+    line-height: 18px;
+    width: 140px;
   }
 
   .tel {
@@ -146,6 +165,7 @@
     margin-bottom: 16px !important;
     color: #e8e7e9;
   }
+
   .donate-quantity {
     color: #21003a;
   }
@@ -179,12 +199,14 @@
     border-radius: 6px;
     padding: 12px;
   }
+
   // End of Right Card
 
   // Your Products to return section
   .products-return {
     margin-top: 39px;
   }
+
   //  ProductCard stylings inside productcard.scss
 
   // Don't miss out section
@@ -192,6 +214,7 @@
     margin-top: 55px;
     margin-bottom: 17px;
   }
+
   .all-checkbox {
     padding-top: 0px !important;
     padding-bottom: 13px !important;
@@ -202,6 +225,7 @@
     width: 680px;
     margin-bottom: 18px;
   }
+
   .pick-up-day {
     font-size: 16px;
     line-height: 19px;
@@ -277,6 +301,7 @@
   .empty-header {
     color: #2e1d3a;
   }
+
   .empty-sub {
     color: #0e0018;
   }

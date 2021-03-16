@@ -48,12 +48,12 @@ function ProductCard({
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <div className="card-body pt-3 pb-3 p-0 m-0">
+      <div className='card-body pt-3 pb-3 p-0 m-0'>
         <Row>
           {selectable && (
-            <div className="row align-items-center p-4 product-checkbox">
+            <div className='row align-items-center p-4 product-checkbox'>
               <input
-                type="checkbox"
+                type='checkbox'
                 checked={selected}
                 onChange={handleSelection}
                 style={{
@@ -63,16 +63,16 @@ function ProductCard({
             </div>
           )}
           <div
-            className="col-sm-1 product-img-container"
+            className='col-sm-1 product-img-container'
             style={{
               display: 'flex',
               alignItems: 'center',
             }}
           >
             <img
-              className="product-img"
+              className='product-img'
               src={imageUrl}
-              alt=""
+              alt=''
               style={{
                 maxWidth: 50,
                 maxHeight: 50,
@@ -92,36 +92,36 @@ function ProductCard({
             }}
           />
           <div
-            className="col-sm-12 return-details-container"
+            className='col-sm-12 return-details-container'
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyItems: 'center',
             }}
           >
-            {isHover && <OnHoverProductCard />}
+            {isHover && <OnHoverProductCard orderDate={orderDate} />}
 
             {!isHover && (
               <>
                 <div
-                  className="col-sm-6 noted-red sofia-pro return-time-left"
+                  className='col-sm-6 noted-red sofia-pro return-time-left'
                   style={{
                     color: '#FF1C29',
                   }}
                 >
                   2 days left
                 </div>
-                <div className="col-sm-3 return-score">
+                <div className='col-sm-3 return-score'>
                   <ReturnScore score={returnScore} />
                 </div>
               </>
             )}
 
-            <div className="col-sm-3 return-item-brand">
+            <div className='col-sm-3 return-item-brand'>
               <img
-                src="https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png"
-                alt=""
-                className="avatar-img ml-2 rounded-circle noted-border brand-img"
+                src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                alt=''
+                className='avatar-img ml-2 rounded-circle noted-border brand-img'
                 style={{
                   width: 35,
                   height: 35,
