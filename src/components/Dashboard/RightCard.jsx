@@ -22,37 +22,43 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
         <HorizontalLine width='90%' />
         <div className='card-body p-0'>
           <div className='container p-2'>
-            <Row marginTop={3} marginLeft={2}>
-              <div className='col-7 total-returns'>
-                <div className='row card-text mb-0 sofia-pro card-value'>
-                  {totalReturns}
-                </div>
-                <div className='row card-text card-label'>Total Returns</div>
-              </div>
-            </Row>
-            <Row marginTop={3} marginLeft={2} className='p-0'>
-              <div className='col-5'>
-                <div className='row card-text mb-0 sofia-pro card-value'>
-                  ${Number(potentialReturnValue).toFixed(2)}
-                </div>
-                <div className='row small sofia-pro card-label text-potential-value'>
-                  Potential Return Value
-                </div>
-              </div>
-            </Row>
-            <hr />
-            <Row marginTop={3} marginLeft={2} className='p-0'>
-              <div className='col-12 p-0'>
-                <div className='col-sm-8'>
-                  <div className='row mb-0 sofia-pro card-value'>
-                    {donations}
+            <div className='mobile-container'>
+              <Row marginTop={3} marginLeft={2}>
+                <div className='col-7 total-returns'>
+                  <div className='row card-text mb-0 sofia-pro card-value'>
+                    {totalReturns}
                   </div>
-                  <div className='row card-text small sofia-pro card-label total-donations'>
-                    Total Donations
+                  <div className='row card-text card-label'>Total Returns</div>
+                </div>
+              </Row>
+              <Row
+                marginTop={3}
+                marginLeft={2}
+                className='p-0 return-value-container'
+              >
+                <div className='col-5'>
+                  <div className='row card-text mb-0 sofia-pro card-value'>
+                    ${Number(potentialReturnValue).toFixed(2)}
+                  </div>
+                  <div className='row small sofia-pro card-label text-potential-value'>
+                    Potential Return Value
                   </div>
                 </div>
-              </div>
-            </Row>
+              </Row>
+              <hr />
+              <Row marginTop={3} marginLeft={2} className='p-0'>
+                <div className='col-12 p-0'>
+                  <div className='col-sm-8'>
+                    <div className='row mb-0 sofia-pro card-value'>
+                      {donations}
+                    </div>
+                    <div className='row card-text small sofia-pro card-label total-donations'>
+                      Total Donations
+                    </div>
+                  </div>
+                </div>
+              </Row>
+            </div>
             <div
               className='pr-3 pl-3 mt-3 pickup-value'
               style={{
