@@ -39,8 +39,8 @@ function DashboardPage() {
     try {
       setLoading(true);
       const client = await api();
-      // const userId = await getUserId();
-      const userId = '9dfd011c-6e99-4af1-a4a2-5f207fe2f390';
+      const userId = await getUserId();
+      // const userId = '9dfd011c-6e99-4af1-a4a2-5f207fe2f390';
 
       const { data } = await client.get(`scans/${userId}`);
 
