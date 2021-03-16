@@ -5,7 +5,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import './assets/scss/theme.scss';
 import './assets/scss/App.scss';
-// import Code from './pages/Code';
 
 /*
 IMPORTS ROUTES
@@ -22,7 +21,6 @@ function App() {
         <div className='App'>
           <BrowserRouter>
             <Suspense fallback={<div className='loading' />}>
-              {/* <Route path="/code" component={Code} /> */}
               <Route render={(props) => <AppRouteSwitcher {...props} />} />
             </Suspense>
           </BrowserRouter>

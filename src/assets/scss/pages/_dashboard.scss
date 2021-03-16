@@ -45,17 +45,37 @@
   }
 }
 
+// START OF RIGHT CARD
 .right-card {
+  @media (max-width: 540px) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
   .card-label {
     font-size: 12px;
     line-height: 14px;
     color: #0e0018;
     mix-blend-mode: normal;
     opacity: 0.6;
+
+    @media (max-width: 540px) {
+      width: 89px !important;
+    }
   }
 
-  .total-returns {
-    margin-bottom: 16px;
+  .mobile-container {
+    @media (max-width: 540px) {
+      display: inline-flex;
+      width: 100%;
+    }
+
+    .return-value-container {
+      @media (max-width: 540px) {
+        display: flex;
+        justify-content: center;
+      }
+    }
   }
 
   .total-returns {
@@ -103,6 +123,7 @@
     }
   }
 }
+// END OF RIGHT CARD
 
 .left-card {
   position: absolute;
@@ -203,6 +224,10 @@
 
 .bottom {
   padding-bottom: 163px;
+
+  @media (max-width: 540px) {
+    padding-bottom: 0px;
+  }
 }
 
 // Return Category
