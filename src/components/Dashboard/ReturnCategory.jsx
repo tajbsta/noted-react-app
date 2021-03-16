@@ -61,8 +61,8 @@ function ReturnCategory({ scannedItems, typeTitle, compensationType }) {
   };
 
   const removeSelected = (id) => {
-    if (selected.includes(id)) {
-      setSelected([...selected.filter((itemId) => itemId !== id)]);
+    if (selected.map(({ id }) => id).includes(id)) {
+      setSelected([...selected.filter(({ id: itemId }) => itemId !== id)]);
     }
   };
 
@@ -72,7 +72,7 @@ function ReturnCategory({ scannedItems, typeTitle, compensationType }) {
     }
 
     if (selected.length !== scannedItems.length) {
-      setSelected([...scannedItems.map(({ id }) => id)]);
+      setSelected([...scannedItems.map((scannedItem) => scannedItem)]);
     }
   };
 

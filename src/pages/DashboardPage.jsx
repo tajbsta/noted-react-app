@@ -43,7 +43,7 @@ function DashboardPage() {
   );
 
   const potentialReturnValue = [...forReturn, ...lastCall]
-    .map(({ amount }) => Number(amount))
+    .map(({ amount }) => parseFloat(amount))
     .reduce((acc, curr) => (acc += curr), 0);
 
   const localScannedItems =
@@ -55,7 +55,7 @@ function DashboardPage() {
       setLoading(true);
       const client = await api();
       // const userId = await getUserId();
-      const userId = '9dfd011c-6e99-4af1-a4a2-5f207fe2f390';
+      const userId = 'a3aec5c2-ea06-4c21-bea5-6f13e107721f';
 
       const { data } = await client.get(`scans/${userId}`);
 
@@ -226,7 +226,7 @@ function DashboardPage() {
           <div className='col-sm-3'>
             <RightCard
               totalReturns={[...forReturn, ...lastCall].length}
-              potentialReturnValue={~~potentialReturnValue}
+              potentialReturnValue={potentialReturnValue}
               donations={localDonationsCount}
             />
           </div>

@@ -14,7 +14,6 @@ const initialState = {
 };
 
 function runtime(state = initialState, { type, data }) {
-  console.log(data);
   switch (type) {
     case SEARCH:
       return {

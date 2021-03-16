@@ -7,7 +7,6 @@ const initialState = {
 };
 
 function auth(state = initialState, { type, data }) {
-  console.log(type);
   switch (type) {
     case SET_USER:
       return {
