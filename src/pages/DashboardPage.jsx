@@ -132,14 +132,14 @@ function DashboardPage() {
                   <>
                     <div>
                       <ReturnCategory
-                        scannedItems={items.slice(0, 8)}
+                        scannedItems={items.slice(0, 4)}
                         typeTitle='Last Call!'
                         compensationType={LAST_CALL}
                       />
                     </div>
                     <div className='mt-4 returnable-items'>
                       <ReturnCategory
-                        scannedItems={items.slice(9, 18)}
+                        scannedItems={items.slice(5, 9)}
                         typeTitle='Returnable Items'
                         compensationType={FOR_RETURN}
                       />
@@ -151,7 +151,7 @@ function DashboardPage() {
                     </div>
                     <div className='mt-4'>
                       <ReturnCategory
-                        scannedItems={items.slice(19, 28)}
+                        scannedItems={items.slice(10, 14)}
                         typeTitle='Donate'
                         compensationType={FOR_DONATION}
                       />

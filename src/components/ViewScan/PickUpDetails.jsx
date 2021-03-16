@@ -2,29 +2,25 @@ import React, { useState } from 'react';
 import EmptyAddress from './EmptyAddress';
 import EmptyPayment from './EmptyPayment';
 import AddressForm from '../../components/ViewScan/AddressForm';
-import * as Yup from 'yup';
+import PaymentForm from '../../components/ViewScan/PaymentForm';
+
 import { useFormik } from 'formik';
-import { isEmpty } from 'lodash-es';
 import { formatPhoneNumber, isFormEmpty } from '../../utils/form';
+import {
+  paymentAddressSchema,
+  pickUpAddressSchema,
+} from '../../models/formSchema';
 
 function PickUpDetails() {
-  const [emptyAddress, setEmptyAddress] = useState(true);
   const [emptyPayment, setEmptyPayment] = useState(true);
   const [showEditAddress, setShowEditAddress] = useState(false);
+  const [showEditPayment, setShowEditPayment] = useState(false);
 
-  const pickUpAddressSchema = Yup.object({
-    fullName: Yup.string().min(2).required('We need your name'),
-    state: Yup.number().required('State is required'),
-    zipCode: Yup.number().required('Zipcode is required'),
-    line1: Yup.string().min(2).required('Line 1 is required'),
-    line2: Yup.string().min(2).required('Line 2 is required'),
-    phoneNumber: Yup.string().matches(
-      /^(\d{3})(\d{3})(\d{4})$/,
-      'Phone number is not valid'
-    ),
-  });
-
-  const { errors, handleChange, values } = useFormik({
+  const {
+    errors: addressFormErrors,
+    handleChange: handleAddressChange,
+    values: addressFormValues,
+  } = useFormik({
     initialValues: {
       fullName: '',
       state: '',
@@ -36,29 +32,51 @@ function PickUpDetails() {
     validationSchema: pickUpAddressSchema,
   });
 
-  const isAddressFormEmpty = isFormEmpty(values);
+  const {
+    errors: paymentFormErrors,
+    handleChange: handlePaymentChange,
+    values: paymentFormValues,
+  } = useFormik({
+    initialValues: {
+      fullName: '',
+      cardNumber: '',
+      expirationMonth: '',
+      expirationYear: '',
+      cvc: '',
+    },
+    validationSchema: paymentAddressSchema,
+  });
 
-  console.log(values);
+  const isAddressFormEmpty = isFormEmpty(addressFormValues);
+  const isPaymentFormEmpty = isFormEmpty(paymentFormValues);
 
   return (
     <>
-      {!showEditAddress && (
+      {!showEditAddress && !showEditPayment && (
         <h3 className='sofia-pro text-18'>Pick-up details</h3>
       )}
 
       <div className='row'>
+        {showEditPayment && (
+          <PaymentForm
+            {...paymentFormValues}
+            errors={paymentFormErrors}
+            handleChange={handlePaymentChange}
+            setShowEditPayment={setShowEditPayment}
+          />
+        )}
         {showEditAddress && (
           <AddressForm
-            {...values}
-            errors={errors}
-            handleChange={handleChange}
+            {...addressFormValues}
+            errors={addressFormErrors}
+            handleChange={handleAddressChange}
             setShowEditAddress={setShowEditAddress}
           />
         )}
 
         {/* ADDRESS DETAILS */}
 
-        {!showEditAddress && (
+        {!showEditAddress && !showEditPayment && (
           <>
             <div className='col-sm-4'>
               <div className='card shadow-sm'>
@@ -81,20 +99,20 @@ function PickUpDetails() {
                     </div>
                     <div>
                       <h4 className='p-0 m-0 sofia-pro postal-name'>
-                        {values.fullName}
+                        {addressFormValues.fullName}
                       </h4>
                       <h4 className='p-0 m-0 sofia-pro line1'>
-                        {values.line1}
+                        {addressFormValues.line1}
                       </h4>
                       <h4 className='p-0 m-0 sofia-pro line1'>
-                        {values.line2}
+                        {addressFormValues.line2}
                       </h4>
                       <h4 className='p-0 m-0 sofia-pro line1'>
-                        {values.state} {values.zipCode}
+                        {addressFormValues.state} {addressFormValues.zipCode}
                       </h4>
                     </div>
                     <p className='sofia-pro mt-3 tel'>
-                      Tel: {formatPhoneNumber(values.phoneNumber)}
+                      Tel: {formatPhoneNumber(addressFormValues.phoneNumber)}
                     </p>
                     <p className='sofia-pro noted-purple mt-3 btn-add-instructions'>
                       Add pick-up instructions
@@ -110,7 +128,7 @@ function PickUpDetails() {
             {/* PAYMENT DETAILS */}
             <div className='col-sm-4'>
               <div className='card shadow-sm'>
-                {!emptyPayment && (
+                {!isPaymentFormEmpty && !showEditPayment && (
                   <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0'>
                     <div className='title-container'>
                       <div className='p-0'>
@@ -119,7 +137,10 @@ function PickUpDetails() {
                         </p>
                       </div>
                       <div>
-                        <a className='btn-edit sofia-pro text-14 line-height-16'>
+                        <a
+                          className='btn-edit sofia-pro text-14 line-height-16'
+                          onClick={() => setShowEditPayment(true)}
+                        >
                           Edit
                         </a>
                       </div>
@@ -133,24 +154,34 @@ function PickUpDetails() {
                           alt='...'
                         />
                       </div>
-                      <div className='mb-4 text-14 text'>Ending in 9456</div>
+                      <div className='mb-4 text-14 text'>
+                        Ending in{' '}
+                        {paymentFormValues.cardNumber.substr(
+                          paymentFormValues.cardNumber.length - 4
+                        )}
+                      </div>
                     </div>
                     <h3 className='sofia-pro mb-0 mt-2 mb-2 text-14 ine-height-16 c-add'>
                       Card Address
                     </h3>
                     <div>
                       <h4 className='p-0 m-0 sofia-pro postal-name'>
-                        Alexis Jones
+                        {paymentFormValues.fullName}
                       </h4>
+                      <h4 className='p-0 m-0 sofia-pro line1'>
+                        {addressFormValues.line1}
+                      </h4>
+
                       <h4 className='p-0 m-0 sofia-pro postal-address'>
-                        1 Titans Way Nashville, TN 37213 United States
+                        {addressFormValues.line2} {addressFormValues.state}{' '}
+                        {addressFormValues.zipCode}
                       </h4>
                     </div>
                   </div>
                 )}
 
-                {emptyPayment && (
-                  <EmptyPayment onClick={() => setEmptyPayment(false)} />
+                {isPaymentFormEmpty && (
+                  <EmptyPayment onClick={() => setShowEditPayment(true)} />
                 )}
               </div>
             </div>

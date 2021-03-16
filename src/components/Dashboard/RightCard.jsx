@@ -6,6 +6,7 @@ import PickUpButton from './PickUpButton';
 
 function RightCard({ totalReturns, potentialReturnValue, donations }) {
   const history = useHistory();
+
   return (
     <div
       className='col right-card mt-4'
