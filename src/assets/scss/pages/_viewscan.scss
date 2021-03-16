@@ -9,7 +9,7 @@
   }
 
   /* Firefox */
-  input[type=number] {
+  input[type='number'] {
     -moz-appearance: textfield;
   }
 
@@ -22,7 +22,7 @@
   h4,
   h5,
   h6 {
-    font-family: "Sofia Pro";
+    font-family: 'Sofia Pro';
   }
 
   .card {
@@ -115,6 +115,8 @@
 
   .text-price-sched {
     color: #2e1d3a !important;
+    mix-blend-mode: normal;
+    opacity: 0.6;
   }
 
   .call-to-action-container {
@@ -175,6 +177,11 @@
     line-height: 14px;
     color: #0e0018 !important;
     margin-bottom: 0px;
+  }
+
+  .value-label {
+    mix-blend-mode: normal;
+    opacity: 0.6;
   }
 
   .line-break-2 {

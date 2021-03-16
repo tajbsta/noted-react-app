@@ -98,7 +98,7 @@ function ViewScanPage() {
                     <h3 className='sofia-pro pick-up-price mb-0'>
                       ${potentialReturnValue.toFixed(2)}
                     </h3>
-                    <h3 className='return-type sofia-pro'>
+                    <h3 className='return-type sofia-pro value-label'>
                       Potential Return Value
                     </h3>
                     <p className='pick-up-reminder sofia-pro'>
@@ -112,11 +112,13 @@ function ViewScanPage() {
                 {!confirmed && (
                   <>
                     <h2 className='sofia-pro mb-0 donate-quantity'>1</h2>
-                    <h5 className='sofia-pro text-muted'>Donation</h5>
+                    <h5 className='sofia-pro text-muted value-label'>
+                      Donation
+                    </h5>
                     <hr className='line-break-2' />
                     <div className='row'>
                       <div className='col'>
-                        <h5 className='sofia-pro text-muted'>
+                        <h5 className='sofia-pro text-muted value-label'>
                           Return total cost
                         </h5>
                       </div>
@@ -126,7 +128,9 @@ function ViewScanPage() {
                     </div>
                     <div className='row'>
                       <div className='col'>
-                        <h5 className='sofia-pro text-muted'>Taxes</h5>
+                        <h5 className='sofia-pro text-muted value-label'>
+                          Taxes
+                        </h5>
                       </div>
                       <div className='col'>
                         <h5 className='sofia-pro text-right'>
