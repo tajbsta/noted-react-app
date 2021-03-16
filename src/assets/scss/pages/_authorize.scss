@@ -182,19 +182,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 14px;
+    // margin-top: 14px;
 
     img {
       width: 300px;
       height: 287px;
       margin-bottom: 24px;
 
-      @media (max-width: 540px) {
-        padding-top: 14px;
-      }
+      // @media (max-width: 540px) {
+      //   padding-top: 14px;
+      // }
 
       // Ipad
-      @media (max-width: 768px) and (max-width: 1023px) {
+      @media (min-width: 768px) and (max-width: 1023px) {
         width: 56%;
         height: 100%;
       }
