@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { storeScan } from '../actions/scans.action';
-import EmptyScan from '../components/Dashboard/EmptyScan';
 import ReturnCategory from '../components/Dashboard/ReturnCategory';
 import RightCard from '../components/Dashboard/RightCard';
 import Scanning from '../components/Dashboard/Scanning';
 import { api } from '../utils/api';
 import Auth from '@aws-amplify/auth';
-import { clearSearchQuery, searchScans } from '../actions/runtime.action';
+import { clearSearchQuery } from '../actions/runtime.action';
+import { FOR_DONATION, FOR_RETURN } from '../constants/actions/runtime';
 
 function DashboardPage() {
   const history = useHistory();
@@ -30,8 +30,6 @@ function DashboardPage() {
   const [scannedItems, setScannedItems] = useState([]);
   const [searchedScans, setSearchedScans] = useState([]);
 
-  console.log(search);
-
   const customerEmail = get(
     useSelector((state) => state),
     'auth.user.username',
@@ -51,8 +49,8 @@ function DashboardPage() {
         `scans/9dfd011c-6e99-4af1-a4a2-5f207fe2f390`
       );
 
-      setScannedItems([...data.slice(0, 8)]);
-      dispatch(storeScan({ scannedItems: [...data.slice(0, 8)] }));
+      setScannedItems([...data]);
+      dispatch(storeScan({ scannedItems: [...data] }));
 
       setScanning(isEmpty(data));
     } catch (error) {
@@ -97,8 +95,6 @@ function DashboardPage() {
 
   const showSearchScans = () => !isEmpty(searchedScans) && search.length > 0;
 
-  console.log(isEmpty(searchedScans));
-
   return (
     <div>
       <div className='container mt-6'>
@@ -133,14 +129,16 @@ function DashboardPage() {
                 </h3>
                 <div>
                   <ReturnCategory
-                    scannedItems={scannedItems}
+                    scannedItems={scannedItems.slice(0, 8)}
                     typeTitle='Last Call!'
+                    compensationType={FOR_RETURN}
                   />
                 </div>
                 <div className='mt-4 returnable-items'>
                   <ReturnCategory
-                    scannedItems={scannedItems}
+                    scannedItems={scannedItems.slice(9, 18)}
                     typeTitle='Returnable Items'
+                    compensationType={FOR_RETURN}
                   />
                 </div>
                 <div>
@@ -150,8 +148,9 @@ function DashboardPage() {
                 </div>
                 <div className='mt-4'>
                   <ReturnCategory
-                    scannedItems={scannedItems}
+                    scannedItems={scannedItems.slice(19, 27)}
                     typeTitle='Donate'
+                    compensationType={FOR_DONATION}
                   />
                 </div>
                 <div>
