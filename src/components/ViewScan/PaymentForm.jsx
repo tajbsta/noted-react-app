@@ -44,6 +44,7 @@ export default function PaymentForm({
                       <Form.Group>
                         <Form.Label>Cardholder Name</Form.Label>
                         <Form.Control
+                          className='form-control-lg'
                           type='name'
                           name='fullName'
                           value={fullName || ''}
@@ -56,6 +57,7 @@ export default function PaymentForm({
                         <Form.Label>Expiration Date</Form.Label>
                         <div className='exp-form'>
                           <Form.Control
+                            className='form-control-sm'
                             name='expirationMonth'
                             maxLength={2}
                             value={expirationMonth || ''}
@@ -73,6 +75,7 @@ export default function PaymentForm({
                             <h4>&nbsp;&nbsp;/&nbsp;&nbsp;</h4>
                           </div>
                           <Form.Control
+                            className='form-control-sm'
                             name='expirationYear'
                             maxLength={2}
                             value={expirationYear || ''}
@@ -96,6 +99,7 @@ export default function PaymentForm({
                       <Form.Group>
                         <Form.Label>Card Number</Form.Label>
                         <Form.Control
+                          className='form-control-lg'
                           name='cardNumber'
                           value={formatCardNumber(cardNumber) || ''}
                           onChange={handleChange}
@@ -107,6 +111,7 @@ export default function PaymentForm({
                       <Form.Group>
                         <Form.Label>CVC</Form.Label>
                         <Form.Control
+                          className='form-control-sm'
                           name='cvc'
                           value={cvc || ''}
                           onChange={(e) => {

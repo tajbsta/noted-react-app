@@ -2,10 +2,29 @@
   .form-label {
     font-size: 14px;
     color: #2e1d3a;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+    margin-bottom: 3px;
   }
 
   .form-control {
     border: 1px solid #ece4f2;
+  }
+
+  .form-control-lg {
+    height: 38px;
+    width: 352px;
+    left: 0px;
+    top: 22px;
+    border-radius: 4px;
+  }
+
+  .form-control-sm {
+    height: 38px;
+    width: 164px;
+    left: 0px;
+    top: 22px;
+    border-radius: 4px;
   }
 
   .exp-form {
@@ -29,5 +48,10 @@
   .btn-save {
     background: #570097;
     width: 110px;
+    border-color: #570097 !important;
+
+    &:disabled {
+      border-color: #570097 !important;
+    }
   }
 }
