@@ -1,17 +1,22 @@
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, toNumber } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { storeScan } from '../actions/scans.action';
-import EmptyScan from '../components/Dashboard/EmptyScan';
 import ReturnCategory from '../components/Dashboard/ReturnCategory';
 import RightCard from '../components/Dashboard/RightCard';
 import Scanning from '../components/Dashboard/Scanning';
 import { api } from '../utils/api';
 import { getUserId } from '../utils/auth';
 import Auth from '@aws-amplify/auth';
-import { clearSearchQuery, searchScans } from '../actions/runtime.action';
+import { clearSearchQuery } from '../actions/runtime.action';
+import {
+  FOR_DONATION,
+  FOR_RETURN,
+  LAST_CALL,
+} from '../constants/actions/runtime';
+import { number } from 'yup';
 
 function DashboardPage() {
   const history = useHistory();
@@ -23,13 +28,23 @@ function DashboardPage() {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
 
-  console.log(search);
-
   const customerEmail = get(
     useSelector((state) => state),
     'auth.user.username',
     ''
   );
+
+  const { localDonationsCount, lastCall, forReturn } = useSelector(
+    ({ runtime: { forDonation, forReturn, lastCall } }) => ({
+      localDonationsCount: forDonation.length,
+      forReturn,
+      lastCall,
+    })
+  );
+
+  const potentialReturnValue = [...forReturn, ...lastCall]
+    .map(({ amount }) => parseFloat(amount))
+    .reduce((acc, curr) => (acc += curr), 0);
 
   const localScannedItems =
     useSelector((state) => get(state, 'scans', [])) || [];
@@ -40,13 +55,14 @@ function DashboardPage() {
       setLoading(true);
       const client = await api();
       const userId = await getUserId();
-      // const userId = '9dfd011c-6e99-4af1-a4a2-5f207fe2f390';
+      // const userId = 'a3aec5c2-ea06-4c21-bea5-6f13e107721f';
 
       const { data } = await client.get(`scans/${userId}`);
 
       setLoading(false);
 
-      setItems([...data.slice(0, 8)]);
+      setItems([...data]);
+      dispatch(storeScan({ scannedItems: [...data] }));
     } catch (error) {
       setLoading(false);
       history.push('/scanning');
@@ -116,14 +132,16 @@ function DashboardPage() {
                   <>
                     <div>
                       <ReturnCategory
-                        scannedItems={items}
+                        scannedItems={items.slice(0, 4)}
                         typeTitle='Last Call!'
+                        compensationType={LAST_CALL}
                       />
                     </div>
                     <div className='mt-4 returnable-items'>
                       <ReturnCategory
-                        scannedItems={items}
+                        scannedItems={items.slice(5, 9)}
                         typeTitle='Returnable Items'
+                        compensationType={FOR_RETURN}
                       />
                     </div>
                     <div>
@@ -132,7 +150,11 @@ function DashboardPage() {
                       </p>
                     </div>
                     <div className='mt-4'>
-                      <ReturnCategory scannedItems={items} typeTitle='Donate' />
+                      <ReturnCategory
+                        scannedItems={items.slice(10, 14)}
+                        typeTitle='Donate'
+                        compensationType={FOR_DONATION}
+                      />
                     </div>
                     <div>
                       <p className='line-break'>
@@ -203,15 +225,9 @@ function DashboardPage() {
           </div>
           <div className='col-sm-3'>
             <RightCard
-              totalReturns={items.length * 2}
-              potentialReturnValue={
-                items
-                  .map(({ amount }) => {
-                    return Number(amount) | 0;
-                  })
-                  .reduce((acc, curr) => (acc += curr), 0) * 2
-              }
-              donations={items.length}
+              totalReturns={[...forReturn, ...lastCall].length}
+              potentialReturnValue={potentialReturnValue}
+              donations={localDonationsCount}
             />
           </div>
         </div>

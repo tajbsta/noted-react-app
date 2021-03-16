@@ -1,11 +1,12 @@
-import { isEmpty } from 'lodash';
 import React from 'react';
-import { scanned } from '../../_mock';
+import { useHistory } from 'react-router';
 import HorizontalLine from '../HorizontalLine';
 import Row from '../Row';
 import PickUpButton from './PickUpButton';
 
 function RightCard({ totalReturns, potentialReturnValue, donations }) {
+  const history = useHistory();
+
   return (
     <div
       className='col right-card mt-4'
@@ -72,7 +73,9 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
                 backgroundColor='#570097'
                 textColor='white'
                 opacity='0.8'
-                onClick={() => {}}
+                onClick={() => {
+                  history.push('/view-scan');
+                }}
               />
               <PickUpButton
                 leadingText='Pickup later'
