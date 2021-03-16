@@ -87,8 +87,8 @@ function DashboardPage() {
                 <h3 className='sofia-pro text-16'>
                   Your online purchases - Last 90 Days
                 </h3>
-                <div className={`card shadow-sm scanned-item-card mb-2 p-5 `}>
-                  <Spinner animation='border' />
+                <div className='card shadow-sm scanned-item-card mb-2 p-5 spinner-container'>
+                  <Spinner className='dashboard-spinner' animation='border' />
                 </div>
               </>
             )}
@@ -98,7 +98,7 @@ function DashboardPage() {
                 <h3 className='sofia-pro text-16'>
                   Your online purchases - Last 90 Days
                 </h3>
-                <div className={`card shadow-sm scanned-item-card mb-2 p-5 `}>
+                <div className='card shadow-sm scanned-item-card mb-2 p-5'>
                   <Scanning />
                 </div>
               </>
@@ -153,8 +153,8 @@ function DashboardPage() {
                 {!isEmpty(search) && isEmpty(filteredItems) && (
                   <div className='row justify-center'>
                     <div className='col-sm-7 text-center'>
-                      <div className='text-muted text-center sofia-pro line-height-16 text-bottom-title'>
-                        No scans found with the keyword &apos;{search}&apos;
+                      <div className='text-center sofia-pro empty-search'>
+                        No results found.
                       </div>
                     </div>
                   </div>

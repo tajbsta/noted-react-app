@@ -36,6 +36,15 @@
   border-radius: 8px;
 }
 
+.spinner-container {
+  display: flex;
+  align-items: center;
+
+  .dashboard-spinner {
+    color: #570097;
+  }
+}
+
 .right-card {
   .card-label {
     font-size: 12px;
@@ -88,7 +97,7 @@
     padding: 6px;
 
     .pick-up-btn-lead {
-      font-family: "Sofia Pro";
+      font-family: 'Sofia Pro';
       font-size: 16px;
       line-height: 19px;
     }
@@ -150,6 +159,12 @@
   height: 20%;
 }
 
+// Search Results
+.empty-search {
+  font-size: 16px;
+  margin-top: 65px;
+}
+
 // Bottom Footer
 .line-break {
   width: 100%;
@@ -161,7 +176,7 @@
   font-size: 14px;
   margin-top: 24px;
   margin-bottom: 24px;
-  font-family: "Sofia Pro";
+  font-family: 'Sofia Pro';
   margin-top: 32px;
 }
 
