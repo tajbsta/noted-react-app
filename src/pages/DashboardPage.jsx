@@ -1,4 +1,4 @@
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, toNumber } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
@@ -11,7 +11,12 @@ import { api } from '../utils/api';
 import { getUserId } from '../utils/auth';
 import Auth from '@aws-amplify/auth';
 import { clearSearchQuery } from '../actions/runtime.action';
-import { FOR_DONATION, FOR_RETURN } from '../constants/actions/runtime';
+import {
+  FOR_DONATION,
+  FOR_RETURN,
+  LAST_CALL,
+} from '../constants/actions/runtime';
+import { number } from 'yup';
 
 function DashboardPage() {
   const history = useHistory();
@@ -29,6 +34,18 @@ function DashboardPage() {
     ''
   );
 
+  const { localDonationsCount, lastCall, forReturn } = useSelector(
+    ({ runtime: { forDonation, forReturn, lastCall } }) => ({
+      localDonationsCount: forDonation.length,
+      forReturn,
+      lastCall,
+    })
+  );
+
+  const potentialReturnValue = [...forReturn, ...lastCall]
+    .map(({ amount }) => Number(amount))
+    .reduce((acc, curr) => (acc += curr), 0);
+
   const localScannedItems =
     useSelector((state) => get(state, 'scans', [])) || [];
 
@@ -44,7 +61,8 @@ function DashboardPage() {
 
       setLoading(false);
 
-      setItems([...data.slice(0, 8)]);
+      setItems([...data]);
+      dispatch(storeScan({ scannedItems: [...data] }));
     } catch (error) {
       setLoading(false);
       history.push('/scanning');
@@ -114,14 +132,16 @@ function DashboardPage() {
                   <>
                     <div>
                       <ReturnCategory
-                        scannedItems={items}
+                        scannedItems={items.slice(0, 8)}
                         typeTitle='Last Call!'
+                        compensationType={LAST_CALL}
                       />
                     </div>
                     <div className='mt-4 returnable-items'>
                       <ReturnCategory
-                        scannedItems={items}
+                        scannedItems={items.slice(9, 18)}
                         typeTitle='Returnable Items'
+                        compensationType={FOR_RETURN}
                       />
                     </div>
                     <div>
@@ -130,7 +150,11 @@ function DashboardPage() {
                       </p>
                     </div>
                     <div className='mt-4'>
-                      <ReturnCategory scannedItems={items} typeTitle='Donate' />
+                      <ReturnCategory
+                        scannedItems={items.slice(19, 28)}
+                        typeTitle='Donate'
+                        compensationType={FOR_DONATION}
+                      />
                     </div>
                     <div>
                       <p className='line-break'>
@@ -201,15 +225,9 @@ function DashboardPage() {
           </div>
           <div className='col-sm-3'>
             <RightCard
-              totalReturns={items.length * 2}
-              potentialReturnValue={
-                items
-                  .map(({ amount }) => {
-                    return Number(amount) | 0;
-                  })
-                  .reduce((acc, curr) => (acc += curr), 0) * 2
-              }
-              donations={items.length}
+              totalReturns={[...forReturn, ...lastCall].length}
+              potentialReturnValue={~~potentialReturnValue}
+              donations={localDonationsCount}
             />
           </div>
         </div>

@@ -18,3 +18,9 @@ export const FOR_RETURN = 'forReturn';
 
 export const UPDATE_FOR_DONATION = 'UPDATE_FOR_DONATION';
 export const FOR_DONATION = 'forDonation';
+
+/**
+ * LAST CALL
+ */
+export const UPDATE_LAST_CALL = 'UPDATE_LAST_CALL';
+export const LAST_CALL = 'lastCall';

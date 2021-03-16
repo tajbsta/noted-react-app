@@ -3,10 +3,12 @@ import {
   SEARCH,
   UPDATE_FOR_DONATION,
   UPDATE_FOR_RETURN,
+  UPDATE_LAST_CALL,
 } from '../constants/actions/runtime';
 
 const initialState = {
   search: '',
+  lastCall: [],
   forReturn: [],
   forDonation: [],
 };
@@ -33,6 +35,11 @@ function runtime(state = initialState, { type, data }) {
       return {
         ...state,
         forDonation: [...data],
+      };
+    case UPDATE_LAST_CALL:
+      return {
+        ...state,
+        lastCall: [...data],
       };
     default:
       return state;

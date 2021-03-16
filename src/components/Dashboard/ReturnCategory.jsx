@@ -7,8 +7,13 @@ import { useDispatch } from 'react-redux';
 import {
   updateForDonation,
   updateForReturn,
+  updateLastCall,
 } from '../../actions/runtime.action';
-import { FOR_DONATION, FOR_RETURN } from '../../constants/actions/runtime';
+import {
+  FOR_DONATION,
+  FOR_RETURN,
+  LAST_CALL,
+} from '../../constants/actions/runtime';
 
 function ReturnCategory({ scannedItems, typeTitle, compensationType }) {
   const dispatch = useDispatch();
@@ -31,13 +36,21 @@ function ReturnCategory({ scannedItems, typeTitle, compensationType }) {
         })
       );
     }
+
+    if (compensationType === LAST_CALL) {
+      dispatch(
+        updateLastCall({
+          scans: [...selected],
+        })
+      );
+    }
   }, [selected]);
 
   const addSelected = (id) => {
-    if (selected.includes(id)) {
+    if (selected.map(({ id }) => id).includes(id)) {
       return;
     }
-    setSelected([...selected, scannedItems.find((item) => item.id === id).id]);
+    setSelected([...selected, scannedItems.find((item) => item.id === id)]);
     if (compensationType === FOR_RETURN) {
       dispatch(
         updateForReturn({
@@ -96,7 +109,7 @@ function ReturnCategory({ scannedItems, typeTitle, compensationType }) {
           <ProductCard
             key={scannedItem.id}
             scannedItem={scannedItem}
-            selected={selected.includes(scannedItem.id)}
+            selected={selected.map(({ id }) => id).includes(scannedItem.id)}
             addSelected={addSelected}
             removeSelected={removeSelected}
             onClick={() => {
