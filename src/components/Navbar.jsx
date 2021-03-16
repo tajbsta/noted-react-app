@@ -56,12 +56,6 @@ const Topnav = () => {
     dispatch(searchScans(keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')));
   };
 
-  const onSearchSubmit = (e) => {
-    if (e.keyCode === 13 && !isEmpty(e.target.value)) {
-      submitSearch(e.target.value);
-    }
-  };
-
   return (
     <Navbar
       expand={`lg ${showShadow}`}

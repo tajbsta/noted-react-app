@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import AuthorizeImg from "../assets/img/Authorize.svg";
 import { scraperAuth } from "../utils/scrapeService";
