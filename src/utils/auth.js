@@ -6,12 +6,18 @@ export const getUser = async () => {
     const accessToken = res.getAccessToken().getJwtToken();
     const idToken = res.getIdToken().getJwtToken();
     const refreshToken = res.getRefreshToken().getToken();
-    const username = res.getAccessToken().decodePayload().username;
+    const tokenInfo = res.getAccessToken().decodePayload();
 
     return {
         accessToken,
         idToken,
         refreshToken,
-        username
+        userId: tokenInfo.username
     }
+}
+
+// Cognito userId
+export const getUserId = async () => {
+    const user = await getUser()
+    return user.userId
 }
