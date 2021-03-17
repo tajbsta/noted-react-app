@@ -103,7 +103,7 @@ export default function AddressForm({
                         <Form.Control
                           className='form-control-lg'
                           onChange={handleChange}
-                          value={formatPhoneNumber(phoneNumber) || ''}
+                          value={formatPhoneNumber(phoneNumber)}
                           name='phoneNumber'
                           maxLength={13}
                         />

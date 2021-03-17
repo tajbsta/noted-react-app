@@ -323,6 +323,8 @@
 
   .empty-sub {
     color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
   }
 
   .margin-bottom {
@@ -333,7 +335,7 @@
     margin-top: 24px;
     color: #fff;
     border-radius: 6px;
-    padding: 12px;
+    padding: 10px;
     background: #570097;
     border: none;
     width: 215px;
