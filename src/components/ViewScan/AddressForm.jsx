@@ -25,8 +25,6 @@ export default function AddressForm({
       phoneNumber,
     }) || !isFormEmpty({ ...errors });
 
-  console.log(errors);
-
   const renderInlineError = (error) => (
     <small className='form-text p-0 m-0 noted-red'>{error}</small>
   );

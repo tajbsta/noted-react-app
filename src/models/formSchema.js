@@ -15,12 +15,11 @@ export const pickUpAddressSchema = Yup.object({
 });
 
 export const paymentAddressSchema = Yup.object({
-  fullName: Yup.string().min(2).required('We need your name'),
-  cardNumber: Yup.number().required('Card number is required'),
-  expirationMonth: Yup.number()
-    .min(2)
-    .max(2)
-    .required('Expiration month is required'),
+  fullName: Yup.string().required('We need your name'),
+  cardNumber: Yup.string()
+    .min(19, 'Enter a valid card number')
+    .required('Card number is required'),
+  expirationMonth: Yup.number().required('Expiration month is required'),
   expirationYear: Yup.string()
     .min(2)
     .max(2)
