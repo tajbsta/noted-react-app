@@ -206,12 +206,22 @@
   }
 
   .btn-confirm {
-    margin-top: 13px;
+    margin-top: 6px;
     color: #fff;
     border-radius: 6px;
     padding: 12px;
   }
 
+  .btn-more-info {
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+
+    &:focus {
+      outline: none !important;
+      box-shadow: none;
+    }
+  }
   // End of Right Card
 
   // Your Products to return section
@@ -272,9 +282,11 @@
     color: #0e0018;
     mix-blend-mode: normal;
     opacity: 0.6;
+    margin-bottom: 0px;
   }
 
   .pick-up-reminder {
+    margin-top: 9px;
     width: 216px;
     font-style: normal;
     font-weight: normal;
@@ -316,6 +328,8 @@
 
   .empty-sub {
     color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
   }
 
   .margin-bottom {
@@ -326,7 +340,7 @@
     margin-top: 24px;
     color: #fff;
     border-radius: 6px;
-    padding: 12px;
+    padding: 10px;
     background: #570097;
     border: none;
     width: 215px;

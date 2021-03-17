@@ -4,9 +4,11 @@ import PickUpConfirmed from '../components/ViewScan/PickUpConfirmed';
 import PickUpDetails from '../components/ViewScan/PickUpDetails';
 import { useSelector } from 'react-redux';
 import { get } from 'lodash';
+import SizeGuideModal from './../components/Dashboard/modals/SizeGuideModal';
 
 function ViewScanPage() {
   const [confirmed, setconfirmed] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
 
   const scans = useSelector((state) => get(state, 'scans', []));
 
@@ -93,9 +95,19 @@ function ViewScanPage() {
                 <h3 className='box-size-description'>
                   All products need to fit in a 12”W x 12”H x 20”L box
                 </h3>
-                <h3 className='noted-purple sofia-pro more-pick-up-info mb-0'>
-                  More info
-                </h3>
+                <button
+                  className='btn btn-more-info'
+                  onClick={() => setModalShow(true)}
+                >
+                  <h3 className='noted-purple sofia-pro more-pick-up-info mb-0'>
+                    More info
+                  </h3>
+                </button>
+                <SizeGuideModal
+                  show={modalShow}
+                  onHide={() => setModalShow(false)}
+                />
+
                 <hr className='line-break-1' />
 
                 {confirmed && (
@@ -116,10 +128,16 @@ function ViewScanPage() {
 
                 {!confirmed && (
                   <>
-                    <h2 className='sofia-pro mb-0 donate-quantity'>1</h2>
+                    {/* <h2 className='sofia-pro mb-0 donate-quantity'>1</h2>
                     <h5 className='sofia-pro text-muted value-label'>
                       Donation
-                    </h5>
+                    </h5> */}
+                    <h3 className='sofia-pro pick-up-price mb-0'>
+                      ${potentialReturnValue.toFixed(2) || 0.0}
+                    </h3>
+                    <h3 className='return-type sofia-pro value-label'>
+                      Potential Return Value
+                    </h3>
                     <hr className='line-break-2' />
                     <div className='row'>
                       <div className='col'>
