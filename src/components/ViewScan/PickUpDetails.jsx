@@ -12,7 +12,6 @@ import {
 } from '../../models/formSchema';
 
 function PickUpDetails() {
-  const [emptyPayment, setEmptyPayment] = useState(true);
   const [showEditAddress, setShowEditAddress] = useState(false);
   const [showEditPayment, setShowEditPayment] = useState(false);
 

@@ -15,14 +15,21 @@ export default function AddressForm({
   handleChange,
   setShowEditAddress,
 }) {
-  const disableSubmit = isFormEmpty({
-    fullName,
-    state,
-    zipCode,
-    line1,
-    line2,
-    phoneNumber,
-  });
+  const disableSubmit =
+    isFormEmpty({
+      fullName,
+      state,
+      zipCode,
+      line1,
+      line2,
+      phoneNumber,
+    }) || !isFormEmpty({ ...errors });
+
+  console.log(errors);
+
+  const renderInlineError = (error) => (
+    <small className='form-text p-0 m-0 noted-red'>{error}</small>
+  );
 
   return (
     <div>
@@ -38,13 +45,14 @@ export default function AddressForm({
                       <Form.Group>
                         <Form.Label>Full Name</Form.Label>
                         <Form.Control
+                          isInvalid={errors.fullName}
                           className='form-control-lg'
                           onChange={handleChange}
                           type='name'
                           name='fullName'
                           value={fullName || ''}
-                          isInvalid={errors.fullName}
                         />
+                        {renderInlineError(errors.fullName)}
                       </Form.Group>
                     </Col>
                     <Col>
@@ -57,16 +65,21 @@ export default function AddressForm({
                           name='state'
                           onChange={handleChange}
                           placeholder='Select State'
+                          defaultValue='null'
                         >
-                          {USA_STATES.map(({ name, abbreviation }, index) => (
+                          {[
+                            { abbreviation: '', name: 'Select State' },
+                            ...USA_STATES,
+                          ].map(({ name, abbreviation }, index) => (
                             <option
                               value={abbreviation}
-                              key={`${index - name - abbreviation}`}
+                              key={`${abbreviation}`}
                             >
                               {name}
                             </option>
                           ))}
                         </Form.Control>
+                        {renderInlineError(errors.state)}
                       </Form.Group>
                     </Col>
                     <Col>
@@ -74,12 +87,22 @@ export default function AddressForm({
                         <Form.Label>Zip Code</Form.Label>
                         <Form.Control
                           className='form-control-sm'
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            const re = /^[0-9\b]+$/;
+                            if (
+                              e.target.value === '' ||
+                              re.test(e.target.value)
+                            ) {
+                              handleChange(e);
+                            }
+                          }}
                           type='zip code'
                           value={zipCode || ''}
                           name='zipCode'
                           maxLength={6}
                         />
+                        {zipCode.length > 0 &&
+                          renderInlineError(errors.zipCode)}
                       </Form.Group>
                     </Col>
                   </Row>
@@ -95,6 +118,7 @@ export default function AddressForm({
                           value={line1 || ''}
                           name='line1'
                         />
+                        {line1.length > 0 && renderInlineError(errors.line1)}
                       </Form.Group>
                     </Col>
                     <Col>
@@ -122,6 +146,7 @@ export default function AddressForm({
                           name='line2'
                           onChange={handleChange}
                         />
+                        {line2.length > 0 && renderInlineError(errors.line2)}
                       </Form.Group>
                     </Col>
 
