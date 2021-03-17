@@ -23,6 +23,7 @@ function ProductCard({
     imageUrl,
     orderDate,
   },
+  disabled,
   scannedItem,
 }) {
   const [scanning, setScanning] = useState(false);
@@ -53,6 +54,7 @@ function ProductCard({
           {selectable && (
             <div className='row align-items-center p-4 product-checkbox'>
               <input
+                disabled={disabled}
                 type='checkbox'
                 checked={selected}
                 onChange={handleSelection}
