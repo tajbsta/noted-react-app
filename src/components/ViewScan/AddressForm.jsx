@@ -45,7 +45,11 @@ export default function AddressForm({
                         <Form.Control
                           isInvalid={errors.fullName}
                           className='form-control-lg'
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            if (/^[a-zA-Z\s]*$/g.test(e.target.value)) {
+                              handleChange(e);
+                            }
+                          }}
                           type='name'
                           name='fullName'
                           value={fullName || ''}
@@ -124,7 +128,15 @@ export default function AddressForm({
                         <Form.Label>Phone</Form.Label>
                         <Form.Control
                           className='form-control-lg'
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            const re = /^[0-9\b]+$/;
+                            if (
+                              e.target.value === '' ||
+                              re.test(e.target.value)
+                            ) {
+                              handleChange(e);
+                            }
+                          }}
                           value={formatPhoneNumber(phoneNumber) || ''}
                           name='phoneNumber'
                           maxLength={13}

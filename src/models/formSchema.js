@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
 export const pickUpAddressSchema = Yup.object({
-  fullName: Yup.string().min(2).required('We need your name'),
+  fullName: Yup.string().required('We need your name'),
   state: Yup.string().required('State is required'),
   zipCode: Yup.number()
     .min(4, 'Enter a valid zip code')
