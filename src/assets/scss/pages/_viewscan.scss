@@ -1,4 +1,5 @@
 #ViewScanPage {
+
   padding-bottom: 73px;
 
   /* Chrome, Safari, Edge, Opera */
@@ -11,6 +12,10 @@
   /* Firefox */
   input[type='number'] {
     -moz-appearance: textfield;
+  }
+
+  .noted-red {
+    color: #ff1c29 !important;
   }
 
   p,

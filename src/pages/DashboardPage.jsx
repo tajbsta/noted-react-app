@@ -135,6 +135,7 @@ function DashboardPage() {
                         scannedItems={items.slice(0, 4)}
                         typeTitle='Last Call!'
                         compensationType={LAST_CALL}
+                        disabled={localDonationsCount > 0}
                       />
                     </div>
                     <div className='mt-4 returnable-items'>
@@ -142,6 +143,7 @@ function DashboardPage() {
                         scannedItems={items.slice(5, 9)}
                         typeTitle='Returnable Items'
                         compensationType={FOR_RETURN}
+                        disabled={localDonationsCount > 0}
                       />
                     </div>
                     <div>
@@ -149,11 +151,12 @@ function DashboardPage() {
                         <span></span>
                       </p>
                     </div>
-                    <div className='mt-4'>
+                    <div className='mt-4' unselectable={true}>
                       <ReturnCategory
                         scannedItems={items.slice(10, 14)}
                         typeTitle='Donate'
                         compensationType={FOR_DONATION}
+                        disabled={[...lastCall, ...forReturn].length > 0}
                       />
                     </div>
                     <div>

@@ -15,7 +15,12 @@ import {
   LAST_CALL,
 } from '../../constants/actions/runtime';
 
-function ReturnCategory({ scannedItems, typeTitle, compensationType }) {
+function ReturnCategory({
+  scannedItems,
+  typeTitle,
+  compensationType,
+  disabled,
+}) {
   const dispatch = useDispatch();
   const { push } = useHistory();
   const [selected, setSelected] = useState([]);
@@ -82,6 +87,7 @@ function ReturnCategory({ scannedItems, typeTitle, compensationType }) {
         <div className='category-title'>
           <div className='ml-3 p-0 purchase-type-checkbox-container'>
             <input
+              disabled={disabled}
               className='checkbox'
               type='checkbox'
               onChange={handleSelectAll}
@@ -107,6 +113,7 @@ function ReturnCategory({ scannedItems, typeTitle, compensationType }) {
       {[...scannedItems].map((scannedItem) => {
         return (
           <ProductCard
+            disabled={disabled}
             key={scannedItem.id}
             scannedItem={scannedItem}
             selected={selected.map(({ id }) => id).includes(scannedItem.id)}

@@ -12,13 +12,14 @@ export default function PaymentForm({
   handleChange,
   setShowEditPayment,
 }) {
-  const disableSubmit = isFormEmpty({
-    fullName,
-    cardNumber,
-    expirationMonth,
-    expirationYear,
-    cvc,
-  });
+  const disableSubmit =
+    isFormEmpty({
+      fullName,
+      cardNumber,
+      expirationMonth,
+      expirationYear,
+      cvc,
+    }) || !isFormEmpty({ ...errors });
 
   function formatCardNumber(value) {
     return value
@@ -29,6 +30,12 @@ export default function PaymentForm({
         return str + (!i || i % 4 ? '' : '-') + l;
       }, '');
   }
+
+  const renderInlineError = (error) => (
+    <small className='form-text p-0 m-0 noted-red'>{error}</small>
+  );
+
+  console.log(errors);
 
   return (
     <div>
@@ -50,6 +57,7 @@ export default function PaymentForm({
                           value={fullName || ''}
                           onChange={handleChange}
                         />
+                        {renderInlineError(errors.fullName)}
                       </Form.Group>
                     </Col>
                     <Col>
@@ -90,6 +98,7 @@ export default function PaymentForm({
                             }}
                           />
                         </div>
+                        {renderInlineError(errors.expirationYear)}
                       </Form.Group>
                     </Col>
                   </Row>
@@ -105,6 +114,7 @@ export default function PaymentForm({
                           onChange={handleChange}
                           maxLength={20}
                         />
+                        {renderInlineError(errors.cardNumber)}
                       </Form.Group>
                     </Col>
                     <Col xs={6} md={3}>
