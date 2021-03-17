@@ -207,6 +207,16 @@
     padding: 12px;
   }
 
+  .btn-more-info {
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+
+    &:focus {
+      outline: none !important;
+      box-shadow: none;
+    }
+  }
   // End of Right Card
 
   // Your Products to return section
@@ -267,9 +277,11 @@
     color: #0e0018;
     mix-blend-mode: normal;
     opacity: 0.6;
+    margin-bottom: 0px;
   }
 
   .pick-up-reminder {
+    margin-top: 9px;
     width: 216px;
     font-style: normal;
     font-weight: normal;

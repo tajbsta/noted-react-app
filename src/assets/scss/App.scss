@@ -6,34 +6,35 @@
 */
 
 @font-face {
-  font-family: "Sofia Pro";
-  src: url("../fonts/SofiaPro/Sofia\ Pro\ Regular.otf") format("opentype");
+  font-family: 'Sofia Pro';
+  src: url('../fonts/SofiaPro/Sofia\ Pro\ Regular.otf') format('opentype');
 }
 html {
   background-color: white;
 }
 
 /* Pages styling */
-@import "./pages/register.scss";
-@import "./pages/login.scss";
-@import "./pages/forgotpass.scss";
-@import "./pages/resetpass.scss";
-@import "./pages/authorize.scss";
-@import "./pages/code.scss";
-@import "./pages/dashboard.scss";
-@import "./pages/scanning.scss";
-@import "./pages/viewscan.scss";
+@import './pages/register.scss';
+@import './pages/login.scss';
+@import './pages/forgotpass.scss';
+@import './pages/resetpass.scss';
+@import './pages/authorize.scss';
+@import './pages/code.scss';
+@import './pages/dashboard.scss';
+@import './pages/scanning.scss';
+@import './pages/viewscan.scss';
 
 /* Components in Pages styling */
-@import "./pages/components/brandlogo.scss";
-@import "./pages/components/navbar.scss";
-@import "./pages/components/returncategory.scss";
-@import "./pages/components/productcard.scss";
-@import "./pages/components/addressform.scss";
-@import "./pages/components/paymentform.scss";
+@import './pages/components/brandlogo.scss';
+@import './pages/components/navbar.scss';
+@import './pages/components/returncategory.scss';
+@import './pages/components/productcard.scss';
+@import './pages/components/addressform.scss';
+@import './pages/components/paymentform.scss';
 
 /* Modals */
-@import "./pages/components/modals/returnpolicy.scss";
+@import './pages/components/modals/returnpolicy.scss';
+@import './pages/components/modals/sizeguide.scss';
 
 html,
 body {
