@@ -1,5 +1,15 @@
 import { Auth } from "aws-amplify";
 
+export const isAuthenticated = async () => {
+    try {
+        const session = await Auth.currentSession()
+        return session.isValid();
+    } catch (error) {
+        console.log(error)
+        return false;
+    }
+}
+
 export const getUser = async () => {
     const res = await Auth.currentSession();
 
