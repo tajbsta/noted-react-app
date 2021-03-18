@@ -52,6 +52,14 @@ const Topnav = () => {
       });
   };
 
+  const profile = () => {
+    history.push('/profile');
+  };
+
+  const settings = () => {
+    history.push('/settings');
+  };
+
   const submitSearch = (keyword) => {
     dispatch(searchScans(keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')));
   };
@@ -70,69 +78,69 @@ const Topnav = () => {
       >
         <BrandLogoSvg />
       </Navbar.Brand>
-      {['/dashboard', '/view-scan'].includes(pathname) && (
-        <>
-          <Container className='ml-3'>
-            <div className='input-group input-group-lg input-group-merge background-color'>
-              <input
-                type='text'
-                className='form-control form-control-prepended list-search background-color sofia-pro text-16 color'
-                placeholder='Search purchases'
-                onChange={(e) => submitSearch(e.target.value)}
-              />
-              <div className='input-group-prepend'>
-                <div className='input-group-text background-color'>
-                  <span className='fe fe-search'>
-                    <img src={Search} />
-                  </span>
-                </div>
+      {/* {['/dashboard', '/view-scan'].includes(pathname) && ( */}
+      <>
+        <Container className='ml-3'>
+          <div className='input-group input-group-lg input-group-merge background-color'>
+            <input
+              type='text'
+              className='form-control form-control-prepended list-search background-color sofia-pro text-16 color'
+              placeholder='Search purchases'
+              onChange={(e) => submitSearch(e.target.value)}
+            />
+            <div className='input-group-prepend'>
+              <div className='input-group-text background-color'>
+                <span className='fe fe-search'>
+                  <img src={Search} />
+                </span>
               </div>
             </div>
-          </Container>
-          <button
-            className='navbar-toggler'
-            type='button'
-            data-toggle='collapse'
-            data-target='#navbar-list-4'
-            aria-controls='navbarNav'
-            aria-expanded='false'
-            aria-label='Toggle navigation'
-          >
-            <span className='navbar-toggler-icon'></span>
-          </button>
-          <div className='collapse navbar-collapse' id='navbar-list-4'>
-            <ul className='navbar-nav'>
-              <li className='nav-item dropdown'>
-                <a
-                  className='nav-link dropdown-toggle'
-                  href='#'
-                  id='navbarDropdownMenuLink'
-                  role='button'
-                  data-toggle='dropdown'
-                  aria-haspopup='true'
-                  aria-expanded='false'
-                >
-                  <img src={ProfileIcon} width='30' height='30' />
-                </a>
-                <div
-                  className='dropdown-menu'
-                  aria-labelledby='navbarDropdownMenuLink'
-                >
-                  {/* <a className="dropdown-item" href="#">
-                    Dashboard
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Edit Profile
-                  </a> */}
-                  <button className='dropdown-item sofia-pro' onClick={logout}>
-                    Log Out
-                  </button>
-                </div>
-              </li>
-            </ul>
           </div>
-        </>
-      )}
+        </Container>
+        <button
+          className='navbar-toggler'
+          type='button'
+          data-toggle='collapse'
+          data-target='#navbar-list-4'
+          aria-controls='navbarNav'
+          aria-expanded='false'
+          aria-label='Toggle navigation'
+        >
+          <span className='navbar-toggler-icon'></span>
+        </button>
+        <div className='collapse navbar-collapse' id='navbar-list-4'>
+          <ul className='navbar-nav'>
+            <li className='nav-item dropdown'>
+              <a
+                className='nav-link dropdown-toggle'
+                href='#'
+                id='navbarDropdownMenuLink'
+                role='button'
+                data-toggle='dropdown'
+                aria-haspopup='true'
+                aria-expanded='false'
+              >
+                <img src={ProfileIcon} width='30' height='30' />
+              </a>
+              <div
+                className='dropdown-menu'
+                aria-labelledby='navbarDropdownMenuLink'
+              >
+                <button className='dropdown-item sofia-pro' onClick={profile}>
+                  Profile
+                </button>
+                <button className='dropdown-item sofia-pro' onClick={settings}>
+                  Settings
+                </button>
+                <button className='dropdown-item sofia-pro' onClick={logout}>
+                  Log Out
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </>
+      {/* )} */}
     </Navbar>
   );
 };

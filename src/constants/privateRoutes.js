@@ -1,5 +1,7 @@
 import { lazy } from 'react';
 import AuthorizePage from '../pages/AuthorizePage';
+import ProfilePage from '../pages/ProfilePage';
+import SettingsPage from '../pages/SettingsPage';
 
 const DashboardPage = lazy(() => import('../pages/DashboardPage'));
 const ViewScanPage = lazy(() => import('../pages/ViewScanPage'));
@@ -22,4 +24,6 @@ export default [
     isSecure: true,
   },
   { path: '/scanning', component: ScanningPage, isSecured: true },
+  { path: '/profile', component: ProfilePage, isSecured: true },
+  { path: '/settings', component: SettingsPage, isSecured: true },
 ];
