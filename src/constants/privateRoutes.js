@@ -1,5 +1,7 @@
 import { lazy } from 'react';
 import AuthorizePage from '../pages/AuthorizePage';
+import ProfilePage from '../pages/ProfilePage';
+import SettingsPage from '../pages/SettingsPage';
 
 const DashboardPage = lazy(() => import('../pages/DashboardPage'));
 const ViewScanPage = lazy(() => import('../pages/ViewScanPage'));
@@ -19,4 +21,6 @@ export default [
     component: ViewScanPage,
   },
   { path: '/scanning', component: ScanningPage },
+  { path: '/profile', component: ProfilePage },
+  { path: '/settings', component: SettingsPage },
 ];

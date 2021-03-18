@@ -1,0 +1,59 @@
+#UserInfo {
+  background-color: #faf8fa;
+  position: absolute;
+  width: 248px;
+  height: 316px;
+  top: 20%;
+
+  .card-body {
+    background-color: #faf8fa;
+  }
+
+  .avatar-img {
+    background: #fff;
+  }
+
+  .name {
+    font-size: 18px;
+    line-height: 24px;
+    color: #2e1d3a;
+  }
+
+  .date {
+    font-size: 12px;
+    line-height: 14px;
+    text-align: center;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
+  .total {
+    font-size: 22px;
+    line-height: 26px;
+    color: #21003a;
+  }
+
+  .total-label {
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
+  .btn-primary {
+    position: absolute;
+    height: 52px;
+    left: 0px;
+    right: 0px;
+    top: 264px;
+    border: none;
+    background: #eee4f6;
+    border-radius: 6px;
+    font-size: 16px;
+    line-height: 19px;
+    padding-top: 16px;
+    color: #570097;
+  }
+}

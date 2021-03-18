@@ -1,0 +1,28 @@
+#Settings {
+  #leftCard {
+    background: #faf8fa;
+    border: none;
+    box-shadow: none;
+  }
+
+  .card-title {
+    font-family: 'Sofia Pro';
+    font-size: 18px;
+    line-height: 24px;
+    color: #2e1d3a;
+  }
+
+  ul,
+  li,
+  a {
+    font-family: 'Sofia Pro';
+    font-size: 14px;
+    line-height: 16px;
+    color: #6c6372;
+
+    &:hover,
+    &:active {
+      color: #570097;
+    }
+  }
+}

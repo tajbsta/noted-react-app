@@ -52,6 +52,14 @@ const Topnav = () => {
       });
   };
 
+  const profile = () => {
+    history.push('/profile');
+  };
+
+  const settings = () => {
+    history.push('/settings');
+  };
+
   const submitSearch = (keyword) => {
     dispatch(searchScans(keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')));
   };
@@ -70,7 +78,9 @@ const Topnav = () => {
       >
         <BrandLogoSvg />
       </Navbar.Brand>
-      {['/dashboard', '/view-scan'].includes(pathname) && (
+      {['/dashboard', '/view-scan', '/profile', '/settings'].includes(
+        pathname
+      ) && (
         <>
           <Container className='ml-3'>
             <div className='input-group input-group-lg input-group-merge background-color'>
@@ -118,12 +128,15 @@ const Topnav = () => {
                   className='dropdown-menu'
                   aria-labelledby='navbarDropdownMenuLink'
                 >
-                  {/* <a className="dropdown-item" href="#">
-                    Dashboard
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Edit Profile
-                  </a> */}
+                  <button className='dropdown-item sofia-pro' onClick={profile}>
+                    Profile
+                  </button>
+                  <button
+                    className='dropdown-item sofia-pro'
+                    onClick={settings}
+                  >
+                    Settings
+                  </button>
                   <button className='dropdown-item sofia-pro' onClick={logout}>
                     Log Out
                   </button>
