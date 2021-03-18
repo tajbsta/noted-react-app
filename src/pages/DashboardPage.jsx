@@ -16,7 +16,6 @@ import {
   FOR_RETURN,
   LAST_CALL,
 } from '../constants/actions/runtime';
-import { number } from 'yup';
 
 function DashboardPage() {
   const history = useHistory();

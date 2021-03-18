@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import HorizontalLine from '../HorizontalLine';
 import Row from '../Row';
@@ -6,6 +7,14 @@ import PickUpButton from './PickUpButton';
 
 function RightCard({ totalReturns, potentialReturnValue, donations }) {
   const history = useHistory();
+  const { inReturn, inDonation } = useSelector(
+    ({ runtime: { forReturn, lastCall, forDonation } }) => ({
+      inReturn: [...forReturn, ...lastCall],
+      inDonation: [...forDonation],
+    })
+  );
+
+  const enablePickUpButton = inReturn.length > 0 || inDonation.length > 0;
 
   return (
     <div
@@ -46,6 +55,7 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
                   </div>
                 </div>
               </Row>
+
               <hr />
               <Row marginTop={3} marginLeft={2} className='p-0'>
                 <div className='col-12 p-0'>
@@ -63,11 +73,12 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
             <div
               className='pr-3 pl-3 mt-3 pickup-value'
               style={{
-                opacity: totalReturns === 0 ? 0.37 : 1,
+                opacity: !enablePickUpButton ? 0.37 : 1,
               }}
             >
               <PickUpButton
                 leadingText='Pickup now'
+                disabled={!enablePickUpButton}
                 timeWindow='Today'
                 price='24.99'
                 backgroundColor='#570097'

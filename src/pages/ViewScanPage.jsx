@@ -37,6 +37,8 @@ function ViewScanPage() {
 
   const totalDonations = inDonation.length;
 
+  const checkoutTitle = inReturn.length > 0 ? 'returns' : 'donate';
+
   return (
     <div id='ViewScanPage'>
       <div className='container mt-6'>
@@ -56,9 +58,18 @@ function ViewScanPage() {
               </>
             )}
             <h3 className='sofia-pro products-return text-18 section-title'>
-              Your products to return
+              Your products to {checkoutTitle}
             </h3>
             {inReturn.map((item) => (
+              <ProductCard
+                scannedItem={item}
+                key={item.id}
+                selectable={false}
+                clickable={false}
+              />
+            ))}
+
+            {inDonation.map((item) => (
               <ProductCard
                 scannedItem={item}
                 key={item.id}
@@ -132,12 +143,27 @@ function ViewScanPage() {
                     <h5 className='sofia-pro text-muted value-label'>
                       Donation
                     </h5> */}
-                    <h3 className='sofia-pro pick-up-price mb-0'>
-                      ${potentialReturnValue.toFixed(2) || 0.0}
-                    </h3>
-                    <h3 className='return-type sofia-pro value-label'>
-                      Potential Return Value
-                    </h3>
+
+                    {inReturn.length > 0 && (
+                      <>
+                        <h3 className='sofia-pro pick-up-price mb-0'>
+                          ${potentialReturnValue.toFixed(2) || 0.0}
+                        </h3>
+                        <h3 className='return-type sofia-pro value-label'>
+                          Potential Return Value
+                        </h3>
+                      </>
+                    )}
+                    {inDonation.length > 0 && (
+                      <>
+                        <h3 className='sofia-pro pick-up-price mb-0'>
+                          {inDonation.length}
+                        </h3>
+                        <h3 className='return-type sofia-pro value-label'>
+                          Donation
+                        </h3>
+                      </>
+                    )}
                     <hr className='line-break-2' />
                     <div className='row'>
                       <div className='col'>
