@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { isFormEmpty } from '../../utils/form';
+import $ from 'jquery';
 
 export default function PaymentForm({
   fullName,
@@ -36,6 +37,17 @@ export default function PaymentForm({
   );
 
   console.log(errors);
+
+  useEffect(() => {
+    const platform = window.navigator.platform;
+    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+
+    if (windowsPlatforms.indexOf(platform) !== -1) {
+      // Windows 10 Chrome
+      $('.btn-save').css('padding-top', '9px');
+      $('.btn-save').css('padding-bottom', '9px');
+    }
+  }, []);
 
   return (
     <div>
