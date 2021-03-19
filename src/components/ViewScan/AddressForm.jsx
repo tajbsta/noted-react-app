@@ -13,7 +13,7 @@ export default function AddressForm({
   phoneNumber,
   errors,
   handleChange,
-  setShowEditAddress,
+  onDoneClick,
 }) {
   const disableSubmit =
     isFormEmpty({
@@ -172,7 +172,7 @@ export default function AddressForm({
                       <Button
                         disabled={disableSubmit}
                         className='btn-done'
-                        onClick={() => setShowEditAddress(false)}
+                        onClick={onDoneClick}
                       >
                         Done
                       </Button>

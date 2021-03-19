@@ -10,7 +10,7 @@ export default function PaymentForm({
   cvc,
   errors,
   handleChange,
-  setShowEditPayment,
+  onDoneClick,
 }) {
   const disableSubmit =
     isFormEmpty({
@@ -145,7 +145,7 @@ export default function PaymentForm({
                         disabled={disableSubmit}
                         className='btn-save'
                         type='submit'
-                        onClick={() => setShowEditPayment(false)}
+                        onClick={onDoneClick}
                       >
                         Save
                       </Button>

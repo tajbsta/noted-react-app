@@ -5,7 +5,11 @@ import Payment from '../components/Profile/Payment';
 import ReturnHistory from '../components/Profile/ReturnHistory';
 import AddressForm from '../components/ViewScan/AddressForm';
 import { useFormik } from 'formik';
-import { pickUpAddressSchema } from '../models/formSchema';
+import {
+  paymentAddressSchema,
+  pickUpAddressSchema,
+} from '../models/formSchema';
+import PaymentForm from '../components/ViewScan/PaymentForm';
 
 export default function ProfilePage() {
   const {
@@ -24,6 +28,21 @@ export default function ProfilePage() {
     validationSchema: pickUpAddressSchema,
   });
 
+  const {
+    errors: paymentFormErrors,
+    handleChange: handlePaymentChange,
+    values: paymentFormValues,
+  } = useFormik({
+    initialValues: {
+      fullName: '',
+      cardNumber: '',
+      expirationMonth: '',
+      expirationYear: '',
+      cvc: '',
+    },
+    validationSchema: paymentAddressSchema,
+  });
+
   return (
     <div>
       <div className='container mt-6'>
@@ -40,6 +59,21 @@ export default function ProfilePage() {
               {...addressFormValues}
               errors={addressFormErrors}
               handleChange={handleAddressChange}
+              onDoneClick={() => {
+                /**
+                 * SAVE ADDRESS IN DB HERE
+                 */
+              }}
+            />
+            <PaymentForm
+              {...paymentFormValues}
+              errors={paymentFormErrors}
+              handleChange={handlePaymentChange}
+              onDoneClick={() => {
+                /**
+                 * SAVE PAYMENT INFO IN DB HERE
+                 */
+              }}
             />
             <Payment />
             <ReturnHistory />
