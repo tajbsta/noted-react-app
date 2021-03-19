@@ -65,17 +65,18 @@ export default function ProfilePage() {
                  */
               }}
             />
-            <PaymentForm
-              {...paymentFormValues}
-              errors={paymentFormErrors}
-              handleChange={handlePaymentChange}
-              onDoneClick={() => {
-                /**
-                 * SAVE PAYMENT INFO IN DB HERE
-                 */
-              }}
-            />
-            <Payment />
+            <div className='mt-5'>
+              <PaymentForm
+                {...paymentFormValues}
+                errors={paymentFormErrors}
+                handleChange={handlePaymentChange}
+                onDoneClick={() => {
+                  /**
+                   * SAVE PAYMENT INFO IN DB HERE
+                   */
+                }}
+              />
+            </div>
             <ReturnHistory />
           </div>
         </div>
