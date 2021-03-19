@@ -56,6 +56,12 @@
     position: absolute;
     top: 35%;
     border-color: #570097 !important;
+    padding: 9px;
+    padding-top: 10px;
+    padding-bottom: 8px;
+    font-size: 14px;
+    letter-spacing: 0px;
+    text-align: center;
 
     &:disabled {
       border-color: #570097 !important;

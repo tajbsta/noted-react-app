@@ -10,13 +10,13 @@ export default function ProfilePage() {
       <div className='container mt-6'>
         <div className='row'>
           <div className='col-sm-3'>
-            {/*RIGHT CARD*/}
+            {/*LEFT CARD*/}
             <div className='col'>
               <UserInfo />
             </div>
           </div>
           <div className='col-sm-9'>
-            {/*LEFT CARD*/}
+            {/*RIGHT CARD*/}
             <Address />
             <Payment />
             <ReturnHistory />
