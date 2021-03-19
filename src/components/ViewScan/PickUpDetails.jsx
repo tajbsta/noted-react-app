@@ -61,7 +61,7 @@ function PickUpDetails() {
             {...paymentFormValues}
             errors={paymentFormErrors}
             handleChange={handlePaymentChange}
-            onDoneClick={() => showEditPayment(false)}
+            onDoneClick={() => setShowEditPayment(false)}
           />
         )}
         {showEditAddress && (
