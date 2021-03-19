@@ -21,8 +21,7 @@ export const paymentAddressSchema = Yup.object({
     .required('Card number is required'),
   expirationMonth: Yup.number().required('Expiration month is required'),
   expirationYear: Yup.string()
-    .min(2)
-    .max(2)
+    .min(2, 'Enter a valid expiration year')
     .required('Expiration year is required'),
   cvc: Yup.string()
     .min(3, 'Invalid card security number')

@@ -61,7 +61,7 @@ function PickUpDetails() {
             {...paymentFormValues}
             errors={paymentFormErrors}
             handleChange={handlePaymentChange}
-            setShowEditPayment={setShowEditPayment}
+            onDoneClick={() => setShowEditPayment(false)}
           />
         )}
         {showEditAddress && (
@@ -69,7 +69,7 @@ function PickUpDetails() {
             {...addressFormValues}
             errors={addressFormErrors}
             handleChange={handleAddressChange}
-            setShowEditAddress={setShowEditAddress}
+            onDoneClick={() => setShowEditAddress(false)}
           />
         )}
 
