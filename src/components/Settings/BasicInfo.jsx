@@ -72,16 +72,16 @@ export default function BasicInfo() {
               </Col>
 
               <Col className='add-pick-up'>
-                <div>
+                {/* <div>
                   <h4 className='noted-purple text-instructions'>
                     Add pick-up instructions
                   </h4>
-                </div>
+                </div> */}
               </Col>
 
               <Col className='btn-container'>
                 <Button className='btn-done' type='submit'>
-                  Done
+                  Save
                 </Button>
               </Col>
             </Row>
