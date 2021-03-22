@@ -23,7 +23,7 @@ export default function LoginPage() {
       setError(null);
       setIsSubmitting(true);
       await Auth.signIn(email, password);
-      history.push('/code?method=cognito');
+      history.push('/dashboard');
     } catch (error) {
       console.log('Error signing in', error.code);
       setError(

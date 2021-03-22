@@ -7,7 +7,6 @@ import EmptyScan from '../components/Dashboard/EmptyScan';
 import RightCard from '../components/Dashboard/RightCard';
 import Scanning from '../components/Dashboard/Scanning';
 import { scraperStart } from '../utils/scrapeService';
-import Amplify, { API, graphqlOperation } from 'aws-amplify';
 
 function ScanningPage() {
   const history = useHistory();
@@ -24,37 +23,10 @@ function ScanningPage() {
     return res.data.body.id;
   }
 
-  // const subscribeScraping = async (id) => {
-  //   const onUpdateScrapeAttempt = /* GraphQL */ `
-  //     subscription MySubscription {
-  //       onUpdateScrapeAttempt(id: $id) {
-  //         datetimestampcreated
-  //         id
-  //         itemcount
-  //         percentage
-  //         reademail
-  //         totalamount
-  //         totalmessagecount
-  //         userid
-  //         scrapestatus
-  //       }
-  //     }
-  //   `;
-
-  //   await API.graphql(
-  //     graphqlOperation(onUpdateScrapeAttempt, { id })
-  //   ).subscribe({
-  //     next: ({ provider, value }) => console.log({ provider, value }),
-  //     error: (error) => console.warn(error),
-  //   });
-  // };
-
   const onScanLaunch = async () => {
     try {
       setScanning(true);
       const id = await startScan();
-
-      // await subscribeScraping(id);
 
       setTimeout(() => {
         history.push('/dashboard');
