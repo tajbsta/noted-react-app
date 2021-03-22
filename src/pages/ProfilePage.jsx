@@ -1,6 +1,6 @@
 import React from 'react';
 import UserInfo from '../components/Profile/UserInfo';
-// import Address from '../components/Profile/Address';
+import Address from '../components/Profile/Address';
 // import Payment from '../components/Profile/Payment';
 import ReturnHistory from '../components/Profile/ReturnHistory';
 import AddressForm from '../components/ViewScan/AddressForm';
@@ -55,16 +55,13 @@ export default function ProfilePage() {
           </div>
           <div className='col-sm-9'>
             {/*LEFT CARD*/}
-            <AddressForm
+            {/* <AddressForm
               {...addressFormValues}
               errors={addressFormErrors}
               handleChange={handleAddressChange}
-              onDoneClick={() => {
-                /**
-                 * SAVE ADDRESS IN DB HERE
-                 */
-              }}
-            />
+              onDoneClick={() => {}}
+            /> */}
+            <Address />
             <div className='mt-5'>
               <PaymentForm
                 {...paymentFormValues}

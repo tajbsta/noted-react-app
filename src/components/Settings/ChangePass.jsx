@@ -11,7 +11,7 @@ export default function ChangePass() {
     .catch((err) => console.log(err));
 
   return (
-    <div>
+    <div id='ChangePass'>
       <div className='mt-5'>
         <h3 className='sofia-pro text-18 mb-4'>Change Password</h3>
         <div className='card shadow-sm mb-2 p-3 w-840 change-container'>

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import USA_STATES from '../../assets/usa_states.json';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import $ from 'jquery';
 
@@ -13,7 +14,7 @@ export default function BasicInfo() {
     }
   }, []);
   return (
-    <div>
+    <div id='BasicInfo'>
       <h3 className='sofia-pro text-18 mb-4'>Basic Information</h3>
       <div className='card shadow-sm mb-2 p-3 w-840'>
         <div className='card-body'>
@@ -28,12 +29,23 @@ export default function BasicInfo() {
               <Col>
                 <Form.Group>
                   <Form.Label>State</Form.Label>
-                  <Form.Control className='form-control-md' as='select'>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                  <Form.Control
+                    className='form-control-md'
+                    as='select'
+                    // value={state || ''}
+                    name='state'
+                    // onChange={handleChange}
+                    placeholder='Select State'
+                    defaultValue='null'
+                  >
+                    {[
+                      { abbreviation: '', name: 'Select State' },
+                      ...USA_STATES,
+                    ].map(({ name, abbreviation }) => (
+                      <option value={abbreviation} key={`${abbreviation}`}>
+                        {name}
+                      </option>
+                    ))}
                   </Form.Control>
                 </Form.Group>
               </Col>
