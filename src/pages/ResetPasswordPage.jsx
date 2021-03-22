@@ -5,11 +5,23 @@ import { Form, Spinner } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { PASSWORD_REGEX_FORMAT } from '../constants/errors/regexFormats';
+import { Eye, EyeOff } from 'react-feather';
 
 export default function ForgotPasswordPage() {
   let history = useHistory();
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [newPasswordShown, setNewPasswordShown] = useState(false);
+  const [confirmPasswordShown, setConfirmPasswordShown] = useState(false);
+
+  const toggleNewPasswordVisiblity = () => {
+    setNewPasswordShown(newPasswordShown ? false : true);
+  };
+  const toggleConfirmPasswordVisiblity = () => {
+    setConfirmPasswordShown(confirmPasswordShown ? false : true);
+  };
+  const eyeOff = <EyeOff />;
+  const eye = <Eye />;
 
   const sendResetLink = () => {
     history.push('/');
@@ -68,29 +80,52 @@ export default function ForgotPasswordPage() {
             <Form>
               {error && <div>{error.message}</div>}
               <Form.Group>
-                <Form.Control
-                  isValid={!errors.confirmNewPassword && newPassword.length > 0}
-                  isInvalid={errors.newPassword}
-                  className='form-control form-control-lg'
-                  type='password'
-                  name='newPassword'
-                  placeholder='Enter your new password'
-                  onChange={handleChange}
-                />
+                <div>
+                  <Form.Control
+                    isValid={
+                      !errors.confirmNewPassword && newPassword.length > 0
+                    }
+                    isInvalid={errors.newPassword}
+                    className='form-control form-control-lg'
+                    type={newPasswordShown ? 'text' : 'password'}
+                    name='newPassword'
+                    placeholder='Enter your new password'
+                    onChange={handleChange}
+                  />
+                  <i
+                    className='fe-eye-new'
+                    onClick={toggleNewPasswordVisiblity}
+                  >
+                    {newPasswordShown ? eye : eyeOff}
+                  </i>
+                </div>
                 {errors.newPassword && renderLocalNewPasswordValidationError()}
               </Form.Group>
               <Form.Group>
-                <Form.Control
-                  isValid={
-                    !errors.confirmNewPassword && confirmNewPassword.length > 0
-                  }
-                  isInvalid={errors.confirmNewPassword}
-                  className='form-control form-control-lg'
-                  type='password'
-                  name='confirmNewPassword'
-                  placeholder='Confirm your new password'
-                  onChange={handleChange}
-                />
+                <div>
+                  <Form.Control
+                    isValid={
+                      !errors.confirmNewPassword &&
+                      confirmNewPassword.length > 0
+                    }
+                    isInvalid={errors.confirmNewPassword}
+                    className='form-control form-control-lg'
+                    type={confirmPasswordShown ? 'text' : 'password'}
+                    name='confirmNewPassword'
+                    placeholder='Confirm your new password'
+                    onChange={handleChange}
+                  />
+                  <i
+                    className={
+                      errors.confirmNewPassword || errors.newPassword
+                        ? 'fe-eye-error'
+                        : 'fe-eye-confirm'
+                    }
+                    onClick={toggleConfirmPasswordVisiblity}
+                  >
+                    {confirmPasswordShown ? eye : eyeOff}
+                  </i>
+                </div>
                 {errors.confirmNewPassword &&
                   renderLocalConfirmNewPasswordValidationError()}
               </Form.Group>

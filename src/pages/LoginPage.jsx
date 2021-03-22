@@ -6,6 +6,7 @@ import { Form, Spinner } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
 import { signInErrors } from '../library/errors.library';
 import { get } from 'lodash';
+import { Eye, EyeOff } from 'react-feather';
 
 export default function LoginPage() {
   let history = useHistory();
@@ -13,6 +14,12 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [passwordShown, setPasswordShown] = useState(false);
+  const togglePasswordVisiblity = () => {
+    setPasswordShown(passwordShown ? false : true);
+  };
+  const eyeOff = <EyeOff />;
+  const eye = <Eye />;
 
   const login = async () => {
     try {
@@ -94,13 +101,18 @@ export default function LoginPage() {
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Control
-                  className='form-control form-control-lg'
-                  type='password'
-                  name='password'
-                  placeholder='Your password...'
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <div>
+                  <Form.Control
+                    className='form-control form-control-lg'
+                    type={passwordShown ? 'text' : 'password'}
+                    name='password'
+                    placeholder='Your password...'
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <i className='fe-eye' onClick={togglePasswordVisiblity}>
+                    {passwordShown ? eye : eyeOff}
+                  </i>
+                </div>
               </Form.Group>
               <h3 className='text-forgot'>
                 <Link

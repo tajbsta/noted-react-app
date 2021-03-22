@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState } from 'react';
-import { Mail } from 'react-feather';
+import { Mail, Eye, EyeOff } from 'react-feather';
 import { Link, useHistory } from 'react-router-dom';
 import { Form, Spinner } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
@@ -14,6 +14,12 @@ export default function RegisterPage() {
   const history = useHistory();
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [passwordShown, setPasswordShown] = useState(false);
+  const togglePasswordVisiblity = () => {
+    setPasswordShown(passwordShown ? false : true);
+  };
+  const eyeOff = <EyeOff />;
+  const eye = <Eye />;
 
   const registerSchema = Yup.object({
     email: Yup.string()
@@ -145,18 +151,23 @@ export default function RegisterPage() {
                   renderLocalEmailValidationError()}
               </Form.Group>
               <Form.Group>
-                <Form.Control
-                  isValid={!errors.password && password.length > 0}
-                  isInvalid={errors.password && password.length > 0}
-                  className='form-control form-control-lg mb-0'
-                  type='password'
-                  name='password'
-                  placeholder='Your password...'
-                  onChange={handleChange}
-                />
-                {password.length > 0 &&
-                  errors.password &&
-                  renderLocalPasswordValidationError()}
+                <div>
+                  <Form.Control
+                    isValid={!errors.password && password.length > 0}
+                    isInvalid={errors.password && password.length > 0}
+                    className='form-control form-control-lg mb-0'
+                    type={passwordShown ? 'text' : 'password'}
+                    name='password'
+                    placeholder='Your password...'
+                    onChange={handleChange}
+                  />
+                  <i className='fe-eye' onClick={togglePasswordVisiblity}>
+                    {passwordShown ? eye : eyeOff}
+                  </i>
+                  {password.length > 0 &&
+                    errors.password &&
+                    renderLocalPasswordValidationError()}
+                </div>
               </Form.Group>
               <button
                 className='btn btn-lg btn-block btn-green mb-3 btn-submit'
