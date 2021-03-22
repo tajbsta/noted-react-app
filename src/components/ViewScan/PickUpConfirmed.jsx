@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Row from '../Row';
 import $ from 'jquery';
 
 function PickUpConfirmed() {
-  const [scanning, setScanning] = useState(false);
-
   useEffect(() => {
     const platform = window.navigator.platform;
     const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];

@@ -2,10 +2,8 @@
 import React, { useState } from 'react';
 import { Mail } from 'react-feather';
 import { Link, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { Form, FormGroup, FormControl, Spinner } from 'react-bootstrap';
-import Amplify, { Auth } from 'aws-amplify';
-import { setUser } from '../actions/auth.action';
+import { Form, Spinner } from 'react-bootstrap';
+import { Auth } from 'aws-amplify';
 import { signUpErrors } from '../library/errors.library';
 import { get } from 'lodash';
 import { PASSWORD_REGEX_FORMAT } from '../constants/errors/regexFormats';

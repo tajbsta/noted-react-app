@@ -1,4 +1,3 @@
-import axios from "axios";
 import { scraperApi } from "./api";
 
 // Getting Google code for scraper

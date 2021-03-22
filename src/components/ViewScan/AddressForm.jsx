@@ -83,7 +83,7 @@ export default function AddressForm({
                           {[
                             { abbreviation: '', name: 'Select State' },
                             ...USA_STATES,
-                          ].map(({ name, abbreviation }, index) => (
+                          ].map(({ name, abbreviation }) => (
                             <option
                               value={abbreviation}
                               key={`${abbreviation}`}

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { GREAT } from '../../constants/returns/scores';
 import ReturnScore from '../ReturnsScore';
 import Row from '../Row';
-import EmptyScan from './EmptyScan';
 import ProductDetails from './ProductDetails';
 import OnHoverProductCard from './OnHoverProductCard';
 
@@ -12,13 +11,11 @@ function ProductCard({
   addSelected,
   removeSelected,
   clickable = true,
-  onClick = () => {},
   scannedItem: {
     vendorTag,
     itemName,
     returnScore = GREAT,
     amount,
-    compensationType,
     id,
     imageUrl,
     orderDate,
@@ -26,10 +23,9 @@ function ProductCard({
   disabled,
   scannedItem,
 }) {
-  const [scanning, setScanning] = useState(false);
   const [isHover, setIsHover] = useState(false);
 
-  const handleSelection = (e) => {
+  const handleSelection = () => {
     if (selected) {
       removeSelected(id);
       return;

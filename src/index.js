@@ -3,8 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import Amplify, { Auth, Hub } from "aws-amplify";
-import authListener from "./utils/authListener";
+import Amplify from "aws-amplify";
 
 Amplify.configure({
   Auth: {

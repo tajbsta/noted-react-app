@@ -1,15 +1,14 @@
 import React, { lazy } from 'react';
 import { Container, Navbar } from 'react-bootstrap';
 import ProfileIcon from '../assets/icons/Profile.svg';
-import DropwDownIcon from '../assets/icons/InvertedTriangle.svg';
+// import DropwDownIcon from '../assets/icons/InvertedTriangle.svg';
 import Search from '../assets/icons/Search.svg';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { unsetUser } from '../actions/auth.action';
 import { unsetScan } from '../actions/scans.action';
 import { searchScans } from '../actions/runtime.action';
-import { get, isEmpty } from 'lodash';
 
 const BrandLogoSvg = lazy(() => import('./BrandLogoSvg'));
 
@@ -32,17 +31,14 @@ const Topnav = () => {
   const {
     location: { pathname },
   } = useHistory();
-  const { username, scans } = useSelector(({ auth: { username }, scans }) => ({
-    username,
-    scans,
-  }));
+
   const showShadow = guestViews.includes(pathname) ? '' : 'shadow-sm';
 
   const logout = async () => {
     dispatch(await unsetUser());
     dispatch(await unsetScan());
     Auth.signOut()
-      .then(async (data) => {
+      .then(async () => {
         setTimeout(() => {
           history.push('/login');
         }, 400);

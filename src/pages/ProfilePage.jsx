@@ -1,7 +1,7 @@
 import React from 'react';
 import UserInfo from '../components/Profile/UserInfo';
-import Address from '../components/Profile/Address';
-import Payment from '../components/Profile/Payment';
+// import Address from '../components/Profile/Address';
+// import Payment from '../components/Profile/Payment';
 import ReturnHistory from '../components/Profile/ReturnHistory';
 import AddressForm from '../components/ViewScan/AddressForm';
 import { useFormik } from 'formik';

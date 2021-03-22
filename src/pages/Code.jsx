@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 import qs from 'qs';
-import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUser, setGoogleAuthCode } from '../actions/auth.action';
+import { useDispatch } from 'react-redux';
+import { setGoogleAuthCode } from '../actions/auth.action';
 
 export default function Code() {
   const history = useHistory();
@@ -21,23 +20,6 @@ export default function Code() {
       console.log({
         query,
       });
-
-      // const res = await Auth.currentSession();
-
-      // const loginMethod = query.method || 'google';
-      // const username = res.getAccessToken().decodePayload().username;
-
-      // console.log({
-      //   loginMethod,
-      //   username,
-      // });
-
-      // dispatch(
-      //   setUser({
-      //     loginMethod,
-      //     username,
-      //   })
-      // );
 
       if (isAuthRedirect) {
         dispatch(setGoogleAuthCode(query.code));

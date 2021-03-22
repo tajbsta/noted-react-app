@@ -1,8 +1,6 @@
-import { get, isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { storeScan } from '../actions/scans.action';
 import EmptyScan from '../components/Dashboard/EmptyScan';
 import RightCard from '../components/Dashboard/RightCard';
 import Scanning from '../components/Dashboard/Scanning';
@@ -10,7 +8,6 @@ import { scraperStart } from '../utils/scrapeService';
 
 function ScanningPage() {
   const history = useHistory();
-  const dispatch = useDispatch();
   const googleAuthCode = useSelector(
     ({ auth: { googleAuthCode } }) => googleAuthCode
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Container } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import BasicInfo from '../components/Settings/BasicInfo';
 import ChangePass from '../components/Settings/ChangePass';
 

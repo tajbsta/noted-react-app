@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
 
 export default function ChangePass() {

@@ -2,10 +2,8 @@
 import React, { useState } from 'react';
 import { ArrowRight } from 'react-feather';
 import { Link, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { Form, Spinner } from 'react-bootstrap';
-import Amplify, { Auth } from 'aws-amplify';
-import { setUser } from '../actions/auth.action';
+import { Auth } from 'aws-amplify';
 import { signInErrors } from '../library/errors.library';
 import { get } from 'lodash';
 
@@ -15,8 +13,6 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const dispatch = useDispatch();
 
   const login = async () => {
     try {

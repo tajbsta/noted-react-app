@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { Form, Spinner } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
@@ -11,8 +10,6 @@ export default function ForgotPasswordPage() {
   let history = useHistory();
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const dispatch = useDispatch();
 
   const sendResetLink = () => {
     history.push('/');

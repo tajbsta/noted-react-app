@@ -36,7 +36,7 @@ function ViewScanPage() {
 
   const totalPayment = (returnFee + taxes).toFixed(2);
 
-  const totalDonations = inDonation.length;
+  // const totalDonations = inDonation.length;
 
   const checkoutTitle = inReturn.length > 0 ? 'returns' : 'donate';
 

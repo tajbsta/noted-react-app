@@ -1,4 +1,4 @@
-import { get, isEmpty, toNumber } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
@@ -9,7 +9,6 @@ import RightCard from '../components/Dashboard/RightCard';
 import Scanning from '../components/Dashboard/Scanning';
 import { api } from '../utils/api';
 import { getUserId } from '../utils/auth';
-import Auth from '@aws-amplify/auth';
 import { clearSearchQuery } from '../actions/runtime.action';
 import {
   FOR_DONATION,
@@ -44,9 +43,6 @@ function DashboardPage() {
   const potentialReturnValue = [...forReturn, ...lastCall]
     .map(({ amount }) => parseFloat(amount))
     .reduce((acc, curr) => (acc += curr), 0);
-
-  const localScannedItems =
-    useSelector((state) => get(state, 'scans', [])) || [];
 
   async function loadScans() {
     dispatch(clearSearchQuery());
