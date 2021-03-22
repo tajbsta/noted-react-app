@@ -79,6 +79,58 @@ const Topnav = () => {
       ) && (
         <>
           <div id='DashboardNav'>
+            {/* START OF MOBILE VIEWS */}
+            <Container id='mobile-view'>
+              <Row>
+                <Col className='search-col'>
+                  <div>
+                    <img className='mobile-search-icon' src={Search} />
+                  </div>
+                </Col>
+                <Col>
+                  <ul className='navbar-nav'>
+                    <li className='nav-item dropdown'>
+                      <a
+                        className='nav-link dropdown-toggle'
+                        href='#'
+                        id='navbarDropdownMenuLink'
+                        role='button'
+                        data-toggle='dropdown'
+                        aria-haspopup='true'
+                        aria-expanded='false'
+                      >
+                        <img src={ProfileIcon} width='30' height='30' />
+                      </a>
+                      <div
+                        className='dropdown-menu'
+                        aria-labelledby='navbarDropdownMenuLink'
+                      >
+                        <button
+                          className='dropdown-item sofia-pro'
+                          onClick={profile}
+                        >
+                          Profile
+                        </button>
+                        <button
+                          className='dropdown-item sofia-pro'
+                          onClick={settings}
+                        >
+                          Settings
+                        </button>
+                        <button
+                          className='dropdown-item sofia-pro'
+                          onClick={logout}
+                        >
+                          Log Out
+                        </button>
+                      </div>
+                    </li>
+                  </ul>
+                </Col>
+              </Row>
+            </Container>
+            {/* END OF MOBILE VIEWS */}
+
             <Container className='ml-3'>
               <div className='input-group input-group-lg input-group-merge background-color search-bar-input'>
                 <input
