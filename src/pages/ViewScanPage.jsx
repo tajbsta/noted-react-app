@@ -5,6 +5,7 @@ import PickUpDetails from '../components/ViewScan/PickUpDetails';
 import { useSelector } from 'react-redux';
 import { get } from 'lodash';
 import SizeGuideModal from './../components/Dashboard/modals/SizeGuideModal';
+import $ from 'jquery';
 
 function ViewScanPage() {
   const [confirmed, setconfirmed] = useState(false);
@@ -38,6 +39,16 @@ function ViewScanPage() {
   const totalDonations = inDonation.length;
 
   const checkoutTitle = inReturn.length > 0 ? 'returns' : 'donate';
+
+  useEffect(() => {
+    const platform = window.navigator.platform;
+    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+
+    if (windowsPlatforms.indexOf(platform) !== -1) {
+      // Windows 10 Chrome
+      $('.btn-confirm').css('padding-top', '10px');
+    }
+  }, []);
 
   return (
     <div id='ViewScanPage'>

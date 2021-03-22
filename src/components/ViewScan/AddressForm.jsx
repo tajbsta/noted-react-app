@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { formatPhoneNumber } from '../../utils/form';
 import USA_STATES from '../../assets/usa_states.json';
 import { isFormEmpty } from '../../utils/form';
+import $ from 'jquery';
 
 export default function AddressForm({
   fullName,
@@ -13,7 +14,7 @@ export default function AddressForm({
   phoneNumber,
   errors,
   handleChange,
-  setShowEditAddress,
+  onDoneClick,
 }) {
   const disableSubmit =
     isFormEmpty({
@@ -28,6 +29,16 @@ export default function AddressForm({
   const renderInlineError = (error) => (
     <small className='form-text p-0 m-0 noted-red'>{error}</small>
   );
+
+  useEffect(() => {
+    const platform = window.navigator.platform;
+    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+
+    if (windowsPlatforms.indexOf(platform) !== -1) {
+      // Windows 10 Chrome
+      $('.btn-done').css('padding-top', '9px');
+    }
+  }, []);
 
   return (
     <div>
@@ -172,7 +183,7 @@ export default function AddressForm({
                       <Button
                         disabled={disableSubmit}
                         className='btn-done'
-                        onClick={() => setShowEditAddress(false)}
+                        onClick={onDoneClick}
                       >
                         Done
                       </Button>

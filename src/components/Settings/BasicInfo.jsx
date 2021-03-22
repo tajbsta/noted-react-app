@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
+import $ from 'jquery';
 
 export default function BasicInfo() {
+  useEffect(() => {
+    const platform = window.navigator.platform;
+    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+
+    if (windowsPlatforms.indexOf(platform) !== -1) {
+      // Windows 10 Chrome
+      $('.btn-done').css('padding-bottom', '10px');
+    }
+  }, []);
   return (
     <div>
       <h3 className='sofia-pro text-18 mb-4'>Basic Information</h3>
@@ -62,16 +72,16 @@ export default function BasicInfo() {
               </Col>
 
               <Col className='add-pick-up'>
-                <div>
+                {/* <div>
                   <h4 className='noted-purple text-instructions'>
                     Add pick-up instructions
                   </h4>
-                </div>
+                </div> */}
               </Col>
 
               <Col className='btn-container'>
                 <Button className='btn-done' type='submit'>
-                  Done
+                  Save
                 </Button>
               </Col>
             </Row>

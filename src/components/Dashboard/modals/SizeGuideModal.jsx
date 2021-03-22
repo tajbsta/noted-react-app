@@ -11,7 +11,6 @@ export default function SizeGuideModal(props) {
       centered
       backdrop='static'
       keyboard={false}
-      modalOptions={{ dismissible: false }}
       id='SizeGuideModal'
     >
       <Modal.Header>
