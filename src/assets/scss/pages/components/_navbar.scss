@@ -2,65 +2,75 @@
   background-color: #faf8fa !important;
 }
 
-.background-color {
-  background-color: #f7f5f7;
-}
+#DashboardNav {
+  display: contents;
 
-.input-group.input-group-merge > .form-control:focus {
-  background-color: #f7f5f7;
-}
-
-.input-group {
-  width: 840px;
-}
-
-.input-group-lg > .form-control {
-  font-size: 16px;
-}
-
-.input-group.input-group-merge > .input-group-prepend > .input-group-text {
-  border-top-left-radius: none !important;
-  border-bottom-left-radius: none !important;
-  border: none;
-}
-
-.form-control {
-  border: none;
-}
-
-.dropdown-menu {
-  left: -105px;
-  font-size: 16px;
-  text-align: left;
-}
-
-.select-dropdown {
-  margin: 0;
-}
-
-.navbar {
-  @media (max-width: 768px) {
-    height: 64px;
+  .background-color {
+    background-color: #f7f5f7;
   }
-}
 
-.navbar-collapse {
-  position: relative;
-  right: 1%;
-}
+  .input-group.input-group-merge > .form-control:focus {
+    background-color: #f7f5f7;
+  }
 
-.search {
-  border: none;
-  background: #f7f5f7;
-  font-family: 'Sofia Pro';
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 21px;
-  color: #8b888c;
-  width: 61vw;
-}
+  .input-group {
+    width: 840px;
+  }
 
-.search::placeholder {
-  color: #8d888d;
+  .input-group-lg > .form-control {
+    font-size: 16px;
+  }
+
+  .input-group.input-group-merge > .input-group-prepend > .input-group-text {
+    border-top-left-radius: none !important;
+    border-bottom-left-radius: none !important;
+    border: none;
+  }
+
+  .form-control {
+    border: none;
+  }
+
+  .dropdown-menu {
+    left: -105px;
+    font-size: 16px;
+    text-align: left;
+  }
+
+  .select-dropdown {
+    margin: 0;
+  }
+
+  .navbar {
+    @media (max-width: 768px) {
+      height: 64px;
+    }
+  }
+
+  .navbar-collapse {
+    position: relative;
+    right: 1%;
+  }
+
+  .search {
+    border: none;
+    background: #f7f5f7;
+    font-family: 'Sofia Pro';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 21px;
+    color: #8b888c;
+    width: 61vw;
+  }
+
+  .search::placeholder {
+    color: #8d888d;
+  }
+
+  .search-bar-input {
+    @media (max-width: 767px) {
+      display: none;
+    }
+  }
 }
