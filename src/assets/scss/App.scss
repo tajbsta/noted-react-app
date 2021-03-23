@@ -9,6 +9,7 @@
   font-family: 'Sofia Pro';
   src: url('../fonts/SofiaPro/Sofia\ Pro\ Regular.otf') format('opentype');
 }
+
 html {
   background-color: white;
 }
@@ -25,6 +26,7 @@ html {
 @import './pages/viewscan.scss';
 @import './pages/profile.scss';
 @import './pages/settings.scss';
+@import './pages/viewconfirmedreturn';
 
 /* Components in Pages styling */
 @import './pages/components/brandlogo.scss';

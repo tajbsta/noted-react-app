@@ -6,6 +6,9 @@ import SettingsPage from '../pages/SettingsPage';
 const DashboardPage = lazy(() => import('../pages/DashboardPage'));
 const ViewScanPage = lazy(() => import('../pages/ViewScanPage'));
 const ScanningPage = lazy(() => import('../pages/ScanningPage'));
+const ViewConfirmedReturnPage = lazy(() =>
+  import('../pages/ViewConfirmedReturn')
+);
 
 export default [
   { path: '/request-permission', component: AuthorizePage },
@@ -14,4 +17,5 @@ export default [
   { path: '/scanning', component: ScanningPage },
   { path: '/profile', component: ProfilePage },
   { path: '/settings', component: SettingsPage },
+  { path: '/view-return', component: ViewConfirmedReturnPage },
 ];

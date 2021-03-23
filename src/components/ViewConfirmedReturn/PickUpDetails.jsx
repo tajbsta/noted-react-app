@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import EmptyAddress from './EmptyAddress';
 import EmptyPayment from './EmptyPayment';
-import AddressForm from '../../components/ViewScan/AddressForm';
-import PaymentForm from '../../components/ViewScan/PaymentForm';
+import AddressForm from '../ViewScan/AddressForm';
+import PaymentForm from '../ViewScan/PaymentForm';
 
 import { useFormik } from 'formik';
 import { formatPhoneNumber, isFormEmpty } from '../../utils/form';
@@ -10,103 +10,45 @@ import {
   paymentAddressSchema,
   pickUpAddressSchema,
 } from '../../models/formSchema';
-import { useDispatch } from 'react-redux';
-import {
-  updatePaymentInfo,
-  updateReturnAdddress,
-} from '../../actions/runtime.action';
+import { get } from 'lodash-es';
 
-function PickUpDetails() {
-  /**
-   * @UTILITY
-   * @returns misc hooks
-   */
-  const dispatch = useDispatch();
-
-  /**
-   * @STATES
-   * @returns component states
-   */
+function PickUpDetails({ address, payment }) {
   const [showEditAddress, setShowEditAddress] = useState(false);
   const [showEditPayment, setShowEditPayment] = useState(false);
 
-  /**
-   * @FORMSTATE by FORMIK
-   * @returns customer address
-   */
   const {
     errors: addressFormErrors,
     handleChange: handleAddressChange,
     values: addressFormValues,
   } = useFormik({
     initialValues: {
-      fullName: '',
-      state: '',
-      zipCode: '',
-      line1: '',
-      line2: '',
-      phoneNumber: '',
+      fullName: get(address, 'fullName', ''),
+      state: get(address, 'state', ''),
+      zipCode: get(address, 'zipCode', ''),
+      line1: get(address, 'line1', ''),
+      line2: get(address, 'line2', ''),
+      phoneNumber: get(address, 'phoneNumber', ''),
     },
     validationSchema: pickUpAddressSchema,
   });
 
-  /**
-   * @FORMSTATE by FORMIK
-   * @returns payment
-   */
   const {
     errors: paymentFormErrors,
     handleChange: handlePaymentChange,
     values: paymentFormValues,
   } = useFormik({
     initialValues: {
-      fullName: '',
-      cardNumber: '',
-      expirationMonth: '',
-      expirationYear: '',
-      cvc: '',
+      fullName: get(address, 'fullName', ''),
+      cardNumber: get(address, 'cardNumber', ''),
+      expirationMonth: get(address, 'expirationMonth', ''),
+      expirationYear: get(address, 'expirationYear', ''),
+      cvc: get(address, 'cvc', ''),
     },
     validationSchema: paymentAddressSchema,
   });
 
-  /**
-   * @VALIDATION
-   * @returns boolean of validation
-   */
   const isAddressFormEmpty = isFormEmpty(addressFormValues);
   const isPaymentFormEmpty = isFormEmpty(paymentFormValues);
-
-  /**
-   * @FUNCTION
-   * @submits payment form state
-   */
-  const savePayment = async () => {
-    dispatch(
-      updatePaymentInfo({
-        formData: { ...paymentFormValues, errors: paymentFormErrors },
-      })
-    );
-    setShowEditPayment(false);
-  };
-
-  /**
-   * @FUNCTION
-   * @submits address form state
-   */
-  const saveAddress = async () => {
-    dispatch(
-      updateReturnAdddress({
-        formData: { ...addressFormValues, errors: addressFormErrors },
-      })
-    );
-    setShowEditAddress(false);
-  };
-
-  /**
-   * @FUNCTION
-   * @submits pick-up details form state
-   */
-  const saveDetails = async () => {};
 
   return (
     <>
@@ -120,7 +62,7 @@ function PickUpDetails() {
             {...paymentFormValues}
             errors={paymentFormErrors}
             handleChange={handlePaymentChange}
-            onDoneClick={savePayment}
+            onDoneClick={() => setShowEditPayment(false)}
           />
         )}
         {showEditAddress && (
@@ -128,7 +70,7 @@ function PickUpDetails() {
             {...addressFormValues}
             errors={addressFormErrors}
             handleChange={handleAddressChange}
-            onDoneClick={saveAddress}
+            onDoneClick={() => setShowEditAddress(false)}
           />
         )}
 

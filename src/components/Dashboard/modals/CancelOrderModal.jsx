@@ -37,7 +37,7 @@ export default function CancelOrderModal(props) {
           <a className='sofia-pro view-link'>More info</a>
         </div>
         <div className='button-group'>
-          <Button className='btn-cancel' onClick={props.onHide}>
+          <Button className='btn-cancel' onClick={props.onCancel}>
             Cancel order
           </Button>
           <Button className='btn-dont' onClick={props.onHide}>
