@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 import qs from 'qs';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setGoogleAuthCode } from '../actions/auth.action';
+import { saveGoogleAuthCode } from '../utils/authApi';
+import { getUserId } from '../utils/auth';
 
 export default function Code() {
   const history = useHistory();
-  const dispatch = useDispatch();
 
   const verifyUser = async () => {
     const isAuthRedirect = history.location.pathname.includes('/code/verify');
@@ -22,11 +21,17 @@ export default function Code() {
       });
 
       if (isAuthRedirect) {
-        dispatch(setGoogleAuthCode(query.code));
-        history.push('/scanning');
-      } else {
-        history.push('/request-permission');
+        if (!query.code) {
+          throw new Error('Rejected by the user');
+        }
+
+        const user = await getUserId();
+
+        // get the code and call POST /auth/google with code and user
+        await saveGoogleAuthCode(query.code, user);
       }
+
+      history.push('/dashboard');
     } catch (error) {
       console.log(error);
 
@@ -39,7 +44,6 @@ export default function Code() {
     }
   };
   useEffect(() => {
-    console.log('code');
     verifyUser();
   }, []);
   return (

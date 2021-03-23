@@ -3,7 +3,7 @@ import { getUser } from "./auth";
 
 // import qs from "qs";
 
-const { REACT_APP_API_URI, REACT_APP_SCRAPER_API_URI } = process.env;
+const { REACT_APP_API_URI } = process.env;
 
 // const instance = axios.create({ baseURL: REACT_APP_API_URI });
 
@@ -22,13 +22,5 @@ export const api = async () => {
 
   return axios.create({
     baseURL: REACT_APP_API_URI, headers: { 'Authorization': `Bearer ${user.idToken}` }
-  })
-}
-
-export const scraperApi = async () => {
-  const user = await getUser();
-
-  return axios.create({
-    baseURL: REACT_APP_SCRAPER_API_URI, headers: { 'Authorization': `Bearer ${user.idToken}` }
   })
 }

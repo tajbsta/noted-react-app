@@ -27,6 +27,7 @@ const Topnav = () => {
     '/request-permission',
     '/code',
     '/code/',
+    '/code/verify',
   ];
   const {
     location: { pathname },

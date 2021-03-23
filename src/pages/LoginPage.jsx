@@ -109,7 +109,10 @@ export default function LoginPage() {
                     placeholder='Your password...'
                     onChange={(e) => setPassword(e.target.value)}
                   />
-                  <i className='fe-eye' onClick={togglePasswordVisiblity}>
+                  <i
+                    className={!error ? 'fe-eye' : 'fe-eye-error'}
+                    onClick={togglePasswordVisiblity}
+                  >
                     {passwordShown ? eye : eyeOff}
                   </i>
                 </div>
