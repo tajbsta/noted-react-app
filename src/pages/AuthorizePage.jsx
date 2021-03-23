@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import AuthorizeImg from '../assets/img/Authorize.svg';
-import { scraperAuth } from '../utils/scrapeService';
 import $ from 'jquery';
+import { getGoogleOauthUrl } from '../utils/authApi';
 
 export default function AuthorizePage() {
   const [authUrl, setAuthUrl] = useState(null);
 
   const getAuthUrl = async () => {
     try {
-      const res = await scraperAuth();
+      const url = await getGoogleOauthUrl();
 
-      setAuthUrl(res.data.url);
+      setAuthUrl(url);
     } catch (error) {
       console.log(error);
     }

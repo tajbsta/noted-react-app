@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import EmptyScan from '../components/Dashboard/EmptyScan';
 import RightCard from '../components/Dashboard/RightCard';
 import Scanning from '../components/Dashboard/Scanning';
-import { scraperStart } from '../utils/scrapeService';
 
 function ScanningPage() {
   const history = useHistory();
@@ -13,17 +12,10 @@ function ScanningPage() {
   );
   const [scanning, setScanning] = useState(false);
 
-  // Returns scan ID
-  async function startScan() {
-    const res = await scraperStart(googleAuthCode);
-
-    return res.data.body.id;
-  }
-
   const onScanLaunch = async () => {
     try {
       setScanning(true);
-      const id = await startScan();
+      // const id = await startScan();
 
       setTimeout(() => {
         history.push('/dashboard');
@@ -34,12 +26,6 @@ function ScanningPage() {
       setScanning(false);
     }
   };
-
-  useEffect(() => {
-    if (!googleAuthCode) {
-      history.push('/request-permission');
-    }
-  }, []);
 
   return (
     <div id='ScanningPage'>

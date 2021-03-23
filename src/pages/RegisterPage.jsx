@@ -61,7 +61,7 @@ export default function RegisterPage() {
 
       await Auth.signIn(email, password).then((data) => console.log(data));
 
-      history.push('/code');
+      history.push('/request-permission');
     } catch (error) {
       console.log(Object.values(error));
       setError(
@@ -161,7 +161,16 @@ export default function RegisterPage() {
                     placeholder='Your password...'
                     onChange={handleChange}
                   />
-                  <i className='fe-eye' onClick={togglePasswordVisiblity}>
+                  <i
+                    className={
+                      errors.length < 1 ||
+                      errors.email == 'Email is required' ||
+                      !errors.email
+                        ? 'fe-eye'
+                        : 'fe-eye-error'
+                    }
+                    onClick={togglePasswordVisiblity}
+                  >
                     {passwordShown ? eye : eyeOff}
                   </i>
                   {password.length > 0 &&

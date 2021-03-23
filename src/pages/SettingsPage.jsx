@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import BasicInfo from '../components/Settings/BasicInfo';
 import ChangePass from '../components/Settings/ChangePass';
-import { Link, animateScroll as scroll } from 'react-scroll';
+import { Link } from 'react-scroll';
 
 export default function SettingsPage() {
   return (

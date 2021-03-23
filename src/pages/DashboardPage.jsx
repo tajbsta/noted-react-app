@@ -7,14 +7,16 @@ import { storeScan } from '../actions/scans.action';
 import ReturnCategory from '../components/Dashboard/ReturnCategory';
 import RightCard from '../components/Dashboard/RightCard';
 import Scanning from '../components/Dashboard/Scanning';
-import { api } from '../utils/api';
 import { getUserId } from '../utils/auth';
+import { getAccounts, startAccountsScan } from '../utils/accountsApi';
+import { getProducts } from '../utils/productsApi';
 import { clearSearchQuery } from '../actions/runtime.action';
 import {
   FOR_DONATION,
   FOR_RETURN,
   LAST_CALL,
 } from '../constants/actions/runtime';
+import EmptyScan from '../components/Dashboard/EmptyScan';
 
 function DashboardPage() {
   const history = useHistory();
@@ -23,6 +25,8 @@ function DashboardPage() {
   const { search } = useSelector(({ runtime: { search } }) => ({ search }));
 
   const [loading, setLoading] = useState(true);
+  const [launchScan, setLaunchScan] = useState(false);
+  const [userId, setUserId] = useState('');
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
 
@@ -48,19 +52,35 @@ function DashboardPage() {
     dispatch(clearSearchQuery());
     try {
       setLoading(true);
-      const client = await api();
-      const userId = await getUserId();
-      // const userId = 'a3aec5c2-ea06-4c21-bea5-6f13e107721f';
+      const user = await getUserId();
+      const accounts = await getAccounts(user);
 
-      const { data } = await client.get(`scans/${userId}`);
+      setUserId(user);
+
+      // Redirect to request-permission if user has no accounts
+      if (accounts.length === 0) {
+        history.push('/request-permission');
+        return;
+      }
+
+      const validAccounts = accounts.filter((acc) => acc.valid === 1);
+
+      // Redirect to scanning if user has no active gmail account
+      if (validAccounts.length === 0) {
+        setLaunchScan(true);
+        setLoading(false);
+        return;
+      }
+
+      const products = await getProducts(user);
 
       setLoading(false);
 
-      setItems([...data]);
-      dispatch(storeScan({ scannedItems: [...data] }));
+      setItems([...products]);
+      dispatch(storeScan({ scannedItems: [...products] }));
     } catch (error) {
       setLoading(false);
-      history.push('/scanning');
+      // TODO: show error here
     }
   }
 
@@ -84,8 +104,9 @@ function DashboardPage() {
     loadScans();
   }, []);
 
-  const onScanLaunch = () => {
-    loadScans();
+  const onScanLaunch = async () => {
+    await startAccountsScan(userId);
+    setLaunchScan(false);
   };
 
   return (
@@ -110,7 +131,8 @@ function DashboardPage() {
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className='card shadow-sm scanned-item-card mb-2 p-5'>
-                  <Scanning />
+                  {launchScan && <EmptyScan onScanLaunch={onScanLaunch} />}
+                  {!launchScan && <Scanning />}
                 </div>
               </>
             )}
@@ -209,7 +231,7 @@ function DashboardPage() {
                     </div>
                     <div className='row justify-center mt-2'>
                       <div className='col-sm-6 text-center'>
-                        <a onClick={onScanLaunch}>
+                        <a>
                           <div className='text-center noted-purple line-height-16 sofia-pro'>
                             Scan for older items
                           </div>
