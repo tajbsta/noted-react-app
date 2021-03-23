@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import HorizontalLine from '../HorizontalLine';
@@ -16,6 +16,21 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
 
   const enablePickUpButton = inReturn.length > 0 || inDonation.length > 0;
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 639);
+    }
+    handleResize(); // Run on load to set the default value
+    window.addEventListener('resize', handleResize);
+    // Clean up event listener
+    return (_) => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   return (
     <div
       className='col right-card mt-4'
@@ -29,7 +44,7 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
             {totalReturns > 0 ? 'Total past 90 days' : ' No Articles'}
           </h5>
         </div>
-        <HorizontalLine width='90%' />
+        {!isMobile && <HorizontalLine width='90%' />}
         <div className='card-body p-0'>
           <div className='container p-2'>
             <div className='mobile-container'>

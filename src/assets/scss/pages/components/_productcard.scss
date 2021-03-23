@@ -1,95 +1,151 @@
 //Product Cards
-.p-details {
-  margin-left: 28px;
-}
+#productCard {
+  .p-details {
+    padding-left: 28px !important;
+    height: 48px;
 
-.product-checkbox {
-  padding-right: 16px !important;
-}
-
-.distributor-name {
-  font-weight: 700;
-  font-size: 14px;
-}
-
-.product-name {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 19px;
-  text-align: left;
-}
-
-.product-price {
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 15px;
-}
-
-.product-img-container {
-  margin-left: 16px;
-  border: 1px solid #f0f0f0;
-  border-radius: 8px;
-
-  .product-img {
-    justify-content: center;
-  }
-}
-
-// OnHoverProductCard
-#OnHoverProductCard {
-  .container-1 {
-    width: 20%;
-    position: absolute;
-    bottom: 40%;
-    height: 19px;
-    right: 23.46%;
-
-    .date {
-      margin-bottom: 0px;
-      color: #2e1d3a;
-    }
-
-    .info-container {
-      display: inline-flex;
-    }
-
-    .text-wrong-info {
-      font-size: 12px;
-      line-height: 14px;
-      color: #0e0018;
-      mix-blend-mode: normal;
-      opacity: 0.6;
-    }
-
-    .btn-hover-edit {
-      line-height: 14px;
-      font-size: 12px;
-      text-decoration-line: underline;
-      color: #570097;
+    @media (min-width: 280px) and (max-width: 767px) {
+      display: none !important;
     }
   }
 
-  .container-2 {
-    position: absolute;
-    bottom: 40%;
-    height: 19px;
-    right: 10.46%;
-
-    .text-score {
-      margin-bottom: 0px;
+  .card {
+    @media (min-width: 280px) and (max-width: 767px) {
+      width: auto;
+      height: 90px;
     }
+  }
 
-    .btn-policy {
+  .product-checkbox {
+    padding-right: 16px !important;
+  }
+
+  .distributor-name {
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .product-name {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 19px;
+    text-align: left;
+
+    @media (min-width: 280px) and (max-width: 767px) {
       line-height: 14px;
-      font-size: 12px;
-      text-decoration-line: underline;
-      color: #570097;
-      padding: 0;
+    }
+  }
 
-      &:focus {
-        outline: none !important;
-        box-shadow: none;
+  .product-price {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 15px;
+  }
+
+  .col-sm-5 {
+    @media (min-width: 280px) and (max-width: 767px) {
+      width: auto;
+    }
+  }
+
+  .product-img-container {
+    margin-left: 12px;
+
+    .product-img {
+      border: 1px solid #f0f0f0;
+      border-radius: 8px;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  // OnHoverProductCard
+  #OnHoverProductCard {
+    .container-1 {
+      width: 20%;
+      position: absolute;
+      bottom: 40%;
+      height: 19px;
+      right: 23.46%;
+
+      .date {
+        margin-bottom: 0px;
+        color: #2e1d3a;
       }
+
+      .info-container {
+        display: inline-flex;
+      }
+
+      .text-wrong-info {
+        font-size: 12px;
+        line-height: 14px;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+      }
+
+      .btn-hover-edit {
+        line-height: 14px;
+        font-size: 12px;
+        text-decoration-line: underline;
+        color: #570097;
+      }
+    }
+
+    .container-2 {
+      position: absolute;
+      bottom: 40%;
+      height: 19px;
+      right: 10.46%;
+
+      .text-score {
+        margin-bottom: 0px;
+      }
+
+      .btn-policy {
+        line-height: 14px;
+        font-size: 12px;
+        text-decoration-line: underline;
+        color: #570097;
+        padding: 0;
+
+        &:focus {
+          outline: none !important;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+
+  // MOBILE VIEWS OF PRODUCT DETAILS
+  #mobile-product-info {
+    @media (min-width: 767px) {
+      display: none;
+    }
+
+    width: 75%;
+
+    .title-container {
+      display: inline-flex;
+      width: 100%;
+    }
+
+    .s-container {
+      padding-right: 0px;
+      padding-left: 0px;
+    }
+
+    .col-limit {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .col-score {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 0px;
     }
   }
 }

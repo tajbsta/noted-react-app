@@ -111,16 +111,18 @@ function DashboardPage() {
 
   return (
     <div>
-      <div className='container mt-6'>
+      <div className='container mt-6 main-mobile-dashboard'>
         <div className='row'>
           <div className='col-sm-9 mt-4 w-840 bottom'>
             {loading && (
               <>
-                <h3 className='sofia-pro text-16'>
-                  Your online purchases - Last 90 Days
-                </h3>
-                <div className='card shadow-sm scanned-item-card mb-2 p-5 spinner-container'>
-                  <Spinner className='dashboard-spinner' animation='border' />
+                <div id='loader-con'>
+                  <h3 className='sofia-pro text-16'>
+                    Your online purchases - Last 90 Days
+                  </h3>
+                  <div className='card shadow-sm scanned-item-card mb-2 p-5 spinner-container'>
+                    <Spinner className='dashboard-spinner' animation='border' />
+                  </div>
                 </div>
               </>
             )}
@@ -243,7 +245,7 @@ function DashboardPage() {
               </>
             )}
           </div>
-          <div className='col-sm-3'>
+          <div className='col-sm-3 checkout-card'>
             <RightCard
               totalReturns={[...forReturn, ...lastCall].length}
               potentialReturnValue={potentialReturnValue}
