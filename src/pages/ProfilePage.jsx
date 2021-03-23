@@ -1,7 +1,7 @@
 import React from 'react';
 import UserInfo from '../components/Profile/UserInfo';
 import Address from '../components/Profile/Address';
-// import Payment from '../components/Profile/Payment';
+import Payment from '../components/Profile/Payment';
 import ReturnHistory from '../components/Profile/ReturnHistory';
 import AddressForm from '../components/ViewScan/AddressForm';
 import { useFormik } from 'formik';
@@ -63,16 +63,13 @@ export default function ProfilePage() {
             /> */}
             <Address />
             <div className='mt-5'>
-              <PaymentForm
+              {/* <PaymentForm
                 {...paymentFormValues}
                 errors={paymentFormErrors}
                 handleChange={handlePaymentChange}
-                onDoneClick={() => {
-                  /**
-                   * SAVE PAYMENT INFO IN DB HERE
-                   */
-                }}
-              />
+                onDoneClick={() => {}}
+              /> */}
+              <Payment />
             </div>
             <ReturnHistory />
           </div>

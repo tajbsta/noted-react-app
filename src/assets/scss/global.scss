@@ -25,7 +25,11 @@
 }
 
 .w-840 {
-  max-width: 840px;
+  width: 840px;
+
+  @media (min-width: 280px) and (max-width: 1119px) {
+    width: auto;
+  }
 }
 
 .line-height-16 {
