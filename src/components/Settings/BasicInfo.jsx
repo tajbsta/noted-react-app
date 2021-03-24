@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import USA_STATES from '../../assets/usa_states.json';
+import { formatPhoneNumber } from '../../utils/form';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import $ from 'jquery';
 
@@ -29,6 +30,7 @@ export default function BasicInfo({
     ? {
         style: {
           border: 'none',
+          padding: '0px',
         },
         disabled: true,
       }
@@ -53,35 +55,35 @@ export default function BasicInfo({
               <Col>
                 <Form.Group>
                   <Form.Label>State</Form.Label>
-                  {isEditing && (
-                    <Form.Control
-                      className='form-control-md'
-                      as='select'
-                      value={state || ''}
-                      name='state'
-                      onChange={handleChange}
-                      placeholder='Select State'
-                      defaultValue='null'
-                      {...noBorder}
-                    >
-                      {[
-                        { abbreviation: '', name: 'Select State' },
-                        ...USA_STATES,
-                      ].map(({ name, abbreviation }) => (
-                        <option value={abbreviation} key={`${abbreviation}`}>
-                          {name}
-                        </option>
-                      ))}
-                    </Form.Control>
-                  )}
-                  {!isEditing && (
+                  {/* {isEditing && ( */}
+                  <Form.Control
+                    className='form-control-md'
+                    as='select'
+                    value={state || ''}
+                    name='state'
+                    onChange={handleChange}
+                    placeholder='Select State'
+                    defaultValue='null'
+                    {...noBorder}
+                  >
+                    {[
+                      { abbreviation: '', name: 'Select State' },
+                      ...USA_STATES,
+                    ].map(({ name, abbreviation }) => (
+                      <option value={abbreviation} key={`${abbreviation}`}>
+                        {name}
+                      </option>
+                    ))}
+                  </Form.Control>
+                  {/* )} */}
+                  {/* {!isEditing && (
                     <Form.Control
                       className='form-control-sm'
                       type='zip code'
                       value={state}
                       {...noBorder}
                     />
-                  )}
+                  )} */}
                 </Form.Group>
               </Col>
               <Col>
@@ -113,6 +115,15 @@ export default function BasicInfo({
                   <Form.Control
                     className='form-control-lg'
                     type='phone number'
+                    onChange={(e) => {
+                      const re = /^[0-9\b]+$/;
+                      if (e.target.value === '' || re.test(e.target.value)) {
+                        handleChange(e);
+                      }
+                    }}
+                    value={formatPhoneNumber(phoneNumber) || ''}
+                    name='phoneNumber'
+                    maxLength={13}
                     {...noBorder}
                   />
                 </Form.Group>

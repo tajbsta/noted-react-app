@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Plus } from 'react-feather';
 import ProductCard from '../components/Dashboard/ProductCard';
 import PickUpConfirmed from '../components/ViewConfirmedReturn/PickUpConfirmed';
 import PickUpDetails from '../components/ViewConfirmedReturn/PickUpDetails';
@@ -139,7 +140,7 @@ function ViewConfirmedReturn({
              */}
             {!confirmed && (
               <div
-                className={`card shadow-sm scanned-item-card w-840 mb-3 p-0 btn`}
+                className='card add-border scanned-item-card w-840 mb-3 p-0 btn'
                 onClick={() => {
                   /**
                    * @FUNCTION Show products like the one from dashboard
@@ -148,7 +149,7 @@ function ViewConfirmedReturn({
                 }}
               >
                 <div className='card-body pt-3 pb-3 p-0 m-0'>
-                  <Row>
+                  <Row className='add-row'>
                     <div
                       className='col-sm-1 product-img-container add-product-container'
                       style={{
@@ -158,11 +159,11 @@ function ViewConfirmedReturn({
                         height: 60,
                       }}
                     >
-                      +
+                      <Plus />
                     </div>
-                    <div className='col-sm-4 p-0 mt-1 p-details'>
+                    <div className='col-sm-4 p-0 p-details'>
                       <Row>
-                        <h3 className='product-name'>Add Products</h3>
+                        <h3 className='add-title'>Add Products</h3>
                       </Row>
                       <h3 className='add-product-info'>
                         (No extra cost if they fit in one box)
@@ -224,22 +225,21 @@ function ViewConfirmedReturn({
 
                 <hr className='line-break-1' />
 
-                {confirmed && (
-                  <div>
-                    <h3 className='sofia-pro pick-up-price mb-0'>
-                      ${potentialReturnValue.toFixed(2) || 0.0}
-                    </h3>
-                    <h3 className='return-type sofia-pro value-label'>
-                      Potential Return Value
-                    </h3>
+                <div>
+                  <h3 className='sofia-pro pick-up-price mb-0'>
+                    ${potentialReturnValue.toFixed(2) || 0.0}
+                  </h3>
+                  <h3 className='return-type sofia-pro value-label'>
+                    Potential Return Value
+                  </h3>
+                  {confirmed && (
                     <p className='pick-up-reminder sofia-pro'>
                       Once the pick-up has been confirmed we’ll take care of
                       contacting your merchants. They will then be in charge of
                       the payment.
                     </p>
-                  </div>
-                )}
-
+                  )}
+                </div>
                 {!confirmed && (
                   <>
                     {/* <h2 className='sofia-pro mb-0 donate-quantity'>1</h2>
@@ -305,8 +305,14 @@ function ViewConfirmedReturn({
                         </button>
                         <h3 className='cancel-info'>
                           Canceling pick-ups less than 4h before schedule will
-                          result in a $5 penalty More info
+                          result in a $5 penalty
                         </h3>
+                        <a
+                          style={{ textDecoration: 'underline' }}
+                          className='cancel-info'
+                        >
+                          More info
+                        </a>
                       </div>
                     </div>
                     {!isEmpty(orderInMemory) && (

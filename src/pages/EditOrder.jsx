@@ -139,7 +139,7 @@ function EditOrder({
             {!loading && items.length === 0 && (
               <>
                 <h3 className='sofia-pro text-16'>
-                  Your online purchases - Last 90 Days
+                  Add products to your return
                 </h3>
                 <div className='card shadow-sm scanned-item-card mb-2 p-5'>
                   <Scanning />
@@ -152,7 +152,7 @@ function EditOrder({
               <>
                 <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
                   {isEmpty(search)
-                    ? 'Your online purchases - Last 90 Days'
+                    ? 'Add products to your return'
                     : 'Search Results'}
                 </h3>
                 {isEmpty(search) && (
@@ -168,6 +168,7 @@ function EditOrder({
                         setSelected={setInBoxSelected}
                       />
                     </div>
+                    <hr className='edit-line-break'></hr>
                     <div>
                       <ReturnCategory
                         scannedItems={unSelectedReturns.slice(0, 4)}

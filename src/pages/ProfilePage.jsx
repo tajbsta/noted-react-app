@@ -8,7 +8,6 @@ import {
   paymentAddressSchema,
   pickUpAddressSchema,
 } from '../models/formSchema';
-import BasicInfo from '../components/Settings/BasicInfo';
 
 export default function ProfilePage() {
   /**
@@ -59,7 +58,7 @@ export default function ProfilePage() {
             </div>
           </div>
           <div className='col-sm-9'>
-            <BasicInfo
+            <Address
               {...addressFormValues}
               handleChange={handleAddressChange}
             />
