@@ -40,7 +40,7 @@ export default function BasicInfo({
       <h3 className='sofia-pro text-18 mb-4'>Basic Information</h3>
       <div className='card shadow-sm mb-2 p-3 w-840'>
         <div className='card-body'>
-          <Form id='AddressForm'>
+          <Form id='Info'>
             <Row>
               <Col xs={6}>
                 <Form.Group>

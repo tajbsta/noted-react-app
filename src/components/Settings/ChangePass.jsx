@@ -39,7 +39,7 @@ export default function ChangePass() {
         <h3 className='sofia-pro text-18 mb-4'>Change Password</h3>
         <div className='card shadow-sm mb-2 p-3 w-840 change-container'>
           <div className='card-body'>
-            <Form id='AddressForm'>
+            <Form id='passForm'>
               <Row>
                 <Col>
                   <Form.Group>
@@ -47,7 +47,7 @@ export default function ChangePass() {
                     <div>
                       <Form.Control
                         className='form-control-lg'
-                        type={oldPasswordShown ? 'text' : 'password'}
+                        type={oldPasswordShown ? 'text' : 'current-password'}
                       />
                       <i
                         className='fe-eye'
@@ -64,7 +64,7 @@ export default function ChangePass() {
                     <div>
                       <Form.Control
                         className='form-control-lg'
-                        type={newPasswordShown ? 'text' : 'password'}
+                        type={newPasswordShown ? 'text' : 'new-password'}
                       />
                       <i
                         className='fe-eye'
@@ -85,7 +85,7 @@ export default function ChangePass() {
                     <div>
                       <Form.Control
                         className='form-control-lg'
-                        type={confirmPasswordShown ? 'text' : 'password'}
+                        type={confirmPasswordShown ? 'text' : 'new-password'}
                       />
                       <i
                         className='fe-eye'
