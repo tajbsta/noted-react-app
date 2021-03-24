@@ -184,6 +184,8 @@ function DashboardPage() {
                       ));
                     })}
                   </div>
+
+                  <hr className='scheduled-line-break'></hr>
                 </>
               )}
             </>
