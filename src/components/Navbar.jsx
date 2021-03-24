@@ -179,6 +179,7 @@ const Topnav = () => {
                     >
                       Settings
                     </button>
+                    <hr className='dropdown-line'></hr>
                     <button
                       className='dropdown-item sofia-pro'
                       onClick={logout}

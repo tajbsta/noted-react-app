@@ -4,15 +4,16 @@
     padding-left: 28px !important;
     height: 48px;
 
-    @media (min-width: 280px) and (max-width: 767px) {
+    @media (max-width: 767px) {
       display: none !important;
     }
   }
 
   .card {
-    @media (min-width: 280px) and (max-width: 767px) {
+    @media (max-width: 767px) {
       width: auto;
       height: 90px;
+      border-radius: 0;
     }
   }
 

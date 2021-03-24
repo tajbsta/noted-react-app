@@ -2,11 +2,22 @@
   background-color: #faf8fa !important;
 }
 
+.navbar-nav {
+  font-size: 16px;
+  line-height: 22px;
+}
+
 #DashboardNav {
   display: contents;
 
   .container {
     width: auto;
+
+    @media (max-width: 767px) {
+      width: 100%;
+      display: flex;
+      flex-direction: row-reverse;
+    }
   }
 
   .background-color {
@@ -43,6 +54,19 @@
     left: -105px;
     font-size: 16px;
     text-align: left;
+    height: 169px;
+    width: 160px;
+    border-radius: 8px;
+    padding: 15px 0px;
+  }
+
+  .dropdown-item {
+    line-height: 22px;
+    padding: 10px 20px;
+
+    &:focus {
+      color: #2e1d3a !important;
+    }
   }
 
   .select-dropdown {
@@ -89,9 +113,14 @@
     }
   }
 
-  #mobile-view {
-    flex-direction: row-reverse;
+  .dropdown-line {
+    color: #e8e7e9 !important;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    width: 75%;
+  }
 
+  #mobile-view {
     .col {
       padding-left: 0px;
     }
