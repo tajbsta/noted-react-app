@@ -11,6 +11,8 @@ import {
   UPDATE_PICKUP_DETAILS,
   CLEAR_PICKUP_DETAILS,
   CLEAR_FORM,
+  UPDATE_CURRENT_ORDER,
+  CLEAR_CURRENT_ORDER,
 } from '../constants/actions/runtime';
 
 export const searchScans = (query) => ({
@@ -66,4 +68,13 @@ export const clearPickUpDetails = () => ({
 
 export const clearForm = () => ({
   type: CLEAR_FORM,
+});
+
+export const updateCurrentOrder = (data) => ({
+  type: UPDATE_CURRENT_ORDER,
+  data,
+});
+
+export const clearCurrentOrder = () => ({
+  type: CLEAR_CURRENT_ORDER,
 });

@@ -9,6 +9,7 @@ const ScanningPage = lazy(() => import('../pages/ScanningPage'));
 const ViewConfirmedReturnPage = lazy(() =>
   import('../pages/ViewConfirmedReturn')
 );
+const EditOrderPage = lazy(() => import('../pages/EditOrder'));
 
 export default [
   { path: '/request-permission', component: AuthorizePage },
@@ -18,4 +19,5 @@ export default [
   { path: '/profile', component: ProfilePage },
   { path: '/settings', component: SettingsPage },
   { path: '/view-return', component: ViewConfirmedReturnPage },
+  { path: '/edit-order', component: EditOrderPage },
 ];

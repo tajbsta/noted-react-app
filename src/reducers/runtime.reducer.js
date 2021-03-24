@@ -1,10 +1,12 @@
 import {
+  CLEAR_CURRENT_ORDER,
   CLEAR_FORM,
   CLEAR_PAYMENT_INFO,
   CLEAR_PICKUP_DETAILS,
   CLEAR_RETURN_ADDRESS,
   CLEAR_SEARCH,
   SEARCH,
+  UPDATE_CURRENT_ORDER,
   UPDATE_FOR_DONATION,
   UPDATE_FOR_RETURN,
   UPDATE_LAST_CALL,
@@ -23,6 +25,7 @@ const initialState = {
     payment: {},
     details: {},
   },
+  orderInMemory: {},
 };
 
 function runtime(state = initialState, { type, data }) {
@@ -104,6 +107,16 @@ function runtime(state = initialState, { type, data }) {
       return {
         ...state,
         form: {},
+      };
+    case UPDATE_CURRENT_ORDER:
+      return {
+        ...state,
+        orderInMemory: data,
+      };
+    case CLEAR_CURRENT_ORDER:
+      return {
+        ...state,
+        orderInMemory: {},
       };
     default:
       return state;

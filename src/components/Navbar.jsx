@@ -28,6 +28,12 @@ const Topnav = () => {
     '/code',
     '/code/',
   ];
+  const authenticatedViews = [
+    '/dashboard',
+    '/view-scan',
+    '/profile',
+    '/settings',
+  ];
   const {
     location: { pathname },
   } = useHistory();
@@ -74,9 +80,7 @@ const Topnav = () => {
       >
         <BrandLogoSvg />
       </Navbar.Brand>
-      {['/dashboard', '/view-scan', '/profile', '/settings'].includes(
-        pathname
-      ) && (
+      {authenticatedViews.includes(pathname) && (
         <>
           <Container className='ml-3'>
             <div className='input-group input-group-lg input-group-merge background-color'>

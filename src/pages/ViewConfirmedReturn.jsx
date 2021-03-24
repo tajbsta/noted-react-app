@@ -9,29 +9,49 @@ import $ from 'jquery';
 import CancelOrderModal from '../components/Dashboard/modals/CancelOrderModal';
 import { updateOrders } from '../actions/auth.action';
 import { useHistory } from 'react-router';
+import Row from '../components/Row';
+import ReturnCategory from '../components/Dashboard/ReturnCategory';
+import {
+  FOR_DONATION,
+  FOR_RETURN,
+  LAST_CALL,
+} from '../constants/actions/runtime';
 
 function ViewConfirmedReturn({
   location: {
-    state: { scheduledReturnId },
+    state: { scheduledReturnId, hasModifications },
   },
 }) {
+  console.log(hasModifications);
   const dispatch = useDispatch();
   const [confirmed, setconfirmed] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
   const history = useHistory();
-
-  const { inDonation, scheduledReturns } = useSelector(
+  const {
+    inDonation,
+    scheduledReturns,
+    scans,
+    forReturn,
+    lastCall,
+    localDonationsCount,
+    orderInMemory,
+  } = useSelector(
     ({
-      runtime: { forReturn, lastCall, forDonation },
+      runtime: { forReturn, lastCall, forDonation, orderInMemory },
       auth: { scheduledReturns },
+      scans,
     }) => ({
+      localDonationsCount: forDonation.length,
+      forReturn,
+      lastCall,
       scheduledReturns,
       inReturn: [...forReturn, ...lastCall],
       inDonation: [...forDonation],
+      scans,
+      orderInMemory,
     })
   );
-
   // const totalDonations = inDonation.length;
 
   useEffect(() => {
@@ -44,9 +64,9 @@ function ViewConfirmedReturn({
     }
   }, []);
 
-  const scheduledReturn = scheduledReturns.find(
-    ({ id }) => id === scheduledReturnId
-  );
+  const scheduledReturn = hasModifications
+    ? orderInMemory
+    : scheduledReturns.find(({ id }) => id === scheduledReturnId);
 
   const { returnFee, taxes, address, payment } = scheduledReturn;
   const items = get(scheduledReturn, 'items', []);
@@ -55,10 +75,22 @@ function ViewConfirmedReturn({
     .reduce((acc, curr) => (acc += curr), 0);
   const totalPayment = (returnFee + taxes).toFixed(2);
 
-  const checkoutTitle = items.length > 0 ? 'returns' : 'donate';
-
   const initiateCancelOrder = () => {
     setShowCancelOrderModal(true);
+  };
+
+  const onConfirm = () => {
+    /**
+     *
+     */
+    console.log(orderInMemory);
+
+    const filteredOrders = [
+      ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
+      orderInMemory,
+    ];
+    dispatch(updateOrders(filteredOrders));
+    history.push('/dashboard');
   };
 
   return (
@@ -93,16 +125,49 @@ function ViewConfirmedReturn({
                 clickable={false}
               />
             ))}
-
-            {inDonation.map((item) => (
-              <ProductCard
-                scannedItem={item}
-                key={item.id}
-                selectable={false}
-                clickable={false}
-              />
-            ))}
+            {/**
+             * @START ADD PRODUCTS BTN
+             */}
+            <div
+              className={`card shadow-sm scanned-item-card w-840 mb-3 p-0 btn`}
+              onClick={() => {
+                /**
+                 * @FUNCTION Show products like the one from dashboard
+                 */
+                history.push('/edit-order', { scheduledReturnId });
+              }}
+            >
+              <div className='card-body pt-3 pb-3 p-0 m-0'>
+                <Row>
+                  <div
+                    className='col-sm-1 product-img-container add-product-container'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: 60,
+                    }}
+                  >
+                    +
+                  </div>
+                  <div className='col-sm-4 p-0 mt-1 p-details'>
+                    <Row>
+                      <h3 className='product-name'>Add Products</h3>
+                    </Row>
+                    <h3 className='add-product-info'>
+                      (No extra cost if they fit in one box)
+                    </h3>
+                  </div>
+                </Row>
+              </div>
+            </div>
+            {/**
+             * @END ADD PRODUCTS BTN
+             */}
           </div>
+          {/**
+           * @START OF RIGHT CARD
+           */}
           <div className='col-sm-3'>
             <div
               className='col right-card'
@@ -129,31 +194,6 @@ function ViewConfirmedReturn({
                     More info
                   </h3>
                 </button>
-                {/* MODAL CITY HERE */}
-                <SizeGuideModal
-                  show={modalShow}
-                  onHide={() => setModalShow(false)}
-                />
-                <CancelOrderModal
-                  show={showCancelOrderModal}
-                  onHide={() => setShowCancelOrderModal(false)}
-                  onCancel={async () => {
-                    /**
-                     * CANCEL ORDER HERE
-                     */
-                    /**
-                     * UPDATE SCHEDULED RETURNS BY FILTER
-                     */
-                    const filteredOrders = [
-                      ...scheduledReturns.filter(
-                        ({ id }) => id !== scheduledReturnId
-                      ),
-                    ];
-                    console.log(filteredOrders);
-                    dispatch(updateOrders(filteredOrders));
-                    history.push('/dashboard');
-                  }}
-                />
 
                 <hr className='line-break-1' />
 
@@ -251,12 +291,47 @@ function ViewConfirmedReturn({
                       </h3>
                     </div>
                   </div>
+                  {orderInMemory && (
+                    <div
+                      className='btn mt-2'
+                      style={{
+                        background: '#570097',
+                        border: 'none',
+                        color: '#FFFFFF',
+                      }}
+                      onClick={onConfirm}
+                    >
+                      Confirm
+                    </div>
+                  )}
                 </>
               </div>
             </div>
           </div>
+          {/**
+           * @END RIGHT CARD
+           */}
         </div>
       </div>
+      {/* MODAL CITY HERE */}
+      <SizeGuideModal show={modalShow} onHide={() => setModalShow(false)} />
+      <CancelOrderModal
+        show={showCancelOrderModal}
+        onHide={() => setShowCancelOrderModal(false)}
+        onCancel={async () => {
+          /**
+           * CANCEL ORDER HERE
+           */
+          /**
+           * UPDATE SCHEDULED RETURNS BY FILTER
+           */
+          const filteredOrders = [
+            ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
+          ];
+          dispatch(updateOrders(filteredOrders));
+          history.push('/dashboard');
+        }}
+      />
     </div>
   );
 }
