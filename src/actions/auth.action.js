@@ -48,7 +48,7 @@ export function clearOrder() {
   };
 }
 
-export function updateOrders(scheduledReturns) {
+export async function updateOrders(scheduledReturns) {
   return {
     type: UPDATE_ORDERS,
     data: scheduledReturns,
