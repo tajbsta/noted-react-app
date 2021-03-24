@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import UserInfo from '../components/Profile/UserInfo';
 import Address from '../components/Profile/Address';
 import Payment from '../components/Profile/Payment';
@@ -8,8 +8,15 @@ import {
   paymentAddressSchema,
   pickUpAddressSchema,
 } from '../models/formSchema';
+import BasicInfo from '../components/Settings/BasicInfo';
 
 export default function ProfilePage() {
+  /**
+   * @STATES
+   * @returns component states
+   */
+  const [showEditPayment, setShowEditPayment] = useState(true);
+
   const {
     errors: addressFormErrors,
     handleChange: handleAddressChange,
@@ -52,23 +59,18 @@ export default function ProfilePage() {
             </div>
           </div>
           <div className='col-sm-9'>
-            {/*LEFT CARD*/}
-            {/* <AddressForm
+            <BasicInfo
               {...addressFormValues}
-              errors={addressFormErrors}
               handleChange={handleAddressChange}
-              onDoneClick={() => {}}
-            /> */}
-            <Address />
-            <div className='mt-5'>
-              {/* <PaymentForm
-                {...paymentFormValues}
-                errors={paymentFormErrors}
-                handleChange={handlePaymentChange}
-                onDoneClick={() => {}}
-              /> */}
-              <Payment />
-            </div>
+            />
+            {showEditPayment && (
+              <div className='mt-5'>
+                <Payment
+                  {...paymentFormValues}
+                  handleChange={handlePaymentChange}
+                />
+              </div>
+            )}
             <ReturnHistory />
           </div>
         </div>
