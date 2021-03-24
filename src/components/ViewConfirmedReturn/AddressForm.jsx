@@ -48,7 +48,10 @@ export default function AddressForm({
             <h3 className='sofia-pro text-18 mb-4'>Pick-up Address</h3>
             <div className='card shadow-sm mb-2 p-3 w-840'>
               <div className='card-body'>
-                <Form id='AddressForm' onSubmit={(e) => e.preventDefault()}>
+                <Form
+                  id='AddressFormConfirmed'
+                  onSubmit={(e) => e.preventDefault()}
+                >
                   <Row>
                     <Col xs={6}>
                       <Form.Group>

@@ -3,6 +3,7 @@ import {
   INVALID_PASSWORD,
   INVALID_PARAMETER,
   INVALID_CREDENTIALS,
+  LIMIT_EXCEEDED_EXCEPTION
 } from "../constants/errors/errorCodes";
 
 export const signUpErrors = [
@@ -27,3 +28,25 @@ export const signInErrors = [
     message: "Invalid email or password. Please try again.",
   },
 ];
+
+export const changePassErrors = [
+  {
+    code: INVALID_CREDENTIALS,
+    message: "Invalid current password. Please try again.",
+  },
+  {
+    code: INVALID_PASSWORD,
+    message:
+      "Password must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character",
+  },
+  {
+    code: INVALID_PARAMETER,
+    message: "Password must contain 8 characters",
+  },
+  {
+    code: LIMIT_EXCEEDED_EXCEPTION,
+    message: "Attempt limit exceeded, please try again later.",
+
+  }
+];
+

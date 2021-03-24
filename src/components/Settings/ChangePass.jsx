@@ -1,12 +1,52 @@
 import React, { useState } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
 import { Eye, EyeOff } from 'react-feather';
 import { Auth } from 'aws-amplify';
+import { changePassErrors } from '../../library/errors.library';
+import { PASSWORD_REGEX_FORMAT } from '../../constants/errors/regexFormats';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import { get } from 'lodash';
 
 export default function ChangePass() {
   const [oldPasswordShown, setOldPasswordShown] = useState(false);
   const [newPasswordShown, setNewPasswordShown] = useState(false);
   const [confirmPasswordShown, setConfirmPasswordShown] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
+  const changePassSchema = Yup.object({
+    oldPassword: Yup.string().required('Your old password is required'),
+    newPassword: Yup.string()
+      .required(
+        'Your password must be 8-20 characters long and must contain a letter, symbol and a number'
+      )
+      .matches(PASSWORD_REGEX_FORMAT, {
+        message:
+          'Your password must be 8-20 characters long and must contain a letter, symbol and a number',
+      })
+      .resolve(),
+    confirmPassword: Yup.string().oneOf(
+      [Yup.ref('newPassword'), null],
+      'New Passwords must match'
+    ),
+  });
+
+  const { errors, handleChange, values } = useFormik({
+    initialValues: {
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    },
+    validationSchema: changePassSchema,
+  });
+
+  const { oldPassword, newPassword, confirmPassword } = values;
+
+  const eyeOff = <EyeOff />;
+  const eye = <Eye />;
 
   const toggleOldPasswordVisiblity = () => {
     setOldPasswordShown(oldPasswordShown ? false : true);
@@ -17,19 +57,31 @@ export default function ChangePass() {
   const toggleConfirmPasswordVisiblity = () => {
     setConfirmPasswordShown(confirmPasswordShown ? false : true);
   };
-  const eyeOff = <EyeOff />;
-  const eye = <Eye />;
 
-  const changePassword = async () => {
+  const changePassword = async (e) => {
+    e.preventDefault();
+
+    setError(null);
+    setSuccess(null);
+    setLoading(true);
+
     try {
-      Auth.currentAuthenticatedUser()
-        .then((user) => {
-          return Auth.changePassword(user, 'oldPassword', 'newPassword');
-        })
-        .then((data) => console.log(data))
-        .catch((err) => console.log(err));
+      const user = await Auth.currentAuthenticatedUser();
+      await Auth.changePassword(user, values.oldPassword, values.newPassword);
+
+      setLoading(false);
+
+      setSuccess(true);
     } catch (err) {
+      setLoading(false);
       console.log(err);
+      setError(
+        get(
+          changePassErrors.find(({ code }) => code === err.code),
+          'message',
+          'An error occurred changing password'
+        )
+      );
     }
   };
 
@@ -37,17 +89,32 @@ export default function ChangePass() {
     <div id='ChangePass'>
       <div className='mt-5'>
         <h3 className='sofia-pro text-18 mb-4'>Change Password</h3>
+        {error && (
+          <div className='alert alert-danger w-840' role='alert'>
+            <h4 className='text-center text-alert'>{error}</h4>
+          </div>
+        )}
+        {success && (
+          <div className='alert alert-success w-840' role='alert'>
+            <h4 className='text-center text-alert'>
+              Password Changed Successfully
+            </h4>
+          </div>
+        )}
         <div className='card shadow-sm mb-2 p-3 w-840 change-container'>
           <div className='card-body'>
-            <Form id='AddressForm'>
+            <Form id='passForm'>
               <Row>
                 <Col>
-                  <Form.Group>
-                    <Form.Label>Old Password</Form.Label>
+                  <Form.Group controlId='oldPassword'>
+                    <Form.Label>Current Password</Form.Label>
                     <div>
                       <Form.Control
                         className='form-control-lg'
                         type={oldPasswordShown ? 'text' : 'password'}
+                        onChange={handleChange}
+                        value={values.oldPassword}
+                        disabled={loading}
                       />
                       <i
                         className='fe-eye'
@@ -59,12 +126,15 @@ export default function ChangePass() {
                   </Form.Group>
                 </Col>
                 <Col>
-                  <Form.Group>
+                  <Form.Group controlId='newPassword'>
                     <Form.Label>New Password</Form.Label>
                     <div>
                       <Form.Control
                         className='form-control-lg'
                         type={newPasswordShown ? 'text' : 'password'}
+                        onChange={handleChange}
+                        value={values.newPassword}
+                        disabled={loading}
                       />
                       <i
                         className='fe-eye'
@@ -80,12 +150,15 @@ export default function ChangePass() {
               <Row>
                 <Col xs={6}></Col>
                 <Col xs={6}>
-                  <Form.Group>
+                  <Form.Group controlId='confirmPassword'>
                     <Form.Label>Confirm New Password</Form.Label>
                     <div>
                       <Form.Control
                         className='form-control-lg'
                         type={confirmPasswordShown ? 'text' : 'password'}
+                        onChange={handleChange}
+                        value={values.confirmPassword}
+                        disabled={loading}
                       />
                       <i
                         className='fe-eye'
@@ -104,8 +177,17 @@ export default function ChangePass() {
                     className='btn-change'
                     type='submit'
                     onClick={changePassword}
+                    disabled={loading}
                   >
-                    Change Password
+                    {!loading ? (
+                      <>Change Password</>
+                    ) : (
+                      <Spinner
+                        animation='border'
+                        size='sm'
+                        className='spinner'
+                      />
+                    )}
                   </Button>
                 </Col>
               </Row>
