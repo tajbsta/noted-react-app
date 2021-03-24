@@ -306,8 +306,14 @@ function ViewConfirmedReturn({
                         </button>
                         <h3 className='cancel-info'>
                           Canceling pick-ups less than 4h before schedule will
-                          result in a $5 penalty More info
+                          result in a $5 penalty
                         </h3>
+                        <a
+                          style={{ textDecoration: 'underline' }}
+                          className='cancel-info'
+                        >
+                          More info
+                        </a>
                       </div>
                     </div>
                     {!isEmpty(orderInMemory) && (
