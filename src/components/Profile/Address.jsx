@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import USA_STATES from '../../assets/usa_states.json';
+import { formatPhoneNumber } from '../../utils/form';
 import { Form, Button, Row, Col } from 'react-bootstrap';
+import $ from 'jquery';
 
 export default function Address({
   fullName,
@@ -13,8 +15,28 @@ export default function Address({
   handleChange,
   onDoneClick,
 }) {
+  const [isEditing, setIsEditing] = useState(false);
+  useEffect(() => {
+    const platform = window.navigator.platform;
+    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+
+    if (windowsPlatforms.indexOf(platform) !== -1) {
+      // Windows 10 Chrome
+      $('.btn-done').css('padding-bottom', '10px');
+    }
+  }, []);
+
+  const noBorder = !isEditing
+    ? {
+        style: {
+          border: 'none',
+          padding: '0px',
+        },
+        disabled: true,
+      }
+    : {};
   return (
-    <div>
+    <div id='BasicInfo'>
       <h3 className='sofia-pro text-18 mb-4'>Pick-up Address</h3>
       <div className='card shadow-sm mb-2 p-3 w-840'>
         <div className='card-body'>
@@ -26,23 +48,23 @@ export default function Address({
                   <Form.Control
                     className='form-control-lg'
                     type='name'
-                    name='fullName'
-                    value={fullName}
-                    onChange={handleChange}
+                    {...noBorder}
                   />
                 </Form.Group>
               </Col>
               <Col>
                 <Form.Group>
                   <Form.Label>State</Form.Label>
+
                   <Form.Control
                     className='form-control-md'
                     as='select'
-                    value={state || ''}
+                    value={state}
                     name='state'
                     onChange={handleChange}
                     placeholder='Select State'
                     defaultValue='null'
+                    {...noBorder}
                   >
                     {[
                       { abbreviation: '', name: 'Select State' },
@@ -53,6 +75,15 @@ export default function Address({
                       </option>
                     ))}
                   </Form.Control>
+
+                  {/* {!isEditing && (
+                    <Form.Control
+                      className='form-control-sm'
+                      type='zip code'
+                      value={state}
+                      {...noBorder}
+                    />
+                  )} */}
                 </Form.Group>
               </Col>
               <Col>
@@ -61,9 +92,7 @@ export default function Address({
                   <Form.Control
                     className='form-control-sm'
                     type='zip code'
-                    name='zipCode'
-                    value={zipCode}
-                    onChange={handleChange}
+                    {...noBorder}
                   />
                 </Form.Group>
               </Col>
@@ -76,9 +105,7 @@ export default function Address({
                   <Form.Control
                     className='form-control-lg'
                     type='name'
-                    name='line1'
-                    value={line1}
-                    onChange={handleChange}
+                    {...noBorder}
                   />
                 </Form.Group>
               </Col>
@@ -88,9 +115,16 @@ export default function Address({
                   <Form.Control
                     className='form-control-lg'
                     type='phone number'
+                    onChange={(e) => {
+                      const re = /^[0-9\b]+$/;
+                      if (e.target.value === '' || re.test(e.target.value)) {
+                        handleChange(e);
+                      }
+                    }}
+                    value={formatPhoneNumber(phoneNumber) || ''}
                     name='phoneNumber'
-                    value={phoneNumber}
-                    onChange={handleChange}
+                    maxLength={13}
+                    {...noBorder}
                   />
                 </Form.Group>
               </Col>
@@ -99,13 +133,11 @@ export default function Address({
             <Row>
               <Col xs={6}>
                 <Form.Group>
-                  <Form.Label va>Address Line 2</Form.Label>
+                  <Form.Label>Address Line 2</Form.Label>
                   <Form.Control
                     className='form-control-lg'
                     type='name'
-                    name='line2'
-                    value={line2}
-                    onChange={handleChange}
+                    {...noBorder}
                   />
                 </Form.Group>
               </Col>
@@ -119,16 +151,30 @@ export default function Address({
               </Col>
 
               <Col className='btn-container'>
-                <Button
-                  className='btn-done'
-                  type='submit'
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onDoneClick();
-                  }}
-                >
-                  Done
-                </Button>
+                {isEditing && (
+                  <Button
+                    className='btn-done'
+                    type='submit'
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsEditing(false);
+                    }}
+                  >
+                    Done
+                  </Button>
+                )}
+                {!isEditing && (
+                  <Button
+                    className='btn-done'
+                    type='submit'
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsEditing(true);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                )}
               </Col>
             </Row>
           </Form>
