@@ -224,22 +224,21 @@ function ViewConfirmedReturn({
 
                 <hr className='line-break-1' />
 
-                {confirmed && (
-                  <div>
-                    <h3 className='sofia-pro pick-up-price mb-0'>
-                      ${potentialReturnValue.toFixed(2) || 0.0}
-                    </h3>
-                    <h3 className='return-type sofia-pro value-label'>
-                      Potential Return Value
-                    </h3>
+                <div>
+                  <h3 className='sofia-pro pick-up-price mb-0'>
+                    ${potentialReturnValue.toFixed(2) || 0.0}
+                  </h3>
+                  <h3 className='return-type sofia-pro value-label'>
+                    Potential Return Value
+                  </h3>
+                  {confirmed && (
                     <p className='pick-up-reminder sofia-pro'>
                       Once the pick-up has been confirmed we’ll take care of
                       contacting your merchants. They will then be in charge of
                       the payment.
                     </p>
-                  </div>
-                )}
-
+                  )}
+                </div>
                 {!confirmed && (
                   <>
                     {/* <h2 className='sofia-pro mb-0 donate-quantity'>1</h2>
