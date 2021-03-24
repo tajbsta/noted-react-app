@@ -91,6 +91,19 @@ function DashboardPage() {
       setLoading(false);
 
       setItems([...products]);
+
+      if (!isEmpty(scheduledReturns)) {
+        setItems([
+          ...products.filter(
+            ({ id }) =>
+              ![
+                ...scheduledReturns
+                  .reduce((acc, curr) => acc.items.concat(curr.items))
+                  .map(({ id }) => id),
+              ].includes(id)
+          ),
+        ]);
+      }
       dispatch(storeScan({ scannedItems: [...products] }));
     } catch (error) {
       setLoading(false);
