@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Plus } from 'react-feather';
 import ProductCard from '../components/Dashboard/ProductCard';
 import PickUpConfirmed from '../components/ViewConfirmedReturn/PickUpConfirmed';
 import PickUpDetails from '../components/ViewConfirmedReturn/PickUpDetails';
@@ -139,7 +140,7 @@ function ViewConfirmedReturn({
              */}
             {!confirmed && (
               <div
-                className={`card shadow-sm scanned-item-card w-840 mb-3 p-0 btn`}
+                className='card add-border scanned-item-card w-840 mb-3 p-0 btn'
                 onClick={() => {
                   /**
                    * @FUNCTION Show products like the one from dashboard
@@ -148,7 +149,7 @@ function ViewConfirmedReturn({
                 }}
               >
                 <div className='card-body pt-3 pb-3 p-0 m-0'>
-                  <Row>
+                  <Row className='add-row'>
                     <div
                       className='col-sm-1 product-img-container add-product-container'
                       style={{
@@ -158,11 +159,11 @@ function ViewConfirmedReturn({
                         height: 60,
                       }}
                     >
-                      +
+                      <Plus />
                     </div>
-                    <div className='col-sm-4 p-0 mt-1 p-details'>
+                    <div className='col-sm-4 p-0 p-details'>
                       <Row>
-                        <h3 className='product-name'>Add Products</h3>
+                        <h3 className='add-title'>Add Products</h3>
                       </Row>
                       <h3 className='add-product-info'>
                         (No extra cost if they fit in one box)
