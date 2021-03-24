@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import AuthorizeImg from '../assets/img/Authorize.svg';
-import { scraperAuth } from '../utils/scrapeService';
+import $ from 'jquery';
+import { getGoogleOauthUrl } from '../utils/authApi';
 
 export default function AuthorizePage() {
   const [authUrl, setAuthUrl] = useState(null);
 
   const getAuthUrl = async () => {
     try {
-      const res = await scraperAuth();
+      const url = await getGoogleOauthUrl();
 
-      setAuthUrl(res.data.url);
+      setAuthUrl(url);
     } catch (error) {
       console.log(error);
     }
@@ -23,6 +24,17 @@ export default function AuthorizePage() {
   useEffect(() => {
     getAuthUrl();
   }, []);
+
+  useEffect(() => {
+    const platform = window.navigator.platform;
+    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+
+    if (windowsPlatforms.indexOf(platform) !== -1) {
+      // Windows 10 Chrome
+      $('.btn-authorize').css('padding-top', '12px');
+    }
+  }, []);
+
   return (
     <div id='Authorize'>
       <Container className='main-body' fluid='lg'>

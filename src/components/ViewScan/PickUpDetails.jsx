@@ -10,11 +10,30 @@ import {
   paymentAddressSchema,
   pickUpAddressSchema,
 } from '../../models/formSchema';
+import { useDispatch } from 'react-redux';
+import {
+  updatePaymentInfo,
+  updateReturnAdddress,
+} from '../../actions/runtime.action';
 
 function PickUpDetails() {
+  /**
+   * @UTILITY
+   * @returns misc hooks
+   */
+  const dispatch = useDispatch();
+
+  /**
+   * @STATES
+   * @returns component states
+   */
   const [showEditAddress, setShowEditAddress] = useState(false);
   const [showEditPayment, setShowEditPayment] = useState(false);
 
+  /**
+   * @FORMSTATE by FORMIK
+   * @returns customer address
+   */
   const {
     errors: addressFormErrors,
     handleChange: handleAddressChange,
@@ -31,6 +50,10 @@ function PickUpDetails() {
     validationSchema: pickUpAddressSchema,
   });
 
+  /**
+   * @FORMSTATE by FORMIK
+   * @returns payment
+   */
   const {
     errors: paymentFormErrors,
     handleChange: handlePaymentChange,
@@ -46,8 +69,44 @@ function PickUpDetails() {
     validationSchema: paymentAddressSchema,
   });
 
+  /**
+   * @VALIDATION
+   * @returns boolean of validation
+   */
   const isAddressFormEmpty = isFormEmpty(addressFormValues);
   const isPaymentFormEmpty = isFormEmpty(paymentFormValues);
+
+  /**
+   * @FUNCTION
+   * @submits payment form state
+   */
+  const savePayment = async () => {
+    dispatch(
+      updatePaymentInfo({
+        formData: { ...paymentFormValues, errors: paymentFormErrors },
+      })
+    );
+    setShowEditPayment(false);
+  };
+
+  /**
+   * @FUNCTION
+   * @submits address form state
+   */
+  const saveAddress = async () => {
+    dispatch(
+      updateReturnAdddress({
+        formData: { ...addressFormValues, errors: addressFormErrors },
+      })
+    );
+    setShowEditAddress(false);
+  };
+
+  /**
+   * @FUNCTION
+   * @submits pick-up details form state
+   */
+  const saveDetails = async () => {};
 
   return (
     <>
@@ -61,7 +120,7 @@ function PickUpDetails() {
             {...paymentFormValues}
             errors={paymentFormErrors}
             handleChange={handlePaymentChange}
-            setShowEditPayment={setShowEditPayment}
+            onDoneClick={savePayment}
           />
         )}
         {showEditAddress && (
@@ -69,7 +128,7 @@ function PickUpDetails() {
             {...addressFormValues}
             errors={addressFormErrors}
             handleChange={handleAddressChange}
-            setShowEditAddress={setShowEditAddress}
+            onDoneClick={saveAddress}
           />
         )}
 

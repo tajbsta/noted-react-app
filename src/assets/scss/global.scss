@@ -8,6 +8,10 @@
   font-family: 'Sofia Pro';
 }
 
+.noted-red {
+  color: red;
+}
+
 .text-14 {
   font-size: 14px;
 }
@@ -22,6 +26,10 @@
 
 .w-840 {
   width: 840px;
+
+  @media (min-width: 280px) and (max-width: 1119px) {
+    width: auto;
+  }
 }
 
 .line-height-16 {

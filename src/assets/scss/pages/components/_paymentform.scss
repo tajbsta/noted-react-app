@@ -17,6 +17,10 @@
     left: 0px;
     top: 22px;
     border-radius: 4px;
+
+    @media (min-width: 280px) and (max-width: 1119px) {
+      width: auto;
+    }
   }
 
   .form-control-sm {
@@ -25,6 +29,10 @@
     left: 0px;
     top: 22px;
     border-radius: 4px;
+
+    @media (min-width: 280px) and (max-width: 1119px) {
+      width: auto;
+    }
   }
 
   .exp-form {

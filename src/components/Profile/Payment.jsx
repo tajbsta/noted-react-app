@@ -1,7 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 
-export default function Payment() {
+export default function Payment({
+  fullName,
+  cardNumber,
+  expirationMonth,
+  expirationYear,
+  cvc,
+  errors,
+  handleChange,
+  onDoneClick,
+}) {
+  const [isEditing, setIsEditing] = useState(false);
+  const noBorder = !isEditing
+    ? {
+        style: {
+          border: 'none',
+        },
+        disabled: true,
+      }
+    : {};
   return (
     <div>
       <div className='container mt-6'>
@@ -15,7 +33,14 @@ export default function Payment() {
                     <Col xs={6}>
                       <Form.Group>
                         <Form.Label>Cardholder Name</Form.Label>
-                        <Form.Control className='form-control-lg' type='name' />
+                        <Form.Control
+                          className='form-control-lg'
+                          type='name'
+                          name='fullName'
+                          value={fullName}
+                          onChange={handleChange}
+                          {...noBorder}
+                        />
                       </Form.Group>
                     </Col>
                     <Col>
@@ -24,14 +49,20 @@ export default function Payment() {
                         <div className='exp-form'>
                           <Form.Control
                             className='form-control-sm'
-                            type='number'
+                            name='expirationMonth'
+                            value={expirationMonth}
+                            onChange={handleChange}
+                            {...noBorder}
                           />
                           <div className='separator'>
                             <h4>&nbsp;&nbsp;/&nbsp;&nbsp;</h4>
                           </div>
                           <Form.Control
                             className='form-control-sm'
-                            type='number'
+                            name='expirationYear'
+                            value={expirationYear}
+                            onChange={handleChange}
+                            {...noBorder}
                           />
                         </div>
                       </Form.Group>
@@ -44,7 +75,10 @@ export default function Payment() {
                         <Form.Label>Card Number</Form.Label>
                         <Form.Control
                           className='form-control-lg'
-                          type='number'
+                          name='cardNumber'
+                          value={cardNumber}
+                          onChange={handleChange}
+                          {...noBorder}
                         />
                       </Form.Group>
                     </Col>
@@ -54,6 +88,10 @@ export default function Payment() {
                         <Form.Control
                           className='form-control-sm'
                           type='phone number'
+                          name='cvc'
+                          value={cvc}
+                          onChange={handleChange}
+                          {...noBorder}
                         />
                       </Form.Group>
                     </Col>
@@ -61,9 +99,30 @@ export default function Payment() {
 
                   <Row>
                     <Col className='btn-container'>
-                      <Button className='btn-save' type='submit'>
-                        Save
-                      </Button>
+                      {isEditing && (
+                        <Button
+                          className='btn-save'
+                          type='submit'
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setIsEditing(false);
+                          }}
+                        >
+                          Done
+                        </Button>
+                      )}
+                      {!isEditing && (
+                        <Button
+                          className='btn-save'
+                          type='submit'
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setIsEditing(true);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                      )}
                     </Col>
                   </Row>
                 </Form>

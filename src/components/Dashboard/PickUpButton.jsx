@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 function PickUpButton({
   disabled,
@@ -11,6 +11,21 @@ function PickUpButton({
   opacity,
   onClick,
 }) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 639);
+    }
+    handleResize(); // Run on load to set the default value
+    window.addEventListener('resize', handleResize);
+    // Clean up event listener
+    return (_) => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   return (
     <div className='row'>
       <button
@@ -26,7 +41,7 @@ function PickUpButton({
       >
         <div className='row'>
           <div
-            className='col-sm-8'
+            className={!isMobile ? 'col-sm-8' : 'ml-3'}
             style={{
               display: 'flex',
               justifyItems: 'center',
@@ -44,7 +59,7 @@ function PickUpButton({
               {leadingText || ''}
             </p>
           </div>
-          <div className='col-sm-4 small'>
+          <div className={!isMobile ? 'col-sm-4 small' : 'd-none'}>
             <p
               className='mt-0 mb-0'
               style={{

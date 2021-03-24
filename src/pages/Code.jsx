@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 import qs from 'qs';
-import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUser, setGoogleAuthCode } from '../actions/auth.action';
+import { saveGoogleAuthCode } from '../utils/authApi';
+import { getUserId } from '../utils/auth';
 
 export default function Code() {
   const history = useHistory();
-  const dispatch = useDispatch();
 
   const verifyUser = async () => {
     const isAuthRedirect = history.location.pathname.includes('/code/verify');
@@ -22,30 +20,18 @@ export default function Code() {
         query,
       });
 
-      // const res = await Auth.currentSession();
-
-      // const loginMethod = query.method || "google";
-      // const username = res.getAccessToken().decodePayload().username;
-
-      // console.log({
-      //   loginMethod,
-      //   username,
-      // });
-
-      // dispatch(
-      //   setUser({
-      //     loginMethod,
-      //     username,
-      //   })
-      // );
-
       if (isAuthRedirect) {
-        // await scraperStart(query.code);
-        dispatch(setGoogleAuthCode(query.code));
-        history.push('/scanning');
-      } else {
-        history.push('/request-permission');
+        if (!query.code) {
+          throw new Error('Rejected by the user');
+        }
+
+        const user = await getUserId();
+
+        // get the code and call POST /auth/google with code and user
+        await saveGoogleAuthCode(query.code, user);
       }
+
+      history.push('/dashboard');
     } catch (error) {
       console.log(error);
 
@@ -58,7 +44,6 @@ export default function Code() {
     }
   };
   useEffect(() => {
-    console.log('code');
     verifyUser();
   }, []);
   return (

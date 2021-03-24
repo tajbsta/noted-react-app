@@ -9,6 +9,7 @@
   font-family: 'Sofia Pro';
   src: url('../fonts/SofiaPro/Sofia\ Pro\ Regular.otf') format('opentype');
 }
+
 html {
   background-color: white;
 }
@@ -25,6 +26,8 @@ html {
 @import './pages/viewscan.scss';
 @import './pages/profile.scss';
 @import './pages/settings.scss';
+@import './pages/viewconfirmedreturn';
+@import './pages/editorder';
 
 /* Components in Pages styling */
 @import './pages/components/brandlogo.scss';
@@ -37,6 +40,7 @@ html {
 /* Modals */
 @import './pages/components/modals/returnpolicy.scss';
 @import './pages/components/modals/sizeguide.scss';
+@import './pages/components/modals/cancelorder.scss';
 
 html,
 body {

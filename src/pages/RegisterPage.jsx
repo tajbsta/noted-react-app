@@ -1,11 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState } from 'react';
-import { Mail } from 'react-feather';
+import { Mail, Eye, EyeOff } from 'react-feather';
 import { Link, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { Form, FormGroup, FormControl, Spinner } from 'react-bootstrap';
-import Amplify, { Auth } from 'aws-amplify';
-import { setUser } from '../actions/auth.action';
+import { Form, Spinner } from 'react-bootstrap';
+import { Auth } from 'aws-amplify';
 import { signUpErrors } from '../library/errors.library';
 import { get } from 'lodash';
 import { PASSWORD_REGEX_FORMAT } from '../constants/errors/regexFormats';
@@ -16,6 +14,12 @@ export default function RegisterPage() {
   const history = useHistory();
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [passwordShown, setPasswordShown] = useState(false);
+  const togglePasswordVisiblity = () => {
+    setPasswordShown(passwordShown ? false : true);
+  };
+  const eyeOff = <EyeOff />;
+  const eye = <Eye />;
 
   const registerSchema = Yup.object({
     email: Yup.string()
@@ -57,7 +61,7 @@ export default function RegisterPage() {
 
       await Auth.signIn(email, password).then((data) => console.log(data));
 
-      history.push('/code');
+      history.push('/request-permission');
     } catch (error) {
       console.log(Object.values(error));
       setError(
@@ -147,18 +151,32 @@ export default function RegisterPage() {
                   renderLocalEmailValidationError()}
               </Form.Group>
               <Form.Group>
-                <Form.Control
-                  isValid={!errors.password && password.length > 0}
-                  isInvalid={errors.password && password.length > 0}
-                  className='form-control form-control-lg mb-0'
-                  type='password'
-                  name='password'
-                  placeholder='Your password...'
-                  onChange={handleChange}
-                />
-                {password.length > 0 &&
-                  errors.password &&
-                  renderLocalPasswordValidationError()}
+                <div>
+                  <Form.Control
+                    isValid={!errors.password && password.length > 0}
+                    isInvalid={errors.password && password.length > 0}
+                    className='form-control form-control-lg mb-0'
+                    type={passwordShown ? 'text' : 'password'}
+                    name='password'
+                    placeholder='Your password...'
+                    onChange={handleChange}
+                  />
+                  <i
+                    className={
+                      errors.length < 1 ||
+                      errors.email == 'Email is required' ||
+                      !errors.email
+                        ? 'fe-eye'
+                        : 'fe-eye-error'
+                    }
+                    onClick={togglePasswordVisiblity}
+                  >
+                    {passwordShown ? eye : eyeOff}
+                  </i>
+                  {password.length > 0 &&
+                    errors.password &&
+                    renderLocalPasswordValidationError()}
+                </div>
               </Form.Group>
               <button
                 className='btn btn-lg btn-block btn-green mb-3 btn-submit'

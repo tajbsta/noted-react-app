@@ -1,4 +1,11 @@
-import { SET_USER, SIGN_OUT, SIGN_UP, SET_GOOGLE_AUTH_CODE } from '../constants/actions/auth';
+import {
+  SET_USER,
+  SIGN_OUT,
+  SET_GOOGLE_AUTH_CODE,
+  SUBMIT_ORDER,
+  CLEAR_ORDER,
+  UPDATE_ORDERS,
+} from '../constants/actions/auth';
 
 export function setUser(data) {
   return {
@@ -23,7 +30,27 @@ export function setGoogleAuthCode(code) {
   return {
     type: SET_GOOGLE_AUTH_CODE,
     data: {
-      googleAuthCode: code
-    }
+      googleAuthCode: code,
+    },
+  };
+}
+
+export function submitOrder(scheduledReturn) {
+  return {
+    type: SUBMIT_ORDER,
+    data: scheduledReturn,
+  };
+}
+
+export function clearOrder() {
+  return {
+    type: CLEAR_ORDER,
+  };
+}
+
+export async function updateOrders(scheduledReturns) {
+  return {
+    type: UPDATE_ORDERS,
+    data: scheduledReturns,
   };
 }

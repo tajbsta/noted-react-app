@@ -6,7 +6,7 @@
   small,
   a,
   button {
-    font-family: "Sofia Pro";
+    font-family: 'Sofia Pro';
   }
 
   h3 {
@@ -43,7 +43,7 @@
     line-height: 28px;
     letter-spacing: 0px;
     color: #21003a;
-    font-family: "Sofia Pro";
+    font-family: 'Sofia Pro';
 
     @media (max-width: 414px) {
       top: 47px;
@@ -65,6 +65,33 @@
 
   .btn-submit {
     font-size: 16px;
+  }
+
+  .fe-eye-new {
+    position: absolute;
+    right: 5%;
+    top: 180%;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.3;
+  }
+
+  .fe-eye-confirm {
+    position: absolute;
+    right: 5%;
+    top: 265%;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.3;
+  }
+
+  .fe-eye-error {
+    position: absolute;
+    right: 5%;
+    top: 323%;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.3;
   }
 }
 

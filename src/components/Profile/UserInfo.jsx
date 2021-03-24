@@ -7,18 +7,14 @@ export default function UserInfo() {
     <div>
       <Card id='UserInfo'>
         <div className='card-body text-center'>
-          <a href='#' className='avatar avatar-xl card-avatar'>
-            <img
-              src={ProfileIcon}
-              className='avatar-img rounded-circle border border-4 border-card'
-              alt='...'
-            />
-          </a>
+          <div className='img-container'>
+            <img src={ProfileIcon} className='avatar-placeholder' alt='...' />
+          </div>
           <h2 className='card-title name'>Jason Chan</h2>
           <p className='small text-muted mb-3 date'>
             User since Augst 24, 2021
           </p>
-          <hr className='line-break-1' />
+          <hr className='line-break-user' />
           <div className='row align-items-center justify-content-between'>
             <div className='col-auto'>
               <div>

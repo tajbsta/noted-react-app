@@ -1,4 +1,6 @@
 #Settings {
+  padding-bottom: 163px;
+
   #leftCard {
     background: #faf8fa;
     border: none;
@@ -10,6 +12,7 @@
     font-size: 18px;
     line-height: 24px;
     color: #2e1d3a;
+    margin-bottom: 14px;
   }
 
   ul,
@@ -19,10 +22,46 @@
     font-size: 14px;
     line-height: 16px;
     color: #6c6372;
+    cursor: pointer;
 
-    &:hover,
-    &:active {
+    &:hover {
       color: #570097;
     }
+  }
+
+  .active {
+    color: #570097;
+  }
+
+  // Change Password Form
+  .change-container {
+    height: 258px;
+  }
+
+  .btn-change {
+    // margin-top: 7px;
+    background: #570097;
+    border: none;
+    position: absolute;
+    right: 4%;
+    height: 40px;
+    width: 194px;
+    border-radius: 6px;
+
+    font-family: 'Sofia Pro';
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+
+    color: #f8efff;
+  }
+
+  .fe-eye {
+    position: absolute;
+    right: 10%;
+    top: 40%;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.3;
   }
 }

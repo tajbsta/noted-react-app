@@ -111,7 +111,7 @@ dist
 .tern-port
 
 # installation locks
-package-lock.json
+# package-lock.json
 yarn.lock
 
 build
@@ -135,4 +135,3 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 .eslintcache
-package-lock.json

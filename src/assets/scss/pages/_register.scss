@@ -131,6 +131,24 @@
   .index-container {
     background-color: #faf8fa;
   }
+
+  .fe-eye {
+    position: absolute;
+    right: 5%;
+    top: 420%;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.3;
+  }
+
+  .fe-eye-error {
+    position: absolute;
+    right: 5%;
+    top: 460%;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.3;
+  }
 }
 
 .error-msg {
