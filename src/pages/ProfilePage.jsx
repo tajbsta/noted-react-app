@@ -3,13 +3,11 @@ import UserInfo from '../components/Profile/UserInfo';
 import Address from '../components/Profile/Address';
 import Payment from '../components/Profile/Payment';
 import ReturnHistory from '../components/Profile/ReturnHistory';
-import AddressForm from '../components/ViewScan/AddressForm';
 import { useFormik } from 'formik';
 import {
   paymentAddressSchema,
   pickUpAddressSchema,
 } from '../models/formSchema';
-import PaymentForm from '../components/ViewScan/PaymentForm';
 
 export default function ProfilePage() {
   const {
@@ -44,7 +42,7 @@ export default function ProfilePage() {
   });
 
   return (
-    <div>
+    <div id='Profile'>
       <div className='container mt-6'>
         <div className='row'>
           <div className='col-sm-3'>

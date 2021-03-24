@@ -1,4 +1,6 @@
 #Settings {
+  padding-bottom: 163px;
+
   #leftCard {
     background: #faf8fa;
     border: none;
@@ -10,6 +12,7 @@
     font-size: 18px;
     line-height: 24px;
     color: #2e1d3a;
+    margin-bottom: 14px;
   }
 
   ul,
@@ -21,10 +24,13 @@
     color: #6c6372;
     cursor: pointer;
 
-    &:hover,
-    &:active {
+    &:hover {
       color: #570097;
     }
+  }
+
+  .active {
+    color: #570097;
   }
 
   // Change Password Form
