@@ -3,7 +3,7 @@ import ProductCard from '../components/Dashboard/ProductCard';
 import PickUpConfirmed from '../components/ViewConfirmedReturn/PickUpConfirmed';
 import PickUpDetails from '../components/ViewConfirmedReturn/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import SizeGuideModal from '../components/Dashboard/modals/SizeGuideModal';
 import $ from 'jquery';
 import CancelOrderModal from '../components/Dashboard/modals/CancelOrderModal';
@@ -74,22 +74,31 @@ function ViewConfirmedReturn({
     .map(({ amount }) => parseFloat(amount))
     .reduce((acc, curr) => (acc += curr), 0);
   const totalPayment = (returnFee + taxes).toFixed(2);
+  const forgottenReturns = [...scans].filter(({ id }) => {
+    return ![...items].map(({ id }) => id).includes(id);
+  });
 
   const initiateCancelOrder = () => {
     setShowCancelOrderModal(true);
   };
 
-  const onConfirm = () => {
+  const onConfirm = async () => {
     /**
      *
      */
-    console.log(orderInMemory);
 
     const filteredOrders = [
       ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
       orderInMemory,
     ];
-    dispatch(updateOrders(filteredOrders));
+    console.log(
+      ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId)
+    );
+    dispatch(await updateOrders(filteredOrders));
+
+    if (hasModifications) {
+      return setconfirmed(true);
+    }
     history.push('/dashboard');
   };
 
@@ -128,39 +137,57 @@ function ViewConfirmedReturn({
             {/**
              * @START ADD PRODUCTS BTN
              */}
-            <div
-              className={`card shadow-sm scanned-item-card w-840 mb-3 p-0 btn`}
-              onClick={() => {
-                /**
-                 * @FUNCTION Show products like the one from dashboard
-                 */
-                history.push('/edit-order', { scheduledReturnId });
-              }}
-            >
-              <div className='card-body pt-3 pb-3 p-0 m-0'>
-                <Row>
-                  <div
-                    className='col-sm-1 product-img-container add-product-container'
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: 60,
-                    }}
-                  >
-                    +
-                  </div>
-                  <div className='col-sm-4 p-0 mt-1 p-details'>
-                    <Row>
-                      <h3 className='product-name'>Add Products</h3>
-                    </Row>
-                    <h3 className='add-product-info'>
-                      (No extra cost if they fit in one box)
-                    </h3>
-                  </div>
-                </Row>
+            {!confirmed && (
+              <div
+                className={`card shadow-sm scanned-item-card w-840 mb-3 p-0 btn`}
+                onClick={() => {
+                  /**
+                   * @FUNCTION Show products like the one from dashboard
+                   */
+                  history.push('/edit-order', { scheduledReturnId });
+                }}
+              >
+                <div className='card-body pt-3 pb-3 p-0 m-0'>
+                  <Row>
+                    <div
+                      className='col-sm-1 product-img-container add-product-container'
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: 60,
+                      }}
+                    >
+                      +
+                    </div>
+                    <div className='col-sm-4 p-0 mt-1 p-details'>
+                      <Row>
+                        <h3 className='product-name'>Add Products</h3>
+                      </Row>
+                      <h3 className='add-product-info'>
+                        (No extra cost if they fit in one box)
+                      </h3>
+                    </div>
+                  </Row>
+                </div>
               </div>
-            </div>
+            )}
+            {confirmed && (
+              <>
+                <h3 className='sofia-pro miss-out section-title'>
+                  Don&apos;t miss out on other returns
+                </h3>
+                <div className='row align-items-center p-4 all-checkbox'>
+                  <input type='checkbox' />
+                  <h4 className='sofia-pro noted-purple ml-4 mb-0 p-0'>
+                    Add all
+                  </h4>
+                </div>
+                {forgottenReturns.map((item) => (
+                  <ProductCard scannedItem={item} key={item.id} />
+                ))}
+              </>
+            )}
             {/**
              * @END ADD PRODUCTS BTN
              */}
@@ -213,98 +240,90 @@ function ViewConfirmedReturn({
                   </div>
                 )}
 
-                <>
-                  {/* <h2 className='sofia-pro mb-0 donate-quantity'>1</h2>
+                {!confirmed && (
+                  <>
+                    {/* <h2 className='sofia-pro mb-0 donate-quantity'>1</h2>
                     <h5 className='sofia-pro text-muted value-label'>
                       Donation
                     </h5> */}
 
-                  {items.length > 0 && (
-                    <>
-                      <h3 className='sofia-pro pick-up-price mb-0'>
-                        ${potentialReturnValue.toFixed(2) || 0.0}
-                      </h3>
-                      <h3 className='return-type sofia-pro value-label'>
-                        Potential Return Value
-                      </h3>
-                    </>
-                  )}
-                  {inDonation.length > 0 && (
-                    <>
-                      <h3 className='sofia-pro pick-up-price mb-0'>
-                        {inDonation.length}
-                      </h3>
-                      <h3 className='return-type sofia-pro value-label'>
-                        Donation
-                      </h3>
-                    </>
-                  )}
-                  <hr className='line-break-2' />
-                  <div className='row'>
-                    <div className='col'>
-                      <h5 className='sofia-pro text-muted value-label'>
-                        Return total cost
-                      </h5>
-                    </div>
-                    <div className='col'>
-                      <h5 className='sofia-pro text-right'>${returnFee}</h5>
-                    </div>
-                  </div>
-                  <div className='row'>
-                    <div className='col'>
-                      <h5 className='sofia-pro text-muted value-label'>
-                        Taxes
-                      </h5>
-                    </div>
-                    <div className='col'>
-                      <h5 className='sofia-pro text-right'>
-                        ${taxes.toFixed(2)}
-                      </h5>
-                    </div>
-                  </div>
-                  <hr className='line-break-3' />
-                  <div className='row'>
-                    <div className='col'>
-                      <h5 className='sofia-pro text-muted'>Total paid</h5>
-                    </div>
-                    <div className='col'>
-                      <h5 className='sofia-pro text-right total-now'>
-                        ${totalPayment}
-                      </h5>
-                    </div>
-                  </div>
-
-                  <hr />
-                  <div className='row'>
-                    <div className='col'>
-                      <button
-                        className='btn btn-more-info'
-                        onClick={initiateCancelOrder}
-                      >
-                        <h3 className='noted-red sofia-pro cancel-order mb-0'>
-                          Cancel order
+                    {inDonation.length > 0 && (
+                      <>
+                        <h3 className='sofia-pro pick-up-price mb-0'>
+                          {inDonation.length}
                         </h3>
-                      </button>
-                      <h3 className='cancel-info'>
-                        Canceling pick-ups less than 4h before schedule will
-                        result in a $5 penalty More info
-                      </h3>
+                        <h3 className='return-type sofia-pro value-label'>
+                          Donation
+                        </h3>
+                      </>
+                    )}
+                    <hr className='line-break-2' />
+                    <div className='row'>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-muted value-label'>
+                          Return total cost
+                        </h5>
+                      </div>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-right'>${returnFee}</h5>
+                      </div>
                     </div>
-                  </div>
-                  {orderInMemory && (
-                    <div
-                      className='btn mt-2'
-                      style={{
-                        background: '#570097',
-                        border: 'none',
-                        color: '#FFFFFF',
-                      }}
-                      onClick={onConfirm}
-                    >
-                      Confirm
+                    <div className='row'>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-muted value-label'>
+                          Taxes
+                        </h5>
+                      </div>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-right'>
+                          ${taxes.toFixed(2)}
+                        </h5>
+                      </div>
                     </div>
-                  )}
-                </>
+                    <hr className='line-break-3' />
+                    <div className='row'>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-muted'>Total paid</h5>
+                      </div>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-right total-now'>
+                          ${totalPayment}
+                        </h5>
+                      </div>
+                    </div>
+
+                    <hr />
+                    <div className='row'>
+                      <div className='col'>
+                        <button
+                          className='btn btn-more-info'
+                          onClick={initiateCancelOrder}
+                        >
+                          <h3 className='noted-red sofia-pro cancel-order mb-0'>
+                            Cancel order
+                          </h3>
+                        </button>
+                        <h3 className='cancel-info'>
+                          Canceling pick-ups less than 4h before schedule will
+                          result in a $5 penalty More info
+                        </h3>
+                      </div>
+                    </div>
+                    {!isEmpty(orderInMemory) && (
+                      <div
+                        className='btn mt-2'
+                        style={{
+                          background: '#570097',
+                          border: 'none',
+                          color: '#FFFFFF',
+                        }}
+                        onClick={onConfirm}
+                      >
+                        Confirm
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>
