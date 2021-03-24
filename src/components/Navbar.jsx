@@ -29,6 +29,14 @@ const Topnav = () => {
     '/code/',
     '/code/verify',
   ];
+  const authenticatedViews = [
+    '/dashboard',
+    '/view-scan',
+    '/profile',
+    '/settings',
+    '/view-return',
+    '/edit-order',
+  ];
   const {
     location: { pathname },
   } = useHistory();
@@ -75,9 +83,7 @@ const Topnav = () => {
       >
         <BrandLogoSvg />
       </Navbar.Brand>
-      {['/dashboard', '/view-scan', '/profile', '/settings'].includes(
-        pathname
-      ) && (
+      {authenticatedViews.includes(pathname) && (
         <>
           <div id='DashboardNav'>
             {/* START OF MOBILE VIEWS */}

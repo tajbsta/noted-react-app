@@ -1,4 +1,4 @@
-import { get, isEmpty } from 'lodash';
+import { flatten, get, isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
@@ -17,6 +17,11 @@ import {
   LAST_CALL,
 } from '../constants/actions/runtime';
 import EmptyScan from '../components/Dashboard/EmptyScan';
+import ProductCard from '../components/Dashboard/ProductCard';
+import ScheduledReturnCard from '../components/Dashboard/ScheduledReturnCard';
+import { clearOrder } from '../actions/auth.action';
+
+const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 
 function DashboardPage() {
   const history = useHistory();
@@ -36,11 +41,20 @@ function DashboardPage() {
     ''
   );
 
-  const { localDonationsCount, lastCall, forReturn } = useSelector(
-    ({ runtime: { forDonation, forReturn, lastCall } }) => ({
+  const {
+    localDonationsCount,
+    lastCall,
+    forReturn,
+    scheduledReturns,
+  } = useSelector(
+    ({
+      runtime: { forDonation, forReturn, lastCall },
+      auth: { scheduledReturns },
+    }) => ({
       localDonationsCount: forDonation.length,
       forReturn,
       lastCall,
+      scheduledReturns,
     })
   );
 
@@ -138,6 +152,41 @@ function DashboardPage() {
                 </div>
               </>
             )}
+
+            {/* IF YOU HAVE SCHEDULED RETURNS */}
+
+            <>
+              {!loading && isEmpty(search) && !isEmpty(scheduledReturns) && (
+                <>
+                  <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
+                    Your scheduled returns{' '}
+                    {inDevMode && (
+                      // THIS ONLY SHOWS WHEN ENV IS SET TO development
+                      <button
+                        className='btn btn-primary'
+                        onClick={() => dispatch(clearOrder())}
+                      >
+                        Clear Orders (DEV)
+                      </button>
+                    )}
+                  </h3>
+                  <div>
+                    {scheduledReturns.map((scheduleReturn) => {
+                      const items = get(scheduleReturn, 'items', []);
+                      return items.map((item) => (
+                        <ScheduledReturnCard
+                          scheduledReturnId={scheduleReturn.id}
+                          scannedItem={item}
+                          key={item.id}
+                          selectable={false}
+                          clickable={false}
+                        />
+                      ));
+                    })}
+                  </div>
+                </>
+              )}
+            </>
 
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
             {!loading && items.length > 0 && (

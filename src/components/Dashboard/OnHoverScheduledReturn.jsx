@@ -1,0 +1,22 @@
+import React, { useState } from 'react';
+
+import ReturnPolicyModal from './modals/ReturnPolicyModal';
+
+export default function OnHoverScheduledReturn({ timeLeft, onClick }) {
+  const [modalShow, setModalShow] = useState(false);
+
+  return (
+    <div>
+      <div id='OnHoverProductCard'>
+        <div className='container-2 text-left'>
+          <p className='text-14 sofia-pro line-height-16 text-score'>
+            {timeLeft}
+          </p>
+          <button className='btn-policy sofia-pro btn' onClick={onClick}>
+            Cancel or modify
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

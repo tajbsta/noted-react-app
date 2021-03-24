@@ -2,21 +2,36 @@ import React, { useEffect, useState } from 'react';
 import ProductCard from '../components/Dashboard/ProductCard';
 import PickUpConfirmed from '../components/ViewScan/PickUpConfirmed';
 import PickUpDetails from '../components/ViewScan/PickUpDetails';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { get } from 'lodash';
 import SizeGuideModal from './../components/Dashboard/modals/SizeGuideModal';
 import $ from 'jquery';
+import { submitOrder } from '../actions/auth.action';
+import { nanoid } from 'nanoid';
+import moment from 'moment';
+import { clearForm } from '../actions/runtime.action';
 
 function ViewScanPage() {
+  const dispatch = useDispatch();
   const [confirmed, setconfirmed] = useState(false);
   const [modalShow, setModalShow] = useState(false);
 
   const scans = useSelector((state) => get(state, 'scans', []));
 
-  const { inReturn, inDonation } = useSelector(
-    ({ runtime: { forReturn, lastCall, forDonation } }) => ({
+  const { inReturn, inDonation, address, payment, details } = useSelector(
+    ({
+      runtime: {
+        forReturn,
+        lastCall,
+        forDonation,
+        form: { address, payment, details },
+      },
+    }) => ({
       inReturn: [...forReturn, ...lastCall],
       inDonation: [...forDonation],
+      address,
+      payment,
+      details,
     })
   );
 
@@ -49,6 +64,29 @@ function ViewScanPage() {
       $('.btn-confirm').css('padding-top', '10px');
     }
   }, []);
+
+  const onReturnConfirm = async () => {
+    setconfirmed(true);
+    /**
+     * SUBMIT ORDER HERE
+     */
+    /**
+     * THIS ID GENERATION IS TEMPORARY
+     */
+    const newUniqueId = `${moment().format('MM-DD-YY-hh:mm')}${nanoid()}`;
+    dispatch(
+      submitOrder({
+        id: newUniqueId,
+        payment,
+        address,
+        details,
+        items: [...inReturn],
+        returnFee: returnFee,
+        taxes,
+      })
+    );
+    dispatch(clearForm());
+  };
 
   return (
     <div id='ViewScanPage'>
@@ -217,7 +255,7 @@ function ViewScanPage() {
                         background: '#570097',
                         border: 'none',
                       }}
-                      onClick={() => setconfirmed(true)}
+                      onClick={onReturnConfirm}
                     >
                       Confirm Order
                     </div>

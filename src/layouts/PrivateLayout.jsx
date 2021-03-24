@@ -10,10 +10,10 @@ function PrivateLayout({ component: Component, ...allProps }) {
     (async () => {
       const isLoggedIn = await isAuthenticated();
 
-      console.log({
-        isLoggedIn,
-        path: allProps.path,
-      });
+      // console.log({
+      //   isLoggedIn,
+      //   path: allProps.path,
+      // });
       if (!isLoggedIn) {
         history.push('/login');
       }

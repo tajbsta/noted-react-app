@@ -1,20 +1,11 @@
 import React from 'react';
 import Row from '../Row';
-import { useHistory } from 'react-router-dom';
 
 function ProductDetails({
   scannedItem: { itemName, vendorTag, amount, compensationType },
 }) {
-  const history = useHistory();
-  const pageLocation = history.location.pathname;
-  const orderViews = ['/view-return', '/view-scan'];
-
   return (
-    <div
-      className={`col-sm-7 p-0 mt-1 p-details ${
-        orderViews.indexOf(pageLocation) != -1 ? 'scheduled-height' : ''
-      }`}
-    >
+    <div className='col-sm-7 p-0 mt-1 p-details'>
       <Row>
         <h4 className='mb-0 sofia-pro mb-1 distributor-name'>{vendorTag}</h4>
       </Row>
