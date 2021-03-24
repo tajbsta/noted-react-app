@@ -3,8 +3,28 @@ import { Card } from 'react-bootstrap';
 import BasicInfo from '../components/Settings/BasicInfo';
 import ChangePass from '../components/Settings/ChangePass';
 import { Link } from 'react-scroll';
+import { useFormik } from 'formik';
+import {
+  paymentAddressSchema,
+  pickUpAddressSchema,
+} from '../models/formSchema';
 
 export default function SettingsPage() {
+  const {
+    errors: addressFormErrors,
+    handleChange: handleAddressChange,
+    values: addressFormValues,
+  } = useFormik({
+    initialValues: {
+      fullName: '',
+      state: '',
+      zipCode: '',
+      line1: '',
+      line2: '',
+      phoneNumber: '',
+    },
+    validationSchema: pickUpAddressSchema,
+  });
   return (
     <div>
       <div id='Settings' className='container mt-6'>
@@ -50,7 +70,10 @@ export default function SettingsPage() {
           </div>
           {/* RIGHT CARD */}
           <div className='col-sm-9'>
-            <BasicInfo />
+            <BasicInfo
+              {...addressFormValues}
+              handleChange={handleAddressChange}
+            />
             <ChangePass />
           </div>
         </div>
