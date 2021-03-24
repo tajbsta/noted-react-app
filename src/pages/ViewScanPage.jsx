@@ -167,9 +167,7 @@ function ViewScanPage() {
                   show={modalShow}
                   onHide={() => setModalShow(false)}
                 />
-
                 <hr className='line-break-1' />
-
                 {confirmed && (
                   <div>
                     <h3 className='sofia-pro pick-up-price mb-0'>
