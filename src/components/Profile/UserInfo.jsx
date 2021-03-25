@@ -18,7 +18,7 @@ export default function UserInfo() {
           <div className='row align-items-center justify-content-between'>
             <div className='col-auto'>
               <div>
-                <h4 className='text-left total'>420</h4>
+                <h4 className='text-left total'>200</h4>
                 <h5 className='total-label'>Total Returns</h5>
               </div>
             </div>

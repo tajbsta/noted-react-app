@@ -7,6 +7,8 @@ import { PASSWORD_REGEX_FORMAT } from '../../constants/errors/regexFormats';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { get } from 'lodash';
+import { AlertCircle } from 'react-feather';
+import PassChangeSuccessModal from '../../components/Dashboard/modals/PassChangeSuccessModal';
 
 export default function ChangePass() {
   const [oldPasswordShown, setOldPasswordShown] = useState(false);
@@ -16,6 +18,8 @@ export default function ChangePass() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+
+  const [modalShow, setModalShow] = useState(null);
 
   const changePassSchema = Yup.object({
     oldPassword: Yup.string().required('Your old password is required'),
@@ -30,7 +34,7 @@ export default function ChangePass() {
       .resolve(),
     confirmPassword: Yup.string().oneOf(
       [Yup.ref('newPassword'), null],
-      'New Passwords must match'
+      'Passwords do not match'
     ),
   });
 
@@ -63,18 +67,28 @@ export default function ChangePass() {
 
     setError(null);
     setSuccess(null);
+    setModalShow(null);
+
     setLoading(true);
 
     try {
+      if (values.newPassword !== values.confirmPassword) {
+        setError('Passwords do not match');
+        setLoading(false);
+        return;
+      }
+
       const user = await Auth.currentAuthenticatedUser();
       await Auth.changePassword(user, values.oldPassword, values.newPassword);
+      // console.log({ values });
 
       setLoading(false);
 
       setSuccess(true);
+      setModalShow(true);
     } catch (err) {
       setLoading(false);
-      console.log(err);
+
       setError(
         get(
           changePassErrors.find(({ code }) => code === err.code),
@@ -87,20 +101,32 @@ export default function ChangePass() {
 
   return (
     <div id='ChangePass'>
+      <PassChangeSuccessModal
+        show={modalShow}
+        onChange={() => setModalShow(true)}
+        onHide={() => setModalShow(false)}
+      />
       <div className='mt-5'>
         <h3 className='sofia-pro text-18 mb-4'>Change Password</h3>
         {error && (
           <div className='alert alert-danger w-840' role='alert'>
-            <h4 className='text-center text-alert'>{error}</h4>
+            <div>
+              <h4 className='text-center text-alert'>
+                <AlertCircle />
+                &nbsp;&nbsp;&nbsp;{error}
+              </h4>
+            </div>
           </div>
         )}
-        {success && (
-          <div className='alert alert-success w-840' role='alert'>
-            <h4 className='text-center text-alert'>
-              Password Changed Successfully
-            </h4>
-          </div>
-        )}
+        {/* {success && (
+          <>
+            <div className='alert alert-success w-840' role='alert'>
+              <h4 className='text-center text-alert'>
+                Password Changed Successfully
+              </h4>
+            </div>
+          </>
+        )} */}
         <div className='card shadow-sm mb-2 p-3 w-840 change-container'>
           <div className='card-body'>
             <Form id='passForm'>

@@ -37,7 +37,7 @@ export const changePassErrors = [
   {
     code: INVALID_PASSWORD,
     message:
-      "Password must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character",
+      "New password must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character",
   },
   {
     code: INVALID_PARAMETER,

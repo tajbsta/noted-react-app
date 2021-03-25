@@ -1,6 +1,15 @@
-#CancelOrderModal {
+.modal-open,
+.modal {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+#PassChangeSuccessModal {
   justify-content: center;
 
+  .modal-dialog-centered,
+  .modal-dialog {
+    justify-content: center;
+  }
   .modal-content {
     height: 358px;
     width: 680px;
@@ -39,27 +48,22 @@
 
   .modal-title {
     position: absolute;
-    // height: 24px;
-    // left: 24.12%;
-    // right: 24.12%;
     top: calc(50% - 24px / 2 - 111px);
     font-style: normal;
     font-weight: normal;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 24px;
     color: #2e1d3a;
   }
 
   .info {
     position: absolute;
-    // left: 20.59%;
-    // right: 20.59%;
-    top: 25.14%;
+    top: 55.14%;
     bottom: 63.69%;
     width: 400px;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 20px;
     text-align: center;
     color: #0e0018;
@@ -67,19 +71,13 @@
     opacity: 0.6;
   }
 
-  .view-link {
+  .check-icon {
     position: absolute;
-    // height: 19px;
-    // width: 100px;
-    // left: 45.44%;
-    // right: 45.44%;
-    top: calc(50% - 19px / 2 - 23.5px);
-    font-family: 'Sofia Pro';
-    font-size: 14px;
-    line-height: 16px;
+    height: 60px;
+    width: 60px;
+    top: calc(35% - 19px / 2 - 23.5px);
     text-align: center;
-    text-decoration-line: underline;
-    color: #570097;
+    color: #00d97e;
   }
 
   .button-group {
@@ -87,11 +85,10 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    top: 60%;
+    top: 75%;
 
-    .btn-cancel {
-      background: #ff1c29;
-      box-shadow: 0px 10px 30px -10px rgba(255, 28, 41, 0.5);
+    .btn-ok {
+      background: #570097;
       border-radius: 6px;
       height: 48px;
       width: 232px;
@@ -100,21 +97,6 @@
       line-height: 19px;
       letter-spacing: 0px;
       text-align: center;
-    }
-
-    .btn-dont {
-      font-size: 14px;
-      line-height: 16px;
-      text-align: center;
-      color: #6aaf6a;
-      background-color: initial !important;
-      border: none;
-      margin-top: 24px;
-
-      &:focus {
-        outline: none !important;
-        box-shadow: none;
-      }
     }
   }
 }
