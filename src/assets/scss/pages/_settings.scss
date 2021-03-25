@@ -70,5 +70,16 @@
       margin-top: 0px;
       padding: 5px;
     }
+
+    .text-alert {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-family: 'Sofia Pro';
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
   }
 }

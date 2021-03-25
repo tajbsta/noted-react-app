@@ -1,4 +1,6 @@
 #ReturnPolicyModal {
+  justify-content: center;
+
   .modal-content {
     background: #ffffff;
     border: 1px solid #eae8eb;
@@ -80,7 +82,7 @@
     border-radius: 6px;
     border: none;
     width: 110px;
-    font-family: "Sofia Pro";
+    font-family: 'Sofia Pro';
 
     &:focus {
       outline: none !important;
