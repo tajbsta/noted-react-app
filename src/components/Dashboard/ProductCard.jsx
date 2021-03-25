@@ -10,7 +10,7 @@ function ProductCard({
   selectable = true,
   selected,
   addSelected,
-  removeSelected,
+  removeSelected = () => {},
   clickable = true,
   scannedItem: {
     vendorTag,
