@@ -98,7 +98,7 @@ const Topnav = () => {
                   <ul className='navbar-nav'>
                     <li className='nav-item dropdown'>
                       <a
-                        className='nav-link dropdown-toggle'
+                        className='nav-link dropdown-toggle mr-3'
                         href='#'
                         id='navbarDropdownMenuLink'
                         role='button'
@@ -155,7 +155,7 @@ const Topnav = () => {
                 </div>
               </div>
             </Container>
-            <div className='mr-2' id='nav-toggle'>
+            <div className='mr-4' id='nav-toggle'>
               <ul className='navbar-nav'>
                 <li className='nav-item dropdown'>
                   <a
