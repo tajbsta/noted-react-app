@@ -10,12 +10,13 @@ import { submitOrder } from '../actions/auth.action';
 import { nanoid } from 'nanoid';
 import moment from 'moment';
 import { clearForm } from '../actions/runtime.action';
+import { FOR_RETURN } from '../constants/actions/runtime';
 
 function ViewScanPage() {
   const dispatch = useDispatch();
   const [confirmed, setconfirmed] = useState(false);
   const [modalShow, setModalShow] = useState(false);
-
+  const [newSelected, setNewSelected] = useState([]);
   const scans = useSelector((state) => get(state, 'scans', []));
 
   const { inReturn, inDonation, address, payment, details } = useSelector(
@@ -80,13 +81,35 @@ function ViewScanPage() {
         payment,
         address,
         details,
-        items: [...inReturn],
+        items: [...inReturn, ...newSelected],
         returnFee: returnFee,
         taxes,
       })
     );
     dispatch(clearForm());
   };
+
+  const addSelected = (id) => {
+    if (newSelected.map(({ id }) => id).includes(id)) {
+      return;
+    }
+    setNewSelected([
+      ...newSelected,
+      forgottenReturns.find((item) => item.id === id),
+    ]);
+  };
+
+  const handleSelectAll = () => {
+    if (newSelected.length === forgottenReturns.length) {
+      setNewSelected([]);
+    }
+
+    if (newSelected.length !== forgottenReturns.length) {
+      setNewSelected([...forgottenReturns.map((scannedItem) => scannedItem)]);
+    }
+  };
+
+  console.log(newSelected);
 
   return (
     <div id='ViewScanPage'>
@@ -130,11 +153,22 @@ function ViewScanPage() {
               Don&apos;t miss out on other returns
             </h3>
             <div className='row align-items-center p-4 all-checkbox'>
-              <input type='checkbox' />
+              <input
+                type='checkbox'
+                onChange={handleSelectAll}
+                checked={newSelected.length === forgottenReturns.length}
+              />
               <h4 className='sofia-pro noted-purple ml-4 mb-0 p-0'>Add all</h4>
             </div>
             {forgottenReturns.map((item) => (
-              <ProductCard scannedItem={item} key={item.id} />
+              <ProductCard
+                scannedItem={item}
+                key={item.id}
+                selected={newSelected.map(({ id }) => id).includes(item.id)}
+                addSelected={() => {
+                  addSelected(item.id);
+                }}
+              />
             ))}
           </div>
           <div className='col-sm-3'>
