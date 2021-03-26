@@ -1,0 +1,79 @@
+.modal-open,
+.modal {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+#AddEmailModal {
+  justify-content: center;
+  font-family: 'Sofia Pro';
+
+  .modal-content {
+    height: 206px;
+    width: 528px;
+    left: 0px;
+    top: 0px;
+    border-radius: 8px;
+  }
+
+  .modal-body {
+    padding: 0px;
+  }
+
+  .form-label {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
+    margin-top: 40px;
+    margin-bottom: 11px;
+
+    padding: 0px 32px;
+  }
+
+  .form-group {
+    margin-bottom: 40px;
+  }
+
+  .form-control {
+    margin: 0px 32px;
+    width: 464px;
+    // height: 32px;
+    border: 1px solid #ece4f2;
+    border-radius: 4px;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-right: 24px;
+
+    .btn-add-email {
+      background: #570097;
+      border-radius: 6px;
+      height: 40px;
+      width: 138px;
+      border: none;
+      font-size: 14px;
+      line-height: 16px;
+      letter-spacing: 0px;
+      text-align: center;
+    }
+
+    .btn-cancel {
+      padding: 0.5rem 24px;
+      font-size: 14px;
+      line-height: 16px;
+      text-align: center;
+      color: #2e1d3a;
+      background-color: initial !important;
+      border: none;
+
+      &:focus {
+        outline: none !important;
+        box-shadow: none;
+      }
+    }
+  }
+}
