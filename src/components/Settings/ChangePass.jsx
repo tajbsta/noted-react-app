@@ -50,13 +50,13 @@ export default function ChangePass() {
   const eyeOff = <EyeOff />;
   const eye = <Eye />;
 
-  const toggleOldPasswordVisiblity = () => {
+  const toggleOldPasswordVisibility = () => {
     setOldPasswordShown(oldPasswordShown ? false : true);
   };
-  const toggleNewPasswordVisiblity = () => {
+  const toggleNewPasswordVisibility = () => {
     setNewPasswordShown(newPasswordShown ? false : true);
   };
-  const toggleConfirmPasswordVisiblity = () => {
+  const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordShown(confirmPasswordShown ? false : true);
   };
 
@@ -137,7 +137,7 @@ export default function ChangePass() {
                       />
                       <i
                         className='fe-eye-old'
-                        onClick={toggleOldPasswordVisiblity}
+                        onClick={toggleOldPasswordVisibility}
                       >
                         {oldPasswordShown ? eye : eyeOff}
                       </i>
@@ -159,7 +159,7 @@ export default function ChangePass() {
                           />
                           <i
                             className='fe-eye-new'
-                            onClick={toggleNewPasswordVisiblity}
+                            onClick={toggleNewPasswordVisibility}
                           >
                             {newPasswordShown ? eye : eyeOff}
                           </i>
@@ -181,7 +181,7 @@ export default function ChangePass() {
                           />
                           <i
                             className='fe-eye-confirm'
-                            onClick={toggleConfirmPasswordVisiblity}
+                            onClick={toggleConfirmPasswordVisibility}
                           >
                             {confirmPasswordShown ? eye : eyeOff}
                           </i>

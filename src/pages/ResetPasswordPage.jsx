@@ -14,10 +14,10 @@ export default function ForgotPasswordPage() {
   const [newPasswordShown, setNewPasswordShown] = useState(false);
   const [confirmPasswordShown, setConfirmPasswordShown] = useState(false);
 
-  const toggleNewPasswordVisiblity = () => {
+  const toggleNewPasswordVisibility = () => {
     setNewPasswordShown(newPasswordShown ? false : true);
   };
-  const toggleConfirmPasswordVisiblity = () => {
+  const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordShown(confirmPasswordShown ? false : true);
   };
   const eyeOff = <EyeOff />;
@@ -94,7 +94,7 @@ export default function ForgotPasswordPage() {
                   />
                   <i
                     className='fe-eye-new'
-                    onClick={toggleNewPasswordVisiblity}
+                    onClick={toggleNewPasswordVisibility}
                   >
                     {newPasswordShown ? eye : eyeOff}
                   </i>
@@ -121,7 +121,7 @@ export default function ForgotPasswordPage() {
                         ? 'fe-eye-error'
                         : 'fe-eye-confirm'
                     }
-                    onClick={toggleConfirmPasswordVisiblity}
+                    onClick={toggleConfirmPasswordVisibility}
                   >
                     {confirmPasswordShown ? eye : eyeOff}
                   </i>
