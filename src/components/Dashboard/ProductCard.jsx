@@ -46,12 +46,14 @@ function ProductCard({
   return (
     <div id='productCard'>
       <div
-        className={`card shadow-sm scanned-item-card w-840 mb-3 p-0 ${
+        className={`card scanned-item-card w-840 mb-3 p-0 ${
           clickable && 'btn'
         }`}
         key={itemName}
         style={{
-          border: selected ? '1px solid rgba(87, 0, 151, 0.8)' : 'none',
+          border: selected
+            ? '1px solid rgba(87, 0, 151, 0.8)'
+            : '1px solid #EAE8EB',
         }}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}

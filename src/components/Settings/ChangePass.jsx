@@ -47,8 +47,6 @@ export default function ChangePass() {
     validationSchema: changePassSchema,
   });
 
-  const { oldPassword, newPassword, confirmPassword } = values;
-
   const eyeOff = <EyeOff />;
   const eye = <Eye />;
 
@@ -72,12 +70,12 @@ export default function ChangePass() {
     setLoading(true);
 
     try {
-      if (values.newPassword !== values.confirmPassword) {
-        setError('Passwords do not match');
+      if (values.oldPassword === values.newPassword) {
+        setError('New password cannot be the same as old password');
         setLoading(false);
         return;
-      } else if (values.oldPassword === values.newPassword) {
-        setError('New password cannot be the same as old password');
+      } else if (values.newPassword !== values.confirmPassword) {
+        setError('New passwords do not match');
         setLoading(false);
         return;
       }
