@@ -15,6 +15,10 @@
     border: 1px solid #ece4f2;
   }
 
+  .form-group {
+    margin-bottom: 24px;
+  }
+
   .form-control-lg {
     height: 38px;
     width: 352px;
@@ -33,6 +37,7 @@
     left: 0px;
     top: 22px;
     border-radius: 4px;
+    font-size: 0.9375rem;
 
     @media (min-width: 280px) and (max-width: 1119px) {
       width: auto;
@@ -45,6 +50,7 @@
     left: 0px;
     top: 22px;
     border-radius: 4px;
+    font-size: 0.9375rem;
 
     @media (min-width: 280px) and (max-width: 1119px) {
       width: auto;
@@ -57,7 +63,7 @@
 
     .text-instructions {
       position: absolute;
-      top: 50%;
+      top: 45%;
     }
   }
 
@@ -70,7 +76,7 @@
     background: #570097;
     width: 110px;
     position: absolute;
-    top: 35%;
+    top: 30%;
     border-color: #570097 !important;
     padding: 9px;
     padding-top: 10px;
@@ -82,5 +88,10 @@
     &:disabled {
       border-color: #570097 !important;
     }
+  }
+
+  // Profile page
+  .mb-3-profile {
+    margin-bottom: 10px;
   }
 }
