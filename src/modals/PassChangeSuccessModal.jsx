@@ -4,8 +4,8 @@ import { CheckCircle } from 'react-feather';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
-import { unsetUser } from '../../../actions/auth.action';
-import { unsetScan } from '../../../actions/scans.action';
+import { unsetUser } from '../actions/auth.action';
+import { unsetScan } from '../actions/scans.action';
 
 export default function PassChangeSuccessModal(props) {
   const history = useHistory();

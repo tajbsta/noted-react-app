@@ -4,7 +4,7 @@ import PickUpConfirmed from '../components/ViewScan/PickUpConfirmed';
 import PickUpDetails from '../components/ViewScan/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { get } from 'lodash';
-import SizeGuideModal from './../components/Dashboard/modals/SizeGuideModal';
+import SizeGuideModal from './../modals/SizeGuideModal';
 import $ from 'jquery';
 import { submitOrder } from '../actions/auth.action';
 import { nanoid } from 'nanoid';

@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { get } from 'lodash';
 import { AlertCircle } from 'react-feather';
-import PassChangeSuccessModal from '../../components/Dashboard/modals/PassChangeSuccessModal';
+import PassChangeSuccessModal from '../../modals/PassChangeSuccessModal';
 
 export default function ChangePass() {
   const [oldPasswordShown, setOldPasswordShown] = useState(false);

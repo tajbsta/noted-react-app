@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import ReturnPolicyModal from './modals/ReturnPolicyModal';
+import ReturnPolicyModal from '../../modals/ReturnPolicyModal';
 
 export default function OnHoverScheduledReturn({ timeLeft, onClick }) {
   const [modalShow, setModalShow] = useState(false);
