@@ -59,7 +59,7 @@ function ScheduledReturnCard({
                   checked={selected}
                   onChange={handleSelection}
                   style={{
-                    zIndex: 99999,
+                    zIndex: 999,
                   }}
                 />
               </div>
