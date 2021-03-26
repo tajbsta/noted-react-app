@@ -1,13 +1,11 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import BasicInfo from '../components/Settings/BasicInfo';
+import EmailAddresses from '../components/Settings/EmailAddresses';
 import ChangePass from '../components/Settings/ChangePass';
 import { Link } from 'react-scroll';
 import { useFormik } from 'formik';
-import {
-  paymentAddressSchema,
-  pickUpAddressSchema,
-} from '../models/formSchema';
+import { pickUpAddressSchema } from '../models/formSchema';
 
 export default function SettingsPage() {
   const {
@@ -49,6 +47,18 @@ export default function SettingsPage() {
                 </li>
                 <li className='nav-item'>
                   <Link
+                    to='EmailAddresses'
+                    spy={true}
+                    smooth={true}
+                    className='nav-link'
+                    offset={-70}
+                    duration={500}
+                  >
+                    Email Addresses
+                  </Link>
+                </li>
+                <li className='nav-item'>
+                  <Link
                     to='ChangePass'
                     spy={true}
                     smooth={true}
@@ -58,11 +68,6 @@ export default function SettingsPage() {
                   >
                     Change Password
                   </Link>
-                </li>
-                <li className='nav-item'>
-                  <a href='#' className='nav-link'>
-                    Change Email
-                  </a>
                 </li>
               </ul>
             </Card>
@@ -74,6 +79,7 @@ export default function SettingsPage() {
               {...addressFormValues}
               handleChange={handleAddressChange}
             />
+            <EmailAddresses />
             <ChangePass />
           </div>
         </div>

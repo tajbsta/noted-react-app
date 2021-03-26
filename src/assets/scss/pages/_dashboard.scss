@@ -247,8 +247,18 @@
   color: #b1adb3 !important;
 }
 
+.btn-add-new-email {
+  &:focus {
+    outline: none !important;
+    box-shadow: none;
+  }
+}
+
 .text-new-email {
   margin-bottom: 11px;
+  &:hover {
+    color: #b079da;
+  }
 }
 
 .bottom {
