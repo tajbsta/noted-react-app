@@ -122,16 +122,7 @@ export default function ChangePass() {
             </div>
           </div>
         )}
-        {/* {success && (
-          <>
-            <div className='alert alert-success w-840' role='alert'>
-              <h4 className='text-center text-alert'>
-                Password Changed Successfully
-              </h4>
-            </div>
-          </>
-        )} */}
-        <div className='card shadow-sm mb-2 p-3 w-840 change-container'>
+        <div className='card shadow-sm mb-2 w-840 change-container'>
           <div className='card-body'>
             <Form id='passForm'>
               <Row>
@@ -147,7 +138,7 @@ export default function ChangePass() {
                         disabled={loading}
                       />
                       <i
-                        className='fe-eye'
+                        className='fe-eye-old'
                         onClick={toggleOldPasswordVisiblity}
                       >
                         {oldPasswordShown ? eye : eyeOff}
@@ -156,48 +147,50 @@ export default function ChangePass() {
                   </Form.Group>
                 </Col>
                 <Col>
-                  <Form.Group controlId='newPassword'>
-                    <Form.Label>New Password</Form.Label>
-                    <div>
-                      <Form.Control
-                        className='form-control-lg'
-                        type={newPasswordShown ? 'text' : 'password'}
-                        onChange={handleChange}
-                        value={values.newPassword}
-                        disabled={loading}
-                      />
-                      <i
-                        className='fe-eye'
-                        onClick={toggleNewPasswordVisiblity}
-                      >
-                        {newPasswordShown ? eye : eyeOff}
-                      </i>
-                    </div>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col xs={6}></Col>
-                <Col xs={6}>
-                  <Form.Group controlId='confirmPassword'>
-                    <Form.Label>Confirm New Password</Form.Label>
-                    <div>
-                      <Form.Control
-                        className='form-control-lg'
-                        type={confirmPasswordShown ? 'text' : 'password'}
-                        onChange={handleChange}
-                        value={values.confirmPassword}
-                        disabled={loading}
-                      />
-                      <i
-                        className='fe-eye'
-                        onClick={toggleConfirmPasswordVisiblity}
-                      >
-                        {confirmPasswordShown ? eye : eyeOff}
-                      </i>
-                    </div>
-                  </Form.Group>
+                  <Row>
+                    <Col>
+                      <Form.Group controlId='newPassword'>
+                        <Form.Label>New Password</Form.Label>
+                        <div>
+                          <Form.Control
+                            className='form-control-lg'
+                            type={newPasswordShown ? 'text' : 'password'}
+                            onChange={handleChange}
+                            value={values.newPassword}
+                            disabled={loading}
+                          />
+                          <i
+                            className='fe-eye-new'
+                            onClick={toggleNewPasswordVisiblity}
+                          >
+                            {newPasswordShown ? eye : eyeOff}
+                          </i>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs={6}>
+                      <Form.Group controlId='confirmPassword'>
+                        <Form.Label>Confirm New Password</Form.Label>
+                        <div>
+                          <Form.Control
+                            className='form-control-lg'
+                            type={confirmPasswordShown ? 'text' : 'password'}
+                            onChange={handleChange}
+                            value={values.confirmPassword}
+                            disabled={loading}
+                          />
+                          <i
+                            className='fe-eye-confirm'
+                            onClick={toggleConfirmPasswordVisiblity}
+                          >
+                            {confirmPasswordShown ? eye : eyeOff}
+                          </i>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
 
