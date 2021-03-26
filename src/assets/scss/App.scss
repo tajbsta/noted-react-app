@@ -30,18 +30,19 @@ html {
 @import './pages/editorder';
 
 /* Components in Pages styling */
-@import './pages/components/brandlogo.scss';
-@import './pages/components/navbar.scss';
-@import './pages/components/returncategory.scss';
-@import './pages/components/productcard.scss';
-@import './pages/components/addressform.scss';
-@import './pages/components/paymentform.scss';
+@import './components/brandlogo.scss';
+@import './components/navbar.scss';
+@import './components/returncategory.scss';
+@import './components/productcard.scss';
+@import './components/addressform.scss';
+@import './components/paymentform.scss';
 
 /* Modals */
-@import './pages/components/modals/returnpolicy.scss';
-@import './pages/components/modals/sizeguide.scss';
-@import './pages/components/modals/cancelorder.scss';
-@import './pages/components/modals/passchangesuccess.scss';
+@import './modals/returnpolicy.scss';
+@import './modals/sizeguide.scss';
+@import './modals/cancelorder.scss';
+@import './modals/passchangesuccess.scss';
+@import './modals/addemail.scss';
 
 html,
 body {
