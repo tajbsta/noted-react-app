@@ -76,6 +76,10 @@ export default function ChangePass() {
         setError('Passwords do not match');
         setLoading(false);
         return;
+      } else if (values.oldPassword === values.newPassword) {
+        setError('New password cannot be the same as old password');
+        setLoading(false);
+        return;
       }
 
       const user = await Auth.currentAuthenticatedUser();
