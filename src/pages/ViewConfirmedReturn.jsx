@@ -23,7 +23,6 @@ function ViewConfirmedReturn({
     state: { scheduledReturnId, hasModifications },
   },
 }) {
-  console.log(hasModifications);
   const dispatch = useDispatch();
   const [confirmed, setconfirmed] = useState(false);
   const [modalShow, setModalShow] = useState(false);
@@ -92,9 +91,7 @@ function ViewConfirmedReturn({
       ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
       orderInMemory,
     ];
-    console.log(
-      ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId)
-    );
+
     dispatch(await updateOrders(filteredOrders));
 
     if (hasModifications) {

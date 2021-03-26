@@ -109,8 +109,6 @@ function ViewScanPage() {
     }
   };
 
-  console.log(newSelected);
-
   return (
     <div id='ViewScanPage'>
       <div className='container mt-6'>

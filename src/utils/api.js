@@ -1,5 +1,5 @@
-import axios from "axios";
-import { getUser } from "./auth";
+import axios from 'axios';
+import { getUser } from './auth';
 
 // import qs from "qs";
 
@@ -18,9 +18,9 @@ const { REACT_APP_API_URI } = process.env;
 // }
 
 export const api = async () => {
-  const user = await getUser();
-
+  const { accessToken } = await getUser();
   return axios.create({
-    baseURL: REACT_APP_API_URI, headers: { 'Authorization': `Bearer ${user.idToken}` }
-  })
-}
+    baseURL: REACT_APP_API_URI,
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+};

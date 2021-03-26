@@ -7,7 +7,7 @@ import { storeScan } from '../actions/scans.action';
 import ReturnCategory from '../components/Dashboard/ReturnCategory';
 import RightCard from '../components/Dashboard/RightCard';
 import Scanning from '../components/Dashboard/Scanning';
-import { getUserId } from '../utils/auth';
+import { getUserId, getUser } from '../utils/auth';
 import { getAccounts, startAccountsScan } from '../utils/accountsApi';
 import { getProducts } from '../utils/productsApi';
 import { clearSearchQuery } from '../actions/runtime.action';
@@ -67,6 +67,7 @@ function DashboardPage() {
     try {
       setLoading(true);
       const user = await getUserId();
+      // const user = '399f6259-6b1e-49a5-ba77-5fff248d48e2';
       const accounts = await getAccounts(user);
 
       setUserId(user);
