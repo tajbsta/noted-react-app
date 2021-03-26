@@ -106,7 +106,7 @@ function PickUpDetails() {
    * @FUNCTION
    * @submits pick-up details form state
    */
-  const saveDetails = async () => {};
+  // const saveDetails = async () => {};
 
   return (
     <>

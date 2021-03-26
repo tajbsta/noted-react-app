@@ -20,7 +20,6 @@ function ScheduledReturnCard({
     amount,
     id,
     imageUrl,
-    orderDate,
   },
   disabled,
   scannedItem,

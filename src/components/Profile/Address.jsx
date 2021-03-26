@@ -4,17 +4,7 @@ import { formatPhoneNumber } from '../../utils/form';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import $ from 'jquery';
 
-export default function Address({
-  fullName,
-  state,
-  zipCode,
-  line1,
-  line2,
-  phoneNumber,
-  errors,
-  handleChange,
-  onDoneClick,
-}) {
+export default function Address({ state, phoneNumber, handleChange }) {
   const [isEditing, setIsEditing] = useState(false);
   useEffect(() => {
     const platform = window.navigator.platform;

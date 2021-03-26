@@ -1,4 +1,4 @@
-import { flatten, get, isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
@@ -17,7 +17,6 @@ import {
   LAST_CALL,
 } from '../constants/actions/runtime';
 import EmptyScan from '../components/Dashboard/EmptyScan';
-import ProductCard from '../components/Dashboard/ProductCard';
 import ScheduledReturnCard from '../components/Dashboard/ScheduledReturnCard';
 import { clearOrder } from '../actions/auth.action';
 import AddEmailModal from '../modals/AddEmailModal';

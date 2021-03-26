@@ -9,7 +9,6 @@ import { pickUpAddressSchema } from '../models/formSchema';
 
 export default function SettingsPage() {
   const {
-    errors: addressFormErrors,
     handleChange: handleAddressChange,
     values: addressFormValues,
   } = useFormik({

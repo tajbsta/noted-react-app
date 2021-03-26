@@ -14,10 +14,9 @@ export default function ProfilePage() {
    * @STATES
    * @returns component states
    */
-  const [showEditPayment, setShowEditPayment] = useState(true);
+  const [showEditPayment] = useState(true);
 
   const {
-    errors: addressFormErrors,
     handleChange: handleAddressChange,
     values: addressFormValues,
   } = useFormik({
@@ -33,7 +32,6 @@ export default function ProfilePage() {
   });
 
   const {
-    errors: paymentFormErrors,
     handleChange: handlePaymentChange,
     values: paymentFormValues,
   } = useFormik({

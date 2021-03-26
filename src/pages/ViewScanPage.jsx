@@ -10,7 +10,6 @@ import { submitOrder } from '../actions/auth.action';
 import { nanoid } from 'nanoid';
 import moment from 'moment';
 import { clearForm } from '../actions/runtime.action';
-import { FOR_RETURN } from '../constants/actions/runtime';
 
 function ViewScanPage() {
   const dispatch = useDispatch();

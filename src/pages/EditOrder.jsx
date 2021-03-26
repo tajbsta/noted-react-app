@@ -1,4 +1,4 @@
-import { flatten, get, isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
@@ -6,15 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import $ from 'jquery';
 import ReturnCategory from '../components/EditOrder/ReturnCategory';
 import Scanning from '../components/Dashboard/Scanning';
-import {
-  FOR_DONATION,
-  FOR_RETURN,
-  LAST_CALL,
-} from '../constants/actions/runtime';
+import { FOR_RETURN, LAST_CALL } from '../constants/actions/runtime';
 import InReturnBox from '../components/EditOrder/InReturnBox';
 import { updateCurrentOrder } from '../actions/runtime.action';
-
-const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 
 function EditOrder({
   location: {
@@ -27,20 +21,13 @@ function EditOrder({
   const { search } = useSelector(({ runtime: { search } }) => ({ search }));
 
   const [loading, setLoading] = useState(true);
-  const [modalShow, setModalShow] = useState(false);
+  const [setModalShow] = useState(false);
   const [filteredItems, setFilteredItems] = useState([]);
 
   const [lastCallSelected, setLastCallSelected] = useState([]);
   const [returnableSelected, setReturnableSelected] = useState([]);
 
-  const {
-    inDonation,
-    scheduledReturns,
-    scans,
-    forReturn,
-    lastCall,
-    localDonationsCount,
-  } = useSelector(
+  const { scheduledReturns, scans, localDonationsCount } = useSelector(
     ({
       runtime: { forReturn, lastCall, forDonation },
       auth: { scheduledReturns },
@@ -59,7 +46,6 @@ function EditOrder({
     ({ id }) => id === scheduledReturnId
   );
 
-  const { returnFee, taxes, address, payment } = scheduledReturn;
   const items = get(scheduledReturn, 'items', []);
 
   const unSelectedReturns = scans.filter(

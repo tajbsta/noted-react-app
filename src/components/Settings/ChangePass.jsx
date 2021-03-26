@@ -17,7 +17,7 @@ export default function ChangePass() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [setSuccess] = useState(null);
 
   const [modalShow, setModalShow] = useState(null);
 
@@ -38,7 +38,7 @@ export default function ChangePass() {
     ),
   });
 
-  const { errors, handleChange, values } = useFormik({
+  const { handleChange, values } = useFormik({
     initialValues: {
       oldPassword: '',
       newPassword: '',
