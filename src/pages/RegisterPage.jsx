@@ -56,11 +56,11 @@ export default function RegisterPage() {
         password,
         attributes: {
           email,
+          'custom:created_at': new Date().getTime().toString(),
         },
       });
 
       await Auth.signIn(email, password).then((data) => console.log(data));
-
       history.push('/request-permission');
     } catch (error) {
       console.log(Object.values(error));

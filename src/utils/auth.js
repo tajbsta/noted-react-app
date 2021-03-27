@@ -10,7 +10,7 @@ export const isAuthenticated = async () => {
     }
 }
 
-export const getUser = async () => {
+export const getUserSession = async () => {
     const res = await Auth.currentSession();
 
     const accessToken = res.getAccessToken().getJwtToken();
@@ -28,6 +28,23 @@ export const getUser = async () => {
 
 // Cognito userId
 export const getUserId = async () => {
-    const user = await getUser()
+    const user = await getUserSession()
     return user.userId
+}
+
+export const getUser = async () => {
+
+    const user = await Auth.currentAuthenticatedUser()
+    const attributes = await Auth.userAttributes(user)
+    console.log({
+        attributes
+    })
+
+    return user
+}
+
+export const updateUserAttributes = async (attributes) => {
+    const user = await Auth.currentAuthenticatedUser()
+
+    await Auth.updateUserAttributes(user, attributes)
 }

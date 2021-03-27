@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, Container } from 'react-bootstrap';
 import ProfileIcon from '../../../src/assets/icons/Profile.svg';
-
+import { getUser } from '../../utils/auth';
 export default function UserInfo() {
+  useEffect(() => {
+    (async () => {
+      const user = await getUser();
+      console.log({
+        user,
+      });
+    })();
+  }, []);
+
   return (
     <div>
       <Card id='UserInfo'>
