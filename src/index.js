@@ -13,7 +13,7 @@ Amplify.configure({
     mandatorySignIn: false,
     oauth: {
       domain: process.env.REACT_APP_OAUTH_DOMAIN,
-      scope: ["email", "profile", "openid"],
+      scope: ["email", "profile", "openid", "aws.cognito.signin.user.admin"],
       redirectSignIn: process.env.REACT_APP_OAUTH_REDIRECT_SIGN_IN,
       redirectSignOut: process.env.REACT_APP_OAUTH_REDIRECT_SIGN_OUT,
       responseType: "code",
