@@ -11,7 +11,7 @@ export default function DeleteAccount() {
           <div className='card-body'>
             <Row>
               <Col>
-                <h4>
+                <h4 className='delete-info'>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Quisque pharetra consequat cursus ac auctor duis commodo
                   pulvinar.

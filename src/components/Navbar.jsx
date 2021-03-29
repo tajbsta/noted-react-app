@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { Row, Col, Container, Navbar } from 'react-bootstrap';
 import ProfileIcon from '../assets/icons/Profile.svg';
 // import DropwDownIcon from '../assets/icons/InvertedTriangle.svg';
@@ -9,8 +9,7 @@ import { Auth } from 'aws-amplify';
 import { unsetUser } from '../actions/auth.action';
 import { unsetScan } from '../actions/scans.action';
 import { searchScans } from '../actions/runtime.action';
-
-const BrandLogoSvg = lazy(() => import('./BrandLogoSvg'));
+import BrandLogoSvg from './BrandLogoSvg';
 
 const Topnav = () => {
   let history = useHistory();
