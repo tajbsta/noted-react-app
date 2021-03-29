@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
 import AddEmailModal from '../../modals/AddEmailModal';
 
-export default function EmailAddresses() {
+export default function EmailAddresses({ user }) {
   const [modalShow, setModalShow] = useState(false);
 
+  console.log({ user });
   return (
     <div id='EmailAddresses'>
       <h3 className='sofia-pro text-18 mb-3 mt-5'>Email Addresses</h3>
@@ -30,7 +31,7 @@ export default function EmailAddresses() {
                         <Form.Label>Account email</Form.Label>
                         <Form.Control
                           type='email'
-                          placeholder='masterEmail@example.com'
+                          placeholder={user && user.email}
                         />
                       </Form.Group>
                     </Col>

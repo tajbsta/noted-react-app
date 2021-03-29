@@ -38,7 +38,7 @@ export const getUser = async () => {
     const data = user.attributes
 
     if (data['custom:created_at']) {
-        data.createdAt = data['custom:created_at']
+        data.createdAt = parseInt(data['custom:created_at'])
     } else if (data.identities) {
         const identity = JSON.parse(data.identities).pop();
 
