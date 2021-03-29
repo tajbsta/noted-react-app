@@ -4,17 +4,7 @@ import { formatPhoneNumber } from '../../utils/form';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import $ from 'jquery';
 
-export default function Address({
-  fullName,
-  state,
-  zipCode,
-  line1,
-  line2,
-  phoneNumber,
-  errors,
-  handleChange,
-  onDoneClick,
-}) {
+export default function Address({ state, phoneNumber, handleChange }) {
   const [isEditing, setIsEditing] = useState(false);
   useEffect(() => {
     const platform = window.navigator.platform;
@@ -37,7 +27,7 @@ export default function Address({
     : {};
   return (
     <div id='BasicInfo'>
-      <h3 className='sofia-pro text-18 mb-4'>Pick-up Address</h3>
+      <h3 className='sofia-pro text-18 mb-3-profile'>Pick-up Address</h3>
       <div className='card shadow-sm mb-2 p-3 w-840'>
         <div className='card-body'>
           <Form id='Address'>

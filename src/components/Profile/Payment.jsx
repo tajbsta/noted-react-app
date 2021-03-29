@@ -7,9 +7,7 @@ export default function Payment({
   expirationMonth,
   expirationYear,
   cvc,
-  errors,
   handleChange,
-  onDoneClick,
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const noBorder = !isEditing
@@ -25,7 +23,7 @@ export default function Payment({
       <div className='container mt-6'>
         <div className='row'>
           <div className='col-sm-9 mt-4'>
-            <h3 className='sofia-pro text-18 mb-4'>Payment Method</h3>
+            <h3 className='sofia-pro text-18 mb-3-profile'>Payment Method</h3>
             <div className='card shadow-sm mb-2 p-3 w-840'>
               <div className='card-body'>
                 <Form id='PaymentForm'>

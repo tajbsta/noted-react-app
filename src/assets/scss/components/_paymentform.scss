@@ -1,8 +1,4 @@
-#AddressForm,
-#Address,
-#Info,
-#passForm,
-#AddressFormConfirmed {
+#PaymentForm {
   .form-label {
     font-size: 14px;
     color: #2e1d3a;
@@ -13,6 +9,10 @@
 
   .form-control {
     border: 1px solid #ece4f2;
+  }
+
+  .form-group {
+    margin-bottom: 24px;
   }
 
   .form-control-lg {
@@ -27,37 +27,29 @@
     }
   }
 
-  .form-control-md {
-    height: 38px;
-    width: 200px;
-    left: 0px;
-    top: 22px;
-    border-radius: 4px;
-
-    @media (min-width: 280px) and (max-width: 1119px) {
-      width: auto;
-    }
-  }
-
   .form-control-sm {
     height: 38px;
-    width: 139px;
+    width: 164px;
     left: 0px;
     top: 22px;
     border-radius: 4px;
+    font-size: 0.9375rem;
 
     @media (min-width: 280px) and (max-width: 1119px) {
       width: auto;
     }
   }
 
-  .add-pick-up {
-    display: flex;
-    align-items: center;
+  .exp-form {
+    display: inline-flex;
 
-    .text-instructions {
-      position: absolute;
-      top: 50%;
+    .separator {
+      display: flex;
+      align-items: center;
+
+      h4 {
+        margin-bottom: 0px !important;
+      }
     }
   }
 
@@ -66,11 +58,9 @@
     justify-content: flex-end;
   }
 
-  .btn-done {
+  .btn-save {
     background: #570097;
     width: 110px;
-    position: absolute;
-    top: 35%;
     border-color: #570097 !important;
     padding: 9px;
     padding-top: 10px;
@@ -82,5 +72,10 @@
     &:disabled {
       border-color: #570097 !important;
     }
+  }
+
+  // Profile page
+  .mb-3-profile {
+    margin-bottom: 10px;
   }
 }

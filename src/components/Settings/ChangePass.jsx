@@ -7,6 +7,8 @@ import { PASSWORD_REGEX_FORMAT } from '../../constants/errors/regexFormats';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { get } from 'lodash';
+import { AlertCircle } from 'react-feather';
+import PassChangeSuccessModal from '../../modals/PassChangeSuccessModal';
 
 export default function ChangePass() {
   const [oldPasswordShown, setOldPasswordShown] = useState(false);
@@ -15,7 +17,9 @@ export default function ChangePass() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [setSuccess] = useState(null);
+
+  const [modalShow, setModalShow] = useState(null);
 
   const changePassSchema = Yup.object({
     oldPassword: Yup.string().required('Your old password is required'),
@@ -30,11 +34,11 @@ export default function ChangePass() {
       .resolve(),
     confirmPassword: Yup.string().oneOf(
       [Yup.ref('newPassword'), null],
-      'New Passwords must match'
+      'Passwords do not match'
     ),
   });
 
-  const { errors, handleChange, values } = useFormik({
+  const { handleChange, values } = useFormik({
     initialValues: {
       oldPassword: '',
       newPassword: '',
@@ -43,18 +47,16 @@ export default function ChangePass() {
     validationSchema: changePassSchema,
   });
 
-  const { oldPassword, newPassword, confirmPassword } = values;
-
   const eyeOff = <EyeOff />;
   const eye = <Eye />;
 
-  const toggleOldPasswordVisiblity = () => {
+  const toggleOldPasswordVisibility = () => {
     setOldPasswordShown(oldPasswordShown ? false : true);
   };
-  const toggleNewPasswordVisiblity = () => {
+  const toggleNewPasswordVisibility = () => {
     setNewPasswordShown(newPasswordShown ? false : true);
   };
-  const toggleConfirmPasswordVisiblity = () => {
+  const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordShown(confirmPasswordShown ? false : true);
   };
 
@@ -63,18 +65,32 @@ export default function ChangePass() {
 
     setError(null);
     setSuccess(null);
+    setModalShow(null);
+
     setLoading(true);
 
     try {
+      if (values.oldPassword === values.newPassword) {
+        setError('New password cannot be the same as old password');
+        setLoading(false);
+        return;
+      } else if (values.newPassword !== values.confirmPassword) {
+        setError('New passwords do not match');
+        setLoading(false);
+        return;
+      }
+
       const user = await Auth.currentAuthenticatedUser();
       await Auth.changePassword(user, values.oldPassword, values.newPassword);
+      // console.log({ values });
 
       setLoading(false);
 
       setSuccess(true);
+      setModalShow(true);
     } catch (err) {
       setLoading(false);
-      console.log(err);
+
       setError(
         get(
           changePassErrors.find(({ code }) => code === err.code),
@@ -87,21 +103,24 @@ export default function ChangePass() {
 
   return (
     <div id='ChangePass'>
+      <PassChangeSuccessModal
+        show={modalShow}
+        onChange={() => setModalShow(true)}
+        onHide={() => setModalShow(false)}
+      />
       <div className='mt-5'>
         <h3 className='sofia-pro text-18 mb-4'>Change Password</h3>
         {error && (
           <div className='alert alert-danger w-840' role='alert'>
-            <h4 className='text-center text-alert'>{error}</h4>
+            <div>
+              <h4 className='text-center text-alert'>
+                <AlertCircle />
+                &nbsp;&nbsp;&nbsp;{error}
+              </h4>
+            </div>
           </div>
         )}
-        {success && (
-          <div className='alert alert-success w-840' role='alert'>
-            <h4 className='text-center text-alert'>
-              Password Changed Successfully
-            </h4>
-          </div>
-        )}
-        <div className='card shadow-sm mb-2 p-3 w-840 change-container'>
+        <div className='card shadow-sm mb-2 w-840 change-container'>
           <div className='card-body'>
             <Form id='passForm'>
               <Row>
@@ -117,8 +136,8 @@ export default function ChangePass() {
                         disabled={loading}
                       />
                       <i
-                        className='fe-eye'
-                        onClick={toggleOldPasswordVisiblity}
+                        className='fe-eye-old'
+                        onClick={toggleOldPasswordVisibility}
                       >
                         {oldPasswordShown ? eye : eyeOff}
                       </i>
@@ -126,48 +145,50 @@ export default function ChangePass() {
                   </Form.Group>
                 </Col>
                 <Col>
-                  <Form.Group controlId='newPassword'>
-                    <Form.Label>New Password</Form.Label>
-                    <div>
-                      <Form.Control
-                        className='form-control-lg'
-                        type={newPasswordShown ? 'text' : 'password'}
-                        onChange={handleChange}
-                        value={values.newPassword}
-                        disabled={loading}
-                      />
-                      <i
-                        className='fe-eye'
-                        onClick={toggleNewPasswordVisiblity}
-                      >
-                        {newPasswordShown ? eye : eyeOff}
-                      </i>
-                    </div>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col xs={6}></Col>
-                <Col xs={6}>
-                  <Form.Group controlId='confirmPassword'>
-                    <Form.Label>Confirm New Password</Form.Label>
-                    <div>
-                      <Form.Control
-                        className='form-control-lg'
-                        type={confirmPasswordShown ? 'text' : 'password'}
-                        onChange={handleChange}
-                        value={values.confirmPassword}
-                        disabled={loading}
-                      />
-                      <i
-                        className='fe-eye'
-                        onClick={toggleConfirmPasswordVisiblity}
-                      >
-                        {confirmPasswordShown ? eye : eyeOff}
-                      </i>
-                    </div>
-                  </Form.Group>
+                  <Row>
+                    <Col>
+                      <Form.Group controlId='newPassword'>
+                        <Form.Label>New Password</Form.Label>
+                        <div>
+                          <Form.Control
+                            className='form-control-lg'
+                            type={newPasswordShown ? 'text' : 'password'}
+                            onChange={handleChange}
+                            value={values.newPassword}
+                            disabled={loading}
+                          />
+                          <i
+                            className='fe-eye-new'
+                            onClick={toggleNewPasswordVisibility}
+                          >
+                            {newPasswordShown ? eye : eyeOff}
+                          </i>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs={6}>
+                      <Form.Group controlId='confirmPassword'>
+                        <Form.Label>Confirm New Password</Form.Label>
+                        <div>
+                          <Form.Control
+                            className='form-control-lg'
+                            type={confirmPasswordShown ? 'text' : 'password'}
+                            onChange={handleChange}
+                            value={values.confirmPassword}
+                            disabled={loading}
+                          />
+                          <i
+                            className='fe-eye-confirm'
+                            onClick={toggleConfirmPasswordVisibility}
+                          >
+                            {confirmPasswordShown ? eye : eyeOff}
+                          </i>
+                        </div>
+                      </Form.Group>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
 

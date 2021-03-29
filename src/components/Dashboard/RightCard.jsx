@@ -26,7 +26,7 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
     handleResize(); // Run on load to set the default value
     window.addEventListener('resize', handleResize);
     // Clean up event listener
-    return (_) => {
+    return () => {
       window.removeEventListener('resize', handleResize);
     };
   });

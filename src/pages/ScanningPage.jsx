@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import EmptyScan from '../components/Dashboard/EmptyScan';
 import RightCard from '../components/Dashboard/RightCard';
@@ -7,9 +6,6 @@ import Scanning from '../components/Dashboard/Scanning';
 
 function ScanningPage() {
   const history = useHistory();
-  const googleAuthCode = useSelector(
-    ({ auth: { googleAuthCode } }) => googleAuthCode
-  );
   const [scanning, setScanning] = useState(false);
 
   const onScanLaunch = async () => {

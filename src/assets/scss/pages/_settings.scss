@@ -1,5 +1,16 @@
 #Settings {
   padding-bottom: 163px;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  a,
+  p,
+  div {
+    font-family: 'Sofia Pro';
+  }
 
   #leftCard {
     background: #faf8fa;
@@ -33,42 +44,167 @@
     color: #570097;
   }
 
-  // Change Password Form
-  .change-container {
-    height: 258px;
-  }
+  #EmailAddresses {
+    .card-body {
+      padding: 24px 25px;
+    }
 
-  .btn-change {
-    // margin-top: 7px;
-    background: #570097;
-    border: none;
-    position: absolute;
-    right: 4%;
-    height: 40px;
-    width: 194px;
-    border-radius: 6px;
+    .info-col {
+      padding-left: 0px;
+    }
 
-    font-family: 'Sofia Pro';
-    font-size: 14px;
-    line-height: 16px;
-    text-align: center;
+    .section-info {
+      font-size: 14px;
+      line-height: 18px;
+      color: #0e0018;
+      width: 352px;
+      margin-bottom: 0px;
+    }
 
-    color: #f8efff;
-  }
+    .email-column {
+      margin-left: -10px;
 
-  .fe-eye {
-    position: absolute;
-    right: 10%;
-    top: 40%;
-    color: #0e0018;
-    mix-blend-mode: normal;
-    opacity: 0.3;
+      @media (max-width: 767px) {
+        margin-left: 0px;
+      }
+    }
+
+    .form-group {
+      width: 352px;
+      margin-bottom: 24px;
+    }
+
+    .title-group {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 3px;
+
+      .delete-email {
+        padding: 0px;
+        margin: 0px;
+        font-size: 14px;
+        line-height: 16px;
+        color: #570097;
+        background-color: inherit;
+        border: none;
+
+        &:focus {
+          outline: none !important;
+          box-shadow: none;
+        }
+
+        &:hover {
+          color: #b079da;
+        }
+      }
+    }
+
+    .form-label {
+      font-size: 14px;
+      line-height: 16px;
+      color: #2e1d3a;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      margin-bottom: 3px;
+    }
+
+    .form-control {
+      border: 1px solid #ece4f2;
+      border-radius: 4px;
+    }
+
+    .button-row {
+      padding-right: 28px;
+    }
+
+    .btn-add-container {
+      margin-top: 16px;
+      display: flex;
+      justify-content: flex-end;
+
+      .add-new-email {
+        height: 40px;
+        width: 156px;
+        border-radius: 6px;
+        background: #570097;
+        font-size: 14px;
+        line-height: 16px;
+        border: none;
+      }
+    }
   }
 
   #ChangePass {
+    .change-container {
+      padding: 24px 25px;
+      height: 268px;
+    }
+
+    .card-body {
+      padding: 0px;
+    }
+
     .alert {
       margin-top: 0px;
       padding: 5px;
+    }
+
+    .text-alert {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-family: 'Sofia Pro';
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    #passForm {
+      .fe-eye-old {
+        position: absolute;
+        right: 12%;
+        top: 18%;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.3;
+      }
+
+      .fe-eye-new {
+        position: absolute;
+        right: 12%;
+        top: 36%;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.3;
+      }
+
+      .fe-eye-confirm {
+        position: absolute;
+        left: 164%;
+        top: 36%;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.3;
+      }
+
+      .btn-change {
+        // margin-top: 7px;
+        background: #570097;
+        border: none;
+        position: absolute;
+        right: 5%;
+        height: 40px;
+        width: 194px;
+        border-radius: 6px;
+
+        font-family: 'Sofia Pro';
+        font-size: 14px;
+        line-height: 16px;
+        text-align: center;
+
+        color: #f8efff;
+      }
     }
   }
 }

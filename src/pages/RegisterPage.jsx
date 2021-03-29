@@ -15,7 +15,7 @@ export default function RegisterPage() {
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
-  const togglePasswordVisiblity = () => {
+  const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
   };
   const eyeOff = <EyeOff />;
@@ -169,7 +169,7 @@ export default function RegisterPage() {
                         ? 'fe-eye'
                         : 'fe-eye-error'
                     }
-                    onClick={togglePasswordVisiblity}
+                    onClick={togglePasswordVisibility}
                   >
                     {passwordShown ? eye : eyeOff}
                   </i>

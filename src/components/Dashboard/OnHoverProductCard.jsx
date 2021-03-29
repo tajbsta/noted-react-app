@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReturnPolicyModal from './modals/ReturnPolicyModal';
+import ReturnPolicyModal from '../../modals/ReturnPolicyModal';
 import moment from 'moment';
 export default function OnHoverProductCard({ orderDate = '2222-4-23' }) {
   const [modalShow, setModalShow] = useState(false);
