@@ -35,12 +35,17 @@ export const getUserId = async () => {
 export const getUser = async () => {
 
     const user = await Auth.currentAuthenticatedUser()
-    const attributes = await Auth.userAttributes(user)
-    console.log({
-        attributes
-    })
+    const data = user.attributes
 
-    return user
+    if (data['custom:created_at']) {
+        data.createdAt = data['custom:created_at']
+    } else if (data.identities) {
+        const identity = JSON.parse(data.identities).pop();
+
+        data.createdAt = identity.dateCreated
+    }
+
+    return data
 }
 
 export const updateUserAttributes = async (attributes) => {
