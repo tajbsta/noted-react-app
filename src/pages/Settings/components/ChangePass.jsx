@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
 import { Eye, EyeOff } from 'react-feather';
 import { Auth } from 'aws-amplify';
-import { changePassErrors } from '../../library/errors.library';
-import { PASSWORD_REGEX_FORMAT } from '../../constants/errors/regexFormats';
+import { changePassErrors } from '../../../library/errors.library';
+import { PASSWORD_REGEX_FORMAT } from '../../../constants/errors/regexFormats';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { get } from 'lodash';
 import { AlertCircle } from 'react-feather';
-import PassChangeSuccessModal from '../../modals/PassChangeSuccessModal';
+import PassChangeSuccessModal from '../../../modals/PassChangeSuccessModal';
 
 export default function ChangePass() {
   const [oldPasswordShown, setOldPasswordShown] = useState(false);

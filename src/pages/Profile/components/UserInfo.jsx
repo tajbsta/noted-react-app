@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Container } from 'react-bootstrap';
-import ProfileIcon from '../../../src/assets/icons/Profile.svg';
-import { getUser } from '../../utils/auth';
+import ProfileIcon from '../../../assets/icons/Profile.svg';
 import moment from 'moment';
 
 export default function UserInfo({ user: userData }) {

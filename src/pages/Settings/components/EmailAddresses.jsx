@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
-import AddEmailModal from '../../modals/AddEmailModal';
+import AddEmailModal from '../../../modals/AddEmailModal';
 
 export default function EmailAddresses({ user }) {
   const [modalShow, setModalShow] = useState(false);

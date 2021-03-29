@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import EmptyScan from '../components/Dashboard/EmptyScan';
-import RightCard from '../components/Dashboard/RightCard';
-import Scanning from '../components/Dashboard/Scanning';
+import EmptyScan from './Dashboard/components/EmptyScan';
+import RightCard from './Dashboard/components/RightCard';
+import Scanning from './Dashboard/components/Scanning';
 
 function ScanningPage() {
   const history = useHistory();

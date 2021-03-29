@@ -1,11 +1,11 @@
 import AuthorizePage from '../pages/AuthorizePage';
-import ProfilePage from '../pages/ProfilePage';
-import SettingsPage from '../pages/SettingsPage';
-import DashboardPage from '../pages/DashboardPage';
-import ViewScanPage from '../pages/ViewScanPage';
+import ProfilePage from '../pages/Profile/ProfilePage';
+import SettingsPage from '../pages/Settings/SettingsPage';
+import DashboardPage from '../pages/Dashboard/DashboardPage';
+import ViewScanPage from '../pages/ViewScan/ViewScanPage';
 import ScanningPage from '../pages/ScanningPage';
-import ViewConfirmedReturnPage from '../pages/ViewConfirmedReturn';
-import EditOrderPage from '../pages/EditOrder';
+import ViewConfirmedReturnPage from '../pages/ViewConfirmedReturn/ViewConfirmedReturn';
+import EditOrderPage from '../pages/EditOrder/EditOrder';
 
 export default [
   { path: '/request-permission', component: AuthorizePage },

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
-import UserInfo from '../components/Profile/UserInfo';
-import Address from '../components/Profile/Address';
-import Payment from '../components/Profile/Payment';
-import ReturnHistory from '../components/Profile/ReturnHistory';
+import UserInfo from './components/UserInfo';
+import Address from './components/Address';
+import Payment from './components/Payment';
+import ReturnHistory from './components/ReturnHistory';
 import { useFormik } from 'formik';
 import {
   paymentAddressSchema,
   pickUpAddressSchema,
-} from '../models/formSchema';
-import { getUser } from '../utils/auth';
+} from '../../models/formSchema';
+import { getUser } from '../../utils/auth';
 
 export default function ProfilePage() {
   const [showEditPayment] = useState(true);

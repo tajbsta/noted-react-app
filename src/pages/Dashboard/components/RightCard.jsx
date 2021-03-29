@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import HorizontalLine from '../HorizontalLine';
-import Row from '../Row';
+import HorizontalLine from '../../../components/HorizontalLine';
+import Row from '../../../components/Row';
 import PickUpButton from './PickUpButton';
 
 function RightCard({ totalReturns, potentialReturnValue, donations }) {

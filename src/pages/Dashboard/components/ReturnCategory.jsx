@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Row from '../Row';
+import Row from '../../components/Row';
 import ProductCard from './ProductCard';
 import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';

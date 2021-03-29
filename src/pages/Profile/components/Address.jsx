@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import USA_STATES from '../../assets/usa_states.json';
-import { formatPhoneNumber } from '../../utils/form';
+import USA_STATES from '../../../assets/usa_states.json';
+import { formatPhoneNumber } from '../../../utils/form';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import $ from 'jquery';
+import AddPickupModal from '../../../modals/AddPickupModal';
 
-export default function BasicInfo({ state, phoneNumber, handleChange }) {
+export default function Address({ state, phoneNumber, handleChange }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
+
   useEffect(() => {
     const platform = window.navigator.platform;
     const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
@@ -27,10 +30,10 @@ export default function BasicInfo({ state, phoneNumber, handleChange }) {
     : {};
   return (
     <div id='BasicInfo'>
-      <h3 className='sofia-pro text-18 mb-4'>Basic Information</h3>
+      <h3 className='sofia-pro text-18 mb-3-profile'>Pick-up Address</h3>
       <div className='card shadow-sm mb-2 p-3 w-840'>
         <div className='card-body'>
-          <Form id='Info'>
+          <Form id='Address'>
             <Row>
               <Col xs={6}>
                 <Form.Group>
@@ -45,11 +48,11 @@ export default function BasicInfo({ state, phoneNumber, handleChange }) {
               <Col>
                 <Form.Group>
                   <Form.Label>State</Form.Label>
-                  {/* {isEditing && ( */}
+
                   <Form.Control
                     className='form-control-md'
                     as='select'
-                    value={state || ''}
+                    value={state}
                     name='state'
                     onChange={handleChange}
                     placeholder='Select State'
@@ -65,7 +68,7 @@ export default function BasicInfo({ state, phoneNumber, handleChange }) {
                       </option>
                     ))}
                   </Form.Control>
-                  {/* )} */}
+
                   {/* {!isEditing && (
                     <Form.Control
                       className='form-control-sm'
@@ -133,12 +136,20 @@ export default function BasicInfo({ state, phoneNumber, handleChange }) {
               </Col>
 
               <Col className='add-pick-up'>
-                {/* <div>
-                  <h4 className='noted-purple text-instructions'>
+                <button
+                  className='btn-instructions'
+                  onClick={() => setModalShow(true)}
+                >
+                  <h4 className='text-instructions'>
                     Add pick-up instructions
                   </h4>
-                </div> */}
+                </button>
               </Col>
+
+              <AddPickupModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+              />
 
               <Col className='btn-container'>
                 {isEditing && (
