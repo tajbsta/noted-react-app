@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { get } from 'lodash';
 import { AlertCircle } from 'react-feather';
-import PassChangeSuccessModal from '../../components/Dashboard/modals/PassChangeSuccessModal';
+import PassChangeSuccessModal from '../../modals/PassChangeSuccessModal';
 
 export default function ChangePass() {
   const [oldPasswordShown, setOldPasswordShown] = useState(false);
@@ -17,7 +17,7 @@ export default function ChangePass() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [setSuccess] = useState(null);
 
   const [modalShow, setModalShow] = useState(null);
 
@@ -38,7 +38,7 @@ export default function ChangePass() {
     ),
   });
 
-  const { errors, handleChange, values } = useFormik({
+  const { handleChange, values } = useFormik({
     initialValues: {
       oldPassword: '',
       newPassword: '',
@@ -47,18 +47,16 @@ export default function ChangePass() {
     validationSchema: changePassSchema,
   });
 
-  const { oldPassword, newPassword, confirmPassword } = values;
-
   const eyeOff = <EyeOff />;
   const eye = <Eye />;
 
-  const toggleOldPasswordVisiblity = () => {
+  const toggleOldPasswordVisibility = () => {
     setOldPasswordShown(oldPasswordShown ? false : true);
   };
-  const toggleNewPasswordVisiblity = () => {
+  const toggleNewPasswordVisibility = () => {
     setNewPasswordShown(newPasswordShown ? false : true);
   };
-  const toggleConfirmPasswordVisiblity = () => {
+  const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordShown(confirmPasswordShown ? false : true);
   };
 
@@ -72,12 +70,12 @@ export default function ChangePass() {
     setLoading(true);
 
     try {
-      if (values.newPassword !== values.confirmPassword) {
-        setError('Passwords do not match');
+      if (values.oldPassword === values.newPassword) {
+        setError('New password cannot be the same as old password');
         setLoading(false);
         return;
-      } else if (values.oldPassword === values.newPassword) {
-        setError('New password cannot be the same as old password');
+      } else if (values.newPassword !== values.confirmPassword) {
+        setError('New passwords do not match');
         setLoading(false);
         return;
       }
@@ -139,7 +137,7 @@ export default function ChangePass() {
                       />
                       <i
                         className='fe-eye-old'
-                        onClick={toggleOldPasswordVisiblity}
+                        onClick={toggleOldPasswordVisibility}
                       >
                         {oldPasswordShown ? eye : eyeOff}
                       </i>
@@ -161,7 +159,7 @@ export default function ChangePass() {
                           />
                           <i
                             className='fe-eye-new'
-                            onClick={toggleNewPasswordVisiblity}
+                            onClick={toggleNewPasswordVisibility}
                           >
                             {newPasswordShown ? eye : eyeOff}
                           </i>
@@ -183,7 +181,7 @@ export default function ChangePass() {
                           />
                           <i
                             className='fe-eye-confirm'
-                            onClick={toggleConfirmPasswordVisiblity}
+                            onClick={toggleConfirmPasswordVisibility}
                           >
                             {confirmPasswordShown ? eye : eyeOff}
                           </i>

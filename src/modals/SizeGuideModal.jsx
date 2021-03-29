@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Button, Container, Row, Col } from 'react-bootstrap';
-import SizeGuideImg from '../../../../src/assets/img/SizeGuide.svg';
+import SizeGuideImg from '../assets/img/SizeGuide.svg';
 
 export default function SizeGuideModal(props) {
   return (

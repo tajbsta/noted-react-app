@@ -7,14 +7,6 @@ import ScanningPage from '../pages/ScanningPage';
 import ViewConfirmedReturnPage from '../pages/ViewConfirmedReturn';
 import EditOrderPage from '../pages/EditOrder';
 
-// const DashboardPage = lazy(() => import('../pages/DashboardPage'));
-// const ViewScanPage = lazy(() => import('../pages/ViewScanPage'));
-// const ScanningPage = lazy(() => import('../pages/ScanningPage'));
-// const ViewConfirmedReturnPage = lazy(() =>
-//   import('../pages/ViewConfirmedReturn')
-// );
-// const EditOrderPage = lazy(() => import('../pages/EditOrder'));
-
 export default [
   { path: '/request-permission', component: AuthorizePage },
   { path: '/dashboard', component: DashboardPage },

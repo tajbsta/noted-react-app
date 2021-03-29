@@ -1,30 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Container } from 'react-bootstrap';
 import ProfileIcon from '../../../src/assets/icons/Profile.svg';
+import { getUser } from '../../utils/auth';
+import moment from 'moment';
 
-export default function UserInfo() {
+export default function UserInfo({ user: userData }) {
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    setUser(userData);
+  }, [userData]);
+
   return (
     <div>
       <Card id='UserInfo'>
         <div className='card-body text-center'>
           <div className='img-container'>
-            <img src={ProfileIcon} className='avatar-placeholder' alt='...' />
+            {user.profile && (
+              <img
+                src={user.profile}
+                className='avatar-placeholder'
+                alt='...'
+              />
+            )}
+            {!user.profile && (
+              <img src={ProfileIcon} className='default-avatar' alt='...' />
+            )}
           </div>
-          <h2 className='card-title name'>Jason Chan</h2>
+          <h2 className='card-title name'>{user.name || user.email}</h2>
           <p className='small text-muted mb-3 date'>
-            User since Augst 24, 2021
+            User since {moment(user.createdAt).format('MMMM DD, YYYY')}
           </p>
           <hr className='line-break-user' />
           <div className='row align-items-center justify-content-between'>
             <div className='col-auto'>
               <div>
-                <h4 className='text-left total'>200</h4>
+                <h4 className='text-left total'>0</h4>
                 <h5 className='total-label'>Total Returns</h5>
               </div>
             </div>
             <div className='col-auto'>
               <div>
-                <h4 className='text-left total'>99</h4>
+                <h4 className='text-left total'>0</h4>
                 <h5 className='total-label'>Total Donations</h5>
               </div>
             </div>

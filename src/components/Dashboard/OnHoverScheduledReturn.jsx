@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
-
-import ReturnPolicyModal from './modals/ReturnPolicyModal';
+import React from 'react';
 
 export default function OnHoverScheduledReturn({ timeLeft, onClick }) {
-  const [modalShow, setModalShow] = useState(false);
-
   return (
     <div>
       <div id='OnHoverProductCard'>

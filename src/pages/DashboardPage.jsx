@@ -1,4 +1,4 @@
-import { flatten, get, isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
@@ -17,10 +17,10 @@ import {
   LAST_CALL,
 } from '../constants/actions/runtime';
 import EmptyScan from '../components/Dashboard/EmptyScan';
-import ProductCard from '../components/Dashboard/ProductCard';
 import ScheduledReturnCard from '../components/Dashboard/ScheduledReturnCard';
 import { clearOrder } from '../actions/auth.action';
-import AddEmailModal from '../components/Dashboard/modals/AddEmailModal';
+import AddEmailModal from '../modals/AddEmailModal';
+import { getUser } from '../utils/auth';
 
 const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 
@@ -30,18 +30,13 @@ function DashboardPage() {
   const dispatch = useDispatch();
   const { search } = useSelector(({ runtime: { search } }) => ({ search }));
 
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [launchScan, setLaunchScan] = useState(false);
   const [userId, setUserId] = useState('');
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [modalShow, setModalShow] = useState(false);
-
-  const customerEmail = get(
-    useSelector((state) => state),
-    'auth.user.username',
-    ''
-  );
 
   const {
     localDonationsCount,
@@ -137,6 +132,13 @@ function DashboardPage() {
     await startAccountsScan(userId);
     setLaunchScan(false);
   };
+
+  useEffect(() => {
+    (async () => {
+      const user = await getUser();
+      setUser(user);
+    })();
+  }, []);
 
   return (
     <div>
@@ -276,7 +278,7 @@ function DashboardPage() {
                       <div className='col-sm-7 text-center'>
                         <div className='text-muted text-center sofia-pro line-height-16 text-bottom-title'>
                           These are all the purchases we found in the past 90
-                          days from your address {customerEmail}
+                          days from your address {user && user.email}
                         </div>
                       </div>
                     </div>

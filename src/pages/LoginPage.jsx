@@ -15,7 +15,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
-  const togglePasswordVisiblity = () => {
+  const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
   };
   const eyeOff = <EyeOff />;
@@ -111,7 +111,7 @@ export default function LoginPage() {
                   />
                   <i
                     className={!error ? 'fe-eye' : 'fe-eye-error'}
-                    onClick={togglePasswordVisiblity}
+                    onClick={togglePasswordVisibility}
                   >
                     {passwordShown ? eye : eyeOff}
                   </i>

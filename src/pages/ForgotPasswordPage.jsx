@@ -8,8 +8,8 @@ import { useFormik } from 'formik';
 
 export default function ForgotPasswordPage() {
   let history = useHistory();
-  const [error, setError] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error] = useState(null);
+  const [isSubmitting] = useState(false);
 
   const sendResetLink = () => {
     history.push('/');

@@ -15,7 +15,7 @@ export default function RegisterPage() {
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
-  const togglePasswordVisiblity = () => {
+  const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
   };
   const eyeOff = <EyeOff />;
@@ -56,11 +56,11 @@ export default function RegisterPage() {
         password,
         attributes: {
           email,
+          'custom:created_at': new Date().getTime().toString(),
         },
       });
 
       await Auth.signIn(email, password).then((data) => console.log(data));
-
       history.push('/request-permission');
     } catch (error) {
       console.log(Object.values(error));
@@ -169,7 +169,7 @@ export default function RegisterPage() {
                         ? 'fe-eye'
                         : 'fe-eye-error'
                     }
-                    onClick={togglePasswordVisiblity}
+                    onClick={togglePasswordVisibility}
                   >
                     {passwordShown ? eye : eyeOff}
                   </i>

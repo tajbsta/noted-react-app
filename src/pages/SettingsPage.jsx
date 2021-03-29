@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from 'react-bootstrap';
 import BasicInfo from '../components/Settings/BasicInfo';
 import EmailAddresses from '../components/Settings/EmailAddresses';
@@ -6,10 +6,12 @@ import ChangePass from '../components/Settings/ChangePass';
 import { Link } from 'react-scroll';
 import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../models/formSchema';
+import { getUser } from '../utils/auth';
 
 export default function SettingsPage() {
+  const [user, setUser] = useState(null);
+
   const {
-    errors: addressFormErrors,
     handleChange: handleAddressChange,
     values: addressFormValues,
   } = useFormik({
@@ -23,6 +25,14 @@ export default function SettingsPage() {
     },
     validationSchema: pickUpAddressSchema,
   });
+
+  useEffect(() => {
+    (async () => {
+      const user = await getUser();
+      setUser(user);
+    })();
+  }, []);
+
   return (
     <div>
       <div id='Settings' className='container mt-6'>
@@ -79,7 +89,7 @@ export default function SettingsPage() {
               {...addressFormValues}
               handleChange={handleAddressChange}
             />
-            <EmailAddresses />
+            <EmailAddresses user={user} />
             <ChangePass />
           </div>
         </div>

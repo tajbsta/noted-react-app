@@ -12,7 +12,7 @@ import {
 } from '../../models/formSchema';
 import { get } from 'lodash-es';
 
-function PickUpDetails({ address, payment }) {
+function PickUpDetails({ address }) {
   const [showEditAddress, setShowEditAddress] = useState(false);
   const [showEditPayment, setShowEditPayment] = useState(false);
 

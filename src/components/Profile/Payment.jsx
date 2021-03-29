@@ -7,9 +7,7 @@ export default function Payment({
   expirationMonth,
   expirationYear,
   cvc,
-  errors,
   handleChange,
-  onDoneClick,
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const noBorder = !isEditing

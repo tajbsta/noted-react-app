@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Row from '../Row';
 import ProductCard from './ProductCard';
 import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  updateForDonation,
-  updateForReturn,
-  updateLastCall,
-} from '../../actions/runtime.action';
-import {
-  FOR_DONATION,
-  FOR_RETURN,
-  LAST_CALL,
-} from '../../constants/actions/runtime';
+import { updateForReturn } from '../../actions/runtime.action';
+import { FOR_RETURN } from '../../constants/actions/runtime';
 
 function InReturnBox({
-  scannedItems,
   typeTitle,
   compensationType,
   disabled,
@@ -27,14 +18,7 @@ function InReturnBox({
   const dispatch = useDispatch();
   const { push } = useHistory();
 
-  const {
-    inDonation,
-    scheduledReturns,
-    scans,
-    forReturn,
-    lastCall,
-    localDonationsCount,
-  } = useSelector(
+  const { scheduledReturns } = useSelector(
     ({
       runtime: { forReturn, lastCall, forDonation },
       auth: { scheduledReturns },

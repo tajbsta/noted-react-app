@@ -5,18 +5,12 @@ import PickUpConfirmed from '../components/ViewConfirmedReturn/PickUpConfirmed';
 import PickUpDetails from '../components/ViewConfirmedReturn/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, isEmpty } from 'lodash';
-import SizeGuideModal from '../components/Dashboard/modals/SizeGuideModal';
+import SizeGuideModal from '../modals/SizeGuideModal';
 import $ from 'jquery';
-import CancelOrderModal from '../components/Dashboard/modals/CancelOrderModal';
+import CancelOrderModal from '../modals/CancelOrderModal';
 import { updateOrders } from '../actions/auth.action';
 import { useHistory } from 'react-router';
 import Row from '../components/Row';
-import ReturnCategory from '../components/Dashboard/ReturnCategory';
-import {
-  FOR_DONATION,
-  FOR_RETURN,
-  LAST_CALL,
-} from '../constants/actions/runtime';
 
 function ViewConfirmedReturn({
   location: {
@@ -29,15 +23,7 @@ function ViewConfirmedReturn({
   const [modalShow, setModalShow] = useState(false);
   const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
   const history = useHistory();
-  const {
-    inDonation,
-    scheduledReturns,
-    scans,
-    forReturn,
-    lastCall,
-    localDonationsCount,
-    orderInMemory,
-  } = useSelector(
+  const { inDonation, scheduledReturns, scans, orderInMemory } = useSelector(
     ({
       runtime: { forReturn, lastCall, forDonation, orderInMemory },
       auth: { scheduledReturns },
