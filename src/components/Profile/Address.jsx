@@ -3,9 +3,12 @@ import USA_STATES from '../../assets/usa_states.json';
 import { formatPhoneNumber } from '../../utils/form';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import $ from 'jquery';
+import AddPickupModal from '../../modals/AddPickupModal';
 
 export default function Address({ state, phoneNumber, handleChange }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
+
   useEffect(() => {
     const platform = window.navigator.platform;
     const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
@@ -133,12 +136,20 @@ export default function Address({ state, phoneNumber, handleChange }) {
               </Col>
 
               <Col className='add-pick-up'>
-                <div>
-                  <h4 className='noted-purple text-instructions'>
+                <button
+                  className='btn-instructions'
+                  onClick={() => setModalShow(true)}
+                >
+                  <h4 className='text-instructions'>
                     Add pick-up instructions
                   </h4>
-                </div>
+                </button>
               </Col>
+
+              <AddPickupModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+              />
 
               <Col className='btn-container'>
                 {isEditing && (
