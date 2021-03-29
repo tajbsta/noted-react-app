@@ -18,7 +18,7 @@ const { REACT_APP_API_URI } = process.env;
 // }
 
 export const api = async () => {
-  const user = await getUserSession();
+  const { accessToken } = await getUserSession();
 
   return axios.create({
     baseURL: REACT_APP_API_URI,

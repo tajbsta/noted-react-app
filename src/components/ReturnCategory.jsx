@@ -1,52 +1,62 @@
-import React from "react";
-import Row from "../Row";
-import ProductCard from "../ProductCard";
-import QuestionMarkSvg from "../../assets/icons/QuestionMark.svg";
-import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { updateForReturn } from "../../actions/runtime.action";
-import { FOR_RETURN } from "../../constants/actions/runtime";
+import React, { useEffect, useState } from 'react';
+import Row from './Row';
+import ProductCard from './ProductCard';
+import QuestionMarkSvg from '../assets/icons/QuestionMark.svg';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {
+  updateForDonation,
+  updateForReturn,
+  updateLastCall,
+} from '../actions/runtime.action';
+import {
+  FOR_DONATION,
+  FOR_RETURN,
+  LAST_CALL,
+} from '../constants/actions/runtime';
 
-function InReturnBox({
+function ReturnCategory({
+  scannedItems,
   typeTitle,
   compensationType,
   disabled,
-  scheduledReturnId,
-  selected,
+  selected = [],
   setSelected,
 }) {
   const dispatch = useDispatch();
   const { push } = useHistory();
 
-  const { scheduledReturns } = useSelector(
-    ({
-      runtime: { forReturn, lastCall, forDonation },
-      auth: { scheduledReturns },
-      scans,
-    }) => ({
-      localDonationsCount: forDonation.length,
-      forReturn,
-      lastCall,
-      scheduledReturns,
-      inReturn: [...forReturn, ...lastCall],
-      inDonation: [...forDonation],
-      scans,
-    })
-  );
+  useEffect(() => {
+    if (compensationType === FOR_RETURN) {
+      dispatch(
+        updateForReturn({
+          scans: [...selected],
+        })
+      );
+    }
 
-  const scheduledReturn = scheduledReturns.find(
-    ({ id }) => id === scheduledReturnId
-  );
-  const { items } = scheduledReturn;
+    if (compensationType === FOR_DONATION) {
+      dispatch(
+        updateForDonation({
+          scans: [...selected],
+        })
+      );
+    }
 
-  const isSelected = (itemId) =>
-    [...selected.map(({ id }) => id)].includes(itemId);
+    if (compensationType === LAST_CALL) {
+      dispatch(
+        updateLastCall({
+          scans: [...selected],
+        })
+      );
+    }
+  }, [selected]);
 
   const addSelected = (id) => {
     if (selected.map(({ id }) => id).includes(id)) {
       return;
     }
-    setSelected([...selected, items.find((item) => item.id === id)]);
+    setSelected([...selected, scannedItems.find((item) => item.id === id)]);
     if (compensationType === FOR_RETURN) {
       dispatch(
         updateForReturn({
@@ -63,12 +73,12 @@ function InReturnBox({
   };
 
   const handleSelectAll = () => {
-    if (selected.length === items.length) {
+    if (selected.length === scannedItems.length) {
       setSelected([]);
     }
 
-    if (selected.length !== items.length) {
-      setSelected([...items.map((scannedItem) => scannedItem)]);
+    if (selected.length !== scannedItems.length) {
+      setSelected([...scannedItems.map((scannedItem) => scannedItem)]);
     }
   };
 
@@ -82,7 +92,7 @@ function InReturnBox({
               className="checkbox"
               type="checkbox"
               onChange={handleSelectAll}
-              checked={selected.length === items.length}
+              checked={selected.length === scannedItems.length}
             />
           </div>
           <h4 className="sofia-pro purchase-types purchase-type-title">
@@ -101,13 +111,13 @@ function InReturnBox({
           />
         </div>
       </Row>
-      {[...items].map((scannedItem) => {
+      {[...scannedItems].map((scannedItem) => {
         return (
           <ProductCard
             disabled={disabled}
             key={scannedItem.id}
             scannedItem={scannedItem}
-            selected={isSelected(scannedItem.id)}
+            selected={selected.map(({ id }) => id).includes(scannedItem.id)}
             addSelected={addSelected}
             removeSelected={removeSelected}
             onClick={() => {
@@ -120,4 +130,4 @@ function InReturnBox({
   );
 }
 
-export default InReturnBox;
+export default ReturnCategory;

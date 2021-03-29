@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import EmptyAddress from './EmptyAddress';
-import EmptyPayment from './EmptyPayment';
-import AddressForm from '../../components/ViewScan/AddressForm';
-import PaymentForm from '../../components/ViewScan/PaymentForm';
+import EmptyAddress from '../EmptyAddress';
+import EmptyPayment from '../EmptyPayment';
+import AddressForm from '../../components/AddressForm';
+import PaymentForm from '../../components/PaymentForm';
 
 import { useFormik } from 'formik';
 import { formatPhoneNumber, isFormEmpty } from '../../utils/form';
@@ -111,10 +111,10 @@ function PickUpDetails() {
   return (
     <>
       {!showEditAddress && !showEditPayment && (
-        <h3 className='sofia-pro text-18'>Pick-up details</h3>
+        <h3 className="sofia-pro text-18">Pick-up details</h3>
       )}
 
-      <div className='row'>
+      <div className="row">
         {showEditPayment && (
           <PaymentForm
             {...paymentFormValues}
@@ -136,19 +136,19 @@ function PickUpDetails() {
 
         {!showEditAddress && !showEditPayment && (
           <>
-            <div className='col-sm-4'>
-              <div className='card shadow-sm'>
+            <div className="col-sm-4">
+              <div className="card shadow-sm">
                 {!isAddressFormEmpty && !showEditAddress && (
-                  <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0'>
-                    <div className='title-container'>
-                      <div className='p-0'>
-                        <p className='pick-up-message sofia-pro text-14 line-height-16'>
+                  <div className="card-body payment-details-card-body pt-4 pb-3 pl-4 m-0">
+                    <div className="title-container">
+                      <div className="p-0">
+                        <p className="pick-up-message sofia-pro text-14 line-height-16">
                           Pick-up Address
                         </p>
                       </div>
                       <div>
                         <a
-                          className='btn-edit sofia-pro text-14 line-height-16'
+                          className="btn-edit sofia-pro text-14 line-height-16"
                           onClick={() => setShowEditAddress(true)}
                         >
                           Edit
@@ -156,23 +156,23 @@ function PickUpDetails() {
                       </div>
                     </div>
                     <div>
-                      <h4 className='p-0 m-0 sofia-pro postal-name'>
+                      <h4 className="p-0 m-0 sofia-pro postal-name">
                         {addressFormValues.fullName}
                       </h4>
-                      <h4 className='p-0 m-0 sofia-pro line1'>
+                      <h4 className="p-0 m-0 sofia-pro line1">
                         {addressFormValues.line1}
                       </h4>
-                      <h4 className='p-0 m-0 sofia-pro line1'>
+                      <h4 className="p-0 m-0 sofia-pro line1">
                         {addressFormValues.line2}
                       </h4>
-                      <h4 className='p-0 m-0 sofia-pro line1'>
+                      <h4 className="p-0 m-0 sofia-pro line1">
                         {addressFormValues.state} {addressFormValues.zipCode}
                       </h4>
                     </div>
-                    <p className='sofia-pro mt-3 tel'>
+                    <p className="sofia-pro mt-3 tel">
                       Tel: {formatPhoneNumber(addressFormValues.phoneNumber)}
                     </p>
-                    <p className='sofia-pro noted-purple mt-3 btn-add-instructions'>
+                    <p className="sofia-pro noted-purple mt-3 btn-add-instructions">
                       Add pick-up instructions
                     </p>
                   </div>
@@ -184,53 +184,53 @@ function PickUpDetails() {
               </div>
             </div>
             {/* PAYMENT DETAILS */}
-            <div className='col-sm-4'>
-              <div className='card shadow-sm'>
+            <div className="col-sm-4">
+              <div className="card shadow-sm">
                 {!isPaymentFormEmpty && !showEditPayment && (
-                  <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0'>
-                    <div className='title-container'>
-                      <div className='p-0'>
-                        <p className='pick-up-message sofia-pro text-14 line-height-16'>
+                  <div className="card-body payment-details-card-body pt-4 pb-3 pl-4 m-0">
+                    <div className="title-container">
+                      <div className="p-0">
+                        <p className="pick-up-message sofia-pro text-14 line-height-16">
                           Payment method
                         </p>
                       </div>
                       <div>
                         <a
-                          className='btn-edit sofia-pro text-14 line-height-16'
+                          className="btn-edit sofia-pro text-14 line-height-16"
                           onClick={() => setShowEditPayment(true)}
                         >
                           Edit
                         </a>
                       </div>
                     </div>
-                    <div className='end'>
-                      <div className='img-container'>
+                    <div className="end">
+                      <div className="img-container">
                         <img
-                          className='img-fluid'
+                          className="img-fluid"
                           style={{ width: '38px' }}
-                          src='https://www.svgrepo.com/show/46490/credit-card.svg'
-                          alt='...'
+                          src="https://www.svgrepo.com/show/46490/credit-card.svg"
+                          alt="..."
                         />
                       </div>
-                      <div className='mb-4 text-14 text'>
+                      <div className="mb-4 text-14 text">
                         Ending in{' '}
                         {paymentFormValues.cardNumber.substr(
                           paymentFormValues.cardNumber.length - 4
                         )}
                       </div>
                     </div>
-                    <h3 className='sofia-pro mb-0 mt-2 mb-2 text-14 ine-height-16 c-add'>
+                    <h3 className="sofia-pro mb-0 mt-2 mb-2 text-14 ine-height-16 c-add">
                       Card Address
                     </h3>
                     <div>
-                      <h4 className='p-0 m-0 sofia-pro postal-name'>
+                      <h4 className="p-0 m-0 sofia-pro postal-name">
                         {paymentFormValues.fullName}
                       </h4>
-                      <h4 className='p-0 m-0 sofia-pro line1'>
+                      <h4 className="p-0 m-0 sofia-pro line1">
                         {addressFormValues.line1}
                       </h4>
 
-                      <h4 className='p-0 m-0 sofia-pro postal-address'>
+                      <h4 className="p-0 m-0 sofia-pro postal-address">
                         {addressFormValues.line2} {addressFormValues.state}{' '}
                         {addressFormValues.zipCode}
                       </h4>
@@ -244,24 +244,24 @@ function PickUpDetails() {
               </div>
             </div>
             {/* RETURN SCHEDULE */}
-            <div className='col-sm-4'>
-              <div className='card shadow-sm'>
-                <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0'>
-                  <div className='title-container'>
-                    <div className='p-0'>
-                      <p className='pick-up-message sofia-pro text-14 line-height-16'>
+            <div className="col-sm-4">
+              <div className="card shadow-sm">
+                <div className="card-body payment-details-card-body pt-4 pb-3 pl-4 m-0">
+                  <div className="title-container">
+                    <div className="p-0">
+                      <p className="pick-up-message sofia-pro text-14 line-height-16">
                         Pick up
                       </p>
                     </div>
                   </div>
-                  <h4 className='sofia-pro mb-4'>Today</h4>
-                  <h4 className='p-0 m-0 sofia-pro'>Between 2pm and 3pm</h4>
-                  <h4 className='p-0 m-0 sofia-pro mt-2 btn-edit'>Edit</h4>
+                  <h4 className="sofia-pro mb-4">Today</h4>
+                  <h4 className="p-0 m-0 sofia-pro">Between 2pm and 3pm</h4>
+                  <h4 className="p-0 m-0 sofia-pro mt-2 btn-edit">Edit</h4>
                   <hr />
-                  <a className='btn-edit p-0 m-0 sofia-pro noted-purple mt-2 text-14 line-height-16'>
+                  <a className="btn-edit p-0 m-0 sofia-pro noted-purple mt-2 text-14 line-height-16">
                     Schedule another date
                   </a>
-                  <h5 className='sofia-pro text-muted text-price-sched text-14'>
+                  <h5 className="sofia-pro text-muted text-price-sched text-14">
                     (-$10.99)
                   </h5>
                 </div>

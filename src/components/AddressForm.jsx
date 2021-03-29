@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { formatPhoneNumber } from '../../utils/form';
-import USA_STATES from '../../assets/usa_states.json';
-import { isFormEmpty } from '../../utils/form';
+import USA_STATES from '../assets/usa_states.json';
+import { isFormEmpty, formatPhoneNumber } from '../utils/form';
 import $ from 'jquery';
 
 export default function AddressForm({
@@ -27,7 +26,7 @@ export default function AddressForm({
     }) || !isFormEmpty({ ...errors });
 
   const renderInlineError = (error) => (
-    <small className='form-text p-0 m-0 noted-red'>{error}</small>
+    <small className="form-text p-0 m-0 noted-red">{error}</small>
   );
 
   useEffect(() => {
@@ -42,14 +41,14 @@ export default function AddressForm({
 
   return (
     <div>
-      <div className='container mt-0'>
-        <div className='row'>
-          <div className='col-sm-9 mt-2'>
-            <h3 className='sofia-pro text-18 mb-4'>Pick-up Address</h3>
-            <div className='card shadow-sm mb-2 p-3 w-840'>
-              <div className='card-body'>
+      <div className="container mt-0">
+        <div className="row">
+          <div className="col-sm-9 mt-2">
+            <h3 className="sofia-pro text-18 mb-4">Pick-up Address</h3>
+            <div className="card shadow-sm mb-2 p-3 w-840">
+              <div className="card-body">
                 <Form
-                  id='AddressFormConfirmed'
+                  id="AddressFormConfirmed"
                   onSubmit={(e) => e.preventDefault()}
                 >
                   <Row>
@@ -58,14 +57,14 @@ export default function AddressForm({
                         <Form.Label>Full Name</Form.Label>
                         <Form.Control
                           isInvalid={errors.fullName}
-                          className='form-control-lg'
+                          className="form-control-lg"
                           onChange={(e) => {
                             if (/^[a-zA-Z\s]*$/g.test(e.target.value)) {
                               handleChange(e);
                             }
                           }}
-                          type='name'
-                          name='fullName'
+                          type="name"
+                          name="fullName"
                           value={fullName || ''}
                         />
                         {renderInlineError(errors.fullName)}
@@ -75,13 +74,13 @@ export default function AddressForm({
                       <Form.Group>
                         <Form.Label>State</Form.Label>
                         <Form.Control
-                          className='form-control-md'
-                          as='select'
+                          className="form-control-md"
+                          as="select"
                           value={state || ''}
-                          name='state'
+                          name="state"
                           onChange={handleChange}
-                          placeholder='Select State'
-                          defaultValue='null'
+                          placeholder="Select State"
+                          defaultValue="null"
                         >
                           {[
                             { abbreviation: '', name: 'Select State' },
@@ -102,7 +101,7 @@ export default function AddressForm({
                       <Form.Group>
                         <Form.Label>Zip Code</Form.Label>
                         <Form.Control
-                          className='form-control-sm'
+                          className="form-control-sm"
                           onChange={(e) => {
                             const re = /^[0-9\b]+$/;
                             if (
@@ -112,9 +111,9 @@ export default function AddressForm({
                               handleChange(e);
                             }
                           }}
-                          type='zip code'
+                          type="zip code"
                           value={zipCode || ''}
-                          name='zipCode'
+                          name="zipCode"
                           maxLength={6}
                         />
                         {zipCode.length > 0 &&
@@ -128,11 +127,11 @@ export default function AddressForm({
                       <Form.Group>
                         <Form.Label>Address Line 1</Form.Label>
                         <Form.Control
-                          className='form-control-lg'
+                          className="form-control-lg"
                           onChange={handleChange}
-                          type='name'
+                          type="name"
                           value={line1 || ''}
-                          name='line1'
+                          name="line1"
                         />
                         {line1.length > 0 && renderInlineError(errors.line1)}
                       </Form.Group>
@@ -141,7 +140,7 @@ export default function AddressForm({
                       <Form.Group>
                         <Form.Label>Phone</Form.Label>
                         <Form.Control
-                          className='form-control-lg'
+                          className="form-control-lg"
                           onChange={(e) => {
                             const re = /^[0-9\b]+$/;
                             if (
@@ -152,7 +151,7 @@ export default function AddressForm({
                             }
                           }}
                           value={formatPhoneNumber(phoneNumber) || ''}
-                          name='phoneNumber'
+                          name="phoneNumber"
                           maxLength={13}
                         />
                       </Form.Group>
@@ -164,28 +163,28 @@ export default function AddressForm({
                       <Form.Group>
                         <Form.Label>Address Line 2</Form.Label>
                         <Form.Control
-                          className='form-control-lg'
-                          type='name'
+                          className="form-control-lg"
+                          type="name"
                           value={line2 || ''}
-                          name='line2'
+                          name="line2"
                           onChange={handleChange}
                         />
                         {line2.length > 0 && renderInlineError(errors.line2)}
                       </Form.Group>
                     </Col>
 
-                    <Col className='add-pick-up'>
+                    <Col className="add-pick-up">
                       <div>
-                        <h4 className='noted-purple text-instructions'>
+                        <h4 className="noted-purple text-instructions">
                           Add pick-up instructions
                         </h4>
                       </div>
                     </Col>
 
-                    <Col className='btn-container'>
+                    <Col className="btn-container">
                       <Button
                         disabled={disableSubmit}
-                        className='btn-done'
+                        className="btn-done"
                         onClick={onDoneClick}
                       >
                         Done
