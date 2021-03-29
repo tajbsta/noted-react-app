@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { isFormEmpty } from '../../utils/form';
+import { isFormEmpty } from '../utils/form';
 import $ from 'jquery';
 
 export default function PaymentForm({
@@ -33,7 +33,7 @@ export default function PaymentForm({
   }
 
   const renderInlineError = (error) => (
-    <small className='form-text p-0 m-0 noted-red'>{error}</small>
+    <small className="form-text p-0 m-0 noted-red">{error}</small>
   );
 
   console.log(errors);
@@ -51,21 +51,21 @@ export default function PaymentForm({
 
   return (
     <div>
-      <div className='container mt-0'>
-        <div className='row'>
-          <div className='col-sm-9 mt-2'>
-            <h3 className='sofia-pro text-18 mb-4'>Payment Method</h3>
-            <div className='card shadow-sm mb-2 p-3 w-840'>
-              <div className='card-body'>
-                <Form id='PaymentForm'>
+      <div className="container mt-0">
+        <div className="row">
+          <div className="col-sm-9 mt-2">
+            <h3 className="sofia-pro text-18 mb-4">Payment Method</h3>
+            <div className="card shadow-sm mb-2 p-3 w-840">
+              <div className="card-body">
+                <Form id="PaymentForm">
                   <Row>
                     <Col xs={6}>
                       <Form.Group>
                         <Form.Label>Cardholder Name</Form.Label>
                         <Form.Control
-                          className='form-control-lg'
-                          type='name'
-                          name='fullName'
+                          className="form-control-lg"
+                          type="name"
+                          name="fullName"
                           value={fullName || ''}
                           onChange={handleChange}
                         />
@@ -75,10 +75,10 @@ export default function PaymentForm({
                     <Col>
                       <Form.Group>
                         <Form.Label>Expiration Date</Form.Label>
-                        <div className='exp-form'>
+                        <div className="exp-form">
                           <Form.Control
-                            className='form-control-sm'
-                            name='expirationMonth'
+                            className="form-control-sm"
+                            name="expirationMonth"
                             maxLength={2}
                             value={expirationMonth || ''}
                             onChange={(e) => {
@@ -91,12 +91,12 @@ export default function PaymentForm({
                               }
                             }}
                           />
-                          <div className='separator'>
+                          <div className="separator">
                             <h4>&nbsp;&nbsp;/&nbsp;&nbsp;</h4>
                           </div>
                           <Form.Control
-                            className='form-control-sm'
-                            name='expirationYear'
+                            className="form-control-sm"
+                            name="expirationYear"
                             maxLength={2}
                             value={expirationYear || ''}
                             onChange={(e) => {
@@ -120,8 +120,8 @@ export default function PaymentForm({
                       <Form.Group>
                         <Form.Label>Card Number</Form.Label>
                         <Form.Control
-                          className='form-control-lg'
-                          name='cardNumber'
+                          className="form-control-lg"
+                          name="cardNumber"
                           value={formatCardNumber(cardNumber) || ''}
                           onChange={handleChange}
                           maxLength={20}
@@ -133,8 +133,8 @@ export default function PaymentForm({
                       <Form.Group>
                         <Form.Label>CVC</Form.Label>
                         <Form.Control
-                          className='form-control-sm'
-                          name='cvc'
+                          className="form-control-sm"
+                          name="cvc"
                           value={cvc || ''}
                           onChange={(e) => {
                             const re = /^[0-9\b]+$/;
@@ -152,11 +152,11 @@ export default function PaymentForm({
                   </Row>
 
                   <Row>
-                    <Col className='btn-container'>
+                    <Col className="btn-container">
                       <Button
                         disabled={disableSubmit}
-                        className='btn-save'
-                        type='submit'
+                        className="btn-save"
+                        type="submit"
                         onClick={onDoneClick}
                       >
                         Save

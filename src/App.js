@@ -13,7 +13,6 @@ import AppRouteSwitcher from './routes/AppRouteSwitcher';
 import configureStore from './store';
 
 const { persistor, store } = configureStore();
-console.log(process.env);
 function App() {
   return (
     <Provider store={store}>

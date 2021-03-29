@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { formatPhoneNumber } from '../../utils/form';
-import USA_STATES from '../../assets/usa_states.json';
-import { isFormEmpty } from '../../utils/form';
+import USA_STATES from '../assets/usa_states.json';
+import { isFormEmpty, formatPhoneNumber } from '../utils/form';
 import $ from 'jquery';
+import AddPickupModal from '../modals/AddPickupModal';
 
 export default function AddressForm({
   fullName,
@@ -16,6 +16,8 @@ export default function AddressForm({
   handleChange,
   onDoneClick,
 }) {
+  const [modalShow, setModalShow] = useState(false);
+
   const disableSubmit =
     isFormEmpty({
       fullName,
@@ -175,12 +177,20 @@ export default function AddressForm({
                     </Col>
 
                     <Col className='add-pick-up'>
-                      <div>
-                        <h4 className='noted-purple text-instructions'>
+                      <button
+                        className='btn btn-instructions'
+                        onClick={() => setModalShow(true)}
+                      >
+                        <h4 className='text-instructions'>
                           Add pick-up instructions
                         </h4>
-                      </div>
+                      </button>
                     </Col>
+
+                    <AddPickupModal
+                      show={modalShow}
+                      onHide={() => setModalShow(false)}
+                    />
 
                     <Col className='btn-container'>
                       <Button

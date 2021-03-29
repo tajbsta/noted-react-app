@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
-import Row from '../Row';
-import ProductCard from './ProductCard';
-import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
-import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from "react";
+import Row from "../Row";
+import ProductCard from "./ProductCard";
+import QuestionMarkSvg from "../../assets/icons/QuestionMark.svg";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   updateForDonation,
   updateForReturn,
   updateLastCall,
-} from '../../actions/runtime.action';
+} from "../../actions/runtime.action";
 import {
   FOR_DONATION,
   FOR_RETURN,
   LAST_CALL,
-} from '../../constants/actions/runtime';
+} from "../../constants/actions/runtime";
 
 function ReturnCategory({
   scannedItems,
@@ -83,31 +83,31 @@ function ReturnCategory({
   };
 
   return (
-    <div id='ReturnCategory'>
+    <div id="ReturnCategory">
       <Row>
-        <div className='category-title'>
-          <div className='ml-3 p-0 purchase-type-checkbox-container'>
+        <div className="category-title">
+          <div className="ml-3 p-0 purchase-type-checkbox-container">
             <input
               disabled={disabled}
-              className='checkbox'
-              type='checkbox'
+              className="checkbox"
+              type="checkbox"
               onChange={handleSelectAll}
               checked={selected.length === scannedItems.length}
             />
           </div>
-          <h4 className='sofia-pro purchase-types purchase-type-title'>
+          <h4 className="sofia-pro purchase-types purchase-type-title">
             {typeTitle}
           </h4>
           <img
-            className='question-mark'
+            className="question-mark"
             src={QuestionMarkSvg}
-            alt=''
+            alt=""
             style={{
               opacity: 0.6,
             }}
-            data-toggle='tooltip'
-            data-placement='top'
-            title='Tooltip message here :)'
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Tooltip message here :)"
           />
         </div>
       </Row>
