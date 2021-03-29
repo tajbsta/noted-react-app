@@ -3,6 +3,7 @@ import { Card } from 'react-bootstrap';
 import BasicInfo from '../components/Settings/BasicInfo';
 import EmailAddresses from '../components/Settings/EmailAddresses';
 import ChangePass from '../components/Settings/ChangePass';
+import DeleteAccount from '../components/Settings/DeleteAccount';
 import { Link } from 'react-scroll';
 import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../models/formSchema';
@@ -79,6 +80,18 @@ export default function SettingsPage() {
                     Change Password
                   </Link>
                 </li>
+                <li className='nav-item'>
+                  <Link
+                    to='DeleteAccount'
+                    spy={true}
+                    smooth={true}
+                    className='nav-link'
+                    offset={-70}
+                    duration={500}
+                  >
+                    Delete Account
+                  </Link>
+                </li>
               </ul>
             </Card>
             <div className='col'></div>
@@ -91,6 +104,7 @@ export default function SettingsPage() {
             />
             <EmailAddresses user={user} />
             <ChangePass />
+            <DeleteAccount />
           </div>
         </div>
       </div>

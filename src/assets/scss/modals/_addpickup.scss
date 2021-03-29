@@ -1,0 +1,78 @@
+#AddPickupModal {
+  font-family: 'Sofia Pro';
+  height: 312px;
+  width: 528px;
+  border-radius: 8px;
+
+  .modal-content {
+    padding: 32px 40px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a,
+  div {
+    font-family: 'Sofia Pro';
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 11px;
+
+    .modal-title {
+      font-size: 14px;
+      line-height: 16px;
+      color: #2e1d3a;
+    }
+
+    .clear {
+      border: none;
+      background: inherit;
+      color: #570097;
+      text-decoration: underline;
+      font-size: 12px;
+      line-height: 14px;
+    }
+  }
+
+  .modal-body {
+    padding: 0px;
+    margin-bottom: 0px;
+  }
+
+  .button-group {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 40px;
+
+    .btn-cancel {
+      border: none;
+      box-shadow: none !important;
+      padding: 0px;
+      background: inherit;
+      color: #2e1d3a;
+      margin-right: 24px;
+
+      .text-cancel {
+        font-size: 14px;
+        line-height: 16px;
+        margin-bottom: 0px;
+      }
+    }
+
+    .btn-save {
+      background: #570097;
+      border-radius: 6px;
+      height: 40px;
+      width: 138px;
+      border-radius: 6px;
+    }
+  }
+}
