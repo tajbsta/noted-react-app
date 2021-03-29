@@ -1,27 +1,27 @@
-import { get, isEmpty } from "lodash";
-import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { storeScan } from "../actions/scans.action";
-import ReturnCategory from "../components/ReturnCategory";
-import RightCard from "../components/Dashboard/RightCard";
-import Scanning from "../components/Dashboard/Scanning";
-import { getUserId, getUser } from "../utils/auth";
-import { getAccounts, startAccountsScan } from "../utils/accountsApi";
-import { getProducts } from "../utils/productsApi";
-import { clearSearchQuery } from "../actions/runtime.action";
+import { get, isEmpty } from 'lodash';
+import React, { useEffect, useState } from 'react';
+import { Spinner } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { storeScan } from '../actions/scans.action';
+import ReturnCategory from '../components/ReturnCategory';
+import RightCard from '../components/Dashboard/RightCard';
+import Scanning from '../components/Dashboard/Scanning';
+import { getUserId, getUser } from '../utils/auth';
+import { getAccounts, startAccountsScan } from '../utils/accountsApi';
+import { getProducts } from '../utils/productsApi';
+import { clearSearchQuery } from '../actions/runtime.action';
 import {
   FOR_DONATION,
   FOR_RETURN,
   LAST_CALL,
-} from "../constants/actions/runtime";
-import EmptyScan from "../components/Dashboard/EmptyScan";
-import ScheduledReturnCard from "../components/ScheduledReturnCard";
-import { clearOrder } from "../actions/auth.action";
-import AddEmailModal from "../modals/AddEmailModal";
+} from '../constants/actions/runtime';
+import EmptyScan from '../components/Dashboard/EmptyScan';
+import ScheduledReturnCard from '../components/ScheduledReturnCard';
+import { clearOrder } from '../actions/auth.action';
+import AddEmailModal from '../modals/AddEmailModal';
 
-const inDevMode = ["local", "development"].includes(process.env.NODE_ENV);
+const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 
 function DashboardPage() {
   const history = useHistory();
@@ -32,11 +32,14 @@ function DashboardPage() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [launchScan, setLaunchScan] = useState(false);
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState('');
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [modalShow, setModalShow] = useState(false);
 
+  const [lastCallSelected, setLastCallSelected] = useState([]);
+  const [returnableSelected, setReturnableSelected] = useState([]);
+  const [donations, setDonationsSelected] = useState([]);
   const {
     localDonationsCount,
     lastCall,
@@ -70,7 +73,7 @@ function DashboardPage() {
 
       // Redirect to request-permission if user has no accounts
       if (accounts.length === 0) {
-        history.push("/request-permission");
+        history.push('/request-permission');
         return;
       }
 
@@ -110,10 +113,10 @@ function DashboardPage() {
 
   useEffect(() => {
     const filtered = items.filter((scan) => {
-      const pattern = new RegExp(search, "i");
+      const pattern = new RegExp(search, 'i');
       return (
-        get(scan, "vendorTag", "").match(pattern) ||
-        get(scan, "itemName", "").match(pattern)
+        get(scan, 'vendorTag', '').match(pattern) ||
+        get(scan, 'itemName', '').match(pattern)
       );
     });
 
@@ -176,7 +179,7 @@ function DashboardPage() {
               {!loading && isEmpty(search) && !isEmpty(scheduledReturns) && (
                 <>
                   <h3 className="sofia-pro mt-0 ml-3 text-18 text-list">
-                    Your scheduled returns{" "}
+                    Your scheduled returns{' '}
                     {inDevMode && (
                       // THIS ONLY SHOWS WHEN ENV IS SET TO development
                       <button
@@ -189,7 +192,7 @@ function DashboardPage() {
                   </h3>
                   <div>
                     {scheduledReturns.map((scheduleReturn) => {
-                      const items = get(scheduleReturn, "items", []);
+                      const items = get(scheduleReturn, 'items', []);
                       return items.map((item) => (
                         <ScheduledReturnCard
                           scheduledReturnId={scheduleReturn.id}
@@ -212,8 +215,8 @@ function DashboardPage() {
               <>
                 <h3 className="sofia-pro mt-0 ml-3 text-18 text-list">
                   {isEmpty(search)
-                    ? "Your online purchases - Last 90 Days"
-                    : "Search Results"}
+                    ? 'Your online purchases - Last 90 Days'
+                    : 'Search Results'}
                 </h3>
                 {isEmpty(search) && (
                   <>
@@ -223,6 +226,8 @@ function DashboardPage() {
                         typeTitle="Last Call!"
                         compensationType={LAST_CALL}
                         disabled={localDonationsCount > 0}
+                        selected={lastCallSelected}
+                        setSelected={setLastCallSelected}
                       />
                     </div>
                     <div className="mt-4 returnable-items">
@@ -231,6 +236,8 @@ function DashboardPage() {
                         typeTitle="Returnable Items"
                         compensationType={FOR_RETURN}
                         disabled={localDonationsCount > 0}
+                        selected={returnableSelected}
+                        setSelected={setReturnableSelected}
                       />
                     </div>
                     <div>
@@ -244,6 +251,8 @@ function DashboardPage() {
                         typeTitle="Donate"
                         compensationType={FOR_DONATION}
                         disabled={[...lastCall, ...forReturn].length > 0}
+                        setSelected={setDonationsSelected}
+                        selected={donations}
                       />
                     </div>
                     <div>

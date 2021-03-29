@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { GREAT } from "../constants/returns/scores";
-import ReturnScore from "./ReturnsScore";
-import Row from "./Row";
-import { Container, Col } from "react-bootstrap";
-import ProductDetails from "./ProductDetails";
-import ProductCardHover from "./ProductCardHover";
+import React, { useState } from 'react';
+import { GREAT } from '../constants/returns/scores';
+import ReturnScore from './ReturnsScore';
+import Row from './Row';
+import { Container, Col } from 'react-bootstrap';
+import ProductDetails from './ProductDetails';
+import ProductCardHover from './ProductCardHover';
 
 function ProductCard({
   selectable = true,
@@ -25,7 +25,6 @@ function ProductCard({
   scannedItem,
 }) {
   const [isHover, setIsHover] = useState(false);
-
   const handleSelection = () => {
     if (selected) {
       removeSelected(id);
@@ -37,7 +36,7 @@ function ProductCard({
   // Truncate name if name is longer than 15 characters
   const truncateString = (str, num = 15) => {
     if (str && str.length > num) {
-      return str.slice(0, num) + "...";
+      return str.slice(0, num) + '...';
     } else {
       return str;
     }
@@ -47,13 +46,13 @@ function ProductCard({
     <div id="productCard">
       <div
         className={`card scanned-item-card w-840 mb-3 p-0 ${
-          clickable && "btn"
+          clickable && 'btn'
         }`}
         key={itemName}
         style={{
           border: selected
-            ? "1px solid rgba(87, 0, 151, 0.8)"
-            : "1px solid #EAE8EB",
+            ? '1px solid rgba(87, 0, 151, 0.8)'
+            : '1px solid #EAE8EB',
         }}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
@@ -76,8 +75,8 @@ function ProductCard({
             <div
               className="product-img-container"
               style={{
-                display: "flex",
-                alignItems: "center",
+                display: 'flex',
+                alignItems: 'center',
               }}
             >
               <img
@@ -87,7 +86,7 @@ function ProductCard({
                 style={{
                   maxWidth: 50,
                   maxHeight: 50,
-                  objectFit: "contain",
+                  objectFit: 'contain',
                 }}
               />
             </div>
@@ -110,7 +109,7 @@ function ProductCard({
                       <div
                         className="noted-red sofia-pro mobile-limit"
                         style={{
-                          color: "#FF1C29",
+                          color: '#FF1C29',
                         }}
                       >
                         2 days left
@@ -138,16 +137,16 @@ function ProductCard({
                 scannedItem,
                 returnScore,
                 amount,
-                compensationType: "",
+                compensationType: '',
               }}
             />
 
             <div
               className="col-sm-12 return-details-container"
               style={{
-                display: "flex",
-                alignItems: "center",
-                justifyItems: "center",
+                display: 'flex',
+                alignItems: 'center',
+                justifyItems: 'center',
               }}
             >
               {isHover && <ProductCardHover orderDate={orderDate} />}
@@ -157,7 +156,7 @@ function ProductCard({
                   <div
                     className="col-sm-6 noted-red sofia-pro return-time-left"
                     style={{
-                      color: "#FF1C29",
+                      color: '#FF1C29',
                     }}
                   >
                     2 days left

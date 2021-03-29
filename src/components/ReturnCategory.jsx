@@ -25,7 +25,6 @@ function ReturnCategory({
 }) {
   const dispatch = useDispatch();
   const { push } = useHistory();
-
   useEffect(() => {
     if (compensationType === FOR_RETURN) {
       dispatch(

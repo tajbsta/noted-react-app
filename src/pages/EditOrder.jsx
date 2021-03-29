@@ -68,8 +68,6 @@ function EditOrder({
     [...get(scheduledReturn, 'items', [])].length !==
     [...inBoxSelected, ...returnableSelected, ...lastCallSelected].length;
 
-  console.log(get(scheduledReturn, 'items', []));
-  console.log(lastCallSelected);
   useEffect(() => {
     const platform = window.navigator.platform;
     const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
