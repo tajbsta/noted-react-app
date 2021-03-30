@@ -1,0 +1,42 @@
+#DatePicker {
+  display: flex;
+  justify-content: center;
+  .flatpickr-calendar {
+    box-shadow: none !important;
+  }
+  .flatpickr-disabled {
+    color: #2e1d3a;
+    opacity: 0.6;
+  }
+  .flatpickr-calendar,
+  .flatpickr-innerContainer,
+  .flatpickr-Container,
+  .flatpickr-days,
+  .dayContainer {
+    min-width: 432px !important;
+    height: 432px !important;
+    padding: 5px;
+    border: none;
+    color: #2e1d3a;
+  }
+  .flatpickr-day {
+    border: none;
+  }
+  .selected {
+    color: #570097 !important;
+    background: #eee4f6;
+    border-radius: 8px !important;
+  }
+
+  .flatpickr-weekday {
+    top: 0px;
+
+    font-family: 'Sofia Pro';
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    letter-spacing: 0.2px;
+
+    color: #0e0018;
+  }
+}

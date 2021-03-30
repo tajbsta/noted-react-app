@@ -27,3 +27,8 @@ export const paymentAddressSchema = Yup.object({
     .min(3, 'Invalid card security number')
     .required('Line 2 is required'),
 });
+
+export const pickUpDateSchema = Yup.object({
+  date: Yup.string().required('Date is required'),
+  time: Yup.string().required('Time is Required'),
+});

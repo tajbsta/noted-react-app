@@ -1,0 +1,107 @@
+#DatePickerModal {
+  justify-content: center;
+  .modal-header {
+    border: none;
+
+    justify-content: center;
+    .modal-title {
+      font-size: 18px !important;
+      line-height: 24px;
+      color: #2e1d3a;
+    }
+  }
+  .modal-body {
+    justify-content: center;
+    padding-bottom: 100px;
+    .date-guide {
+      text-align: center;
+    }
+  }
+
+  .modal-footer {
+    border: none;
+    .confirmPickUpText {
+      font-family: 'Sofia Pro';
+      font-size: 14px;
+      line-height: 16px;
+      text-align: center;
+
+      color: #f8efff;
+    }
+    .cancePickUpButton {
+      background-color: white !important;
+      border: none;
+      .cancePickUpText {
+        font-family: 'Sofia Pro';
+        font-size: 14px;
+        line-height: 16px;
+        text-align: right;
+        color: #2e1d3a;
+      }
+    }
+  }
+  .left-column {
+    margin-top: 12px !important;
+
+    .selectedDateContainer {
+      color: #570097 !important;
+    }
+
+    .isSelected {
+      border: 1px solid #570097 !important;
+    }
+
+    .isDisabled {
+      background: #faf8fa;
+      border: 1px solid #f0f0f0;
+      box-sizing: border-box;
+      border-radius: 4px;
+
+      .isDisabledText {
+        font-family: 'Sofia Pro';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: right;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.4;
+      }
+    }
+
+    .timeSlotContainer {
+      min-width: 214px;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border: 1px solid #eae8eb;
+      box-sizing: border-box;
+      border-radius: 4px;
+      margin-top: 20px;
+
+      .timeSlotText {
+        font-family: 'Sofia Pro';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: right;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+      }
+    }
+    .eveningSlotsContainer {
+      .availableTimeSlot {
+        font-size: 11px;
+        text-align: right;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+      }
+    }
+  }
+}

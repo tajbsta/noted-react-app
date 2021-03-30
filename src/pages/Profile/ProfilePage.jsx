@@ -10,6 +10,7 @@ import {
   pickUpAddressSchema,
 } from '../../models/formSchema';
 import { getUser } from '../../utils/auth';
+import DatePicker from '../../components/DatePicker';
 
 export default function ProfilePage() {
   const [showEditPayment] = useState(true);
@@ -52,24 +53,24 @@ export default function ProfilePage() {
   }, []);
 
   return (
-    <div id='Profile'>
-      <div className='container mt-6'>
+    <div id="Profile">
+      <div className="container mt-6">
         {!user && 'Loading...'}
         {user && (
-          <div className='row'>
-            <div className='col-sm-3'>
+          <div className="row">
+            <div className="col-sm-3">
               {/*LEFT CARD*/}
-              <div className='col'>
+              <div className="col">
                 <UserInfo user={user} />
               </div>
             </div>
-            <div className='col-sm-9'>
+            <div className="col-sm-9">
               <Address
                 {...addressFormValues}
                 handleChange={handleAddressChange}
               />
               {showEditPayment && (
-                <div className='mt-5'>
+                <div className="mt-5">
                   <Payment
                     {...paymentFormValues}
                     handleChange={handlePaymentChange}
