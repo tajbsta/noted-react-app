@@ -207,4 +207,24 @@
       }
     }
   }
+
+  #DeleteAccount {
+    .delete-info {
+      font-size: 14px;
+      line-height: 18px;
+      color: #0e0018;
+    }
+
+    .btn-delete {
+      font-size: 14px;
+      line-height: 16px;
+      color: #570097;
+      max-width: 352px;
+      margin-bottom: 0px;
+
+      &:hover {
+        color: #b079da;
+      }
+    }
+  }
 }
