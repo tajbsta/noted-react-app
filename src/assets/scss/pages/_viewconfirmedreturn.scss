@@ -57,9 +57,23 @@
     color: #570097;
   }
 
-  .btn-add-instructions {
-    cursor: pointer;
+  .btn-instructions {
+    font-size: 14px;
+    line-height: 16px;
     color: #570097;
+    background: inherit;
+    border: none;
+    padding: 0px;
+    outline: none !important;
+    box-shadow: none !important;
+
+    &:focus {
+      outline: none !important;
+      border: none;
+    }
+    &:hover {
+      color: #b079da;
+    }
   }
 
   .pick-up-message {

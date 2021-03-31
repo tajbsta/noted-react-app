@@ -110,7 +110,7 @@ export default function SchedulingModal(props) {
                   <span
                     className='sofia-pro availableTimeSlot'
                     style={{
-                      fontSize: 11,
+                      fontSize: 13,
                       opacity: 0.6,
                     }}
                   >

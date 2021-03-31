@@ -3,6 +3,7 @@ import EmptyAddress from '../../../components/EmptyAddress';
 import EmptyPayment from '../../../components/EmptyPayment';
 import AddressForm from '../../../components/AddressForm';
 import PaymentForm from '../../../components/PaymentForm';
+import AddPickupModal from '../../../modals/AddPickupModal';
 
 import { useFormik } from 'formik';
 import { formatPhoneNumber, isFormEmpty } from '../../../utils/form';
@@ -35,6 +36,8 @@ function PickUpDetails() {
   const [showEditAddress, setShowEditAddress] = useState(false);
   const [showEditPayment, setShowEditPayment] = useState(false);
   const [isDatePickerOpen, setisDatePickerOpen] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
+
   /**
    * @FORMSTATE by FORMIK
    * @returns customer address
@@ -202,11 +205,21 @@ function PickUpDetails() {
                     <p className='sofia-pro mt-3 tel'>
                       Tel: {formatPhoneNumber(addressFormValues.phoneNumber)}
                     </p>
-                    <p className='sofia-pro noted-purple mt-3 btn-add-instructions'>
-                      Add pick-up instructions
-                    </p>
+                    <button
+                      className='btn btn-instructions'
+                      onClick={() => setModalShow(true)}
+                    >
+                      <h4 className='text-instructions'>
+                        Add pick-up instructions
+                      </h4>
+                    </button>
                   </div>
                 )}
+
+                <AddPickupModal
+                  show={modalShow}
+                  onHide={() => setModalShow(false)}
+                />
 
                 {isAddressFormEmpty && (
                   <EmptyAddress onClick={() => setShowEditAddress(true)} />

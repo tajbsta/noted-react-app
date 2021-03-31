@@ -101,6 +101,10 @@
     color: #0e0018;
     mix-blend-mode: normal;
     opacity: 0.3;
+
+    @media (min-width: 1734px) {
+      top: 382%;
+    }
   }
 
   // Error with forms
