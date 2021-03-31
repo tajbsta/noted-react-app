@@ -5,7 +5,7 @@ export const pickUpAddressSchema = Yup.object({
   state: Yup.string().required('State is required'),
   zipCode: Yup.number()
     .min(4, 'Enter a valid zip code')
-    .required('Zipcode is required'),
+    .required('Zip code is required'),
   line1: Yup.string().required('Line 1 is required'),
   line2: Yup.string().required('Line 2 is required'),
   phoneNumber: Yup.string().matches(

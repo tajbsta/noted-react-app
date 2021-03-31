@@ -95,7 +95,7 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
                 leadingText='Pickup now'
                 disabled={!enablePickUpButton}
                 timeWindow='Today'
-                price='24.99'
+                price='9.99'
                 backgroundColor='#570097'
                 textColor='white'
                 opacity='0.8'
@@ -105,7 +105,7 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
               />
               <PickUpButton
                 leadingText='Pickup later'
-                price='24.99'
+                price='9.99'
                 backgroundColor='#faf5fc'
                 textColor='#570097'
                 opacity='0.8'
