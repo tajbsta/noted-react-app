@@ -17,12 +17,18 @@
   .dayContainer {
     min-width: 432px !important;
     height: 432px !important;
-    padding: 5px;
+    // padding: 5px;
     border: none;
     color: #2e1d3a;
   }
   .flatpickr-day {
     border: none;
+
+    &:hover {
+      border-radius: 8px !important;
+      color: #570097 !important;
+      background: #eee4f6;
+    }
   }
 
   .selected {
