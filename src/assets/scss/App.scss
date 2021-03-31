@@ -36,7 +36,7 @@ html {
 @import './components/productcard.scss';
 @import './components/addressform.scss';
 @import './components/paymentform.scss';
-
+@import './components/datepicker';
 /* Modals */
 @import './modals/returnpolicy.scss';
 @import './modals/sizeguide.scss';
@@ -44,6 +44,7 @@ html {
 @import './modals/passchangesuccess.scss';
 @import './modals/addemail.scss';
 @import './modals/addpickup.scss';
+@import './modals/schedulingmodal.scss';
 
 html,
 body {
