@@ -21,14 +21,14 @@ const CustomInput = ({ value, defaultValue, inputRef, name, ...props }) => {
 
 export default function DatePicker({ date, setFieldValue }) {
   return (
-    <div id="DatePicker">
+    <div id='DatePicker'>
       <Flatpickr
         render={({ defaultValue, value, ...props }, ref) => {
           return (
             <CustomInput
               defaultValue={defaultValue}
               inputRef={ref}
-              name="date"
+              name='date'
             />
           );
         }}
@@ -36,7 +36,8 @@ export default function DatePicker({ date, setFieldValue }) {
           setFieldValue('date', get(date, '0'));
         }}
         options={{
-          minDate: new Date().getTime(),
+          minDate: new Date().setDate(new Date().getDate() + 1),
+          maxDate: new Date().setDate(new Date().getDate() + 5),
           inline: true,
           animate: true,
           dateFormat: 'Y-m-d',

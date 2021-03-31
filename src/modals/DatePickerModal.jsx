@@ -8,7 +8,7 @@ const eveningTimeSlots = [
     startTime: '1200',
     endTime: '1500',
     text: '12 P.M - 3 P.M',
-    disabled: true,
+    disabled: false,
   },
 ];
 
@@ -102,6 +102,7 @@ export default function SchedulingModal(props) {
                 </div>
                 <div className='eveningSlotsContainer'>
                   {eveningTimeSlots.map((timeSlot) => {
+                    console.log(timeSlot);
                     const isSelected =
                       pickUpDateValues.time === timeSlot.text
                         ? `isSelected`
