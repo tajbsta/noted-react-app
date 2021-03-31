@@ -18,7 +18,6 @@ export default function ResetPasswordPage(props) {
 
   const [newPasswordShown, setNewPasswordShown] = useState(false);
   const [confirmPasswordShown, setConfirmPasswordShown] = useState(false);
-
   const toggleNewPasswordVisibility = () => {
     setNewPasswordShown(newPasswordShown ? false : true);
   };
@@ -77,12 +76,11 @@ export default function ResetPasswordPage(props) {
   );
 
   const { code, newPassword, confirmNewPassword } = values;
-
   const resetPassword = async (e) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-    setIsSubmitting(false);
+    setIsSubmitting(true);
 
     try {
       console.log({
@@ -102,7 +100,7 @@ export default function ResetPasswordPage(props) {
         history.push('/login');
       }, 4000);
     } catch (err) {
-      // console.log(err);
+      console.log(err);
       setIsSubmitting(false);
 
       setError(
@@ -183,7 +181,9 @@ export default function ResetPasswordPage(props) {
                     {newPasswordShown ? eye : eyeOff}
                   </i> */}
                 </div>
-                {errors.newPassword && renderLocalNewPasswordValidationError()}
+                {errors.newPassword &&
+                  newPassword.length > 0 &&
+                  renderLocalNewPasswordValidationError()}
               </Form.Group>
               <Form.Group>
                 <div>
