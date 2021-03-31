@@ -3,7 +3,9 @@ import {
   INVALID_PASSWORD,
   INVALID_PARAMETER,
   INVALID_CREDENTIALS,
-  LIMIT_EXCEEDED_EXCEPTION
+  LIMIT_EXCEEDED_EXCEPTION,
+  EXPIRED_CODE_EXCEPTION,
+  CODE_MISMATCH_EXCEPTION
 } from "../constants/errors/errorCodes";
 
 export const signUpErrors = [
@@ -46,7 +48,28 @@ export const changePassErrors = [
   {
     code: LIMIT_EXCEEDED_EXCEPTION,
     message: "Attempt limit exceeded, please try again later.",
-
   }
 ];
+
+export const forgotPassErrors = [
+  {
+    err: "The user is not authenticated",
+  }
+];
+
+export const resetPassErrors = [
+  {
+    code: EXPIRED_CODE_EXCEPTION,
+    message: "Invalid code provided, please request a code again.",
+  },
+  {
+    code: CODE_MISMATCH_EXCEPTION,
+    message: "Invalid code provided, please request a code again.",
+  },
+  {
+    code: LIMIT_EXCEEDED_EXCEPTION,
+    message: "Attempt limit exceeded, please try again later.",
+  }
+];
+
 
