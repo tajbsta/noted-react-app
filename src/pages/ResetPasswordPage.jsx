@@ -134,8 +134,7 @@ export default function ResetPasswordPage(props) {
                 <div className='alert alert-success w-840' role='alert'>
                   <div>
                     <h4 className='text-center text-alert'>
-                      Password changed successfully! Please login with your new
-                      password.
+                      Success! Please login with your new password.
                     </h4>
                   </div>
                 </div>
@@ -158,7 +157,7 @@ export default function ResetPasswordPage(props) {
                     }}
                     maxLength={6}
                   />
-                  {/* {errors.code && renderCodeError()} */}
+                  {errors.code && renderCodeError()}
                 </div>
               </Form.Group>
               <Form.Group>
@@ -174,7 +173,7 @@ export default function ResetPasswordPage(props) {
                     placeholder='Enter your new password'
                     onChange={handleChange}
                   />
-                  {error && (
+                  {/* {error && (
                     <i
                       className='fe-form-msg-new'
                       onClick={toggleNewPasswordVisibility}
@@ -200,6 +199,16 @@ export default function ResetPasswordPage(props) {
                       {newPasswordShown ? eye : eyeOff}
                     </i>
                   )}
+                  {!error && (
+                    <i
+                      className={
+                        errors.newPassword ? 'fe-eye-new-error' : 'fe-eye-new'
+                      }
+                      onClick={toggleNewPasswordVisibility}
+                    >
+                      {newPasswordShown ? eye : eyeOff}
+                    </i>
+                  )} */}
                 </div>
                 {errors.newPassword &&
                   newPassword.length > 0 &&
@@ -219,7 +228,7 @@ export default function ResetPasswordPage(props) {
                     placeholder='Confirm your new password'
                     onChange={handleChange}
                   />
-                  {error && (
+                  {/* {error && (
                     <i
                       className='fe-form-msg-confirm'
                       onClick={toggleConfirmPasswordVisibility}
@@ -246,7 +255,7 @@ export default function ResetPasswordPage(props) {
                     >
                       {confirmPasswordShown ? eye : eyeOff}
                     </i>
-                  )}
+                  )} */}
                 </div>
                 {errors.confirmNewPassword &&
                   renderLocalConfirmNewPasswordValidationError()}
