@@ -45,20 +45,33 @@ export default function SchedulingModal(props) {
       keyboard={false}
       id='SchedulingModal'
     >
+      <div className='close-container'>
+        <Button
+          type='button'
+          className='close'
+          data-dismiss='modal'
+          aria-label='Close'
+          onClick={props.onHide}
+        >
+          <span aria-hidden='true'>&times;</span>
+        </Button>
+      </div>
       <Modal.Header>
         <Modal.Title>Select a Date & Time Slot</Modal.Title>
       </Modal.Header>
       <Modal.Body className='sofia-pro'>
-        <h4 className='sofia-pro date-guide'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et, eu ac
-          egestas placerat sit natoque.
-        </h4>
+        <div className='guide-container'>
+          <h4 className='sofia-pro date-guide'>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et, eu ac
+            egestas placerat sit natoque.
+          </h4>
+        </div>
         {/**
          * @COMPONENT date picker component here
          */}
 
         <div className='row'>
-          <div className='col'>
+          <div className='col d-flex justify-content-center date-column'>
             <DatePicker
               setFieldValue={setFieldValue}
               date={pickUpDateValues.date}
@@ -97,7 +110,7 @@ export default function SchedulingModal(props) {
                       opacity: 0.6,
                     }}
                   >
-                    Available Time Slots: 2
+                    Available Time Slots: 3
                   </span>
                 </div>
                 <div className='eveningSlotsContainer'>
@@ -129,7 +142,7 @@ export default function SchedulingModal(props) {
                     );
                   })}
                   <span className='sofia-pro availableTimeSlot'>
-                    Available Time Slots: 0
+                    Available Time Slots: 3
                   </span>
                 </div>
               </div>
@@ -157,7 +170,7 @@ export default function SchedulingModal(props) {
                 onConfirm();
               }}
             >
-              <span className='confirmPickUpText'>Confirm Pick-up Date</span>
+              <span className='confirmPickUpText'>Confirm</span>
             </Button>
           </>
         )}

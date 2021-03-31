@@ -1,21 +1,72 @@
 #SchedulingModal {
   justify-content: center;
+
+  .close-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 28px;
+    margin-top: 28px;
+
+    .close {
+      box-shadow: none;
+      color: #b1adb2;
+
+      &:hover {
+        background: inherit;
+        color: black;
+      }
+    }
+  }
+
+  .modal-content {
+    min-height: 590px;
+    min-width: 680px;
+    left: 0px;
+    top: 0px;
+    border-radius: 8px;
+  }
+
   .modal-header {
     border: none;
-
+    padding: 0px;
+    margin: 0px;
     justify-content: center;
+
     .modal-title {
       font-size: 18px !important;
       line-height: 24px;
       color: #2e1d3a;
+      margin-bottom: 10px;
     }
   }
+
   .modal-body {
     justify-content: center;
-    padding-bottom: 100px;
-    .date-guide {
-      text-align: center;
+    padding: 0px;
+    margin: 0px;
+    padding-bottom: 78px;
+
+    .guide-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .date-guide {
+        text-align: center;
+        width: 400px;
+        font-size: 14px;
+        line-height: 20px;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+        margin-bottom: 32px;
+      }
     }
+  }
+
+  .date-column {
+    margin-left: 20px;
+    margin-right: 10px;
   }
 
   .modal-footer {
@@ -41,14 +92,19 @@
     }
   }
   .left-column {
-    margin-top: 12px !important;
+    margin-right: 32px;
+    margin-top: 12px;
+    font-size: 18px;
+    line-height: 24px;
 
     .selectedDateContainer {
       color: #570097 !important;
     }
 
     .isSelected {
+      background: #eee4f6 !important;
       border: 1px solid #570097 !important;
+      color: #570097 !important;
     }
 
     .isDisabled {
@@ -81,6 +137,7 @@
       box-sizing: border-box;
       border-radius: 4px;
       margin-top: 20px;
+      margin-bottom: 8px;
 
       .timeSlotText {
         font-family: 'Sofia Pro';
@@ -89,7 +146,7 @@
         font-size: 14px;
         line-height: 20px;
         text-align: right;
-        color: #0e0018;
+        color: #0e0018 !important;
         mix-blend-mode: normal;
         opacity: 0.6;
       }

@@ -1,6 +1,8 @@
 #DatePicker {
   display: flex;
   justify-content: center;
+  min-height: 372px;
+  min-width: 373px;
   .flatpickr-calendar {
     box-shadow: none !important;
   }
@@ -22,6 +24,7 @@
   .flatpickr-day {
     border: none;
   }
+
   .selected {
     color: #570097 !important;
     background: #eee4f6;

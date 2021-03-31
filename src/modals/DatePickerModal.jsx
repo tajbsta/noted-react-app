@@ -157,7 +157,7 @@ export default function SchedulingModal(props) {
                 onConfirm();
               }}
             >
-              <span className='confirmPickUpText'>Confirm Pick-up Date</span>
+              <span className='confirmPickUpText'>Confirm</span>
             </Button>
           </>
         )}
