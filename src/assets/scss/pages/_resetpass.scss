@@ -70,7 +70,7 @@
   .fe-eye-new {
     position: absolute;
     right: 5%;
-    top: 180%;
+    top: 265%;
     color: #0e0018;
     mix-blend-mode: normal;
     opacity: 0.3;
@@ -79,7 +79,7 @@
   .fe-eye-confirm {
     position: absolute;
     right: 5%;
-    top: 265%;
+    top: 348%;
     color: #0e0018;
     mix-blend-mode: normal;
     opacity: 0.3;
@@ -88,10 +88,23 @@
   .fe-eye-error {
     position: absolute;
     right: 5%;
-    top: 323%;
+    top: 405%;
     color: #0e0018;
     mix-blend-mode: normal;
     opacity: 0.3;
+  }
+
+  // ALERTS
+  .alert {
+    margin-top: 0px;
+    padding: 5px;
+    width: auto;
+
+    .text-alert {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-family: 'Sofia Pro';
+    }
   }
 }
 
