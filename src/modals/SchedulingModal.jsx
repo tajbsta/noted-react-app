@@ -97,7 +97,11 @@ export default function SchedulingModal(props) {
                         key={timeSlot.startTime}
                         onClick={() => setFieldValue('time', timeSlot.text)}
                       >
-                        <div className='sofia-pro timeSlotText'>
+                        <div
+                          className={`sofia-pro timeSlotText ${
+                            isSelected ? 'selected' : ''
+                          }`}
+                        >
                           {timeSlot.text}
                         </div>
                       </div>
@@ -135,7 +139,11 @@ export default function SchedulingModal(props) {
                           )
                         }
                       >
-                        <div className={`sofia-pro ${isDisabledText}`}>
+                        <div
+                          className={`sofia-pro timeSlotText ${
+                            isSelected ? 'selected' : ''
+                          }`}
+                        >
                           {timeSlot.text}
                         </div>
                       </div>

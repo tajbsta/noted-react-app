@@ -150,6 +150,15 @@
         mix-blend-mode: normal;
         opacity: 0.6;
       }
+      .selected {
+        font-family: 'Sofia Pro';
+        font-size: 14px;
+        line-height: 20px;
+        text-align: right;
+        color: #570097 !important;
+        mix-blend-mode: normal;
+        opacity: 1;
+      }
     }
     .eveningSlotsContainer {
       .availableTimeSlot {
