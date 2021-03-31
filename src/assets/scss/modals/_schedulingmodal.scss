@@ -1,4 +1,4 @@
-#DatePickerModal {
+#SchedulingModal {
   justify-content: center;
   .modal-header {
     border: none;
@@ -28,10 +28,10 @@
 
       color: #f8efff;
     }
-    .cancePickUpButton {
+    .cancelPickUpButton {
       background-color: white !important;
       border: none;
-      .cancePickUpText {
+      .cancelPickUpText {
         font-family: 'Sofia Pro';
         font-size: 14px;
         line-height: 16px;
