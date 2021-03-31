@@ -8,7 +8,7 @@ const eveningTimeSlots = [
     startTime: '1200',
     endTime: '1500',
     text: '12 P.M - 3 P.M',
-    disabled: true,
+    disabled: false,
   },
 ];
 
