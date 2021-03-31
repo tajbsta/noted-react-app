@@ -1,19 +1,23 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Form, Spinner } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { PASSWORD_REGEX_FORMAT } from '../constants/errors/regexFormats';
 import { Eye, EyeOff } from 'react-feather';
+import { Auth } from 'aws-amplify';
+import { get } from 'lodash';
+import { resetPassErrors } from '../library/errors.library';
 
-export default function ForgotPasswordPage() {
-  let history = useHistory();
-  const [error] = useState(null);
-  const [isSubmitting] = useState(false);
+export default function ResetPasswordPage(props) {
+  const history = useHistory();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
   const [newPasswordShown, setNewPasswordShown] = useState(false);
   const [confirmPasswordShown, setConfirmPasswordShown] = useState(false);
-
   const toggleNewPasswordVisibility = () => {
     setNewPasswordShown(newPasswordShown ? false : true);
   };
@@ -23,11 +27,10 @@ export default function ForgotPasswordPage() {
   const eyeOff = <EyeOff />;
   const eye = <Eye />;
 
-  const sendResetLink = () => {
-    history.push('/');
-  };
-
   const resetPasswordSchema = Yup.object().shape({
+    code: Yup.number()
+      .min(6, 'Not correct length')
+      .required('Code is required'),
     newPassword: Yup.string()
       .required(
         'Your password must be 8-20 characters long and must contain a letter, symbol and a number'
@@ -47,13 +50,18 @@ export default function ForgotPasswordPage() {
 
   const { errors, handleChange, values } = useFormik({
     initialValues: {
+      code: '',
       newPassword: '',
       confirmNewPassword: '',
     },
     validationSchema: resetPasswordSchema,
   });
 
-  console.log(errors);
+  const renderCodeError = () => (
+    <small className='form-text p-0 m-0 noted-red error-msg'>
+      {errors.code}
+    </small>
+  );
 
   const renderLocalNewPasswordValidationError = () => (
     <small className='form-text p-0 m-0 noted-red error-msg'>
@@ -67,7 +75,44 @@ export default function ForgotPasswordPage() {
     </small>
   );
 
-  const { newPassword, confirmNewPassword } = values;
+  const { code, newPassword, confirmNewPassword } = values;
+  const resetPassword = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    setIsSubmitting(true);
+
+    try {
+      console.log({
+        username: props.location.state.username,
+      });
+
+      await Auth.forgotPasswordSubmit(
+        props.location.state.username,
+        values.code,
+        values.newPassword
+      );
+
+      setIsSubmitting(false);
+      setSuccess(true);
+
+      setTimeout(() => {
+        history.push('/login');
+      }, 4000);
+    } catch (err) {
+      console.log(err);
+      setIsSubmitting(false);
+
+      setError(
+        get(
+          resetPassErrors.find(({ code }) => code === err.code),
+          'message',
+          'An error occurred resetting password'
+        )
+      );
+    }
+  };
+
   return (
     <div id='ResetPasswordPage'>
       <div>
@@ -78,7 +123,44 @@ export default function ForgotPasswordPage() {
               <p>Please choose your new password</p>
             </div>
             <Form>
-              {error && <div>{error.message}</div>}
+              {error && (
+                <div className='alert alert-danger w-840' role='alert'>
+                  <div>
+                    <h4 className='text-center text-alert'>{error}</h4>
+                  </div>
+                </div>
+              )}
+              {success && (
+                <div className='alert alert-success w-840' role='alert'>
+                  <div>
+                    <h4 className='text-center text-alert'>
+                      Password changed successfully! Please login with your new
+                      password.
+                    </h4>
+                  </div>
+                </div>
+              )}
+              <Form.Group>
+                <div>
+                  <Form.Control
+                    className='form-control form-control-lg'
+                    isValid={!errors.code && code.length > 0}
+                    isInvalid={errors.code}
+                    type='code'
+                    pattern='[0-9]*'
+                    name='code'
+                    placeholder='Enter code from email'
+                    onChange={(e) => {
+                      const re = /^[0-9\b]+$/;
+                      if (e.target.value === '' || re.test(e.target.value)) {
+                        handleChange(e);
+                      }
+                    }}
+                    maxLength={6}
+                  />
+                  {/* {errors.code && renderCodeError()} */}
+                </div>
+              </Form.Group>
               <Form.Group>
                 <div>
                   <Form.Control
@@ -92,14 +174,36 @@ export default function ForgotPasswordPage() {
                     placeholder='Enter your new password'
                     onChange={handleChange}
                   />
-                  <i
-                    className='fe-eye-new'
-                    onClick={toggleNewPasswordVisibility}
-                  >
-                    {newPasswordShown ? eye : eyeOff}
-                  </i>
+                  {error && (
+                    <i
+                      className='fe-form-msg-new'
+                      onClick={toggleNewPasswordVisibility}
+                    >
+                      {newPasswordShown ? eye : eyeOff}
+                    </i>
+                  )}
+                  {success && (
+                    <i
+                      className='fe-form-msg-new'
+                      onClick={toggleNewPasswordVisibility}
+                    >
+                      {newPasswordShown ? eye : eyeOff}
+                    </i>
+                  )}
+                  {!error && (
+                    <i
+                      className={
+                        errors.newPassword ? 'fe-eye-new-error' : 'fe-eye-new'
+                      }
+                      onClick={toggleNewPasswordVisibility}
+                    >
+                      {newPasswordShown ? eye : eyeOff}
+                    </i>
+                  )}
                 </div>
-                {errors.newPassword && renderLocalNewPasswordValidationError()}
+                {errors.newPassword &&
+                  newPassword.length > 0 &&
+                  renderLocalNewPasswordValidationError()}
               </Form.Group>
               <Form.Group>
                 <div>
@@ -115,16 +219,34 @@ export default function ForgotPasswordPage() {
                     placeholder='Confirm your new password'
                     onChange={handleChange}
                   />
-                  <i
-                    className={
-                      errors.confirmNewPassword || errors.newPassword
-                        ? 'fe-eye-error'
-                        : 'fe-eye-confirm'
-                    }
-                    onClick={toggleConfirmPasswordVisibility}
-                  >
-                    {confirmPasswordShown ? eye : eyeOff}
-                  </i>
+                  {error && (
+                    <i
+                      className='fe-form-msg-confirm'
+                      onClick={toggleConfirmPasswordVisibility}
+                    >
+                      {confirmPasswordShown ? eye : eyeOff}
+                    </i>
+                  )}
+                  {success && (
+                    <i
+                      className='fe-form-msg-confirm'
+                      onClick={toggleConfirmPasswordVisibility}
+                    >
+                      {confirmPasswordShown ? eye : eyeOff}
+                    </i>
+                  )}
+                  {!error && (
+                    <i
+                      className={
+                        newPassword.length !== 0 && errors.newPassword
+                          ? 'fe-eye-confirm-error'
+                          : 'fe-eye-confirm'
+                      }
+                      onClick={toggleConfirmPasswordVisibility}
+                    >
+                      {confirmPasswordShown ? eye : eyeOff}
+                    </i>
+                  )}
                 </div>
                 {errors.confirmNewPassword &&
                   renderLocalConfirmNewPasswordValidationError()}
@@ -134,12 +256,13 @@ export default function ForgotPasswordPage() {
                 type='submit'
                 disabled={
                   isSubmitting ||
+                  code.length < 1 ||
                   confirmNewPassword.length === 0 ||
                   newPassword.length === 0 ||
                   (newPassword.length > 0 && errors.newPassword) ||
                   (confirmNewPassword.length > 0 && errors.confirmNewPassword)
                 }
-                onClick={sendResetLink}
+                onClick={resetPassword}
               >
                 {!isSubmitting ? (
                   'Save New Password'

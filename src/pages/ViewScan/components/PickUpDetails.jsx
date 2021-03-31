@@ -9,12 +9,17 @@ import { formatPhoneNumber, isFormEmpty } from '../../../utils/form';
 import {
   paymentAddressSchema,
   pickUpAddressSchema,
+  pickUpDateSchema,
 } from '../../../models/formSchema';
 import { useDispatch } from 'react-redux';
 import {
   updatePaymentInfo,
+  updatePickUpDetails,
   updateReturnAdddress,
 } from '../../../actions/runtime.action';
+import SchedulingModal from '../../../modals/SchedulingModal';
+import { get } from 'lodash-es';
+import moment from 'moment';
 
 function PickUpDetails() {
   /**
@@ -29,7 +34,7 @@ function PickUpDetails() {
    */
   const [showEditAddress, setShowEditAddress] = useState(false);
   const [showEditPayment, setShowEditPayment] = useState(false);
-
+  const [isDatePickerOpen, setisDatePickerOpen] = useState(false);
   /**
    * @FORMSTATE by FORMIK
    * @returns customer address
@@ -68,6 +73,17 @@ function PickUpDetails() {
     },
     validationSchema: paymentAddressSchema,
   });
+  /**
+   * @FORMSTATE by FORMIK
+   * @returns pickup date
+   */
+  const pickUpDateForm = useFormik({
+    initialValues: {
+      date: null,
+      time: null,
+    },
+    validationSchema: pickUpDateSchema,
+  });
 
   /**
    * @VALIDATION
@@ -104,9 +120,23 @@ function PickUpDetails() {
 
   /**
    * @FUNCTION
-   * @submits pick-up details form state
+   * @submits address form state
    */
-  // const saveDetails = async () => {};
+  const savePickUpDetails = async () => {
+    dispatch(
+      updatePickUpDetails({
+        formData: { ...get(pickUpDateForm, 'values', {}) },
+      })
+    );
+  };
+
+  /**
+   * @FUNCTION
+   * @opens date picker modal
+   */
+  const openDatePickerModal = () => {
+    setisDatePickerOpen(true);
+  };
 
   return (
     <>
@@ -254,9 +284,36 @@ function PickUpDetails() {
                       </p>
                     </div>
                   </div>
-                  <h4 className='sofia-pro mb-4'>Today</h4>
-                  <h4 className='p-0 m-0 sofia-pro'>Between 2pm and 3pm</h4>
-                  <h4 className='p-0 m-0 sofia-pro mt-2 btn-edit'>Edit</h4>
+
+                  {get(pickUpDateForm, 'values.date', null) === null &&
+                  get(pickUpDateForm, 'values.time', null) === null ? (
+                    <>
+                      <h4 className='p-0 m-0 sofia-pro'>No date selected</h4>
+                      <h4
+                        className='p-0 m-0 sofia-pro mt-2 btn-edit'
+                        onClick={openDatePickerModal}
+                      >
+                        Select date
+                      </h4>
+                    </>
+                  ) : (
+                    <>
+                      <h4 className='sofia-pro mb-4'>
+                        {moment(get(pickUpDateForm, 'values.date', '')).format(
+                          'MMMM DD, YYYY'
+                        )}
+                      </h4>
+                      <h4 className='p-0 m-0 sofia-pro'>
+                        Between {get(pickUpDateForm, 'values.time', '')}
+                      </h4>
+                      <h4
+                        className='p-0 m-0 sofia-pro mt-2 btn-edit'
+                        onClick={openDatePickerModal}
+                      >
+                        Edit
+                      </h4>
+                    </>
+                  )}
                   <hr />
                   <a className='btn-edit p-0 m-0 sofia-pro noted-purple mt-2 text-14 line-height-16'>
                     Schedule another date
@@ -269,6 +326,12 @@ function PickUpDetails() {
             </div>
           </>
         )}
+        <SchedulingModal
+          show={isDatePickerOpen}
+          onHide={() => setisDatePickerOpen(false)}
+          form={pickUpDateForm}
+          onConfirm={savePickUpDetails}
+        />
       </div>
     </>
   );
