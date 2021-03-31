@@ -158,7 +158,7 @@ export default function ResetPasswordPage(props) {
                     }}
                     maxLength={6}
                   />
-                  {errors.code && renderCodeError()}
+                  {/* {errors.code && renderCodeError()} */}
                 </div>
               </Form.Group>
               <Form.Group>
@@ -174,12 +174,32 @@ export default function ResetPasswordPage(props) {
                     placeholder='Enter your new password'
                     onChange={handleChange}
                   />
-                  {/* <i
-                    className='fe-eye-new'
-                    onClick={toggleNewPasswordVisibility}
-                  >
-                    {newPasswordShown ? eye : eyeOff}
-                  </i> */}
+                  {error && (
+                    <i
+                      className='fe-form-msg-new'
+                      onClick={toggleNewPasswordVisibility}
+                    >
+                      {newPasswordShown ? eye : eyeOff}
+                    </i>
+                  )}
+                  {success && (
+                    <i
+                      className='fe-form-msg-new'
+                      onClick={toggleNewPasswordVisibility}
+                    >
+                      {newPasswordShown ? eye : eyeOff}
+                    </i>
+                  )}
+                  {!error && (
+                    <i
+                      className={
+                        errors.newPassword ? 'fe-eye-new-error' : 'fe-eye-new'
+                      }
+                      onClick={toggleNewPasswordVisibility}
+                    >
+                      {newPasswordShown ? eye : eyeOff}
+                    </i>
+                  )}
                 </div>
                 {errors.newPassword &&
                   newPassword.length > 0 &&
@@ -199,16 +219,34 @@ export default function ResetPasswordPage(props) {
                     placeholder='Confirm your new password'
                     onChange={handleChange}
                   />
-                  {/* <i
-                    className={
-                      errors.confirmNewPassword || errors.newPassword
-                        ? 'fe-eye-error'
-                        : 'fe-eye-confirm'
-                    }
-                    onClick={toggleConfirmPasswordVisibility}
-                  >
-                    {confirmPasswordShown ? eye : eyeOff}
-                  </i> */}
+                  {error && (
+                    <i
+                      className='fe-form-msg-confirm'
+                      onClick={toggleConfirmPasswordVisibility}
+                    >
+                      {confirmPasswordShown ? eye : eyeOff}
+                    </i>
+                  )}
+                  {success && (
+                    <i
+                      className='fe-form-msg-confirm'
+                      onClick={toggleConfirmPasswordVisibility}
+                    >
+                      {confirmPasswordShown ? eye : eyeOff}
+                    </i>
+                  )}
+                  {!error && (
+                    <i
+                      className={
+                        newPassword.length !== 0 && errors.newPassword
+                          ? 'fe-eye-confirm-error'
+                          : 'fe-eye-confirm'
+                      }
+                      onClick={toggleConfirmPasswordVisibility}
+                    >
+                      {confirmPasswordShown ? eye : eyeOff}
+                    </i>
+                  )}
                 </div>
                 {errors.confirmNewPassword &&
                   renderLocalConfirmNewPasswordValidationError()}

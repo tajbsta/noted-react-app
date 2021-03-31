@@ -85,10 +85,38 @@
     opacity: 0.3;
   }
 
-  .fe-eye-error {
+  .fe-eye-new-error {
     position: absolute;
     right: 5%;
-    top: 405%;
+    top: 265%;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.3;
+  }
+
+  .fe-eye-confirm-error {
+    position: absolute;
+    right: 5%;
+    top: 409%;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.3;
+  }
+
+  // Error with forms
+  .fe-form-msg-new {
+    position: absolute;
+    right: 5%;
+    top: 340%;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.3;
+  }
+
+  .fe-form-msg-confirm {
+    position: absolute;
+    right: 5%;
+    top: 422%;
     color: #0e0018;
     mix-blend-mode: normal;
     opacity: 0.3;
