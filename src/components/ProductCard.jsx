@@ -43,7 +43,7 @@ function ProductCard({
   };
 
   return (
-    <div id="productCard">
+    <div id='productCard'>
       <div
         className={`card scanned-item-card w-840 mb-3 p-0 ${
           clickable && 'btn'
@@ -57,13 +57,13 @@ function ProductCard({
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        <div className="card-body pt-3 pb-3 p-0 m-0">
+        <div className='card-body pt-3 pb-3 p-0 m-0'>
           <Row>
             {selectable && (
-              <div className="row align-items-center p-4 product-checkbox">
+              <div className='row align-items-center p-4 product-checkbox'>
                 <input
                   disabled={disabled}
-                  type="checkbox"
+                  type='checkbox'
                   checked={selected}
                   onChange={handleSelection}
                   style={{
@@ -73,16 +73,16 @@ function ProductCard({
               </div>
             )}
             <div
-              className="product-img-container"
+              className='product-img-container'
               style={{
                 display: 'flex',
                 alignItems: 'center',
               }}
             >
               <img
-                className="product-img"
+                className='product-img'
                 src={imageUrl}
-                alt=""
+                alt=''
                 style={{
                   maxWidth: 50,
                   maxHeight: 50,
@@ -91,23 +91,23 @@ function ProductCard({
               />
             </div>
             {/* MOBILE VIEWS FOR PRODUCT DETAILS */}
-            <div id="mobile-product-info">
-              <div className="details">
+            <div id='mobile-product-info'>
+              <div className='details'>
                 <Container>
-                  <div className="title-container">
-                    <h4 className="mb-0 sofia-pro mb-1 distributor-name">
+                  <div className='title-container'>
+                    <h4 className='mb-0 sofia-pro mb-1 distributor-name'>
                       {vendorTag}
                     </h4>
-                    <h5 className="sofia-pro mb-2 product-name">
+                    <h5 className='sofia-pro mb-2 product-name'>
                       &nbsp;{truncateString(itemName)}
                     </h5>
                   </div>
                 </Container>
-                <Container className="s-container">
+                <Container className='s-container'>
                   <Row>
-                    <Col className="col-limit">
+                    <Col className='col-limit'>
                       <div
-                        className="noted-red sofia-pro mobile-limit"
+                        className='noted-red sofia-pro mobile-limit'
                         style={{
                           color: '#FF1C29',
                         }}
@@ -115,8 +115,8 @@ function ProductCard({
                         2 days left
                       </div>
                     </Col>
-                    <Col className="col-score">
-                      <div className="mobile-return-score">
+                    <Col className='col-score'>
+                      <div className='mobile-return-score'>
                         <ReturnScore score={returnScore} />
                       </div>
                     </Col>
@@ -124,7 +124,7 @@ function ProductCard({
                 </Container>
                 <Container>
                   <Row>
-                    <h4 className="sofia-pro mobile-price">${amount}</h4>
+                    <h4 className='sofia-pro mobile-price'>${amount}</h4>
                   </Row>
                 </Container>
               </div>
@@ -139,10 +139,11 @@ function ProductCard({
                 amount,
                 compensationType: '',
               }}
+              isHovering={isHover}
             />
 
             <div
-              className="col-sm-12 return-details-container"
+              className='col-sm-12 return-details-container'
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -154,24 +155,24 @@ function ProductCard({
               {!isHover && (
                 <>
                   <div
-                    className="col-sm-6 noted-red sofia-pro return-time-left"
+                    className='col-sm-6 noted-red sofia-pro return-time-left'
                     style={{
                       color: '#FF1C29',
                     }}
                   >
                     2 days left
                   </div>
-                  <div className="col-sm-3 return-score">
+                  <div className='col-sm-3 return-score'>
                     <ReturnScore score={returnScore} />
                   </div>
                 </>
               )}
 
-              <div className="col-sm-3 return-item-brand">
+              <div className='col-sm-3 return-item-brand'>
                 <img
-                  src="https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png"
-                  alt=""
-                  className="avatar-img ml-2 rounded-circle noted-border brand-img"
+                  src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                  alt=''
+                  className='avatar-img ml-2 rounded-circle noted-border brand-img'
                   style={{
                     width: 35,
                     height: 35,
