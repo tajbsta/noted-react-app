@@ -1,8 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
+import { UploadCloud } from 'react-feather';
 
 export default function AddProductModal(props) {
+  const [file, setFile] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Handles file upload event and updates state
+  const handleUpload = (event) => {
+    // const file = event.target.files[0];
+    setFile(event.target.files[0]);
+
+    if (file && file.size > 5097152) {
+      alert('File is too large! The maximum size for file upload is 5 MB.');
+    }
+
+    setLoading(true);
+
+    // Upload file to server (code goes under)
+
+    setLoading(false);
+  };
+
+  // Display Image Component
+  const ImageThumb = ({ image }) => {
+    return (
+      <img
+        src={URL.createObjectURL(image)}
+        alt={image.name}
+        className='product-placeholder'
+      />
+    );
+  };
+
   return (
     <div>
       <Modal
@@ -19,25 +50,28 @@ export default function AddProductModal(props) {
             <Row>
               <Col xs={2}>
                 <Form.Group controlId='image'>
-                  <Form.Label>Image</Form.Label>
-                  {/* <div className='product-img-container'>
-                    <img className='product-img' src={ProductPlaceholder} />
-                  </div> */}
+                  {/* <Form.Label>Image</Form.Label> */}
 
-                  {/* <div className='avatar-wrapper'>
-                    <img className='profile-pic' src='' />
-                    <div className='upload-button'>
-                      <i
-                        className='fa fa-arrow-circle-up'
-                        aria-hidden='true'
-                      ></i>
-                    </div>
-                    <input
-                      className='file-upload'
-                      type='file'
-                      accept='image/*'
+                  <div className='img-container'>
+                    <img
+                      src={ProductPlaceholder}
+                      className={`${
+                        file ? 'no-placeholder' : 'default-placeholder'
+                      }`}
                     />
-                  </div> */}
+                    {file && <ImageThumb image={file} />}
+                    <div className='upload-button'>
+                      <i className='fa fa-upload-icon' aria-hidden='true'>
+                        <UploadCloud />
+                        <input
+                          className='file-upload'
+                          type='file'
+                          accept='.jpg, .jpeg, .png'
+                          onChange={handleUpload}
+                        />
+                      </i>
+                    </div>
+                  </div>
                 </Form.Group>
               </Col>
               <Col>
