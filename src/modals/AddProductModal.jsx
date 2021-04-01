@@ -120,16 +120,7 @@ export default function AddProductModal(props) {
                     </Form.Group>
                   </Col>
                 </Row>
-                <Row>
-                  <Col>
-                    <Form.Group controlId='merchant'>
-                      <Form.Label>Merchant</Form.Label>
-                      <div>
-                        <Form.Control />
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
+
                 <Row>
                   <Col>
                     <Form.Group controlId='price'>
