@@ -20,6 +20,7 @@ import EmptyScan from './components/EmptyScan';
 import ScheduledReturnCard from '../../components/ScheduledReturnCard';
 import { clearOrder } from '../../actions/auth.action';
 import AddEmailModal from '../../modals/AddEmailModal';
+import AddProductModal from '../../modals/AddProductModal';
 
 const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 
@@ -35,7 +36,8 @@ function DashboardPage() {
   const [userId, setUserId] = useState('');
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
-  const [modalShow, setModalShow] = useState(false);
+  const [modalEmailShow, setModalEmailShow] = useState(false);
+  const [modalProductShow, setModalProductShow] = useState(false);
 
   const [lastCallSelected, setLastCallSelected] = useState([]);
   const [returnableSelected, setReturnableSelected] = useState([]);
@@ -145,17 +147,17 @@ function DashboardPage() {
 
   return (
     <div>
-      <div className="container mt-6 main-mobile-dashboard">
-        <div className="row">
-          <div className="col-sm-9 mt-4 w-840 bottom">
+      <div className='container mt-6 main-mobile-dashboard'>
+        <div className='row'>
+          <div className='col-sm-9 mt-4 w-840 bottom'>
             {loading && (
               <>
-                <div id="loader-con">
-                  <h3 className="sofia-pro text-16">
+                <div id='loader-con'>
+                  <h3 className='sofia-pro text-16'>
                     Your online purchases - Last 90 Days
                   </h3>
-                  <div className="card shadow-sm scanned-item-card mb-2 p-5 spinner-container">
-                    <Spinner className="dashboard-spinner" animation="border" />
+                  <div className='card shadow-sm scanned-item-card mb-2 p-5 spinner-container'>
+                    <Spinner className='dashboard-spinner' animation='border' />
                   </div>
                 </div>
               </>
@@ -163,10 +165,10 @@ function DashboardPage() {
 
             {!loading && items.length === 0 && (
               <>
-                <h3 className="sofia-pro text-16">
+                <h3 className='sofia-pro text-16'>
                   Your online purchases - Last 90 Days
                 </h3>
-                <div className="card shadow-sm scanned-item-card mb-2 p-5">
+                <div className='card shadow-sm scanned-item-card mb-2 p-5'>
                   {launchScan && <EmptyScan onScanLaunch={onScanLaunch} />}
                   {!launchScan && <Scanning />}
                 </div>
@@ -178,12 +180,12 @@ function DashboardPage() {
             <>
               {!loading && isEmpty(search) && !isEmpty(scheduledReturns) && (
                 <>
-                  <h3 className="sofia-pro mt-0 ml-3 text-18 text-list">
+                  <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
                     Your scheduled returns{' '}
                     {inDevMode && (
                       // THIS ONLY SHOWS WHEN ENV IS SET TO development
                       <button
-                        className="btn btn-primary"
+                        className='btn btn-primary'
                         onClick={() => dispatch(clearOrder())}
                       >
                         Clear Orders (DEV)
@@ -205,7 +207,7 @@ function DashboardPage() {
                     })}
                   </div>
 
-                  <hr className="scheduled-line-break"></hr>
+                  <hr className='scheduled-line-break'></hr>
                 </>
               )}
             </>
@@ -213,7 +215,7 @@ function DashboardPage() {
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
             {!loading && items.length > 0 && (
               <>
-                <h3 className="sofia-pro mt-0 ml-3 text-18 text-list">
+                <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
                   {isEmpty(search)
                     ? 'Your online purchases - Last 90 Days'
                     : 'Search Results'}
@@ -223,17 +225,17 @@ function DashboardPage() {
                     <div>
                       <ReturnCategory
                         scannedItems={items.slice(0, 4)}
-                        typeTitle="Last Call!"
+                        typeTitle='Last Call!'
                         compensationType={LAST_CALL}
                         disabled={localDonationsCount > 0}
                         selected={lastCallSelected}
                         setSelected={setLastCallSelected}
                       />
                     </div>
-                    <div className="mt-4 returnable-items">
+                    <div className='mt-4 returnable-items'>
                       <ReturnCategory
                         scannedItems={items.slice(5, 9)}
-                        typeTitle="Returnable Items"
+                        typeTitle='Returnable Items'
                         compensationType={FOR_RETURN}
                         disabled={localDonationsCount > 0}
                         selected={returnableSelected}
@@ -241,14 +243,14 @@ function DashboardPage() {
                       />
                     </div>
                     <div>
-                      <p className="line-break">
+                      <p className='line-break'>
                         <span></span>
                       </p>
                     </div>
-                    <div className="mt-4" unselectable={true}>
+                    <div className='mt-4' unselectable={true}>
                       <ReturnCategory
                         scannedItems={items.slice(10, 14)}
-                        typeTitle="Donate"
+                        typeTitle='Donate'
                         compensationType={FOR_DONATION}
                         disabled={[...lastCall, ...forReturn].length > 0}
                         setSelected={setDonationsSelected}
@@ -256,7 +258,7 @@ function DashboardPage() {
                       />
                     </div>
                     <div>
-                      <p className="line-break">
+                      <p className='line-break'>
                         <span></span>
                       </p>
                     </div>
@@ -267,14 +269,14 @@ function DashboardPage() {
                   <div>
                     <ReturnCategory
                       scannedItems={filteredItems}
-                      typeTitle="Select all"
+                      typeTitle='Select all'
                     />
                   </div>
                 )}
                 {!isEmpty(search) && isEmpty(filteredItems) && (
-                  <div className="row justify-center">
-                    <div className="col-sm-7 text-center">
-                      <div className="text-center sofia-pro empty-search">
+                  <div className='row justify-center'>
+                    <div className='col-sm-7 text-center'>
+                      <div className='text-center sofia-pro empty-search'>
                         No results found.
                       </div>
                     </div>
@@ -283,44 +285,54 @@ function DashboardPage() {
 
                 {isEmpty(search) && (
                   <div>
-                    <div className="row justify-center">
-                      <div className="col-sm-7 text-center">
-                        <div className="text-muted text-center sofia-pro line-height-16 text-bottom-title">
+                    <div className='row justify-center'>
+                      <div className='col-sm-7 text-center'>
+                        <div className='text-muted text-center sofia-pro line-height-16 text-bottom-title'>
                           These are all the purchases we found in the past 90
                           days from your address {user && user.email}
                         </div>
                       </div>
                     </div>
-                    <div className="row justify-center mt-3">
-                      <div className="col-sm-6 text-center">
-                        <div className="text-muted text-center text-cant-find sofia-pro">
+                    <div className='row justify-center mt-3'>
+                      <div className='col-sm-6 text-center'>
+                        <div className='text-muted text-center text-cant-find sofia-pro'>
                           Can’t find one?
-                          <span className="noted-purple sofia-pro line-height-16">
-                            &nbsp; Add it manually
-                          </span>
+                          <button
+                            className='btn btn-add-product'
+                            onClick={() => setModalProductShow(true)}
+                          >
+                            <div className='noted-purple sofia-pro line-height-16 text-add'>
+                              &nbsp; Add it manually
+                            </div>
+                          </button>
                         </div>
                       </div>
                     </div>
-                    <div className="row justify-center mt-2">
-                      <div className="col-sm-6 text-center">
+                    <div className='row justify-center mt-2'>
+                      <div className='col-sm-6 text-center'>
                         <button
-                          className="btn btn-add-new-email"
-                          onClick={() => setModalShow(true)}
+                          className='btn btn-add-new-email'
+                          onClick={() => setModalEmailShow(true)}
                         >
-                          <div className="text-center noted-purple sofia-pro line-height-16 text-new-email">
+                          <div className='text-center noted-purple sofia-pro line-height-16 text-new-email'>
                             Add new email address
                           </div>
                         </button>
                       </div>
                     </div>
-                    <AddEmailModal
-                      show={modalShow}
-                      onHide={() => setModalShow(false)}
+                    {/* MODALS */}
+                    <AddProductModal
+                      show={modalProductShow}
+                      onHide={() => setModalProductShow(false)}
                     />
-                    <div className="row justify-center mt-2">
-                      <div className="col-sm-6 text-center">
+                    <AddEmailModal
+                      show={modalEmailShow}
+                      onHide={() => setModalEmailShow(false)}
+                    />
+                    <div className='row justify-center mt-2'>
+                      <div className='col-sm-6 text-center'>
                         <a>
-                          <div className="text-center noted-purple line-height-16 sofia-pro">
+                          <div className='text-center noted-purple line-height-16 sofia-pro'>
                             Scan for older items
                           </div>
                         </a>
@@ -331,7 +343,7 @@ function DashboardPage() {
               </>
             )}
           </div>
-          <div className="col-sm-3 checkout-card">
+          <div className='col-sm-3 checkout-card'>
             <RightCard
               totalReturns={[...forReturn, ...lastCall].length}
               potentialReturnValue={potentialReturnValue}
