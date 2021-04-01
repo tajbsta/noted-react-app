@@ -1,11 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
+import { useDropzone } from 'react-dropzone';
 
 export default function AddProductModal(props) {
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const onDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.forEach((file) => {
+      const reader = new FileReader();
+
+      reader.onabort = () => console.log('file reading was aborted');
+      reader.onerror = () => console.log('file reading has failed');
+      reader.onload = () => {
+        // Do whatever you want with the file contents
+        const binaryStr = reader.result;
+        console.log(binaryStr);
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  }, []);
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   // Handles file upload event and updates state
   const handleUpload = (event) => {
@@ -126,12 +143,17 @@ export default function AddProductModal(props) {
                 <Row>
                   <Col>
                     <Form.Group controlId='returnDocuments'>
-                      <Form.Label>
-                        Return Documents (ie. Amazon QR code, receipts, and
-                        shipping labels)
+                      <Form.Label className='documents-title'>
+                        Return Documents{' '}
+                        <small style={{ fontSize: '12px' }}>
+                          (ie. Amazon QR code, receipts, and shipping labels)
+                        </small>
                       </Form.Label>
-                      <div>
-                        <Form.Control />
+                      <div className='dropzone-container' {...getRootProps()}>
+                        <input {...getInputProps()} />
+                        <p className='sofia-pro text-drag'>
+                          Drag & drop or click to upload
+                        </p>
                       </div>
                     </Form.Group>
                   </Col>

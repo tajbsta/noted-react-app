@@ -1,5 +1,5 @@
 #AddProductModal {
-  height: 547px;
+  //   height: 547px;
   width: 528px;
 
   border-radius: 8px;
@@ -113,6 +113,28 @@
     }
   }
   //   End of Image
+
+  //   DROPZONE
+  .documents-title {
+    font-size: 13px;
+  }
+  .dropzone-container {
+    cursor: pointer;
+    padding: 39px 94px;
+    box-shadow: none;
+    outline: none;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='4' ry='4' stroke='%23ECE4F2FF' stroke-width='3' stroke-dasharray='5%2c11 ' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    border-radius: 4px;
+    height: 96px;
+    width: 400px;
+  }
+  .text-drag {
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    margin-bottom: 0px;
+    color: #827889;
+  }
 
   .row {
     flex-wrap: initial;
