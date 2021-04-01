@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, Container } from 'react-bootstrap';
 import ProfileIcon from '../../../assets/icons/Profile.svg';
 import moment from 'moment';
-import { FilePlus } from 'react-feather';
+import { Upload } from 'react-feather';
 
 export default function UserInfo({ user: userData }) {
   const [user, setUser] = useState({});
@@ -65,8 +65,8 @@ export default function UserInfo({ user: userData }) {
             {file && <ImageThumb image={file} />}
 
             <div className='upload-button'>
-              <i className='fa fa-file-plus' aria-hidden='true'>
-                <FilePlus />
+              <i className='fa fa-upload-icon' aria-hidden='true'>
+                <Upload />
 
                 <input
                   className='file-upload'
