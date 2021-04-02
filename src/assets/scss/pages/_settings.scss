@@ -161,51 +161,59 @@
       }
     }
 
-    #passForm {
-      .fe-eye-old {
-        position: absolute;
-        right: 12%;
-        top: 18%;
+    input {
+      border: 1px solid #ece4f2;
+    }
+
+    label {
+      font-size: 14px;
+      line-height: 16px;
+      color: #2e1d3a;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      margin-bottom: 3px;
+    }
+
+    .input-group {
+      width: 352px;
+    }
+
+    .col-pass {
+      padding-left: 0px;
+    }
+
+    .form-pass {
+      border-right: none;
+    }
+
+    .input-group-text {
+      padding: 0 10px;
+      border: 1px solid #ece4f2 !important;
+      background: #fff !important;
+
+      .fe-eye {
         color: #0e0018;
         mix-blend-mode: normal;
-        opacity: 0.3;
+        opacity: 0.2;
       }
+    }
 
-      .fe-eye-new {
-        position: absolute;
-        right: 12%;
-        top: 36%;
-        color: #0e0018;
-        mix-blend-mode: normal;
-        opacity: 0.3;
-      }
+    .btn-change {
+      // margin-top: 7px;
+      background: #570097;
+      border: none;
+      position: absolute;
+      right: 5%;
+      height: 40px;
+      width: 194px;
+      border-radius: 6px;
 
-      .fe-eye-confirm {
-        position: absolute;
-        left: 164%;
-        top: 36%;
-        color: #0e0018;
-        mix-blend-mode: normal;
-        opacity: 0.3;
-      }
+      font-family: 'Sofia Pro';
+      font-size: 14px;
+      line-height: 16px;
+      text-align: center;
 
-      .btn-change {
-        // margin-top: 7px;
-        background: #570097;
-        border: none;
-        position: absolute;
-        right: 5%;
-        height: 40px;
-        width: 194px;
-        border-radius: 6px;
-
-        font-family: 'Sofia Pro';
-        font-size: 14px;
-        line-height: 16px;
-        text-align: center;
-
-        color: #f8efff;
-      }
+      color: #f8efff;
     }
   }
 
