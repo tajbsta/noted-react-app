@@ -27,8 +27,7 @@ function ProductDetails({
           ${amount}{' '}
           {isHovering && (
             <>
-              <span className='compensationText ml-2'>Cash back</span>
-              <span className='alternateActionText ml-2'>- Donate instead</span>
+              <span className='alternateActionText ml-2'>Donate instead</span>
             </>
           )}
           <span
