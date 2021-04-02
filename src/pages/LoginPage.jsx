@@ -91,32 +91,39 @@ export default function LoginPage() {
                   <h4 className='text-center text-alert'>{error}</h4>
                 </div>
               )}
-              <Form.Group>
-                <Form.Control
-                  className='form-control form-control-lg'
+
+              <div className='form-group'>
+                <input
+                  className='form-control form-control-appended'
                   type='email'
                   name='email'
                   placeholder='Your email...'
                   onChange={(e) => setEmail(e.target.value)}
                 />
-              </Form.Group>
-              <Form.Group>
-                <div>
-                  <Form.Control
-                    className='form-control form-control-lg'
+              </div>
+
+              <div className='form-group'>
+                <div className='input-group input-group-merge'>
+                  <input
+                    className='form-control form-control-appended form-pass'
                     type={passwordShown ? 'text' : 'password'}
                     name='password'
                     placeholder='Your password...'
                     onChange={(e) => setPassword(e.target.value)}
                   />
-                  <i
-                    className={!error ? 'fe-eye' : 'fe-eye-error'}
-                    onClick={togglePasswordVisibility}
-                  >
-                    {passwordShown ? eye : eyeOff}
-                  </i>
+                  <div className='input-group-append'>
+                    <span className='input-group-text'>
+                      <i
+                        className={!error ? 'fe-eye' : 'fe-eye-error'}
+                        onClick={togglePasswordVisibility}
+                      >
+                        {passwordShown ? eye : eyeOff}
+                      </i>
+                    </span>
+                  </div>
                 </div>
-              </Form.Group>
+              </div>
+
               <h3 className='text-forgot'>
                 <Link
                   to='forgot-password'

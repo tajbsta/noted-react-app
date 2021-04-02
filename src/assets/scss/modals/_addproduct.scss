@@ -1,0 +1,168 @@
+#AddProductModal {
+  height: 547px;
+  width: 528px;
+
+  border-radius: 8px;
+
+  .modal-body {
+    padding: 24px 24px;
+  }
+
+  .form-label {
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
+  //   IMAGE
+  .img-container {
+    background: #fff;
+    border: 1px solid #eae8eb;
+    border-radius: 8px;
+
+    width: 64px;
+    height: 64px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: all 0.4s ease;
+
+    &:hover {
+      transform: scale(1.05);
+      opacity: 0.7;
+      background: #570097;
+      box-shadow: 1px 1px 15px -5px black;
+    }
+
+    .default-placeholder {
+      width: 20px;
+      height: 22.67px;
+    }
+
+    .no-placeholder {
+      display: none;
+    }
+
+    .product-placeholder {
+      height: 64px;
+      width: 64px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    // Image file upload
+    .upload-button {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 50%;
+      width: 50%;
+      border-radius: 8px;
+
+      .fa-upload-icon {
+        position: relative;
+        // top: 0px;
+        // left: -1px;
+        top: -17px;
+        left: -16px;
+        text-align: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+        color: #fff;
+
+        svg {
+          height: 96px;
+          width: 96px;
+          padding: 33px;
+          border-radius: 50%;
+          //   border-radius: 8px;
+
+          background: #570097;
+        }
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+
+    // Get rid of Choose file upload button css
+    input {
+      outline: none !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+
+    .file-upload {
+      padding: 100px 0 0 0;
+      height: 255px;
+      position: relative;
+      bottom: 200%;
+      box-shadow: none;
+      border: none;
+
+      &:hover {
+        outline: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        cursor: pointer !important;
+      }
+    }
+  }
+  //   End of Image
+
+  //   DROPZONE
+  .documents-title {
+    font-size: 13px;
+  }
+  .dropzone-container {
+    cursor: pointer;
+    padding: 39px 94px;
+    box-shadow: none;
+    outline: none;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='4' ry='4' stroke='%23ECE4F2FF' stroke-width='3' stroke-dasharray='5%2c11 ' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    border-radius: 4px;
+    height: 96px;
+    width: 400px;
+  }
+  .text-drag {
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    margin-bottom: 0px;
+    color: #827889;
+  }
+
+  .row {
+    flex-wrap: initial;
+  }
+
+  .form-control {
+    width: 400px;
+  }
+
+  .btn-container {
+    padding: 5px;
+  }
+
+  .btn-cancel {
+    padding: 0px;
+    padding-right: 24px;
+    background: inherit;
+    border: none;
+    box-shadow: none;
+    color: #2e1d3a;
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .btn-save {
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 16px;
+    padding: 12px 24px;
+  }
+}

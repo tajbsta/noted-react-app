@@ -2,9 +2,39 @@ import React, { useEffect, useState } from 'react';
 import { Card, Container } from 'react-bootstrap';
 import ProfileIcon from '../../../assets/icons/Profile.svg';
 import moment from 'moment';
+import { Upload } from 'react-feather';
 
 export default function UserInfo({ user: userData }) {
   const [user, setUser] = useState({});
+  const [file, setFile] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Handles file upload event and updates state
+  const handleUpload = (event) => {
+    // const file = event.target.files[0];
+    setFile(event.target.files[0]);
+
+    if (file.size > 5097152) {
+      alert('File is too large! The maximum size for file upload is 5 MB.');
+    }
+
+    setLoading(true);
+
+    // Upload file to server (code goes under)
+
+    setLoading(false);
+  };
+
+  // Display Image Component
+  const ImageThumb = ({ image }) => {
+    return (
+      <img
+        src={URL.createObjectURL(image)}
+        alt={image.name}
+        className='avatar-placeholder'
+      />
+    );
+  };
 
   useEffect(() => {
     setUser(userData);
@@ -18,15 +48,42 @@ export default function UserInfo({ user: userData }) {
             {user.profile && (
               <img
                 src={user.profile}
-                className='avatar-placeholder'
+                className={`${
+                  file ? 'no-default-avatar' : 'avatar-placeholder'
+                }`}
                 alt='...'
               />
             )}
             {!user.profile && (
-              <img src={ProfileIcon} className='default-avatar' alt='...' />
+              <img
+                src={ProfileIcon}
+                className={`${file ? 'no-default-avatar' : 'default-avatar'}`}
+                alt='...'
+              />
             )}
+
+            {file && <ImageThumb image={file} />}
+
+            <div className='upload-button'>
+              <i className='fa fa-upload-icon' aria-hidden='true'>
+                <Upload />
+
+                <input
+                  className='file-upload'
+                  type='file'
+                  accept='.jpg, .jpeg, .png'
+                  onChange={handleUpload}
+                />
+              </i>
+            </div>
           </div>
-          <h2 className='card-title name'>{user.name || user.email}</h2>
+          <h2
+            className={`card-title ${
+              file || user.profile ? 'margin-name' : 'name'
+            }`}
+          >
+            {user.name || user.email}
+          </h2>
           <p className='small text-muted mb-3 date'>
             User since {moment(user.createdAt).format('MMMM DD, YYYY')}
           </p>

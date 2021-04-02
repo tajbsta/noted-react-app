@@ -247,6 +247,21 @@
   color: #b1adb3 !important;
 }
 
+.btn-add-product {
+  padding: 0px;
+
+  &:focus {
+    outline: none !important;
+    box-shadow: none;
+  }
+
+  .text-add {
+    &:hover {
+      color: #b079da;
+    }
+  }
+}
+
 .btn-add-new-email {
   &:focus {
     outline: none !important;

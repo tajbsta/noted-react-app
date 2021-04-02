@@ -122,71 +122,92 @@ export default function ChangePass() {
         )}
         <div className='card shadow-sm mb-2 w-840 change-container'>
           <div className='card-body'>
-            <Form id='passForm'>
+            <Form>
               <Row>
                 <Col>
-                  <Form.Group controlId='oldPassword'>
-                    <Form.Label>Current Password</Form.Label>
-                    <div>
-                      <Form.Control
-                        className='form-control-lg'
+                  <div className='form-group' controlId='oldPassword'>
+                    <div className='col col-pass'>
+                      <label>Current Password</label>
+                    </div>
+                    <div className='input-group input-group-merge'>
+                      <input
+                        className='form-control form-control-appended form-pass'
                         type={oldPasswordShown ? 'text' : 'password'}
+                        name='oldPassword'
                         onChange={handleChange}
                         value={values.oldPassword}
                         disabled={loading}
                       />
-                      <i
-                        className='fe-eye-old'
-                        onClick={toggleOldPasswordVisibility}
-                      >
-                        {oldPasswordShown ? eye : eyeOff}
-                      </i>
+                      <div className='input-group-append'>
+                        <span className='input-group-text'>
+                          <i
+                            className='fe fe-eye'
+                            onClick={toggleOldPasswordVisibility}
+                          >
+                            {oldPasswordShown ? eye : eyeOff}
+                          </i>
+                        </span>
+                      </div>
                     </div>
-                  </Form.Group>
+                  </div>
                 </Col>
                 <Col>
                   <Row>
                     <Col>
-                      <Form.Group controlId='newPassword'>
-                        <Form.Label>New Password</Form.Label>
-                        <div>
-                          <Form.Control
-                            className='form-control-lg'
+                      <div className='form-group' controlId='newPassword'>
+                        <div className='col col-pass'>
+                          <label>New Password</label>
+                        </div>
+                        <div className='input-group input-group-merge'>
+                          <input
+                            className='form-control form-control-appended form-pass'
                             type={newPasswordShown ? 'text' : 'password'}
+                            name='newPassword'
                             onChange={handleChange}
                             value={values.newPassword}
                             disabled={loading}
                           />
-                          <i
-                            className='fe-eye-new'
-                            onClick={toggleNewPasswordVisibility}
-                          >
-                            {newPasswordShown ? eye : eyeOff}
-                          </i>
+                          <div className='input-group-append'>
+                            <span className='input-group-text'>
+                              <i
+                                className='fe fe-eye'
+                                onClick={toggleNewPasswordVisibility}
+                              >
+                                {newPasswordShown ? eye : eyeOff}
+                              </i>
+                            </span>
+                          </div>
                         </div>
-                      </Form.Group>
+                      </div>
                     </Col>
                   </Row>
                   <Row>
-                    <Col xs={6}>
-                      <Form.Group controlId='confirmPassword'>
-                        <Form.Label>Confirm New Password</Form.Label>
-                        <div>
-                          <Form.Control
-                            className='form-control-lg'
+                    <Col>
+                      <div className='form-group' controlId='confirmPassword'>
+                        <div className='col col-pass'>
+                          <label>Confirm Password</label>
+                        </div>
+                        <div className='input-group input-group-merge'>
+                          <input
+                            className='form-control form-control-appended form-pass'
                             type={confirmPasswordShown ? 'text' : 'password'}
+                            name='confirmPassword'
                             onChange={handleChange}
                             value={values.confirmPassword}
                             disabled={loading}
                           />
-                          <i
-                            className='fe-eye-confirm'
-                            onClick={toggleConfirmPasswordVisibility}
-                          >
-                            {confirmPasswordShown ? eye : eyeOff}
-                          </i>
+                          <div className='input-group-append'>
+                            <span className='input-group-text'>
+                              <i
+                                className='fe fe-eye'
+                                onClick={toggleConfirmPasswordVisibility}
+                              >
+                                {confirmPasswordShown ? eye : eyeOff}
+                              </i>
+                            </span>
+                          </div>
                         </div>
-                      </Form.Group>
+                      </div>
                     </Col>
                   </Row>
                 </Col>

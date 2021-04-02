@@ -136,11 +136,12 @@ export default function RegisterPage() {
                   <h4 className='text-center text-alert'>{error}</h4>
                 </div>
               )}
-              <Form.Group>
-                <Form.Control
+
+              <div className='form-group'>
+                <input
+                  className='form-control form-control-appended'
                   isValid={!errors.email && email.length > 0}
                   isInvalid={errors.email && email.length > 0}
-                  className='form-control form-control-lg'
                   type='email'
                   name='email'
                   placeholder='Your email...'
@@ -149,35 +150,35 @@ export default function RegisterPage() {
                 {email.length > 0 &&
                   errors.email &&
                   renderLocalEmailValidationError()}
-              </Form.Group>
-              <Form.Group>
-                <div>
-                  <Form.Control
+              </div>
+
+              <div className='form-group'>
+                <div className='input-group input-group-merge'>
+                  <input
+                    className='form-control form-control-appended form-pass'
                     isValid={!errors.password && password.length > 0}
                     isInvalid={errors.password && password.length > 0}
-                    className='form-control form-control-lg mb-0'
                     type={passwordShown ? 'text' : 'password'}
                     name='password'
                     placeholder='Your password...'
                     onChange={handleChange}
                   />
-                  <i
-                    className={
-                      errors.length < 1 ||
-                      errors.email == 'Email is required' ||
-                      !errors.email
-                        ? 'fe-eye'
-                        : 'fe-eye-error'
-                    }
-                    onClick={togglePasswordVisibility}
-                  >
-                    {passwordShown ? eye : eyeOff}
-                  </i>
-                  {password.length > 0 &&
-                    errors.password &&
-                    renderLocalPasswordValidationError()}
+                  <div className='input-group-append'>
+                    <span className='input-group-text'>
+                      <i
+                        className='fe fe-eye'
+                        onClick={togglePasswordVisibility}
+                      >
+                        {passwordShown ? eye : eyeOff}
+                      </i>
+                    </span>
+                  </div>
                 </div>
-              </Form.Group>
+                {password.length > 0 &&
+                  errors.password &&
+                  renderLocalPasswordValidationError()}
+              </div>
+
               <button
                 className='btn btn-lg btn-block btn-green mb-3 btn-submit'
                 type='submit'

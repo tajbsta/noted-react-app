@@ -139,127 +139,85 @@ export default function ResetPasswordPage(props) {
                   </div>
                 </div>
               )}
-              <Form.Group>
-                <div>
-                  <Form.Control
-                    className='form-control form-control-lg'
-                    isValid={!errors.code && code.length > 0}
-                    isInvalid={errors.code}
-                    type='code'
-                    pattern='[0-9]*'
-                    name='code'
-                    placeholder='Enter code from email'
-                    onChange={(e) => {
-                      const re = /^[0-9\b]+$/;
-                      if (e.target.value === '' || re.test(e.target.value)) {
-                        handleChange(e);
-                      }
-                    }}
-                    maxLength={6}
-                  />
-                  {errors.code && renderCodeError()}
-                </div>
-              </Form.Group>
-              <Form.Group>
-                <div>
-                  <Form.Control
+
+              <div className='form-group'>
+                <input
+                  className='form-control form-control-appended'
+                  isValid={!errors.code && code.length > 0}
+                  isInvalid={errors.code}
+                  type='code'
+                  pattern='[0-9]*'
+                  name='code'
+                  placeholder='Enter code from email'
+                  onChange={(e) => {
+                    const re = /^[0-9\b]+$/;
+                    if (e.target.value === '' || re.test(e.target.value)) {
+                      handleChange(e);
+                    }
+                  }}
+                  maxLength={6}
+                />
+                {errors.code && renderCodeError()}
+              </div>
+
+              <div className='form-group'>
+                <div className='input-group input-group-merge'>
+                  <input
+                    className='form-control form-control-appended form-pass'
+                    placeholder='Enter your new password'
                     isValid={
                       !errors.confirmNewPassword && newPassword.length > 0
                     }
                     isInvalid={errors.newPassword}
-                    className='form-control form-control-lg'
                     type={newPasswordShown ? 'text' : 'password'}
                     name='newPassword'
-                    placeholder='Enter your new password'
                     onChange={handleChange}
                   />
-                  {/* {error && (
-                    <i
-                      className='fe-form-msg-new'
-                      onClick={toggleNewPasswordVisibility}
-                    >
-                      {newPasswordShown ? eye : eyeOff}
-                    </i>
-                  )}
-                  {success && (
-                    <i
-                      className='fe-form-msg-new'
-                      onClick={toggleNewPasswordVisibility}
-                    >
-                      {newPasswordShown ? eye : eyeOff}
-                    </i>
-                  )}
-                  {!error && (
-                    <i
-                      className={
-                        errors.newPassword ? 'fe-eye-new-error' : 'fe-eye-new'
-                      }
-                      onClick={toggleNewPasswordVisibility}
-                    >
-                      {newPasswordShown ? eye : eyeOff}
-                    </i>
-                  )}
-                  {!error && (
-                    <i
-                      className={
-                        errors.newPassword ? 'fe-eye-new-error' : 'fe-eye-new'
-                      }
-                      onClick={toggleNewPasswordVisibility}
-                    >
-                      {newPasswordShown ? eye : eyeOff}
-                    </i>
-                  )} */}
+                  <div className='input-group-append'>
+                    <span className='input-group-text'>
+                      <i
+                        className='fe fe-eye'
+                        onClick={toggleNewPasswordVisibility}
+                      >
+                        {newPasswordShown ? eye : eyeOff}
+                      </i>
+                    </span>
+                  </div>
                 </div>
                 {errors.newPassword &&
                   newPassword.length > 0 &&
                   renderLocalNewPasswordValidationError()}
-              </Form.Group>
-              <Form.Group>
-                <div>
-                  <Form.Control
+              </div>
+
+              <div className='form-group'>
+                <div className='input-group input-group-merge'>
+                  <input
+                    className='form-control form-control-appended form-pass'
                     isValid={
                       !errors.confirmNewPassword &&
                       confirmNewPassword.length > 0
                     }
                     isInvalid={errors.confirmNewPassword}
-                    className='form-control form-control-lg'
                     type={confirmPasswordShown ? 'text' : 'password'}
                     name='confirmNewPassword'
                     placeholder='Confirm your new password'
                     onChange={handleChange}
                   />
-                  {/* {error && (
-                    <i
-                      className='fe-form-msg-confirm'
-                      onClick={toggleConfirmPasswordVisibility}
-                    >
-                      {confirmPasswordShown ? eye : eyeOff}
-                    </i>
-                  )}
-                  {success && (
-                    <i
-                      className='fe-form-msg-confirm'
-                      onClick={toggleConfirmPasswordVisibility}
-                    >
-                      {confirmPasswordShown ? eye : eyeOff}
-                    </i>
-                  )}
-                  {!error && (
-                    <i
-                      className={
-                        newPassword.length !== 0 && errors.newPassword
-                          ? 'fe-eye-confirm-error'
-                          : 'fe-eye-confirm'
-                      }
-                      onClick={toggleConfirmPasswordVisibility}
-                    >
-                      {confirmPasswordShown ? eye : eyeOff}
-                    </i>
-                  )} */}
+                  <div className='input-group-append'>
+                    <span className='input-group-text'>
+                      <i
+                        className='fe fe-eye'
+                        onClick={toggleConfirmPasswordVisibility}
+                      >
+                        {confirmPasswordShown ? eye : eyeOff}
+                      </i>
+                    </span>
+                  </div>
                 </div>
                 {errors.confirmNewPassword &&
                   renderLocalConfirmNewPasswordValidationError()}
-              </Form.Group>
+              </div>
+
               <button
                 className='btn btn-lg btn-block btn-green mb-3 btn-submit'
                 type='submit'
