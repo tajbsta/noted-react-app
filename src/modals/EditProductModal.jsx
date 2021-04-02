@@ -4,7 +4,7 @@ import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
 import { useDropzone } from 'react-dropzone';
 
-export default function AddProductModal(props) {
+export default function EditProductModal(props) {
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -60,7 +60,7 @@ export default function AddProductModal(props) {
         centered
         backdrop='static'
         keyboard={false}
-        id='AddProductModal'
+        id='EditProductModal'
       >
         <Modal.Body className='sofia-pro'>
           <Form id='passForm'>

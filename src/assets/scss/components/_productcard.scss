@@ -109,6 +109,7 @@
         color: #0e0018;
         mix-blend-mode: normal;
         opacity: 0.6;
+        margin: 1px;
       }
 
       .btn-hover-edit {
@@ -116,6 +117,12 @@
         font-size: 12px;
         text-decoration-line: underline;
         color: #570097;
+        padding: 0;
+
+        &:focus {
+          outline: none !important;
+          box-shadow: none;
+        }
       }
     }
 
