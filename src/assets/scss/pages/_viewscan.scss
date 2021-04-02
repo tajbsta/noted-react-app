@@ -333,6 +333,21 @@
     height: 40px;
     color: #ffffff;
   }
+
+  // MOBILE
+  .container {
+    @media (max-width: 767px) {
+      padding: 0px;
+    }
+  }
+
+  #mobile-product-info {
+    padding-left: 12px;
+
+    .col-days-left {
+      padding: 0px;
+    }
+  }
 }
 
 // Empty Address and Payment
