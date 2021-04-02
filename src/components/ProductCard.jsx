@@ -42,6 +42,8 @@ function ProductCard({
     }
   };
 
+  const showHoverContent = isHover || selected;
+
   return (
     <div id='productCard'>
       <div
@@ -139,7 +141,7 @@ function ProductCard({
                 amount,
                 compensationType: '',
               }}
-              isHovering={isHover}
+              isHovering={showHoverContent}
             />
 
             <div
@@ -150,9 +152,9 @@ function ProductCard({
                 justifyItems: 'center',
               }}
             >
-              {isHover && <ProductCardHover orderDate={orderDate} />}
+              {showHoverContent && <ProductCardHover orderDate={orderDate} />}
 
-              {!isHover && (
+              {!isHover && !selected && (
                 <>
                   <div
                     className='col-sm-6 noted-red sofia-pro return-time-left'
