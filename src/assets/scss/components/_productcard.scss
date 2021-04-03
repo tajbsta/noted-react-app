@@ -158,9 +158,13 @@
     }
 
     width: 75%;
+    @media (max-width: 358px) {
+      width: 65%;
+    }
 
     .title-container {
-      display: inline-flex;
+      display: flex;
+      justify-content: flex-start;
       width: 100%;
     }
 
@@ -169,9 +173,10 @@
       padding-left: 0px;
     }
 
-    .col-limit {
+    .col-days-left {
       display: flex;
       justify-content: flex-start;
+      // padding: 0px;
     }
 
     .col-score {

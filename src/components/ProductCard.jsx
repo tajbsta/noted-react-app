@@ -42,6 +42,15 @@ function ProductCard({
     }
   };
 
+  // Truncate name if name is longer than 15 characters
+  const truncateBrand = (str, num = 8) => {
+    if (str && str.length > num) {
+      return str.slice(0, num);
+    } else {
+      return str;
+    }
+  };
+
   const showHoverContent = isHover || selected;
 
   return (
@@ -98,7 +107,7 @@ function ProductCard({
                 <Container>
                   <div className='title-container'>
                     <h4 className='mb-0 sofia-pro mb-1 distributor-name'>
-                      {vendorTag}
+                      {truncateBrand(vendorTag)}
                     </h4>
                     <h5 className='sofia-pro mb-2 product-name'>
                       &nbsp;{truncateString(itemName)}
@@ -107,7 +116,7 @@ function ProductCard({
                 </Container>
                 <Container className='s-container'>
                   <Row>
-                    <Col className='col-limit'>
+                    <Col className='col-days-left'>
                       <div
                         className='noted-red sofia-pro mobile-limit'
                         style={{
