@@ -67,21 +67,19 @@ function ViewConfirmedReturn({
   const initiateCancelOrder = () => {
     setShowCancelOrderModal(true);
   };
-  console.log(hasModifications);
 
   const onConfirm = async () => {
     /**
      *
      */
 
-    const filteredOrders = [
-      ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
-      orderInMemory,
-    ];
-
-    dispatch(await updateOrders(filteredOrders));
-
     if (hasModifications) {
+      const filteredOrders = [
+        ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
+        orderInMemory,
+      ];
+
+      dispatch(await updateOrders(filteredOrders));
       return setconfirmed(true);
     }
     history.push('/dashboard');
@@ -312,6 +310,23 @@ function ViewConfirmedReturn({
                           color: '#FFFFFF',
                         }}
                         onClick={onConfirm}
+                      >
+                        Confirm
+                      </div>
+                    )}
+
+                    {!isEmpty(orderInMemory) && !hasModifications && (
+                      <div
+                        className='btn noted-purple mt-2'
+                        style={{
+                          background: '#EEE4F6',
+                          border: 'none',
+                          color: '#57009',
+                          display: 'flex',
+                          alignContent: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onClick={() => history.push('/dashboard')}
                       >
                         Confirm
                       </div>
