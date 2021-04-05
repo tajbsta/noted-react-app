@@ -56,7 +56,7 @@ export default function EmailAddresses({ user }) {
                     <Col>
                       <Form.Group controlId='exampleForm.ControlInput1'>
                         <div className='title-group'>
-                          <Form.Label>Email #1</Form.Label>
+                          <Form.Label>Email #2</Form.Label>
                           <Button className='btn delete-email'>
                             Delete email
                           </Button>

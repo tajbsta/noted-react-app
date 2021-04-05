@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Container, Navbar } from 'react-bootstrap';
 import ProfileIcon from '../assets/icons/Profile.svg';
 // import DropwDownIcon from '../assets/icons/InvertedTriangle.svg';
@@ -15,7 +15,7 @@ const Topnav = () => {
   let history = useHistory();
   const dispatch = useDispatch();
   const pageLocation = history.location.pathname;
-
+  const [showDropdown, setShowDropdown] = useState(false);
   const guestViews = [
     '/',
     '/login',
@@ -165,12 +165,16 @@ const Topnav = () => {
                     data-toggle='dropdown'
                     aria-haspopup='true'
                     aria-expanded='false'
+                    onClick={() => setShowDropdown(!showDropdown)}
                   >
                     <img src={ProfileIcon} width='30' height='30' />
                   </a>
                   <div
                     className='dropdown-menu'
                     aria-labelledby='navbarDropdownMenuLink'
+                    style={{
+                      display: showDropdown ? 'block' : 'none',
+                    }}
                   >
                     <button
                       className='dropdown-item sofia-pro'
