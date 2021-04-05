@@ -53,30 +53,32 @@ export default function ProfilePage() {
   }, []);
 
   return (
-    <div id="Profile">
-      <div className="container mt-6">
+    <div id='Profile'>
+      <div className='container mt-6'>
         {!user && 'Loading...'}
         {user && (
-          <div className="row">
-            <div className="col-sm-3">
+          <div className='row'>
+            <div className='col-sm-3'>
               {/*LEFT CARD*/}
-              <div className="col">
+              <div className='col'>
                 <UserInfo user={user} />
               </div>
             </div>
-            <div className="col-sm-9">
+            <div className='col-sm-9'>
               <Address
                 {...addressFormValues}
                 handleChange={handleAddressChange}
               />
+              <hr />
               {showEditPayment && (
-                <div className="mt-5">
+                <div>
                   <Payment
                     {...paymentFormValues}
                     handleChange={handlePaymentChange}
                   />
                 </div>
               )}
+              <hr />
               <ReturnHistory />
             </div>
           </div>
