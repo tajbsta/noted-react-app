@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Container, Navbar } from 'react-bootstrap';
 import ProfileIcon from '../assets/icons/Profile.svg';
 // import DropwDownIcon from '../assets/icons/InvertedTriangle.svg';
@@ -16,6 +16,24 @@ const Topnav = () => {
   const dispatch = useDispatch();
   const pageLocation = history.location.pathname;
   const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleClick = (e) => {
+    if (e.target && e.target.id !== 'navigation-menu') {
+      setShowDropdown(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showDropdown) {
+      window.addEventListener('click', handleClick);
+    }
+    return () => {
+      if (showDropdown) {
+        window.removeEventListener('click', handleClick);
+      }
+    };
+  }, [showDropdown]);
+
   const guestViews = [
     '/',
     '/login',
@@ -170,6 +188,7 @@ const Topnav = () => {
                     <img src={ProfileIcon} width='30' height='30' />
                   </a>
                   <div
+                    id='navigation-menu'
                     className='dropdown-menu'
                     aria-labelledby='navbarDropdownMenuLink'
                     style={{
