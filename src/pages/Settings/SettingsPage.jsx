@@ -11,6 +11,7 @@ import { getUser } from '../../utils/auth';
 
 export default function SettingsPage() {
   const [user, setUser] = useState(null);
+  const [currentTab, setCurrenTab] = useState('');
 
   const {
     handleChange: handleAddressChange,
@@ -34,6 +35,12 @@ export default function SettingsPage() {
     })();
   }, []);
 
+  const isActive = (tabName) => {
+    return tabName === currentTab
+      ? { color: '#570097', fontWeight: '700' }
+      : {};
+  };
+
   return (
     <div>
       <div id='Settings' className='container mt-6'>
@@ -45,13 +52,17 @@ export default function SettingsPage() {
               <ul className='list-unstyled nav-items'>
                 <li className='nav-item'>
                   <Link
-                    activeClass='active'
                     to='BasicInfo'
                     spy={true}
                     smooth={true}
                     className='nav-link'
                     offset={-70}
                     duration={500}
+                    onClick={() => {
+                      setCurrenTab('BasicInfo');
+                    }}
+                    color='purple'
+                    style={isActive('BasicInfo')}
                   >
                     Basic Information
                   </Link>
@@ -64,6 +75,10 @@ export default function SettingsPage() {
                     className='nav-link'
                     offset={-70}
                     duration={500}
+                    onClick={() => {
+                      setCurrenTab('EmailAddresses');
+                    }}
+                    style={isActive('EmailAddresses')}
                   >
                     Email Addresses
                   </Link>
@@ -76,6 +91,10 @@ export default function SettingsPage() {
                     className='nav-link'
                     offset={-70}
                     duration={500}
+                    onClick={() => {
+                      setCurrenTab('ChangePass');
+                    }}
+                    style={isActive('ChangePass')}
                   >
                     Change Password
                   </Link>
@@ -88,6 +107,10 @@ export default function SettingsPage() {
                     className='nav-link'
                     offset={-70}
                     duration={500}
+                    onClick={() => {
+                      setCurrenTab('DeleteAccount');
+                    }}
+                    style={isActive('DeleteAccount')}
                   >
                     Delete Account
                   </Link>

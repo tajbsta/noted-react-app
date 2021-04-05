@@ -21,6 +21,7 @@
     "qs": "^6.5.2",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.3",
+    "react-collapsible": "^2.8.3",
     "react-dom": "^17.0.1",
     "react-dropzone": "^11.3.2",
     "react-feather": "^2.0.9",
