@@ -17,21 +17,20 @@ const Topnav = () => {
   const pageLocation = history.location.pathname;
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const handleClick = (e) => {
-    if (e.target && e.target.id !== 'navigation-menu') {
+  const handleWindowClick = (e) => {
+    console.log(e.target.id);
+    if (e.target && e.target.id !== 'navbarDropdownMenuLink') {
       setShowDropdown(false);
+      window.removeEventListener('click', handleWindowClick);
     }
   };
 
+  console.log(showDropdown);
+
   useEffect(() => {
     if (showDropdown) {
-      window.addEventListener('click', handleClick);
+      window.addEventListener('click', handleWindowClick);
     }
-    return () => {
-      if (showDropdown) {
-        window.removeEventListener('click', handleClick);
-      }
-    };
   }, [showDropdown]);
 
   const guestViews = [
@@ -124,7 +123,12 @@ const Topnav = () => {
                         aria-expanded='false'
                         onClick={() => setShowDropdown(!showDropdown)}
                       >
-                        <img src={ProfileIcon} width='30' height='30' />
+                        <img
+                          src={ProfileIcon}
+                          width='30'
+                          height='30'
+                          id='navbarDropdownMenuLink'
+                        />
                       </a>
                       <div
                         id='navigation-menu'
@@ -182,7 +186,6 @@ const Topnav = () => {
                 <li className='nav-item dropdown'>
                   <a
                     className='nav-link dropdown-toggle'
-                    href='#'
                     id='navbarDropdownMenuLink'
                     role='button'
                     data-toggle='dropdown'
@@ -190,7 +193,12 @@ const Topnav = () => {
                     aria-expanded='false'
                     onClick={() => setShowDropdown(!showDropdown)}
                   >
-                    <img src={ProfileIcon} width='30' height='30' />
+                    <img
+                      src={ProfileIcon}
+                      width='30'
+                      height='30'
+                      id='navbarDropdownMenuLink'
+                    />
                   </a>
                   <div
                     id='navigation-menu'
