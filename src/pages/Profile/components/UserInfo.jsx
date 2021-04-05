@@ -14,7 +14,7 @@ export default function UserInfo({ user: userData }) {
     // const file = event.target.files[0];
     setFile(event.target.files[0]);
 
-    if (file.size > 5097152) {
+    if (file && file.size > 5097152) {
       alert('File is too large! The maximum size for file upload is 5 MB.');
     }
 
