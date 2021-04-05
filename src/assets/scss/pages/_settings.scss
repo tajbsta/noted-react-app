@@ -44,6 +44,25 @@
     color: #570097;
   }
 
+  #BasicInfo {
+    .alert {
+      margin-top: 0px;
+      padding: 5px;
+      width: auto;
+    }
+
+    .text-alert {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-family: 'Sofia Pro';
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
   #EmailAddresses {
     .card-body {
       padding: 24px 25px;

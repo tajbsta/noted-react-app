@@ -1,0 +1,18 @@
+#BasicInfo {
+  .triggerContainer {
+    display: flex;
+    align-content: center;
+    cursor: pointer;
+
+    .triggerArrow {
+      color: #b1adb2;
+      font-size: 8px;
+      position: absolute;
+      right: 1vw;
+
+      &:hover {
+        color: #570097;
+      }
+    }
+  }
+}

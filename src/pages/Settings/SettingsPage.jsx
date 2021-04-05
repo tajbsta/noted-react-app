@@ -11,21 +11,7 @@ import { getUser } from '../../utils/auth';
 
 export default function SettingsPage() {
   const [user, setUser] = useState(null);
-
-  const {
-    handleChange: handleAddressChange,
-    values: addressFormValues,
-  } = useFormik({
-    initialValues: {
-      fullName: '',
-      state: '',
-      zipCode: '',
-      line1: '',
-      line2: '',
-      phoneNumber: '',
-    },
-    validationSchema: pickUpAddressSchema,
-  });
+  const [currentTab, setCurrenTab] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -33,6 +19,12 @@ export default function SettingsPage() {
       setUser(user);
     })();
   }, []);
+
+  const isActive = (tabName) => {
+    return tabName === currentTab
+      ? { color: '#570097', fontWeight: '700' }
+      : {};
+  };
 
   return (
     <div>
@@ -45,13 +37,17 @@ export default function SettingsPage() {
               <ul className='list-unstyled nav-items'>
                 <li className='nav-item'>
                   <Link
-                    activeClass='active'
                     to='BasicInfo'
                     spy={true}
                     smooth={true}
                     className='nav-link'
                     offset={-70}
                     duration={500}
+                    onClick={() => {
+                      setCurrenTab('BasicInfo');
+                    }}
+                    color='purple'
+                    style={isActive('BasicInfo')}
                   >
                     Basic Information
                   </Link>
@@ -64,6 +60,10 @@ export default function SettingsPage() {
                     className='nav-link'
                     offset={-70}
                     duration={500}
+                    onClick={() => {
+                      setCurrenTab('EmailAddresses');
+                    }}
+                    style={isActive('EmailAddresses')}
                   >
                     Email Addresses
                   </Link>
@@ -76,6 +76,10 @@ export default function SettingsPage() {
                     className='nav-link'
                     offset={-70}
                     duration={500}
+                    onClick={() => {
+                      setCurrenTab('ChangePass');
+                    }}
+                    style={isActive('ChangePass')}
                   >
                     Change Password
                   </Link>
@@ -88,6 +92,10 @@ export default function SettingsPage() {
                     className='nav-link'
                     offset={-70}
                     duration={500}
+                    onClick={() => {
+                      setCurrenTab('DeleteAccount');
+                    }}
+                    style={isActive('DeleteAccount')}
                   >
                     Delete Account
                   </Link>
@@ -98,10 +106,7 @@ export default function SettingsPage() {
           </div>
           {/* RIGHT CARD */}
           <div className='col-sm-9'>
-            <BasicInfo
-              {...addressFormValues}
-              handleChange={handleAddressChange}
-            />
+            <BasicInfo user={user} />
             <EmailAddresses user={user} />
             <ChangePass />
             <DeleteAccount />

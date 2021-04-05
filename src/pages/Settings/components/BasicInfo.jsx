@@ -3,9 +3,60 @@ import USA_STATES from '../../../assets/usa_states.json';
 import { formatPhoneNumber } from '../../../utils/form';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import $ from 'jquery';
+import { useFormik } from 'formik';
+import { pickUpAddressSchema } from '../../../models/formSchema';
+import { updateUserAttributes } from '../../../utils/auth';
 
-export default function BasicInfo({ state, phoneNumber, handleChange }) {
+export default function BasicInfo({ user }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
+  const { handleChange, setFieldValue, values: addressFormValues } = useFormik({
+    initialValues: {
+      fullName: '',
+      state: '',
+      zipCode: '',
+      line1: '',
+      line2: '',
+      phoneNumber: '',
+    },
+    validationSchema: pickUpAddressSchema,
+  });
+
+  useEffect(() => {
+    console.log({ user });
+
+    if (user) {
+      setFieldValue('fullName', user.name);
+    }
+  }, [user]);
+
+  const updateBasicInfo = async () => {
+    console.log(addressFormValues);
+    setError(null);
+    setSuccess(null);
+    try {
+      const attributes = {
+        name: addressFormValues.fullName || '',
+        address: addressFormValues.line1 || '',
+        // 'custom:phone': addressFormValues.phone || '',
+        'custom:address_2': addressFormValues.line2 || '',
+        'custom:state': addressFormValues.state || '',
+        'custom:zipcode': addressFormValues.zipCode || '',
+      };
+
+      await updateUserAttributes(attributes);
+      setSuccess(true);
+
+      // show success alert
+      console.log('success');
+    } catch (error) {
+      // show error alert
+      setError(true);
+    }
+  };
+
   useEffect(() => {
     const platform = window.navigator.platform;
     const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
@@ -28,6 +79,20 @@ export default function BasicInfo({ state, phoneNumber, handleChange }) {
   return (
     <div id='BasicInfo'>
       <h3 className='sofia-pro text-18 mb-4'>Basic Information</h3>
+      {success && (
+        <div className='alert alert-success w-840' role='alert'>
+          <div>
+            <h4 className='text-center text-alert'>Success</h4>
+          </div>
+        </div>
+      )}
+      {error && (
+        <div className='alert alert-danger w-840' role='alert'>
+          <div>
+            <h4 className='text-center text-alert'>Error occurred</h4>
+          </div>
+        </div>
+      )}
       <div className='card shadow-sm mb-2 p-3 w-840'>
         <div className='card-body'>
           <Form id='Info'>
@@ -38,7 +103,10 @@ export default function BasicInfo({ state, phoneNumber, handleChange }) {
                   <Form.Control
                     className='form-control-lg'
                     type='name'
+                    name='fullName'
+                    value={addressFormValues.fullName || ''}
                     {...noBorder}
+                    onChange={handleChange}
                   />
                 </Form.Group>
               </Col>
@@ -49,7 +117,7 @@ export default function BasicInfo({ state, phoneNumber, handleChange }) {
                   <Form.Control
                     className='form-control-md'
                     as='select'
-                    value={state || ''}
+                    // value={addressFormValues.state || ''}
                     name='state'
                     onChange={handleChange}
                     placeholder='Select State'
@@ -111,7 +179,9 @@ export default function BasicInfo({ state, phoneNumber, handleChange }) {
                         handleChange(e);
                       }
                     }}
-                    value={formatPhoneNumber(phoneNumber) || ''}
+                    value={
+                      formatPhoneNumber(addressFormValues.phoneNumber) || ''
+                    }
                     name='phoneNumber'
                     maxLength={13}
                     {...noBorder}
@@ -148,6 +218,7 @@ export default function BasicInfo({ state, phoneNumber, handleChange }) {
                     onClick={(e) => {
                       e.preventDefault();
                       setIsEditing(false);
+                      updateBasicInfo();
                     }}
                   >
                     Done
