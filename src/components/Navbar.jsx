@@ -122,12 +122,17 @@ const Topnav = () => {
                         data-toggle='dropdown'
                         aria-haspopup='true'
                         aria-expanded='false'
+                        onClick={() => setShowDropdown(!showDropdown)}
                       >
                         <img src={ProfileIcon} width='30' height='30' />
                       </a>
                       <div
+                        id='navigation-menu'
                         className='dropdown-menu'
                         aria-labelledby='navbarDropdownMenuLink'
+                        style={{
+                          display: showDropdown ? 'block' : 'none',
+                        }}
                       >
                         <button
                           className='dropdown-item sofia-pro'
