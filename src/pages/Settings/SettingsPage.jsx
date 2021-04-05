@@ -13,21 +13,6 @@ export default function SettingsPage() {
   const [user, setUser] = useState(null);
   const [currentTab, setCurrenTab] = useState('');
 
-  const {
-    handleChange: handleAddressChange,
-    values: addressFormValues,
-  } = useFormik({
-    initialValues: {
-      fullName: '',
-      state: '',
-      zipCode: '',
-      line1: '',
-      line2: '',
-      phoneNumber: '',
-    },
-    validationSchema: pickUpAddressSchema,
-  });
-
   useEffect(() => {
     (async () => {
       const user = await getUser();
@@ -121,10 +106,7 @@ export default function SettingsPage() {
           </div>
           {/* RIGHT CARD */}
           <div className='col-sm-9'>
-            <BasicInfo
-              {...addressFormValues}
-              handleChange={handleAddressChange}
-            />
+            <BasicInfo user={user} />
             <EmailAddresses user={user} />
             <ChangePass />
             <DeleteAccount />
