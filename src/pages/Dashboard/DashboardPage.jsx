@@ -247,7 +247,7 @@ function DashboardPage() {
                         <span></span>
                       </p>
                     </div>
-                    <div className='mt-4' unselectable={true}>
+                    <div className='mt-4' unselectable='one'>
                       <ReturnCategory
                         scannedItems={items.slice(10, 14)}
                         typeTitle='Donate'
