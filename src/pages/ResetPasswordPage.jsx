@@ -57,22 +57,8 @@ export default function ResetPasswordPage(props) {
     validationSchema: resetPasswordSchema,
   });
 
-  const renderCodeError = () => (
-    <small className='form-text p-0 m-0 noted-red error-msg'>
-      {errors.code}
-    </small>
-  );
-
-  const renderLocalNewPasswordValidationError = () => (
-    <small className='form-text p-0 m-0 noted-red error-msg'>
-      {errors.newPassword}
-    </small>
-  );
-
-  const renderLocalConfirmNewPasswordValidationError = () => (
-    <small className='form-text p-0 m-0 noted-red'>
-      {errors.confirmNewPassword}
-    </small>
+  const renderInlineError = (error) => (
+    <small className='form-text p-0 m-0 noted-red'>{error}</small>
   );
 
   const { code, newPassword, confirmNewPassword } = values;
@@ -157,7 +143,7 @@ export default function ResetPasswordPage(props) {
                   }}
                   maxLength={6}
                 />
-                {errors.code && renderCodeError()}
+                {renderInlineError(errors.code)}
               </div>
 
               <div className='form-group'>
@@ -184,9 +170,8 @@ export default function ResetPasswordPage(props) {
                     </span>
                   </div>
                 </div>
-                {errors.newPassword &&
-                  newPassword.length > 0 &&
-                  renderLocalNewPasswordValidationError()}
+                {newPassword.length > 0 &&
+                  renderInlineError(errors.newPassword)}
               </div>
 
               <div className='form-group'>
@@ -214,8 +199,7 @@ export default function ResetPasswordPage(props) {
                     </span>
                   </div>
                 </div>
-                {errors.confirmNewPassword &&
-                  renderLocalConfirmNewPasswordValidationError()}
+                {renderInlineError(errors.confirmNewPassword)}
               </div>
 
               <button
