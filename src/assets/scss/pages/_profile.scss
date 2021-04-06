@@ -184,4 +184,81 @@
       color: #570097;
     }
   }
+
+  #Address {
+    .alert-container {
+      margin-left: 10px;
+      margin-top: 15px;
+    }
+
+    .alert {
+      margin-top: 0px;
+      padding: 5px;
+      min-width: auto;
+    }
+
+    .text-alert {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-family: 'Sofia Pro';
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .triggerContainer {
+      display: flex;
+      align-content: center;
+      cursor: pointer;
+
+      .triggerArrow {
+        color: #b1adb2;
+        font-size: 8px;
+        position: absolute;
+        right: 1vw;
+
+        &:hover {
+          color: #570097;
+        }
+      }
+    }
+  }
+
+  #Payment {
+    .alert {
+      margin-top: 0px;
+      padding: 5px;
+      min-width: auto;
+    }
+
+    .text-alert {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-family: 'Sofia Pro';
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .triggerContainer {
+      display: flex;
+      align-content: center;
+      cursor: pointer;
+
+      .triggerArrow {
+        color: #b1adb2;
+        font-size: 8px;
+        position: absolute;
+        right: 1vw;
+
+        &:hover {
+          color: #570097;
+        }
+      }
+    }
+  }
 }

@@ -217,7 +217,7 @@ export default function BasicInfo({ user }) {
                     value={addressFormValues.line1 || ''}
                     {...noBorder}
                   />
-                  {addressFormValues.line2.length > 0 &&
+                  {addressFormValues.line1.length > 0 &&
                     renderInlineError(errors.line1)}
                 </Form.Group>
               </Col>
