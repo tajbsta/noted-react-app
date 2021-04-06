@@ -56,6 +56,7 @@ function ViewConfirmedReturn({
 
   const { returnFee, taxes, address, payment, details } = scheduledReturn;
   const items = get(scheduledReturn, 'items', []);
+  const orderId = get(scheduledReturn, 'id', '');
   const potentialReturnValue = [...items]
     .map(({ amount }) => parseFloat(amount))
     .reduce((acc, curr) => (acc += curr), 0);
@@ -63,6 +64,17 @@ function ViewConfirmedReturn({
   const forgottenReturns = [...scans].filter(({ id }) => {
     return ![...items].map(({ id }) => id).includes(id);
   });
+
+  useEffect(() => {
+    console.log('hihi');
+    if (get(scheduledReturn, 'items', []).length === 0) {
+      /**
+       * CANCELS ORDER ENTIRELY
+       * WILL REDIRECT TO DASHBOARD FOR NOW
+       */
+      history.push('/dashboard');
+    }
+  }, [scheduledReturn]);
 
   const initiateCancelOrder = () => {
     setShowCancelOrderModal(true);
@@ -115,6 +127,7 @@ function ViewConfirmedReturn({
             </h3>
             {items.map((item) => (
               <ProductCard
+                orderId={orderId}
                 scannedItem={item}
                 key={item.id}
                 selectable={false}
