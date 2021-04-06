@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 import ReturnPolicyModal from './ReturnPolicyModal';
 import EditProductModal from '../modals/EditProductModal';
 import moment from 'moment';
-export default function ProductCardHover({ orderDate = '2222-4-23' }) {
+export default function ProductCardHover({ orderDate = '2222-4-23', show }) {
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
   const [modalEditShow, setModalEditShow] = useState(false);
 
   return (
     <div>
-      <div id='OnHoverProductCard'>
+      <div
+        id='OnHoverProductCard'
+        style={{
+          display: show ? 'block' : 'none',
+        }}
+      >
         <div className='container-1'>
           <h4 className='date text-14 sofia-pro line-height-16'>
             {moment(orderDate, 'YYYY-MM-DD').format('MMMM DD YYYY')}

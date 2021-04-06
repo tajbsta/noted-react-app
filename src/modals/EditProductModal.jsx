@@ -3,6 +3,7 @@ import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
 import { useDropzone } from 'react-dropzone';
+import Flatpickr from 'react-flatpickr';
 
 export default function EditProductModal(props) {
   const [file, setFile] = useState('');
@@ -112,6 +113,23 @@ export default function EditProductModal(props) {
                 </Row>
                 <Row>
                   <Col>
+                    <Form.Group controlId='orderDate'>
+                      <Form.Label>Order Date</Form.Label>
+                      <div>
+                        <Flatpickr
+                          className='c-date-picker'
+                          options={{
+                            dateFormat: 'M j, Y',
+                            monthSelectorType: 'static',
+                            showMonths: 1,
+                          }}
+                        />
+                      </div>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
                     <Form.Group controlId='productName'>
                       <Form.Label>Product Name</Form.Label>
                       <div>
@@ -157,7 +175,11 @@ export default function EditProductModal(props) {
                 <Button className='btn-cancel' onClick={props.onHide}>
                   Cancel
                 </Button>
-                <Button className='btn-save' type='submit'>
+                <Button
+                  className='btn-save'
+                  type='submit'
+                  onClick={props.onHide}
+                >
                   Save Changes
                 </Button>
               </Col>

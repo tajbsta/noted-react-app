@@ -1,3 +1,4 @@
+#AddProductModal,
 #EditProductModal {
   height: 547px;
   width: 528px;
@@ -113,6 +114,26 @@
     }
   }
   //   End of Image
+
+  // DATE PICKER
+  .c-date-picker {
+    border: 1px solid #ece4f2;
+    border-radius: 4px;
+    height: calc(1.5em + 1rem + 2px);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9375rem;
+    min-width: 400px;
+  }
+
+  .flatpickr-calendar {
+    border: none;
+
+    &:hover {
+      border-radius: 8px !important;
+      color: #570097 !important;
+      background: #eee4f6;
+    }
+  }
 
   //   DROPZONE
   .documents-title {

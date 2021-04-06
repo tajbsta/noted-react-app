@@ -161,7 +161,7 @@ function ProductCard({
                 justifyItems: 'center',
               }}
             >
-              {showHoverContent && <ProductCardHover orderDate={orderDate} />}
+              <ProductCardHover orderDate={orderDate} show={showHoverContent} />
 
               {!isHover && !selected && (
                 <>
