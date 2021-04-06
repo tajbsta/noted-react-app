@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GREAT } from '../constants/returns/scores';
 import ReturnScore from './ReturnsScore';
 import Row from './Row';
@@ -10,6 +10,8 @@ import { updateForReturn, updateLastCall } from '../actions/runtime.action';
 import { useHistory } from 'react-router';
 import { get } from 'lodash';
 import { updateOrders } from '../actions/auth.action';
+import $ from 'jquery';
+
 function ProductCard({
   orderId = '',
   selectable = true,
@@ -116,6 +118,16 @@ function ProductCard({
 
   const showHoverContent = isHover || selected;
 
+  useEffect(() => {
+    const platform = window.navigator.platform;
+    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+
+    if (windowsPlatforms.indexOf(platform) !== -1) {
+      // Windows 10 Chrome
+      $('.x').css('position', 'initial');
+    }
+  }, []);
+
   return (
     <div id='productCard'>
       <div
@@ -156,7 +168,9 @@ function ProductCard({
             >
               {removable && !selectable && (
                 <div className='removeProduct' onClick={() => onRemove(id)}>
-                  <span>&times;</span>
+                  <span className='x' style={{ color: 'black' }}>
+                    &times;
+                  </span>
                 </div>
               )}
               <img
