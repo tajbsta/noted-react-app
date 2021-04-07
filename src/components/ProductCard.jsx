@@ -244,7 +244,11 @@ function ProductCard({
                 justifyItems: 'center',
               }}
             >
-              <ProductCardHover orderDate={orderDate} show={showHoverContent} />
+              <ProductCardHover
+                orderDate={orderDate}
+                show={showHoverContent}
+                scannedItem={scannedItem}
+              />
 
               {!isHover && !selected && (
                 <>

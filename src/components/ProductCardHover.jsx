@@ -2,9 +2,45 @@ import React, { useState } from 'react';
 import ReturnPolicyModal from './ReturnPolicyModal';
 import EditProductModal from '../modals/EditProductModal';
 import moment from 'moment';
-export default function ProductCardHover({ orderDate = '2222-4-23', show }) {
+import { get } from 'lodash';
+import {
+  mountProductInEdit,
+  unmountProductedit,
+} from '../actions/runtime.action';
+import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
+export default function ProductCardHover({
+  orderDate = '2222-4-23',
+  show,
+  scannedItem,
+}) {
+  const dispatch = useDispatch();
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
   const [modalEditShow, setModalEditShow] = useState(false);
+
+  const { handleChange, values } = useFormik({
+    initialValues: {
+      amount: get(scannedItem, 'amount', ''),
+      vendorTag: get(scannedItem, 'vendorTag', ''),
+      orderDate: get(scannedItem, 'orderDate', ''),
+      itemName: get(scannedItem, 'itemName', ''),
+      productUrl: '',
+    },
+  });
+
+  const onEdit = async () => {
+    /**
+     * MOUNT PRODUCT FIRST
+     */
+    dispatch(unmountProductedit());
+    dispatch(mountProductInEdit(scannedItem));
+    setModalEditShow(true);
+  };
+
+  const onHide = () => {
+    dispatch(unmountProductedit());
+    setModalEditShow(false);
+  };
 
   return (
     <div>
@@ -20,10 +56,7 @@ export default function ProductCardHover({ orderDate = '2222-4-23', show }) {
           </h4>
           <div className='info-container'>
             <p className='text-wrong-info sofia-pro'>Wrong info?&nbsp;</p>
-            <button
-              className='btn-hover-edit sofia-pro btn'
-              onClick={() => setModalEditShow(true)}
-            >
+            <button className='btn-hover-edit sofia-pro btn' onClick={onEdit}>
               {' '}
               Edit
             </button>
@@ -44,11 +77,14 @@ export default function ProductCardHover({ orderDate = '2222-4-23', show }) {
 
       <EditProductModal
         show={modalEditShow}
-        onHide={() => setModalEditShow(false)}
+        onHide={onHide}
+        editProductForm={{ handleChange, values }}
       />
       <ReturnPolicyModal
         show={modalPolicyShow}
-        onHide={() => setModalPolicyShow(false)}
+        onHide={() => {
+          setModalPolicyShow(false);
+        }}
       />
     </div>
   );

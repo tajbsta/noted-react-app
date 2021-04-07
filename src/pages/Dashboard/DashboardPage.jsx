@@ -34,7 +34,6 @@ function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [launchScan, setLaunchScan] = useState(false);
   const [userId, setUserId] = useState('');
-  const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [modalEmailShow, setModalEmailShow] = useState(false);
   const [modalProductShow, setModalProductShow] = useState(false);
@@ -47,15 +46,18 @@ function DashboardPage() {
     lastCall,
     forReturn,
     scheduledReturns,
+    scans: items,
   } = useSelector(
     ({
       runtime: { forDonation, forReturn, lastCall },
       auth: { scheduledReturns },
+      scans,
     }) => ({
       localDonationsCount: forDonation.length,
       forReturn,
       lastCall,
       scheduledReturns,
+      scans,
     })
   );
 
@@ -92,19 +94,21 @@ function DashboardPage() {
 
       setLoading(false);
 
-      setItems([...products]);
-
       if (!isEmpty(scheduledReturns)) {
-        setItems([
-          ...products.filter(
-            ({ id }) =>
-              ![
-                ...scheduledReturns
-                  .reduce((acc, curr) => acc.items.concat(curr.items))
-                  .map(({ id }) => id),
-              ].includes(id)
-          ),
-        ]);
+        dispatch(
+          storeScan({
+            scannedItems: [
+              ...products.filter(
+                ({ id }) =>
+                  ![
+                    ...scheduledReturns
+                      .reduce((acc, curr) => acc.items.concat(curr.items))
+                      .map(({ id }) => id),
+                  ].includes(id)
+              ),
+            ],
+          })
+        );
       }
       dispatch(storeScan({ scannedItems: [...products] }));
     } catch (error) {
@@ -144,6 +148,8 @@ function DashboardPage() {
       setUser(user);
     })();
   }, []);
+
+  const onEdit = () => {};
 
   return (
     <div>
