@@ -12,9 +12,10 @@ export default function DeleteAccount() {
             <Row>
               <Col>
                 <h4 className='delete-info'>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Quisque pharetra consequat cursus ac auctor duis commodo
-                  pulvinar.
+                  Deleting your account will permanently clear all scanned items
+                  and account information. All open orders will continue to be
+                  picked up and charged unless canceled through the order
+                  history page.
                 </h4>
               </Col>
               <Col className='d-flex justify-content-center'>

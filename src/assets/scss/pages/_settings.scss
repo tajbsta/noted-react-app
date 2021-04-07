@@ -258,6 +258,7 @@
       font-size: 14px;
       line-height: 18px;
       color: #0e0018;
+      min-width: 352px;
     }
 
     .btn-delete {
@@ -267,6 +268,8 @@
       max-width: 352px;
       margin-bottom: 0px;
       box-shadow: none;
+      position: relative;
+      left: 11%;
 
       &:hover {
         color: #b079da;
