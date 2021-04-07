@@ -126,13 +126,12 @@ function ViewConfirmedReturn({
             </h3>
             {items.map((item) => (
               <ProductCard
-                confirmed={confirmed}
-                hasModifications={hasModifications}
                 orderId={orderId}
                 scannedItem={item}
                 key={item.id}
                 selectable={false}
                 clickable={false}
+                removable={!confirmed && hasModifications}
               />
             ))}
             {/**
