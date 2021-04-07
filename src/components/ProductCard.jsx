@@ -11,6 +11,7 @@ import { useHistory } from 'react-router';
 import { get } from 'lodash';
 import { updateOrders } from '../actions/auth.action';
 import $ from 'jquery';
+import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 
 function ProductCard({
   orderId = '',
@@ -175,7 +176,7 @@ function ProductCard({
               )}
               <img
                 className='product-img'
-                src={imageUrl}
+                src={imageUrl || ProductPlaceholder}
                 alt=''
                 style={{
                   maxWidth: 50,

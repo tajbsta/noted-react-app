@@ -68,8 +68,6 @@ export default function EditProductModal(props) {
             <Row>
               <Col xs={2}>
                 <Form.Group controlId='image'>
-                  {/* <Form.Label>Image</Form.Label> */}
-
                   <div className='img-container'>
                     <img
                       src={ProductPlaceholder}
