@@ -114,6 +114,13 @@ export default function Address({ user }) {
       }
     : {};
 
+  const fullName = addressFormValues.fullName;
+  const phoneNumber = addressFormValues.phoneNumber;
+  const line1 = addressFormValues.line1;
+  const line2 = addressFormValues.line2;
+  const state = addressFormValues.state;
+  const zipCode = addressFormValues.zipCode;
+
   return (
     <div id='Address'>
       <div className='row'>
@@ -168,7 +175,7 @@ export default function Address({ user }) {
                         {...noBorder}
                         onChange={handleChange}
                       />
-                      {addressFormValues.fullName.length > 0 ||
+                      {(fullName && fullName.length > 0) ||
                         renderInlineError(errors.fullName)}
                     </Form.Group>
                   </Col>
@@ -199,7 +206,7 @@ export default function Address({ user }) {
                           ))}
                         </Form.Control>
                       )}
-                      {addressFormValues.state.length > 0 ||
+                      {(state && state.length > 0) ||
                         renderInlineError(errors.state)}
 
                       {!isEditing && (
@@ -231,7 +238,7 @@ export default function Address({ user }) {
                         value={addressFormValues.zipCode || ''}
                         {...noBorder}
                       />
-                      {addressFormValues.zipCode.length > 0 ||
+                      {(zipCode && zipCode.length > 0) ||
                         renderInlineError(errors.zipCode)}
                     </Form.Group>
                   </Col>
@@ -249,7 +256,7 @@ export default function Address({ user }) {
                         value={addressFormValues.line1 || ''}
                         {...noBorder}
                       />
-                      {addressFormValues.line1.length > 0 ||
+                      {(line1 && line1.length > 0) ||
                         renderInlineError(errors.line1)}
                     </Form.Group>
                   </Col>
@@ -292,7 +299,7 @@ export default function Address({ user }) {
                         onChange={handleChange}
                         {...noBorder}
                       />
-                      {addressFormValues.line2.length > 0 ||
+                      {(line2 && line2.length > 0) ||
                         renderInlineError(errors.line2)}
                     </Form.Group>
                   </Col>

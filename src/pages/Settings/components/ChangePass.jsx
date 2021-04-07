@@ -125,7 +125,7 @@ export default function ChangePass() {
             <Form>
               <Row>
                 <Col>
-                  <div className='form-group' controlId='oldPassword'>
+                  <div className='form-group'>
                     <div className='col col-pass'>
                       <label>Current Password</label>
                     </div>
@@ -154,7 +154,7 @@ export default function ChangePass() {
                 <Col>
                   <Row>
                     <Col>
-                      <div className='form-group' controlId='newPassword'>
+                      <div className='form-group'>
                         <div className='col col-pass'>
                           <label>New Password</label>
                         </div>
@@ -183,7 +183,7 @@ export default function ChangePass() {
                   </Row>
                   <Row>
                     <Col>
-                      <div className='form-group' controlId='confirmPassword'>
+                      <div className='form-group'>
                         <div className='col col-pass'>
                           <label>Confirm Password</label>
                         </div>
