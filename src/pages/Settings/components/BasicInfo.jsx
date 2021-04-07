@@ -40,6 +40,11 @@ export default function BasicInfo({ user }) {
 
     if (user) {
       setFieldValue('fullName', user.name);
+      setFieldValue('phoneNumber', user['custom:phone']);
+      setFieldValue('line1', user.address);
+      setFieldValue('line2', user['custom:address_2']);
+      setFieldValue('zipCode', user['custom:zipcode']);
+      setFieldValue('state', user['custom:state']);
     }
   }, [user]);
 
@@ -145,7 +150,8 @@ export default function BasicInfo({ user }) {
                     {...noBorder}
                     onChange={handleChange}
                   />
-                  {renderInlineError(errors.fullName)}
+                  {addressFormValues.fullName.length > 0 ||
+                    renderInlineError(errors.fullName)}
                 </Form.Group>
               </Col>
               <Col>
@@ -172,7 +178,8 @@ export default function BasicInfo({ user }) {
                       ))}
                     </Form.Control>
                   )}
-                  {renderInlineError(errors.state)}
+                  {addressFormValues.state.length > 0 ||
+                    renderInlineError(errors.state)}
 
                   {!isEditing && (
                     <Form.Control
@@ -200,7 +207,8 @@ export default function BasicInfo({ user }) {
                     value={addressFormValues.zipCode || ''}
                     {...noBorder}
                   />
-                  {renderInlineError(errors.zipCode)}
+                  {addressFormValues.zipCode.length > 0 ||
+                    renderInlineError(errors.zipCode)}
                 </Form.Group>
               </Col>
             </Row>
@@ -217,7 +225,7 @@ export default function BasicInfo({ user }) {
                     value={addressFormValues.line1 || ''}
                     {...noBorder}
                   />
-                  {addressFormValues.line1.length > 0 &&
+                  {addressFormValues.line1.length > 0 ||
                     renderInlineError(errors.line1)}
                 </Form.Group>
               </Col>
@@ -233,7 +241,9 @@ export default function BasicInfo({ user }) {
                         handleChange(e);
                       }
                     }}
-                    value={formatPhoneNumber(addressFormValues.phoneNumber)}
+                    value={
+                      formatPhoneNumber(addressFormValues.phoneNumber) || ''
+                    }
                     name='phoneNumber'
                     maxLength={13}
                     {...noBorder}
@@ -255,7 +265,7 @@ export default function BasicInfo({ user }) {
                     onChange={handleChange}
                     {...noBorder}
                   />
-                  {addressFormValues.line2.length > 0 &&
+                  {addressFormValues.line2.length > 0 ||
                     renderInlineError(errors.line2)}
                 </Form.Group>
               </Col>
