@@ -19,12 +19,20 @@ export default function EditProductModal(props) {
   }));
   const [loading, setLoading] = useState(false);
   const returnId = get(inEdit, 'id', '');
-  const { handleChange, values } = props.editProductForm;
+  const { handleChange, values, setFieldValue } = props.editProductForm;
 
-  const { amount, vendorTag, orderDate, itemName, productUrl } = values;
+  const {
+    amount,
+    vendorTag,
+    orderDate,
+    itemName,
+    productUrl,
+    imageUrl,
+  } = values;
 
   const onSave = (e) => {
     e.preventDefault();
+    console.log(file);
     /**
      * FILTER FOR NOW THEN ADD
      * @PROCESS filter current product first
@@ -37,6 +45,7 @@ export default function EditProductModal(props) {
       orderDate,
       itemName,
       productUrl,
+      imageUrl,
     };
     const newScanIndex = [...scans].map((scan) => scan.id).indexOf(returnId);
     scans[newScanIndex] = newScan;
@@ -65,6 +74,7 @@ export default function EditProductModal(props) {
   const handleUpload = (event) => {
     // const file = event.target.files[0];
     setFile(event.target.files[0]);
+    setFieldValue('imageUrl', URL.createObjectURL(event.target.files[0]));
 
     if (file && file.size > 5097152) {
       alert('File is too large! The maximum size for file upload is 5 MB.');
@@ -105,14 +115,16 @@ export default function EditProductModal(props) {
               <Col xs={2}>
                 <Form.Group controlId='image'>
                   {/* <Form.Label>Image</Form.Label> */}
-
                   <div className='img-container'>
-                    <img
-                      src={ProductPlaceholder}
-                      className={`${
-                        file ? 'no-placeholder' : 'default-placeholder'
-                      }`}
-                    />
+                    {!file && (
+                      <img
+                        src={imageUrl}
+                        style={{
+                          width: '64px',
+                          height: '64px',
+                        }}
+                      />
+                    )}
                     {file && <ImageThumb image={file} />}
                     <div className='upload-button'>
                       <i className='fa fa-upload-icon' aria-hidden='true'>

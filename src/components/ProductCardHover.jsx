@@ -18,13 +18,14 @@ export default function ProductCardHover({
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
   const [modalEditShow, setModalEditShow] = useState(false);
 
-  const { handleChange, values } = useFormik({
+  const { handleChange, values, setFieldValue } = useFormik({
     initialValues: {
       amount: get(scannedItem, 'amount', ''),
       vendorTag: get(scannedItem, 'vendorTag', ''),
       orderDate: get(scannedItem, 'orderDate', ''),
       itemName: get(scannedItem, 'itemName', ''),
       productUrl: '',
+      imageUrl: get(scannedItem, 'imageUrl', ''),
     },
   });
 
@@ -78,7 +79,7 @@ export default function ProductCardHover({
       <EditProductModal
         show={modalEditShow}
         onHide={onHide}
-        editProductForm={{ handleChange, values }}
+        editProductForm={{ handleChange, values, setFieldValue }}
       />
       <ReturnPolicyModal
         show={modalPolicyShow}
