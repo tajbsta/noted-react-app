@@ -29,10 +29,13 @@ export default function EmailAddresses({ user }) {
                     <Col>
                       <Form.Group controlId='exampleForm.ControlInput1'>
                         <Form.Label>Account email</Form.Label>
-                        <Form.Control
+                        {/* <Form.Control
                           type='email'
                           placeholder={user && user.email}
-                        />
+                        /> */}
+                        <div className='master-email'>
+                          <h4>{user && user.email}</h4>
+                        </div>
                       </Form.Group>
                     </Col>
                   </Row>
