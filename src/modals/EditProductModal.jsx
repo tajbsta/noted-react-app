@@ -9,6 +9,7 @@ import { get } from 'lodash';
 import { useFormik } from 'formik';
 import { updateScans } from '../actions/scans.action';
 import { unmountProductedit } from '../actions/runtime.action';
+import moment from 'moment';
 
 export default function EditProductModal(props) {
   const dispatch = useDispatch();
@@ -176,8 +177,16 @@ export default function EditProductModal(props) {
                             showMonths: 1,
                           }}
                           name='orderDate'
-                          onChange={(e) => console.log(e)}
-                          value={orderDate}
+                          onChange={(date) =>
+                            setFieldValue(
+                              'orderDate',
+                              moment(get(date, '[0]', '')).format('YYYY-MM-DD')
+                            )
+                          }
+                          defaultValue={moment(
+                            orderDate,
+                            'YYYY-MM-DD'
+                          ).toISOString()}
                         />
                       </div>
                     </Form.Group>
