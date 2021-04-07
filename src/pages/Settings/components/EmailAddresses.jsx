@@ -27,12 +27,8 @@ export default function EmailAddresses({ user }) {
                 <Form>
                   <Row>
                     <Col>
-                      <Form.Group controlId='exampleForm.ControlInput1'>
+                      <Form.Group>
                         <Form.Label>Account email</Form.Label>
-                        {/* <Form.Control
-                          type='email'
-                          placeholder={user && user.email}
-                        /> */}
                         <div className='master-email'>
                           <h4>{user && user.email}</h4>
                         </div>
@@ -41,7 +37,7 @@ export default function EmailAddresses({ user }) {
                   </Row>
                   <Row>
                     <Col>
-                      <Form.Group controlId='exampleForm.ControlInput2'>
+                      <Form.Group>
                         <div className='title-group'>
                           <Form.Label>Email #1</Form.Label>
                           <Button className='btn delete-email'>
@@ -57,7 +53,7 @@ export default function EmailAddresses({ user }) {
                   </Row>
                   <Row>
                     <Col>
-                      <Form.Group controlId='exampleForm.ControlInput1'>
+                      <Form.Group>
                         <div className='title-group'>
                           <Form.Label>Email #2</Form.Label>
                           <Button className='btn delete-email'>
