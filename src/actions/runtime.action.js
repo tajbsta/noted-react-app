@@ -13,6 +13,8 @@ import {
   CLEAR_FORM,
   UPDATE_CURRENT_ORDER,
   CLEAR_CURRENT_ORDER,
+  MOUNT_PRODUCT_IN_EDIT,
+  UNMOUNT_PRODUCT_IN_EDIT,
 } from '../constants/actions/runtime';
 
 export const searchScans = (query) => ({
@@ -77,4 +79,13 @@ export const updateCurrentOrder = (data) => ({
 
 export const clearCurrentOrder = () => ({
   type: CLEAR_CURRENT_ORDER,
+});
+
+export const mountProductInEdit = (data) => ({
+  type: MOUNT_PRODUCT_IN_EDIT,
+  data,
+});
+
+export const unmountProductedit = () => ({
+  type: UNMOUNT_PRODUCT_IN_EDIT,
 });

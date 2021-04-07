@@ -4,10 +4,56 @@ import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
 import { useDropzone } from 'react-dropzone';
 import Flatpickr from 'react-flatpickr';
+import { useDispatch, useSelector } from 'react-redux';
+import { get } from 'lodash';
+import { useFormik } from 'formik';
+import { updateScans } from '../actions/scans.action';
+import { unmountProductedit } from '../actions/runtime.action';
+import moment from 'moment';
 
 export default function EditProductModal(props) {
+  const dispatch = useDispatch();
   const [file, setFile] = useState('');
+  const { inEdit, scans } = useSelector(({ runtime: { inEdit }, scans }) => ({
+    inEdit,
+    scans,
+  }));
   const [loading, setLoading] = useState(false);
+  const returnId = get(inEdit, 'id', '');
+  const { handleChange, values, setFieldValue } = props.editProductForm;
+
+  const {
+    amount,
+    vendorTag,
+    orderDate,
+    itemName,
+    productUrl,
+    imageUrl,
+  } = values;
+
+  const onSave = (e) => {
+    e.preventDefault();
+    console.log(file);
+    /**
+     * FILTER FOR NOW THEN ADD
+     * @PROCESS filter current product first
+     *
+     */
+    const newScan = {
+      ...inEdit,
+      amount,
+      vendorTag,
+      orderDate,
+      itemName,
+      productUrl,
+      imageUrl,
+    };
+    const newScanIndex = [...scans].map((scan) => scan.id).indexOf(returnId);
+    scans[newScanIndex] = newScan;
+    dispatch(updateScans({ scannedItems: [...scans] }));
+    dispatch(unmountProductedit());
+    props.onHide();
+  };
 
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
@@ -29,6 +75,7 @@ export default function EditProductModal(props) {
   const handleUpload = (event) => {
     // const file = event.target.files[0];
     setFile(event.target.files[0]);
+    setFieldValue('imageUrl', URL.createObjectURL(event.target.files[0]));
 
     if (file && file.size > 5097152) {
       alert('File is too large! The maximum size for file upload is 5 MB.');
@@ -69,12 +116,15 @@ export default function EditProductModal(props) {
               <Col xs={2}>
                 <Form.Group controlId='image'>
                   <div className='img-container'>
-                    <img
-                      src={ProductPlaceholder}
-                      className={`${
-                        file ? 'no-placeholder' : 'default-placeholder'
-                      }`}
-                    />
+                    {!file && (
+                      <img
+                        src={imageUrl}
+                        style={{
+                          width: '64px',
+                          height: '64px',
+                        }}
+                      />
+                    )}
                     {file && <ImageThumb image={file} />}
                     <div className='upload-button'>
                       <i className='fa fa-upload-icon' aria-hidden='true'>
@@ -104,7 +154,11 @@ export default function EditProductModal(props) {
                     <Form.Group controlId='merchant'>
                       <Form.Label>Merchant</Form.Label>
                       <div>
-                        <Form.Control />
+                        <Form.Control
+                          name='vendorTag'
+                          onChange={handleChange}
+                          value={vendorTag}
+                        />
                       </div>
                     </Form.Group>
                   </Col>
@@ -121,6 +175,17 @@ export default function EditProductModal(props) {
                             monthSelectorType: 'static',
                             showMonths: 1,
                           }}
+                          name='orderDate'
+                          onChange={(date) =>
+                            setFieldValue(
+                              'orderDate',
+                              moment(get(date, '[0]', '')).format('YYYY-MM-DD')
+                            )
+                          }
+                          defaultValue={moment(
+                            orderDate,
+                            'YYYY-MM-DD'
+                          ).toISOString()}
                         />
                       </div>
                     </Form.Group>
@@ -131,7 +196,11 @@ export default function EditProductModal(props) {
                     <Form.Group controlId='productName'>
                       <Form.Label>Product Name</Form.Label>
                       <div>
-                        <Form.Control />
+                        <Form.Control
+                          name='itemName'
+                          onChange={handleChange}
+                          value={itemName}
+                        />
                       </div>
                     </Form.Group>
                   </Col>
@@ -142,7 +211,11 @@ export default function EditProductModal(props) {
                     <Form.Group controlId='price'>
                       <Form.Label>Price</Form.Label>
                       <div>
-                        <Form.Control />
+                        <Form.Control
+                          name='amount'
+                          onChange={handleChange}
+                          value={amount}
+                        />
                       </div>
                     </Form.Group>
                   </Col>
@@ -173,11 +246,7 @@ export default function EditProductModal(props) {
                 <Button className='btn-cancel' onClick={props.onHide}>
                   Cancel
                 </Button>
-                <Button
-                  className='btn-save'
-                  type='submit'
-                  onClick={props.onHide}
-                >
+                <Button className='btn-save' type='submit' onClick={onSave}>
                   Save Changes
                 </Button>
               </Col>

@@ -1,4 +1,8 @@
-import { STORE_SCAN, UNSET_SCAN } from "../constants/actions/scans";
+import {
+  STORE_SCAN,
+  UNSET_SCAN,
+  UPDATE_SCANS,
+} from '../constants/actions/scans';
 
 function scans(state = [], { type, scannedItems: scans }) {
   switch (type) {
@@ -6,6 +10,8 @@ function scans(state = [], { type, scannedItems: scans }) {
       return scans;
     case UNSET_SCAN:
       return [];
+    case UPDATE_SCANS:
+      return scans;
     default:
       return state;
   }
