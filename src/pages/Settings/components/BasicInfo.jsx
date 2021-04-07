@@ -22,11 +22,11 @@ export default function BasicInfo({ user }) {
   } = useFormik({
     initialValues: {
       fullName: '',
+      phoneNumber: '',
+      line1: '',
+      city: '',
       state: '',
       zipCode: '',
-      line1: '',
-      line2: '',
-      phoneNumber: '',
     },
     validationSchema: pickUpAddressSchema,
   });
@@ -43,8 +43,9 @@ export default function BasicInfo({ user }) {
       setFieldValue('phoneNumber', user['custom:phone']);
       setFieldValue('line1', user.address);
       setFieldValue('line2', user['custom:address_2']);
-      setFieldValue('zipCode', user['custom:zipcode']);
+      setFieldValue('city', user['custom:city']);
       setFieldValue('state', user['custom:state']);
+      setFieldValue('zipCode', user['custom:zipcode']);
     }
   }, [user]);
 
@@ -60,6 +61,7 @@ export default function BasicInfo({ user }) {
         'custom:phone': addressFormValues.phoneNumber || '',
         address: addressFormValues.line1 || '',
         'custom:address_2': addressFormValues.line2 || '',
+        'custom:city': addressFormValues.city || '',
         'custom:state': addressFormValues.state || '',
         'custom:zipcode': addressFormValues.zipCode || '',
       };
@@ -70,8 +72,8 @@ export default function BasicInfo({ user }) {
       if (
         !addressFormValues.fullName ||
         !addressFormValues.phoneNumber ||
+        !addressFormValues.city ||
         !addressFormValues.line1 ||
-        !addressFormValues.line2 ||
         !addressFormValues.state ||
         !addressFormValues.zipCode
       ) {
@@ -113,7 +115,7 @@ export default function BasicInfo({ user }) {
   const fullName = addressFormValues.fullName;
   const phoneNumber = addressFormValues.phoneNumber;
   const line1 = addressFormValues.line1;
-  const line2 = addressFormValues.line2;
+  const city = addressFormValues.city;
   const state = addressFormValues.state;
   const zipCode = addressFormValues.zipCode;
 
@@ -144,7 +146,7 @@ export default function BasicInfo({ user }) {
         <div className='card-body'>
           <Form id='Info'>
             <Row>
-              <Col xs={6}>
+              <Col>
                 <Form.Group>
                   <Form.Label>Full Name</Form.Label>
                   <Form.Control
@@ -200,7 +202,7 @@ export default function BasicInfo({ user }) {
                 <Form.Group>
                   <Form.Label>Zip Code</Form.Label>
                   <Form.Control
-                    className='form-control-sm'
+                    className='form-control-md'
                     onChange={(e) => {
                       const re = /^[0-9\b]+$/;
                       if (e.target.value === '' || re.test(e.target.value)) {
@@ -236,9 +238,23 @@ export default function BasicInfo({ user }) {
               </Col>
               <Col>
                 <Form.Group>
+                  <Form.Label>City</Form.Label>
+                  <Form.Control
+                    className='form-control-md'
+                    type='city'
+                    name='city'
+                    value={addressFormValues.city || ''}
+                    onChange={handleChange}
+                    {...noBorder}
+                  />
+                  {(city && city.length > 0) || renderInlineError(errors.city)}
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group>
                   <Form.Label>Phone</Form.Label>
                   <Form.Control
-                    className='form-control-lg'
+                    className='form-control-md'
                     type='phone number'
                     onChange={(e) => {
                       const re = /^[0-9\b]+$/;
@@ -270,8 +286,6 @@ export default function BasicInfo({ user }) {
                     onChange={handleChange}
                     {...noBorder}
                   />
-                  {(line2 && line2.length > 0) ||
-                    renderInlineError(errors.line2)}
                 </Form.Group>
               </Col>
 
