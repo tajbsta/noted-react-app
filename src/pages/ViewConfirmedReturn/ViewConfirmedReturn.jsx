@@ -66,7 +66,6 @@ function ViewConfirmedReturn({
   });
 
   useEffect(() => {
-    console.log('hihi');
     if (get(scheduledReturn, 'items', []).length === 0) {
       /**
        * CANCELS ORDER ENTIRELY
