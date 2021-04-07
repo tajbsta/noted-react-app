@@ -14,6 +14,7 @@ import $ from 'jquery';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 
 function ProductCard({
+  hasModifications = false,
   confirmed = false,
   orderId = '',
   selectable = true,
@@ -168,7 +169,7 @@ function ProductCard({
                 alignItems: 'center',
               }}
             >
-              {removable && !selectable && !confirmed && (
+              {removable && !selectable && !confirmed && hasModifications && (
                 <div className='removeProduct' onClick={() => onRemove(id)}>
                   <span className='x' style={{ color: 'black' }}>
                     &times;

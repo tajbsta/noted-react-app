@@ -127,6 +127,7 @@ function ViewConfirmedReturn({
             {items.map((item) => (
               <ProductCard
                 confirmed={confirmed}
+                hasModifications={hasModifications}
                 orderId={orderId}
                 scannedItem={item}
                 key={item.id}
