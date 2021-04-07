@@ -118,7 +118,7 @@ export default function EditProductModal(props) {
                   <div className='img-container'>
                     {!file && (
                       <img
-                        src={imageUrl}
+                        src={imageUrl || ProductPlaceholder}
                         style={{
                           width: '64px',
                           height: '64px',
