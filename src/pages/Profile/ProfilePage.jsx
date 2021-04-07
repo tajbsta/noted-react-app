@@ -16,35 +16,6 @@ export default function ProfilePage() {
   const [showEditPayment] = useState(true);
   const [user, setUser] = useState(null);
 
-  const {
-    handleChange: handleAddressChange,
-    values: addressFormValues,
-  } = useFormik({
-    initialValues: {
-      fullName: '',
-      state: '',
-      zipCode: '',
-      line1: '',
-      line2: '',
-      phoneNumber: '',
-    },
-    validationSchema: pickUpAddressSchema,
-  });
-
-  const {
-    handleChange: handlePaymentChange,
-    values: paymentFormValues,
-  } = useFormik({
-    initialValues: {
-      fullName: '',
-      cardNumber: '',
-      expirationMonth: '',
-      expirationYear: '',
-      cvc: '',
-    },
-    validationSchema: paymentAddressSchema,
-  });
-
   useEffect(() => {
     (async () => {
       const user = await getUser();
@@ -65,17 +36,11 @@ export default function ProfilePage() {
               </div>
             </div>
             <div className='col-sm-9'>
-              <Address
-                {...addressFormValues}
-                handleChange={handleAddressChange}
-              />
+              <Address user={user} />
               <hr />
               {showEditPayment && (
                 <div>
-                  <Payment
-                    {...paymentFormValues}
-                    handleChange={handlePaymentChange}
-                  />
+                  <Payment />
                 </div>
               )}
               <hr />

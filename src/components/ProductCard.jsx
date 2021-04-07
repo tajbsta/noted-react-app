@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GREAT } from '../constants/returns/scores';
 import ReturnScore from './ReturnsScore';
 import Row from './Row';
 import { Container, Col } from 'react-bootstrap';
 import ProductDetails from './ProductDetails';
 import ProductCardHover from './ProductCardHover';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateForReturn, updateLastCall } from '../actions/runtime.action';
+import { useHistory } from 'react-router';
+import { get } from 'lodash';
+import { updateOrders } from '../actions/auth.action';
+import $ from 'jquery';
+import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 
 function ProductCard({
+  orderId = '',
   selectable = true,
   selected,
   addSelected,
+  removable = true,
   removeSelected = () => {},
   clickable = true,
   scannedItem: {
@@ -24,6 +33,17 @@ function ProductCard({
   disabled,
   scannedItem,
 }) {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const pathName = get(history, 'location.pathname', '');
+  const { forReturn, lastCall, scheduledReturns } = useSelector(
+    ({ runtime: { forReturn, lastCall }, auth: { scheduledReturns } }) => ({
+      forReturn,
+      lastCall,
+      scheduledReturns,
+    })
+  );
+
   const [isHover, setIsHover] = useState(false);
   const handleSelection = () => {
     if (selected) {
@@ -31,6 +51,52 @@ function ProductCard({
       return;
     }
     addSelected(id);
+  };
+
+  const onRemove = (id) => {
+    /**
+     * REMOVE PRODUCT HERE FROM WHEREVER IT IS STORED FOR NOW.
+     * BACKEND INTEGRATION WILL MAKE THIS PRETTY :()
+     */
+
+    if (pathName === '/view-scan') {
+      dispatch(
+        updateForReturn({
+          scans: [...forReturn.filter(({ id: returnId }) => returnId !== id)],
+        })
+      );
+      dispatch(
+        updateLastCall({
+          scans: [...lastCall.filter(({ id: returnId }) => returnId !== id)],
+        })
+      );
+    }
+
+    if (pathName === '/view-return') {
+      const scheduledReturn = scheduledReturns.find(({ id }) => id === orderId);
+      console.log(scheduledReturn);
+      /**
+       * MUTATE THE ORDER => then => ORDERS FOR NOW
+       */
+      const items = get(scheduledReturn, 'items', []);
+      /**
+       * MUTATING ITEMS FIRST
+       */
+      const newItems = items.filter(({ id: returnId }) => returnId !== id);
+      /**
+       * CREATE NEW MUTATION OF THE ORDER
+       */
+      const newScheduledReturn = { ...scheduledReturn, items: [...newItems] };
+      /**
+       * MUTATE ORDERS WITH NEW ORDER
+       */
+      dispatch(
+        updateOrders([
+          ...scheduledReturns.filter(({ id }) => newScheduledReturn.id !== id),
+          { ...newScheduledReturn },
+        ])
+      );
+    }
   };
 
   // Truncate name if name is longer than 15 characters
@@ -52,6 +118,16 @@ function ProductCard({
   };
 
   const showHoverContent = isHover || selected;
+
+  useEffect(() => {
+    const platform = window.navigator.platform;
+    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+
+    if (windowsPlatforms.indexOf(platform) !== -1) {
+      // Windows 10 Chrome
+      $('.x').css('position', 'initial');
+    }
+  }, []);
 
   return (
     <div id='productCard'>
@@ -83,6 +159,7 @@ function ProductCard({
                 />
               </div>
             )}
+
             <div
               className='product-img-container'
               style={{
@@ -90,9 +167,16 @@ function ProductCard({
                 alignItems: 'center',
               }}
             >
+              {removable && !selectable && (
+                <div className='removeProduct' onClick={() => onRemove(id)}>
+                  <span className='x' style={{ color: 'black' }}>
+                    &times;
+                  </span>
+                </div>
+              )}
               <img
                 className='product-img'
-                src={imageUrl}
+                src={imageUrl || ProductPlaceholder}
                 alt=''
                 style={{
                   maxWidth: 50,
@@ -161,7 +245,11 @@ function ProductCard({
                 justifyItems: 'center',
               }}
             >
-              {showHoverContent && <ProductCardHover orderDate={orderDate} />}
+              <ProductCardHover
+                orderDate={orderDate}
+                show={showHoverContent}
+                scannedItem={scannedItem}
+              />
 
               {!isHover && !selected && (
                 <>

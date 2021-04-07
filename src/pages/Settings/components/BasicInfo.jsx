@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import USA_STATES from '../../../assets/usa_states.json';
 import { formatPhoneNumber } from '../../../utils/form';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
 import $ from 'jquery';
 import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../../models/formSchema';
 import { updateUserAttributes } from '../../../utils/auth';
+import { AlertCircle, CheckCircle } from 'react-feather';
 
 export default function BasicInfo({ user }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  const { handleChange, setFieldValue, values: addressFormValues } = useFormik({
+  const {
+    errors,
+    handleChange,
+    setFieldValue,
+    values: addressFormValues,
+  } = useFormik({
     initialValues: {
       fullName: '',
       state: '',
@@ -24,36 +31,62 @@ export default function BasicInfo({ user }) {
     validationSchema: pickUpAddressSchema,
   });
 
+  const renderInlineError = (errors) => (
+    <small className='form-text p-0 m-0 noted-red'>{errors}</small>
+  );
+
   useEffect(() => {
-    console.log({ user });
+    // console.log({ user });
 
     if (user) {
       setFieldValue('fullName', user.name);
+      setFieldValue('phoneNumber', user['custom:phone']);
+      setFieldValue('line1', user.address);
+      setFieldValue('line2', user['custom:address_2']);
+      setFieldValue('zipCode', user['custom:zipcode']);
+      setFieldValue('state', user['custom:state']);
     }
   }, [user]);
 
   const updateBasicInfo = async () => {
     console.log(addressFormValues);
-    setError(null);
-    setSuccess(null);
+    setError(false);
+    setSuccess(false);
+    setIsSubmitting(true);
+
     try {
       const attributes = {
         name: addressFormValues.fullName || '',
+        'custom:phone': addressFormValues.phoneNumber || '',
         address: addressFormValues.line1 || '',
-        // 'custom:phone': addressFormValues.phone || '',
         'custom:address_2': addressFormValues.line2 || '',
         'custom:state': addressFormValues.state || '',
         'custom:zipcode': addressFormValues.zipCode || '',
       };
 
       await updateUserAttributes(attributes);
-      setSuccess(true);
+      setIsSubmitting(false);
 
-      // show success alert
-      console.log('success');
-    } catch (error) {
-      // show error alert
+      if (
+        !addressFormValues.fullName ||
+        !addressFormValues.phoneNumber ||
+        !addressFormValues.line1 ||
+        !addressFormValues.line2 ||
+        !addressFormValues.state ||
+        !addressFormValues.zipCode
+      ) {
+        setSuccess(false);
+        setError('Missing field. Please complete the form.');
+      } else {
+        setError(false);
+        setSuccess(true);
+      }
+    } catch (err) {
+      console.log(err);
+      setSuccess(false);
       setError(true);
+
+      setIsSubmitting(false);
     }
   };
 
@@ -76,20 +109,29 @@ export default function BasicInfo({ user }) {
         disabled: true,
       }
     : {};
+
+  console.log(errors.state);
+
   return (
     <div id='BasicInfo'>
       <h3 className='sofia-pro text-18 mb-4'>Basic Information</h3>
       {success && (
         <div className='alert alert-success w-840' role='alert'>
           <div>
-            <h4 className='text-center text-alert'>Success</h4>
+            <h4 className='text-center text-alert'>
+              <CheckCircle />
+              &nbsp;&nbsp;&nbsp;Success
+            </h4>
           </div>
         </div>
       )}
       {error && (
         <div className='alert alert-danger w-840' role='alert'>
           <div>
-            <h4 className='text-center text-alert'>Error occurred</h4>
+            <h4 className='text-center text-alert'>
+              <AlertCircle />
+              &nbsp;&nbsp;&nbsp;{error}
+            </h4>
           </div>
         </div>
       )}
@@ -108,40 +150,45 @@ export default function BasicInfo({ user }) {
                     {...noBorder}
                     onChange={handleChange}
                   />
+                  {addressFormValues.fullName.length > 0 ||
+                    renderInlineError(errors.fullName)}
                 </Form.Group>
               </Col>
               <Col>
                 <Form.Group>
                   <Form.Label>State</Form.Label>
-                  {/* {isEditing && ( */}
-                  <Form.Control
-                    className='form-control-md'
-                    as='select'
-                    // value={addressFormValues.state || ''}
-                    name='state'
-                    onChange={handleChange}
-                    placeholder='Select State'
-                    defaultValue='null'
-                    {...noBorder}
-                  >
-                    {[
-                      { abbreviation: '', name: 'Select State' },
-                      ...USA_STATES,
-                    ].map(({ name, abbreviation }) => (
-                      <option value={abbreviation} key={`${abbreviation}`}>
-                        {name}
-                      </option>
-                    ))}
-                  </Form.Control>
-                  {/* )} */}
-                  {/* {!isEditing && (
+                  {isEditing && (
+                    <Form.Control
+                      className='form-control-md'
+                      as='select'
+                      value={addressFormValues.state || ''}
+                      name='state'
+                      onChange={handleChange}
+                      placeholder='Select State'
+                      defaultValue='null'
+                      {...noBorder}
+                    >
+                      {[
+                        { abbreviation: '', name: 'Select State' },
+                        ...USA_STATES,
+                      ].map(({ name, abbreviation }) => (
+                        <option value={abbreviation} key={`${abbreviation}`}>
+                          {name}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  )}
+                  {addressFormValues.state.length > 0 ||
+                    renderInlineError(errors.state)}
+
+                  {!isEditing && (
                     <Form.Control
                       className='form-control-sm'
                       type='zip code'
-                      value={state}
+                      value={addressFormValues.state}
                       {...noBorder}
                     />
-                  )} */}
+                  )}
                 </Form.Group>
               </Col>
               <Col>
@@ -149,9 +196,19 @@ export default function BasicInfo({ user }) {
                   <Form.Label>Zip Code</Form.Label>
                   <Form.Control
                     className='form-control-sm'
+                    onChange={(e) => {
+                      const re = /^[0-9\b]+$/;
+                      if (e.target.value === '' || re.test(e.target.value)) {
+                        handleChange(e);
+                      }
+                    }}
+                    name='zipCode'
                     type='zip code'
+                    value={addressFormValues.zipCode || ''}
                     {...noBorder}
                   />
+                  {addressFormValues.zipCode.length > 0 ||
+                    renderInlineError(errors.zipCode)}
                 </Form.Group>
               </Col>
             </Row>
@@ -163,8 +220,13 @@ export default function BasicInfo({ user }) {
                   <Form.Control
                     className='form-control-lg'
                     type='name'
+                    name='line1'
+                    onChange={handleChange}
+                    value={addressFormValues.line1 || ''}
                     {...noBorder}
                   />
+                  {addressFormValues.line1.length > 0 ||
+                    renderInlineError(errors.line1)}
                 </Form.Group>
               </Col>
               <Col>
@@ -186,6 +248,7 @@ export default function BasicInfo({ user }) {
                     maxLength={13}
                     {...noBorder}
                   />
+                  {renderInlineError(errors.phoneNumber)}
                 </Form.Group>
               </Col>
             </Row>
@@ -197,17 +260,14 @@ export default function BasicInfo({ user }) {
                   <Form.Control
                     className='form-control-lg'
                     type='name'
+                    value={addressFormValues.line2 || ''}
+                    name='line2'
+                    onChange={handleChange}
                     {...noBorder}
                   />
+                  {addressFormValues.line2.length > 0 ||
+                    renderInlineError(errors.line2)}
                 </Form.Group>
-              </Col>
-
-              <Col className='add-pick-up'>
-                {/* <div>
-                  <h4 className='noted-purple text-instructions'>
-                    Add pick-up instructions
-                  </h4>
-                </div> */}
               </Col>
 
               <Col className='btn-container'>
@@ -233,7 +293,15 @@ export default function BasicInfo({ user }) {
                       setIsEditing(true);
                     }}
                   >
-                    Edit
+                    {!isSubmitting ? (
+                      'Edit'
+                    ) : (
+                      <Spinner
+                        animation='border'
+                        size='sm'
+                        className='spinner'
+                      />
+                    )}
                   </Button>
                 )}
               </Col>

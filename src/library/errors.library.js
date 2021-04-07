@@ -64,7 +64,7 @@ export const resetPassErrors = [
   },
   {
     code: CODE_MISMATCH_EXCEPTION,
-    message: "Invalid code provided, please put correct code.",
+    message: "Invalid code provided.",
   },
   {
     code: LIMIT_EXCEEDED_EXCEPTION,

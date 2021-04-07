@@ -5,7 +5,9 @@ import {
   CLEAR_PICKUP_DETAILS,
   CLEAR_RETURN_ADDRESS,
   CLEAR_SEARCH,
+  MOUNT_PRODUCT_IN_EDIT,
   SEARCH,
+  UNMOUNT_PRODUCT_IN_EDIT,
   UPDATE_CURRENT_ORDER,
   UPDATE_FOR_DONATION,
   UPDATE_FOR_RETURN,
@@ -20,6 +22,7 @@ const initialState = {
   lastCall: [],
   forReturn: [],
   forDonation: [],
+  inEdit: {},
   form: {
     address: {},
     payment: {},
@@ -117,6 +120,13 @@ function runtime(state = initialState, { type, data }) {
       return {
         ...state,
         orderInMemory: {},
+      };
+    case MOUNT_PRODUCT_IN_EDIT:
+      return { ...state, inEdit: { ...data } };
+    case UNMOUNT_PRODUCT_IN_EDIT:
+      return {
+        ...state,
+        inEdit: {},
       };
     default:
       return state;

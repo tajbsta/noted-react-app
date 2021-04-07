@@ -15,40 +15,38 @@ html {
 }
 
 /* Pages styling */
-@import './pages/register.scss';
-@import './pages/login.scss';
-@import './pages/forgotpass.scss';
-@import './pages/resetpass.scss';
-@import './pages/authorize.scss';
-@import './pages/code.scss';
-@import './pages/dashboard.scss';
-@import './pages/scanning.scss';
-@import './pages/viewscan.scss';
-@import './pages/profile.scss';
-@import './pages/settings.scss';
+@import './pages/register';
+@import './pages/login';
+@import './pages/forgotpass';
+@import './pages/resetpass';
+@import './pages/authorize';
+@import './pages/code';
+@import './pages/dashboard';
+@import './pages/scanning';
+@import './pages/viewscan';
+@import './pages/profile';
+@import './pages/settings';
 @import './pages/viewconfirmedreturn';
 @import './pages/editorder';
 
 /* Components in Pages styling */
-@import './components/brandlogo.scss';
-@import './components/navbar.scss';
-@import './components/returncategory.scss';
-@import './components/productcard.scss';
-@import './components/addressform.scss';
-@import './components/paymentform.scss';
+@import './components/brandlogo';
+@import './components/navbar';
+@import './components/returncategory';
+@import './components/productcard';
+@import './components/addressform';
+@import './components/paymentform';
 @import './components/datepicker';
-@import './components/address';
-@import './components/payment';
+
 /* Modals */
-@import './modals/returnpolicy.scss';
-@import './modals/sizeguide.scss';
-@import './modals/cancelorder.scss';
-@import './modals/passchangesuccess.scss';
-@import './modals/addemail.scss';
-@import './modals/addpickup.scss';
-@import './modals/addproduct.scss';
-@import './modals/editproduct.scss';
-@import './modals/schedulingmodal.scss';
+@import './modals/returnpolicy';
+@import './modals/sizeguide';
+@import './modals/cancelorder';
+@import './modals/passchangesuccess';
+@import './modals/addemail';
+@import './modals/addpickup';
+@import './modals/addeditproduct';
+@import './modals/schedulingmodal';
 
 html,
 body {

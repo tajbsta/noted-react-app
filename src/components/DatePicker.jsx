@@ -41,6 +41,8 @@ export default function DatePicker({ date, setFieldValue }) {
           inline: true,
           animate: true,
           dateFormat: 'Y-m-d',
+          monthSelectorType: 'static',
+          showMonths: 1,
         }}
         value={date}
       />
