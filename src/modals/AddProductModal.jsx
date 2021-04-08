@@ -17,20 +17,22 @@ export default function AddProductModal(props) {
     values: productValues,
   } = useFormik({
     initialValues: {
-      merchant: '',
+      productUrl: '',
+      vendorTag: '',
       orderDate: '',
-      productName: '',
-      price: '',
+      itemName: '',
+      amount: '',
       returnDocument: '',
     },
     validationSchema: addProductSchema,
   });
 
   const {
-    merchant,
+    productUrl,
+    vendorTag,
     orderDate,
-    productName,
-    price,
+    itemName,
+    amount,
     returnDocument,
   } = productValues;
 
@@ -137,7 +139,15 @@ export default function AddProductModal(props) {
                   <Col>
                     <Form.Group>
                       <Form.Label>Product URL</Form.Label>
-                      <Form.Control />
+                      <Form.Control
+                        type='name'
+                        isValid={!errors.productUrl && productUrl.length > 0}
+                        isInvalid={errors.productUrl}
+                        name='productUrl'
+                        value={productUrl || ''}
+                        onChange={handleProductChange}
+                      />
+                      {renderInlineError(errors.productUrl)}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -148,13 +158,13 @@ export default function AddProductModal(props) {
                       <div>
                         <Form.Control
                           type='name'
-                          isValid={!errors.merchant && merchant.length > 0}
-                          isInvalid={errors.merchant}
-                          name='merchant'
-                          value={merchant || ''}
+                          isValid={!errors.vendorTag && vendorTag.length > 0}
+                          isInvalid={errors.vendorTag}
+                          name='vendorTag'
+                          value={vendorTag || ''}
                           onChange={handleProductChange}
                         />
-                        {renderInlineError(errors.merchant)}
+                        {renderInlineError(errors.vendorTag)}
                       </div>
                     </Form.Group>
                   </Col>
@@ -184,15 +194,13 @@ export default function AddProductModal(props) {
                       <div>
                         <Form.Control
                           type='name'
-                          isValid={
-                            !errors.productName && productName.length > 0
-                          }
-                          isInvalid={errors.productName}
-                          name='productName'
-                          value={productName || ''}
+                          isValid={!errors.itemName && itemName.length > 0}
+                          isInvalid={errors.itemName}
+                          name='itemName'
+                          value={itemName || ''}
                           onChange={handleProductChange}
                         />
-                        {renderInlineError(errors.productName)}
+                        {renderInlineError(errors.itemName)}
                       </div>
                     </Form.Group>
                   </Col>
@@ -205,13 +213,13 @@ export default function AddProductModal(props) {
                       <div>
                         <Form.Control
                           type='number'
-                          isValid={!errors.price && price.length > 0}
-                          isInvalid={errors.price}
-                          name='price'
-                          value={price}
+                          isValid={!errors.amount && amount.length > 0}
+                          isInvalid={errors.amount}
+                          name='amount'
+                          value={amount}
                           onChange={handleProductChange}
                         />
-                        {renderInlineError(errors.price)}
+                        {renderInlineError(errors.amount)}
                       </div>
                     </Form.Group>
                   </Col>

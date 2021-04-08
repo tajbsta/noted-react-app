@@ -23,12 +23,12 @@ export default function EditProductModal(props) {
   const { handleChange, values, setFieldValue } = props.editProductForm;
 
   const {
-    amount,
+    imageUrl,
+    productUrl,
     vendorTag,
     orderDate,
     itemName,
-    productUrl,
-    imageUrl,
+    amount,
   } = values;
 
   const hiddenFileInput = React.useRef(null);
