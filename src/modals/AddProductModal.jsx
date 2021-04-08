@@ -102,7 +102,7 @@ export default function AddProductModal(props) {
           <Form id='passForm'>
             <Row>
               <Col xs={2}>
-                <Form.Group controlId='image'>
+                <Form.Group>
                   <div className='img-container'>
                     <img
                       src={ProductPlaceholder}
@@ -135,7 +135,7 @@ export default function AddProductModal(props) {
               <Col>
                 <Row>
                   <Col>
-                    <Form.Group controlId='productUrl'>
+                    <Form.Group>
                       <Form.Label>Product URL</Form.Label>
                       <Form.Control />
                     </Form.Group>
@@ -143,7 +143,7 @@ export default function AddProductModal(props) {
                 </Row>
                 <Row>
                   <Col>
-                    <Form.Group controlId='merchant'>
+                    <Form.Group>
                       <Form.Label>Merchant</Form.Label>
                       <div>
                         <Form.Control
@@ -161,7 +161,7 @@ export default function AddProductModal(props) {
                 </Row>
                 <Row>
                   <Col>
-                    <Form.Group controlId='orderDate'>
+                    <Form.Group>
                       <Form.Label>Order Date</Form.Label>
                       <div>
                         <Flatpickr
