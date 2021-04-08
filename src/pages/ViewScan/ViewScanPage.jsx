@@ -131,7 +131,7 @@ function ViewScanPage() {
             </h3>
             {inReturn.map((item) => (
               <ProductCard
-                confirmed={confirmed}
+                removable={!confirmed}
                 scannedItem={item}
                 key={item.id}
                 selectable={false}

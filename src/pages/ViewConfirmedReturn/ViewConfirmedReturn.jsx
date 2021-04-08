@@ -131,6 +131,7 @@ function ViewConfirmedReturn({
                 key={item.id}
                 selectable={false}
                 clickable={false}
+                removable={!confirmed}
               />
             ))}
             {/**
