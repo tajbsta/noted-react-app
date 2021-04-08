@@ -92,24 +92,23 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
               }}
             >
               <PickUpButton
-                leadingText='Pickup now'
+                leadingText='Pickup later'
                 disabled={!enablePickUpButton}
-                timeWindow='Today'
+                // timeWindow='Today'
                 price='9.99'
                 backgroundColor='#570097'
                 textColor='white'
-                opacity='0.8'
                 onClick={() => {
                   history.push('/view-scan');
                 }}
               />
-              <PickUpButton
+              {/* <PickUpButton
                 leadingText='Pickup later'
                 price='9.99'
                 backgroundColor='#faf5fc'
                 textColor='#570097'
                 opacity='0.8'
-              />
+              /> */}
             </div>
           </div>
         </div>

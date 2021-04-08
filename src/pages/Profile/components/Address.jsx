@@ -26,11 +26,11 @@ export default function Address({ user }) {
   } = useFormik({
     initialValues: {
       fullName: '',
+      phoneNumber: '',
+      line1: '',
+      city: '',
       state: '',
       zipCode: '',
-      line1: '',
-      line2: '',
-      phoneNumber: '',
     },
     validationSchema: pickUpAddressSchema,
   });
@@ -47,12 +47,21 @@ export default function Address({ user }) {
       setFieldValue('phoneNumber', user['custom:phone']);
       setFieldValue('line1', user.address);
       setFieldValue('line2', user['custom:address_2']);
-      setFieldValue('zipCode', user['custom:zipcode']);
+      setFieldValue('city', user['custom:city']);
       setFieldValue('state', user['custom:state']);
+      setFieldValue('zipCode', user['custom:zipcode']);
     }
   }, [user]);
 
-  const updateBasicInfo = async () => {
+  const fullName = addressFormValues.fullName;
+  const phoneNumber = addressFormValues.phoneNumber;
+  const line1 = addressFormValues.line1;
+  const line2 = addressFormValues.line2;
+  const city = addressFormValues.city;
+  const state = addressFormValues.state;
+  const zipCode = addressFormValues.zipCode;
+
+  const updateAddress = async () => {
     console.log(addressFormValues);
     setError(false);
     setSuccess(false);
@@ -60,25 +69,19 @@ export default function Address({ user }) {
 
     try {
       const attributes = {
-        name: addressFormValues.fullName || '',
-        'custom:phone': addressFormValues.phoneNumber || '',
-        address: addressFormValues.line1 || '',
-        'custom:address_2': addressFormValues.line2 || '',
-        'custom:state': addressFormValues.state || '',
-        'custom:zipcode': addressFormValues.zipCode || '',
+        name: fullName || '',
+        'custom:phone': phoneNumber || '',
+        address: line1 || '',
+        'custom:address_2': line2 || '',
+        'custom:city': city || '',
+        'custom:state': state || '',
+        'custom:zipcode': zipCode || '',
       };
 
       await updateUserAttributes(attributes);
       setIsSubmitting(false);
 
-      if (
-        !addressFormValues.fullName ||
-        !addressFormValues.phoneNumber ||
-        !addressFormValues.line1 ||
-        !addressFormValues.line2 ||
-        !addressFormValues.state ||
-        !addressFormValues.zipCode
-      ) {
+      if (!fullName || !phoneNumber || !city || !line1 || !state || !zipCode) {
         setSuccess(false);
         setError('Missing field. Please complete the form.');
       } else {
@@ -113,13 +116,6 @@ export default function Address({ user }) {
         disabled: true,
       }
     : {};
-
-  const fullName = addressFormValues.fullName;
-  const phoneNumber = addressFormValues.phoneNumber;
-  const line1 = addressFormValues.line1;
-  const line2 = addressFormValues.line2;
-  const state = addressFormValues.state;
-  const zipCode = addressFormValues.zipCode;
 
   return (
     <div id='Address'>
@@ -164,14 +160,14 @@ export default function Address({ user }) {
             <div className='card-body'>
               <Form id='Address'>
                 <Row>
-                  <Col xs={6}>
+                  <Col>
                     <Form.Group>
                       <Form.Label>Full Name</Form.Label>
                       <Form.Control
                         className='form-control-lg'
                         type='name'
                         name='fullName'
-                        value={addressFormValues.fullName || ''}
+                        value={fullName || ''}
                         {...noBorder}
                         onChange={handleChange}
                       />
@@ -186,7 +182,7 @@ export default function Address({ user }) {
                         <Form.Control
                           className='form-control-md'
                           as='select'
-                          value={addressFormValues.state || ''}
+                          value={state || ''}
                           name='state'
                           onChange={handleChange}
                           placeholder='Select State'
@@ -213,7 +209,7 @@ export default function Address({ user }) {
                         <Form.Control
                           className='form-control-sm'
                           type='zip code'
-                          value={addressFormValues.state}
+                          value={state}
                           {...noBorder}
                         />
                       )}
@@ -223,7 +219,7 @@ export default function Address({ user }) {
                     <Form.Group>
                       <Form.Label>Zip Code</Form.Label>
                       <Form.Control
-                        className='form-control-sm'
+                        className='form-control-md'
                         onChange={(e) => {
                           const re = /^[0-9\b]+$/;
                           if (
@@ -235,7 +231,7 @@ export default function Address({ user }) {
                         }}
                         name='zipCode'
                         type='zip code'
-                        value={addressFormValues.zipCode || ''}
+                        value={zipCode || ''}
                         {...noBorder}
                       />
                       {(zipCode && zipCode.length > 0) ||
@@ -253,7 +249,7 @@ export default function Address({ user }) {
                         type='name'
                         name='line1'
                         onChange={handleChange}
-                        value={addressFormValues.line1 || ''}
+                        value={line1 || ''}
                         {...noBorder}
                       />
                       {(line1 && line1.length > 0) ||
@@ -262,9 +258,24 @@ export default function Address({ user }) {
                   </Col>
                   <Col>
                     <Form.Group>
+                      <Form.Label>City</Form.Label>
+                      <Form.Control
+                        className='form-control-md'
+                        type='city'
+                        name='city'
+                        value={city || ''}
+                        onChange={handleChange}
+                        {...noBorder}
+                      />
+                      {(city && city.length > 0) ||
+                        renderInlineError(errors.city)}
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group>
                       <Form.Label>Phone</Form.Label>
                       <Form.Control
-                        className='form-control-lg'
+                        className='form-control-md'
                         type='phone number'
                         onChange={(e) => {
                           const re = /^[0-9\b]+$/;
@@ -275,9 +286,7 @@ export default function Address({ user }) {
                             handleChange(e);
                           }
                         }}
-                        value={
-                          formatPhoneNumber(addressFormValues.phoneNumber) || ''
-                        }
+                        value={formatPhoneNumber(phoneNumber) || ''}
                         name='phoneNumber'
                         maxLength={13}
                         {...noBorder}
@@ -294,13 +303,11 @@ export default function Address({ user }) {
                       <Form.Control
                         className='form-control-lg'
                         type='name'
-                        value={addressFormValues.line2 || ''}
+                        value={line2 || ''}
                         name='line2'
                         onChange={handleChange}
                         {...noBorder}
                       />
-                      {(line2 && line2.length > 0) ||
-                        renderInlineError(errors.line2)}
                     </Form.Group>
                   </Col>
 
@@ -328,7 +335,7 @@ export default function Address({ user }) {
                         onClick={(e) => {
                           e.preventDefault();
                           setIsEditing(false);
-                          updateBasicInfo();
+                          updateAddress();
                         }}
                       >
                         Done

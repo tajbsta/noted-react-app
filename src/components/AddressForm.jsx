@@ -11,6 +11,7 @@ export default function AddressForm({
   zipCode,
   line1,
   line2,
+  city,
   phoneNumber,
   errors,
   handleChange,
@@ -24,7 +25,7 @@ export default function AddressForm({
       state,
       zipCode,
       line1,
-      line2,
+      city,
       phoneNumber,
     }) || !isFormEmpty({ ...errors });
 
@@ -55,7 +56,7 @@ export default function AddressForm({
                   onSubmit={(e) => e.preventDefault()}
                 >
                   <Row>
-                    <Col xs={6}>
+                    <Col>
                       <Form.Group>
                         <Form.Label>Full Name</Form.Label>
                         <Form.Control
@@ -104,7 +105,7 @@ export default function AddressForm({
                       <Form.Group>
                         <Form.Label>Zip Code</Form.Label>
                         <Form.Control
-                          className='form-control-sm'
+                          className='form-control-md'
                           onChange={(e) => {
                             const re = /^[0-9\b]+$/;
                             if (
@@ -136,14 +137,27 @@ export default function AddressForm({
                           value={line1 || ''}
                           name='line1'
                         />
-                        {line1.length > 0 && renderInlineError(errors.line1)}
+                        {renderInlineError(errors.line1)}
+                      </Form.Group>
+                    </Col>
+                    <Col>
+                      <Form.Group>
+                        <Form.Label>City</Form.Label>
+                        <Form.Control
+                          className='form-control-md'
+                          type='city'
+                          name='city'
+                          value={city || ''}
+                          onChange={handleChange}
+                        />
+                        {renderInlineError(errors.city)}
                       </Form.Group>
                     </Col>
                     <Col>
                       <Form.Group>
                         <Form.Label>Phone</Form.Label>
                         <Form.Control
-                          className='form-control-lg'
+                          className='form-control-md'
                           onChange={(e) => {
                             const re = /^[0-9\b]+$/;
                             if (
@@ -172,7 +186,6 @@ export default function AddressForm({
                           name='line2'
                           onChange={handleChange}
                         />
-                        {line2.length > 0 && renderInlineError(errors.line2)}
                       </Form.Group>
                     </Col>
 

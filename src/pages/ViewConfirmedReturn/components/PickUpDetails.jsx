@@ -28,6 +28,7 @@ function PickUpDetails({ address, payment, details }) {
       fullName: get(address, 'fullName', ''),
       state: get(address, 'state', ''),
       zipCode: get(address, 'zipCode', ''),
+      city: get(address, 'city', ''),
       line1: get(address, 'line1', ''),
       line2: get(address, 'line2', ''),
       phoneNumber: get(address, 'phoneNumber', ''),
@@ -119,8 +120,10 @@ function PickUpDetails({ address, payment, details }) {
                         {addressFormValues.line2}
                       </h4>
                       <h4 className='p-0 m-0 sofia-pro line1'>
-                        {addressFormValues.state} {addressFormValues.zipCode}
+                        {addressFormValues.city}, {addressFormValues.state}{' '}
+                        {addressFormValues.zipCode}
                       </h4>
+                      <h4 className='p-0 m-0 sofia-pro line1'>United States</h4>
                     </div>
                     <p className='sofia-pro mt-3 tel'>
                       Tel: {formatPhoneNumber(addressFormValues.phoneNumber)}

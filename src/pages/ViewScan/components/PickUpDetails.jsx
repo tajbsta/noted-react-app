@@ -52,7 +52,7 @@ function PickUpDetails() {
       state: '',
       zipCode: '',
       line1: '',
-      line2: '',
+      city: '',
       phoneNumber: '',
     },
     validationSchema: pickUpAddressSchema,
@@ -199,8 +199,10 @@ function PickUpDetails() {
                         {addressFormValues.line2}
                       </h4>
                       <h4 className='p-0 m-0 sofia-pro line1'>
-                        {addressFormValues.state} {addressFormValues.zipCode}
+                        {addressFormValues.city}, {addressFormValues.state}{' '}
+                        {addressFormValues.zipCode}
                       </h4>
+                      <h4 className='p-0 m-0 sofia-pro line1'>United States</h4>
                     </div>
                     <p className='sofia-pro mt-3 tel'>
                       Tel: {formatPhoneNumber(addressFormValues.phoneNumber)}

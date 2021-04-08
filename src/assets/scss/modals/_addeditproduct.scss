@@ -23,13 +23,20 @@
     border: 1px solid #eae8eb;
     border-radius: 8px;
 
-    width: 64px;
-    height: 64px;
+    max-height: 64px;
+    max-width: 64px;
+    object-fit: contain;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     transition: all 0.4s ease;
+
+    img {
+      max-height: 64px;
+      max-width: 64px;
+      object-fit: contain;
+    }
 
     &:hover {
       transform: scale(1.05);
@@ -51,19 +58,17 @@
 
     // Image file upload
     .upload-button {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 50%;
-      width: 50%;
+      height: 64px;
+      width: 64px;
       border-radius: 8px;
+      position: absolute;
+      top: 0px;
+      left: 13px;
 
       .fa-upload-icon {
         position: relative;
-        // top: 0px;
-        // left: -1px;
-        top: -17px;
-        left: -16px;
+        top: -20px;
+        left: -30px;
         text-align: center;
         opacity: 0;
         transition: all 0.3s ease;
@@ -73,9 +78,6 @@
           height: 96px;
           width: 96px;
           padding: 33px;
-          border-radius: 50%;
-          //   border-radius: 8px;
-
           background: #570097;
         }
 
@@ -93,10 +95,6 @@
     }
 
     .file-upload {
-      padding: 100px 0 0 0;
-      height: 255px;
-      position: relative;
-      bottom: 200%;
       box-shadow: none;
       border: none;
 
