@@ -53,13 +53,15 @@ export default function Address({ user }) {
     }
   }, [user]);
 
-  const fullName = addressFormValues.fullName;
-  const phoneNumber = addressFormValues.phoneNumber;
-  const line1 = addressFormValues.line1;
-  const line2 = addressFormValues.line2;
-  const city = addressFormValues.city;
-  const state = addressFormValues.state;
-  const zipCode = addressFormValues.zipCode;
+  const {
+    fullName,
+    phoneNumber,
+    line1,
+    line2,
+    city,
+    state,
+    zipCode,
+  } = addressFormValues;
 
   const updateAddress = async () => {
     console.log(addressFormValues);

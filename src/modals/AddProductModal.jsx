@@ -4,10 +4,39 @@ import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
 import { useDropzone } from 'react-dropzone';
 import Flatpickr from 'react-flatpickr';
+import { addProductSchema } from '../models/formSchema';
+import { useFormik } from 'formik';
 
 export default function AddProductModal(props) {
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const {
+    errors,
+    handleChange: handleProductChange,
+    values: productValues,
+  } = useFormik({
+    initialValues: {
+      merchant: '',
+      orderDate: '',
+      productName: '',
+      price: '',
+      returnDocument: '',
+    },
+    validationSchema: addProductSchema,
+  });
+
+  const {
+    merchant,
+    orderDate,
+    productName,
+    price,
+    returnDocument,
+  } = productValues;
+
+  const renderInlineError = (errors) => (
+    <small className='form-text p-0 m-0 noted-red'>{errors}</small>
+  );
 
   const hiddenFileInput = React.useRef(null);
 
@@ -73,7 +102,7 @@ export default function AddProductModal(props) {
           <Form id='passForm'>
             <Row>
               <Col xs={2}>
-                <Form.Group controlId='image'>
+                <Form.Group>
                   <div className='img-container'>
                     <img
                       src={ProductPlaceholder}
@@ -106,7 +135,7 @@ export default function AddProductModal(props) {
               <Col>
                 <Row>
                   <Col>
-                    <Form.Group controlId='productUrl'>
+                    <Form.Group>
                       <Form.Label>Product URL</Form.Label>
                       <Form.Control />
                     </Form.Group>
@@ -114,17 +143,25 @@ export default function AddProductModal(props) {
                 </Row>
                 <Row>
                   <Col>
-                    <Form.Group controlId='merchant'>
+                    <Form.Group>
                       <Form.Label>Merchant</Form.Label>
                       <div>
-                        <Form.Control />
+                        <Form.Control
+                          type='name'
+                          isValid={!errors.merchant && merchant.length > 0}
+                          isInvalid={errors.merchant}
+                          name='merchant'
+                          value={merchant || ''}
+                          onChange={handleProductChange}
+                        />
+                        {renderInlineError(errors.merchant)}
                       </div>
                     </Form.Group>
                   </Col>
                 </Row>
                 <Row>
                   <Col>
-                    <Form.Group controlId='orderDate'>
+                    <Form.Group>
                       <Form.Label>Order Date</Form.Label>
                       <div>
                         <Flatpickr
@@ -136,15 +173,26 @@ export default function AddProductModal(props) {
                           }}
                         />
                       </div>
+                      {/* {renderInlineError(errors.orderDate)} */}
                     </Form.Group>
                   </Col>
                 </Row>
                 <Row>
                   <Col>
-                    <Form.Group controlId='productName'>
+                    <Form.Group>
                       <Form.Label>Product Name</Form.Label>
                       <div>
-                        <Form.Control />
+                        <Form.Control
+                          type='name'
+                          isValid={
+                            !errors.productName && productName.length > 0
+                          }
+                          isInvalid={errors.productName}
+                          name='productName'
+                          value={productName || ''}
+                          onChange={handleProductChange}
+                        />
+                        {renderInlineError(errors.productName)}
                       </div>
                     </Form.Group>
                   </Col>
@@ -152,17 +200,25 @@ export default function AddProductModal(props) {
 
                 <Row>
                   <Col>
-                    <Form.Group controlId='price'>
+                    <Form.Group>
                       <Form.Label>Price</Form.Label>
                       <div>
-                        <Form.Control />
+                        <Form.Control
+                          type='number'
+                          isValid={!errors.price && price.length > 0}
+                          isInvalid={errors.price}
+                          name='price'
+                          value={price}
+                          onChange={handleProductChange}
+                        />
+                        {renderInlineError(errors.price)}
                       </div>
                     </Form.Group>
                   </Col>
                 </Row>
                 <Row>
                   <Col>
-                    <Form.Group controlId='returnDocuments'>
+                    <Form.Group>
                       <Form.Label className='documents-title'>
                         Return Documents{' '}
                         <small style={{ fontSize: '12px' }}>
@@ -175,6 +231,7 @@ export default function AddProductModal(props) {
                           Drag & drop or click to upload
                         </p>
                       </div>
+                      {/* {renderInlineError(errors.returnDocument)} */}
                     </Form.Group>
                   </Col>
                 </Row>

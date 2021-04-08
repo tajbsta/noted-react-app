@@ -6,9 +6,8 @@ import { Form, Spinner } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
 import { signUpErrors } from '../library/errors.library';
 import { get } from 'lodash';
-import { PASSWORD_REGEX_FORMAT } from '../constants/errors/regexFormats';
-import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import { registerSchema } from '../models/formSchema';
 
 export default function RegisterPage() {
   const history = useHistory();
@@ -20,21 +19,6 @@ export default function RegisterPage() {
   };
   const eyeOff = <EyeOff />;
   const eye = <Eye />;
-
-  const registerSchema = Yup.object({
-    email: Yup.string()
-      .email('Enter a valid email address')
-      .required('Email is required'),
-    password: Yup.string()
-      .required(
-        'Your password must be 8-20 characters long and must contain a letter, symbol and a number'
-      )
-      .matches(PASSWORD_REGEX_FORMAT, {
-        message:
-          'Your password must be 8-20 characters long and must contain a letter, symbol and a number',
-      })
-      .resolve(),
-  });
 
   const { errors, handleChange, values } = useFormik({
     initialValues: {

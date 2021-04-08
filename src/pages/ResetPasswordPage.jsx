@@ -2,13 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Form, Spinner } from 'react-bootstrap';
-import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { PASSWORD_REGEX_FORMAT } from '../constants/errors/regexFormats';
 import { Eye, EyeOff } from 'react-feather';
 import { Auth } from 'aws-amplify';
 import { get } from 'lodash';
 import { resetPassErrors } from '../library/errors.library';
+import { resetPasswordSchema } from '../models/formSchema';
 
 export default function ResetPasswordPage(props) {
   const history = useHistory();
@@ -26,27 +25,6 @@ export default function ResetPasswordPage(props) {
   };
   const eyeOff = <EyeOff />;
   const eye = <Eye />;
-
-  const resetPasswordSchema = Yup.object().shape({
-    code: Yup.number()
-      .min(6, 'Not correct length')
-      .required('Code is required'),
-    newPassword: Yup.string()
-      .required(
-        'Your password must be 8-20 characters long and must contain a letter, symbol and a number'
-      )
-      .matches(PASSWORD_REGEX_FORMAT, {
-        message:
-          'Your password must be 8-20 characters long and must contain a letter, symbol and a number',
-      }),
-    confirmNewPassword: Yup.string().when('newPassword', {
-      is: (val) => (val && val.length > 0 ? true : false),
-      then: Yup.string().oneOf(
-        [Yup.ref('newPassword')],
-        'Passwords do not match'
-      ),
-    }),
-  });
 
   const { errors, handleChange, values } = useFormik({
     initialValues: {
@@ -84,7 +62,7 @@ export default function ResetPasswordPage(props) {
 
       setTimeout(() => {
         history.push('/login');
-      }, 4000);
+      }, 3500);
     } catch (err) {
       console.log(err);
       setIsSubmitting(false);

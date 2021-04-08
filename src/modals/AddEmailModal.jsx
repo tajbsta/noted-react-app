@@ -15,7 +15,7 @@ export default function AddEmailModal(props) {
       >
         <Modal.Body className='sofia-pro'>
           <Form>
-            <Form.Group controlId='exampleForm.ControlInput1'>
+            <Form.Group>
               <Form.Label> Enter New Email</Form.Label>
               <Form.Control type='email' />
             </Form.Group>

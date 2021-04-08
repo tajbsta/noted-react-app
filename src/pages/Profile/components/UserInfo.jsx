@@ -89,13 +89,7 @@ export default function UserInfo({ user: userData }) {
               </i>
             </div>
           </div>
-          <h2
-            className={`card-title ${
-              file || user.profile ? 'margin-name' : 'name'
-            }`}
-          >
-            {user.name || user.email}
-          </h2>
+          <h2 className='card-title name'>{user.name || user.email}</h2>
           <p className='small text-muted mb-3 date'>
             User since {moment(user.createdAt).format('MMMM DD, YYYY')}
           </p>
