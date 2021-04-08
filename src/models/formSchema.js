@@ -1,4 +1,48 @@
 import * as Yup from 'yup';
+import { PASSWORD_REGEX_FORMAT } from '../constants/errors/regexFormats'
+
+export const registerSchema = Yup.object({
+  email: Yup.string()
+    .email('Enter a valid email address')
+    .required('Email is required'),
+  password: Yup.string()
+    .required(
+      'Your password must be 8-20 characters long and must contain a letter, symbol and a number'
+    )
+    .matches(PASSWORD_REGEX_FORMAT, {
+      message:
+        'Your password must be 8-20 characters long and must contain a letter, symbol and a number',
+    })
+    .resolve(),
+});
+
+export const forgotPasswordSchema = Yup.object({
+  email: Yup.string()
+    .email('Enter a valid email address')
+    .required('Email is required'),
+});
+
+export const resetPasswordSchema = Yup.object().shape({
+  code: Yup.number()
+    .min(6, 'Not correct length')
+    .required('Code is required'),
+  newPassword: Yup.string()
+    .required(
+      'Your password must be 8-20 characters long and must contain a letter, symbol and a number'
+    )
+    .matches(PASSWORD_REGEX_FORMAT, {
+      message:
+        'Your password must be 8-20 characters long and must contain a letter, symbol and a number',
+    }),
+  confirmNewPassword: Yup.string().when('newPassword', {
+    is: (val) => (val && val.length > 0 ? true : false),
+    then: Yup.string().oneOf(
+      [Yup.ref('newPassword')],
+      'Passwords do not match'
+    ),
+  }),
+});
+
 
 export const pickUpAddressSchema = Yup.object({
   fullName: Yup.string().required('Fill in your name'),
