@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
@@ -8,6 +8,12 @@ import Flatpickr from 'react-flatpickr';
 export default function AddProductModal(props) {
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const hiddenFileInput = React.useRef(null);
+
+  const handleClick = (event) => {
+    hiddenFileInput.current.click();
+  };
 
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
@@ -77,13 +83,20 @@ export default function AddProductModal(props) {
                     />
                     {file && <ImageThumb image={file} />}
                     <div className='upload-button'>
-                      <i className='fa fa-upload-icon' aria-hidden='true'>
+                      <i
+                        className='fa fa-upload-icon'
+                        aria-hidden='true'
+                        onClick={handleClick}
+                        style={{ cursor: 'pointer' }}
+                      >
                         <UploadCloud />
                         <input
+                          style={{ display: 'none' }}
                           className='file-upload'
                           type='file'
                           accept='.jpg, .jpeg, .png'
                           onChange={handleUpload}
+                          ref={hiddenFileInput}
                         />
                       </i>
                     </div>

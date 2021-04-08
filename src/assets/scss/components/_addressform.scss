@@ -2,6 +2,7 @@
 #Address,
 #Info,
 #passForm,
+#BasicInfo,
 #AddressFormConfirmed {
   .form-label {
     font-size: 14px;
@@ -33,7 +34,7 @@
 
   .form-control-md {
     height: 38px;
-    width: 200px;
+    // width: 164px;
     left: 0px;
     top: 22px;
     border-radius: 4px;

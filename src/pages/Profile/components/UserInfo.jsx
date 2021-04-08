@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Container } from 'react-bootstrap';
+import React, { useEffect, useState, useRef } from 'react';
+import { Button, Card, Container } from 'react-bootstrap';
 import ProfileIcon from '../../../assets/icons/Profile.svg';
 import moment from 'moment';
 import { Upload } from 'react-feather';
@@ -8,6 +8,12 @@ export default function UserInfo({ user: userData }) {
   const [user, setUser] = useState({});
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const hiddenFileInput = React.useRef(null);
+
+  const handleClick = (event) => {
+    hiddenFileInput.current.click();
+  };
 
   // Handles file upload event and updates state
   const handleUpload = (event) => {
@@ -65,13 +71,19 @@ export default function UserInfo({ user: userData }) {
             {file && <ImageThumb image={file} />}
 
             <div className='upload-button'>
-              <i className='fa fa-upload-icon' aria-hidden='true'>
+              <i
+                className='fa fa-upload-icon'
+                aria-hidden='true'
+                onClick={handleClick}
+                style={{ cursor: 'pointer' }}
+              >
                 <Upload />
-
                 <input
+                  style={{ display: 'none' }}
                   className='file-upload'
                   type='file'
                   accept='.jpg, .jpeg, .png'
+                  ref={hiddenFileInput}
                   onChange={handleUpload}
                 />
               </i>

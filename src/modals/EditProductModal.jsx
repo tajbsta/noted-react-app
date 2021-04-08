@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
@@ -30,6 +30,12 @@ export default function EditProductModal(props) {
     productUrl,
     imageUrl,
   } = values;
+
+  const hiddenFileInput = React.useRef(null);
+
+  const handleClick = (event) => {
+    hiddenFileInput.current.click();
+  };
 
   const onSave = (e) => {
     e.preventDefault();
@@ -118,7 +124,7 @@ export default function EditProductModal(props) {
                   <div className='img-container'>
                     {!file && (
                       <img
-                        src={imageUrl}
+                        src={imageUrl || ProductPlaceholder}
                         style={{
                           width: '64px',
                           height: '64px',
@@ -127,13 +133,20 @@ export default function EditProductModal(props) {
                     )}
                     {file && <ImageThumb image={file} />}
                     <div className='upload-button'>
-                      <i className='fa fa-upload-icon' aria-hidden='true'>
+                      <i
+                        className='fa fa-upload-icon'
+                        aria-hidden='true'
+                        onClick={handleClick}
+                        style={{ cursor: 'pointer' }}
+                      >
                         <UploadCloud />
                         <input
+                          style={{ display: 'none' }}
                           className='file-upload'
                           type='file'
                           accept='.jpg, .jpeg, .png'
                           onChange={handleUpload}
+                          ref={hiddenFileInput}
                         />
                       </i>
                     </div>
