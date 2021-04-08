@@ -9,6 +9,7 @@ import Scanning from '../Dashboard/components/Scanning';
 import { FOR_RETURN, LAST_CALL } from '../../constants/actions/runtime';
 import InReturnBox from './components/InReturnBox';
 import { updateCurrentOrder } from '../../actions/runtime.action';
+import { dedupeByKey } from '../../utils/data';
 
 function EditOrder({
   location: {
@@ -27,9 +28,14 @@ function EditOrder({
   const [lastCallSelected, setLastCallSelected] = useState([]);
   const [returnableSelected, setReturnableSelected] = useState([]);
 
-  const { scheduledReturns, scans, localDonationsCount } = useSelector(
+  const {
+    scheduledReturns,
+    scans,
+    localDonationsCount,
+    orderInMemory,
+  } = useSelector(
     ({
-      runtime: { forReturn, lastCall, forDonation },
+      runtime: { forReturn, lastCall, forDonation, orderInMemory },
       auth: { scheduledReturns },
       scans,
     }) => ({
@@ -40,13 +46,18 @@ function EditOrder({
       inReturn: [...forReturn, ...lastCall],
       inDonation: [...forDonation],
       scans,
+      orderInMemory,
     })
   );
   const scheduledReturn = scheduledReturns.find(
     ({ id }) => id === scheduledReturnId
   );
+  const currentOrderItems = get(orderInMemory, 'items', []);
 
-  const items = get(scheduledReturn, 'items', []);
+  const items = dedupeByKey(
+    [...get(scheduledReturn, 'items', []), ...currentOrderItems],
+    'id'
+  );
 
   const unSelectedReturns = scans.filter(
     ({ id }) => ![...items.map(({ id }) => id)].includes(id)
@@ -55,6 +66,7 @@ function EditOrder({
    * NEEDS ITEMS ABOVE TO START
    */
   const [inBoxSelected, setInBoxSelected] = useState([...items]);
+  console.log(inBoxSelected);
   const potentialReturnValue = [
     ...inBoxSelected,
     ...lastCallSelected,
@@ -65,7 +77,7 @@ function EditOrder({
   const extraCost =
     [...inBoxSelected, ...lastCallSelected, ...returnableSelected].length * 2;
   const hasChanges =
-    [...get(scheduledReturn, 'items', [])].length !==
+    [...items].length !==
     [...inBoxSelected, ...returnableSelected, ...lastCallSelected].length;
 
   useEffect(() => {
@@ -146,7 +158,6 @@ function EditOrder({
                   <>
                     <div>
                       <InReturnBox
-                        scannedItems={items}
                         typeTitle='In your box'
                         compensationType={LAST_CALL}
                         disabled={localDonationsCount > 0}

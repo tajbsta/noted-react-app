@@ -6,6 +6,8 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateForReturn } from '../../../actions/runtime.action';
 import { FOR_RETURN } from '../../../constants/actions/runtime';
+import { get } from 'lodash-es';
+import { dedupeByKey } from '../../../utils/data';
 
 function InReturnBox({
   typeTitle,
@@ -18,9 +20,9 @@ function InReturnBox({
   const dispatch = useDispatch();
   const { push } = useHistory();
 
-  const { scheduledReturns } = useSelector(
+  const { scheduledReturns, orderInMemory } = useSelector(
     ({
-      runtime: { forReturn, lastCall, forDonation },
+      runtime: { forReturn, lastCall, forDonation, orderInMemory },
       auth: { scheduledReturns },
       scans,
     }) => ({
@@ -31,13 +33,20 @@ function InReturnBox({
       inReturn: [...forReturn, ...lastCall],
       inDonation: [...forDonation],
       scans,
+      orderInMemory,
     })
   );
 
   const scheduledReturn = scheduledReturns.find(
     ({ id }) => id === scheduledReturnId
   );
-  const { items } = scheduledReturn;
+
+  const currentOrderItems = get(orderInMemory, 'items', []);
+
+  const items = dedupeByKey(
+    [...get(scheduledReturn, 'items', []), ...currentOrderItems],
+    'id'
+  );
 
   const isSelected = (itemId) =>
     [...selected.map(({ id }) => id)].includes(itemId);

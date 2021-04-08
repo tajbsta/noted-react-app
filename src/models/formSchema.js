@@ -78,11 +78,28 @@ export const pickUpDateSchema = Yup.object({
   time: Yup.string().required('Time is required'),
 });
 
+
 export const addProductSchema = Yup.object({
-  merchant: Yup.string().required('Merchant is required'),
+  productUrl: Yup.string()
+    .url('Enter valid url')
+    .required('Please enter website'),
+  vendorTag: Yup.string().required('Merchant is required'),
   orderDate: Yup.string().required('Order date is required'),
-  productName: Yup.string().required('Product name is required'),
-  price: Yup.number().required('Product\'s price is required'),
+  itemName: Yup.string().required('Product name is required'),
+  amount: Yup.number().required('Product\'s amount is required'),
+  returnDocument: Yup.object().shape({
+    name: Yup.string().required()
+  }).label('File')
+});
+
+export const editProductSchema = Yup.object({
+  productUrl: Yup.string()
+    .url('Enter valid url')
+    .required('Please enter website'),
+  vendorTag: Yup.string().required('Merchant is required'),
+  orderDate: Yup.string().required('Order date is required'),
+  itemName: Yup.string().required('Product name is required'),
+  amount: Yup.number().required('Product\'s amount is required'),
   returnDocument: Yup.object().shape({
     name: Yup.string().required()
   }).label('File')
