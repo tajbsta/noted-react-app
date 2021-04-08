@@ -3,23 +3,17 @@ import React, { useState } from 'react';
 import { Mail } from 'react-feather';
 import { Link, useHistory } from 'react-router-dom';
 import { Form, Spinner } from 'react-bootstrap';
-import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { Auth } from 'aws-amplify';
 import { forgotPassErrors } from '../library/errors.library';
 import { get } from 'lodash';
+import { forgotPasswordSchema } from '../models/formSchema';
 
 export default function ForgotPasswordPage() {
   const history = useHistory();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const forgotPasswordSchema = Yup.object({
-    email: Yup.string()
-      .email('Enter a valid email address')
-      .required('Email is required'),
-  });
 
   const { errors, handleChange, values } = useFormik({
     initialValues: {

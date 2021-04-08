@@ -19,7 +19,7 @@ export default function AddPickupModal(props) {
         </div>
         <Modal.Body>
           <Form>
-            <Form.Group controlId='Form.ControlTextarea1'>
+            <Form.Group>
               <Form.Control
                 as='textarea'
                 rows={8}

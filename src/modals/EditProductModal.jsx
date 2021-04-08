@@ -23,12 +23,12 @@ export default function EditProductModal(props) {
   const { handleChange, values, setFieldValue } = props.editProductForm;
 
   const {
-    amount,
+    imageUrl,
+    productUrl,
     vendorTag,
     orderDate,
     itemName,
-    productUrl,
-    imageUrl,
+    amount,
   } = values;
 
   const hiddenFileInput = React.useRef(null);
@@ -120,7 +120,7 @@ export default function EditProductModal(props) {
           <Form id='passForm'>
             <Row>
               <Col xs={2}>
-                <Form.Group controlId='image'>
+                <Form.Group>
                   <div className='img-container'>
                     {!file && (
                       <img
@@ -156,7 +156,7 @@ export default function EditProductModal(props) {
               <Col>
                 <Row>
                   <Col>
-                    <Form.Group controlId='productUrl'>
+                    <Form.Group>
                       <Form.Label>Product URL</Form.Label>
                       <Form.Control />
                     </Form.Group>
@@ -164,7 +164,7 @@ export default function EditProductModal(props) {
                 </Row>
                 <Row>
                   <Col>
-                    <Form.Group controlId='merchant'>
+                    <Form.Group>
                       <Form.Label>Merchant</Form.Label>
                       <div>
                         <Form.Control
@@ -178,7 +178,7 @@ export default function EditProductModal(props) {
                 </Row>
                 <Row>
                   <Col>
-                    <Form.Group controlId='orderDate'>
+                    <Form.Group>
                       <Form.Label>Order Date</Form.Label>
                       <div>
                         <Flatpickr
@@ -206,7 +206,7 @@ export default function EditProductModal(props) {
                 </Row>
                 <Row>
                   <Col>
-                    <Form.Group controlId='productName'>
+                    <Form.Group>
                       <Form.Label>Product Name</Form.Label>
                       <div>
                         <Form.Control
@@ -221,7 +221,7 @@ export default function EditProductModal(props) {
 
                 <Row>
                   <Col>
-                    <Form.Group controlId='price'>
+                    <Form.Group>
                       <Form.Label>Price</Form.Label>
                       <div>
                         <Form.Control
@@ -235,7 +235,7 @@ export default function EditProductModal(props) {
                 </Row>
                 <Row>
                   <Col>
-                    <Form.Group controlId='returnDocuments'>
+                    <Form.Group>
                       <Form.Label className='documents-title'>
                         Return Documents{' '}
                         <small style={{ fontSize: '12px' }}>
