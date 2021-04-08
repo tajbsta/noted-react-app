@@ -53,6 +53,7 @@
       .default-avatar {
         width: 32px;
         height: 32px;
+        position: absolute;
       }
 
       .no-default-avatar {
@@ -122,13 +123,6 @@
       line-height: 24px;
       color: #2e1d3a;
       margin-top: 16px;
-    }
-
-    .margin-name {
-      font-size: 18px;
-      line-height: 24px;
-      color: #2e1d3a;
-      margin-top: 8px;
     }
 
     .date {

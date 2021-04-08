@@ -31,5 +31,15 @@ export const paymentAddressSchema = Yup.object({
 
 export const pickUpDateSchema = Yup.object({
   date: Yup.string().required('Date is required'),
-  time: Yup.string().required('Time is Required'),
+  time: Yup.string().required('Time is required'),
+});
+
+export const addProductSchema = Yup.object({
+  merchant: Yup.string().required('Merchant is required'),
+  orderDate: Yup.string().required('Order date is required'),
+  productName: Yup.string().required('Product name is required'),
+  price: Yup.number().required('Product\'s price is required'),
+  returnDocument: Yup.object().shape({
+    name: Yup.string().required()
+  }).label('File')
 });
