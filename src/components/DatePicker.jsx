@@ -18,7 +18,6 @@ const CustomInput = ({ value, defaultValue, inputRef, name, ...props }) => {
     />
   );
 };
-
 export default function DatePicker({ date, setFieldValue }) {
   return (
     <div id='DatePicker'>
@@ -26,9 +25,11 @@ export default function DatePicker({ date, setFieldValue }) {
         render={({ defaultValue, value, ...props }, ref) => {
           return (
             <CustomInput
+              {...props}
               defaultValue={defaultValue}
               inputRef={ref}
               name='date'
+              value={value}
             />
           );
         }}
@@ -44,7 +45,6 @@ export default function DatePicker({ date, setFieldValue }) {
           monthSelectorType: 'static',
           showMonths: 1,
         }}
-        value={date}
       />
     </div>
   );
