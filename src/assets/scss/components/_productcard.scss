@@ -52,8 +52,9 @@
     line-height: 19px;
     text-align: left;
 
-    @media (min-width: 280px) and (max-width: 767px) {
+    @media (max-width: 767px) {
       line-height: 14px;
+      margin-bottom: 0px !important;
     }
   }
 
@@ -153,6 +154,89 @@
   }
 
   // MOBILE VIEWS OF PRODUCT DETAILS
+
+  // START OF PRODUCT IS SELECTED
+  .selected-mobile {
+    height: 212.42px;
+    background: #eee4f6;
+    border: none !important;
+  }
+
+  .m-date-col {
+    padding-left: 0px;
+    position: relative;
+    bottom: 1%;
+
+    .m-date {
+      font-size: 13px;
+      line-height: 17px;
+      color: #b1adb3;
+      width: max-content;
+    }
+  }
+
+  .btn-m-donate {
+    padding: 0px;
+    font-size: 12px;
+    line-height: 14px;
+    text-decoration-line: underline;
+    color: #570097;
+    box-shadow: none;
+  }
+
+  .m-brand-info-container {
+    margin-top: 25px;
+    margin-left: 40px;
+
+    .m-brand-img {
+      border: 1px solid #f0f0f0;
+      border-radius: 50%;
+      height: 31px;
+      width: 31px;
+    }
+  }
+
+  .m-score-container {
+    display: flex;
+    align-items: flex-start;
+    margin-left: 16px;
+  }
+
+  .m-score-text {
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
+    margin-bottom: 4px;
+  }
+
+  .m-edit-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 28px;
+
+    .m-edit-col {
+      display: flex;
+      align-items: flex-start;
+
+      h4 {
+        font-size: 12px;
+        line-height: 14px;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+      }
+
+      .btn-m-edit {
+        padding: 0px;
+        font-size: 12px;
+        line-height: 14px;
+        text-decoration-line: underline;
+        color: #570097;
+      }
+    }
+  }
+  // END OF PRODUCT IS SELECTED
+
   #mobile-product-info {
     @media (min-width: 767px) {
       display: none;
@@ -185,7 +269,12 @@
       justify-content: flex-end;
       padding-right: 0px;
     }
+
+    .mobile-price {
+      margin-bottom: 3px;
+    }
   }
+
   .removeProduct {
     background: #ffffff;
     border: 1px solid #eae8eb;
