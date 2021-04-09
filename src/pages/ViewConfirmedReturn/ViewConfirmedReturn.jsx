@@ -103,14 +103,14 @@ function ViewConfirmedReturn({
           <div className='col-sm-9'>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed ? (
-              <>
+              <div className='mobile-view-scan-col'>
                 <h3 className='sofia-pro text-18 section-title'>
                   Pick-up confirmed
                 </h3>
                 <PickUpConfirmed />
-              </>
+              </div>
             ) : (
-              <>
+              <div className='mobile-view-scan-col'>
                 <PickUpDetails
                   address={address}
                   payment={payment}
@@ -119,7 +119,7 @@ function ViewConfirmedReturn({
                 {/**
                  * PICK UP DETAILS
                  */}
-              </>
+              </div>
             )}
             <h3 className='sofia-pro products-return text-18 section-title'>
               Your products to return

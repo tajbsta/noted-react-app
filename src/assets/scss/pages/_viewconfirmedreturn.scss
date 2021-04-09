@@ -7,6 +7,13 @@
     }
   }
 
+  .mobile-view-scan-col {
+    @media (max-width: 767px) {
+      padding-right: 12px;
+      padding-left: 12px;
+    }
+  }
+
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
