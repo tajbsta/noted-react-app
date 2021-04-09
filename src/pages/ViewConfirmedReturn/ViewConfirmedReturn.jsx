@@ -14,7 +14,7 @@ import Row from '../../components/Row';
 
 function ViewConfirmedReturn({
   location: {
-    state: { scheduledReturnId, hasModifications = false },
+    state: { scheduledReturnId = '', hasModifications = false },
   },
 }) {
   const dispatch = useDispatch();

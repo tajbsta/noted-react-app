@@ -303,7 +303,7 @@ function DashboardPage() {
 
                 {isEmpty(search) && (
                   <div>
-                    <div className='row justify-center'>
+                    <div className='row justify-center mobile-footer-row'>
                       <div className='col-sm-7 text-center'>
                         <div className='text-muted text-center sofia-pro line-height-16 text-bottom-title'>
                           These are all the purchases we found in the past 90
@@ -311,7 +311,7 @@ function DashboardPage() {
                         </div>
                       </div>
                     </div>
-                    <div className='row justify-center mt-3'>
+                    <div className='row justify-center mt-3 mobile-footer-row'>
                       <div className='col-sm-6 text-center'>
                         <div className='text-muted text-center text-cant-find sofia-pro'>
                           Can’t find one?
@@ -326,7 +326,7 @@ function DashboardPage() {
                         </div>
                       </div>
                     </div>
-                    <div className='row justify-center mt-2'>
+                    <div className='row justify-center mt-2 mobile-footer-row'>
                       <div className='col-sm-6 text-center'>
                         <button
                           className='btn btn-add-new-email'
@@ -347,7 +347,7 @@ function DashboardPage() {
                       show={modalEmailShow}
                       onHide={() => setModalEmailShow(false)}
                     />
-                    <div className='row justify-center mt-2'>
+                    <div className='row justify-center mt-2 mobile-footer-row'>
                       <div className='col-sm-6 text-center'>
                         <a>
                           <div className='text-center noted-purple line-height-16 sofia-pro'>

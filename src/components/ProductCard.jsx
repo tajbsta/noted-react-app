@@ -13,6 +13,7 @@ import { updateOrders } from '../actions/auth.action';
 import $ from 'jquery';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import moment from 'moment';
+import ReturnPolicyModal from '../modals/ReturnPolicyModal';
 
 function ProductCard({
   orderId = '',
@@ -47,6 +48,7 @@ function ProductCard({
 
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [modalPolicyShow, setModalPolicyShow] = useState(false);
 
   // Check if device is mobile
   useEffect(() => {
@@ -313,7 +315,7 @@ function ProductCard({
                       <Row>
                         <button
                           className='sofia-pro btn btn-m-donate'
-                          type='submit'
+                          onClick={() => setModalPolicyShow(true)}
                         >
                           Return policy
                         </button>
@@ -337,6 +339,12 @@ function ProductCard({
                 </Container>
               </>
             )}
+            <ReturnPolicyModal
+              show={modalPolicyShow}
+              onHide={() => {
+                setModalPolicyShow(false);
+              }}
+            />
 
             <ProductDetails
               scannedItem={{
