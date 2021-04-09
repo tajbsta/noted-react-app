@@ -174,7 +174,17 @@
   }
 }
 
-.error-msg {
-  margin-top: 5px !important;
+.error-email {
+  margin: auto;
+  max-width: 440px;
+  margin-top: -16px;
+  margin-bottom: 10px;
+}
+
+.error-pass-msg {
+  margin-top: -13px !important;
   line-height: 22px;
+  margin: auto;
+  max-width: 440px;
+  margin-bottom: 16px;
 }
