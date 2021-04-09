@@ -81,13 +81,7 @@ export default function RegisterPage() {
             <p className='text-center'>Need to return or donate</p>
             <p className='text-center'>purchases made in the past?</p>
             <p className='text-center'>Let's go!</p>
-            <div
-              className='form-group'
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
+            <div className='form-group'>
               <button
                 onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
                 className='btn btn-md btn-block btn-google'
@@ -109,7 +103,7 @@ export default function RegisterPage() {
                 Join with Google
               </button>
             </div>
-            <div>
+            <div className='line-container'>
               <p className='line-break'>
                 <span>or</span>
               </p>

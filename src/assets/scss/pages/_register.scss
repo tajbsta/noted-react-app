@@ -70,6 +70,11 @@
     color: #dbd3e0;
   }
 
+  .line-container {
+    margin: auto;
+    max-width: 440px;
+  }
+
   .line-break {
     width: 100%;
     text-align: center;
@@ -83,12 +88,24 @@
     font-family: 'Sofia Pro';
   }
 
+  .form-group {
+    display: flex;
+    margin: auto;
+    margin-bottom: 16px;
+    justify-content: center;
+    max-width: 440px;
+  }
+
   .text-alert {
     margin: 0 auto;
   }
 
   .btn-submit {
     font-size: 16px;
+    display: flex;
+    justify-content: center;
+    max-width: 440px;
+    margin: auto;
 
     .fe-mail {
       position: relative;
@@ -111,6 +128,12 @@
   small,
   a {
     color: #aaa5ad;
+  }
+
+  .text-already,
+  .text-left {
+    max-width: 440px;
+    margin: auto;
   }
 
   .text-already {
