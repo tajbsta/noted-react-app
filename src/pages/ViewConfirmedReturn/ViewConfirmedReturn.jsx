@@ -341,7 +341,7 @@ function ViewConfirmedReturn({
                         }}
                         onClick={() => history.push('/dashboard')}
                       >
-                        Confirm
+                        No changes
                       </div>
                     )}
                   </>

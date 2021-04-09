@@ -277,7 +277,13 @@ function EditOrder({
                       alignContent: 'center',
                       justifyContent: 'center',
                     }}
-                    onClick={() => history.push('/dashboard')}
+                    onClick={() => {
+                      /**
+                       * @STEP clear orderInMemory first
+                       */
+                      dispatch(updateCurrentOrder(scheduledReturn));
+                      history.push('/dashboard');
+                    }}
                   >
                     Cancel
                   </div>
