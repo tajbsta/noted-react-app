@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ReturnPolicyModal from './ReturnPolicyModal';
+import ReturnPolicyModal from '../modals/ReturnPolicyModal';
 import EditProductModal from '../modals/EditProductModal';
 import moment from 'moment';
 import { get } from 'lodash';

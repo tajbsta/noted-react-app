@@ -115,7 +115,7 @@ function ProductCard({
     }
   };
 
-  // Truncate name if name is longer than 15 characters
+  // Truncate name if longer than 15 characters
   const truncateString = (str, num = 15) => {
     if (str && str.length > num) {
       return str.slice(0, num) + '...';
@@ -124,7 +124,7 @@ function ProductCard({
     }
   };
 
-  // Truncate name if name is longer than 15 characters
+  // Truncate name if longer than 8 characters
   const truncateBrand = (str, num = 8) => {
     if (str && str.length > num) {
       return str.slice(0, num);
