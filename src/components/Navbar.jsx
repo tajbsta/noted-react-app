@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { unsetUser } from '../actions/auth.action';
-import { unsetScan } from '../actions/scans.action';
 import { searchScans } from '../actions/runtime.action';
 import BrandLogoSvg from './BrandLogoSvg';
 
@@ -61,7 +60,6 @@ const Topnav = () => {
 
   const logout = async () => {
     dispatch(await unsetUser());
-    dispatch(await unsetScan());
     Auth.signOut()
       .then(async () => {
         setTimeout(() => {

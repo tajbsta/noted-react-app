@@ -16,7 +16,6 @@ import {
   FOR_RETURN,
   LAST_CALL,
 } from '../../constants/actions/runtime';
-import EmptyScan from './components/EmptyScan';
 import ScheduledReturnCard from '../../components/ScheduledReturnCard';
 import { clearOrder } from '../../actions/auth.action';
 import AddEmailModal from '../../modals/AddEmailModal';
@@ -32,32 +31,28 @@ function DashboardPage() {
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [launchScan, setLaunchScan] = useState(false);
   const [userId, setUserId] = useState('');
-  const [filteredItems, setFilteredItems] = useState([]);
   const [modalEmailShow, setModalEmailShow] = useState(false);
   const [modalProductShow, setModalProductShow] = useState(false);
 
   const [lastCallSelected, setLastCallSelected] = useState([]);
   const [returnableSelected, setReturnableSelected] = useState([]);
   const [donations, setDonationsSelected] = useState([]);
+  const [items, setItems] = useState([]);
   const {
     localDonationsCount,
     lastCall,
     forReturn,
     scheduledReturns,
-    scans: items,
   } = useSelector(
     ({
       runtime: { forDonation, forReturn, lastCall },
       auth: { scheduledReturns },
-      scans,
     }) => ({
       localDonationsCount: forDonation.length,
       forReturn,
       lastCall,
       scheduledReturns,
-      scans,
     })
   );
 
@@ -66,11 +61,10 @@ function DashboardPage() {
     .reduce((acc, curr) => (acc += curr), 0);
 
   async function loadScans() {
-    dispatch(clearSearchQuery());
+    // dispatch(clearSearchQuery());
     try {
       setLoading(true);
       const user = await getUserId();
-      // const user = '399f6259-6b1e-49a5-ba77-5fff248d48e2';
       const accounts = await getAccounts(user);
 
       setUserId(user);
@@ -84,33 +78,18 @@ function DashboardPage() {
       const validAccounts = accounts.filter((acc) => acc.valid === 1);
 
       // Redirect to scanning if user has no active gmail account
-      if (validAccounts.length === 0) {
-        setLaunchScan(true);
-        setLoading(false);
-        return;
-      }
+      // if (validAccounts.length === 0) {
+      //   setLaunchScan(true);
+      //   setLoading(false);
+      //   return;
+      // }
 
       const products = await getProducts(user);
 
       setLoading(false);
 
-      if (!isEmpty(scheduledReturns)) {
-        dispatch(
-          storeScan({
-            scannedItems: [
-              ...products.filter(
-                ({ id }) =>
-                  ![
-                    ...scheduledReturns
-                      .reduce((acc, curr) => acc.items.concat(curr.items))
-                      .map(({ id }) => id),
-                  ].includes(id)
-              ),
-            ],
-          })
-        );
-      }
-      dispatch(storeScan({ scannedItems: [...products] }));
+      // dispatch(storeScan({ scannedItems: [...products] }));
+      setItems(products);
     } catch (error) {
       setLoading(false);
       // TODO: show error here
@@ -118,29 +97,8 @@ function DashboardPage() {
   }
 
   useEffect(() => {
-    const filtered = items.filter((scan) => {
-      const pattern = new RegExp(search, 'i');
-      return (
-        get(scan, 'vendorTag', '').match(pattern) ||
-        get(scan, 'itemName', '').match(pattern)
-      );
-    });
-
-    if (search.length > 0) {
-      setFilteredItems([...filtered]);
-    } else {
-      setFilteredItems([]);
-    }
-  }, [search]);
-
-  useEffect(() => {
     loadScans();
   }, []);
-
-  const onScanLaunch = async () => {
-    await startAccountsScan(userId);
-    setLaunchScan(false);
-  };
 
   useEffect(() => {
     (async () => {
@@ -148,8 +106,6 @@ function DashboardPage() {
       setUser(user);
     })();
   }, []);
-
-  const onEdit = () => {};
 
   return (
     <div>
@@ -175,8 +131,7 @@ function DashboardPage() {
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className='card shadow-sm scanned-item-card mb-2 p-5'>
-                  {launchScan && <EmptyScan onScanLaunch={onScanLaunch} />}
-                  {!launchScan && <Scanning />}
+                  <Scanning />
                 </div>
               </>
             )}
@@ -271,15 +226,15 @@ function DashboardPage() {
                   </>
                 )}
 
-                {!isEmpty(search) && !isEmpty(filteredItems) && (
+                {/* {!isEmpty(search) && !isEmpty(filteredItems) && (
                   <div>
                     <ReturnCategory
                       scannedItems={filteredItems}
                       typeTitle='Select all'
                     />
                   </div>
-                )}
-                {!isEmpty(search) && isEmpty(filteredItems) && (
+                )} */}
+                {!isEmpty(search) && (
                   <div className='row justify-center'>
                     <div className='col-sm-7 text-center'>
                       <div className='text-center sofia-pro empty-search'>

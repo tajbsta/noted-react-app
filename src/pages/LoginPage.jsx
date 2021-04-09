@@ -140,7 +140,11 @@ export default function LoginPage() {
                     Sign In
                   </>
                 ) : (
-                  <Spinner animation='border' size='sm' className='spinner' />
+                  <Spinner
+                    animation='border'
+                    size='sm'
+                    className='spinner btn-spinner'
+                  />
                 )}
               </button>
             </Form>

@@ -196,7 +196,11 @@ export default function ResetPasswordPage(props) {
                 {!isSubmitting ? (
                   'Save New Password'
                 ) : (
-                  <Spinner animation='border' size='sm' className='spinner' />
+                  <Spinner
+                    animation='border'
+                    size='sm'
+                    className='spinner btn-spinner'
+                  />
                 )}
               </button>
             </Form>
