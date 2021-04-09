@@ -38,21 +38,24 @@ function DashboardPage() {
   const [lastCallSelected, setLastCallSelected] = useState([]);
   const [returnableSelected, setReturnableSelected] = useState([]);
   const [donations, setDonationsSelected] = useState([]);
-  const [items, setItems] = useState([]);
+  // const [items, setItems] = useState([]);
   const {
     localDonationsCount,
     lastCall,
     forReturn,
     scheduledReturns,
+    scans: items,
   } = useSelector(
     ({
       runtime: { forDonation, forReturn, lastCall },
       auth: { scheduledReturns },
+      scans,
     }) => ({
       localDonationsCount: forDonation.length,
       forReturn,
       lastCall,
       scheduledReturns,
+      scans,
     })
   );
 
@@ -87,9 +90,8 @@ function DashboardPage() {
       const products = await getProducts(user);
 
       setLoading(false);
-
       // dispatch(storeScan({ scannedItems: [...products] }));
-      setItems(products);
+      // setItems(products);
     } catch (error) {
       setLoading(false);
       // TODO: show error here
