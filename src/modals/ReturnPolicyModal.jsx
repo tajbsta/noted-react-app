@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Row, Col } from 'react-bootstrap';
 
 export default function ReturnPolicyModal(props) {
   return (
@@ -18,8 +18,22 @@ export default function ReturnPolicyModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className='sofia-pro'>
-        <h4 className='sofia-pro brand'>Nordstrom</h4>
-        <h4 className='sofia-pro text-score'>Excellent Returns</h4>
+        <Row className='b-row'>
+          <Col>
+            <div className='brand-group'>
+              <img
+                src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                alt=''
+                className='brand-img'
+              />
+              <h4 className='sofia-pro brand'>Nordstrom</h4>
+            </div>
+          </Col>
+          <Col className='score-col'>
+            <h4 className='sofia-pro text-score'>Excellent Returns</h4>
+          </Col>
+        </Row>
+
         <p className='sofia-pro info'>
           Nordstrom returns are free, all the time. Due to increase volume and
           the impact of COVID-19, returns processing by mail is delayed. For

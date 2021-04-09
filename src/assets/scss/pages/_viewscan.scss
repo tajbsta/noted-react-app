@@ -341,8 +341,16 @@
     }
   }
 
+  .m-brand-info-container,
+  .m-edit-container {
+    padding-right: 12px;
+    padding-left: 12px;
+    margin-right: auto;
+  }
+
   #mobile-product-info {
     padding-left: 12px;
+    padding-right: 12px;
 
     .col-days-left {
       padding: 0px;

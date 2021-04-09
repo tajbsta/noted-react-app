@@ -12,6 +12,7 @@ import { get } from 'lodash';
 import { updateOrders } from '../actions/auth.action';
 import $ from 'jquery';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
+import moment from 'moment';
 
 function ProductCard({
   orderId = '',
@@ -45,6 +46,21 @@ function ProductCard({
   );
 
   const [isHover, setIsHover] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 639);
+    }
+    handleResize(); // Run on load to set the default value
+    window.addEventListener('resize', handleResize);
+    // Clean up event listener
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   const handleSelection = () => {
     if (selected) {
       removeSelected(id);
@@ -99,7 +115,7 @@ function ProductCard({
     }
   };
 
-  // Truncate name if name is longer than 15 characters
+  // Truncate name if longer than 15 characters
   const truncateString = (str, num = 15) => {
     if (str && str.length > num) {
       return str.slice(0, num) + '...';
@@ -108,7 +124,7 @@ function ProductCard({
     }
   };
 
-  // Truncate name if name is longer than 15 characters
+  // Truncate name if longer than 8 characters
   const truncateBrand = (str, num = 8) => {
     if (str && str.length > num) {
       return str.slice(0, num);
@@ -134,7 +150,7 @@ function ProductCard({
       <div
         className={`card scanned-item-card w-840 mb-3 p-0 ${
           clickable && 'btn'
-        }`}
+        } ${isMobile && selected ? 'selected-mobile' : ''}`}
         key={itemName}
         style={{
           border: selected
@@ -144,10 +160,18 @@ function ProductCard({
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        <div className='card-body pt-3 pb-3 p-0 m-0'>
+        <div
+          className='card-body pt-3 pb-3 p-0 m-0'
+          style={{ marginTop: isMobile ? '1px' : '' }}
+        >
           <Row>
             {selectable && (
-              <div className='row align-items-center p-4 product-checkbox'>
+              <div
+                className='row p-4 product-checkbox'
+                style={{
+                  alignItems: isMobile && selected ? 'initial' : 'center',
+                }}
+              >
                 <input
                   disabled={disabled}
                   type='checkbox'
@@ -164,7 +188,8 @@ function ProductCard({
               className='product-img-container'
               style={{
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: isMobile && selected ? '' : 'center',
+                marginTop: isMobile && selected ? '7px' : '',
               }}
             >
               {removable && !selectable && (
@@ -186,11 +211,14 @@ function ProductCard({
               />
             </div>
             {/* MOBILE VIEWS FOR PRODUCT DETAILS */}
-            <div id='mobile-product-info'>
+            <div id='mobile-product-info' style={{ marginTop: '5px' }}>
               <div className='details'>
                 <Container>
                   <div className='title-container'>
-                    <h4 className='mb-0 sofia-pro mb-1 distributor-name'>
+                    <h4
+                      className='mb-0 sofia-pro mb-1 distributor-name'
+                      style={{ marginBottom: '0px' }}
+                    >
                       {truncateBrand(vendorTag)}
                     </h4>
                     <h5 className='sofia-pro mb-2 product-name'>
@@ -200,17 +228,39 @@ function ProductCard({
                 </Container>
                 <Container className='s-container'>
                   <Row>
-                    <Col className='col-days-left'>
-                      <div
-                        className='noted-red sofia-pro mobile-limit'
-                        style={{
-                          color: '#FF1C29',
-                        }}
+                    <div
+                      style={{
+                        display: selected ? 'flex' : '',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Col
+                        className='col-days-left'
+                        style={{ paddingRight: '4px' }}
                       >
-                        2 days left
-                      </div>
-                    </Col>
-                    <Col className='col-score'>
+                        <div
+                          className='noted-red sofia-pro mobile-limit'
+                          style={{
+                            color: '#FF1C29',
+                          }}
+                        >
+                          2 days left
+                        </div>
+                      </Col>
+                      <Col className='m-date-col'>
+                        {selected && (
+                          <div className='m-date sofia-pro'>
+                            {moment(orderDate, 'YYYY-MM-DD').format(
+                              'MMMM DD YYYY'
+                            )}
+                          </div>
+                        )}
+                      </Col>
+                    </div>
+                    <Col
+                      className='col-score'
+                      style={{ display: selected ? 'none' : '' }}
+                    >
                       <div className='mobile-return-score'>
                         <ReturnScore score={returnScore} />
                       </div>
@@ -222,8 +272,71 @@ function ProductCard({
                     <h4 className='sofia-pro mobile-price'>${amount}</h4>
                   </Row>
                 </Container>
+                {selected && (
+                  <Container>
+                    <Row>
+                      <button
+                        className='sofia-pro btn btn-m-donate'
+                        type='submit'
+                      >
+                        Donate instead
+                      </button>
+                    </Row>
+                  </Container>
+                )}
               </div>
             </div>
+            {isMobile && selected && (
+              <>
+                <Container className='m-brand-info-container'>
+                  <Row>
+                    <div className='m-brand-logo-cont'>
+                      <img
+                        src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                        alt=''
+                        className='m-brand-img'
+                      />
+                    </div>
+
+                    <Row>
+                      <div className='m-score-container'>
+                        <ReturnScore score={returnScore} />
+                      </div>
+                    </Row>
+
+                    <Col style={{ paddingRight: '7px', paddingLeft: '7px' }}>
+                      <Row>
+                        <h4 className='m-score-text sofia-pro'>
+                          Excellent returns
+                        </h4>
+                      </Row>
+                      <Row>
+                        <button
+                          className='sofia-pro btn btn-m-donate'
+                          type='submit'
+                        >
+                          Return policy
+                        </button>
+                      </Row>
+                    </Col>
+                  </Row>
+                </Container>
+
+                <Container className='m-edit-container'>
+                  <Row>
+                    <div className='m-edit-col'>
+                      <h4>Wrong info? &nbsp;</h4>
+                      <button
+                        className='sofia-pro btn btn-m-edit'
+                        type='submit'
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  </Row>
+                </Container>
+              </>
+            )}
 
             <ProductDetails
               scannedItem={{
