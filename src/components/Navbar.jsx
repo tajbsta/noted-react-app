@@ -14,23 +14,25 @@ import BrandLogoSvg from './BrandLogoSvg';
 const Topnav = () => {
   let history = useHistory();
   const dispatch = useDispatch();
+
   const pageLocation = history.location.pathname;
   const [showDropdown, setShowDropdown] = useState(false);
 
   const handleWindowClick = (e) => {
-    console.log(e.target.id);
     if (e.target && e.target.id !== 'navbarDropdownMenuLink') {
       setShowDropdown(false);
       window.removeEventListener('click', handleWindowClick);
     }
   };
 
-  console.log(showDropdown);
-
   useEffect(() => {
-    if (showDropdown) {
+    let mounted = true;
+    if (showDropdown && mounted) {
       window.addEventListener('click', handleWindowClick);
     }
+    return () => {
+      window.removeEventListener('click', handleWindowClick);
+    };
   }, [showDropdown]);
 
   const guestViews = [
