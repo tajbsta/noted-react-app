@@ -37,26 +37,35 @@
     border-bottom: none;
   }
 
+  .modal-header {
+    padding: 0px;
+    margin-top: 56px;
+
+    @media (max-width: 767px) {
+      margin-top: 48px;
+    }
+  }
+
   .modal-title {
-    position: absolute;
-    // height: 24px;
-    // left: 24.12%;
-    // right: 24.12%;
-    top: calc(50% - 24px / 2 - 111px);
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
     line-height: 24px;
     color: #2e1d3a;
+    margin-bottom: 10px;
+    text-align: center;
+
+    @media (max-width: 767px) {
+      max-width: 295px;
+      margin-bottom: 24px;
+    }
+  }
+
+  .modal-body {
+    padding: 0px;
   }
 
   .info {
-    position: absolute;
-    // left: 20.59%;
-    // right: 20.59%;
-    top: 25.14%;
-    bottom: 63.69%;
-    width: 400px;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -65,29 +74,31 @@
     color: #0e0018;
     mix-blend-mode: normal;
     opacity: 0.6;
+    max-width: 352px;
+
+    @media (max-width: 767px) {
+      max-width: 311px;
+    }
   }
 
   .view-link {
-    position: absolute;
-    // height: 19px;
-    // width: 100px;
-    // left: 45.44%;
-    // right: 45.44%;
-    top: calc(50% - 19px / 2 - 23.5px);
     font-family: 'Sofia Pro';
     font-size: 14px;
     line-height: 16px;
     text-align: center;
     text-decoration-line: underline;
     color: #570097;
+    margin-bottom: 59px;
+
+    @media (max-width: 767px) {
+      margin-bottom: 33px;
+    }
   }
 
   .button-group {
     display: grid;
     justify-content: center;
     align-items: center;
-    position: relative;
-    top: 60%;
 
     .btn-cancel {
       background: #ff1c29;

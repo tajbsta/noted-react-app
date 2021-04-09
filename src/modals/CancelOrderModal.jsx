@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 export default function CancelOrderModal(props) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 639);
+    }
+    handleResize(); // Run on load to set the default value
+    window.addEventListener('resize', handleResize);
+    // Clean up event listener
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   return (
     <Modal
       {...props}
@@ -12,15 +27,17 @@ export default function CancelOrderModal(props) {
       keyboard={false}
       id='CancelOrderModal'
     >
-      <Button
-        type='button'
-        className='close'
-        data-dismiss='modal'
-        aria-label='Close'
-        onClick={props.onHide}
-      >
-        <span aria-hidden='true'>&times;</span>
-      </Button>
+      {!isMobile && (
+        <Button
+          type='button'
+          className='close'
+          data-dismiss='modal'
+          aria-label='Close'
+          onClick={props.onHide}
+        >
+          <span aria-hidden='true'>&times;</span>
+        </Button>
+      )}
       <Modal.Header>
         <Modal.Title id='contained-modal-title-vcenter'>
           Are you sure you want to cancel this order?
