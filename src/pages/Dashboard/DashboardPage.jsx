@@ -31,20 +31,22 @@ function DashboardPage() {
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [launchScan, setLaunchScan] = useState(false);
   const [userId, setUserId] = useState('');
+  const [filteredItems, setFilteredItems] = useState([]);
   const [modalEmailShow, setModalEmailShow] = useState(false);
   const [modalProductShow, setModalProductShow] = useState(false);
 
   const [lastCallSelected, setLastCallSelected] = useState([]);
   const [returnableSelected, setReturnableSelected] = useState([]);
   const [donations, setDonationsSelected] = useState([]);
-  // const [items, setItems] = useState([]);
+  const [items, setItems] = useState([]);
   const {
     localDonationsCount,
     lastCall,
     forReturn,
     scheduledReturns,
-    scans: items,
+    // scans: items,
   } = useSelector(
     ({
       runtime: { forDonation, forReturn, lastCall },
@@ -55,7 +57,7 @@ function DashboardPage() {
       forReturn,
       lastCall,
       scheduledReturns,
-      scans,
+      // scans,
     })
   );
 
@@ -64,7 +66,7 @@ function DashboardPage() {
     .reduce((acc, curr) => (acc += curr), 0);
 
   async function loadScans() {
-    // dispatch(clearSearchQuery());
+    dispatch(clearSearchQuery());
     try {
       setLoading(true);
       const user = await getUserId();
@@ -90,8 +92,8 @@ function DashboardPage() {
       const products = await getProducts(user);
 
       setLoading(false);
+      setItems(products);
       // dispatch(storeScan({ scannedItems: [...products] }));
-      // setItems(products);
     } catch (error) {
       setLoading(false);
       // TODO: show error here
@@ -108,6 +110,8 @@ function DashboardPage() {
       setUser(user);
     })();
   }, []);
+
+  const onEdit = () => {};
 
   return (
     <div>
@@ -133,7 +137,7 @@ function DashboardPage() {
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className='card shadow-sm scanned-item-card mb-2 p-5'>
-                  <Scanning />
+                  {!launchScan && <Scanning />}
                 </div>
               </>
             )}
@@ -228,15 +232,15 @@ function DashboardPage() {
                   </>
                 )}
 
-                {/* {!isEmpty(search) && !isEmpty(filteredItems) && (
+                {!isEmpty(search) && !isEmpty(filteredItems) && (
                   <div>
                     <ReturnCategory
                       scannedItems={filteredItems}
                       typeTitle='Select all'
                     />
                   </div>
-                )} */}
-                {!isEmpty(search) && (
+                )}
+                {!isEmpty(search) && isEmpty(filteredItems) && (
                   <div className='row justify-center'>
                     <div className='col-sm-7 text-center'>
                       <div className='text-center sofia-pro empty-search'>
