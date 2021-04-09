@@ -1,6 +1,12 @@
 #ViewScanPage {
   padding-bottom: 73px;
 
+  .col-sm-9 {
+    @media (max-width: 767px) {
+      padding: 0px;
+    }
+  }
+
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
@@ -260,7 +266,7 @@
 
   // Pick-up Confirmed Section
   .request-msg {
-    width: 680px;
+    max-width: 680px;
     margin-bottom: 18px;
   }
 
@@ -385,5 +391,12 @@
     border: none;
     width: 215px;
     height: 40px;
+  }
+}
+
+// MOBILE
+.mobile-row {
+  @media (max-width: 767px) {
+    margin: auto !important;
   }
 }

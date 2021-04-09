@@ -111,7 +111,7 @@ function ViewScanPage() {
   return (
     <div id='ViewScanPage'>
       <div className='container mt-6'>
-        <div className='row'>
+        <div className='row mobile-row'>
           <div className='col-sm-9'>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed ? (
@@ -150,7 +150,7 @@ function ViewScanPage() {
             <h3 className='sofia-pro miss-out section-title'>
               Don&apos;t miss out on other returns
             </h3>
-            <div className='row align-items-center p-4 all-checkbox'>
+            <div className='row align-items-center p-4 all-checkbox mobile-row'>
               <input
                 type='checkbox'
                 onChange={handleSelectAll}
