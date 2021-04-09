@@ -221,11 +221,16 @@ function DashboardPage() {
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
             {!loading && items.length > 0 && (
               <>
-                <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
-                  {isEmpty(search)
-                    ? 'Your online purchases - Last 90 Days'
-                    : 'Search Results'}
-                </h3>
+                {isEmpty(search) && (
+                  <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
+                    Your online purchases - Last 90 Days
+                  </h3>
+                )}
+                {!isEmpty(search) && (
+                  <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
+                    Search Results
+                  </h3>
+                )}
                 {isEmpty(search) && (
                   <>
                     <div>
@@ -270,15 +275,22 @@ function DashboardPage() {
                     </div>
                   </>
                 )}
-
+                {/**
+                 * @SECTION start of search results here
+                 */}
                 {!isEmpty(search) && !isEmpty(filteredItems) && (
                   <div>
                     <ReturnCategory
                       scannedItems={filteredItems}
                       typeTitle='Select all'
+                      setSelected={setLastCallSelected}
+                      selected={lastCallSelected}
                     />
                   </div>
                 )}
+                {/**
+                 * @SECTION end of search results here
+                 */}
                 {!isEmpty(search) && isEmpty(filteredItems) && (
                   <div className='row justify-center'>
                     <div className='col-sm-7 text-center'>
