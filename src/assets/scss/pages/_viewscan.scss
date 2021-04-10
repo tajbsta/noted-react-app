@@ -1,4 +1,6 @@
-#ViewScanPage {
+#ViewScanPage,
+#ViewConfirmReturnPage,
+#EditOrderPage {
   padding-bottom: 73px;
 
   .col-sm-9 {
@@ -11,6 +13,18 @@
     @media (max-width: 767px) {
       padding-right: 12px;
       padding-left: 12px;
+    }
+  }
+
+  .mobile-view-add-col {
+    @media (max-width: 767px) {
+      margin: 12px;
+    }
+  }
+
+  .mobile-view-no-m-row {
+    @media (max-width: 767px) {
+      margin: auto;
     }
   }
 
@@ -60,6 +74,11 @@
   }
 
   .btn-edit {
+    cursor: pointer;
+    color: #570097;
+  }
+
+  .btn-add-instructions {
     cursor: pointer;
     color: #570097;
   }
@@ -215,6 +234,12 @@
     opacity: 0.6;
   }
 
+  .edit-line-break {
+    background: #e8e7e9;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
   .line-break-2 {
     margin-top: 12px !important;
     margin-bottom: 18px !important;
@@ -250,7 +275,6 @@
       box-shadow: none;
     }
   }
-
   // End of Right Card
 
   // Your Products to return section
@@ -271,7 +295,7 @@
     padding-bottom: 13px !important;
   }
 
-  // Pick-up Confirmed Section
+  // START OF PICKUP CONFIRMED
   .request-msg {
     max-width: 680px;
     margin-bottom: 18px;
@@ -346,6 +370,81 @@
     height: 40px;
     color: #ffffff;
   }
+  // END OF PICKUP CONFIRMED
+
+  // START OF MODIFY ORDER
+  .cancel-order {
+    font-size: 14px;
+    line-height: 16px;
+    padding-bottom: 3px;
+  }
+
+  .cancel-info {
+    margin-bottom: 0px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
+  .add-border {
+    border: 1px dashed #b1adb3;
+    mix-blend-mode: normal;
+    background: initial;
+  }
+
+  .add-row {
+    display: flex;
+    align-items: center;
+  }
+
+  .add-title {
+    font-size: 14px;
+    line-height: 16px;
+    color: #b1adb3;
+    margin-bottom: 5px;
+  }
+
+  .add-product-info {
+    margin-bottom: 0px;
+    text-align: left;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #b1adb3;
+  }
+
+  .add-product-container {
+    width: 48px;
+    height: 48px;
+    background: white;
+    border: 1px solid #eae8eb;
+    border-radius: 8px;
+    opacity: 0.6;
+    margin-left: 16px;
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    @media (max-width: 767px) {
+      width: 32px;
+      height: 32px !important;
+      padding: 0px;
+      height: 64px;
+    }
+  }
+  // END OF MODIFY ORDER
+
+  .m-add-product {
+    @media (max-width: 767px) {
+      width: 75%;
+    }
+  }
 
   // MOBILE
   .container {
@@ -368,6 +467,12 @@
     .col-days-left {
       padding: 0px;
     }
+  }
+}
+
+.mobile-row {
+  @media (max-width: 767px) {
+    margin: auto !important;
   }
 }
 
@@ -398,12 +503,5 @@
     border: none;
     width: 215px;
     height: 40px;
-  }
-}
-
-// MOBILE
-.mobile-row {
-  @media (max-width: 767px) {
-    margin: auto !important;
   }
 }

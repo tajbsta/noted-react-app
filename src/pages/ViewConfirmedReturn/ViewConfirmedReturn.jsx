@@ -99,7 +99,7 @@ function ViewConfirmedReturn({
   return (
     <div id='ViewConfirmReturnPage'>
       <div className='container mt-6'>
-        <div className='row'>
+        <div className='row mobile-view-no-m-row'>
           <div className='col-sm-9'>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed ? (
