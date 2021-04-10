@@ -43,6 +43,7 @@ export default function SchedulingModal(props) {
       centered
       backdrop='static'
       keyboard={false}
+      animation={false}
       id='SchedulingModal'
     >
       <Modal.Header>

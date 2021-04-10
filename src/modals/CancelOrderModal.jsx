@@ -25,6 +25,7 @@ export default function CancelOrderModal(props) {
       centered
       backdrop='static'
       keyboard={false}
+      animation={false}
       id='CancelOrderModal'
     >
       {!isMobile && (

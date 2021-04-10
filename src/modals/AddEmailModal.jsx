@@ -11,6 +11,7 @@ export default function AddEmailModal(props) {
         centered
         backdrop='static'
         keyboard={false}
+        animation={false}
         id='AddEmailModal'
       >
         <Modal.Body className='sofia-pro'>

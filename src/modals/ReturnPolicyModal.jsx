@@ -10,6 +10,7 @@ export default function ReturnPolicyModal(props) {
       centered
       backdrop='static'
       keyboard={false}
+      animation={false}
       id='ReturnPolicyModal'
     >
       <Modal.Header>

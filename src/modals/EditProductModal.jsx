@@ -113,6 +113,7 @@ export default function EditProductModal(props) {
         centered
         backdrop='static'
         keyboard={false}
+        animation={false}
         id='EditProductModal'
       >
         <Modal.Body className='sofia-pro'>

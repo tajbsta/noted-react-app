@@ -98,6 +98,7 @@ export default function AddProductModal(props) {
         centered
         backdrop='static'
         keyboard={false}
+        animation={false}
         id='AddProductModal'
       >
         <Modal.Body className='sofia-pro'>

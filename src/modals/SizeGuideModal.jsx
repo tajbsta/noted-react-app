@@ -25,6 +25,7 @@ export default function SizeGuideModal(props) {
       centered
       backdrop='static'
       keyboard={false}
+      animation={false}
       id='SizeGuideModal'
     >
       <Modal.Header>

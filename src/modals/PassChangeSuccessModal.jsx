@@ -33,6 +33,7 @@ export default function PassChangeSuccessModal(props) {
       centered
       backdrop='static'
       keyboard={false}
+      animation={false}
       id='PassChangeSuccessModal'
     >
       <Modal.Header>
