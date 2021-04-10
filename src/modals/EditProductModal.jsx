@@ -118,7 +118,7 @@ export default function EditProductModal(props) {
       >
         <Modal.Body className='sofia-pro'>
           <Form id='passForm'>
-            <Row>
+            <Row className='m-row'>
               <Col xs={2}>
                 <Form.Group>
                   <div className='img-container'>
@@ -166,12 +166,21 @@ export default function EditProductModal(props) {
                   <Col>
                     <Form.Group>
                       <Form.Label>Merchant</Form.Label>
-                      <div>
-                        <Form.Control
-                          name='vendorTag'
-                          onChange={handleChange}
-                          value={vendorTag}
-                        />
+                      <div className='merchant-container'>
+                        <div className='merchant-form-control'>
+                          <Form.Control
+                            name='vendorTag'
+                            onChange={handleChange}
+                            value={vendorTag}
+                          />
+                        </div>
+                        <div className='brand-img-container'>
+                          <img
+                            src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                            alt=''
+                            className='brand-img'
+                          />
+                        </div>
                       </div>
                     </Form.Group>
                   </Col>

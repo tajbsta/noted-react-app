@@ -102,9 +102,9 @@ export default function AddProductModal(props) {
       >
         <Modal.Body className='sofia-pro'>
           <Form id='passForm'>
-            <Row>
+            <Row className='m-row'>
               <Col xs={2}>
-                <Form.Group>
+                <Form.Group className='productImg-form-group'>
                   <div className='img-container'>
                     <img
                       src={ProductPlaceholder}
@@ -155,17 +155,26 @@ export default function AddProductModal(props) {
                   <Col>
                     <Form.Group>
                       <Form.Label>Merchant</Form.Label>
-                      <div>
-                        <Form.Control
-                          type='name'
-                          isValid={!errors.vendorTag && vendorTag.length > 0}
-                          isInvalid={errors.vendorTag}
-                          name='vendorTag'
-                          value={vendorTag || ''}
-                          onChange={handleProductChange}
-                        />
-                        {renderInlineError(errors.vendorTag)}
+                      <div className='merchant-container'>
+                        <div className='merchant-form-control'>
+                          <Form.Control
+                            type='name'
+                            isValid={!errors.vendorTag && vendorTag.length > 0}
+                            isInvalid={errors.vendorTag}
+                            name='vendorTag'
+                            value={vendorTag || ''}
+                            onChange={handleProductChange}
+                          />
+                        </div>
+                        <div className='brand-img-container'>
+                          <img
+                            src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                            alt=''
+                            className='brand-img'
+                          />
+                        </div>
                       </div>
+                      {renderInlineError(errors.vendorTag)}
                     </Form.Group>
                   </Col>
                 </Row>
