@@ -87,6 +87,11 @@
     height: 60px;
   }
 
+  .m-scheduled-card {
+    margin-top: 5px;
+    width: 82% !important;
+  }
+
   // OnHoverProductCard
   #OnHoverProductCard {
     .container-1 {
@@ -238,6 +243,9 @@
   // END OF PRODUCT IS SELECTED
 
   #mobile-product-info {
+    padding-left: 12px;
+    padding-right: 12px;
+
     @media (min-width: 767px) {
       display: none;
     }

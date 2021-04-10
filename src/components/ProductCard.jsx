@@ -48,6 +48,8 @@ function ProductCard({
 
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isMobileSmaller, setIsMobileSmaller] = useState(false);
+
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
 
   // Check if device is mobile
@@ -58,6 +60,17 @@ function ProductCard({
     handleResize(); // Run on load to set the default value
     window.addEventListener('resize', handleResize);
     // Clean up event listener
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobileSmaller(window.innerWidth <= 320);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -213,7 +226,15 @@ function ProductCard({
               />
             </div>
             {/* MOBILE VIEWS FOR PRODUCT DETAILS */}
-            <div id='mobile-product-info' style={{ marginTop: '5px' }}>
+            <div
+              id='mobile-product-info'
+              style={{
+                marginTop: '5px',
+                width: isMobile && removable && !selectable ? '83%' : '',
+                maxWidth:
+                  isMobileSmaller && removable && !selectable ? '75%' : '',
+              }}
+            >
               <div className='details'>
                 <Container>
                   <div className='title-container'>
