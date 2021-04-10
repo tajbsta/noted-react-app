@@ -6,7 +6,6 @@ import { useDropzone } from 'react-dropzone';
 import Flatpickr from 'react-flatpickr';
 import { useDispatch, useSelector } from 'react-redux';
 import { get } from 'lodash';
-import { useFormik } from 'formik';
 import { updateScans } from '../actions/scans.action';
 import { unmountProductedit } from '../actions/runtime.action';
 import moment from 'moment';

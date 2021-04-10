@@ -14,6 +14,8 @@ import $ from 'jquery';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import moment from 'moment';
 import ReturnPolicyModal from '../modals/ReturnPolicyModal';
+import EditProductModal from '../modals/EditProductModal';
+import { useFormik } from 'formik';
 
 function ProductCard({
   orderId = '',
@@ -51,6 +53,7 @@ function ProductCard({
   const [isMobileSmaller, setIsMobileSmaller] = useState(false);
 
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
+  const [modalEditShow, setModalEditShow] = useState(false);
 
   // Check if device is mobile
   useEffect(() => {
@@ -74,6 +77,17 @@ function ProductCard({
     return () => {
       window.removeEventListener('resize', handleResize);
     };
+  });
+
+  const { handleChange, values, setFieldValue } = useFormik({
+    initialValues: {
+      amount: get(scannedItem, 'amount', ''),
+      vendorTag: get(scannedItem, 'vendorTag', ''),
+      orderDate: get(scannedItem, 'orderDate', ''),
+      itemName: get(scannedItem, 'itemName', ''),
+      productUrl: '',
+      imageUrl: get(scannedItem, 'imageUrl', ''),
+    },
   });
 
   const handleSelection = () => {
@@ -351,7 +365,7 @@ function ProductCard({
                       <h4>Wrong info? &nbsp;</h4>
                       <button
                         className='sofia-pro btn btn-m-edit'
-                        type='submit'
+                        onClick={() => setModalEditShow(true)}
                       >
                         Edit
                       </button>
@@ -365,6 +379,13 @@ function ProductCard({
               onHide={() => {
                 setModalPolicyShow(false);
               }}
+            />
+            <EditProductModal
+              show={modalEditShow}
+              onHide={() => {
+                setModalPolicyShow(false);
+              }}
+              editProductForm={{ handleChange, values, setFieldValue }}
             />
 
             <ProductDetails
