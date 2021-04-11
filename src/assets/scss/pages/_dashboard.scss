@@ -79,20 +79,6 @@
     }
   }
 
-  .mobile-container {
-    @media (max-width: 540px) {
-      display: inline-flex;
-      width: 100%;
-    }
-
-    .return-value-container {
-      @media (max-width: 540px) {
-        display: flex;
-        justify-content: center;
-      }
-    }
-  }
-
   .total-returns {
     margin-bottom: 16px;
   }
@@ -135,6 +121,45 @@
       font-family: 'Sofia Pro';
       font-size: 16px;
       line-height: 19px;
+    }
+  }
+
+  // MOBILE FOR RIGHT CARD
+  .m-right-card-row {
+    padding-left: 12px;
+    padding-right: 12px;
+
+    .m-right-card-col {
+      padding-left: 0px;
+      padding-right: 0px;
+
+      .m-right-card-val {
+        h4 {
+          font-size: 22px;
+          line-height: 26px;
+          color: #21003a;
+          margin-bottom: 0px;
+        }
+      }
+
+      .m-label {
+        max-width: 90%;
+        @media (max-width: 375px) {
+          max-width: 77%;
+        }
+
+        @media (max-width: 280px) {
+          max-width: 85%;
+        }
+
+        h4 {
+          font-size: 12px;
+          line-height: 14px;
+          color: #0e0018;
+          mix-blend-mode: normal;
+          opacity: 0.6;
+        }
+      }
     }
   }
 }
