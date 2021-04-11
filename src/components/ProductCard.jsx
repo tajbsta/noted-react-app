@@ -383,7 +383,7 @@ function ProductCard({
             <EditProductModal
               show={modalEditShow}
               onHide={() => {
-                setModalPolicyShow(false);
+                setModalEditShow(false);
               }}
               editProductForm={{ handleChange, values, setFieldValue }}
             />

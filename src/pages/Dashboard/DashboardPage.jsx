@@ -267,6 +267,7 @@ function DashboardPage() {
                           <button
                             className='btn btn-add-product'
                             onClick={() => setModalProductShow(true)}
+                            style={{ padding: '0px' }}
                           >
                             <div className='noted-purple sofia-pro line-height-16 text-add'>
                               &nbsp; Add it manually
@@ -278,7 +279,7 @@ function DashboardPage() {
                     <div className='row justify-center mt-2 mobile-footer-row'>
                       <div className='col-sm-6 text-center'>
                         <button
-                          className='btn btn-add-new-email'
+                          className='btn btn-footer'
                           onClick={() => setModalEmailShow(true)}
                         >
                           <div className='text-center noted-purple sofia-pro line-height-16 text-new-email'>
@@ -298,11 +299,11 @@ function DashboardPage() {
                     />
                     <div className='row justify-center mt-2 mobile-footer-row'>
                       <div className='col-sm-6 text-center'>
-                        <a>
-                          <div className='text-center noted-purple line-height-16 sofia-pro'>
+                        <button className='btn btn-footer'>
+                          <div className='text-center noted-purple sofia-pro line-height-16 text-new-email'>
                             Scan for older items
                           </div>
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </div>

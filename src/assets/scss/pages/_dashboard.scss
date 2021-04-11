@@ -265,7 +265,9 @@
   }
 }
 
-.btn-add-new-email {
+.btn-footer {
+  padding: 0px;
+
   &:focus {
     outline: none !important;
     box-shadow: none;

@@ -94,7 +94,9 @@ export default function ProductCardHover({
 
       <EditProductModal
         show={modalEditShow}
-        onHide={onHide}
+        onHide={() => {
+          setModalEditShow(false);
+        }}
         editProductForm={{ handleChange, values, setFieldValue }}
       />
       <ReturnPolicyModal

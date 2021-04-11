@@ -205,6 +205,8 @@
     display: flex;
     align-items: flex-start;
     margin-left: 16px;
+    position: relative;
+    top: -2%;
   }
 
   .m-score-text {
@@ -237,6 +239,7 @@
         line-height: 14px;
         text-decoration-line: underline;
         color: #570097;
+        box-shadow: none;
       }
     }
   }
