@@ -14,6 +14,8 @@ import $ from 'jquery';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import moment from 'moment';
 import ReturnPolicyModal from '../modals/ReturnPolicyModal';
+import EditProductModal from '../modals/EditProductModal';
+import { useFormik } from 'formik';
 
 function ProductCard({
   orderId = '',
@@ -48,7 +50,10 @@ function ProductCard({
 
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isMobileSmaller, setIsMobileSmaller] = useState(false);
+
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
+  const [modalEditShow, setModalEditShow] = useState(false);
 
   // Check if device is mobile
   useEffect(() => {
@@ -61,6 +66,28 @@ function ProductCard({
     return () => {
       window.removeEventListener('resize', handleResize);
     };
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobileSmaller(window.innerWidth <= 320);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
+  const { handleChange, values, setFieldValue } = useFormik({
+    initialValues: {
+      amount: get(scannedItem, 'amount', ''),
+      vendorTag: get(scannedItem, 'vendorTag', ''),
+      orderDate: get(scannedItem, 'orderDate', ''),
+      itemName: get(scannedItem, 'itemName', ''),
+      productUrl: '',
+      imageUrl: get(scannedItem, 'imageUrl', ''),
+    },
   });
 
   const handleSelection = () => {
@@ -213,7 +240,15 @@ function ProductCard({
               />
             </div>
             {/* MOBILE VIEWS FOR PRODUCT DETAILS */}
-            <div id='mobile-product-info' style={{ marginTop: '5px' }}>
+            <div
+              id='mobile-product-info'
+              style={{
+                marginTop: '5px',
+                width: isMobile && removable && !selectable ? '83%' : '',
+                maxWidth:
+                  isMobileSmaller && removable && !selectable ? '75%' : '',
+              }}
+            >
               <div className='details'>
                 <Container>
                   <div className='title-container'>
@@ -330,7 +365,7 @@ function ProductCard({
                       <h4>Wrong info? &nbsp;</h4>
                       <button
                         className='sofia-pro btn btn-m-edit'
-                        type='submit'
+                        onClick={() => setModalEditShow(true)}
                       >
                         Edit
                       </button>
@@ -344,6 +379,13 @@ function ProductCard({
               onHide={() => {
                 setModalPolicyShow(false);
               }}
+            />
+            <EditProductModal
+              show={modalEditShow}
+              onHide={() => {
+                setModalPolicyShow(false);
+              }}
+              editProductForm={{ handleChange, values, setFieldValue }}
             />
 
             <ProductDetails

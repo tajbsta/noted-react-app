@@ -178,7 +178,11 @@ export default function RegisterPage() {
                     Join with email
                   </>
                 ) : (
-                  <Spinner animation='border' size='sm' className='spinner' />
+                  <Spinner
+                    animation='border'
+                    size='sm'
+                    className='spinner btn-spinner'
+                  />
                 )}
               </button>
             </Form>

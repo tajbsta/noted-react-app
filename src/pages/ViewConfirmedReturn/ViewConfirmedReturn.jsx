@@ -99,18 +99,18 @@ function ViewConfirmedReturn({
   return (
     <div id='ViewConfirmReturnPage'>
       <div className='container mt-6'>
-        <div className='row'>
+        <div className='row mobile-view-no-m-row'>
           <div className='col-sm-9'>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed ? (
-              <>
+              <div className='mobile-view-scan-col'>
                 <h3 className='sofia-pro text-18 section-title'>
                   Pick-up confirmed
                 </h3>
                 <PickUpConfirmed />
-              </>
+              </div>
             ) : (
-              <>
+              <div className='mobile-view-scan-col'>
                 <PickUpDetails
                   address={address}
                   payment={payment}
@@ -119,9 +119,9 @@ function ViewConfirmedReturn({
                 {/**
                  * PICK UP DETAILS
                  */}
-              </>
+              </div>
             )}
-            <h3 className='sofia-pro products-return text-18 section-title'>
+            <h3 className='sofia-pro products-return text-18 section-title mobile-view-scan-col'>
               Your products to return
             </h3>
             {items.map((item) => (
@@ -139,7 +139,7 @@ function ViewConfirmedReturn({
              */}
             {!confirmed && (
               <div
-                className='card add-border scanned-item-card w-840 mb-3 p-0 btn'
+                className='card add-border scanned-item-card w-840 mb-3 p-0 btn mobile-view-add-col'
                 onClick={() => {
                   /**
                    * @FUNCTION Show products like the one from dashboard
@@ -149,18 +149,10 @@ function ViewConfirmedReturn({
               >
                 <div className='card-body pt-3 pb-3 p-0 m-0'>
                   <Row className='add-row'>
-                    <div
-                      className='col-sm-1 product-img-container add-product-container'
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: 60,
-                      }}
-                    >
+                    <div className='col-sm-1 product-img-container add-product-container'>
                       <Plus />
                     </div>
-                    <div className='col-sm-4 p-0 p-details'>
+                    <div className='col-sm-4 p-0 p-details m-add-product'>
                       <Row>
                         <h3 className='add-title'>Add Products</h3>
                       </Row>
