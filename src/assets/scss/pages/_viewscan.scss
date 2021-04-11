@@ -4,26 +4,26 @@
   padding-bottom: 73px;
 
   .col-sm-9 {
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
       padding: 0px;
     }
   }
 
   .mobile-view-scan-col {
-    @media (max-width: 767px) {
+    @media (max-width: 9px) {
       padding-right: 12px;
       padding-left: 12px;
     }
   }
 
   .mobile-view-add-col {
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
       margin: 12px;
     }
   }
 
   .mobile-view-no-m-row {
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
       margin: auto;
     }
   }
@@ -431,7 +431,7 @@
     align-items: center;
     justify-content: center;
     height: 60px;
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
       width: 32px;
       height: 32px !important;
       padding: 0px;
@@ -441,14 +441,14 @@
   // END OF MODIFY ORDER
 
   .m-add-product {
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
       width: 75%;
     }
   }
 
   // MOBILE
   .container {
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
       padding: 0px;
     }
   }
@@ -471,7 +471,7 @@
 }
 
 .mobile-row {
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     margin: auto !important;
   }
 }

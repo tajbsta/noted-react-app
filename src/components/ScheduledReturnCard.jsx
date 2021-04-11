@@ -32,7 +32,7 @@ function ScheduledReturnCard({
   // Check if device is mobile
   useEffect(() => {
     function handleResize() {
-      setIsMobile(window.innerWidth <= 639);
+      setIsMobile(window.innerWidth <= 991);
     }
     handleResize();
     window.addEventListener('resize', handleResize);

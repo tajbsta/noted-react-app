@@ -36,7 +36,7 @@
 }
 
 #loader-con {
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     width: 100vw;
     padding-right: 12px;
     padding-left: 12px;
@@ -54,7 +54,7 @@
 
 // START OF RIGHT CARD
 .checkout-card {
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     padding-left: 0px;
     padding-right: 0px;
   }
@@ -164,7 +164,7 @@
   right: 8.46%;
   top: calc(50% - 19px / 2 + 4px);
 
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     display: none;
   }
 }
@@ -177,7 +177,7 @@
   width: 5%;
   right: 8%;
 
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     display: none;
   }
 }
@@ -196,7 +196,7 @@
     top: 3px;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     display: none;
   }
 }
@@ -206,7 +206,7 @@
   align-self: center;
   height: 20%;
 
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     right: 14%;
     top: 34%;
   }
@@ -287,7 +287,7 @@
   @media (max-width: 540px) {
     padding-bottom: 0px;
   }
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     padding-left: 0px;
     padding-right: 0px;
   }
@@ -307,13 +307,13 @@
 
 // MOBILE VIEW OF DASHBOARD
 .main-mobile-dashboard {
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     margin-top: 0px !important;
   }
 }
 
 .mobile-footer-row {
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     margin: auto;
   }
 }
