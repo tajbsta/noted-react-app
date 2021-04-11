@@ -23,11 +23,9 @@ html {
 @import './pages/code';
 @import './pages/dashboard';
 @import './pages/scanning';
-@import './pages/viewscan';
+@import './pages/viewscan'; //Checkout Process
 @import './pages/profile';
 @import './pages/settings';
-@import './pages/viewconfirmedreturn';
-@import './pages/editorder';
 
 /* Components in Pages styling */
 @import './components/brandlogo';

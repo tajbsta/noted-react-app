@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import ReturnPolicyModal from './ReturnPolicyModal';
+import React, { useState, useEffect } from 'react';
+import ReturnPolicyModal from '../modals/ReturnPolicyModal';
 import EditProductModal from '../modals/EditProductModal';
 import moment from 'moment';
 import { get } from 'lodash';
@@ -17,6 +17,20 @@ export default function ProductCardHover({
   const dispatch = useDispatch();
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
   const [modalEditShow, setModalEditShow] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize(); // Run on load to set the default value
+    window.addEventListener('resize', handleResize);
+    // Clean up event listener
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
 
   const { handleChange, values, setFieldValue } = useFormik({
     initialValues: {
@@ -45,40 +59,44 @@ export default function ProductCardHover({
 
   return (
     <div>
-      <div
-        id='OnHoverProductCard'
-        style={{
-          display: show ? 'block' : 'none',
-        }}
-      >
-        <div className='container-1'>
-          <h4 className='date text-14 sofia-pro line-height-16'>
-            {moment(orderDate, 'YYYY-MM-DD').format('MMMM DD YYYY')}
-          </h4>
-          <div className='info-container'>
-            <p className='text-wrong-info sofia-pro'>Wrong info?&nbsp;</p>
-            <button className='btn-hover-edit sofia-pro btn' onClick={onEdit}>
-              {' '}
-              Edit
+      {!isMobile && (
+        <div
+          id='OnHoverProductCard'
+          style={{
+            display: show ? 'block' : 'none',
+          }}
+        >
+          <div className='container-1'>
+            <h4 className='date text-14 sofia-pro line-height-16'>
+              {moment(orderDate, 'YYYY-MM-DD').format('MMMM DD YYYY')}
+            </h4>
+            <div className='info-container'>
+              <p className='text-wrong-info sofia-pro'>Wrong info?&nbsp;</p>
+              <button className='btn-hover-edit sofia-pro btn' onClick={onEdit}>
+                {' '}
+                Edit
+              </button>
+            </div>
+          </div>
+          <div className='container-2 text-left'>
+            <p className='text-14 sofia-pro line-height-16 text-score'>
+              Excellent Returns
+            </p>
+            <button
+              className='btn-policy sofia-pro btn'
+              onClick={() => setModalPolicyShow(true)}
+            >
+              Return policy
             </button>
           </div>
         </div>
-        <div className='container-2 text-left'>
-          <p className='text-14 sofia-pro line-height-16 text-score'>
-            Excellent Returns
-          </p>
-          <button
-            className='btn-policy sofia-pro btn'
-            onClick={() => setModalPolicyShow(true)}
-          >
-            Return policy
-          </button>
-        </div>
-      </div>
+      )}
 
       <EditProductModal
         show={modalEditShow}
-        onHide={onHide}
+        onHide={() => {
+          setModalEditShow(false);
+        }}
         editProductForm={{ handleChange, values, setFieldValue }}
       />
       <ReturnPolicyModal

@@ -16,7 +16,6 @@ import {
   FOR_RETURN,
   LAST_CALL,
 } from '../../constants/actions/runtime';
-import EmptyScan from './components/EmptyScan';
 import ScheduledReturnCard from '../../components/ScheduledReturnCard';
 import { clearOrder } from '../../actions/auth.action';
 import AddEmailModal from '../../modals/AddEmailModal';
@@ -41,12 +40,13 @@ function DashboardPage() {
   const [lastCallSelected, setLastCallSelected] = useState([]);
   const [returnableSelected, setReturnableSelected] = useState([]);
   const [donations, setDonationsSelected] = useState([]);
+  const [items, setItems] = useState([]);
   const {
     localDonationsCount,
     lastCall,
     forReturn,
     scheduledReturns,
-    scans: items,
+    // scans: items,
   } = useSelector(
     ({
       runtime: { forDonation, forReturn, lastCall },
@@ -57,7 +57,7 @@ function DashboardPage() {
       forReturn,
       lastCall,
       scheduledReturns,
-      scans,
+      // scans,
     })
   );
 
@@ -70,7 +70,6 @@ function DashboardPage() {
     try {
       setLoading(true);
       const user = await getUserId();
-      // const user = '399f6259-6b1e-49a5-ba77-5fff248d48e2';
       const accounts = await getAccounts(user);
 
       setUserId(user);
@@ -84,33 +83,17 @@ function DashboardPage() {
       const validAccounts = accounts.filter((acc) => acc.valid === 1);
 
       // Redirect to scanning if user has no active gmail account
-      if (validAccounts.length === 0) {
-        setLaunchScan(true);
-        setLoading(false);
-        return;
-      }
+      // if (validAccounts.length === 0) {
+      //   setLaunchScan(true);
+      //   setLoading(false);
+      //   return;
+      // }
 
       const products = await getProducts(user);
 
       setLoading(false);
-
-      if (!isEmpty(scheduledReturns)) {
-        dispatch(
-          storeScan({
-            scannedItems: [
-              ...products.filter(
-                ({ id }) =>
-                  ![
-                    ...scheduledReturns
-                      .reduce((acc, curr) => acc.items.concat(curr.items))
-                      .map(({ id }) => id),
-                  ].includes(id)
-              ),
-            ],
-          })
-        );
-      }
-      dispatch(storeScan({ scannedItems: [...products] }));
+      setItems(products);
+      // dispatch(storeScan({ scannedItems: [...products] }));
     } catch (error) {
       setLoading(false);
       // TODO: show error here
@@ -118,29 +101,8 @@ function DashboardPage() {
   }
 
   useEffect(() => {
-    const filtered = items.filter((scan) => {
-      const pattern = new RegExp(search, 'i');
-      return (
-        get(scan, 'vendorTag', '').match(pattern) ||
-        get(scan, 'itemName', '').match(pattern)
-      );
-    });
-
-    if (search.length > 0) {
-      setFilteredItems([...filtered]);
-    } else {
-      setFilteredItems([]);
-    }
-  }, [search]);
-
-  useEffect(() => {
     loadScans();
   }, []);
-
-  const onScanLaunch = async () => {
-    await startAccountsScan(userId);
-    setLaunchScan(false);
-  };
 
   useEffect(() => {
     (async () => {
@@ -175,7 +137,6 @@ function DashboardPage() {
                   Your online purchases - Last 90 Days
                 </h3>
                 <div className='card shadow-sm scanned-item-card mb-2 p-5'>
-                  {launchScan && <EmptyScan onScanLaunch={onScanLaunch} />}
                   {!launchScan && <Scanning />}
                 </div>
               </>
@@ -291,7 +252,7 @@ function DashboardPage() {
 
                 {isEmpty(search) && (
                   <div>
-                    <div className='row justify-center'>
+                    <div className='row justify-center mobile-footer-row'>
                       <div className='col-sm-7 text-center'>
                         <div className='text-muted text-center sofia-pro line-height-16 text-bottom-title'>
                           These are all the purchases we found in the past 90
@@ -299,13 +260,14 @@ function DashboardPage() {
                         </div>
                       </div>
                     </div>
-                    <div className='row justify-center mt-3'>
+                    <div className='row justify-center mt-3 mobile-footer-row'>
                       <div className='col-sm-6 text-center'>
                         <div className='text-muted text-center text-cant-find sofia-pro'>
                           Can’t find one?
                           <button
                             className='btn btn-add-product'
                             onClick={() => setModalProductShow(true)}
+                            style={{ padding: '0px' }}
                           >
                             <div className='noted-purple sofia-pro line-height-16 text-add'>
                               &nbsp; Add it manually
@@ -314,10 +276,10 @@ function DashboardPage() {
                         </div>
                       </div>
                     </div>
-                    <div className='row justify-center mt-2'>
+                    <div className='row justify-center mt-2 mobile-footer-row'>
                       <div className='col-sm-6 text-center'>
                         <button
-                          className='btn btn-add-new-email'
+                          className='btn btn-footer'
                           onClick={() => setModalEmailShow(true)}
                         >
                           <div className='text-center noted-purple sofia-pro line-height-16 text-new-email'>
@@ -335,13 +297,13 @@ function DashboardPage() {
                       show={modalEmailShow}
                       onHide={() => setModalEmailShow(false)}
                     />
-                    <div className='row justify-center mt-2'>
+                    <div className='row justify-center mt-2 mobile-footer-row'>
                       <div className='col-sm-6 text-center'>
-                        <a>
-                          <div className='text-center noted-purple line-height-16 sofia-pro'>
+                        <button className='btn btn-footer'>
+                          <div className='text-center noted-purple sofia-pro line-height-16 text-new-email'>
                             Scan for older items
                           </div>
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </div>

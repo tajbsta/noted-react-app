@@ -64,13 +64,15 @@ export default function RegisterPage() {
   };
 
   const renderLocalPasswordValidationError = () => (
-    <small className='form-text p-0 m-0 noted-red error-msg'>
+    <small className='form-text p-0 noted-red error-pass-msg'>
       {errors.password}
     </small>
   );
 
   const renderLocalEmailValidationError = () => (
-    <small className='form-text p-0 m-0 noted-red'>{errors.email}</small>
+    <small className='form-text p-0 noted-red error-email'>
+      {errors.email}
+    </small>
   );
 
   return (
@@ -81,13 +83,7 @@ export default function RegisterPage() {
             <p className='text-center'>Need to return or donate</p>
             <p className='text-center'>purchases made in the past?</p>
             <p className='text-center'>Let's go!</p>
-            <div
-              className='form-group'
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
+            <div className='form-group'>
               <button
                 onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
                 className='btn btn-md btn-block btn-google'
@@ -109,7 +105,7 @@ export default function RegisterPage() {
                 Join with Google
               </button>
             </div>
-            <div>
+            <div className='line-container'>
               <p className='line-break'>
                 <span>or</span>
               </p>
@@ -131,10 +127,10 @@ export default function RegisterPage() {
                   placeholder='Your email...'
                   onChange={handleChange}
                 />
-                {email.length > 0 &&
-                  errors.email &&
-                  renderLocalEmailValidationError()}
               </div>
+              {email.length > 0 &&
+                errors.email &&
+                renderLocalEmailValidationError()}
 
               <div className='form-group'>
                 <div className='input-group input-group-merge'>
@@ -158,11 +154,10 @@ export default function RegisterPage() {
                     </span>
                   </div>
                 </div>
-                {password.length > 0 &&
-                  errors.password &&
-                  renderLocalPasswordValidationError()}
               </div>
-
+              {password.length > 0 &&
+                errors.password &&
+                renderLocalPasswordValidationError()}
               <button
                 className='btn btn-lg btn-block btn-green mb-3 btn-submit'
                 type='submit'
@@ -183,7 +178,11 @@ export default function RegisterPage() {
                     Join with email
                   </>
                 ) : (
-                  <Spinner animation='border' size='sm' className='spinner' />
+                  <Spinner
+                    animation='border'
+                    size='sm'
+                    className='spinner btn-spinner'
+                  />
                 )}
               </button>
             </Form>

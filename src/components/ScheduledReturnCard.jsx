@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GREAT } from '../constants/returns/scores';
 import ReturnScore from './ReturnsScore';
 import Row from './Row';
@@ -27,6 +27,19 @@ function ScheduledReturnCard({
 }) {
   const history = useHistory();
   const [isHover, setIsHover] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
 
   const handleSelection = () => {
     if (selected) {
@@ -36,7 +49,7 @@ function ScheduledReturnCard({
     addSelected(id);
   };
 
-  // Truncate name if name is longer than 15 characters
+  // Truncate name if longer than 15 characters
   const truncateString = (str, num = 15) => {
     if (str && str.length > num) {
       return str.slice(0, num) + '...';
@@ -45,7 +58,7 @@ function ScheduledReturnCard({
     }
   };
 
-  // Truncate name if name is longer than 15 characters
+  // Truncate name if longer than 8 characters
   const truncateBrand = (str, num = 8) => {
     if (str && str.length > num) {
       return str.slice(0, num);
@@ -85,7 +98,7 @@ function ScheduledReturnCard({
               </div>
             )}
             <div
-              className='col-sm-1 product-img-container'
+              className={`product-img-container ${!isMobile ? 'col-sm-1' : ''}`}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -102,9 +115,8 @@ function ScheduledReturnCard({
                 }}
               />
             </div>
-
             {/* MOBILE VIEWS FOR PRODUCT DETAILS */}
-            <div id='mobile-product-info'>
+            <div id='mobile-product-info' className='m-scheduled-card'>
               <div className='details'>
                 <Container>
                   <div className='title-container'>
@@ -142,7 +154,6 @@ function ScheduledReturnCard({
                 </Container>
               </div>
             </div>
-
             <ProductDetails
               scannedItem={{
                 vendorTag,

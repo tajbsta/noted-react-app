@@ -6,7 +6,6 @@ import { useDropzone } from 'react-dropzone';
 import Flatpickr from 'react-flatpickr';
 import { useDispatch, useSelector } from 'react-redux';
 import { get } from 'lodash';
-import { useFormik } from 'formik';
 import { updateScans } from '../actions/scans.action';
 import { unmountProductedit } from '../actions/runtime.action';
 import moment from 'moment';
@@ -114,11 +113,12 @@ export default function EditProductModal(props) {
         centered
         backdrop='static'
         keyboard={false}
+        animation={false}
         id='EditProductModal'
       >
         <Modal.Body className='sofia-pro'>
           <Form id='passForm'>
-            <Row>
+            <Row className='m-row'>
               <Col xs={2}>
                 <Form.Group>
                   <div className='img-container'>
@@ -166,12 +166,21 @@ export default function EditProductModal(props) {
                   <Col>
                     <Form.Group>
                       <Form.Label>Merchant</Form.Label>
-                      <div>
-                        <Form.Control
-                          name='vendorTag'
-                          onChange={handleChange}
-                          value={vendorTag}
-                        />
+                      <div className='merchant-container'>
+                        <div className='merchant-form-control'>
+                          <Form.Control
+                            name='vendorTag'
+                            onChange={handleChange}
+                            value={vendorTag}
+                          />
+                        </div>
+                        <div className='brand-img-container'>
+                          <img
+                            src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                            alt=''
+                            className='brand-img'
+                          />
+                        </div>
                       </div>
                     </Form.Group>
                   </Col>

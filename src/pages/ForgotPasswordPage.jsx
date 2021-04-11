@@ -124,7 +124,11 @@ export default function ForgotPasswordPage() {
                     Send Reset Instructions
                   </>
                 ) : (
-                  <Spinner animation='border' size='sm' className='spinner' />
+                  <Spinner
+                    animation='border'
+                    size='sm'
+                    className='spinner btn-spinner'
+                  />
                 )}
               </button>
             </Form>

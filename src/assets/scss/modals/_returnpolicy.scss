@@ -11,43 +11,83 @@
     left: 0px;
     top: 0px;
     border-radius: 8px;
+
+    @media (max-width: 767px) {
+      max-width: 343px;
+      min-height: 400px;
+    }
+
+    @media (max-width: 320px) {
+      max-width: 300px;
+      min-height: 429px;
+    }
+
+    @media (max-width: 280px) {
+      max-width: 254px;
+      min-height: 475px;
+    }
   }
 
   .modal-header {
     border: none;
+    margin-top: 40px;
+    margin-left: 56px;
+    padding: 0px;
+
+    @media (max-width: 767px) {
+      margin-top: 24px;
+      margin-left: 16px;
+    }
 
     .modal-title {
       font-size: 18px !important;
       line-height: 24px;
       color: #2e1d3a;
-      position: absolute;
-      height: 24px;
-      left: 8.24%;
-      right: 76.03%;
-      top: calc(50% - 24px / 2 - 139px);
+      margin-bottom: 11px;
     }
   }
 
-  .brand {
-    font-size: 14px;
-    line-height: 16px;
-    color: #2e1d3a;
-    position: absolute;
-    left: 8.24%;
-    right: 8.24%;
-    top: 20.42%;
-    bottom: 73.3%;
+  .modal-body {
+    padding: 0px 56px;
+
+    @media (max-width: 767px) {
+      padding: 0px 16px;
+    }
+  }
+  .b-row {
+    display: inline-flex;
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+
+      .brand {
+        font-size: 14px;
+        line-height: 16px;
+        color: #2e1d3a;
+        margin-bottom: 0px;
+        margin-left: 8.5px;
+      }
+
+      .brand-img {
+        border: 1px solid #f0f0f0;
+        border-radius: 50%;
+        height: 31px;
+        width: 31px;
+      }
+    }
   }
 
-  .text-score {
-    font-size: 14px;
-    line-height: 16px;
-    color: #2e1d3a;
-    position: absolute;
-    left: 25.24%;
-    right: 8.24%;
-    top: 20.42%;
-    bottom: 73.3%;
+  .score-col {
+    display: flex;
+    align-items: center;
+
+    .text-score {
+      font-size: 14px;
+      line-height: 16px;
+      color: #2e1d3a;
+      margin-bottom: 0px;
+    }
   }
 
   .info {
@@ -56,21 +96,26 @@
     color: #2e1d3a;
     width: 568px;
     margin-bottom: 16px;
-    position: absolute;
-    left: 8.24%;
-    right: 8.24%;
-    top: 31.94%;
-    bottom: 39.27%;
+    margin-top: 16px;
+
+    @media (max-width: 767px) {
+      max-width: 313px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 320px) {
+      max-width: 277px;
+    }
+
+    @media (max-width: 280px) {
+      max-width: 220px;
+    }
   }
 
   .view-link {
     font-size: 14px;
     line-height: 16px;
     color: #570097;
-    position: absolute;
-    height: 19px;
-    left: 8.24%;
-    top: calc(60% - 19px / 2 + 66.5px);
   }
 
   .modal-footer {

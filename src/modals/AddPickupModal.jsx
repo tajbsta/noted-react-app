@@ -11,6 +11,7 @@ export default function AddPickupModal(props) {
         centered
         backdrop='static'
         keyboard={false}
+        animation={false}
         id='AddPickupModal'
       >
         <div className='header'>

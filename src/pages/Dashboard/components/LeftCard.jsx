@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { EXCELLENT } from '../../constants/returns/scores';
 import ReturnScore from '../ReturnsScore';
 import Row from '../Row';
-import EmptyScan from './EmptyScan';
 import Scanning from './Scanning';
 
 function LeftCard({ scans }) {
@@ -48,14 +47,7 @@ function LeftCard({ scans }) {
       <h3 className='sofia-pro'>Your online purchases - Last 90 Days</h3>
       {isEmpty(scans) ? (
         <div className='card shadow-sm'>
-          <div className='card-body p-4'>
-            {scanning && <Scanning />}
-            {isEmpty(scans) && !scanning ? (
-              <EmptyScan onScanLaunch={onScanLaunch} />
-            ) : (
-              <></>
-            )}
-          </div>
+          <div className='card-body p-4'>{scanning && <Scanning />}</div>
         </div>
       ) : (
         [...scans].map((scan) => (
