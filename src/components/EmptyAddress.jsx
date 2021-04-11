@@ -30,8 +30,10 @@ export default function EmptyAddress(props) {
             Adding a pick-up address is necessary to proceed.
           </h4>
         </div>
-        <div className='btn btn-add-empty text-16' onClick={props.onClick}>
-          Add Pick-up Address
+        <div className='d-flex justify-content-center'>
+          <button className='btn btn-add-empty text-16' onClick={props.onClick}>
+            Add Pick-up Address
+          </button>
         </div>
       </div>
     </div>
