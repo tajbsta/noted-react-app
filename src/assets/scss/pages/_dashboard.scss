@@ -143,15 +143,6 @@
       }
 
       .m-label {
-        max-width: 90%;
-        @media (max-width: 375px) {
-          max-width: 77%;
-        }
-
-        @media (max-width: 280px) {
-          max-width: 85%;
-        }
-
         h4 {
           font-size: 12px;
           line-height: 14px;

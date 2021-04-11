@@ -40,11 +40,14 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
       }}
     >
       <div className='card shadow-sm'>
-        <div className='p-0 ml-1 d-inline-flex align-center'>
-          <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
-            {totalReturns > 0 ? 'Total past 90 days' : ' No Articles'}
-          </h5>
-        </div>
+        {!isMobile && (
+          <div className='p-0 ml-1 d-inline-flex align-center'>
+            <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
+              {totalReturns > 0 ? 'Total past 90 days' : ' No Articles'}
+            </h5>
+          </div>
+        )}
+
         {!isMobile && <HorizontalLine width='90%' />}
         <div className='card-body p-0'>
           <div className='container p-2'>
@@ -95,19 +98,27 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
               {/* START OF MOBILE VIEWS */}
               {isMobile && (
                 <>
+                  <div className='p-0 ml-1 d-inline-flex align-center'>
+                    <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
+                      {totalReturns == 0 && donations == 0 && (
+                        <div>Total past 90 days</div>
+                      )}
+
+                      {totalReturns > 0 && (
+                        <div>
+                          {totalReturns}{' '}
+                          {totalReturns === 1 ? 'product' : 'products'} selected
+                        </div>
+                      )}
+                      {donations > 0 && (
+                        <div>
+                          {donations} {donations === 1 ? 'product' : 'products'}{' '}
+                          selected
+                        </div>
+                      )}
+                    </h5>
+                  </div>
                   <Row className='m-right-card-row'>
-                    <Col className='m-right-card-col'>
-                      <Row>
-                        <div className='m-right-card-val'>
-                          <h4>{totalReturns}</h4>
-                        </div>
-                      </Row>
-                      <Row>
-                        <div className='m-label'>
-                          <h4>Total Returns</h4>
-                        </div>
-                      </Row>
-                    </Col>
                     <Col className='m-right-card-col'>
                       <Row>
                         <div className='m-right-card-val'>
