@@ -162,7 +162,6 @@
   position: absolute;
   height: 19px;
   right: 8.46%;
-  top: calc(50% - 19px / 2 + 4px);
 
   @media (max-width: 991px) {
     display: none;
@@ -173,7 +172,6 @@
   display: flex;
   align-items: center;
   position: absolute;
-  top: 16.67%;
   width: 5%;
   right: 8%;
 
@@ -188,12 +186,10 @@
   width: 10%;
   position: absolute;
   right: 0%;
-  top: 16.67%;
-  bottom: 16.67%;
 
   img {
     position: relative;
-    top: 3px;
+    top: 0px;
   }
 
   @media (max-width: 991px) {
