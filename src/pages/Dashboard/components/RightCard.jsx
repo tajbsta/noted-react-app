@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { values, concat } from 'lodash';
 import { Col } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import HorizontalLine from '../../../components/HorizontalLine';
 import Row from '../../../components/Row';
 import PickUpButton from './PickUpButton';
 
-function RightCard({ totalReturns, potentialReturnValue, donations }) {
+function RightCard({
+  totalReturns,
+  potentialReturnValue,
+  donations,
+  selectedItems,
+}) {
   const history = useHistory();
-  const { inReturn, inDonation } = useSelector(
-    ({ runtime: { forReturn, lastCall, forDonation } }) => ({
-      inReturn: [...forReturn, ...lastCall],
-      inDonation: [...forDonation],
-    })
-  );
-
-  const enablePickUpButton = inReturn.length > 0 || inDonation.length > 0;
-
   const [isMobile, setIsMobile] = useState(false);
+  const [enablePickUpButton, setEnablePickUpButton] = useState(false);
 
   // Check if device is mobile
   useEffect(() => {
@@ -31,6 +28,13 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
       window.removeEventListener('resize', handleResize);
     };
   });
+
+  useEffect(() => {
+    const items = concat(...values(selectedItems));
+
+    console.log(items);
+    setEnablePickUpButton(items.length > 0);
+  }, [selectedItems]);
 
   return (
     <div
@@ -157,7 +161,6 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
               <PickUpButton
                 leadingText='Pickup later'
                 disabled={!enablePickUpButton}
-                // timeWindow='Today'
                 price='9.99'
                 backgroundColor='#570097'
                 textColor='white'
@@ -165,13 +168,6 @@ function RightCard({ totalReturns, potentialReturnValue, donations }) {
                   history.push('/view-scan');
                 }}
               />
-              {/* <PickUpButton
-                leadingText='Pickup later'
-                price='9.99'
-                backgroundColor='#faf5fc'
-                textColor='#570097'
-                opacity='0.8'
-              /> */}
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Container, Navbar } from 'react-bootstrap';
+import _ from 'lodash';
 import ProfileIcon from '../assets/icons/Profile.svg';
-// import DropwDownIcon from '../assets/icons/InvertedTriangle.svg';
 import Search from '../assets/icons/Search.svg';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -81,9 +81,19 @@ const Topnav = () => {
     history.push('/settings');
   };
 
-  const submitSearch = (keyword) => {
-    dispatch(searchScans(keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')));
+  const submitSearch = (e) => {
+    if (e.key === 'Enter') {
+      dispatch(searchScans(e.target.value));
+    }
   };
+
+  const checkClearSearch = _.debounce((e) => {
+    const keyword = e.target.value || '';
+
+    if (keyword.length === 0) {
+      dispatch(searchScans(''));
+    }
+  }, 1000);
 
   return (
     <Navbar
@@ -170,7 +180,8 @@ const Topnav = () => {
                   type='text'
                   className='form-control form-control-prepended list-search background-color sofia-pro text-16 color'
                   placeholder='Search purchases'
-                  onChange={(e) => submitSearch(e.target.value)}
+                  onChange={checkClearSearch}
+                  onKeyPress={submitSearch}
                 />
                 <div className='input-group-prepend'>
                   <div className='input-group-text background-color'>
