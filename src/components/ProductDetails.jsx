@@ -2,10 +2,7 @@ import React from 'react';
 import Row from './Row';
 import { useHistory } from 'react-router-dom';
 
-function ProductDetails({
-  scannedItem: { itemName, vendorTag, amount, compensationType },
-  isHovering = false,
-}) {
+function ProductDetails({ item, isHovering = false }) {
   const history = useHistory();
   const pageLocation = history.location.pathname;
   const orderViews = ['/view-return', '/view-scan'];
@@ -17,14 +14,16 @@ function ProductDetails({
       }`}
     >
       <Row>
-        <h4 className='mb-0 sofia-pro mb-1 distributor-name'>{vendorTag}</h4>
+        <h4 className='mb-0 sofia-pro mb-1 distributor-name'>
+          {item.vendor_data.name}
+        </h4>
       </Row>
       <Row>
-        <h5 className='sofia-pro mb-2 product-name'>{itemName}</h5>
+        <h5 className='sofia-pro mb-2 product-name'>{item.name}</h5>
       </Row>
       <Row>
         <h4 className='sofia-pro mb-0 product-price'>
-          ${amount}{' '}
+          ${item.price}{' '}
           {isHovering && (
             <>
               <button type='button' className='btn alternateActionText ml-2'>
@@ -32,16 +31,6 @@ function ProductDetails({
               </button>
             </>
           )}
-          <span
-            className='sofia-pro product-compensation-type'
-            style={{
-              fontSize: 12,
-              opacity: 0.6,
-              color: '#0e0018',
-            }}
-          >
-            {compensationType}
-          </span>
         </h4>
       </Row>
     </div>

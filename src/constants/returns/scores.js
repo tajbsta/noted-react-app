@@ -15,21 +15,25 @@ const BELOW_AVERAGE_RETURNS = "Below Average";
 
 export const RETURN_SCORES = [
   {
+    rating: 4,
     name: EXCELLENT,
     title: EXCELLENT_RETURNS,
     icon: ExcellentIconSvg,
   },
   {
+    rating: 3,
     name: GREAT,
     title: GREAT_RETURNS,
     icon: GreatIconSVg,
   },
   {
+    rating: 2,
     name: FAIR,
     title: FAIR_RETURNS,
     icon: FairIconSvg,
   },
   {
+    rating: 1,
     name: BELOW_AVERAGE,
     title: BELOW_AVERAGE_RETURNS,
     icon: BelowIconSvg,

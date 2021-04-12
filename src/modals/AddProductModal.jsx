@@ -40,7 +40,7 @@ export default function AddProductModal(props) {
     <small className='form-text p-0 m-0 noted-red'>{errors}</small>
   );
 
-  const hiddenFileInput = React.useRef(null);
+  const hiddenFileInput = useRef(null);
 
   const handleClick = (event) => {
     hiddenFileInput.current.click();
