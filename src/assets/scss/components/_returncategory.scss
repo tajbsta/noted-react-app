@@ -24,4 +24,17 @@
   .purchase-type-checkbox-container {
     max-width: 5px;
   }
+
+  .progress {
+    margin-top: 30px;
+  }
+
+  .btn-show-more {
+    margin-top: 15px;
+    box-shadow: none;
+
+    &:hover {
+      color: #b079da;
+    }
+  }
 }

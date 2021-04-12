@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Row from './Row';
 import ProductCard from './ProductCard';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, ProgressBar } from 'react-bootstrap';
 import QuestionMarkSvg from '../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';
 import { getProducts } from '../utils/productsApi';
@@ -14,6 +14,8 @@ function ReturnCategory({
   category,
   search,
   updateSelectedItems,
+  width,
+  percent,
 }) {
   const { push } = useHistory();
   const [items, setItems] = useState([]);
@@ -151,13 +153,17 @@ function ReturnCategory({
         </div>
       )}
 
-      {loading && <Spinner className='dashboard-spinner' animation='border' />}
+      {loading && <ProgressBar animated now={55} />}
       {showNextPageButton && !loading && (
-        <button className='sofia-pro btn btn-m-edit' onClick={showMore}>
-          Show more
-        </button>
+        <div className='d-flex justify-content-center'>
+          <button
+            className='sofia-pro btn btn-show-more noted-purple'
+            onClick={showMore}
+          >
+            Show more
+          </button>
+        </div>
       )}
-      {/* TODO: show more button */}
     </div>
   );
 }

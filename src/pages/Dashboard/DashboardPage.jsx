@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, ProgressBar } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ReturnCategory from '../../components/ReturnCategory';
@@ -11,7 +11,6 @@ import { clearSearchQuery } from '../../actions/runtime.action';
 import { LAST_CALL, RETURNABLE, DONATE } from '../../constants/actions/runtime';
 import AddEmailModal from '../../modals/AddEmailModal';
 import AddProductModal from '../../modals/AddProductModal';
-import NotedCheckbox from '../../components/NotedCheckbox';
 
 const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 

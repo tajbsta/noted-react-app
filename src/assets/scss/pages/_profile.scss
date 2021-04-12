@@ -16,6 +16,18 @@
     border-top: 1px solid #e8e7e9 !important;
   }
 
+  .m-no-col {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  // .col-sm-9,
+  .col-sm-3 {
+    @media (max-width: 1199px) {
+      flex: initial;
+    }
+  }
+
   #UserInfo {
     border: none;
     box-shadow: none;
@@ -24,6 +36,12 @@
     width: 248px;
     height: 316px;
     top: 20%;
+
+    @media (max-width: 1199px) {
+      width: auto;
+      position: initial;
+      height: auto;
+    }
 
     .card-body {
       background-color: #faf8fa;
@@ -123,6 +141,10 @@
       line-height: 24px;
       color: #2e1d3a;
       margin-top: 16px;
+
+      @media (min-width: 768px) and (max-width: 1023px) {
+        width: 90%;
+      }
     }
 
     .date {
@@ -148,6 +170,10 @@
       line-height: 26px;
       color: #21003a;
       margin-bottom: 5px;
+
+      @media (max-width: 1199px) {
+        margin-bottom: 0px;
+      }
     }
 
     .total-label {
@@ -156,21 +182,56 @@
       color: #0e0018;
       mix-blend-mode: normal;
       opacity: 0.6;
+
+      @media (max-width: 1199px) {
+        margin-bottom: 0px;
+      }
     }
 
-    .btn-primary {
-      position: absolute;
-      height: 52px;
-      left: 0px;
-      right: 0px;
-      top: 264px;
-      border: none;
-      background: #eee4f6;
-      border-radius: 6px;
-      font-size: 16px;
-      line-height: 19px;
-      padding-top: 16px;
-      color: #570097;
+    .btn {
+      box-shadow: none;
+
+      @media (max-width: 1199px) {
+        padding: initial;
+        width: 100%;
+      }
+
+      .btn-primary {
+        position: absolute;
+        height: 52px;
+        left: 0px;
+        right: 0px;
+        top: 264px;
+        border: none;
+        background: #eee4f6;
+        border-radius: 6px;
+        font-size: 16px;
+        line-height: 19px;
+        padding-top: 16px;
+        color: #570097;
+        box-shadow: none;
+
+        @media (max-width: 1199px) {
+          position: initial;
+          width: 100%;
+          margin-top: 28px;
+        }
+      }
+    }
+
+    // MOBILE
+    .m-user-details {
+      display: flex;
+    }
+
+    .m-col-auto {
+      flex: auto;
+      text-align: initial;
+    }
+
+    .m-btn-container {
+      padding-right: 12px;
+      padding-left: 12px;
     }
   }
 
@@ -233,6 +294,10 @@
       }
     }
 
+    // ACCORDION
+    .Collapsible {
+      width: -webkit-fill-available;
+    }
     .triggerContainer {
       display: flex;
       align-content: center;
