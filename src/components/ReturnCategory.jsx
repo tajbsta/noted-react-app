@@ -86,6 +86,9 @@ function ReturnCategory({
   const handleSelectAll = () => {
     const list = [...items];
     setSelectedIds(list.map((x) => x._id));
+    if (items.length > 0 && selectedIds.length === items.length) {
+      setSelectedIds([]);
+    }
   };
 
   useEffect(() => {
