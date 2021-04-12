@@ -1,20 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { values, concat } from 'lodash';
-import { Col } from 'react-bootstrap';
+import { Col, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import HorizontalLine from '../../../components/HorizontalLine';
 import Row from '../../../components/Row';
 import PickUpButton from './PickUpButton';
+import { useSelector } from 'react-redux';
+import usePrevious from '../../../utils/usePrevious';
+import { isEmpty, isEqual, xorWith } from 'lodash';
+import axios from 'axios';
 
-function RightCard({
-  totalReturns,
-  potentialReturnValue,
-  donations,
-  selectedItems,
-}) {
+import { calculatePricing } from '../../../utils/productsApi';
+
+function RightCard({ userId }) {
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
-  const [enablePickUpButton, setEnablePickUpButton] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { items } = useSelector(({ cart: { items } }) => ({
+    items,
+  }));
+  const previousCartItems = usePrevious(items);
+
+  const [pricing, setPricing] = useState({
+    totalReturns: 0,
+    potentialReturnValue: 0,
+    totalDonations: 0,
+    pickupPrice: 0,
+  });
 
   // Check if device is mobile
   useEffect(() => {
@@ -30,11 +41,40 @@ function RightCard({
   });
 
   useEffect(() => {
-    const items = concat(...values(selectedItems));
+    // if (!isEmpty(xorWith(items, previousCartItems, isEqual))) {
+    //   calculateCurrentCartPricing(items);
+    // }
+    calculateCurrentCartPricing(items);
+  }, [items]);
 
-    console.log(items);
-    setEnablePickUpButton(items.length > 0);
-  }, [selectedItems]);
+  const calculateCurrentCartPricing = async (currentItems) => {
+    try {
+      setLoading(true);
+
+      const cartItems = [...currentItems];
+      console.log('CART items', cartItems);
+      const productIds = cartItems.map((x) => x._id);
+      console.log('product ids', productIds);
+
+      const data = await calculatePricing(userId, productIds);
+
+      console.log({ data });
+
+      setPricing({
+        totalReturns: data.totalReturns,
+        potentialReturnValue: data.potentialReturnValue,
+        totalDonations: data.totalDonations,
+        pickupPrice: data.pickupPrice,
+      });
+      setLoading(false);
+    } catch (error) {
+      if (!axios.isCancel(error)) {
+        setLoading(false);
+        console.log(error);
+        // TODO: handle error
+      }
+    }
+  };
 
   return (
     <div
@@ -43,11 +83,11 @@ function RightCard({
         minWidth: '248px',
       }}
     >
-      <div className='card shadow-sm'>
+      <div className='card shadow-sm' id={loading ? 'overlay' : ''}>
         {!isMobile && (
           <div className='p-0 ml-1 d-inline-flex align-center'>
             <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
-              {totalReturns > 0 ? 'Total past 90 days' : ' No Articles'}
+              {pricing.totalReturns > 0 ? 'Total past 90 days' : ' No Articles'}
             </h5>
           </div>
         )}
@@ -55,13 +95,19 @@ function RightCard({
         {!isMobile && <HorizontalLine width='90%' />}
         <div className='card-body p-0'>
           <div className='container p-2'>
+            {loading && (
+              <div className='d-flex justify-content-center mt-2 r-spin-container'>
+                <Spinner animation='border' size='md' className='spinner' />
+              </div>
+            )}
+
             <div className='mobile-container'>
               {!isMobile && (
                 <>
                   <Row marginTop={3} marginLeft={2}>
                     <div className='col-7 total-returns'>
                       <div className='row card-text mb-0 sofia-pro card-value'>
-                        {totalReturns}
+                        {pricing.totalReturns}
                       </div>
                       <div className='row card-text card-label'>
                         Total Returns
@@ -75,7 +121,7 @@ function RightCard({
                   >
                     <div className='col-5'>
                       <div className='row card-text mb-0 sofia-pro card-value'>
-                        ${Number(potentialReturnValue).toFixed(2)}
+                        ${Number(pricing.potentialReturnValue).toFixed(2)}
                       </div>
                       <div className='row small sofia-pro card-label text-potential-value'>
                         Potential Return Value
@@ -88,7 +134,7 @@ function RightCard({
                     <div className='col-12 p-0'>
                       <div className='col-sm-8'>
                         <div className='row mb-0 sofia-pro card-value'>
-                          {donations}
+                          {pricing.totalDonations}
                         </div>
                         <div className='row card-text small sofia-pro card-label total-donations'>
                           Total Donations
@@ -104,19 +150,24 @@ function RightCard({
                 <>
                   <div className='p-0 ml-1 d-inline-flex align-center'>
                     <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
-                      {totalReturns == 0 && donations == 0 && (
-                        <div>Total past 90 days</div>
-                      )}
+                      {pricing.totalReturns == 0 &&
+                        pricing.totalDonations == 0 && (
+                          <div>Total past 90 days</div>
+                        )}
 
-                      {totalReturns > 0 && (
+                      {pricing.totalReturns > 0 && (
                         <div>
-                          {totalReturns}{' '}
-                          {totalReturns === 1 ? 'product' : 'products'} selected
+                          {pricing.totalReturns}{' '}
+                          {pricing.totalReturns === 1 ? 'product' : 'products'}{' '}
+                          selected
                         </div>
                       )}
-                      {donations > 0 && (
+                      {pricing.totalDonations > 0 && (
                         <div>
-                          {donations} {donations === 1 ? 'product' : 'products'}{' '}
+                          {pricing.totalDonations}{' '}
+                          {pricing.totalDonations === 1
+                            ? 'product'
+                            : 'products'}{' '}
                           selected
                         </div>
                       )}
@@ -126,7 +177,9 @@ function RightCard({
                     <Col className='m-right-card-col'>
                       <Row>
                         <div className='m-right-card-val'>
-                          <h4>${Number(potentialReturnValue).toFixed(2)}</h4>
+                          <h4>
+                            ${Number(pricing.potentialReturnValue).toFixed(2)}
+                          </h4>
                         </div>
                       </Row>
                       <Row>
@@ -138,7 +191,7 @@ function RightCard({
                     <Col className='m-right-card-col'>
                       <Row>
                         <div className='m-right-card-val'>
-                          <h4>{donations}</h4>
+                          <h4>{pricing.totalDonations}</h4>
                         </div>
                       </Row>
                       <Row>
@@ -152,15 +205,16 @@ function RightCard({
               )}
               {/*END OF MOBILE VIEWS */}
             </div>
+
             <div
               className='pr-3 pl-3 mt-3 pickup-value'
               style={{
-                opacity: !enablePickUpButton ? 0.37 : 1,
+                opacity: !items.length ? 0.37 : 1,
               }}
             >
               <PickUpButton
                 leadingText='Pickup later'
-                disabled={!enablePickUpButton}
+                disabled={!items.length || loading}
                 price='9.99'
                 backgroundColor='#570097'
                 textColor='white'

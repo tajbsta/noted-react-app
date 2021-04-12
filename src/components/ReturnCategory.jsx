@@ -19,7 +19,7 @@ function ReturnCategory({
 }) {
   const { push } = useHistory();
   const [items, setItems] = useState([]);
-  const [selectedIds, setSelectedIds] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showNextPageButton, setShowNextPageButton] = useState(true);
   const sortBy = 'order_date,name,_id';
@@ -72,24 +72,24 @@ function ReturnCategory({
     fetchItems(nextPageToken);
   };
 
-  const toggleSelected = (id) => {
-    const list = [...selectedIds];
+  const toggleSelected = (item) => {
+    const list = [...selectedItems];
 
-    const index = list.findIndex((x) => x === id);
+    const index = list.findIndex((x) => x._id === item._id);
     if (index !== -1) {
       list.splice(index, 1);
     } else {
-      list.push(id);
+      list.push(item);
     }
 
-    setSelectedIds(list);
+    setSelectedItems(list);
   };
 
   const handleSelectAll = () => {
     const list = [...items];
-    setSelectedIds(list.map((x) => x._id));
-    if (items.length > 0 && selectedIds.length === items.length) {
-      setSelectedIds([]);
+    setSelectedItems(list);
+    if (items.length > 0 && selectedItems.length === items.length) {
+      setSelectedItems([]);
     }
   };
 
@@ -100,9 +100,9 @@ function ReturnCategory({
   useEffect(() => {
     updateSelectedItems({
       key: category,
-      ids: selectedIds,
+      items: selectedItems,
     });
-  }, [selectedIds]);
+  }, [selectedItems]);
 
   return (
     <div id='ReturnCategory'>
@@ -111,7 +111,9 @@ function ReturnCategory({
           <div className='ml-3 p-0 purchase-type-checkbox-container'>
             <NotedCheckbox
               onChangeState={handleSelectAll}
-              checked={items.length > 0 && selectedIds.length === items.length}
+              checked={
+                items.length > 0 && selectedItems.length === items.length
+              }
               disabled={items.length === 0}
             />
           </div>
@@ -137,7 +139,7 @@ function ReturnCategory({
             key={item._id}
             disabled={false}
             item={item}
-            selected={selectedIds.includes(item._id)}
+            selected={!!selectedItems.find((x) => x._id === item._id)}
             toggleSelected={toggleSelected}
             onClick={() => {
               push(`/view-scan?scanId=${item._id}`);

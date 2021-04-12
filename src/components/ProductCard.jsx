@@ -51,8 +51,7 @@ function ProductCard({
   });
 
   const handleSelection = () => {
-    toggleSelected(item._id);
-    console.log('Hello');
+    toggleSelected(item);
   };
 
   // Truncate name if longer than 15 characters
