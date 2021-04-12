@@ -9,6 +9,7 @@ import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import moment from 'moment';
 import ReturnPolicyModal from '../modals/ReturnPolicyModal';
 import EditProductModal from '../modals/EditProductModal';
+import NotedCheckbox from './NotedCheckbox';
 
 function ProductCard({
   selectable = true,
@@ -51,6 +52,7 @@ function ProductCard({
 
   const handleSelection = () => {
     toggleSelected(item._id);
+    console.log('Hello');
   };
 
   // Truncate name if longer than 15 characters
@@ -118,14 +120,10 @@ function ProductCard({
                   alignItems: isMobile && selected ? 'initial' : 'center',
                 }}
               >
-                <input
+                <NotedCheckbox
                   disabled={disabled}
-                  type='checkbox'
                   checked={selected}
-                  onChange={handleSelection}
-                  style={{
-                    zIndex: 999,
-                  }}
+                  onChangeState={handleSelection}
                 />
               </div>
             )}

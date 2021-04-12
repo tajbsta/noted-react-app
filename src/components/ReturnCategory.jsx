@@ -5,6 +5,7 @@ import { Spinner } from 'react-bootstrap';
 import QuestionMarkSvg from '../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';
 import { getProducts } from '../utils/productsApi';
+import NotedCheckbox from './NotedCheckbox';
 
 function ReturnCategory({
   userId,
@@ -103,12 +104,10 @@ function ReturnCategory({
       <Row>
         <div className='category-title'>
           <div className='ml-3 p-0 purchase-type-checkbox-container'>
-            <input
-              disabled={items.length === 0}
-              className='checkbox'
-              type='checkbox'
-              onChange={handleSelectAll}
+            <NotedCheckbox
+              onChangeState={handleSelectAll}
               checked={items.length > 0 && selectedIds.length === items.length}
+              disabled={items.length === 0}
             />
           </div>
           <h4 className='sofia-pro purchase-types purchase-type-title'>
