@@ -36,7 +36,7 @@
 }
 
 #loader-con {
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     width: 100vw;
     padding-right: 12px;
     padding-left: 12px;
@@ -54,7 +54,7 @@
 
 // START OF RIGHT CARD
 .checkout-card {
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     padding-left: 0px;
     padding-right: 0px;
   }
@@ -76,20 +76,6 @@
     @media (max-width: 540px) {
       // width: 89px !important;
       width: auto;
-    }
-  }
-
-  .mobile-container {
-    @media (max-width: 540px) {
-      display: inline-flex;
-      width: 100%;
-    }
-
-    .return-value-container {
-      @media (max-width: 540px) {
-        display: flex;
-        justify-content: center;
-      }
     }
   }
 
@@ -137,6 +123,36 @@
       line-height: 19px;
     }
   }
+
+  // MOBILE FOR RIGHT CARD
+  .m-right-card-row {
+    padding-left: 12px;
+    padding-right: 12px;
+
+    .m-right-card-col {
+      padding-left: 0px;
+      padding-right: 0px;
+
+      .m-right-card-val {
+        h4 {
+          font-size: 22px;
+          line-height: 26px;
+          color: #21003a;
+          margin-bottom: 0px;
+        }
+      }
+
+      .m-label {
+        h4 {
+          font-size: 12px;
+          line-height: 14px;
+          color: #0e0018;
+          mix-blend-mode: normal;
+          opacity: 0.6;
+        }
+      }
+    }
+  }
 }
 // END OF RIGHT CARD
 
@@ -162,9 +178,8 @@
   position: absolute;
   height: 19px;
   right: 8.46%;
-  top: calc(50% - 19px / 2 + 4px);
 
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     display: none;
   }
 }
@@ -173,11 +188,10 @@
   display: flex;
   align-items: center;
   position: absolute;
-  top: 16.67%;
   width: 5%;
   right: 8%;
 
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     display: none;
   }
 }
@@ -188,15 +202,13 @@
   width: 10%;
   position: absolute;
   right: 0%;
-  top: 16.67%;
-  bottom: 16.67%;
 
   img {
     position: relative;
-    top: 3px;
+    top: 0px;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     display: none;
   }
 }
@@ -206,7 +218,7 @@
   align-self: center;
   height: 20%;
 
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     right: 14%;
     top: 34%;
   }
@@ -265,7 +277,9 @@
   }
 }
 
-.btn-add-new-email {
+.btn-footer {
+  padding: 0px;
+
   &:focus {
     outline: none !important;
     box-shadow: none;
@@ -285,7 +299,7 @@
   @media (max-width: 540px) {
     padding-bottom: 0px;
   }
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     padding-left: 0px;
     padding-right: 0px;
   }
@@ -305,13 +319,13 @@
 
 // MOBILE VIEW OF DASHBOARD
 .main-mobile-dashboard {
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     margin-top: 0px !important;
   }
 }
 
 .mobile-footer-row {
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     margin: auto;
   }
 }

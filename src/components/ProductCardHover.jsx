@@ -22,7 +22,7 @@ export default function ProductCardHover({
   // Check if device is mobile
   useEffect(() => {
     function handleResize() {
-      setIsMobile(window.innerWidth <= 639);
+      setIsMobile(window.innerWidth <= 991);
     }
     handleResize(); // Run on load to set the default value
     window.addEventListener('resize', handleResize);
@@ -94,7 +94,9 @@ export default function ProductCardHover({
 
       <EditProductModal
         show={modalEditShow}
-        onHide={onHide}
+        onHide={() => {
+          setModalEditShow(false);
+        }}
         editProductForm={{ handleChange, values, setFieldValue }}
       />
       <ReturnPolicyModal
