@@ -48,11 +48,6 @@ export default function ProductCardHover({ orderDate, show, item }) {
     setModalEditShow(true);
   };
 
-  const onHide = () => {
-    dispatch(unmountProductedit());
-    setModalEditShow(false);
-  };
-
   return (
     <div>
       {!isMobile && (

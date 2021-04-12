@@ -4,17 +4,6 @@ import ProductCard from './ProductCard';
 import { Spinner } from 'react-bootstrap';
 import QuestionMarkSvg from '../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import {
-  updateForDonation,
-  updateForReturn,
-  updateLastCall,
-} from '../actions/runtime.action';
-import {
-  FOR_DONATION,
-  FOR_RETURN,
-  LAST_CALL,
-} from '../constants/actions/runtime';
 import { getProducts } from '../utils/productsApi';
 
 function ReturnCategory({

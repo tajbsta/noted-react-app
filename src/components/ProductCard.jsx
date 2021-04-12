@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { GREAT } from '../constants/returns/scores';
 import ReturnScore from './ReturnsScore';
 import Row from './Row';
 import { Container, Col } from 'react-bootstrap';
 import ProductDetails from './ProductDetails';
 import ProductCardHover from './ProductCardHover';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateForReturn, updateLastCall } from '../actions/runtime.action';
-import { useHistory } from 'react-router';
-import { get } from 'lodash';
-import { updateOrders } from '../actions/auth.action';
 import $ from 'jquery';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import moment from 'moment';
 import ReturnPolicyModal from '../modals/ReturnPolicyModal';
 import EditProductModal from '../modals/EditProductModal';
-import { useFormik } from 'formik';
 
 function ProductCard({
   selectable = true,
@@ -29,7 +22,6 @@ function ProductCard({
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileSmaller, setIsMobileSmaller] = useState(false);
-
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
   const [modalEditShow, setModalEditShow] = useState(false);
 

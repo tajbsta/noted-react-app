@@ -1,25 +1,14 @@
-import { get, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { storeScan } from '../../actions/scans.action';
 import ReturnCategory from '../../components/ReturnCategory';
 import RightCard from './components/RightCard';
-import Scanning from './components/Scanning';
 import { getUserId, getUser } from '../../utils/auth';
-import { getAccounts, startAccountsScan } from '../../utils/accountsApi';
-import { getProducts } from '../../utils/productsApi';
+import { getAccounts } from '../../utils/accountsApi';
 import { clearSearchQuery } from '../../actions/runtime.action';
-import {
-  FOR_DONATION,
-  FOR_RETURN,
-  LAST_CALL,
-  RETURNABLE,
-  DONATE,
-} from '../../constants/actions/runtime';
-import ScheduledReturnCard from '../../components/ScheduledReturnCard';
-import { clearOrder } from '../../actions/auth.action';
+import { LAST_CALL, RETURNABLE, DONATE } from '../../constants/actions/runtime';
 import AddEmailModal from '../../modals/AddEmailModal';
 import AddProductModal from '../../modals/AddProductModal';
 
