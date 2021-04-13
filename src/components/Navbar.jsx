@@ -13,7 +13,7 @@ import BrandLogoSvg from './BrandLogoSvg';
 import MobileNav from './MobileNav';
 
 const Topnav = () => {
-  let history = useHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const pageLocation = history.location.pathname;

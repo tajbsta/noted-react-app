@@ -1,8 +1,15 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import NoteeIcon from '../../../assets/icons/NoteeIcon.svg';
 
 export default function ScheduledCard() {
+  const history = useHistory();
+
+  const profile = () => {
+    history.push('/profile');
+  };
+
   return (
     <div id='ScheduledCard'>
       <div className='card'>
@@ -25,7 +32,7 @@ export default function ScheduledCard() {
             </Col>
             <Col className='button-col'>
               <div>
-                <button className='btn btn-view-scheduled'>
+                <button className='btn btn-view-scheduled' onClick={profile}>
                   View scheduled returns
                 </button>
               </div>
