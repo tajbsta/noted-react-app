@@ -9,6 +9,7 @@ import {
 } from '../actions/runtime.action';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
+import { addProductSchema } from '../models/formSchema';
 export default function ProductCardHover({ orderDate, show, item }) {
   const dispatch = useDispatch();
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
@@ -28,7 +29,7 @@ export default function ProductCardHover({ orderDate, show, item }) {
     };
   });
 
-  const { handleChange, values, setFieldValue } = useFormik({
+  const { handleChange, values, setFieldValue, errors } = useFormik({
     initialValues: {
       amount: get(item, 'price', ''),
       vendorTag: get(item, 'vendor', ''),
@@ -37,6 +38,7 @@ export default function ProductCardHover({ orderDate, show, item }) {
       productUrl: '',
       imageUrl: get(item, 'thumbnail', ''),
     },
+    validationSchema: addProductSchema,
   });
 
   const onEdit = async () => {
@@ -88,7 +90,7 @@ export default function ProductCardHover({ orderDate, show, item }) {
         onHide={() => {
           setModalEditShow(false);
         }}
-        editProductForm={{ handleChange, values, setFieldValue }}
+        editProductForm={{ handleChange, values, setFieldValue, errors }}
       />
       <ReturnPolicyModal
         show={modalPolicyShow}
