@@ -92,6 +92,12 @@ function ProductCard({
           'days'
         );
 
+  const isDonate = item.category === 'DONATE';
+
+  console.log(item.order_date);
+
+  console.log(moment(item.order_date).format('MMM Do, YYYY'));
+
   return (
     <div id='productCard'>
       <div
@@ -190,9 +196,9 @@ function ProductCard({
                         style={{ paddingRight: '4px' }}
                       >
                         <div
-                          className='noted-red sofia-pro mobile-limit'
+                          className='sofia-pro mobile-limit'
                           style={{
-                            color: '#FF1C29',
+                            color: '#8B888C',
                           }}
                         >
                           {daysLeft}
@@ -201,9 +207,7 @@ function ProductCard({
                       <Col className='m-date-col'>
                         {selected && (
                           <div className='m-date sofia-pro'>
-                            {moment(item.order_date, 'YYYY-MM-DD').format(
-                              'MMMM DD YYYY'
-                            )}
+                            {moment(item.order_date).format('MMM Do, YYYY')}
                           </div>
                         )}
                       </Col>
@@ -318,15 +322,31 @@ function ProductCard({
                 item={item}
               />
 
-              {!isHover && !selected && (
+              {!isHover && !selected && !isDonate && (
                 <>
                   <div
-                    className='col-sm-6 noted-red sofia-pro return-time-left'
+                    className='col-sm-6 sofia-pro return-time-left'
                     style={{
-                      color: '#FF1C29',
+                      color: '#8B888C',
                     }}
                   >
-                    {daysLeft}
+                    {daysLeft} days left
+                  </div>
+                  <div className='col-sm-3 return-score'>
+                    <ReturnScore score={item.vendor_data.rating} />
+                  </div>
+                </>
+              )}
+
+              {!isHover && !selected && isDonate && (
+                <>
+                  <div
+                    className='col-sm-6 sofia-pro return-time-left'
+                    style={{
+                      color: '#8B888C',
+                    }}
+                  >
+                    Donate
                   </div>
                   <div className='col-sm-3 return-score'>
                     <ReturnScore score={item.vendor_data.rating} />

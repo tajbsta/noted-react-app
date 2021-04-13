@@ -125,7 +125,9 @@
   }
 
   .text-new-email {
+    padding: 0px;
     margin-bottom: 11px;
+    box-shadow: none;
     &:hover {
       color: #b079da;
     }

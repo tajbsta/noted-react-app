@@ -13,6 +13,8 @@ import { LAST_CALL, RETURNABLE, DONATE } from '../../constants/actions/runtime';
 import AddEmailModal from '../../modals/AddEmailModal';
 import AddProductModal from '../../modals/AddProductModal';
 import ScheduledCard from './components/ScheduledCard';
+import Scanning from './components/Scanning';
+import moment from 'moment';
 
 const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 
@@ -22,6 +24,7 @@ function DashboardPage() {
   const { search } = useSelector(({ runtime: { search } }) => ({ search }));
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showScanning, setShowScanning] = useState(false);
   const [userId, setUserId] = useState('');
   const [modalEmailShow, setModalEmailShow] = useState(false);
   const [modalProductShow, setModalProductShow] = useState(false);
@@ -46,16 +49,16 @@ function DashboardPage() {
         return;
       }
 
-      // const validAccounts = accounts.filter((acc) => acc.valid === 1);
+      const scrapeUpdated = accounts.every(
+        (acc) =>
+          acc.metadata &&
+          acc.metadata.lastEmailScrapeDate &&
+          moment(acc.metadata.lastEmailScrapeDate)
+            .startOf('day')
+            .isSameOrAfter(moment.utc().startOf('day'), 'day')
+      );
 
-      // Redirect to account settings if user has no active gmail account
-      // if (validAccounts.length === 0) {
-      //   // setLaunchScan(true);
-      //   setLoading(false);
-      //   history.push('/settings');
-      //   return;
-      // }
-
+      setShowScanning(!scrapeUpdated);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -78,6 +81,10 @@ function DashboardPage() {
     loadScans();
   }, []);
 
+  const goToAuthorize = () => {
+    history.push('/request-permission');
+  };
+
   // useEffect(() => {;
   //   (async () => {
   //     const user = await getUser();
@@ -91,6 +98,7 @@ function DashboardPage() {
         {/* <ScheduledCard /> */}
         <div className='row ipad-row'>
           <div className='col-sm-9 mt-4 w-840 bottom'>
+            {' '}
             {/* {loading && (
               <>
                 <div id='loader-con'>
@@ -103,10 +111,21 @@ function DashboardPage() {
                 </div>
               </>
             )} */}
-
+            {(loading || showScanning) && (
+              <>
+                <h3 className='sofia-pro text-16'>
+                  Your online purchases - Last 90 Days
+                </h3>
+                <div className='card shadow-sm scanned-item-card mb-2 p-5 spinner-container'>
+                  {showScanning && <Scanning />}
+                  {loading && (
+                    <Spinner className='dashboard-spinner' animation='border' />
+                  )}
+                </div>
+              </>
+            )}
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
-
-            {!loading && (
+            {!loading && !showScanning && (
               <>
                 {isEmpty(search) && (
                   <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
@@ -124,7 +143,7 @@ function DashboardPage() {
                       <ReturnCategory
                         typeTitle='Last Call!'
                         userId={userId}
-                        size={4}
+                        size={5}
                         category={LAST_CALL}
                         updateSelectedItems={updateSelectedItems}
                       />
@@ -133,7 +152,7 @@ function DashboardPage() {
                       <ReturnCategory
                         typeTitle='Returnable Items'
                         userId={userId}
-                        size={4}
+                        size={5}
                         category={RETURNABLE}
                         updateSelectedItems={updateSelectedItems}
                       />
@@ -147,7 +166,7 @@ function DashboardPage() {
                       <ReturnCategory
                         typeTitle='Donate'
                         userId={userId}
-                        size={4}
+                        size={5}
                         category={DONATE}
                         updateSelectedItems={updateSelectedItems}
                       />
@@ -165,7 +184,7 @@ function DashboardPage() {
                     <ReturnCategory
                       typeTitle='Select all'
                       userId={userId}
-                      size={4}
+                      size={5}
                       search={search}
                       updateSelectedItems={updateSelectedItems}
                     />
@@ -201,24 +220,18 @@ function DashboardPage() {
                     <div className='row justify-center mt-2 mobile-footer-row'>
                       <div className='col-sm-6 text-center'>
                         <button
-                          className='btn btn-footer'
-                          onClick={() => setModalEmailShow(true)}
+                          className='btn text-center noted-purple sofia-pro line-height-16 text-new-email'
+                          onClick={goToAuthorize}
                         >
-                          <div className='text-center noted-purple sofia-pro line-height-16 text-new-email'>
-                            Add new email address
-                          </div>
+                          Add new email address
                         </button>
                       </div>
                     </div>
-                    {/* MODALS */}
                     <AddProductModal
                       show={modalProductShow}
                       onHide={() => setModalProductShow(false)}
                     />
-                    <AddEmailModal
-                      show={modalEmailShow}
-                      onHide={() => setModalEmailShow(false)}
-                    />
+
                     <div className='row justify-center mt-2 mobile-footer-row'>
                       <div className='col-sm-6 text-center'>
                         <button className='btn btn-footer'>

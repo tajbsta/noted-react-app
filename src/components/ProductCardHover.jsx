@@ -61,7 +61,7 @@ export default function ProductCardHover({ orderDate, show, item }) {
         >
           <div className='container-1'>
             <h4 className='date text-14 sofia-pro line-height-16'>
-              {moment(orderDate, 'YYYY-MM-DD').format('MMMM DD YYYY')}
+              {moment(item.order_date).format('MMM Do, YYYY')}
             </h4>
             <div className='info-container'>
               <p className='text-wrong-info sofia-pro'>Wrong info?&nbsp;</p>
