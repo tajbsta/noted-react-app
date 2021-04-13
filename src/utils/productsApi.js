@@ -1,3 +1,5 @@
+import axiosLib from "axios";
+
 import { api } from "./api";
 
 // Get user products
@@ -39,5 +41,21 @@ export const getProducts = async ({
     const query = queries.join('&')
 
     const res = await axios.get(`/${userId}/products?${query}`);
+    return res.data.data
+}
+
+let cancelTokenSource;
+
+export const calculatePricing = async (userId, productIds) => {
+    const axios = await api();
+
+    if (cancelTokenSource) {
+        cancelTokenSource.cancel();
+    }
+
+    cancelTokenSource = axiosLib.CancelToken.source();
+
+    const res = await axios.post(`/${userId}/products/pricing`, { productIds }, { cancelToken: cancelTokenSource.token });
+
     return res.data.data
 }

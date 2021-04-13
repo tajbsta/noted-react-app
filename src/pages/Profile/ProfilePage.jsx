@@ -15,6 +15,18 @@ import DatePicker from '../../components/DatePicker';
 export default function ProfilePage() {
   const [showEditPayment] = useState(true);
   const [user, setUser] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 1199);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
 
   useEffect(() => {
     (async () => {
@@ -29,20 +41,16 @@ export default function ProfilePage() {
         {!user && 'Loading...'}
         {user && (
           <div className='row'>
-            <div className='col-sm-3'>
+            <div className={`col-sm-3 ${!isMobile ? '' : 'm-no-col'}`}>
               {/*LEFT CARD*/}
-              <div className='col'>
+              <div className={`col ${!isMobile ? '' : 'm-no-col'}`}>
                 <UserInfo user={user} />
               </div>
             </div>
-            <div className='col-sm-9'>
+            <div className={`col-sm-9 ${!isMobile ? '' : 'mt-4'}`}>
               <Address user={user} />
               <hr />
-              {showEditPayment && (
-                <div>
-                  <Payment />
-                </div>
-              )}
+              {showEditPayment && <Payment />}
               <hr />
               <ReturnHistory />
             </div>

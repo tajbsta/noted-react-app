@@ -1,6 +1,6 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, values, flatMap } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, ProgressBar } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ReturnCategory from '../../components/ReturnCategory';
@@ -8,10 +8,10 @@ import RightCard from './components/RightCard';
 import { getUserId, getUser } from '../../utils/auth';
 import { getAccounts } from '../../utils/accountsApi';
 import { clearSearchQuery } from '../../actions/runtime.action';
+import { setCartItems } from '../../actions/cart.action';
 import { LAST_CALL, RETURNABLE, DONATE } from '../../constants/actions/runtime';
 import AddEmailModal from '../../modals/AddEmailModal';
 import AddProductModal from '../../modals/AddProductModal';
-import NotedCheckbox from '../../components/NotedCheckbox';
 
 const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 
@@ -63,13 +63,14 @@ function DashboardPage() {
   }
 
   const updateSelectedItems = (data) => {
-    console.log(data);
     const updatedSelectedProducts = selectedProducts;
 
-    updatedSelectedProducts[data.key] = data.ids;
+    updatedSelectedProducts[data.key] = data.items;
 
-    console.log(updatedSelectedProducts);
     setSelectedProducts(updatedSelectedProducts);
+
+    const cartItems = flatMap(values(updatedSelectedProducts));
+    dispatch(setCartItems(cartItems));
   };
 
   useEffect(() => {
@@ -88,7 +89,7 @@ function DashboardPage() {
       <div className='container mt-6 main-mobile-dashboard'>
         <div className='row'>
           <div className='col-sm-9 mt-4 w-840 bottom'>
-            {loading && (
+            {/* {loading && (
               <>
                 <div id='loader-con'>
                   <h3 className='sofia-pro text-16'>
@@ -99,7 +100,7 @@ function DashboardPage() {
                   </div>
                 </div>
               </>
-            )}
+            )} */}
 
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
 
@@ -121,7 +122,7 @@ function DashboardPage() {
                       <ReturnCategory
                         typeTitle='Last Call!'
                         userId={userId}
-                        size={2}
+                        size={4}
                         category={LAST_CALL}
                         updateSelectedItems={updateSelectedItems}
                       />
@@ -130,7 +131,7 @@ function DashboardPage() {
                       <ReturnCategory
                         typeTitle='Returnable Items'
                         userId={userId}
-                        size={2}
+                        size={4}
                         category={RETURNABLE}
                         updateSelectedItems={updateSelectedItems}
                       />
@@ -231,12 +232,7 @@ function DashboardPage() {
             )}
           </div>
           <div className='col-sm-3 checkout-card'>
-            <RightCard
-              totalReturns={0}
-              potentialReturnValue={0}
-              donations={0}
-              selectedItems={selectedProducts}
-            />
+            <RightCard userId={userId} />
           </div>
         </div>
       </div>
