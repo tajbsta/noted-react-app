@@ -19,7 +19,7 @@ export default function EditProductModal(props) {
   }));
   const [loading, setLoading] = useState(false);
   const returnId = get(inEdit, 'id', '');
-  const { handleChange, values, setFieldValue } = props.editProductForm;
+  const { handleChange, values, setFieldValue, errors } = props.editProductForm;
 
   const {
     imageUrl,
@@ -38,7 +38,6 @@ export default function EditProductModal(props) {
 
   const onSave = (e) => {
     e.preventDefault();
-    console.log(file);
     /**
      * FILTER FOR NOW THEN ADD
      * @PROCESS filter current product first
@@ -103,6 +102,10 @@ export default function EditProductModal(props) {
       />
     );
   };
+
+  const renderInlineError = (error) => (
+    <small className='form-text p-0 m-0 noted-red'>{error}</small>
+  );
 
   return (
     <div>
@@ -182,6 +185,8 @@ export default function EditProductModal(props) {
                           />
                         </div>
                       </div>
+                      {vendorTag.length > 0 &&
+                        renderInlineError(errors.vendorTag)}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -224,6 +229,8 @@ export default function EditProductModal(props) {
                           value={itemName}
                         />
                       </div>
+                      {itemName.length > 0 &&
+                        renderInlineError(errors.itemName)}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -239,6 +246,7 @@ export default function EditProductModal(props) {
                           value={amount}
                         />
                       </div>
+                      {amount.length > 0 && renderInlineError(errors.amount)}
                     </Form.Group>
                   </Col>
                 </Row>
