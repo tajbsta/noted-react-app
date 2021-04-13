@@ -12,6 +12,7 @@ import { setCartItems } from '../../actions/cart.action';
 import { LAST_CALL, RETURNABLE, DONATE } from '../../constants/actions/runtime';
 import AddEmailModal from '../../modals/AddEmailModal';
 import AddProductModal from '../../modals/AddProductModal';
+import ScheduledCard from './components/ScheduledCard';
 
 const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 
@@ -87,6 +88,7 @@ function DashboardPage() {
   return (
     <div>
       <div className='container mt-6 main-mobile-dashboard'>
+        {/* <ScheduledCard /> */}
         <div className='row'>
           <div className='col-sm-9 mt-4 w-840 bottom'>
             {/* {loading && (
