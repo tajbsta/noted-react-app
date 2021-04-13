@@ -77,151 +77,157 @@ function RightCard({ userId }) {
   };
 
   return (
-    <div
-      className='col right-card mt-4'
-      style={{
-        minWidth: '248px',
-      }}
-    >
-      <div className='card shadow-sm' id={loading ? 'overlay' : ''}>
-        {!isMobile && (
-          <div className='p-0 ml-1 d-inline-flex align-center'>
-            <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
-              {pricing.totalReturns > 0 ? 'Total past 90 days' : ' No Articles'}
-            </h5>
-          </div>
-        )}
-
-        {!isMobile && <HorizontalLine width='90%' />}
-        <div className='card-body p-0'>
-          <div className='container p-2'>
-            {loading && (
-              <div className='d-flex justify-content-center mt-2 r-spin-container'>
-                <Spinner animation='border' size='md' className='spinner' />
-              </div>
-            )}
-
-            <div className='mobile-container'>
-              {!isMobile && (
-                <>
-                  <Row marginTop={3} marginLeft={2}>
-                    <div className='col-7 total-returns'>
-                      <div className='row card-text mb-0 sofia-pro card-value'>
-                        {pricing.totalReturns}
-                      </div>
-                      <div className='row card-text card-label'>
-                        Total Returns
-                      </div>
-                    </div>
-                  </Row>
-                  <Row
-                    marginTop={3}
-                    marginLeft={2}
-                    className='p-0 return-value-container'
-                  >
-                    <div className='col-5'>
-                      <div className='row card-text mb-0 sofia-pro card-value'>
-                        ${Number(pricing.potentialReturnValue).toFixed(2)}
-                      </div>
-                      <div className='row small sofia-pro card-label text-potential-value'>
-                        Potential Return Value
-                      </div>
-                    </div>
-                  </Row>
-
-                  <hr />
-                  <Row marginTop={3} marginLeft={2} className='p-0'>
-                    <div className='col-12 p-0'>
-                      <div className='col-sm-8'>
-                        <div className='row mb-0 sofia-pro card-value'>
-                          {pricing.totalDonations}
-                        </div>
-                        <div className='row card-text small sofia-pro card-label total-donations'>
-                          Total Donations
-                        </div>
-                      </div>
-                    </div>
-                  </Row>
-                </>
-              )}
-
-              {/* START OF MOBILE VIEWS */}
-              {isMobile && (
-                <>
-                  <div className='p-0 ml-1 d-inline-flex align-center'>
-                    <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
-                      {pricing.totalReturns == 0 &&
-                        pricing.totalDonations == 0 && (
-                          <div>Total past 90 days</div>
-                        )}
-
-                      {pricing.totalReturns > 0 && (
-                        <div>
-                          {pricing.totalReturns}{' '}
-                          {pricing.totalReturns === 1 ? 'product' : 'products'}{' '}
-                          selected
-                        </div>
-                      )}
-                      {pricing.totalDonations > 0 && (
-                        <div>
-                          {pricing.totalDonations}{' '}
-                          {pricing.totalDonations === 1
-                            ? 'product'
-                            : 'products'}{' '}
-                          selected
-                        </div>
-                      )}
-                    </h5>
-                  </div>
-                  <Row className='m-right-card-row'>
-                    <Col className='m-right-card-col'>
-                      <Row>
-                        <div className='m-right-card-val'>
-                          <h4>
-                            ${Number(pricing.potentialReturnValue).toFixed(2)}
-                          </h4>
-                        </div>
-                      </Row>
-                      <Row>
-                        <div className='m-label'>
-                          <h4>Potential Return Value</h4>
-                        </div>
-                      </Row>
-                    </Col>
-                    <Col className='m-right-card-col'>
-                      <Row>
-                        <div className='m-right-card-val'>
-                          <h4>{pricing.totalDonations}</h4>
-                        </div>
-                      </Row>
-                      <Row>
-                        <div className='m-label'>
-                          <h4>Total Donations</h4>
-                        </div>
-                      </Row>
-                    </Col>
-                  </Row>
-                </>
-              )}
-              {/*END OF MOBILE VIEWS */}
+    <div style={{ position: !isMobile ? 'fixed' : '' }}>
+      <div
+        className='col right-card mt-4'
+        style={{
+          minWidth: '248px',
+        }}
+      >
+        <div className='card shadow-sm' id={loading ? 'overlay' : ''}>
+          {!isMobile && (
+            <div className='p-0 ml-1 d-inline-flex align-center'>
+              <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
+                {pricing.totalReturns > 0
+                  ? 'Total past 90 days'
+                  : ' No Articles'}
+              </h5>
             </div>
+          )}
 
-            <div
-              className='pr-3 pl-3 mt-3 pickup-value'
-              style={{
-                opacity: !items.length ? 0.37 : 1,
-              }}
-            >
-              <PickUpButton
-                leadingText='Pickup later'
-                disabled={!items.length || loading}
-                price='9.99'
-                backgroundColor='#570097'
-                textColor='white'
-                onClick={() => {
-                  history.push('/view-scan');
+          {!isMobile && <HorizontalLine width='90%' />}
+          <div className='card-body p-0'>
+            <div className='container p-2'>
+              {loading && (
+                <div className='d-flex justify-content-center mt-2 r-spin-container'>
+                  <Spinner animation='border' size='md' className='spinner' />
+                </div>
+              )}
+
+              <div className='mobile-container'>
+                {!isMobile && (
+                  <>
+                    <Row marginTop={3} marginLeft={2}>
+                      <div className='col-7 total-returns'>
+                        <div className='row card-text mb-0 sofia-pro card-value'>
+                          {pricing.totalReturns}
+                        </div>
+                        <div className='row card-text card-label'>
+                          Total Returns
+                        </div>
+                      </div>
+                    </Row>
+                    <Row
+                      marginTop={3}
+                      marginLeft={2}
+                      className='p-0 return-value-container'
+                    >
+                      <div className='col-5'>
+                        <div className='row card-text mb-0 sofia-pro card-value'>
+                          ${Number(pricing.potentialReturnValue).toFixed(2)}
+                        </div>
+                        <div className='row small sofia-pro card-label text-potential-value'>
+                          Potential Return Value
+                        </div>
+                      </div>
+                    </Row>
+
+                    <hr />
+                    <Row marginTop={3} marginLeft={2} className='p-0'>
+                      <div className='col-12 p-0'>
+                        <div className='col-sm-8'>
+                          <div className='row mb-0 sofia-pro card-value'>
+                            {pricing.totalDonations}
+                          </div>
+                          <div className='row card-text small sofia-pro card-label total-donations'>
+                            Total Donations
+                          </div>
+                        </div>
+                      </div>
+                    </Row>
+                  </>
+                )}
+
+                {/* START OF MOBILE VIEWS */}
+                {isMobile && (
+                  <>
+                    <div className='p-0 ml-1 d-inline-flex align-center'>
+                      <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
+                        {pricing.totalReturns == 0 &&
+                          pricing.totalDonations == 0 && (
+                            <div>Total past 90 days</div>
+                          )}
+
+                        {pricing.totalReturns > 0 && (
+                          <div>
+                            {pricing.totalReturns}{' '}
+                            {pricing.totalReturns === 1
+                              ? 'product'
+                              : 'products'}{' '}
+                            selected
+                          </div>
+                        )}
+                        {pricing.totalDonations > 0 && (
+                          <div>
+                            {pricing.totalDonations}{' '}
+                            {pricing.totalDonations === 1
+                              ? 'product'
+                              : 'products'}{' '}
+                            selected
+                          </div>
+                        )}
+                      </h5>
+                    </div>
+                    <Row className='m-right-card-row'>
+                      <Col className='m-right-card-col'>
+                        <Row>
+                          <div className='m-right-card-val'>
+                            <h4>
+                              ${Number(pricing.potentialReturnValue).toFixed(2)}
+                            </h4>
+                          </div>
+                        </Row>
+                        <Row>
+                          <div className='m-label'>
+                            <h4>Potential Return Value</h4>
+                          </div>
+                        </Row>
+                      </Col>
+                      <Col className='m-right-card-col'>
+                        <Row>
+                          <div className='m-right-card-val'>
+                            <h4>{pricing.totalDonations}</h4>
+                          </div>
+                        </Row>
+                        <Row>
+                          <div className='m-label'>
+                            <h4>Total Donations</h4>
+                          </div>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </>
+                )}
+                {/*END OF MOBILE VIEWS */}
+              </div>
+
+              <div
+                className='pr-3 pl-3 mt-3 pickup-value'
+                style={{
+                  opacity: !items.length ? 0.37 : 1,
                 }}
-              />
+              >
+                <PickUpButton
+                  leadingText='Pickup later'
+                  disabled={!items.length || loading}
+                  price='9.99'
+                  backgroundColor='#570097'
+                  textColor='white'
+                  onClick={() => {
+                    history.push('/view-scan');
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
