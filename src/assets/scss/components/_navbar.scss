@@ -127,35 +127,4 @@
     margin-bottom: 4px;
     width: 75%;
   }
-
-  #mobile-view {
-    .col {
-      padding-left: 0px;
-    }
-
-    .search-col {
-      display: flex;
-      align-items: center;
-    }
-
-    .mobile-search-icon {
-      width: 24px;
-      height: 24px;
-    }
-    @media (min-width: 767px) {
-      display: none;
-    }
-
-    .nav-link {
-      padding-right: 0.2rem;
-    }
-
-    .dropdown-toggle::after {
-      color: white;
-      background-image: url('../../icons/InvertedTriangle.svg');
-      background-repeat: no-repeat;
-      position: absolute;
-      top: 45%;
-    }
-  }
 }

@@ -10,6 +10,7 @@ import { unsetUser } from '../actions/auth.action';
 import { unsetScan } from '../actions/scans.action';
 import { searchScans } from '../actions/runtime.action';
 import BrandLogoSvg from './BrandLogoSvg';
+import MobileNav from './MobileNav';
 
 const Topnav = () => {
   let history = useHistory();
@@ -97,6 +98,19 @@ const Topnav = () => {
     }
   }, 1000);
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 639);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   return (
     <Navbar
       expand={`lg ${showShadow}`}
@@ -105,77 +119,26 @@ const Topnav = () => {
         backgroundColor: guestViews.includes(pathname) ? '#FAF8FA' : '',
       }}
     >
-      <Navbar.Brand
-        href={`${guestViews.indexOf(pageLocation) != -1 ? '/' : '/dashboard'}`}
-        className='ml-4 mr-1'
-      >
-        <BrandLogoSvg />
-      </Navbar.Brand>
+      {!isMobile && (
+        <>
+          <Navbar.Brand
+            href={`${
+              guestViews.indexOf(pageLocation) != -1 ? '/' : '/dashboard'
+            }`}
+            className='ml-4 mr-1'
+          >
+            <BrandLogoSvg />
+          </Navbar.Brand>
+        </>
+      )}
+
+      {isMobile && (
+        <MobileNav logout={logout} profile={profile} settings={settings} />
+      )}
+
       {authenticatedViews.includes(pathname) && (
         <>
           <div id='DashboardNav'>
-            {/* START OF MOBILE VIEWS */}
-            <Container id='mobile-view'>
-              <Row>
-                <Col className='search-col'>
-                  <div>
-                    <img className='mobile-search-icon' src={Search} />
-                  </div>
-                </Col>
-                <Col>
-                  <ul className='navbar-nav'>
-                    <li className='nav-item dropdown'>
-                      <a
-                        className='nav-link dropdown-toggle mr-3'
-                        href='#'
-                        id='navbarDropdownMenuLink'
-                        role='button'
-                        data-toggle='dropdown'
-                        aria-haspopup='true'
-                        aria-expanded='false'
-                        onClick={() => setShowDropdown(!showDropdown)}
-                      >
-                        <img
-                          src={ProfileIcon}
-                          width='30'
-                          height='30'
-                          id='navbarDropdownMenuLink'
-                        />
-                      </a>
-                      <div
-                        id='navigation-menu'
-                        className='dropdown-menu'
-                        aria-labelledby='navbarDropdownMenuLink'
-                        style={{
-                          display: showDropdown ? 'block' : 'none',
-                        }}
-                      >
-                        <button
-                          className='dropdown-item sofia-pro'
-                          onClick={profile}
-                        >
-                          Profile
-                        </button>
-                        <button
-                          className='dropdown-item sofia-pro'
-                          onClick={settings}
-                        >
-                          Settings
-                        </button>
-                        <button
-                          className='dropdown-item sofia-pro'
-                          onClick={logout}
-                        >
-                          Log Out
-                        </button>
-                      </div>
-                    </li>
-                  </ul>
-                </Col>
-              </Row>
-            </Container>
-            {/* END OF MOBILE VIEWS */}
-
             <Container className='ml-3'>
               <div className='input-group input-group-lg input-group-merge background-color search-bar-input'>
                 <input
