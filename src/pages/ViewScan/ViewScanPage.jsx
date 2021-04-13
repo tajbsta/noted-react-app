@@ -10,6 +10,7 @@ import { submitOrder } from '../../actions/auth.action';
 import { nanoid } from 'nanoid';
 import moment from 'moment';
 import { clearForm } from '../../actions/runtime.action';
+import { setCartItems } from '../../actions/cart.action';
 
 function ViewScanPage() {
   const dispatch = useDispatch();
@@ -112,6 +113,13 @@ function ViewScanPage() {
     }
   };
 
+  const onCartRemove = (itemId) => {
+    const newItems = [
+      ...get(cart, 'items', []).filter(({ _id }) => itemId !== _id),
+    ];
+    dispatch(setCartItems(newItems));
+  };
+
   return (
     <div id='ViewScanPage'>
       <div className='container mt-6'>
@@ -150,6 +158,7 @@ function ViewScanPage() {
                 selectable={false}
                 clickable={false}
                 item={item}
+                onRemove={onCartRemove}
               />
             ))}
             <h3 className='sofia-pro miss-out section-title'>

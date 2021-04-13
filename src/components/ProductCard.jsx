@@ -10,6 +10,7 @@ import moment from 'moment';
 import ReturnPolicyModal from '../modals/ReturnPolicyModal';
 import EditProductModal from '../modals/EditProductModal';
 import NotedCheckbox from './NotedCheckbox';
+import { get } from 'lodash-es';
 
 function ProductCard({
   selectable = true,
@@ -19,6 +20,7 @@ function ProductCard({
   item,
   selected,
   toggleSelected,
+  onRemove = () => {},
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -94,10 +96,6 @@ function ProductCard({
 
   const isDonate = item.category === 'DONATE';
 
-  console.log(item.order_date);
-
-  console.log(moment(item.order_date).format('MMM Do, YYYY'));
-
   return (
     <div id='productCard'>
       <div
@@ -142,7 +140,12 @@ function ProductCard({
               }}
             >
               {removable && !selectable && (
-                <div className='removeProduct' onClick={() => {}}>
+                <div
+                  className='removeProduct'
+                  onClick={() => {
+                    onRemove(get(item, '_id', ''));
+                  }}
+                >
                   <span className='x' style={{ color: 'black' }}>
                     &times;
                   </span>
