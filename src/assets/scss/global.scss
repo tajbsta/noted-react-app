@@ -16,6 +16,14 @@
   color: red;
 }
 
+.noted-purple {
+  color: #570097;
+}
+
+.noted-border {
+  border: 1px solid #f0f0f0;
+}
+
 .text-14 {
   font-size: 14px;
 }
@@ -31,7 +39,7 @@
 .w-840 {
   width: 840px;
 
-  @media (min-width: 280px) and (max-width: 1119px) {
+  @media (min-width: 541px) and (max-width: 1200px) {
     width: auto;
   }
 }

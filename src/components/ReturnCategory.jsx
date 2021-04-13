@@ -169,7 +169,7 @@ function ReturnCategory({
       })}
 
       {!loading && items.length === 0 && (
-        <div className='row justify-center'>
+        <div className='row justify-center m-row'>
           <div className='col-sm-7 text-center'>
             <div className='text-center sofia-pro empty-category'>
               No products found.

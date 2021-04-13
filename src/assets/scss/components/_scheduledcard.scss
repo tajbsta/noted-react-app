@@ -1,0 +1,47 @@
+#ScheduledCard {
+  font-family: 'Sofia Pro';
+
+  .icon-col {
+    display: flex;
+    justify-content: flex-start;
+
+    .notee-container {
+      img {
+        width: 48px;
+        height: 48px;
+      }
+    }
+  }
+
+  .title {
+    font-size: 14px;
+    line-height: 20px;
+    color: #2e1d3a;
+  }
+
+  .items-info {
+    font-size: 14px;
+    line-height: 19px;
+    color: #0e0018;
+    opacity: 0.6;
+  }
+
+  .button-col {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .btn-view-scheduled {
+    font-size: 14px;
+    line-height: 16px;
+    text-align: right;
+    text-decoration-line: underline;
+    color: #570097;
+    box-shadow: none;
+
+    &:hover {
+      color: #b079da;
+    }
+  }
+}
