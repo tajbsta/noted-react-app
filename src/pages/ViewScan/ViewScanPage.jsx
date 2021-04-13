@@ -18,8 +18,9 @@ function ViewScanPage() {
   const [newSelected, setNewSelected] = useState([]);
   const scans = useSelector((state) => get(state, 'scans', []));
   const [orderId, setOrderId] = useState('');
-  const { inReturn, inDonation, address, payment, details } = useSelector(
+  const { inReturn, address, payment, details, cart } = useSelector(
     ({
+      cart,
       runtime: {
         forReturn,
         lastCall,
@@ -27,13 +28,15 @@ function ViewScanPage() {
         form: { address, payment, details },
       },
     }) => ({
+      cart,
       inReturn: [...forReturn, ...lastCall],
-      inDonation: [...forDonation],
       address,
       payment,
       details,
     })
   );
+
+  const inDonation = get(cart, 'items', []);
 
   const potentialReturnValue = [...inReturn]
     .map(({ amount }) => parseFloat(amount))
@@ -146,6 +149,7 @@ function ViewScanPage() {
                 key={item.id}
                 selectable={false}
                 clickable={false}
+                item={item}
               />
             ))}
             <h3 className='sofia-pro miss-out section-title'>
