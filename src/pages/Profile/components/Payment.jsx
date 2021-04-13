@@ -36,7 +36,7 @@ export default function Payment({
             </div>
           }
         >
-          <div className='card shadow-sm p-3 w-840 mt-4'>
+          <div className='card shadow-sm p-3 w-840 mt-4 ml-3'>
             <div className='card-body'>
               <Form id='PaymentForm'>
                 <Row>

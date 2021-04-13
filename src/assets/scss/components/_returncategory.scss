@@ -25,6 +25,12 @@
     max-width: 5px;
   }
 
+  .m-row {
+    @media (max-width: 767px) {
+      margin: auto;
+    }
+  }
+
   .empty-category {
     font-size: 16px;
     margin-top: 15px;
