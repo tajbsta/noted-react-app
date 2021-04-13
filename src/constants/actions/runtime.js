@@ -11,6 +11,7 @@ export const CLEAR_SEARCH = 'CLEAR_SEARCH';
 
 export const UPDATE_FOR_RETURN = 'UPDATE_FOR_RETURN';
 export const FOR_RETURN = 'forReturn';
+export const RETURNABLE = 'RETURNABLE';
 
 /**
  * DONATION
@@ -18,12 +19,14 @@ export const FOR_RETURN = 'forReturn';
 
 export const UPDATE_FOR_DONATION = 'UPDATE_FOR_DONATION';
 export const FOR_DONATION = 'forDonation';
+export const DONATE = 'DONATE';
 
 /**
  * LAST CALL
  */
 export const UPDATE_LAST_CALL = 'UPDATE_LAST_CALL';
-export const LAST_CALL = 'lastCall';
+// export const LAST_CALL = 'lastCall';
+export const LAST_CALL = 'LAST_CALL';
 
 /**
  * @FORMS

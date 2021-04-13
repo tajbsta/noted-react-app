@@ -22,10 +22,6 @@
   margin-right: 26px;
 
   @media (max-width: 540px) {
-    position: absolute;
-    left: 4.27%;
-    right: 69.6%;
-    top: 21.88%;
-    bottom: 21.88%;
+    position: initial;
   }
 }

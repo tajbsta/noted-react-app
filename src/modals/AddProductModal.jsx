@@ -40,7 +40,7 @@ export default function AddProductModal(props) {
     <small className='form-text p-0 m-0 noted-red'>{errors}</small>
   );
 
-  const hiddenFileInput = React.useRef(null);
+  const hiddenFileInput = useRef(null);
 
   const handleClick = (event) => {
     hiddenFileInput.current.click();
@@ -148,7 +148,8 @@ export default function AddProductModal(props) {
                         value={productUrl || ''}
                         onChange={handleProductChange}
                       />
-                      {renderInlineError(errors.productUrl)}
+                      {productUrl.length > 0 &&
+                        renderInlineError(errors.productUrl)}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -175,7 +176,8 @@ export default function AddProductModal(props) {
                           />
                         </div>
                       </div>
-                      {renderInlineError(errors.vendorTag)}
+                      {vendorTag.length > 0 &&
+                        renderInlineError(errors.vendorTag)}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -210,7 +212,8 @@ export default function AddProductModal(props) {
                           value={itemName || ''}
                           onChange={handleProductChange}
                         />
-                        {renderInlineError(errors.itemName)}
+                        {itemName.length > 0 &&
+                          renderInlineError(errors.itemName)}
                       </div>
                     </Form.Group>
                   </Col>
@@ -229,7 +232,7 @@ export default function AddProductModal(props) {
                           value={amount}
                           onChange={handleProductChange}
                         />
-                        {renderInlineError(errors.amount)}
+                        {amount.length > 0 && renderInlineError(errors.amount)}
                       </div>
                     </Form.Group>
                   </Col>

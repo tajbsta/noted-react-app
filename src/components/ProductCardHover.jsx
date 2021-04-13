@@ -9,11 +9,8 @@ import {
 } from '../actions/runtime.action';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-export default function ProductCardHover({
-  orderDate = '2222-4-23',
-  show,
-  scannedItem,
-}) {
+import { addProductSchema } from '../models/formSchema';
+export default function ProductCardHover({ orderDate, show, item }) {
   const dispatch = useDispatch();
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
   const [modalEditShow, setModalEditShow] = useState(false);
@@ -32,15 +29,16 @@ export default function ProductCardHover({
     };
   });
 
-  const { handleChange, values, setFieldValue } = useFormik({
+  const { handleChange, values, setFieldValue, errors } = useFormik({
     initialValues: {
-      amount: get(scannedItem, 'amount', ''),
-      vendorTag: get(scannedItem, 'vendorTag', ''),
-      orderDate: get(scannedItem, 'orderDate', ''),
-      itemName: get(scannedItem, 'itemName', ''),
+      amount: get(item, 'price', ''),
+      vendorTag: get(item, 'vendor', ''),
+      orderDate: get(item, 'order_date', ''),
+      itemName: get(item, 'name', ''),
       productUrl: '',
-      imageUrl: get(scannedItem, 'imageUrl', ''),
+      imageUrl: get(item, 'thumbnail', ''),
     },
+    validationSchema: addProductSchema,
   });
 
   const onEdit = async () => {
@@ -48,13 +46,8 @@ export default function ProductCardHover({
      * MOUNT PRODUCT FIRST
      */
     dispatch(unmountProductedit());
-    dispatch(mountProductInEdit(scannedItem));
+    dispatch(mountProductInEdit(item));
     setModalEditShow(true);
-  };
-
-  const onHide = () => {
-    dispatch(unmountProductedit());
-    setModalEditShow(false);
   };
 
   return (
@@ -97,7 +90,7 @@ export default function ProductCardHover({
         onHide={() => {
           setModalEditShow(false);
         }}
-        editProductForm={{ handleChange, values, setFieldValue }}
+        editProductForm={{ handleChange, values, setFieldValue, errors }}
       />
       <ReturnPolicyModal
         show={modalPolicyShow}

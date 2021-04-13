@@ -1,57 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { GREAT } from '../constants/returns/scores';
 import ReturnScore from './ReturnsScore';
 import Row from './Row';
 import { Container, Col } from 'react-bootstrap';
 import ProductDetails from './ProductDetails';
 import ProductCardHover from './ProductCardHover';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateForReturn, updateLastCall } from '../actions/runtime.action';
-import { useHistory } from 'react-router';
-import { get } from 'lodash';
-import { updateOrders } from '../actions/auth.action';
 import $ from 'jquery';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import moment from 'moment';
 import ReturnPolicyModal from '../modals/ReturnPolicyModal';
 import EditProductModal from '../modals/EditProductModal';
-import { useFormik } from 'formik';
+import NotedCheckbox from './NotedCheckbox';
 
 function ProductCard({
-  orderId = '',
   selectable = true,
-  selected,
-  addSelected,
   removable = true,
-  removeSelected = () => {},
   clickable = true,
-  scannedItem: {
-    vendorTag,
-    itemName,
-    returnScore = GREAT,
-    amount,
-    id,
-    imageUrl,
-    orderDate,
-  },
   disabled,
-  scannedItem,
+  item,
+  selected,
+  toggleSelected,
 }) {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const pathName = get(history, 'location.pathname', '');
-  const { forReturn, lastCall, scheduledReturns } = useSelector(
-    ({ runtime: { forReturn, lastCall }, auth: { scheduledReturns } }) => ({
-      forReturn,
-      lastCall,
-      scheduledReturns,
-    })
-  );
-
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileSmaller, setIsMobileSmaller] = useState(false);
-
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
   const [modalEditShow, setModalEditShow] = useState(false);
 
@@ -79,69 +50,8 @@ function ProductCard({
     };
   });
 
-  const { handleChange, values, setFieldValue } = useFormik({
-    initialValues: {
-      amount: get(scannedItem, 'amount', ''),
-      vendorTag: get(scannedItem, 'vendorTag', ''),
-      orderDate: get(scannedItem, 'orderDate', ''),
-      itemName: get(scannedItem, 'itemName', ''),
-      productUrl: '',
-      imageUrl: get(scannedItem, 'imageUrl', ''),
-    },
-  });
-
   const handleSelection = () => {
-    if (selected) {
-      removeSelected(id);
-      return;
-    }
-    addSelected(id);
-  };
-
-  const onRemove = (id) => {
-    /**
-     * REMOVE PRODUCT HERE FROM WHEREVER IT IS STORED FOR NOW.
-     * BACKEND INTEGRATION WILL MAKE THIS PRETTY :()
-     */
-
-    if (pathName === '/view-scan') {
-      dispatch(
-        updateForReturn({
-          scans: [...forReturn.filter(({ id: returnId }) => returnId !== id)],
-        })
-      );
-      dispatch(
-        updateLastCall({
-          scans: [...lastCall.filter(({ id: returnId }) => returnId !== id)],
-        })
-      );
-    }
-
-    if (pathName === '/view-return') {
-      const scheduledReturn = scheduledReturns.find(({ id }) => id === orderId);
-      console.log(scheduledReturn);
-      /**
-       * MUTATE THE ORDER => then => ORDERS FOR NOW
-       */
-      const items = get(scheduledReturn, 'items', []);
-      /**
-       * MUTATING ITEMS FIRST
-       */
-      const newItems = items.filter(({ id: returnId }) => returnId !== id);
-      /**
-       * CREATE NEW MUTATION OF THE ORDER
-       */
-      const newScheduledReturn = { ...scheduledReturn, items: [...newItems] };
-      /**
-       * MUTATE ORDERS WITH NEW ORDER
-       */
-      dispatch(
-        updateOrders([
-          ...scheduledReturns.filter(({ id }) => newScheduledReturn.id !== id),
-          { ...newScheduledReturn },
-        ])
-      );
-    }
+    toggleSelected(item);
   };
 
   // Truncate name if longer than 15 characters
@@ -174,13 +84,21 @@ function ProductCard({
     }
   }, []);
 
+  const daysLeft =
+    item.category === 'DONATE'
+      ? 'Donate'
+      : moment(item.return_not_eligible_date).diff(
+          moment().startOf('day'),
+          'days'
+        );
+
   return (
     <div id='productCard'>
       <div
         className={`card scanned-item-card w-840 mb-3 p-0 ${
           clickable && 'btn'
         } ${isMobile && selected ? 'selected-mobile' : ''}`}
-        key={itemName}
+        key={item.product_hash}
         style={{
           border: selected
             ? '1px solid rgba(87, 0, 151, 0.8)'
@@ -201,14 +119,10 @@ function ProductCard({
                   alignItems: isMobile && selected ? 'initial' : 'center',
                 }}
               >
-                <input
+                <NotedCheckbox
                   disabled={disabled}
-                  type='checkbox'
                   checked={selected}
-                  onChange={handleSelection}
-                  style={{
-                    zIndex: 999,
-                  }}
+                  onChangeState={handleSelection}
                 />
               </div>
             )}
@@ -222,7 +136,7 @@ function ProductCard({
               }}
             >
               {removable && !selectable && (
-                <div className='removeProduct' onClick={() => onRemove(id)}>
+                <div className='removeProduct' onClick={() => {}}>
                   <span className='x' style={{ color: 'black' }}>
                     &times;
                   </span>
@@ -230,7 +144,7 @@ function ProductCard({
               )}
               <img
                 className='product-img'
-                src={imageUrl || ProductPlaceholder}
+                src={item.thumbnail || ProductPlaceholder}
                 alt=''
                 style={{
                   maxWidth: 50,
@@ -256,10 +170,10 @@ function ProductCard({
                       className='mb-0 sofia-pro mb-1 distributor-name'
                       style={{ marginBottom: '0px' }}
                     >
-                      {truncateBrand(vendorTag)}
+                      {truncateBrand(item.vendor_data.name)}
                     </h4>
                     <h5 className='sofia-pro mb-2 product-name'>
-                      &nbsp;{truncateString(itemName)}
+                      &nbsp;{truncateString(item.name)}
                     </h5>
                   </div>
                 </Container>
@@ -281,13 +195,13 @@ function ProductCard({
                             color: '#FF1C29',
                           }}
                         >
-                          2 days left
+                          {daysLeft}
                         </div>
                       </Col>
                       <Col className='m-date-col'>
                         {selected && (
                           <div className='m-date sofia-pro'>
-                            {moment(orderDate, 'YYYY-MM-DD').format(
+                            {moment(item.order_date, 'YYYY-MM-DD').format(
                               'MMMM DD YYYY'
                             )}
                           </div>
@@ -299,14 +213,14 @@ function ProductCard({
                       style={{ display: selected ? 'none' : '' }}
                     >
                       <div className='mobile-return-score'>
-                        <ReturnScore score={returnScore} />
+                        <ReturnScore score={item.vendor_data.rating} />
                       </div>
                     </Col>
                   </Row>
                 </Container>
                 <Container>
                   <Row>
-                    <h4 className='sofia-pro mobile-price'>${amount}</h4>
+                    <h4 className='sofia-pro mobile-price'>${item.price}</h4>
                   </Row>
                 </Container>
                 {selected && (
@@ -337,7 +251,7 @@ function ProductCard({
 
                     <Row>
                       <div className='m-score-container'>
-                        <ReturnScore score={returnScore} />
+                        <ReturnScore score={item.vendor_data.rating} />
                       </div>
                     </Row>
 
@@ -380,25 +294,15 @@ function ProductCard({
                 setModalPolicyShow(false);
               }}
             />
-            <EditProductModal
+            {/* <EditProductModal
               show={modalEditShow}
               onHide={() => {
                 setModalEditShow(false);
               }}
-              editProductForm={{ handleChange, values, setFieldValue }}
-            />
+              // editProductForm={{ handleChange, values, setFieldValue }}
+            /> */}
 
-            <ProductDetails
-              scannedItem={{
-                vendorTag,
-                itemName,
-                scannedItem,
-                returnScore,
-                amount,
-                compensationType: '',
-              }}
-              isHovering={showHoverContent}
-            />
+            <ProductDetails item={item} isHovering={showHoverContent} />
 
             <div
               className='col-sm-12 return-details-container'
@@ -409,9 +313,9 @@ function ProductCard({
               }}
             >
               <ProductCardHover
-                orderDate={orderDate}
+                orderDate={item.order_date}
                 show={showHoverContent}
-                scannedItem={scannedItem}
+                item={item}
               />
 
               {!isHover && !selected && (
@@ -422,10 +326,10 @@ function ProductCard({
                       color: '#FF1C29',
                     }}
                   >
-                    2 days left
+                    {daysLeft}
                   </div>
                   <div className='col-sm-3 return-score'>
-                    <ReturnScore score={returnScore} />
+                    <ReturnScore score={item.vendor_data.rating} />
                   </div>
                 </>
               )}

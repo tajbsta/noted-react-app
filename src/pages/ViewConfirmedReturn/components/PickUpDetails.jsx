@@ -13,11 +13,16 @@ import {
 } from '../../../models/formSchema.js';
 import { get } from 'lodash-es';
 import moment from 'moment';
+import SchedulingModal from '../../../modals/SchedulingModal';
+import { updatePickUpDetails } from '../../../actions/runtime.action';
+import { useDispatch } from 'react-redux';
 
 function PickUpDetails({ address, payment, details }) {
+  const dispatch = useDispatch();
   const [showEditAddress, setShowEditAddress] = useState(false);
   const [showEditPayment, setShowEditPayment] = useState(false);
   const [modalShow, setModalShow] = useState(false);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
   const {
     errors: addressFormErrors,
@@ -61,6 +66,18 @@ function PickUpDetails({ address, payment, details }) {
 
   const isAddressFormEmpty = isFormEmpty(addressFormValues);
   const isPaymentFormEmpty = isFormEmpty(paymentFormValues);
+
+  const savePickUpDetails = async () => {
+    dispatch(
+      updatePickUpDetails({
+        formData: { ...get(pickUpDateForm, 'values', {}) },
+      })
+    );
+  };
+
+  const openDatePickerModal = () => {
+    setIsDatePickerOpen(true);
+  };
 
   return (
     <>
@@ -229,7 +246,12 @@ function PickUpDetails({ address, payment, details }) {
                   <h4 className='p-0 m-0 sofia-pro'>
                     Between {pickUpDateForm.values.time}
                   </h4>
-                  <h4 className='p-0 m-0 sofia-pro mt-2 btn-edit'>Edit</h4>
+                  <h4
+                    className='p-0 m-0 sofia-pro mt-2 btn-edit'
+                    onClick={openDatePickerModal}
+                  >
+                    Edit
+                  </h4>
                   <hr />
                   <a className='btn-edit p-0 m-0 sofia-pro noted-purple mt-2 text-14 line-height-16'>
                     Schedule another date
@@ -243,6 +265,12 @@ function PickUpDetails({ address, payment, details }) {
           </>
         )}
       </div>
+      <SchedulingModal
+        show={isDatePickerOpen}
+        onHide={() => setIsDatePickerOpen(false)}
+        form={pickUpDateForm}
+        onConfirm={savePickUpDetails}
+      />
     </>
   );
 }

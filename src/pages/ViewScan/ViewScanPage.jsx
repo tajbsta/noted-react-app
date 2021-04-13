@@ -17,9 +17,10 @@ function ViewScanPage() {
   const [modalShow, setModalShow] = useState(false);
   const [newSelected, setNewSelected] = useState([]);
   const scans = useSelector((state) => get(state, 'scans', []));
-
-  const { inReturn, inDonation, address, payment, details } = useSelector(
+  const [orderId, setOrderId] = useState('');
+  const { inReturn, address, payment, details, cart } = useSelector(
     ({
+      cart,
       runtime: {
         forReturn,
         lastCall,
@@ -27,13 +28,15 @@ function ViewScanPage() {
         form: { address, payment, details },
       },
     }) => ({
+      cart,
       inReturn: [...forReturn, ...lastCall],
-      inDonation: [...forDonation],
       address,
       payment,
       details,
     })
   );
+
+  const inDonation = get(cart, 'items', []);
 
   const potentialReturnValue = [...inReturn]
     .map(({ amount }) => parseFloat(amount))
@@ -74,6 +77,7 @@ function ViewScanPage() {
      * THIS ID GENERATION IS TEMPORARY
      */
     const newUniqueId = `${moment().format('MM-DD-YY-hh:mm')}${nanoid()}`;
+    setOrderId(newUniqueId);
     dispatch(
       submitOrder({
         id: newUniqueId,
@@ -119,7 +123,7 @@ function ViewScanPage() {
                 <h3 className='sofia-pro text-18 section-title'>
                   Pick-up confirmed
                 </h3>
-                <PickUpConfirmed />
+                <PickUpConfirmed orderId={orderId} />
               </div>
             ) : (
               <div className='mobile-view-scan-col'>
@@ -145,6 +149,7 @@ function ViewScanPage() {
                 key={item.id}
                 selectable={false}
                 clickable={false}
+                item={item}
               />
             ))}
             <h3 className='sofia-pro miss-out section-title'>
