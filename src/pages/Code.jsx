@@ -42,7 +42,7 @@ export default function Code() {
         } catch (error) {
           const errorCode =
             error.response && error.response.data
-              ? error.response.data.description
+              ? error.response.data.details
               : SERVER_ERROR;
 
           console.log({
