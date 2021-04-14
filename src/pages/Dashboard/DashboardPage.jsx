@@ -50,12 +50,7 @@ function DashboardPage() {
       }
 
       const scrapeUpdated = accounts.every(
-        (acc) =>
-          acc.metadata &&
-          acc.metadata.lastEmailScrapeDate &&
-          moment(acc.metadata.lastEmailScrapeDate)
-            .startOf('day')
-            .isSameOrAfter(moment.utc().startOf('day'), 'day')
+        (acc) => acc.lastScrapeAttempt !== 0
       );
 
       setShowScanning(!scrapeUpdated);
