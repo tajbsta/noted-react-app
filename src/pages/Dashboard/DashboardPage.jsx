@@ -22,7 +22,6 @@ function DashboardPage() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { search } = useSelector(({ runtime: { search } }) => ({ search }));
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showScanning, setShowScanning] = useState(false);
   const [userId, setUserId] = useState('');
@@ -33,15 +32,26 @@ function DashboardPage() {
     [RETURNABLE]: [],
     [DONATE]: [],
   });
+  let fetchTimeoutInterval;
 
   async function loadScans() {
     dispatch(clearSearchQuery());
     try {
       setLoading(true);
       const userId = await getUserId();
-      const accounts = await getAccounts(userId);
 
       setUserId(userId);
+      await fetchAccounts(userId);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      // TODO: show error here
+    }
+  }
+
+  async function fetchAccounts(userId) {
+    try {
+      const accounts = await getAccounts(userId);
 
       // Redirect to request-permission if user has no accounts
       if (accounts.length === 0) {
@@ -54,10 +64,18 @@ function DashboardPage() {
       );
 
       setShowScanning(!scrapeUpdated);
-      setLoading(false);
+
+      if (!scrapeUpdated) {
+        fetchTimeoutInterval = setTimeout(async () => {
+          await fetchAccounts(userId);
+        }, 1000 * 60); // 1 minute
+      } else {
+        if (fetchTimeoutInterval) {
+          clearTimeout(fetchTimeoutInterval);
+        }
+      }
     } catch (error) {
-      setLoading(false);
-      // TODO: show error here
+      setShowScanning(false);
     }
   }
 
@@ -79,13 +97,6 @@ function DashboardPage() {
   const goToAuthorize = () => {
     history.push('/request-permission');
   };
-
-  // useEffect(() => {;
-  //   (async () => {
-  //     const user = await getUser();
-  //     setUser(user);
-  //   })();
-  // }, []);
 
   return (
     <div id='DashboardPage'>
@@ -192,7 +203,7 @@ function DashboardPage() {
                       <div className='col-sm-7 text-center'>
                         <div className='text-muted text-center sofia-pro line-height-16 text-bottom-title'>
                           These are all the purchases we found in the past 90
-                          days from your address {user && user.email}
+                          days from your address
                         </div>
                       </div>
                     </div>
