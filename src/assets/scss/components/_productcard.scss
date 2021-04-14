@@ -284,6 +284,12 @@
       // padding: 0px;
     }
 
+    .m-col-d {
+      width: auto !important;
+      flex-basis: initial;
+      flex-grow: initial;
+    }
+
     .col-score {
       display: flex;
       justify-content: flex-end;

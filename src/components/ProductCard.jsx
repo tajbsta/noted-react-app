@@ -22,7 +22,7 @@ function ProductCard({
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isMobileSmaller, setIsMobileSmaller] = useState(false);
+  const [isMobileSmaller, setIsMobileSmaller] = useState(false); // >320px
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
   const [modalEditShow, setModalEditShow] = useState(false);
 
@@ -54,8 +54,26 @@ function ProductCard({
     toggleSelected(item);
   };
 
+  const toTitleCase = (str) => {
+    let replacedDash = str.replace('-', ' ');
+    return replacedDash.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  };
+
+  const formattedProductName = toTitleCase(item.name);
+
+  // Truncate name if longer than 21 characters
+  const truncateProductName = (str, num = 21) => {
+    if (str && str.length > num) {
+      return str.slice(0, num) + '...';
+    } else {
+      return str;
+    }
+  };
+
   // Truncate name if longer than 15 characters
-  const truncateString = (str, num = 15) => {
+  const truncateProductNameForSmallerScreens = (str, num = 12) => {
     if (str && str.length > num) {
       return str.slice(0, num) + '...';
     } else {
@@ -174,9 +192,20 @@ function ProductCard({
                     >
                       {truncateBrand(item.vendor_data.name)}
                     </h4>
-                    <h5 className='sofia-pro mb-2 product-name'>
-                      &nbsp;{truncateString(item.name)}
-                    </h5>
+                    {isMobileSmaller && (
+                      <h5 className='sofia-pro mb-2 product-name'>
+                        &nbsp;
+                        {truncateProductNameForSmallerScreens(
+                          formattedProductName
+                        )}
+                      </h5>
+                    )}
+
+                    {!isMobileSmaller && (
+                      <h5 className='sofia-pro mb-2 product-name'>
+                        &nbsp;{truncateProductName(formattedProductName)}
+                      </h5>
+                    )}
                   </div>
                 </Container>
                 <Container className='s-container'>
@@ -185,13 +214,13 @@ function ProductCard({
                       style={{
                         display: selected ? 'flex' : '',
                         alignItems: 'center',
-                        width: selected ? '80%' : '',
                       }}
                     >
                       <Col
-                        className='col-days-left'
+                        className='col-days-left m-col-d'
                         style={{
                           paddingRight: '4px',
+                          width: 'fit-content !important',
                         }}
                       >
                         {!isDonate && (

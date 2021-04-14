@@ -7,6 +7,15 @@ function ProductDetails({ item, isHovering = false }) {
   const pageLocation = history.location.pathname;
   const orderViews = ['/view-return', '/view-scan'];
 
+  const toTitleCase = (str) => {
+    let replacedDash = str.replace('-', ' ');
+    return replacedDash.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  };
+
+  const formattedProductName = toTitleCase(item.name);
+
   return (
     <div
       className={`col-sm-7 p-0 mt-1 p-details ${
@@ -19,7 +28,7 @@ function ProductDetails({ item, isHovering = false }) {
         </h4>
       </Row>
       <Row>
-        <h5 className='sofia-pro mb-2 product-name'>{item.name}</h5>
+        <h5 className='sofia-pro mb-2 product-name'>{formattedProductName}</h5>
       </Row>
       <Row>
         <h4 className='sofia-pro mb-0 product-price'>
