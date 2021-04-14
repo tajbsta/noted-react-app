@@ -45,11 +45,11 @@ function ReturnCategory({
        * SET TO YOUR LIKING
        */
       setLoadProgress(25);
-      await timeout(800);
-      setLoadProgress(50);
-      await timeout(400);
-      setLoadProgress(87);
       await timeout(300);
+      setLoadProgress(50);
+      await timeout(100);
+      setLoadProgress(95);
+      // await timeout(100);
 
       if (search) {
         params.search = encodeURIComponent(search);
