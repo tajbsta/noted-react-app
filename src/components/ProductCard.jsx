@@ -94,10 +94,6 @@ function ProductCard({
 
   const isDonate = item.category === 'DONATE';
 
-  console.log(item.order_date);
-
-  console.log(moment(item.order_date).format('MMM Do, YYYY'));
-
   return (
     <div id='productCard'>
       <div
@@ -189,20 +185,39 @@ function ProductCard({
                       style={{
                         display: selected ? 'flex' : '',
                         alignItems: 'center',
+                        width: selected ? '75%' : '',
                       }}
                     >
                       <Col
                         className='col-days-left'
-                        style={{ paddingRight: '4px' }}
+                        style={{
+                          paddingRight: '4px',
+                        }}
                       >
-                        <div
-                          className='sofia-pro mobile-limit'
-                          style={{
-                            color: '#8B888C',
-                          }}
-                        >
-                          {daysLeft}
-                        </div>
+                        {!isDonate && (
+                          <>
+                            <div
+                              className='sofia-pro mobile-limit'
+                              style={{
+                                color: '#8B888C',
+                              }}
+                            >
+                              {daysLeft} days left
+                            </div>
+                          </>
+                        )}
+                        {isDonate && (
+                          <>
+                            <div
+                              className='sofia-pro mobile-limit'
+                              style={{
+                                color: '#8B888C',
+                              }}
+                            >
+                              Donate
+                            </div>
+                          </>
+                        )}
                       </Col>
                       <Col className='m-date-col'>
                         {selected && (
