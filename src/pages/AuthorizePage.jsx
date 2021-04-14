@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { AlertCircle } from 'react-feather';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import AuthorizeImg from '../assets/img/Authorize.svg';
 import $ from 'jquery';
@@ -29,7 +30,7 @@ export default function AuthorizePage() {
   };
 
   useEffect(() => {
-    setErrMsg(null);
+    // setErrMsg(null);
 
     const query = qs.parse(history.location.search, {
       ignoreQueryPrefix: true,
@@ -67,19 +68,12 @@ export default function AuthorizePage() {
       <Container className='main-body' fluid='lg'>
         {errMsg && (
           <div
-            className='alert alert-danger alert-dismissible fade show'
+            className='alert alert-danger fade show'
             role='alert'
+            style={{ position: 'relative' }}
           >
-            <strong>Alert! </strong>
-            {errMsg}
-            <button
-              type='button'
-              className='close'
-              data-dismiss='alert'
-              aria-label='Close'
-            >
-              <span aria-hidden='true'>&times;</span>
-            </button>
+            <AlertCircle />{' '}
+            <strong className='error-msg text-center'>{errMsg}</strong>
           </div>
         )}
         <Row md='2' className='text-left align-items-end'>
@@ -124,6 +118,15 @@ export default function AuthorizePage() {
       </Container>
       {/* MOBILE VIEW */}
       <Container className='main-body-mobile' fluid='lg'>
+        {errMsg && (
+          <div
+            className='alert alert-danger fade show'
+            role='alert'
+            style={{ position: 'relative' }}
+          >
+            <strong className='text-center'>{errMsg}</strong>
+          </div>
+        )}
         <Row md='2' className='text-left align-items-end'>
           <Col xs='6'>
             <div className='authorize-img-mobile'>
