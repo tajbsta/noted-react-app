@@ -1,16 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
 import AddEmailModal from '../../../modals/AddEmailModal';
+import { getAccounts } from '../../../utils/accountsApi';
+import { Spinner } from 'react-bootstrap';
 
 export default function EmailAddresses({ user }) {
   const [modalShow, setModalShow] = useState(false);
-
+  const [accounts, setAccounts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const history = useHistory();
 
   const goToAuthorize = () => {
     history.push('/request-permission');
   };
+
+  const fetchAccounts = async () => {
+    try {
+      setLoading(true);
+
+      const userAccounts = await getAccounts(user.sub);
+      setAccounts(userAccounts);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+
+      // TODO: ERROR HANDLING
+      console.log(err);
+    }
+  };
+
+  const isDiffEmail = user && user.email !== accounts.email;
+
+  useEffect(() => {
+    if (user) {
+      fetchAccounts();
+    }
+  }, [user]);
 
   return (
     <div id='EmailAddresses'>
@@ -24,56 +50,51 @@ export default function EmailAddresses({ user }) {
                   Here you will find all the email addresses we use to search
                   for the products you have purchased.
                 </h4>
-                <h4 className='section-info'>
-                  You can change your primary email address in the section
-                  below.
-                </h4>
               </Col>
               <Col className='email-column'>
-                <Form>
-                  <Row>
-                    <Col>
-                      <Form.Group>
-                        <Form.Label>Account email</Form.Label>
-                        <div className='master-email'>
-                          <h4>{user && user.email}</h4>
-                        </div>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <Form.Group>
-                        <div className='title-group'>
-                          <Form.Label>Email #1</Form.Label>
-                          <Button className='btn delete-email'>
-                            Delete email
-                          </Button>
-                        </div>
-                        <Form.Control
-                          type='email'
-                          placeholder='name@example.com'
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <Form.Group>
-                        <div className='title-group'>
-                          <Form.Label>Email #2</Form.Label>
-                          <Button className='btn delete-email'>
-                            Delete email
-                          </Button>
-                        </div>
-                        <Form.Control
-                          type='email'
-                          placeholder='name@example.com'
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                </Form>
+                <Row>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Account email</Form.Label>
+                      <div className='master-email'>
+                        <h4>{user && user.email}</h4>
+                        {isDiffEmail && <h4>&nbsp; (not used for scraping)</h4>}
+                      </div>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                {loading && (
+                  <>
+                    <div className='spinner-container mt-3 mb-3'>
+                      <Spinner
+                        className='settings-spinner'
+                        size='md'
+                        animation='border'
+                      />
+                    </div>
+                  </>
+                )}
+                {!loading && (
+                  <>
+                    {accounts.map((account, index) => (
+                      <Row key={account.id}>
+                        <Col>
+                          <Form.Group>
+                            <div className='title-group'>
+                              <Form.Label>Email #{index + 1}</Form.Label>
+                              <Button className='btn delete-email'>
+                                Delete email
+                              </Button>
+                            </div>
+                            <div className='additional-email'>
+                              <h4>{account.email}</h4>
+                            </div>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    ))}
+                  </>
+                )}
                 <Row className='button-row'>
                   <Col className='btn-add-container'>
                     <Button className='add-new-email' onClick={goToAuthorize}>

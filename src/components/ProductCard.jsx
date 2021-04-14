@@ -185,7 +185,7 @@ function ProductCard({
                       style={{
                         display: selected ? 'flex' : '',
                         alignItems: 'center',
-                        width: selected ? '75%' : '',
+                        width: selected ? '80%' : '',
                       }}
                     >
                       <Col
