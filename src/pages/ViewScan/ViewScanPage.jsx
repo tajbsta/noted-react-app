@@ -3,13 +3,15 @@ import ProductCard from '../../components/ProductCard';
 import PickUpConfirmed from '../../components/PickUpConfirmed';
 import PickUpDetails from './components/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import $ from 'jquery';
 import { submitOrder } from '../../actions/auth.action';
 import { nanoid } from 'nanoid';
 import moment from 'moment';
 import { clearForm } from '../../actions/runtime.action';
+import { setCartItems } from '../../actions/cart.action';
+import { Link } from 'react-router-dom';
 
 function ViewScanPage() {
   const dispatch = useDispatch();
@@ -112,6 +114,13 @@ function ViewScanPage() {
     }
   };
 
+  const onCartRemove = (itemId) => {
+    const newItems = [
+      ...get(cart, 'items', []).filter(({ _id }) => itemId !== _id),
+    ];
+    dispatch(setCartItems(newItems));
+  };
+
   return (
     <div id='ViewScanPage'>
       <div className='container mt-6'>
@@ -130,9 +139,26 @@ function ViewScanPage() {
                 <PickUpDetails />
               </div>
             )}
+
             <h3 className='sofia-pro products-return text-18 section-title'>
               Your products to {checkoutTitle}
             </h3>
+            {isEmpty([...inReturn, ...inDonation]) && (
+              <h4 className='p-0 mb-0 mt-4 ml-3 sofia-pro empty-message'>
+                No more products. Click here to go back to{' '}
+                <Link
+                  style={{
+                    textDecoration: 'underline',
+                    color: '#6aaf6a',
+                  }}
+                  to='/dashboard'
+                >
+                  dashboard
+                </Link>
+                .
+              </h4>
+            )}
+
             {inReturn.map((item) => (
               <ProductCard
                 removable={!confirmed}
@@ -150,6 +176,7 @@ function ViewScanPage() {
                 selectable={false}
                 clickable={false}
                 item={item}
+                onRemove={onCartRemove}
               />
             ))}
             <h3 className='sofia-pro miss-out section-title'>
