@@ -5,7 +5,11 @@ import {
   INVALID_CREDENTIALS,
   LIMIT_EXCEEDED_EXCEPTION,
   EXPIRED_CODE_EXCEPTION,
-  CODE_MISMATCH_EXCEPTION
+  CODE_MISMATCH_EXCEPTION,
+  ACCOUNT_ALREADY_EXIST,
+  INVALID_REQUEST,
+  SERVER_ERROR,
+  GOOGLE_AUTH_ACCESS_DENIED
 } from "../constants/errors/errorCodes";
 
 export const signUpErrors = [
@@ -69,6 +73,26 @@ export const resetPassErrors = [
   {
     code: LIMIT_EXCEEDED_EXCEPTION,
     message: "Attempt limit exceeded, please try again later.",
+  }
+];
+
+export const scraperGmailErrors = [
+  {
+    code: ACCOUNT_ALREADY_EXIST,
+    message: "This account has already been added by an existing user",
+  },
+  {
+    code: INVALID_REQUEST,
+    message:
+      "Invalid request",
+  },
+  {
+    code: SERVER_ERROR,
+    message: "Something went wrong. Please try again later.",
+  },
+  {
+    code: GOOGLE_AUTH_ACCESS_DENIED,
+    message: "Access denied"
   }
 ];
 

@@ -158,19 +158,10 @@ function RightCard({ userId }) {
                             <div>Total past 90 days</div>
                           )}
 
-                        {pricing.totalReturns > 0 && (
+                        {pricing && (
                           <div>
-                            {pricing.totalReturns}{' '}
-                            {pricing.totalReturns === 1
-                              ? 'product'
-                              : 'products'}{' '}
-                            selected
-                          </div>
-                        )}
-                        {pricing.totalDonations > 0 && (
-                          <div>
-                            {pricing.totalDonations}{' '}
-                            {pricing.totalDonations === 1
+                            {pricing.totalReturns + pricing.totalDonations}{' '}
+                            {pricing.totalReturns + pricing.totalDonations == 1
                               ? 'product'
                               : 'products'}{' '}
                             selected

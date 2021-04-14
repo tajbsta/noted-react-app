@@ -3,7 +3,7 @@
 #ScheduledReturnCard,
 #ReturnCategory {
   .p-details {
-    padding-left: 28px !important;
+    padding-left: 16px !important;
     height: 48px;
     .compensationText {
       font-family: 'Sofia Pro';
@@ -251,7 +251,7 @@
   // END OF PRODUCT IS SELECTED
 
   #mobile-product-info {
-    padding-left: 12px;
+    padding-left: 0px;
     padding-right: 12px;
 
     @media (min-width: 991px) {
@@ -282,6 +282,12 @@
       display: flex;
       justify-content: flex-start;
       // padding: 0px;
+    }
+
+    .m-col-d {
+      width: auto !important;
+      flex-basis: initial;
+      flex-grow: initial;
     }
 
     .col-score {

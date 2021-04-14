@@ -10,6 +10,7 @@ import moment from 'moment';
 import ReturnPolicyModal from '../modals/ReturnPolicyModal';
 import EditProductModal from '../modals/EditProductModal';
 import NotedCheckbox from './NotedCheckbox';
+import { get } from 'lodash-es';
 
 function ProductCard({
   selectable = true,
@@ -19,10 +20,11 @@ function ProductCard({
   item,
   selected,
   toggleSelected,
+  onRemove = () => {},
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isMobileSmaller, setIsMobileSmaller] = useState(false);
+  const [isMobileSmaller, setIsMobileSmaller] = useState(false); // >320px
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
   const [modalEditShow, setModalEditShow] = useState(false);
 
@@ -54,8 +56,26 @@ function ProductCard({
     toggleSelected(item);
   };
 
+  const toTitleCase = (str) => {
+    let replacedDash = str.replace('-', ' ');
+    return replacedDash.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  };
+
+  const formattedProductName = toTitleCase(item.name);
+
+  // Truncate name if longer than 21 characters
+  const truncateProductName = (str, num = 21) => {
+    if (str && str.length > num) {
+      return str.slice(0, num) + '...';
+    } else {
+      return str;
+    }
+  };
+
   // Truncate name if longer than 15 characters
-  const truncateString = (str, num = 15) => {
+  const truncateProductNameForSmallerScreens = (str, num = 12) => {
     if (str && str.length > num) {
       return str.slice(0, num) + '...';
     } else {
@@ -93,10 +113,6 @@ function ProductCard({
         );
 
   const isDonate = item.category === 'DONATE';
-
-  console.log(item.order_date);
-
-  console.log(moment(item.order_date).format('MMM Do, YYYY'));
 
   return (
     <div id='productCard'>
@@ -142,7 +158,12 @@ function ProductCard({
               }}
             >
               {removable && !selectable && (
-                <div className='removeProduct' onClick={() => {}}>
+                <div
+                  className='removeProduct'
+                  onClick={() => {
+                    onRemove(get(item, '_id', ''));
+                  }}
+                >
                   <span className='x' style={{ color: 'black' }}>
                     &times;
                   </span>
@@ -178,9 +199,20 @@ function ProductCard({
                     >
                       {truncateBrand(item.vendor_data.name)}
                     </h4>
-                    <h5 className='sofia-pro mb-2 product-name'>
-                      &nbsp;{truncateString(item.name)}
-                    </h5>
+                    {isMobileSmaller && (
+                      <h5 className='sofia-pro mb-2 product-name'>
+                        &nbsp;
+                        {truncateProductNameForSmallerScreens(
+                          formattedProductName
+                        )}
+                      </h5>
+                    )}
+
+                    {!isMobileSmaller && (
+                      <h5 className='sofia-pro mb-2 product-name'>
+                        &nbsp;{truncateProductName(formattedProductName)}
+                      </h5>
+                    )}
                   </div>
                 </Container>
                 <Container className='s-container'>
@@ -192,17 +224,36 @@ function ProductCard({
                       }}
                     >
                       <Col
-                        className='col-days-left'
-                        style={{ paddingRight: '4px' }}
+                        className='col-days-left m-col-d'
+                        style={{
+                          paddingRight: '4px',
+                          width: 'fit-content !important',
+                        }}
                       >
-                        <div
-                          className='sofia-pro mobile-limit'
-                          style={{
-                            color: '#8B888C',
-                          }}
-                        >
-                          {daysLeft}
-                        </div>
+                        {!isDonate && (
+                          <>
+                            <div
+                              className='sofia-pro mobile-limit'
+                              style={{
+                                color: '#8B888C',
+                              }}
+                            >
+                              {daysLeft} days left
+                            </div>
+                          </>
+                        )}
+                        {isDonate && (
+                          <>
+                            <div
+                              className='sofia-pro mobile-limit'
+                              style={{
+                                color: '#8B888C',
+                              }}
+                            >
+                              Donate
+                            </div>
+                          </>
+                        )}
                       </Col>
                       <Col className='m-date-col'>
                         {selected && (

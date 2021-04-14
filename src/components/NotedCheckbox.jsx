@@ -20,7 +20,7 @@ export default function NotedCheckbox({
         display: 'flex',
         padding: 2,
         cursor: 'pointer',
-        zIndex: 9999,
+        zIndex: 999,
       }}
       onClick={() => {
         if (!disabled) {

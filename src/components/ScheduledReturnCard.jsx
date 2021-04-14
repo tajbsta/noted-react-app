@@ -28,11 +28,23 @@ function ScheduledReturnCard({
   const history = useHistory();
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isMobileSmaller, setIsMobileSmaller] = useState(false); // >320px
 
   // Check if device is mobile
   useEffect(() => {
     function handleResize() {
       setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobileSmaller(window.innerWidth <= 320);
     }
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -49,8 +61,17 @@ function ScheduledReturnCard({
     addSelected(id);
   };
 
+  // Truncate name if longer than 21 characters
+  const truncateProductName = (str, num = 21) => {
+    if (str && str.length > num) {
+      return str.slice(0, num) + '...';
+    } else {
+      return str;
+    }
+  };
+
   // Truncate name if longer than 15 characters
-  const truncateString = (str, num = 15) => {
+  const truncateProductNameForSmallerScreens = (str, num = 12) => {
     if (str && str.length > num) {
       return str.slice(0, num) + '...';
     } else {
@@ -123,9 +144,17 @@ function ScheduledReturnCard({
                     <h4 className='mb-0 sofia-pro mb-1 distributor-name'>
                       {truncateBrand(vendorTag)}
                     </h4>
-                    <h5 className='sofia-pro mb-2 product-name'>
-                      &nbsp;{truncateString(itemName)}
-                    </h5>
+                    {isMobileSmaller && (
+                      <h5 className='sofia-pro mb-2 product-name'>
+                        &nbsp;{truncateProductNameForSmallerScreens(itemName)}
+                      </h5>
+                    )}
+
+                    {!isMobileSmaller && (
+                      <h5 className='sofia-pro mb-2 product-name'>
+                        &nbsp;{truncateProductName(itemName)}
+                      </h5>
+                    )}
                   </div>
                 </Container>
                 <Container className='s-container'>

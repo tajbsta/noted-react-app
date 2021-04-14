@@ -9,9 +9,9 @@ export const getAccounts = async (userId) => {
 }
 
 // Launch scan on user's accounts
-export const startAccountsScan = async (userId) => {
-    const axios = await api();
+// export const startAccountsScan = async (userId) => {
+//     const axios = await api();
 
-    const res = await axios.post(`/${userId}/accounts/start`);
-    return res.data.data
-}
+//     const res = await axios.post(`/${userId}/accounts/start`);
+//     return res.data.data
+// }

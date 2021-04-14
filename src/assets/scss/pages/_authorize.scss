@@ -1,4 +1,16 @@
 #Authorize {
+  .alert-danger {
+    margin-bottom: 0px;
+    display: flex;
+    position: relative;
+    justify-content: center;
+
+    .error-msg {
+      margin-left: 10px;
+      margin-top: 3px !important;
+    }
+  }
+
   .main-body {
     background-color: #faf8fa;
     vertical-align: middle;

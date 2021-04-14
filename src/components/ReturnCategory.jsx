@@ -24,6 +24,11 @@ function ReturnCategory({
   const [showNextPageButton, setShowNextPageButton] = useState(true);
   const sortBy = 'order_date,name,_id';
   const sort = 'desc,asc';
+  const [loadProgress, setLoadProgress] = useState(0);
+
+  function timeout(delay) {
+    return new Promise((res) => setTimeout(res, delay));
+  }
 
   const fetchItems = async (nextPageToken) => {
     try {
@@ -36,6 +41,15 @@ function ReturnCategory({
         sortBy,
         sort,
       };
+      /**
+       * SET TO YOUR LIKING
+       */
+      setLoadProgress(25);
+      await timeout(200);
+      setLoadProgress(50);
+      // await timeout(100);
+      setLoadProgress(95);
+      // await timeout(100);
 
       if (search) {
         params.search = encodeURIComponent(search);
@@ -51,6 +65,12 @@ function ReturnCategory({
 
       setShowNextPageButton(products.length > 0 && products.length === size);
       setItems(newItems);
+
+      setLoadProgress(100);
+      await timeout(500);
+      /**
+       * Give animation some time
+       */
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -158,7 +178,7 @@ function ReturnCategory({
         </div>
       )}
 
-      {loading && <ProgressBar animated now={55} />}
+      {loading && <ProgressBar animated now={loadProgress} />}
       {showNextPageButton && !loading && (
         <div className='d-flex justify-content-center'>
           <button
