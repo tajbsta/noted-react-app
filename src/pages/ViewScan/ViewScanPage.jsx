@@ -12,6 +12,7 @@ import moment from 'moment';
 import { clearForm } from '../../actions/runtime.action';
 import { setCartItems } from '../../actions/cart.action';
 import { Link } from 'react-router-dom';
+import { DONATE, RETURNABLE } from '../../constants/actions/runtime';
 
 function ViewScanPage() {
   const dispatch = useDispatch();
@@ -20,28 +21,29 @@ function ViewScanPage() {
   const [newSelected, setNewSelected] = useState([]);
   const scans = useSelector((state) => get(state, 'scans', []));
   const [orderId, setOrderId] = useState('');
-  const { inReturn, address, payment, details, cart } = useSelector(
+  const { address, payment, details, cart } = useSelector(
     ({
       cart,
       runtime: {
-        forReturn,
-        lastCall,
-        forDonation,
         form: { address, payment, details },
       },
     }) => ({
       cart,
-      inReturn: [...forReturn, ...lastCall],
       address,
       payment,
       details,
     })
   );
 
-  const inDonation = get(cart, 'items', []);
-
+  const inDonation = get(cart, 'items', []).filter(
+    ({ category }) => category === DONATE
+  );
+  const inReturn = get(cart, 'items', []).filter(
+    ({ category }) => category === RETURNABLE
+  );
+  console.log(inReturn);
   const potentialReturnValue = [...inReturn]
-    .map(({ amount }) => parseFloat(amount))
+    .map(({ price }) => parseFloat(price))
     .reduce((acc, curr) => (acc += curr), 0);
 
   const forgottenReturns = [...scans].filter(({ id }) => {
@@ -164,8 +166,10 @@ function ViewScanPage() {
                 removable={!confirmed}
                 scannedItem={item}
                 key={item.id}
+                item={item}
                 selectable={false}
                 clickable={false}
+                onRemove={onCartRemove}
               />
             ))}
 
