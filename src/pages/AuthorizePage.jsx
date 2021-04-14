@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import AuthorizeImg from '../assets/img/Authorize.svg';
 import $ from 'jquery';
 import { getGoogleOauthUrl } from '../utils/authApi';
+import qs from 'qs';
+import { scraperGmailErrors } from '../library/errors.library';
+import { get } from 'lodash';
 
 export default function AuthorizePage() {
+  const history = useHistory();
+
   const [authUrl, setAuthUrl] = useState(null);
+  const [errMsg, setErrMsg] = useState(null);
 
   const getAuthUrl = async () => {
     try {
@@ -13,7 +20,7 @@ export default function AuthorizePage() {
 
       setAuthUrl(url);
     } catch (error) {
-      console.log(error);
+      console.log({ error });
     }
   };
 
@@ -22,6 +29,26 @@ export default function AuthorizePage() {
   };
 
   useEffect(() => {
+    setErrMsg(null);
+
+    const query = qs.parse(history.location.search, {
+      ignoreQueryPrefix: true,
+    });
+
+    console.log({ query });
+
+    if (query.error) {
+      setErrMsg(
+        get(
+          scraperGmailErrors.find(({ code }) => code === query.error),
+          'message',
+          'An error occurred'
+        )
+      );
+    }
+
+    console.log({ query });
+    console.log({ errMsg });
     getAuthUrl();
   }, []);
 
@@ -38,6 +65,23 @@ export default function AuthorizePage() {
   return (
     <div id='Authorize'>
       <Container className='main-body' fluid='lg'>
+        {errMsg && (
+          <div
+            className='alert alert-danger alert-dismissible fade show'
+            role='alert'
+          >
+            <strong>Alert! </strong>
+            {errMsg}
+            <button
+              type='button'
+              className='close'
+              data-dismiss='alert'
+              aria-label='Close'
+            >
+              <span aria-hidden='true'>&times;</span>
+            </button>
+          </div>
+        )}
         <Row md='2' className='text-left align-items-end'>
           <Col xs='6' className='info'>
             <h1 className='bold text-title'>Everything is automatic</h1>
