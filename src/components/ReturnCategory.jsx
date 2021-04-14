@@ -45,9 +45,9 @@ function ReturnCategory({
        * SET TO YOUR LIKING
        */
       setLoadProgress(25);
-      await timeout(300);
+      await timeout(200);
       setLoadProgress(50);
-      await timeout(100);
+      // await timeout(100);
       setLoadProgress(95);
       // await timeout(100);
 
