@@ -151,6 +151,7 @@ function ViewScanPage() {
                     textDecoration: 'underline',
                     color: '#6aaf6a',
                   }}
+                  to='/dashboard'
                 >
                   dashboard
                 </Link>
