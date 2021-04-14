@@ -32,7 +32,6 @@ function DashboardPage() {
     [RETURNABLE]: [],
     [DONATE]: [],
   });
-  let fetchTimeoutInterval;
 
   async function loadScans() {
     dispatch(clearSearchQuery());
@@ -59,20 +58,16 @@ function DashboardPage() {
         return;
       }
 
-      const scrapeUpdated = accounts.every(
-        (acc) => acc.lastScrapeAttempt !== 0
+      const scrapeNotUpdated = accounts.every(
+        (acc) => acc.lastScrapeAttempt === 0
       );
 
-      setShowScanning(!scrapeUpdated);
+      setShowScanning(scrapeNotUpdated);
 
-      if (!scrapeUpdated) {
-        fetchTimeoutInterval = setTimeout(async () => {
+      if (scrapeNotUpdated) {
+        setTimeout(async () => {
           await fetchAccounts(userId);
         }, 1000 * 60); // 1 minute
-      } else {
-        if (fetchTimeoutInterval) {
-          clearTimeout(fetchTimeoutInterval);
-        }
       }
     } catch (error) {
       setShowScanning(false);
