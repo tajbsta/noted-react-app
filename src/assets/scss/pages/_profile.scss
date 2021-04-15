@@ -293,25 +293,85 @@
         height: 20px;
       }
     }
+  }
 
-    // ACCORDION
-    .Collapsible {
-      width: -webkit-fill-available;
+  #ScheduledReturn {
+    .title-col {
+      display: block;
+      align-items: center;
+      margin-left: 24px;
+      padding: 0px;
+
+      .title {
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 20px;
+        color: #2e1d3a;
+      }
+
+      .total {
+        font-size: 14px;
+        line-height: 16px;
+        color: #2e1d3a;
+      }
     }
-    .triggerContainer {
+
+    .product-img-col {
+      list-style: none;
       display: flex;
-      align-content: center;
-      cursor: pointer;
+      justify-content: space-evenly;
+      padding: 0px;
+    }
 
-      .triggerArrow {
-        color: #b1adb2;
-        font-size: 8px;
-        position: absolute;
-        right: 1vw;
+    .plus-more {
+      font-size: 12px;
+      line-height: 14px;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      padding: 0px;
+    }
 
-        &:hover {
-          color: #570097;
-        }
+    .button-col {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      .btn-show {
+        padding: 0px;
+        margin-right: 8px;
+        box-shadow: none;
+        font-size: 14px;
+        line-height: 16px;
+        text-decoration-line: underline;
+        color: #570097;
+      }
+
+      .arrow {
+        font-size: 7px;
+        margin-right: 12px;
+        color: #570097;
+      }
+    }
+  }
+
+  // ACCORDION
+  .Collapsible {
+    width: -webkit-fill-available;
+  }
+  .triggerContainer {
+    display: flex;
+    align-content: center;
+    cursor: pointer;
+
+    .triggerArrow {
+      color: #b1adb2;
+      font-size: 8px;
+      position: absolute;
+      right: 1vw;
+
+      &:hover {
+        color: #570097;
       }
     }
   }
