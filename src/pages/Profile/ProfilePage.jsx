@@ -4,6 +4,7 @@ import UserInfo from './components/UserInfo';
 import Address from './components/Address';
 import Payment from './components/Payment';
 import ReturnHistory from './components/ReturnHistory';
+import ScheduledReturn from './components/ScheduledReturn';
 import { useFormik } from 'formik';
 import {
   paymentAddressSchema,
@@ -51,6 +52,8 @@ export default function ProfilePage() {
               <Address user={user} />
               <hr />
               {showEditPayment && <Payment />}
+              <hr />
+              <ScheduledReturn />
               <hr />
               <ReturnHistory />
             </div>
