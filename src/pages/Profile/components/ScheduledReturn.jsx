@@ -18,9 +18,9 @@ export default function ScheduledReturn() {
           <h3 className='sofia-pro text-18 mb-3-profile mb-3 triggerText ml-3'>
             Your scheduled return
           </h3>
-          <Accordion.Collapse eventKey='0'>
-            <Card>
-              <Card.Body>
+          <Card>
+            <Accordion.Collapse eventKey='0'>
+              <div className='p-4'>
                 {/**
                  * IS A CARD PRODUCT
                  */}
@@ -111,10 +111,9 @@ export default function ScheduledReturn() {
                     </Row>
                   </Col>
                 </Row>
-              </Card.Body>
-            </Card>
-          </Accordion.Collapse>
-          <Card>
+              </div>
+            </Accordion.Collapse>
+
             <div className='card-body'>
               <Row className='align-items-center'>
                 <Col xs={2} className='title-col'>

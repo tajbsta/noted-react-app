@@ -35,7 +35,7 @@ export default function EditProductModal(props) {
   const handleClick = (event) => {
     hiddenFileInput.current.click();
   };
-
+  console.log(orderDate);
   const onSave = (e) => {
     e.preventDefault();
     /**
@@ -52,6 +52,7 @@ export default function EditProductModal(props) {
       productUrl,
       imageUrl,
     };
+
     const newScanIndex = [...scans].map((scan) => scan.id).indexOf(returnId);
     scans[newScanIndex] = newScan;
     dispatch(updateScans({ scannedItems: [...scans] }));
@@ -209,10 +210,7 @@ export default function EditProductModal(props) {
                               moment(get(date, '[0]', '')).format('YYYY-MM-DD')
                             )
                           }
-                          defaultValue={moment(
-                            orderDate,
-                            'YYYY-MM-DD'
-                          ).toISOString()}
+                          defaultValue={moment(orderDate).toISOString()}
                         />
                       </div>
                     </Form.Group>
