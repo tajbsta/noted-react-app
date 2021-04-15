@@ -21,6 +21,7 @@ function ProductCard({
   selected,
   toggleSelected,
   onRemove = () => {},
+  confirmed = false,
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -157,7 +158,7 @@ function ProductCard({
                 marginTop: isMobile && selected ? '7px' : '',
               }}
             >
-              {removable && !selectable && (
+              {removable && !selectable && !confirmed && (
                 <div
                   className='removeProduct'
                   onClick={() => {

@@ -170,6 +170,7 @@ function ViewScanPage() {
                 selectable={false}
                 clickable={false}
                 onRemove={onCartRemove}
+                confirmed={confirmed}
               />
             ))}
 
@@ -181,6 +182,7 @@ function ViewScanPage() {
                 clickable={false}
                 item={item}
                 onRemove={onCartRemove}
+                confirmed={confirmed}
               />
             ))}
             <h3 className='sofia-pro miss-out section-title'>
