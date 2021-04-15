@@ -354,7 +354,7 @@ function ProductCard({
               onHide={() => {
                 setModalEditShow(false);
               }}
-              // editProductForm={{ handleChange, values, setFieldValue }}
+              // editproductform={{ handleChange, values, setFieldValue }}
             /> */}
 
             <ProductDetails item={item} isHovering={showHoverContent} />
