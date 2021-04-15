@@ -259,7 +259,7 @@ function ProductCard({
                       <Col className='m-date-col'>
                         {selected && (
                           <div className='m-date sofia-pro'>
-                            {moment(item.order_date).format('MMM Do, YYYY')}
+                            {moment(item.order_date).format('MMM DD, YYYY')}
                           </div>
                         )}
                       </Col>
