@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { addProductSchema } from '../models/formSchema';
 import { RETURN_SCORES } from '../constants/returns/scores';
+import ReturnScore from './ReturnsScore';
 export default function ProductCardHover({ orderDate, show, item }) {
   const dispatch = useDispatch();
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
@@ -23,7 +24,6 @@ export default function ProductCardHover({ orderDate, show, item }) {
     const score = RETURN_SCORES.find(({ rating }) => vendorRating === rating);
     setCurrentScore(score);
   }, []);
-
   // Check if device is mobile
   useEffect(() => {
     function handleResize() {
@@ -79,7 +79,13 @@ export default function ProductCardHover({ orderDate, show, item }) {
               </button>
             </div>
           </div>
-          <div className='container-2 text-left'>
+
+          <div className='container-2 mb-1'>
+            <div className='score-container '>
+              <ReturnScore score={get(currentScore, 'rating', 1)} />
+            </div>
+          </div>
+          <div className='container-3 text-left'>
             <p className='text-14 sofia-pro line-height-16 text-score'>
               {get(currentScore, 'title', '')}
             </p>
