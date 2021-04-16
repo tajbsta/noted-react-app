@@ -54,3 +54,27 @@ export function updateOrders(scheduledReturns) {
     data: scheduledReturns,
   };
 }
+
+/**
+ * TEMPORARY REALM
+ */
+
+export function savePaymentForm(data) {
+  return {
+    type: 'SAVE_PAYMENT_TEMP',
+    data,
+  };
+}
+
+export function updatePaymentForm(data) {
+  return {
+    type: 'UPDATE_PAYMENT_TEMP',
+    data,
+  };
+}
+
+export function clearPaymentForm() {
+  return {
+    type: 'CLEAR_PAYMENT_TEMP',
+  };
+}
