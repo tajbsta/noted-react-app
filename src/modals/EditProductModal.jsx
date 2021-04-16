@@ -19,7 +19,7 @@ export default function EditProductModal(props) {
   }));
   const [loading, setLoading] = useState(false);
   const returnId = get(inEdit, 'id', '');
-  const { handleChange, values, setFieldValue, errors } = props.editProductForm;
+  const { handleChange, values, setFieldValue, errors } = props.editproductform;
 
   const {
     imageUrl,
@@ -35,7 +35,7 @@ export default function EditProductModal(props) {
   const handleClick = (event) => {
     hiddenFileInput.current.click();
   };
-
+  console.log(orderDate);
   const onSave = (e) => {
     e.preventDefault();
     /**
@@ -52,6 +52,7 @@ export default function EditProductModal(props) {
       productUrl,
       imageUrl,
     };
+
     const newScanIndex = [...scans].map((scan) => scan.id).indexOf(returnId);
     scans[newScanIndex] = newScan;
     dispatch(updateScans({ scannedItems: [...scans] }));
@@ -128,6 +129,9 @@ export default function EditProductModal(props) {
                     {!file && (
                       <img
                         src={imageUrl || ProductPlaceholder}
+                        onError={(e) => {
+                          e.currentTarget.src = ProductPlaceholder;
+                        }}
                         style={{
                           width: '64px',
                           height: '64px',
@@ -209,10 +213,7 @@ export default function EditProductModal(props) {
                               moment(get(date, '[0]', '')).format('YYYY-MM-DD')
                             )
                           }
-                          defaultValue={moment(
-                            orderDate,
-                            'YYYY-MM-DD'
-                          ).toISOString()}
+                          defaultValue={moment(orderDate).toISOString()}
                         />
                       </div>
                     </Form.Group>

@@ -293,25 +293,149 @@
         height: 20px;
       }
     }
+  }
 
-    // ACCORDION
-    .Collapsible {
-      width: -webkit-fill-available;
+  #ScheduledReturn {
+
+    .product-price {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 15px;
+      margin-top: 2px;
+      margin-left: 4px;
     }
-    .triggerContainer {
+
+    .col-sm-5 {
+      @media (max-width: 991px) {
+        width: auto;
+      }
+    }
+
+    .product-name {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 19px;
+      text-align: left;
+
+      @media (max-width: 991px) {
+        line-height: 14px;
+        margin-bottom: 0px !important;
+      }
+    }
+
+    .action-container {
+      position: relative;
+      left: 83.4%;
+    }
+
+    .pick-up-duration-container,
+    .total-items-container,
+    .cancel-action-container {
       display: flex;
-      align-content: center;
-      cursor: pointer;
+      align-items: center;
+      justify-content: flex-end;
+      width: auto;
+    }
 
-      .triggerArrow {
-        color: #b1adb2;
-        font-size: 8px;
-        position: absolute;
-        right: 1vw;
 
-        &:hover {
-          color: #570097;
-        }
+    .hr-line {
+      width: 98%;
+    }
+
+    .m-brand-img {
+      border: 1px solid #f0f0f0;
+      border-radius: 50%;
+      height: 31px;
+      width: 31px;
+    }
+
+    .accordion-container {
+      width: 100%;
+    }
+
+    .title-col {
+      display: block;
+      align-items: center;
+      margin-left: 24px;
+      padding: 0px;
+
+      .title {
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 20px;
+        color: #2e1d3a;
+      }
+
+      .total {
+        font-size: 14px;
+        line-height: 16px;
+        color: #2e1d3a;
+      }
+    }
+
+    .product-img-col {
+      list-style: none;
+      display: flex;
+      justify-content: space-evenly;
+      padding: 0px;
+    }
+
+    .plus-more {
+      font-size: 12px;
+      line-height: 14px;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      padding: 0px;
+    }
+
+    .btn-show {
+      padding: 0px;
+      margin-right: 8px;
+      box-shadow: none;
+      font-size: 14px;
+      line-height: 16px;
+      text-decoration-line: underline;
+      color: #570097;
+    }
+
+
+
+    .arrow {
+      font-size: 7px;
+      margin-right: 12px;
+      color: #570097;
+      text-decoration: white;
+    }
+
+
+
+    .button-col {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+    }
+  }
+
+  // ACCORDION
+  .Collapsible {
+    width: -webkit-fill-available;
+  }
+
+  .triggerContainer {
+    display: flex;
+    align-content: center;
+    cursor: pointer;
+
+    .triggerArrow {
+      color: #b1adb2;
+      font-size: 8px;
+      position: absolute;
+      right: 1vw;
+
+      &:hover {
+        color: #570097;
       }
     }
   }

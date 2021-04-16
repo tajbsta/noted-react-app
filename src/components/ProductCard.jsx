@@ -21,6 +21,7 @@ function ProductCard({
   selected,
   toggleSelected,
   onRemove = () => {},
+  confirmed = false,
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -157,7 +158,7 @@ function ProductCard({
                 marginTop: isMobile && selected ? '7px' : '',
               }}
             >
-              {removable && !selectable && (
+              {removable && !selectable && !confirmed && (
                 <div
                   className='removeProduct'
                   onClick={() => {
@@ -172,6 +173,9 @@ function ProductCard({
               <img
                 className='product-img'
                 src={item.thumbnail || ProductPlaceholder}
+                onError={(e) => {
+                  e.currentTarget.src = ProductPlaceholder;
+                }}
                 alt=''
                 style={{
                   maxWidth: 50,
@@ -258,7 +262,7 @@ function ProductCard({
                       <Col className='m-date-col'>
                         {selected && (
                           <div className='m-date sofia-pro'>
-                            {moment(item.order_date).format('MMM Do, YYYY')}
+                            {moment(item.order_date).format('MMM DD, YYYY')}
                           </div>
                         )}
                       </Col>
@@ -303,22 +307,18 @@ function ProductCard({
                         className='m-brand-img'
                       />
                     </div>
-
-                    <Row>
-                      <div className='m-score-container'>
-                        <ReturnScore score={item.vendor_data.rating} />
-                      </div>
-                    </Row>
-
                     <Col style={{ paddingRight: '7px', paddingLeft: '7px' }}>
                       <Row>
+                        <span className='m-score-container'>
+                          <ReturnScore score={item.vendor_data.rating} />
+                        </span>
                         <h4 className='m-score-text sofia-pro'>
                           Excellent returns
                         </h4>
                       </Row>
                       <Row>
                         <button
-                          className='sofia-pro btn btn-m-donate'
+                          className='sofia-pro btn btn-m-policy'
                           onClick={() => setModalPolicyShow(true)}
                         >
                           Return policy
@@ -354,7 +354,7 @@ function ProductCard({
               onHide={() => {
                 setModalEditShow(false);
               }}
-              // editProductForm={{ handleChange, values, setFieldValue }}
+              // editproductform={{ handleChange, values, setFieldValue }}
             /> */}
 
             <ProductDetails item={item} isHovering={showHoverContent} />

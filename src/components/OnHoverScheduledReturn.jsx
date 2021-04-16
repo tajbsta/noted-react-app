@@ -4,7 +4,7 @@ export default function OnHoverScheduledReturn({ timeLeft, onClick }) {
   return (
     <div>
       <div id='OnHoverProductCard'>
-        <div className='container-2 text-left'>
+        <div className='container-3 text-left'>
           <p className='text-14 sofia-pro line-height-16 text-score'>
             {timeLeft}
           </p>

@@ -213,14 +213,15 @@
   }
 
   .empty-message {
+    font-size: 14px;
     margin-bottom: 8px;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 18px;
     color: #0e0018;
-    mix-blend-mode: normal;
-    opacity: 0.6;
+    // mix-blend-mode: normal;
+    // opacity: 0.6;
   }
 
   .line-break-1 {

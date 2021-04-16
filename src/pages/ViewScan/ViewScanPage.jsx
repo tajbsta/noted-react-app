@@ -146,12 +146,12 @@ function ViewScanPage() {
               Your products to {checkoutTitle}
             </h3>
             {isEmpty([...inReturn, ...inDonation]) && (
-              <h4 className='p-0 mb-0 mt-4 ml-3 sofia-pro empty-message'>
-                No more products. Click here to go back to{' '}
+              <h4 className='p-0 mb-0 mt-5 d-flex justify-content-center sofia-pro empty-message'>
+                No more products. Click here to go back to &nbsp;
                 <Link
                   style={{
                     textDecoration: 'underline',
-                    color: '#6aaf6a',
+                    color: '#570097',
                   }}
                   to='/dashboard'
                 >
@@ -170,6 +170,7 @@ function ViewScanPage() {
                 selectable={false}
                 clickable={false}
                 onRemove={onCartRemove}
+                confirmed={confirmed}
               />
             ))}
 
@@ -181,6 +182,7 @@ function ViewScanPage() {
                 clickable={false}
                 item={item}
                 onRemove={onCartRemove}
+                confirmed={confirmed}
               />
             ))}
             <h3 className='sofia-pro miss-out section-title'>
@@ -212,11 +214,7 @@ function ViewScanPage() {
                 maxWidth: '248px',
               }}
             >
-              <div
-                className={`card shadow-sm p-3 pick-up-card ${
-                  confirmed == true ? 'h-292' : 'h-363'
-                }`}
-              >
+              <div className='card shadow-sm p-3 pick-up-card'>
                 <h3 className='sofia-pro products-to-return mb-1'>
                   {inReturn.length} product to return
                 </h3>
@@ -241,9 +239,16 @@ function ViewScanPage() {
                     <h3 className='sofia-pro pick-up-price mb-0'>
                       ${potentialReturnValue.toFixed(2) || 0.0}
                     </h3>
-                    <h3 className='return-type sofia-pro value-label'>
+                    <h3 className='return-type sofia-pro value-label mb-3'>
                       Potential Return Value
                     </h3>
+                    <h3 className='sofia-pro pick-up-price mb-0'>
+                      {inDonation.length}
+                    </h3>
+                    <h3 className='return-type sofia-pro value-label'>
+                      Donations
+                    </h3>
+                    <hr className='line-break-1' />
                     <p className='pick-up-reminder sofia-pro'>
                       Once the pick-up has been confirmed we’ll take care of
                       contacting your merchants. They will then be in charge of
@@ -254,31 +259,20 @@ function ViewScanPage() {
 
                 {!confirmed && (
                   <>
-                    {/* <h2 className='sofia-pro mb-0 donate-quantity'>1</h2>
-                    <h5 className='sofia-pro text-muted value-label'>
-                      Donation
-                    </h5> */}
+                    <h3 className='sofia-pro pick-up-price mb-0'>
+                      ${potentialReturnValue.toFixed(2) || 0.0}
+                    </h3>
+                    <h3 className='return-type sofia-pro value-label mb-3'>
+                      Potential Return Value
+                    </h3>
 
-                    {inReturn.length > 0 && (
-                      <>
-                        <h3 className='sofia-pro pick-up-price mb-0'>
-                          ${potentialReturnValue.toFixed(2) || 0.0}
-                        </h3>
-                        <h3 className='return-type sofia-pro value-label'>
-                          Potential Return Value
-                        </h3>
-                      </>
-                    )}
-                    {inDonation.length > 0 && (
-                      <>
-                        <h3 className='sofia-pro pick-up-price mb-0'>
-                          {inDonation.length}
-                        </h3>
-                        <h3 className='return-type sofia-pro value-label'>
-                          Donation
-                        </h3>
-                      </>
-                    )}
+                    <h3 className='sofia-pro pick-up-price mb-0'>
+                      {inDonation.length}
+                    </h3>
+                    <h3 className='return-type sofia-pro value-label'>
+                      Donations
+                    </h3>
+
                     <hr className='line-break-2' />
                     <div className='row'>
                       <div className='col'>
