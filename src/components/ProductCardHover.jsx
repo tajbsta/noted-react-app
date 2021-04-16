@@ -90,18 +90,17 @@ export default function ProductCardHover({ orderDate, show, item }) {
               </div>
             </div>
           )}
-
-          <div className='container-2 mb-1'>
-            <div className='score-container '>
-              <ReturnScore score={get(currentScore, 'rating', 1)} />
-            </div>
-          </div>
           <div className='container-3 text-left'>
-            <p className='text-14 sofia-pro line-height-16 text-score'>
-              {get(currentScore, 'title', '')}
-            </p>
+            <div className='d-flex align-items-center'>
+              <span className='score-container mr-2'>
+                <ReturnScore score={item.vendor_data.rating} />
+              </span>
+              <p className='text-14 sofia-pro line-height-16 text-score'>
+                {get(currentScore, 'title', '')}
+              </p>
+            </div>
             <button
-              className='btn-policy sofia-pro btn'
+              className='btn-policy sofia-pro btn ml-4'
               onClick={() => setModalPolicyShow(true)}
             >
               Return policy
