@@ -20,3 +20,11 @@ export const getFileTypeIcon = (fileName) => {
 
   return <Slash color='#570097' />;
 };
+
+export const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
