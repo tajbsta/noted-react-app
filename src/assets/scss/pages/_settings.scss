@@ -82,7 +82,7 @@
       padding-left: 0px;
     }
 
-    .master-email {
+    .main-email {
       padding: 0.5rem 0.75rem;
       height: calc(1.5em + 1rem + 2px);
       border-radius: 4px;
@@ -122,6 +122,14 @@
       color: #0e0018;
       width: 352px;
       margin-bottom: 0px;
+
+      @media (max-width: 991px) {
+        max-width: 352px;
+      }
+
+      @media (max-width: 375px) {
+        width: auto;
+      }
     }
 
     .email-column {
@@ -195,12 +203,21 @@
         border: none;
       }
     }
+
+    // MOBILE
+    .m-form-group {
+      width: auto;
+    }
+
+    .m-button-row {
+      padding: 0px;
+    }
   }
 
   #ChangePass {
     .change-container {
       padding: 24px 25px;
-      height: 268px;
+      min-height: 268px;
     }
 
     .card-body {
@@ -238,7 +255,7 @@
     }
 
     .input-group {
-      width: 352px;
+      max-width: 352px;
     }
 
     .col-pass {
@@ -261,22 +278,39 @@
       }
     }
 
+    .btn-container {
+      justify-content: flex-end;
+      display: flex;
+      margin-right: 24px;
+
+      @media (max-width: 1200px) {
+        margin-right: 0px !important;
+      }
+    }
+
     .btn-change {
       // margin-top: 7px;
       background: #570097;
       border: none;
-      position: absolute;
-      right: 5%;
+      // position: absolute;
+      // right: 5%;
       height: 40px;
       width: 194px;
       border-radius: 6px;
-
       font-family: 'Sofia Pro';
       font-size: 14px;
       line-height: 16px;
       text-align: center;
-
       color: #f8efff;
+
+      // @media (max-width: 991px) {
+      //   position: initial;
+      // }
+    }
+
+    // MOBILE
+    .m-current-color {
+      flex-basis: auto !important;
     }
   }
 
@@ -285,7 +319,11 @@
       font-size: 14px;
       line-height: 18px;
       color: #0e0018;
-      min-width: 352px;
+      max-width: 352px;
+
+      @media (max-width: 991px) {
+        margin-bottom: 24px;
+      }
     }
 
     .btn-delete {
@@ -297,6 +335,10 @@
       box-shadow: none;
       position: relative;
       left: 11%;
+
+      @media (max-width: 991px) {
+        position: initial;
+      }
 
       &:hover {
         color: #b079da;

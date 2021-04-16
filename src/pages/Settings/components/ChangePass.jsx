@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
 import { Eye, EyeOff } from 'react-feather';
 import { Auth } from 'aws-amplify';
@@ -14,12 +14,22 @@ export default function ChangePass() {
   const [oldPasswordShown, setOldPasswordShown] = useState(false);
   const [newPasswordShown, setNewPasswordShown] = useState(false);
   const [confirmPasswordShown, setConfirmPasswordShown] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-
   const [modalShow, setModalShow] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
 
   const changePassSchema = Yup.object({
     oldPassword: Yup.string().required('Your old password is required'),
@@ -117,7 +127,7 @@ export default function ChangePass() {
       <div className='mt-5'>
         <h3 className='sofia-pro text-18 mb-4'>Change Password</h3>
         {error && (
-          <div className='alert alert-danger w-840' role='alert'>
+          <div className='alert alert-danger max-w-840' role='alert'>
             <div>
               <h4 className='text-center text-alert'>
                 <AlertCircle />
@@ -126,11 +136,11 @@ export default function ChangePass() {
             </div>
           </div>
         )}
-        <div className='card shadow-sm mb-2 w-840 change-container'>
+        <div className='card shadow-sm mb-2 max-w-840 change-container'>
           <div className='card-body'>
             <Form>
               <Row>
-                <Col>
+                <Col style={{ flexBasis: isMobile ? 'auto' : '0' }}>
                   <div className='form-group'>
                     <div className='col col-pass'>
                       <label>Current Password</label>
@@ -216,27 +226,26 @@ export default function ChangePass() {
                       </div>
                     </Col>
                   </Row>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col className='btn btn-container'>
-                  <Button
-                    className='btn-change'
-                    type='submit'
-                    onClick={changePassword}
-                    disabled={loading || isChangePassFormEmpty}
-                  >
-                    {!loading ? (
-                      <>Change Password</>
-                    ) : (
-                      <Spinner
-                        animation='border'
-                        size='sm'
-                        className='spinner'
-                      />
-                    )}
-                  </Button>
+                  <Row>
+                    <Col className='btn btn-container'>
+                      <Button
+                        className='btn-change'
+                        type='submit'
+                        onClick={changePassword}
+                        disabled={loading || isChangePassFormEmpty}
+                      >
+                        {!loading ? (
+                          <>Change Password</>
+                        ) : (
+                          <Spinner
+                            animation='border'
+                            size='sm'
+                            className='spinner'
+                          />
+                        )}
+                      </Button>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Form>

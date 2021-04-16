@@ -4,6 +4,7 @@ import BasicInfo from './components/BasicInfo';
 import EmailAddresses from './components/EmailAddresses';
 import ChangePass from './components/ChangePass';
 import DeleteAccount from './components/DeleteAccount';
+import UserInfo from './../Profile/components/UserInfo';
 import { Link } from 'react-scroll';
 import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../models/formSchema';
@@ -12,6 +13,18 @@ import { getUser } from '../../utils/auth';
 export default function SettingsPage() {
   const [user, setUser] = useState(null);
   const [currentTab, setCurrenTab] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
 
   useEffect(() => {
     (async () => {
@@ -102,8 +115,8 @@ export default function SettingsPage() {
                 </li>
               </ul>
             </Card>
-            <div className='col'></div>
           </div>
+
           {/* RIGHT CARD */}
           <div className='col-sm-9'>
             <BasicInfo user={user} />

@@ -119,4 +119,27 @@
   .mb-3-profile {
     margin-bottom: 10px;
   }
+
+  // Mobile
+  .m-card-body {
+    padding: 12px 12px;
+
+    .m-control-lg {
+      width: 311px;
+    }
+
+    .m-control-md {
+      width: 150px;
+    }
+
+    .m-btn-col {
+      display: flex;
+      justify-content: flex-end;
+
+      .m-btn-done,
+      .m-btn-edit {
+        width: 138px;
+      }
+    }
+  }
 }
