@@ -10,14 +10,19 @@ export default function PaymentMethods({ setIsEditing }) {
   }));
 
   return (
-    <>
-      <a
-        className='btn btn-sm btn-primary btn-add-method'
-        onClick={() => setIsEditing(true)}
-      >
-        Add method
-      </a>
-      <hr />
+    <div id='PaymentMethods'>
+      <div className='card-header'>
+        <div className='row align-items-center header'>
+          <h4 className='card-header-title'>Your saved cards</h4>
+          <a
+            className='btn btn-sm btn-primary btn-add-method'
+            onClick={() => setIsEditing(true)}
+          >
+            Add method
+          </a>
+        </div>
+      </div>
+      {/* <hr /> */}
       <div className='list-group list-group-flush my-n3'>
         {/**
          * @ELEMENT payment methods here
@@ -38,6 +43,6 @@ export default function PaymentMethods({ setIsEditing }) {
           );
         })}
       </div>
-    </>
+    </div>
   );
 }

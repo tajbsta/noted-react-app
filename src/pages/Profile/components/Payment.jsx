@@ -72,11 +72,11 @@ export default function Payment() {
           overflowWhenOpen='visible'
         >
           <div className='card shadow-sm p-3 w-840 mt-4 ml-3'>
-            <div className='card-body'>
-              {!isEditing && !isEmpty(paymentMethods) && (
-                <PaymentMethods setIsEditing={setIsEditing} />
-              )}
-              {(isEditing || isEmpty(paymentMethods)) && (
+            {!isEditing && !isEmpty(paymentMethods) && (
+              <PaymentMethods setIsEditing={setIsEditing} />
+            )}
+            {(isEditing || isEmpty(paymentMethods)) && (
+              <div className='card-body'>
                 <Form id='PaymentForm'>
                   <Row>
                     <Col xs={6}>
@@ -178,8 +178,8 @@ export default function Payment() {
                     </Col>
                   </Row>
                 </Form>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </Collapsible>
       </div>
