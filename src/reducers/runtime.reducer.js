@@ -29,6 +29,7 @@ const initialState = {
     details: {},
   },
   orderInMemory: {},
+  profileImage: '',
 };
 
 function runtime(state = initialState, { type, data }) {
@@ -128,6 +129,8 @@ function runtime(state = initialState, { type, data }) {
         ...state,
         inEdit: {},
       };
+    case 'UPDATE_PROFILE_PICTURE_TEMP':
+      return { ...state, profileImage: data };
     default:
       return state;
   }

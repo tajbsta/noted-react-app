@@ -64,7 +64,7 @@ export default function Address({ user }) {
   } = addressFormValues;
 
   const updateAddress = async () => {
-    console.log(addressFormValues);
+    // console.log(addressFormValues);
     setError(false);
     setSuccess(false);
     setIsSubmitting(true);

@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/airbnb.css';
 import { get } from 'lodash-es';
-import moment from 'moment';
 
 const CustomInput = ({ value, defaultValue, inputRef, name, ...props }) => {
   return (

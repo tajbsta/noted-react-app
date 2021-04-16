@@ -13,6 +13,7 @@ const initialState = {
   loginMethod: null,
   username: null,
   scheduledReturns: [],
+  paymentMethods: [],
 };
 
 function auth(state = initialState, { type, data }) {
@@ -40,6 +41,12 @@ function auth(state = initialState, { type, data }) {
       };
     case CLEAR_ORDER:
       return { ...state, scheduledReturns: [] };
+    case 'SAVE_PAYMENT_TEMP':
+      return { ...state, paymentMethods: [...state.paymentMethods, data] };
+    case 'UPDATE_PAYMENT_TEMP':
+      return { ...state, paymentMethods: [...data] };
+    case 'CLEAR_PAYMENT_TEMP':
+      return { ...state, paymentMethods: [] };
     default:
       return state;
   }

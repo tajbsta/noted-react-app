@@ -6,8 +6,6 @@ import ChangePass from './components/ChangePass';
 import DeleteAccount from './components/DeleteAccount';
 import UserInfo from './../Profile/components/UserInfo';
 import { Link } from 'react-scroll';
-import { useFormik } from 'formik';
-import { pickUpAddressSchema } from '../../models/formSchema';
 import { getUser } from '../../utils/auth';
 
 export default function SettingsPage() {

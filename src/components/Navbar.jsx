@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Container, Navbar } from 'react-bootstrap';
+import { Container, Navbar } from 'react-bootstrap';
 import _ from 'lodash';
 import ProfileIcon from '../assets/icons/Profile.svg';
 import Search from '../assets/icons/Search.svg';
