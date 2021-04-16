@@ -19,7 +19,7 @@ export default function EditProductModal(props) {
   }));
   const [loading, setLoading] = useState(false);
   const returnId = get(inEdit, 'id', '');
-  const { handleChange, values, setFieldValue, errors } = props.editProductForm;
+  const { handleChange, values, setFieldValue, errors } = props.editproductform;
 
   const {
     imageUrl,

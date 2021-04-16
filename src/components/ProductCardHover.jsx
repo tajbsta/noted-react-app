@@ -98,7 +98,7 @@ export default function ProductCardHover({ orderDate, show, item }) {
         onHide={() => {
           setModalEditShow(false);
         }}
-        editProductForm={{ handleChange, values, setFieldValue, errors }}
+        editproductform={{ handleChange, values, setFieldValue, errors }}
       />
       <ReturnPolicyModal
         show={modalPolicyShow}
