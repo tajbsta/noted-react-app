@@ -128,6 +128,9 @@ export default function EditProductModal(props) {
                     {!file && (
                       <img
                         src={imageUrl || ProductPlaceholder}
+                        onError={(e) => {
+                          e.currentTarget.src = ProductPlaceholder;
+                        }}
                         style={{
                           width: '64px',
                           height: '64px',

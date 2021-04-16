@@ -172,6 +172,9 @@ function ProductCard({
               <img
                 className='product-img'
                 src={item.thumbnail || ProductPlaceholder}
+                onError={(e) => {
+                  e.currentTarget.src = ProductPlaceholder;
+                }}
                 alt=''
                 style={{
                   maxWidth: 50,
