@@ -91,8 +91,8 @@ export default function ProductCardHover({ orderDate, show, item }) {
             </div>
           )}
           <div className='container-3 text-left'>
-            <div className='d-flex align-items-center'>
-              <span className='score-container mr-2'>
+            <div className='d-flex'>
+              <span className='score-container mr-2 d-flex'>
                 <ReturnScore score={item.vendor_data.rating} />
               </span>
               <p className='text-14 sofia-pro line-height-16 text-score'>
