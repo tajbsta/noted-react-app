@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Col, Row, Accordion, Card, Button } from 'react-bootstrap';
 import Collapsible from 'react-collapsible';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import ReturnScore from '../../../components/ReturnsScore';
 
 export default function ScheduledReturn() {
+  const [activeKey, setActiveKey] = useState('1');
   const products = [ProductPlaceholder, ProductPlaceholder, ProductPlaceholder];
   const list = products.map((product) => (
     <li key={product}>
@@ -14,11 +15,45 @@ export default function ScheduledReturn() {
   return (
     <div id='ScheduledReturn'>
       <div className='row'>
-        <Accordion className='accordion-container' defaultActiveKey='0'>
+        <Accordion
+          className='accordion-container'
+          defaultActiveKey='1'
+          activeKey={activeKey}
+          onChange={(e) => console.log(e)}
+        >
           <h3 className='sofia-pro text-18 mb-3-profile mb-3 triggerText ml-3'>
             Your scheduled return
           </h3>
           <Card>
+            {activeKey === '1' && (
+              <div className='card-body'>
+                <Row className='align-items-center'>
+                  <Col xs={2} className='title-col'>
+                    <Row>
+                      <div className='title'>Scheduled Return</div>
+                    </Row>
+                    <Row>
+                      <div className='total'>16 items in total</div>
+                    </Row>
+                  </Col>
+                  <Col className='product-img-col'>{list}</Col>
+                  <Col xs={1} className='plus-more'>
+                    +2 more...
+                  </Col>
+                  <Col xs={3} className='button-col'>
+                    <div>
+                      <button
+                        className='btn btn-show'
+                        onClick={() => setActiveKey('0')}
+                      >
+                        Show details
+                      </button>
+                      <span className='arrow'>▼</span>
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+            )}
             <Accordion.Collapse eventKey='0'>
               <div className='p-4'>
                 {/**
@@ -41,7 +76,12 @@ export default function ScheduledReturn() {
                   </Col>
                   <Col xs={2} className='title-col'>
                     <div className='button-col mr-3'>
-                      <button className='btn btn-show'>Hide details</button>
+                      <button
+                        className='btn btn-show'
+                        onClick={() => setActiveKey('1')}
+                      >
+                        Hide details
+                      </button>
                       <span className='arrow'>▲</span>
                     </div>
                   </Col>
@@ -113,36 +153,6 @@ export default function ScheduledReturn() {
                 </Row>
               </div>
             </Accordion.Collapse>
-
-            <div className='card-body'>
-              <Row className='align-items-center'>
-                <Col xs={2} className='title-col'>
-                  <Row>
-                    <div className='title'>Scheduled Return</div>
-                  </Row>
-                  <Row>
-                    <div className='total'>16 items in total</div>
-                  </Row>
-                </Col>
-                <Col className='product-img-col'>{list}</Col>
-                <Col xs={1} className='plus-more'>
-                  +2 more...
-                </Col>
-                <Col xs={3} className='button-col'>
-                  <div>
-                    <Accordion.Toggle
-                      className='btn btn-show'
-                      as={Button}
-                      variant='link'
-                      eventKey='0'
-                    >
-                      Show details
-                    </Accordion.Toggle>
-                    <span className='arrow'>▼</span>
-                  </div>
-                </Col>
-              </Row>
-            </div>
           </Card>
         </Accordion>
       </div>
