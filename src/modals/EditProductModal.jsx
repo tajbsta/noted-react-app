@@ -91,7 +91,7 @@ export default function EditProductModal(props) {
         style={{ listStyle: 'none', display: 'flex', alignItems: 'center' }}
       >
         {getFileTypeIcon(file.path)}
-        <span className='ml-3'>{file.path}</span>
+        <span className='ml-2'>{file.path}</span>
       </li>
     );
   });
