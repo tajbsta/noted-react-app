@@ -5,8 +5,6 @@ import EmailAddresses from './components/EmailAddresses';
 import ChangePass from './components/ChangePass';
 import DeleteAccount from './components/DeleteAccount';
 import { Link } from 'react-scroll';
-import { useFormik } from 'formik';
-import { pickUpAddressSchema } from '../../models/formSchema';
 import { getUser } from '../../utils/auth';
 
 export default function SettingsPage() {

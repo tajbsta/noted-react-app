@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Row from './Row';
 import ProductCard from './ProductCard';
-import { Spinner, ProgressBar } from 'react-bootstrap';
+import { ProgressBar } from 'react-bootstrap';
 import QuestionMarkSvg from '../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';
 import { getProducts } from '../utils/productsApi';

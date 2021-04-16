@@ -1,6 +1,6 @@
 import { isEmpty, values, flatMap } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { Spinner, ProgressBar } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ReturnCategory from '../../components/ReturnCategory';
@@ -10,7 +10,6 @@ import { getAccounts } from '../../utils/accountsApi';
 import { clearSearchQuery } from '../../actions/runtime.action';
 import { setCartItems } from '../../actions/cart.action';
 import { LAST_CALL, RETURNABLE, DONATE } from '../../constants/actions/runtime';
-import AddEmailModal from '../../modals/AddEmailModal';
 import AddProductModal from '../../modals/AddProductModal';
 import ScheduledCard from './components/ScheduledCard';
 import Scanning from './components/Scanning';

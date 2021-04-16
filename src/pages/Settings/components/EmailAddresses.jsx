@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
-import AddEmailModal from '../../../modals/AddEmailModal';
 import { getAccounts } from '../../../utils/accountsApi';
 import { Spinner } from 'react-bootstrap';
 
@@ -102,10 +101,6 @@ export default function EmailAddresses({ user }) {
                     </Button>
                   </Col>
                 </Row>
-                <AddEmailModal
-                  show={modalShow}
-                  onHide={() => setModalShow(false)}
-                />
               </Col>
             </Row>
           </Container>

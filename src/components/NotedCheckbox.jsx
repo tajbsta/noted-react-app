@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Off from '../assets/icons/Off.svg';
 import OnContainer from '../assets/icons/Rectangle.svg';
 import OnCheckPath from '../assets/icons/Check.svg';
@@ -10,9 +10,6 @@ export default function NotedCheckbox({
 }) {
   return (
     <div
-      onMouseDown={() => {
-        console.log('Hello');
-      }}
       style={{
         width: 16,
         height: 16,
