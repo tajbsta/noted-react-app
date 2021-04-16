@@ -15,7 +15,7 @@ function ProductDetails({ item, isHovering = false }) {
   };
 
   const formattedProductName = toTitleCase(item.name);
-
+  const inDashboard = ['/dashboard'].includes(pageLocation);
   return (
     <div
       className={`col-sm-7 p-0 mt-1 p-details ${
@@ -33,7 +33,7 @@ function ProductDetails({ item, isHovering = false }) {
       <Row>
         <h4 className='sofia-pro mb-0 product-price'>
           ${item.price}{' '}
-          {isHovering && (
+          {isHovering && inDashboard && (
             <>
               <button type='button' className='btn alternateActionText ml-2'>
                 Donate instead

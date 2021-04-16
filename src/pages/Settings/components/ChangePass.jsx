@@ -6,7 +6,7 @@ import { changePassErrors } from '../../../library/errors.library';
 import { PASSWORD_REGEX_FORMAT } from '../../../constants/errors/regexFormats';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { AlertCircle } from 'react-feather';
 import PassChangeSuccessModal from '../../../modals/PassChangeSuccessModal';
 
@@ -82,7 +82,6 @@ export default function ChangePass() {
 
       const user = await Auth.currentAuthenticatedUser();
       await Auth.changePassword(user, values.oldPassword, values.newPassword);
-      // console.log({ values });
 
       setLoading(false);
 
@@ -100,6 +99,13 @@ export default function ChangePass() {
       );
     }
   };
+
+  const isChangePassFormEmpty =
+    Object.values(values)
+      .map((value) => get(value, 'length', 0))
+      .reduce((acc, curr) => acc + curr) === 0;
+
+  console.log(isChangePassFormEmpty);
 
   return (
     <div id='ChangePass'>
@@ -219,7 +225,7 @@ export default function ChangePass() {
                     className='btn-change'
                     type='submit'
                     onClick={changePassword}
-                    disabled={loading}
+                    disabled={loading || isChangePassFormEmpty}
                   >
                     {!loading ? (
                       <>Change Password</>

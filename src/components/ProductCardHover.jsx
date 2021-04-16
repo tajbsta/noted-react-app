@@ -10,12 +10,24 @@ import {
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { addProductSchema } from '../models/formSchema';
+import { RETURN_SCORES } from '../constants/returns/scores';
+import ReturnScore from './ReturnsScore';
+import { useHistory } from 'react-router';
 export default function ProductCardHover({ orderDate, show, item }) {
   const dispatch = useDispatch();
+  const {
+    location: { pathname },
+  } = useHistory();
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
   const [modalEditShow, setModalEditShow] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [currentScore, setCurrentScore] = useState(null);
 
+  useEffect(() => {
+    const vendorRating = get(item, 'vendor_data.rating', 0);
+    const score = RETURN_SCORES.find(({ rating }) => vendorRating === rating);
+    setCurrentScore(score);
+  }, []);
   // Check if device is mobile
   useEffect(() => {
     function handleResize() {
@@ -50,6 +62,8 @@ export default function ProductCardHover({ orderDate, show, item }) {
     setModalEditShow(true);
   };
 
+  const inDashboard = ['/dashboard'].includes(pathname);
+
   return (
     <div>
       {!isMobile && (
@@ -59,24 +73,34 @@ export default function ProductCardHover({ orderDate, show, item }) {
             display: show ? 'block' : 'none',
           }}
         >
-          <div className='container-1'>
-            <h4 className='date text-14 sofia-pro line-height-16'>
-              {moment(item.order_date).format('MMM Do, YYYY')}
-            </h4>
-            <div className='info-container'>
-              <p className='text-wrong-info sofia-pro'>Wrong info?&nbsp;</p>
-              <button className='btn-hover-edit sofia-pro btn' onClick={onEdit}>
-                {' '}
-                Edit
-              </button>
+          {inDashboard && (
+            <div className='container-1'>
+              <h4 className='date text-14 sofia-pro line-height-16'>
+                {moment(item.order_date).format('MMM DD, YYYY')}
+              </h4>
+              <div className='info-container'>
+                <p className='text-wrong-info sofia-pro'>Wrong info?&nbsp;</p>
+                <button
+                  className='btn-hover-edit sofia-pro btn'
+                  onClick={onEdit}
+                >
+                  {' '}
+                  Edit
+                </button>
+              </div>
             </div>
-          </div>
-          <div className='container-2 text-left'>
-            <p className='text-14 sofia-pro line-height-16 text-score'>
-              Excellent Returns
-            </p>
+          )}
+          <div className='container-3 text-left'>
+            <div className='d-flex align-items-center'>
+              <span className='score-container mr-2'>
+                <ReturnScore score={item.vendor_data.rating} />
+              </span>
+              <p className='text-14 sofia-pro line-height-16 text-score'>
+                {get(currentScore, 'title', '')}
+              </p>
+            </div>
             <button
-              className='btn-policy sofia-pro btn'
+              className='btn-policy sofia-pro btn ml-4'
               onClick={() => setModalPolicyShow(true)}
             >
               Return policy

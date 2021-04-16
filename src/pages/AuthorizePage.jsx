@@ -7,7 +7,8 @@ import $ from 'jquery';
 import { getGoogleOauthUrl } from '../utils/authApi';
 import qs from 'qs';
 import { scraperGmailErrors } from '../library/errors.library';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
+import { timeout } from '../utils/time';
 
 export default function AuthorizePage() {
   const history = useHistory();
@@ -62,6 +63,17 @@ export default function AuthorizePage() {
       $('.btn-authorize').css('padding-top', '12px');
     }
   }, []);
+
+  const manageDisplayError = async () => {
+    if (!isEmpty(errMsg)) {
+      await timeout({ duration: 3000 });
+      setErrMsg(null);
+    }
+  };
+
+  useEffect(() => {
+    manageDisplayError();
+  }, [errMsg]);
 
   return (
     <div id='Authorize'>
