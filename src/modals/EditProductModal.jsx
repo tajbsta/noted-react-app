@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
@@ -9,6 +9,7 @@ import { get } from 'lodash';
 import { updateScans } from '../actions/scans.action';
 import { unmountProductedit } from '../actions/runtime.action';
 import moment from 'moment';
+import { getFileTypeIcon } from '../utils/file';
 
 export default function EditProductModal(props) {
   const dispatch = useDispatch();
@@ -32,10 +33,10 @@ export default function EditProductModal(props) {
 
   const hiddenFileInput = React.useRef(null);
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     hiddenFileInput.current.click();
   };
-  console.log(orderDate);
+
   const onSave = (e) => {
     e.preventDefault();
     /**
@@ -59,22 +60,41 @@ export default function EditProductModal(props) {
     dispatch(unmountProductedit());
     props.onHide();
   };
-
+  /**
+   * Please advise, dropzone can function without
+   */
   const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file) => {
+    acceptedFiles.forEach(async (file) => {
       const reader = new FileReader();
 
+      // eslint-disable-next-line no-console
       reader.onabort = () => console.log('file reading was aborted');
+      // eslint-disable-next-line no-console
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = () => {
         // Do whatever with the file contents
         const binaryStr = reader.result;
+        // eslint-disable-next-line no-console
         console.log(binaryStr);
       };
       reader.readAsArrayBuffer(file);
     });
   }, []);
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone();
+
+  const acceptedFileItems = acceptedFiles.map((file) => {
+    return (
+      <li
+        key={file.path}
+        className='list-item'
+        style={{ listStyle: 'none', display: 'flex', alignItems: 'center' }}
+      >
+        {getFileTypeIcon(file.path)}
+        <span className='ml-3'>{file.path}</span>
+      </li>
+    );
+  });
 
   // Handles file upload event and updates state
   const handleUpload = (event) => {
@@ -263,10 +283,11 @@ export default function EditProductModal(props) {
                       <div className='dropzone-container' {...getRootProps()}>
                         <input {...getInputProps()} />
                         <p className='sofia-pro text-drag'>
-                          Drag & drop or click to upload
+                          Drag & drop or click to upload{' '}
                         </p>
                       </div>
                     </Form.Group>
+                    {acceptedFileItems}
                   </Col>
                 </Row>
               </Col>

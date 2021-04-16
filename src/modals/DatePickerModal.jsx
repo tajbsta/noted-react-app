@@ -103,7 +103,6 @@ export default function SchedulingModal(props) {
                 </div>
                 <div className='eveningSlotsContainer'>
                   {eveningTimeSlots.map((timeSlot) => {
-                    console.log(timeSlot);
                     const isSelected =
                       pickUpDateValues.time === timeSlot.text
                         ? `isSelected`
