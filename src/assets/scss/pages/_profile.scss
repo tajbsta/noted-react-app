@@ -236,6 +236,10 @@
   }
 
   #Address {
+    @media (max-width: 570px) {
+      display: none;
+    }
+
     .alert-container {
       margin-left: 10px;
       margin-top: 15px;
@@ -274,6 +278,43 @@
         }
       }
     }
+  }
+
+  #AddressMobile {
+
+    @media (min-width: 570px) {
+      display: none;
+    }
+
+    width: 100%;
+
+    .accordion-control-container {
+      display: flex;
+      justify-items: center;
+      justify-content: center;
+    }
+
+    .arrow-container {
+      margin-bottom: 2%;
+    }
+
+    .address-actions {
+      display: flex;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      z-index: 99999;
+
+      .text-instructions {
+
+        margin-left: 3%;
+        font-family: 'Sofia Pro';
+        font-size: 14px;
+        line-height: 16px;
+        color: #570097;
+      }
+    }
+
   }
 
   #Payment {
