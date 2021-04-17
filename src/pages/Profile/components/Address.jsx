@@ -379,7 +379,7 @@ export default function Address({ user }) {
 
       <div id='AddressMobile'>
         <div className='triggerContainer'>
-          <h3 className='sofia-pro text-18 mb-3-profile mb-0 ml-3 triggerText'>
+          <h3 className='sofia-pro text-18 mb-3-profile mb-0 ml-1 triggerText'>
             Pick-up Address
           </h3>
         </div>
