@@ -3,16 +3,17 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import USA_STATES from '../assets/usa_states.json';
 import { isFormEmpty, formatPhoneNumber } from '../utils/form';
 import $ from 'jquery';
+import { isEmpty, get } from 'lodash';
 import AddPickupModal from '../modals/AddPickupModal';
 
 export default function AddressForm({
-  fullName,
-  state,
-  zipCode,
-  line1,
-  line2,
-  city,
-  phoneNumber,
+  fullName = '',
+  state = '',
+  zipCode = '',
+  line1 = '',
+  line2 = '',
+  city = '',
+  phoneNumber = '',
   errors,
   handleChange,
   onDoneClick,
@@ -71,7 +72,8 @@ export default function AddressForm({
                           name='fullName'
                           value={fullName || ''}
                         />
-                        {renderInlineError(errors.fullName)}
+                        {!isEmpty(fullName) &&
+                          renderInlineError(errors.fullName)}
                       </Form.Group>
                     </Col>
                     <Col>
@@ -98,7 +100,7 @@ export default function AddressForm({
                             </option>
                           ))}
                         </Form.Control>
-                        {renderInlineError(errors.state)}
+                        {!isEmpty(state) && renderInlineError(errors.state)}
                       </Form.Group>
                     </Col>
                     <Col>
@@ -120,8 +122,7 @@ export default function AddressForm({
                           name='zipCode'
                           maxLength={6}
                         />
-                        {zipCode.length > 0 &&
-                          renderInlineError(errors.zipCode)}
+                        {!isEmpty(zipCode) && renderInlineError(errors.zipCode)}
                       </Form.Group>
                     </Col>
                   </Row>
@@ -137,7 +138,7 @@ export default function AddressForm({
                           value={line1 || ''}
                           name='line1'
                         />
-                        {renderInlineError(errors.line1)}
+                        {!isEmpty(line1) && renderInlineError(errors.line1)}
                       </Form.Group>
                     </Col>
                     <Col>
@@ -150,7 +151,7 @@ export default function AddressForm({
                           value={city || ''}
                           onChange={handleChange}
                         />
-                        {renderInlineError(errors.city)}
+                        {!isEmpty(city) && renderInlineError(errors.city)}
                       </Form.Group>
                     </Col>
                     <Col>
