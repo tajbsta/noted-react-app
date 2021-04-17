@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import MastercardSvg from '../../../assets/img/mastercard.svg';
-import VisaSvg from '../../../assets/img/visa.svg';
 import {
   clearPaymentForm,
   updatePaymentForm,
@@ -8,11 +7,16 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function PaymentMethodItem({
+  id = '',
+  cvc = '',
+  fullName = '',
   cardNumber = 'xxxx',
   type = 'Visa',
   expirationMonth = '00',
   expirationYear = '00',
   isDefault = false,
+  setFieldValue,
+  setIsEditing,
 }) {
   const { paymentMethods } = useSelector(({ auth: { paymentMethods } }) => ({
     paymentMethods,
@@ -40,13 +44,23 @@ export default function PaymentMethodItem({
 
   const edit = () => {
     /**
-     * SOMEDAY
+     * Set's Form Value before setting to editing state
      */
+    setFieldValue('cardNumber', cardNumber);
+    setFieldValue('expirationMonth', expirationMonth);
+    setFieldValue('expirationYear', expirationYear);
+    setFieldValue('fullName', fullName);
+    setFieldValue('cvc', cvc);
+    setFieldValue('id', id);
+    /**
+     * Hides payment methods and shows payment form
+     */
+    setIsEditing(true);
   };
 
   const onDelete = () => {
     const newPaymentMethods = [...paymentMethods].filter(
-      ({ cardNumber: number }) => cardNumber !== number
+      ({ id: paymentMethodId }) => paymentMethodId !== id
     );
     dispatch(updatePaymentForm(newPaymentMethods));
   };
@@ -106,7 +120,9 @@ export default function PaymentMethodItem({
               right: '50%',
             }}
           >
-            <a className='dropdown-item btn'>Edit</a>
+            <a className='dropdown-item btn' onClick={edit}>
+              Edit
+            </a>
             <a className='dropdown-item btn' onClick={onDelete}>
               Delete
             </a>
