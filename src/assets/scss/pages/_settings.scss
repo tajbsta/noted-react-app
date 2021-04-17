@@ -12,6 +12,13 @@
     font-family: 'Sofia Pro';
   }
 
+  .col-sm-9 {
+    @media (max-width: 1199px) {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
   #leftCard {
     background: #faf8fa;
     border: none;
