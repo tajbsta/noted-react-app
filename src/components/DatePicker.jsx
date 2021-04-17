@@ -2,6 +2,7 @@ import React from 'react';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/airbnb.css';
 import { get } from 'lodash-es';
+import moment from 'moment';
 
 const CustomInput = ({ value, defaultValue, inputRef, name, ...props }) => {
   return (
@@ -39,6 +40,7 @@ export default function DatePicker({ date, setFieldValue }) {
           minDate: new Date().setDate(new Date().getDate() + 1),
           maxDate: new Date().setDate(new Date().getDate() + 5),
           inline: true,
+          defaultDate: moment(date).toISOString(),
           animate: true,
           dateFormat: 'Y-m-d',
           monthSelectorType: 'static',
