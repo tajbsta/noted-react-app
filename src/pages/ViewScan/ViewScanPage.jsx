@@ -41,7 +41,7 @@ function ViewScanPage() {
   const inReturn = get(cart, 'items', []).filter(
     ({ category }) => category === RETURNABLE
   );
-  console.log(inReturn);
+
   const potentialReturnValue = [...inReturn]
     .map(({ price }) => parseFloat(price))
     .reduce((acc, curr) => (acc += curr), 0);

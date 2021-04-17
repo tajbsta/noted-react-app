@@ -13,7 +13,7 @@ function ReturnCategory({
   size,
   category,
   search,
-  updateSelectedItems,
+  updateSelectedItems = () => {},
   width,
   percent,
 }) {

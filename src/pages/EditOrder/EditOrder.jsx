@@ -66,13 +66,13 @@ function EditOrder({
    * NEEDS ITEMS ABOVE TO START
    */
   const [inBoxSelected, setInBoxSelected] = useState([...items]);
-  console.log(inBoxSelected);
+
   const potentialReturnValue = [
     ...inBoxSelected,
     ...lastCallSelected,
     ...returnableSelected,
   ]
-    .map(({ amount }) => parseFloat(amount))
+    .map(({ price }) => parseFloat(price))
     .reduce((acc, curr) => (acc += curr), 0);
   const extraCost =
     [...inBoxSelected, ...lastCallSelected, ...returnableSelected].length * 2;
