@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Container, Navbar } from 'react-bootstrap';
+import { Container, Navbar } from 'react-bootstrap';
 import _ from 'lodash';
 import ProfileIcon from '../assets/icons/Profile.svg';
 import Search from '../assets/icons/Search.svg';
@@ -102,7 +102,7 @@ const Topnav = () => {
 
   useEffect(() => {
     function handleResize() {
-      setIsMobile(window.innerWidth <= 641);
+      setIsMobile(window.innerWidth <= 991);
     }
     handleResize();
     window.addEventListener('resize', handleResize);

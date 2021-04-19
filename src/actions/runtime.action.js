@@ -89,3 +89,10 @@ export const mountProductInEdit = (data) => ({
 export const unmountProductedit = () => ({
   type: UNMOUNT_PRODUCT_IN_EDIT,
 });
+
+export function updateProfilePicture(file) {
+  return {
+    type: 'UPDATE_PROFILE_PICTURE_TEMP',
+    data: file,
+  };
+}

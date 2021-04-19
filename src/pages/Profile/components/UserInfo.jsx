@@ -1,14 +1,23 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Button, Card, Container, Col, Row } from 'react-bootstrap';
+import { Card, Container, Col, Row } from 'react-bootstrap';
 import ProfileIcon from '../../../assets/icons/Profile.svg';
 import moment from 'moment';
 import { Upload } from 'react-feather';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfilePicture } from '../../../actions/runtime.action';
+import { isEmpty } from 'lodash-es';
+import { toBase64 } from '../../../utils/file';
 
 export default function UserInfo({ user: userData }) {
+  const dispatch = useDispatch();
   const [user, setUser] = useState({});
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  const { profileImage } = useSelector(({ auth: { profileImage } }) => ({
+    profileImage,
+  }));
 
   const hiddenFileInput = useRef(null);
 
@@ -17,30 +26,37 @@ export default function UserInfo({ user: userData }) {
   };
 
   // Handles file upload event and updates state
-  const handleUpload = (event) => {
+  const handleUpload = async (event) => {
     // const file = event.target.files[0];
     setFile(event.target.files[0]);
-
     if (file && file.size > 5097152) {
       alert('File is too large! The maximum size for file upload is 5 MB.');
     }
 
     setLoading(true);
 
+    dispatch(updateProfilePicture(await toBase64(event.target.files[0])));
     // Upload file to server (code goes under)
 
     setLoading(false);
   };
 
   // Display Image Component
-  const ImageThumb = ({ image }) => {
-    return (
-      <img
-        src={URL.createObjectURL(image)}
-        alt={image.name}
-        className='avatar-placeholder'
-      />
-    );
+  const ImageThumb = ({ image, base64URI }) => {
+    if (image) {
+      return (
+        <img
+          src={URL.createObjectURL(image)}
+          alt={image.name}
+          className='avatar-placeholder'
+        />
+      );
+    }
+
+    if (base64URI) {
+      return <img src={base64URI} className='avatar-placeholder' />;
+    }
+    return <img src='' className='avatar-placeholder' />;
   };
 
   useEffect(() => {
@@ -84,7 +100,10 @@ export default function UserInfo({ user: userData }) {
                   />
                 )}
 
-                {file && <ImageThumb image={file} />}
+                {file && isEmpty(profileImage) && <ImageThumb image={file} />}
+                {!isEmpty(profileImage) && (
+                  <ImageThumb base64URI={profileImage} />
+                )}
 
                 <div className='upload-button'>
                   <i
@@ -178,7 +197,7 @@ export default function UserInfo({ user: userData }) {
             </>
           )}
           <hr className='line-break-user' />
-          <div className='row align-items-center justify-content-between'>
+          <div className='row align-items-center justify-content-between m-info-row'>
             <div className='m-col-auto'>
               <div>
                 <h4 className='text-left total'>0</h4>

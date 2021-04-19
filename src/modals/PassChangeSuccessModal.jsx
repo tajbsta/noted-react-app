@@ -21,6 +21,7 @@ export default function PassChangeSuccessModal(props) {
         }, 400);
       })
       .catch((error) => {
+        // eslint-disable-next-line no-console
         console.log('Error Signing Out: ', error);
       });
   };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Nav, NavDropdown, Navbar } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 import BrandLogoSvg from './BrandLogoSvg';
 import Search from '../assets/icons/Search.svg';
 
