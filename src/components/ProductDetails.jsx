@@ -15,6 +15,19 @@ function ProductDetails({ item, isHovering = false }) {
   };
 
   const formattedProductName = toTitleCase(item.name);
+  const formatPrice = item.price.toFixed(2);
+
+  // Truncate name if longer than 50 characters
+  const truncateProductNameInDesktop = (str, num = 50) => {
+    if (str && str.length > num) {
+      return str.slice(0, num) + '...';
+    } else {
+      return str;
+    }
+  };
+
+  const truncatedName = truncateProductNameInDesktop(formattedProductName);
+
   const inDashboard = ['/dashboard'].includes(pageLocation);
   return (
     <div
@@ -28,11 +41,11 @@ function ProductDetails({ item, isHovering = false }) {
         </h4>
       </Row>
       <Row>
-        <h5 className='sofia-pro mb-2 product-name'>{formattedProductName}</h5>
+        <h5 className='sofia-pro mb-2 product-name'>{truncatedName}</h5>
       </Row>
       <Row>
         <h4 className='sofia-pro mb-0 product-price'>
-          ${item.price}{' '}
+          ${formatPrice}{' '}
           {isHovering && inDashboard && (
             <>
               <button type='button' className='btn alternateActionText ml-2'>
