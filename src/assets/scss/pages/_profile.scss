@@ -14,6 +14,11 @@
 
   hr {
     border-top: 1px solid #e8e7e9 !important;
+    margin-right: -12px;
+
+    @media (max-width: 991px) {
+      margin-right: 0px;
+    }
   }
 
   .m-no-col {
@@ -21,10 +26,16 @@
     padding-right: 0px;
   }
 
-  // .col-sm-9,
   .col-sm-3 {
     @media (max-width: 1199px) {
       flex: initial;
+    }
+  }
+
+  .col-sm-9 {
+    @media (max-width: 1199px) {
+      padding-left: 16px;
+      padding-right: 16px;
     }
   }
 
@@ -161,6 +172,10 @@
       margin-bottom: 16px !important;
     }
 
+    .m-info-row {
+      margin: 0px;
+    }
+
     hr {
       border-top: 1px solid #e8e7e9;
     }
@@ -230,8 +245,8 @@
     }
 
     .m-btn-container {
-      padding-right: 12px;
-      padding-left: 12px;
+      padding-right: 16px;
+      padding-left: 16px;
     }
   }
 
@@ -243,6 +258,10 @@
     .alert-container {
       margin-left: 10px;
       margin-top: 15px;
+
+      @media (max-width: 991px) {
+        margin-left: 0px;
+      }
     }
 
     .alert {
@@ -263,15 +282,20 @@
     }
 
     .triggerContainer {
-      display: flex;
-      align-content: center;
       cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .triggerText {
+        @media (max-width: 991px) {
+          margin-left: 0px !important;
+        }
+      }
 
       .triggerArrow {
         color: #b1adb2;
         font-size: 8px;
-        position: absolute;
-        right: 1vw;
 
         &:hover {
           color: #570097;
@@ -280,43 +304,19 @@
     }
   }
 
-  #AddressMobile {
-
-    @media (min-width: 1024px) {
-      display: none;
+  #Address {
+    @media (max-width: 991px) {
+      padding-left: 16px;
+      padding-right: 16px;
     }
-
-    width: 100%;
-
-    .accordion-control-container {
-      display: flex;
-      justify-items: center;
-      justify-content: center;
-    }
-
-    .arrow-container {
-      margin-bottom: 2%;
-    }
-
-    .address-actions {
-      display: flex;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      z-index: 99999;
-
-      .text-instructions {
-        margin-left: 3%;
-        font-family: 'Sofia Pro';
-        font-size: 14px;
-        line-height: 16px;
-        color: #570097;
-      }
-    }
-
   }
 
   #Payment {
+    @media (max-width: 991px) {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
     .alert {
       margin-top: 0px;
       padding: 5px;
@@ -336,6 +336,10 @@
   }
 
   #ScheduledReturn {
+    @media (max-width: 991px) {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
 
     .product-price {
       font-weight: 700;
@@ -376,7 +380,6 @@
       justify-content: flex-end;
       width: auto;
     }
-
 
     .hr-line {
       width: 98%;
@@ -439,8 +442,6 @@
       color: #570097;
     }
 
-
-
     .arrow {
       font-size: 7px;
       margin-right: 12px;
@@ -448,13 +449,10 @@
       text-decoration: white;
     }
 
-
-
     .button-col {
       display: flex;
       justify-content: flex-end;
       align-items: center;
-
     }
   }
 
@@ -464,15 +462,20 @@
   }
 
   .triggerContainer {
-    display: flex;
-    align-content: center;
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .triggerText {
+      @media (max-width: 991px) {
+        margin-left: 0px !important;
+      }
+    }
 
     .triggerArrow {
       color: #b1adb2;
       font-size: 8px;
-      position: absolute;
-      right: 1vw;
 
       &:hover {
         color: #570097;

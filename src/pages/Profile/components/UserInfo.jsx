@@ -197,7 +197,7 @@ export default function UserInfo({ user: userData }) {
             </>
           )}
           <hr className='line-break-user' />
-          <div className='row align-items-center justify-content-between'>
+          <div className='row align-items-center justify-content-between m-info-row'>
             <div className='m-col-auto'>
               <div>
                 <h4 className='text-left total'>0</h4>

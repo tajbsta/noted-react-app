@@ -12,12 +12,44 @@
     position: relative;
     left: 15%;
 
+    @media (max-width: 991px) {
+      left: 37%;
+    }
+
+    @media (max-width: 922px) {
+      left: 36%;
+    }
+
+    @media (max-width: 860px) {
+      left: 35%;
+    }
+
+    @media (max-width: 819px) {
+      left: 34%;
+    }
+
+    @media (max-width: 772px) {
+      left: 33%;
+    }
+
+    @media (max-width: 718px) {
+      left: 32%;
+    }
+
     @media (max-width: 641px) {
       left: 29%;
     }
 
+    @media (max-width: 525px) {
+      left: 25%;
+    }
+
     @media (max-width: 540px) {
       left: 26%;
+    }
+
+    @media (max-width: 454px) {
+      left: 20%;
     }
 
     @media (max-width: 414px) {
