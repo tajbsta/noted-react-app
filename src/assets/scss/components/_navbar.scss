@@ -103,14 +103,14 @@
   }
 
   .search-bar-input {
-    @media (max-width: 641px) {
+    @media (max-width: 991px) {
       display: none;
     }
   }
 
   //profile dropdown
   #nav-toggle {
-    @media (max-width: 641px) {
+    @media (max-width: 991px) {
       display: none;
     }
 

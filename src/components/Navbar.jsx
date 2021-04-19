@@ -102,7 +102,7 @@ const Topnav = () => {
 
   useEffect(() => {
     function handleResize() {
-      setIsMobile(window.innerWidth <= 641);
+      setIsMobile(window.innerWidth <= 991);
     }
     handleResize();
     window.addEventListener('resize', handleResize);
