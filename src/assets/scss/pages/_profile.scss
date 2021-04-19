@@ -236,7 +236,7 @@
   }
 
   #Address {
-    @media (max-width: 570px) {
+    @media (max-width: 1025px) {
       display: none;
     }
 
@@ -282,7 +282,7 @@
 
   #AddressMobile {
 
-    @media (min-width: 570px) {
+    @media (min-width: 1024px) {
       display: none;
     }
 
@@ -306,7 +306,6 @@
       z-index: 99999;
 
       .text-instructions {
-
         margin-left: 3%;
         font-family: 'Sofia Pro';
         font-size: 14px;

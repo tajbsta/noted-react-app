@@ -373,10 +373,10 @@ export default function Address({ user }) {
           </Collapsible>
         </div>
       </div>
+
       {/**
        * MOBILE VIEW
        */}
-
       <div id='AddressMobile'>
         <div className='triggerContainer'>
           <h3 className='sofia-pro text-18 mb-3-profile mb-0 ml-1 triggerText'>
