@@ -21,6 +21,7 @@ function ViewScanPage() {
   const [newSelected, setNewSelected] = useState([]);
   const scans = useSelector((state) => get(state, 'scans', []));
   const [orderId, setOrderId] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
   const { address, payment, details, cart } = useSelector(
     ({
       cart,
@@ -41,7 +42,7 @@ function ViewScanPage() {
   const inReturn = get(cart, 'items', []).filter(
     ({ category }) => category === RETURNABLE
   );
-  console.log(inReturn);
+
   const potentialReturnValue = [...inReturn]
     .map(({ price }) => parseFloat(price))
     .reduce((acc, curr) => (acc += curr), 0);
@@ -123,9 +124,20 @@ function ViewScanPage() {
     dispatch(setCartItems(newItems));
   };
 
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   return (
     <div id='ViewScanPage'>
-      <div className='container mt-6'>
+      <div className={`container  ${isMobile ? 'mt-4' : 'mt-6'}`}>
         <div className='row mobile-row'>
           <div className='col-sm-9'>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}

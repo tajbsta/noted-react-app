@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function EmptyPayment(props) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   return (
     <div>
       <div
         id='EmptyState'
         className='card-body payment-details-card-body pb-3 pl-4 m-0'
       >
-        <div className='d-flex justify-content-center'>
+        <div
+          className='justify-content-center'
+          style={{ display: isMobile ? 'none' : 'flex' }}
+        >
           <div className='p-0'>
             <p className='empty-header sofia-pro text-14 line-height-16 margin-bottom'>
               Payment Method

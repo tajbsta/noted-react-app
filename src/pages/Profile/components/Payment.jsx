@@ -1,19 +1,25 @@
 import { useFormik } from 'formik';
 import { isEmpty } from 'lodash-es';
+import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import Collapsible from 'react-collapsible';
 import { useDispatch, useSelector } from 'react-redux';
-import { savePaymentForm } from '../../../actions/auth.action';
+import {
+  savePaymentForm,
+  updatePaymentForm,
+} from '../../../actions/auth.action';
 import { paymentAddressSchema } from '../../../models/formSchema';
-import PaymentMethods from '../../Settings/components/PaymentMethods';
+import PaymentMethods from './PaymentMethods';
 
 export default function Payment() {
   const dispatch = useDispatch();
+
   const { paymentMethods } = useSelector(({ auth: { paymentMethods } }) => ({
     paymentMethods,
   }));
   const {
+    setFieldValue,
     errors: paymentFormErrors,
     handleChange: handlePaymentChange,
     values: paymentFormValues,
@@ -26,11 +32,37 @@ export default function Payment() {
       expirationMonth: '',
       expirationYear: '',
       cvc: '',
+      id: '',
     },
     validationSchema: paymentAddressSchema,
     onSubmit: (data) => {
-      dispatch(savePaymentForm(data));
-      resetForm();
+      if (
+        !isEmpty(
+          paymentMethods.find(
+            ({ id: paymentMethodId }) => data.id === paymentMethodId
+          )
+        )
+      ) {
+        /***
+         * Should only modify payment methods, although this is temporary
+         */
+        const newPaymentMethods = [...paymentMethods].filter(
+          ({ id: paymentMethodId }) => paymentMethodId !== data.id
+        );
+        dispatch(updatePaymentForm([...newPaymentMethods, data]));
+        return resetForm();
+      }
+
+      /**
+       * If this entry does not exist just add it
+       */
+      dispatch(
+        savePaymentForm({
+          ...data,
+          id: nanoid(),
+        })
+      );
+      return resetForm();
     },
   });
 
@@ -72,10 +104,13 @@ export default function Payment() {
           overflowWhenOpen='visible'
         >
           <div className='card shadow-sm p-3 w-840 mt-4 ml-3'>
-            {!isEditing && !isEmpty(paymentMethods) && (
-              <PaymentMethods setIsEditing={setIsEditing} />
+            {!isEditing && (
+              <PaymentMethods
+                setIsEditing={setIsEditing}
+                setFieldValue={setFieldValue}
+              />
             )}
-            {(isEditing || isEmpty(paymentMethods)) && (
+            {isEditing && (
               <div className='card-body'>
                 <Form id='PaymentForm'>
                   <Row>

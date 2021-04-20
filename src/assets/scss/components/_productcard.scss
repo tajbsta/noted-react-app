@@ -2,6 +2,12 @@
 #productCard,
 #ScheduledReturnCard,
 #ReturnCategory {
+  .container {
+    @media (max-width: 991px) {
+      padding: 0px;
+    }
+  }
+
   .p-details {
     padding-left: 16px !important;
     height: 48px;
@@ -185,6 +191,7 @@
 
   .m-date-col {
     padding-left: 0px;
+    margin-left: 4px;
     position: relative;
     bottom: 1%;
 
@@ -217,7 +224,7 @@
 
   .m-brand-info-container {
     margin-top: 25px;
-    margin-left: 40px;
+    margin-left: 53px;
 
     .m-brand-img {
       border: 1px solid #f0f0f0;
@@ -251,6 +258,7 @@
     .m-edit-col {
       display: flex;
       align-items: flex-start;
+      margin-right: 16px;
 
       h4 {
         font-size: 12px;
@@ -274,7 +282,7 @@
   // END OF PRODUCT IS SELECTED
 
   #mobile-product-info {
-    padding-left: 0px;
+    padding-left: 12px;
     padding-right: 12px;
 
     @media (min-width: 991px) {
@@ -305,7 +313,7 @@
     .col-days-left {
       display: flex;
       justify-content: flex-start;
-      // padding: 0px;
+      padding: 0px;
     }
 
     .m-col-d {

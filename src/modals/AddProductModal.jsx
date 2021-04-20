@@ -6,6 +6,7 @@ import { useDropzone } from 'react-dropzone';
 import Flatpickr from 'react-flatpickr';
 import { addProductSchema } from '../models/formSchema';
 import { useFormik } from 'formik';
+import { getFileTypeIcon } from '../utils/file';
 
 export default function AddProductModal(props) {
   const [file, setFile] = useState('');
@@ -60,7 +61,30 @@ export default function AddProductModal(props) {
       reader.readAsArrayBuffer(file);
     });
   }, []);
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+    onDrop,
+  });
+
+  const acceptedFileItems = acceptedFiles.map((file) => {
+    return (
+      <li
+        key={file.path}
+        className='list-item'
+        style={{ listStyle: 'none', display: 'flex', alignItems: 'center' }}
+      >
+        {getFileTypeIcon(file.path)}
+        <span className='ml-2'>{file.path}</span>
+        {/* <img
+          src={URL.createObjectURL(file)}
+          alt=''
+          style={{
+            width: 50,
+            height: 50,
+          }}
+        /> */}
+      </li>
+    );
+  });
 
   // Handles file upload event and updates state
   const handleUpload = (event) => {
@@ -253,6 +277,7 @@ export default function AddProductModal(props) {
                         </p>
                       </div>
                       {/* {renderInlineError(errors.returnDocument)} */}
+                      {acceptedFileItems}
                     </Form.Group>
                   </Col>
                 </Row>

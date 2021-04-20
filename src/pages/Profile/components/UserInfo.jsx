@@ -5,10 +5,15 @@ import moment from 'moment';
 import { Upload } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfilePicture } from '../../../actions/runtime.action';
-import { isEmpty } from 'lodash-es';
+import { get, isEmpty } from 'lodash-es';
+import { useHistory } from 'react-router-dom';
 import { toBase64 } from '../../../utils/file';
+import { getUser } from '../../../utils/auth';
 
-export default function UserInfo({ user: userData }) {
+export default function UserInfo({ user: userData = {} }) {
+  const {
+    location: { pathname },
+  } = useHistory();
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
   const [file, setFile] = useState('');
@@ -20,6 +25,13 @@ export default function UserInfo({ user: userData }) {
   }));
 
   const hiddenFileInput = useRef(null);
+
+  useEffect(() => {
+    (async () => {
+      const user = await getUser();
+      setUser(user);
+    })();
+  }, []);
 
   const handleClick = (event) => {
     hiddenFileInput.current.click();
@@ -139,9 +151,9 @@ export default function UserInfo({ user: userData }) {
               <Row>
                 <Col xs={4}>
                   <div className='img-container'>
-                    {user.profile && (
+                    {!isEmpty(user.profile) && (
                       <img
-                        src={user.profile}
+                        src={get(user, 'profile', '')}
                         className={`${
                           file ? 'no-default-avatar' : 'avatar-placeholder'
                         }`}
@@ -218,8 +230,11 @@ export default function UserInfo({ user: userData }) {
           }`}
         >
           <button className='btn'>
-            <a href='/settings' className='btn btn-lg btn-primary'>
-              Account Settings
+            <a
+              href={pathname === '/profile' ? '/settings' : '/profile'}
+              className='btn btn-lg btn-primary'
+            >
+              {pathname === '/profile' ? 'Account Settings' : 'Profile'}
             </a>
           </button>
         </Container>

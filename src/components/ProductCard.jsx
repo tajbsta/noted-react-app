@@ -8,7 +8,6 @@ import $ from 'jquery';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import moment from 'moment';
 import ReturnPolicyModal from '../modals/ReturnPolicyModal';
-import EditProductModal from '../modals/EditProductModal';
 import NotedCheckbox from './NotedCheckbox';
 import { get } from 'lodash-es';
 
@@ -65,6 +64,7 @@ function ProductCard({
   };
 
   const formattedProductName = toTitleCase(item.name);
+  const formatPrice = item.price.toFixed(2);
 
   // Truncate name if longer than 21 characters
   const truncateProductName = (str, num = 21) => {
@@ -106,14 +106,14 @@ function ProductCard({
   }, []);
 
   const daysLeft =
-    item.category === 'DONATE'
+    get(item, 'category', '') === 'DONATE'
       ? 'Donate'
-      : moment(item.return_not_eligible_date).diff(
+      : moment(get(item, 'return_not_eligible_date', '')).diff(
           moment().startOf('day'),
           'days'
         );
 
-  const isDonate = item.category === 'DONATE';
+  const isDonate = get(item, 'category', '') === 'DONATE';
 
   return (
     <div id='productCard'>
@@ -189,9 +189,14 @@ function ProductCard({
               id='mobile-product-info'
               style={{
                 marginTop: '5px',
-                width: isMobile && removable && !selectable ? '83%' : '',
+                width:
+                  (isMobile && removable && !selectable) || confirmed
+                    ? '83%'
+                    : '',
                 maxWidth:
-                  isMobileSmaller && removable && !selectable ? '75%' : '',
+                  (isMobileSmaller && removable && !selectable) || confirmed
+                    ? '75%'
+                    : '',
               }}
             >
               <div className='details'>
@@ -230,7 +235,7 @@ function ProductCard({
                       <Col
                         className='col-days-left m-col-d'
                         style={{
-                          paddingRight: '4px',
+                          // paddingRight: '4px',
                           width: 'fit-content !important',
                         }}
                       >
@@ -279,7 +284,7 @@ function ProductCard({
                 </Container>
                 <Container>
                   <Row>
-                    <h4 className='sofia-pro mobile-price'>${item.price}</h4>
+                    <h4 className='sofia-pro mobile-price'>${formatPrice}</h4>
                   </Row>
                 </Container>
                 {selected && (

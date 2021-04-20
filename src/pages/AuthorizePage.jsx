@@ -66,7 +66,7 @@ export default function AuthorizePage() {
 
   const manageDisplayError = async () => {
     if (!isEmpty(errMsg)) {
-      await timeout({ duration: 3000 });
+      await timeout({ duration: 5000 });
       setErrMsg(null);
     }
   };

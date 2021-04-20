@@ -11,6 +11,7 @@ import CancelOrderModal from '../../modals/CancelOrderModal';
 import { updateOrders } from '../../actions/auth.action';
 import { useHistory } from 'react-router';
 import Row from '../../components/Row';
+import { RETURNABLE } from '../../constants/actions/runtime';
 
 function ViewConfirmedReturn({
   location: {
@@ -22,11 +23,18 @@ function ViewConfirmedReturn({
   const [modalShow, setModalShow] = useState(false);
   const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
   const history = useHistory();
-  const { inDonation, scheduledReturns, scans, orderInMemory } = useSelector(
+  const {
+    inDonation,
+    scheduledReturns,
+    scans,
+    orderInMemory,
+    cart,
+  } = useSelector(
     ({
       runtime: { forReturn, lastCall, forDonation, orderInMemory },
       auth: { scheduledReturns },
       scans,
+      cart,
     }) => ({
       localDonationsCount: forDonation.length,
       forReturn,
@@ -36,6 +44,7 @@ function ViewConfirmedReturn({
       inDonation: [...forDonation],
       scans,
       orderInMemory,
+      cart,
     })
   );
   // const totalDonations = inDonation.length;
@@ -57,8 +66,12 @@ function ViewConfirmedReturn({
   const { returnFee, taxes, address, payment, details } = scheduledReturn;
   const items = get(scheduledReturn, 'items', []);
   const orderId = get(scheduledReturn, 'id', '');
-  const potentialReturnValue = [...items]
-    .map(({ amount }) => parseFloat(amount))
+  const inReturn = get(cart, 'items', []).filter(
+    ({ category }) => category === RETURNABLE
+  );
+
+  const potentialReturnValue = [...inReturn]
+    .map(({ price }) => parseFloat(price))
     .reduce((acc, curr) => (acc += curr), 0);
   const totalPayment = (returnFee + taxes).toFixed(2);
   const forgottenReturns = [...scans].filter(({ id }) => {
@@ -129,6 +142,7 @@ function ViewConfirmedReturn({
                 orderId={orderId}
                 scannedItem={item}
                 key={item.id}
+                item={item}
                 selectable={false}
                 clickable={false}
                 removable={!confirmed}

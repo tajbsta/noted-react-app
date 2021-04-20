@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { get } from 'lodash';
+import React from 'react';
+import { get, isEmpty } from 'lodash';
 import { useSelector } from 'react-redux';
 import PaymentMethodItem from './PaymentMethodItem';
 import { nanoid } from 'nanoid';
 
-export default function PaymentMethods({ setIsEditing }) {
+export default function PaymentMethods({ setIsEditing, setFieldValue }) {
   const { paymentMethods } = useSelector(({ auth: { paymentMethods } }) => ({
     paymentMethods,
   }));
@@ -23,6 +23,13 @@ export default function PaymentMethods({ setIsEditing }) {
         </div>
       </div>
       {/* <hr /> */}
+      {isEmpty(paymentMethods) && (
+        <div className='empty-payment-methods'>
+          <h5 className='empty-payment-methods-text'>
+            No saved methods here yet
+          </h5>
+        </div>
+      )}
       <div className='list-group list-group-flush my-n3'>
         {/**
          * @ELEMENT payment methods here
@@ -31,14 +38,21 @@ export default function PaymentMethods({ setIsEditing }) {
           const cardNumber = get(method, 'cardNumber', '');
           const expirationMonth = get(method, 'expirationMonth', '');
           const expirationYear = get(method, 'expirationYear', '');
-
+          const fullName = get(method, 'fullName', '');
+          const cvc = get(method, 'cvc', '');
+          const id = get(method, 'id', '');
           return (
             <PaymentMethodItem
+              id={id}
               key={nanoid()}
+              fullName={fullName}
               cardNumber={cardNumber}
               expirationMonth={expirationMonth}
               expirationYear={expirationYear}
               type='Visa'
+              setFieldValue={setFieldValue}
+              setIsEditing={setIsEditing}
+              cvc={cvc}
             />
           );
         })}

@@ -1,6 +1,7 @@
 import React from 'react';
 import Row from '../../../components/Row';
 import ProductCard from '../../../components/ProductCard';
+import NotedCheckbox from '../../../components/NotedCheckbox';
 import QuestionMarkSvg from '../../../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -86,12 +87,10 @@ function InReturnBox({
       <Row>
         <div className='category-title'>
           <div className='ml-3 p-0 purchase-type-checkbox-container'>
-            <input
-              disabled={disabled}
-              className='checkbox'
-              type='checkbox'
-              onChange={handleSelectAll}
+            <NotedCheckbox
+              onChangeState={handleSelectAll}
               checked={selected.length === items.length}
+              disabled={items.length === 0}
             />
           </div>
           <h4 className='sofia-pro purchase-types purchase-type-title'>
@@ -117,6 +116,7 @@ function InReturnBox({
             key={scannedItem.id}
             scannedItem={scannedItem}
             selected={isSelected(scannedItem.id)}
+            item={scannedItem}
             addSelected={addSelected}
             removeSelected={removeSelected}
             onClick={() => {
