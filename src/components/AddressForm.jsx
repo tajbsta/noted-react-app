@@ -94,7 +94,7 @@ export default function AddressForm({
                         <Col>
                           <Button
                             type='button'
-                            className='close'
+                            className='btn close'
                             data-dismiss='modal'
                             aria-label='Close'
                           >

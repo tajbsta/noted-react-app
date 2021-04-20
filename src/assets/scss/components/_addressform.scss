@@ -144,6 +144,11 @@
   }
 
   // Checkout forms
+  .close {
+    box-shadow: none;
+    background-color: #fff;
+  }
+
   .mobile-address-form-instructions {
     padding: 0px;
     h4 {
