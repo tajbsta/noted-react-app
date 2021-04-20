@@ -193,12 +193,6 @@
     align-items: center;
   }
 
-  .return-schedule {
-    @media (max-width: 1025px) {
-      display: none;
-    }
-  }
-
   .return-schedule-mobile {
     @media (min-width: 1024px) {
       display: none;
