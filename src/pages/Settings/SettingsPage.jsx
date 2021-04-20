@@ -116,7 +116,13 @@ export default function SettingsPage() {
   return (
     <div>
       <div id='Settings' className='container mt-6'>
-        {isMobile && <UserInfo user={user} />}
+        {isMobile && (
+          <>
+            <div style={{ margin: '-12px', paddingBottom: '48px' }}>
+              <UserInfo user={user} />
+            </div>
+          </>
+        )}
         <div className='row'>
           {!isMobile && renderSettingsNavigation()}
           {/* RIGHT CARD */}
