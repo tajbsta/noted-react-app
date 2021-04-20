@@ -142,4 +142,26 @@
       }
     }
   }
+
+  // Checkout forms
+  .mobile-address-form-instructions {
+    padding: 0px;
+    h4 {
+      font-size: 14px;
+      line-height: 16px;
+      color: #570097;
+    }
+  }
+
+  .mobile-address-form-btn-done {
+    padding: 0px;
+    background: #570097;
+    border-radius: 6px;
+    width: 138px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    color: #f8efff;
+  }
 }
