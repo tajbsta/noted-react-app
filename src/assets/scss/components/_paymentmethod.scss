@@ -41,11 +41,7 @@
   }
 }
 
-#item-dropdown-menu {
-  position: absolute;
-  right: 500px !important;
-}
-
 .dropdown-menu {
-  margin-right: 1000px !important;
+  left: auto !important;
+  right: 10px;
 }

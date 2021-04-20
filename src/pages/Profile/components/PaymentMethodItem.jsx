@@ -116,11 +116,9 @@ export default function PaymentMethodItem({
           </div>
           <div
             id='item-dropdown-menu'
-            className='dropdown-menu mr-4'
+            className='dropdown-menu'
             style={{
               display: showDropdown ? 'block' : 'none',
-              position: 'absolute',
-              right: '50%',
             }}
           >
             <a className='dropdown-item btn' onClick={edit}>
