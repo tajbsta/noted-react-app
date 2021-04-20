@@ -127,6 +127,12 @@
     }
   }
 
+  .payment-trigger {
+    .arrow-container {
+      margin-left: 3px;
+    }
+  }
+
   .pick-up-address-title-mobile {
     @media (min-width: 1024px) {
       display: none;
@@ -190,6 +196,15 @@
   .return-schedule {
     @media (max-width: 1025px) {
       display: none;
+    }
+  }
+
+  .return-schedule-trigger {
+    .arrow-container {
+      width: auto;
+      margin-top: 10px;
+      position: absolute;
+      right: 1vh;
     }
   }
 

@@ -399,7 +399,7 @@ function PickUpDetails() {
                         onTriggerOpening={() => setIsPaymentOpen(true)}
                         onTriggerClosing={() => setIsPaymentOpen(false)}
                         trigger={
-                          <div>
+                          <div className='payment-trigger'>
                             <Row
                               className='p-3'
                               style={{
@@ -481,7 +481,7 @@ function PickUpDetails() {
             <div className='col-sm-4'>
               {isMobile && <p className='mobile-form-title'>Pick up</p>}
               <div className='card shadow-sm'>
-                <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0'>
+                <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 return-schedule'>
                   <div
                     className='title-container'
                     style={{ display: isMobile ? 'none' : '' }}
@@ -539,7 +539,7 @@ function PickUpDetails() {
                     onTriggerOpening={() => setIsScheduleOpen(true)}
                     onTriggerClosing={() => setIsScheduleOpen(false)}
                     trigger={
-                      <Row>
+                      <Row className='return-schedule-trigger'>
                         <Col>
                           <div className='text-14 text ending-text'>
                             {get(pickUpDateForm, 'values.date', null) ===
@@ -565,7 +565,7 @@ function PickUpDetails() {
                           </div>
                         </Col>
                         <Col xs={1}>
-                          <div className='arrow-container mt-2'>
+                          <div className='arrow-container'>
                             {IsScheduleOpen ? (
                               <img src={LeftArrow} />
                             ) : (
