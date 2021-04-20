@@ -231,7 +231,7 @@ function ProductCard({
                       <Col
                         className='col-days-left m-col-d'
                         style={{
-                          paddingRight: '4px',
+                          // paddingRight: '4px',
                           width: 'fit-content !important',
                         }}
                       >

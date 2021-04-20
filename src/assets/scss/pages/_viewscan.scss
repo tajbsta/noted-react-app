@@ -472,7 +472,6 @@
   .container {
     @media (max-width: 991px) {
       padding: 0px;
-      // padding-left: 12px;
     }
   }
 
@@ -484,12 +483,12 @@
   }
 
   #mobile-product-info {
-    padding-left: 0px;
+    padding-left: 12px;
     padding-right: 12px;
 
     .col-days-left {
       padding: 0px;
-      padding-left: 12px;
+      // padding-left: 12px;
     }
   }
 
