@@ -547,7 +547,7 @@ function PickUpDetails() {
                             get(pickUpDateForm, 'values.time', null) ===
                               null ? (
                               <>
-                                <h4 className='p-0 ml-3 mt-3 sofia-pro'>
+                                <h4 className='p-0 mt-3 sofia-pro'>
                                   No date selected
                                 </h4>
                               </>
@@ -580,11 +580,8 @@ function PickUpDetails() {
                       {get(pickUpDateForm, 'values.date', null) === null &&
                       get(pickUpDateForm, 'values.time', null) === null ? (
                         <>
-                          <h4 className='p-0 m-0 sofia-pro'>
-                            No date selected
-                          </h4>
                           <h4
-                            className='p-0 m-0 sofia-pro mt-2 btn-edit'
+                            className='p-0 m-0 sofia-pro btn-edit'
                             onClick={openDatePickerModal}
                           >
                             Select date

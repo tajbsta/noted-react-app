@@ -25,20 +25,20 @@ export default function PaymentMethodItem({
 
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const handleWindowClick = (e) => {
-    if (e.target && e.target.id !== 'navbarDropdownMenuLink') {
+  const handleContextClick = (e) => {
+    if (e.target && e.target.class !== 'item-dropdown-menu') {
       setShowDropdown(false);
-      window.removeEventListener('click', handleWindowClick);
+      window.removeEventListener('click', handleContextClick);
     }
   };
 
   useEffect(() => {
     let mounted = true;
     if (showDropdown && mounted) {
-      window.addEventListener('click', handleWindowClick);
+      window.addEventListener('click', handleContextClick);
     }
     return () => {
-      window.removeEventListener('click', handleWindowClick);
+      window.removeEventListener('click', handleContextClick);
     };
   }, [showDropdown]);
 
@@ -107,12 +107,15 @@ export default function PaymentMethodItem({
               data-toggle='dropdown'
               aria-haspopup='true'
               aria-expanded='false'
-              onClick={() => setShowDropdown(true)}
+              onClick={() => {
+                setShowDropdown(true);
+              }}
             >
               <i className='fe fe-more-vertical'>...</i>
             </a>
           </div>
           <div
+            id='item-dropdown-menu'
             className='dropdown-menu mr-4'
             style={{
               display: showDropdown ? 'block' : 'none',
