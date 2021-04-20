@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EmptyAddress from '../../../components/EmptyAddress';
 import EmptyPayment from '../../../components/EmptyPayment';
 import AddressForm from '../../../components/AddressForm';
@@ -41,6 +41,7 @@ function PickUpDetails() {
   const [showEditPayment, setShowEditPayment] = useState(false);
   const [isDatePickerOpen, setisDatePickerOpen] = useState(false);
   const [modalShow, setModalShow] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const [IsAddressOpen, setIsAddressOpen] = useState(false);
   const [IsPaymentOpen, setIsPaymentOpen] = useState(false);
@@ -148,6 +149,17 @@ function PickUpDetails() {
     setisDatePickerOpen(true);
   };
 
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   return (
     <>
       {!showEditAddress && !showEditPayment && (
@@ -181,14 +193,9 @@ function PickUpDetails() {
              */}
 
             <div className='col-sm-4'>
-              <div className='title-container pick-up-address-title-mobile'>
-                <div className='p-0'>
-                  <p className='pick-up-message sofia-pro text-14 line-height-16 mb-0'>
-                    Pick-up Address
-                  </p>
-                </div>
-              </div>
-
+              {isMobile && (
+                <p className='mobile-form-title first-title'>Pick-up Address</p>
+              )}
               <div className='card shadow-sm'>
                 {!isAddressFormEmpty && !showEditAddress && (
                   <>
@@ -330,13 +337,7 @@ function PickUpDetails() {
             </div>
             {/* PAYMENT DETAILS */}
             <div className='col-sm-4'>
-              <div className='title-container payment-method-title-mobile mt-4'>
-                <div className='p-0'>
-                  <p className='pick-up-message sofia-pro text-14 line-height-16 mb-0'>
-                    Payment Method
-                  </p>
-                </div>
-              </div>
+              {isMobile && <p className='mobile-form-title'>Payment method</p>}
               <div className='card shadow-sm'>
                 {!isPaymentFormEmpty && !showEditPayment && (
                   <>
@@ -478,17 +479,13 @@ function PickUpDetails() {
             </div>
             {/* RETURN SCHEDULE */}
             <div className='col-sm-4'>
-              <div className='title-container payment-method-title-mobile mt-4'>
-                <div className='p-0'>
-                  <p className='pick-up-message sofia-pro text-14 line-height-16 mb-0'>
-                    Pick up
-                  </p>
-                </div>
-              </div>
-
+              {isMobile && <p className='mobile-form-title'>Pick up</p>}
               <div className='card shadow-sm'>
-                <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 return-schedule'>
-                  <div className='title-container'>
+                <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0'>
+                  <div
+                    className='title-container'
+                    style={{ display: isMobile ? 'none' : '' }}
+                  >
                     <div className='p-0'>
                       <p className='pick-up-message sofia-pro text-14 line-height-16'>
                         Pick up

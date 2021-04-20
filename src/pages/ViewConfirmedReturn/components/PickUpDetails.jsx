@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EmptyAddress from '../../../components/EmptyAddress';
 import EmptyPayment from '../../../components/EmptyPayment';
 import AddressForm from '../../../components/AddressForm';
@@ -23,6 +23,7 @@ function PickUpDetails({ address, payment, details }) {
   const [showEditPayment, setShowEditPayment] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const {
     errors: addressFormErrors,
@@ -79,6 +80,17 @@ function PickUpDetails({ address, payment, details }) {
     setIsDatePickerOpen(true);
   };
 
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   return (
     <>
       {!showEditAddress && !showEditPayment && (
@@ -108,6 +120,9 @@ function PickUpDetails({ address, payment, details }) {
         {!showEditAddress && !showEditPayment && (
           <>
             <div className='col-sm-4'>
+              {isMobile && (
+                <p className='mobile-form-title first-title'>Pick-up Address</p>
+              )}
               <div className='card shadow-sm'>
                 {!isAddressFormEmpty && !showEditAddress && (
                   <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0'>
@@ -168,6 +183,7 @@ function PickUpDetails({ address, payment, details }) {
             </div>
             {/* PAYMENT DETAILS */}
             <div className='col-sm-4'>
+              {isMobile && <p className='mobile-form-title'>Payment method</p>}
               <div className='card shadow-sm'>
                 {!isPaymentFormEmpty && !showEditPayment && (
                   <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0'>
@@ -228,6 +244,7 @@ function PickUpDetails({ address, payment, details }) {
             </div>
             {/* RETURN SCHEDULE */}
             <div className='col-sm-4'>
+              {isMobile && <p className='mobile-form-title'>Pick up</p>}
               <div className='card shadow-sm'>
                 <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0'>
                   <div className='title-container'>

@@ -63,7 +63,8 @@ function ProductCard({
     });
   };
 
-  const formattedProductName = toTitleCase(get(item, 'name', ''));
+  const formattedProductName = toTitleCase(item.name);
+  const formatPrice = item.price.toFixed(2);
 
   // Truncate name if longer than 21 characters
   const truncateProductName = (str, num = 21) => {
@@ -278,7 +279,7 @@ function ProductCard({
                 </Container>
                 <Container>
                   <Row>
-                    <h4 className='sofia-pro mobile-price'>${item.price}</h4>
+                    <h4 className='sofia-pro mobile-price'>${formatPrice}</h4>
                   </Row>
                 </Container>
                 {selected && (
