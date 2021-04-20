@@ -133,7 +133,8 @@
     }
   }
 
-  .pick-up-address-title-mobile {
+  .pick-up-address-title-mobile,
+  .payment-details-mobile {
     @media (min-width: 1024px) {
       display: none;
     }

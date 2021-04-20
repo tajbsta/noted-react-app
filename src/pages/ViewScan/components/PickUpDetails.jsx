@@ -248,7 +248,7 @@ function PickUpDetails() {
                     {/***
                      * Mobile pickup address
                      */}
-                    <div className='pick-up-address-mobile pl-3 pr-4 pb-0 pt-1'>
+                    <div className='pick-up-address-mobile pl-4 pr-4 pb-0 pt-1'>
                       <Collapsible
                         open={IsAddressOpen}
                         onTriggerOpening={() => setIsAddressOpen(true)}
@@ -392,7 +392,7 @@ function PickUpDetails() {
                     {/**
                      * PAYMENT DETAILS MOBILE
                      */}
-                    <div className='pl-3 pr-4 pb-0 pt-0'>
+                    <div className='pl-4 pr-4 pb-0 pt-0 payment-details-mobile'>
                       <Collapsible
                         open={IsPaymentOpen}
                         onTriggerOpening={() => setIsPaymentOpen(true)}
@@ -439,7 +439,7 @@ function PickUpDetails() {
                           </div>
                         }
                       >
-                        <div className='card-body payment-details-card-body m-0 payment-details-mobile p-0'>
+                        <div className='card-body payment-details-card-body m-0 p-0'>
                           <div className='text-14 text ending-text'>
                             Card Address
                           </div>
