@@ -45,7 +45,6 @@ function PickUpDetails() {
 
   const [IsAddressOpen, setIsAddressOpen] = useState(false);
   const [IsPaymentOpen, setIsPaymentOpen] = useState(false);
-  const [IsScheduleOpen, setIsScheduleOpen] = useState(false);
   /**
    * @FORMSTATE by FORMIK
    * @returns customer address
