@@ -530,6 +530,86 @@ function PickUpDetails() {
                     (-$10.99)
                   </h5>
                 </div>
+                {/**
+                 * RETURN SCHEDULE MOBILE VIEW
+                 */}
+                <div className='pl-3 pr-4 pb-0 pt-0 return-schedule-mobile'>
+                  <Collapsible
+                    open={IsScheduleOpen}
+                    onTriggerOpening={() => setIsScheduleOpen(true)}
+                    onTriggerClosing={() => setIsScheduleOpen(false)}
+                    trigger={
+                      <Row className='return-schedule-trigger'>
+                        <Col>
+                          <div className='text-14 text ending-text'>
+                            {get(pickUpDateForm, 'values.date', null) ===
+                              null &&
+                            get(pickUpDateForm, 'values.time', null) ===
+                              null ? (
+                              <>
+                                <h4 className='p-0 mt-3 sofia-pro'>
+                                  No date selected
+                                </h4>
+                              </>
+                            ) : (
+                              <>
+                                <Row>
+                                  <h4 className='sofia-pro mb-4 mt-4 ml-3'>
+                                    {moment(
+                                      get(pickUpDateForm, 'values.date', '')
+                                    ).format('MMMM DD, YYYY')}
+                                  </h4>
+                                </Row>
+                              </>
+                            )}
+                          </div>
+                        </Col>
+                        <Col xs={1}>
+                          <div className='arrow-container'>
+                            {IsScheduleOpen ? (
+                              <img src={LeftArrow} />
+                            ) : (
+                              <img src={DownArrow} />
+                            )}
+                          </div>
+                        </Col>
+                      </Row>
+                    }
+                  >
+                    <div className='card-body payment-details-card-body m-0 payment-details-mobile p-0'>
+                      {get(pickUpDateForm, 'values.date', null) === null &&
+                      get(pickUpDateForm, 'values.time', null) === null ? (
+                        <>
+                          <h4
+                            className='p-0 m-0 sofia-pro btn-edit'
+                            onClick={openDatePickerModal}
+                          >
+                            Select date
+                          </h4>
+                        </>
+                      ) : (
+                        <>
+                          <h4 className='p-0 m-0 sofia-pro'>
+                            Between {get(pickUpDateForm, 'values.time', '')}
+                          </h4>
+                          <h4
+                            className='p-0 m-0 sofia-pro mt-2 btn-edit'
+                            onClick={openDatePickerModal}
+                          >
+                            Edit
+                          </h4>
+                        </>
+                      )}
+                      <hr />
+                      <a className='btn-edit p-0 m-0 sofia-pro noted-purple mt-2 text-14 line-height-16'>
+                        Schedule another date
+                      </a>
+                      <h5 className='sofia-pro text-muted text-price-sched text-14 pb-3'>
+                        (-$10.99)
+                      </h5>
+                    </div>
+                  </Collapsible>
+                </div>
               </div>
             </div>
           </>

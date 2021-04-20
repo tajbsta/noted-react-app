@@ -199,6 +199,12 @@
     }
   }
 
+  .return-schedule-mobile {
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
   .return-schedule-trigger {
     .arrow-container {
       width: auto;
