@@ -41,13 +41,30 @@ export default function EmailAddresses({ user }) {
     }
   };
 
-  const isDiffEmail = user && user.email !== accounts.email;
-
   useEffect(() => {
     if (user) {
       fetchAccounts();
     }
   }, [user]);
+
+  const renderValidError = () => (
+    <small className='form-text p-0 m-0 noted-red'>
+      Email is not valid anymore. Please{' '}
+      <a
+        className='noted-red'
+        style={{
+          fontSize: '0.8125rem',
+          color: 'red',
+          textDecoration: 'underline',
+        }}
+        href='/request-permission'
+      >
+        authorize noted
+      </a>{' '}
+      again.
+    </small>
+  );
+  console.log(accounts.metadata);
 
   return (
     <div id='EmailAddresses'>
@@ -66,14 +83,26 @@ export default function EmailAddresses({ user }) {
                 <Row>
                   <Col>
                     <Form.Group className={isMobile ? 'm-form-group' : ''}>
-                      <Form.Label>Account email</Form.Label>
+                      <Form.Label>
+                        Account email
+                        {accounts.map((account, index) => (
+                          <h4
+                            key={account.id}
+                            style={{
+                              fontSize: '14px',
+                              marginBottom: '0px',
+                              // display: isMobile ? 'none' : '',
+                            }}
+                          >
+                            &nbsp;{' '}
+                            {user && user.email !== account.email
+                              ? '(not used for scraping)'
+                              : ''}
+                          </h4>
+                        ))}
+                      </Form.Label>
                       <div className='main-email'>
                         <h4>{user && user.email}</h4>
-                        {isDiffEmail && (
-                          <h4 style={{ display: isMobile ? 'none' : '' }}>
-                            &nbsp; (not used for scraping)
-                          </h4>
-                        )}
                       </div>
                     </Form.Group>
                   </Col>
@@ -106,6 +135,33 @@ export default function EmailAddresses({ user }) {
                             <div className='additional-email'>
                               <h4>{account.email}</h4>
                             </div>
+                            {account.valid == 0 && (
+                              <>
+                                <small className='form-text p-0 m-0 noted-red'>
+                                  {account.metadata.errMsg} Please{' '}
+                                  <a
+                                    className='noted-red'
+                                    style={{
+                                      fontSize: '0.8125rem',
+                                      color: 'red',
+                                      textDecoration: 'underline',
+                                    }}
+                                    href='/request-permission'
+                                  >
+                                    authorize noted
+                                  </a>{' '}
+                                  again.
+                                </small>
+                              </>
+                            )}
+                            {!account.valid == 0 &&
+                              account.metaData.errMsg.length > 0 && (
+                                <>
+                                  <small className='form-text p-0 m-0 noted-red'>
+                                    {account.metadata.errMsg}
+                                  </small>
+                                </>
+                              )}
                           </Form.Group>
                         </Col>
                       </Row>
