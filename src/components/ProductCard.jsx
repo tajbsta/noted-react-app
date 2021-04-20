@@ -189,9 +189,14 @@ function ProductCard({
               id='mobile-product-info'
               style={{
                 marginTop: '5px',
-                width: isMobile && removable && !selectable ? '83%' : '',
+                width:
+                  (isMobile && removable && !selectable) || confirmed
+                    ? '83%'
+                    : '',
                 maxWidth:
-                  isMobileSmaller && removable && !selectable ? '75%' : '',
+                  (isMobileSmaller && removable && !selectable) || confirmed
+                    ? '75%'
+                    : '',
               }}
             >
               <div className='details'>
@@ -230,7 +235,7 @@ function ProductCard({
                       <Col
                         className='col-days-left m-col-d'
                         style={{
-                          paddingRight: '4px',
+                          // paddingRight: '4px',
                           width: 'fit-content !important',
                         }}
                       >
