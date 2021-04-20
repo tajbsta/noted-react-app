@@ -67,14 +67,12 @@ export default function EditProductModal(props) {
     acceptedFiles.forEach(async (file) => {
       const reader = new FileReader();
 
-      // eslint-disable-next-line no-console
       reader.onabort = () => console.log('file reading was aborted');
-      // eslint-disable-next-line no-console
+
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = () => {
         // Do whatever with the file contents
         const binaryStr = reader.result;
-        // eslint-disable-next-line no-console
         console.log(binaryStr);
       };
       reader.readAsArrayBuffer(file);

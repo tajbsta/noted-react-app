@@ -103,6 +103,7 @@
       outline: none !important;
       border: none;
     }
+
     &:hover {
       color: #b079da;
     }
@@ -122,6 +123,89 @@
 
     @media (max-width: 991px) {
       min-height: auto;
+      width: 100%;
+    }
+  }
+
+  .payment-trigger {
+    .arrow-container {
+      margin-left: 3px;
+    }
+  }
+
+  .pick-up-address-title-mobile,
+  .payment-details-mobile {
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
+  .arrow-container {
+    margin-bottom: 2%;
+  }
+
+  .payment-card-logo {
+    width: 38px;
+  }
+
+
+  .address-actions {
+    display: flex;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 99999;
+
+    .text-instructions {
+      font-family: 'Sofia Pro';
+      font-size: 14px;
+      line-height: 16px;
+      color: #570097;
+    }
+  }
+
+  .payment-method-title-mobile {
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
+  .pick-up-address {
+    @media (max-width: 1025px) {
+      display: none;
+    }
+  }
+
+
+  .pick-up-address-mobile {
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
+  .payment-method {
+    @media (max-width: 1025px) {
+      display: none;
+    }
+  }
+
+  .ending-text {
+    display: flex;
+    align-items: center;
+  }
+
+  .return-schedule-mobile {
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
+  .return-schedule-trigger {
+    .arrow-container {
+      width: auto;
+      margin-top: 10px;
+      position: absolute;
+      right: 1vh;
     }
   }
 
@@ -297,6 +381,7 @@
       box-shadow: none;
     }
   }
+
   // End of Right Card
 
   // Your Products to return section
@@ -392,6 +477,7 @@
     height: 40px;
     color: #ffffff;
   }
+
   // END OF PICKUP CONFIRMED
 
   // START OF MODIFY ORDER
@@ -453,6 +539,7 @@
     align-items: center;
     justify-content: center;
     height: 60px;
+
     @media (max-width: 991px) {
       width: 32px;
       height: 32px !important;
@@ -460,6 +547,7 @@
       height: 64px;
     }
   }
+
   // END OF MODIFY ORDER
 
   .m-add-product {
@@ -515,6 +603,7 @@
 // Empty Address and Payment
 #EmptyState {
   padding-top: 52px;
+
   @media (max-width: 991px) {
     padding-top: 8px;
   }
