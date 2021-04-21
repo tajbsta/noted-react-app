@@ -18,6 +18,8 @@ function RightCard({ userId }) {
   const { items } = useSelector(({ cart: { items } }) => ({
     items,
   }));
+
+  console.log(items);
   const previousCartItems = usePrevious(items);
 
   const [pricing, setPricing] = useState({
@@ -157,12 +159,9 @@ function RightCard({ userId }) {
                   <>
                     <div className='p-0 ml-1 d-inline-flex align-center'>
                       <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
-                        {pricing.totalReturns == 0 &&
-                          pricing.totalDonations == 0 && (
-                            <div>Total past 90 days</div>
-                          )}
+                        {isEmpty(items) && <div>Total past 90 days</div>}
 
-                        {pricing && (
+                        {!isEmpty(items) && (
                           <div>
                             {pricing.totalReturns + pricing.totalDonations}{' '}
                             {pricing.totalReturns + pricing.totalDonations == 1

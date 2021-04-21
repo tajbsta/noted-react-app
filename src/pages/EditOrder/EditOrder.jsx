@@ -10,6 +10,7 @@ import { FOR_RETURN, LAST_CALL } from '../../constants/actions/runtime';
 import InReturnBox from './components/InReturnBox';
 import { updateCurrentOrder } from '../../actions/runtime.action';
 import { dedupeByKey } from '../../utils/data';
+import { scrollToTop } from '../../utils/window';
 
 function EditOrder({
   location: {
@@ -81,6 +82,7 @@ function EditOrder({
     [...inBoxSelected, ...returnableSelected, ...lastCallSelected].length;
 
   useEffect(() => {
+    scrollToTop();
     const platform = window.navigator.platform;
     const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
 
