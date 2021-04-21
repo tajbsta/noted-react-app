@@ -14,6 +14,7 @@ import AddProductModal from '../../modals/AddProductModal';
 import ScheduledCard from './components/ScheduledCard';
 import Scanning from './components/Scanning';
 import moment from 'moment';
+import { scrollToTop } from '../../utils/window';
 
 const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 
@@ -86,6 +87,7 @@ function DashboardPage() {
   };
 
   useEffect(() => {
+    scrollToTop();
     loadScans();
   }, []);
 

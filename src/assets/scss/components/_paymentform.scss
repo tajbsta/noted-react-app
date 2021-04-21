@@ -42,7 +42,7 @@
   }
 
   .exp-form {
-    display: inline-flex;
+    display: inline-flex !important;
 
     .separator {
       display: flex;
@@ -77,6 +77,23 @@
 
   // Profile page
   .mb-3-profile {
+    margin-bottom: 10px;
+  }
+
+  // MOBILE in checkout
+  .close {
+    box-shadow: none;
+    background-color: #fff;
+  }
+
+  .mobile-payment-form-row {
+    margin: auto !important;
+  }
+
+  .mobile-btn-save-payment {
+    background: #570097;
+    border-radius: 6px;
+    min-width: 138px;
     margin-bottom: 10px;
   }
 }

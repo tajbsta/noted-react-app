@@ -12,6 +12,7 @@ import {
 } from '../../models/formSchema';
 import { getUser } from '../../utils/auth';
 import DatePicker from '../../components/DatePicker';
+import { scrollToTop } from '../../utils/window';
 
 export default function ProfilePage() {
   const [showEditPayment] = useState(true);
@@ -19,6 +20,7 @@ export default function ProfilePage() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    scrollToTop();
     function handleResize() {
       setIsMobile(window.innerWidth <= 1199);
     }

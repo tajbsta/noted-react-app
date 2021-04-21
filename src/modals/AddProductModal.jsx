@@ -21,6 +21,7 @@ export default function AddProductModal(props) {
       productUrl: '',
       vendorTag: '',
       orderDate: '',
+      orderRef: '',
       itemName: '',
       amount: '',
       returnDocument: '',
@@ -32,6 +33,7 @@ export default function AddProductModal(props) {
     productUrl,
     vendorTag,
     orderDate,
+    orderRef,
     itemName,
     amount,
     returnDocument,
@@ -220,6 +222,14 @@ export default function AddProductModal(props) {
                         />
                       </div>
                       {/* {renderInlineError(errors.orderDate)} */}
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Order Ref. #</Form.Label>
+                      <div>
+                        <Form.Control name='order ref' />
+                      </div>
                     </Form.Group>
                   </Col>
                 </Row>

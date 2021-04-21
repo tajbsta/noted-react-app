@@ -256,33 +256,38 @@ function PickUpDetails() {
                         trigger={
                           <div>
                             <Row
-                              className='p-3 mt-2'
+                              className='pl-3 pt-3 mb-2'
                               style={{
                                 display: 'flex',
                                 justifyContent: 'space-between',
                               }}
                             >
                               <Col className='p-0'>
-                                <h4 className='p-0 m-0 sofia-pro postal-name'>
-                                  {addressFormValues.fullName},{' '}
-                                  {addressFormValues.line1}
+                                <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                  {addressFormValues.fullName}
                                 </h4>
                                 {IsAddressOpen && (
                                   <div>
-                                    <h4 className='p-0 m-0 sofia-pro postal-name'>
+                                    <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                      {addressFormValues.line1}
+                                    </h4>
+                                    <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                      {addressFormValues.line2}
+                                    </h4>
+                                    <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
                                       {addressFormValues.city},{' '}
                                       {addressFormValues.state}{' '}
                                       {addressFormValues.zipCode}
                                     </h4>
-                                    <h4 className='p-0 m-0 sofia-pro postal-name'>
+                                    <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
                                       United States
                                     </h4>
                                   </div>
                                 )}
                                 <p
-                                  className='sofia-pro p-0 mb-0 tel'
+                                  className='sofia-pro p-0 mb-0 tel mt-0 pb-1'
                                   style={{
-                                    marginTop: `${IsAddressOpen ? '20px' : ''}`,
+                                    // marginTop: `${IsAddressOpen ? '20px' : ''}`,
                                     transition: 'margin 0.5s',
                                   }}
                                 >
@@ -303,7 +308,7 @@ function PickUpDetails() {
                           </div>
                         }
                       >
-                        <div className='card-body payment-details-card-body m-0 p-0'>
+                        <div className='card-body payment-details-card-body mt-2 mb-2 p-0'>
                           <div className='address-actions'>
                             <h4
                               className='text-instructions'
@@ -382,10 +387,16 @@ function PickUpDetails() {
                         <h4 className='p-0 m-0 sofia-pro line1'>
                           {addressFormValues.line1}
                         </h4>
+                        <h4 className='p-0 m-0 sofia-pro line1'>
+                          {addressFormValues.line2}
+                        </h4>
 
                         <h4 className='p-0 m-0 sofia-pro postal-address'>
-                          {addressFormValues.line2} {addressFormValues.state}{' '}
+                          {addressFormValues.city}, {addressFormValues.state}{' '}
                           {addressFormValues.zipCode}
+                        </h4>
+                        <h4 className='p-0 m-0 sofia-pro line1'>
+                          United States
                         </h4>
                       </div>
                     </div>
@@ -450,14 +461,20 @@ function PickUpDetails() {
                             <h4 className='p-0 m-0 sofia-pro line1'>
                               {addressFormValues.line1}
                             </h4>
+                            <h4 className='p-0 m-0 sofia-pro line2'>
+                              {addressFormValues.line2}
+                            </h4>
 
                             <h4 className='p-0 m-0 sofia-pro postal-address'>
-                              {addressFormValues.line2}{' '}
+                              {addressFormValues.city},{' '}
                               {addressFormValues.state}{' '}
                               {addressFormValues.zipCode}
                             </h4>
+                            <h4 className='p-0 m-0 sofia-pro line1'>
+                              United States
+                            </h4>
                           </div>
-                          <div className='address-actions'>
+                          <div className='address-actions mt-4'>
                             <h4
                               className='text-instructions'
                               onClick={() => setModalShow(true)}

@@ -63,10 +63,12 @@
     font-weight: 400;
     line-height: 19px;
     text-align: left;
+    z-index: 1;
 
     @media (max-width: 991px) {
       line-height: 14px;
       margin-bottom: 0px !important;
+      z-index: inherit;
     }
   }
 

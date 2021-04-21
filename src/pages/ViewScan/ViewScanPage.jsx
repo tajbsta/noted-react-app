@@ -13,6 +13,7 @@ import { clearForm } from '../../actions/runtime.action';
 import { setCartItems } from '../../actions/cart.action';
 import { Link } from 'react-router-dom';
 import { DONATE, RETURNABLE } from '../../constants/actions/runtime';
+import { scrollToTop } from '../../utils/window';
 
 function ViewScanPage() {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ function ViewScanPage() {
   const checkoutTitle = inReturn.length > 0 ? 'returns' : 'donate';
 
   useEffect(() => {
+    scrollToTop();
     const platform = window.navigator.platform;
     const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
 
@@ -95,6 +97,7 @@ function ViewScanPage() {
       })
     );
     dispatch(clearForm());
+    scrollToTop();
   };
 
   const addSelected = (id) => {

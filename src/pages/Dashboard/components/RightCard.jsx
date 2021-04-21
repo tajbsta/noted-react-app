@@ -18,6 +18,7 @@ function RightCard({ userId }) {
   const { items } = useSelector(({ cart: { items } }) => ({
     items,
   }));
+
   const previousCartItems = usePrevious(items);
 
   const [pricing, setPricing] = useState({
@@ -46,6 +47,8 @@ function RightCard({ userId }) {
     // }
     calculateCurrentCartPricing(items);
   }, [items]);
+
+  console.log(items);
 
   const calculateCurrentCartPricing = async (currentItems) => {
     try {
@@ -91,10 +94,15 @@ function RightCard({ userId }) {
         >
           {!isMobile && (
             <div className='p-0 ml-1 d-inline-flex align-center'>
-              <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
-                {pricing.totalReturns > 0
-                  ? 'Total past 90 days'
-                  : ' No Articles'}
+              <h5 className='card-title mb-0 p-3 sofia-pro'>
+                {isEmpty(items) && <div>Total past 90 days</div>}
+
+                {!isEmpty(items) && (
+                  <div>
+                    {items.length} {items.length == 1 ? 'product' : 'products'}{' '}
+                    selected
+                  </div>
+                )}
               </h5>
             </div>
           )}
@@ -156,18 +164,13 @@ function RightCard({ userId }) {
                 {isMobile && (
                   <>
                     <div className='p-0 ml-1 d-inline-flex align-center'>
-                      <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
-                        {pricing.totalReturns == 0 &&
-                          pricing.totalDonations == 0 && (
-                            <div>Total past 90 days</div>
-                          )}
+                      <h5 className='card-title mb-0 p-3 sofia-pro'>
+                        {isEmpty(items) && <div>Total past 90 days</div>}
 
-                        {pricing && (
+                        {!isEmpty(items) && (
                           <div>
-                            {pricing.totalReturns + pricing.totalDonations}{' '}
-                            {pricing.totalReturns + pricing.totalDonations == 1
-                              ? 'product'
-                              : 'products'}{' '}
+                            {items.length}{' '}
+                            {items.length == 1 ? 'product' : 'products'}{' '}
                             selected
                           </div>
                         )}

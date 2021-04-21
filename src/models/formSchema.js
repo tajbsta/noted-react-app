@@ -85,6 +85,7 @@ export const addProductSchema = Yup.object({
     .required('Please enter website'),
   vendorTag: Yup.string().required('Merchant is required'),
   orderDate: Yup.string().required('Order date is required'),
+  orderRefNo: Yup.string().required('Order ref # is required'),
   itemName: Yup.string().required('Product name is required'),
   amount: Yup.number().required('Product\'s amount is required'),
   returnDocument: Yup.object().shape({
@@ -98,6 +99,7 @@ export const editProductSchema = Yup.object({
     .required('Please enter website'),
   vendorTag: Yup.string().required('Merchant is required'),
   orderDate: Yup.string().required('Order date is required'),
+  orderRefNo: Yup.string().required('Order ref # is required'),
   itemName: Yup.string().required('Product name is required'),
   amount: Yup.number().required('Product\'s amount is required'),
   returnDocument: Yup.object().shape({

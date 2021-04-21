@@ -8,6 +8,7 @@ import { Auth } from 'aws-amplify';
 import { get } from 'lodash';
 import { resetPassErrors } from '../library/errors.library';
 import { resetPasswordSchema } from '../models/formSchema';
+import { scrollToTop } from '../utils/window';
 
 export default function ResetPasswordPage(props) {
   const history = useHistory();
@@ -23,6 +24,11 @@ export default function ResetPasswordPage(props) {
   const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordShown(confirmPasswordShown ? false : true);
   };
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   const eyeOff = <EyeOff />;
   const eye = <Eye />;
 

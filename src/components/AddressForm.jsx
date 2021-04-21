@@ -116,7 +116,7 @@ export default function AddressForm({
                               value={fullName || ''}
                               onChange={handleChange}
                             />
-                            {(fullName && fullName.length > 0) ||
+                            {isEmpty(fullName) &&
                               renderInlineError(errors.fullName)}
                           </Form.Group>
                         </Col>
@@ -146,8 +146,7 @@ export default function AddressForm({
                                 </option>
                               ))}
                             </Form.Control>
-                            {(state && state.length > 0) ||
-                              renderInlineError(errors.state)}
+                            {!isEmpty(state) && renderInlineError(errors.state)}
                           </Form.Group>
                         </Col>
                         <Col>
@@ -168,7 +167,7 @@ export default function AddressForm({
                               type='zip code'
                               value={zipCode || ''}
                             />
-                            {(zipCode && zipCode.length > 0) ||
+                            {!isEmpty(zipCode) &&
                               renderInlineError(errors.zipCode)}
                           </Form.Group>
                         </Col>
@@ -184,8 +183,7 @@ export default function AddressForm({
                               onChange={handleChange}
                               value={line1 || ''}
                             />
-                            {(line1 && line1.length > 0) ||
-                              renderInlineError(errors.line1)}
+                            {!isEmpty(line1) && renderInlineError(errors.line1)}
                           </Form.Group>
                         </Col>
                       </Row>
@@ -214,8 +212,7 @@ export default function AddressForm({
                               value={city || ''}
                               onChange={handleChange}
                             />
-                            {(city && city.length > 0) ||
-                              renderInlineError(errors.city)}
+                            {!isEmpty(city) && renderInlineError(errors.city)}
                           </Form.Group>
                         </Col>
                         <Col>
