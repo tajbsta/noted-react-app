@@ -10,6 +10,7 @@ import {
   SERVER_ERROR,
   GOOGLE_AUTH_ACCESS_DENIED,
 } from '../constants/errors/errorCodes';
+import { scrollToTop } from '../utils/window';
 
 export default function Code() {
   const history = useHistory();
@@ -68,6 +69,7 @@ export default function Code() {
     }
   };
   useEffect(() => {
+    scrollToTop();
     verifyUser();
   }, []);
   return (

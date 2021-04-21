@@ -9,6 +9,7 @@ import qs from 'qs';
 import { scraperGmailErrors } from '../library/errors.library';
 import { get, isEmpty } from 'lodash';
 import { timeout } from '../utils/time';
+import { scrollToTop } from '../utils/window';
 
 export default function AuthorizePage() {
   const history = useHistory();
@@ -31,6 +32,7 @@ export default function AuthorizePage() {
   };
 
   useEffect(() => {
+    scrollToTop();
     // setErrMsg(null);
 
     const query = qs.parse(history.location.search, {

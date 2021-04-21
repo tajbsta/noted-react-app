@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail } from 'react-feather';
 import { Link, useHistory } from 'react-router-dom';
 import { Form, Spinner } from 'react-bootstrap';
@@ -8,12 +8,17 @@ import { Auth } from 'aws-amplify';
 import { forgotPassErrors } from '../library/errors.library';
 import { get } from 'lodash';
 import { forgotPasswordSchema } from '../models/formSchema';
+import { scrollToTop } from '../utils/window';
 
 export default function ForgotPasswordPage() {
   const history = useHistory();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   const { errors, handleChange, values } = useFormik({
     initialValues: {
