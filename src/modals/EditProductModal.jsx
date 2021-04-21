@@ -85,7 +85,7 @@ export default function EditProductModal(props) {
     return (
       <li
         key={file.path}
-        className='list-item'
+        className='edit-list-item'
         style={{ listStyle: 'none', display: 'flex', alignItems: 'center' }}
       >
         {getFileTypeIcon(file.path)}
