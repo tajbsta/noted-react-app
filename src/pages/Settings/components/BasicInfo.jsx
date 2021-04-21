@@ -7,6 +7,7 @@ import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../../models/formSchema';
 import { updateUserAttributes } from '../../../utils/auth';
 import { AlertCircle, CheckCircle } from 'react-feather';
+import { isEmpty } from 'lodash-es';
 
 export default function BasicInfo({ user }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -168,8 +169,7 @@ export default function BasicInfo({ user }) {
                         {...noBorder}
                         onChange={handleChange}
                       />
-                      {(fullName && fullName.length > 0) ||
-                        renderInlineError(errors.fullName)}
+                      {!isEmpty(fullName) && renderInlineError(errors.fullName)}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -201,8 +201,7 @@ export default function BasicInfo({ user }) {
                           ))}
                         </Form.Control>
                       )}
-                      {(state && state.length > 0) ||
-                        renderInlineError(errors.state)}
+                      {!isEmpty(state) && renderInlineError(errors.state)}
 
                       {!isEditing && (
                         <Form.Control
@@ -233,8 +232,7 @@ export default function BasicInfo({ user }) {
                         value={zipCode || ''}
                         {...noBorder}
                       />
-                      {(zipCode && zipCode.length > 0) ||
-                        renderInlineError(errors.zipCode)}
+                      {!isEmpty(zipCode) && renderInlineError(errors.zipCode)}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -250,8 +248,7 @@ export default function BasicInfo({ user }) {
                         value={line1 || ''}
                         {...noBorder}
                       />
-                      {(line1 && line1.length > 0) ||
-                        renderInlineError(errors.line1)}
+                      {!isEmpty(line1) && renderInlineError(errors.line1)}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -282,8 +279,7 @@ export default function BasicInfo({ user }) {
                         onChange={handleChange}
                         {...noBorder}
                       />
-                      {(city && city.length > 0) ||
-                        renderInlineError(errors.city)}
+                      {!isEmpty(city) && renderInlineError(errors.city)}
                     </Form.Group>
                   </Col>
                   <Col>
@@ -306,7 +302,8 @@ export default function BasicInfo({ user }) {
                         maxLength={13}
                         {...noBorder}
                       />
-                      {renderInlineError(errors.phoneNumber)}
+                      {!isEmpty(phoneNumber) &&
+                        renderInlineError(errors.phoneNumber)}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -370,8 +367,7 @@ export default function BasicInfo({ user }) {
                         {...noBorder}
                         onChange={handleChange}
                       />
-                      {(fullName && fullName.length > 0) ||
-                        renderInlineError(errors.fullName)}
+                      {!isEmpty(fullName) && renderInlineError(errors.fullName)}
                     </Form.Group>
                   </Col>
                   <Col>
@@ -401,8 +397,7 @@ export default function BasicInfo({ user }) {
                           ))}
                         </Form.Control>
                       )}
-                      {(state && state.length > 0) ||
-                        renderInlineError(errors.state)}
+                      {!isEmpty(state) && renderInlineError(errors.state)}
 
                       {!isEditing && (
                         <Form.Control
@@ -433,8 +428,7 @@ export default function BasicInfo({ user }) {
                         value={zipCode || ''}
                         {...noBorder}
                       />
-                      {(zipCode && zipCode.length > 0) ||
-                        renderInlineError(errors.zipCode)}
+                      {!isEmpty(zipCode) && renderInlineError(errors.zipCode)}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -451,8 +445,7 @@ export default function BasicInfo({ user }) {
                         value={line1 || ''}
                         {...noBorder}
                       />
-                      {(line1 && line1.length > 0) ||
-                        renderInlineError(errors.line1)}
+                      {!isEmpty(line1) && renderInlineError(errors.line1)}
                     </Form.Group>
                   </Col>
                   <Col>
@@ -466,8 +459,7 @@ export default function BasicInfo({ user }) {
                         onChange={handleChange}
                         {...noBorder}
                       />
-                      {(city && city.length > 0) ||
-                        renderInlineError(errors.city)}
+                      {!isEmpty(city) && renderInlineError(errors.city)}
                     </Form.Group>
                   </Col>
                   <Col>
@@ -490,7 +482,8 @@ export default function BasicInfo({ user }) {
                         maxLength={13}
                         {...noBorder}
                       />
-                      {renderInlineError(errors.phoneNumber)}
+                      {!isEmpty(phoneNumber) &&
+                        renderInlineError(errors.phoneNumber)}
                     </Form.Group>
                   </Col>
                 </Row>
