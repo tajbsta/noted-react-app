@@ -37,8 +37,6 @@ export default function AuthorizePage() {
       ignoreQueryPrefix: true,
     });
 
-    console.log({ query });
-
     if (query.error) {
       setErrMsg(
         get(
@@ -49,8 +47,8 @@ export default function AuthorizePage() {
       );
     }
 
-    console.log({ query });
-    console.log({ errMsg });
+    // console.log({ query });
+    // console.log({ errMsg });
     getAuthUrl();
   }, []);
 

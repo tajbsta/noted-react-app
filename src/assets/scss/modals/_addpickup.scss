@@ -1,11 +1,11 @@
 #AddPickupModal {
   font-family: 'Sofia Pro';
-  height: 312px;
-  width: 528px;
   border-radius: 8px;
 
   .modal-content {
     padding: 32px 40px;
+    min-height: 312px;
+    min-width: 528px;
   }
 
   h1,

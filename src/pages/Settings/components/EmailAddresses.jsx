@@ -41,13 +41,30 @@ export default function EmailAddresses({ user }) {
     }
   };
 
-  const isDiffEmail = user && user.email !== accounts.email;
-
   useEffect(() => {
     if (user) {
       fetchAccounts();
     }
   }, [user]);
+
+  const renderValidError = () => (
+    <small className='form-text p-0 m-0 noted-red'>
+      Email is not valid anymore. Please{' '}
+      <a
+        className='noted-red'
+        style={{
+          fontSize: '0.8125rem',
+          color: 'red',
+          textDecoration: 'underline',
+        }}
+        href='/request-permission'
+      >
+        authorize noted
+      </a>{' '}
+      again.
+    </small>
+  );
+  console.log(accounts.metadata);
 
   return (
     <div id='EmailAddresses'>
@@ -66,14 +83,16 @@ export default function EmailAddresses({ user }) {
                 <Row>
                   <Col>
                     <Form.Group className={isMobile ? 'm-form-group' : ''}>
-                      <Form.Label>Account email</Form.Label>
+                      <Form.Label>
+                        Account email{' '}
+                        {user &&
+                          !accounts.find(
+                            (account) => account.email === user.email
+                          ) &&
+                          '(not used for scraping)'}
+                      </Form.Label>
                       <div className='main-email'>
                         <h4>{user && user.email}</h4>
-                        {isDiffEmail && (
-                          <h4 style={{ display: isMobile ? 'none' : '' }}>
-                            &nbsp; (not used for scraping)
-                          </h4>
-                        )}
                       </div>
                     </Form.Group>
                   </Col>
@@ -89,7 +108,7 @@ export default function EmailAddresses({ user }) {
                     </div>
                   </>
                 )}
-                {!loading && (
+                {!loading && user && (
                   <>
                     {accounts.map((account, index) => (
                       <Row key={account.id}>
@@ -106,6 +125,26 @@ export default function EmailAddresses({ user }) {
                             <div className='additional-email'>
                               <h4>{account.email}</h4>
                             </div>
+                            {account.valid == 0 && (
+                              <>
+                                <small className='form-text p-0 m-0 noted-red'>
+                                  {account.metadata && account.metadata.errMsg}{' '}
+                                  Please delete email and{' '}
+                                  <a
+                                    className='noted-red'
+                                    style={{
+                                      fontSize: '0.8125rem',
+                                      color: 'red',
+                                      textDecoration: 'underline',
+                                    }}
+                                    href='/request-permission'
+                                  >
+                                    authorize noted
+                                  </a>{' '}
+                                  again.
+                                </small>
+                              </>
+                            )}
                           </Form.Group>
                         </Col>
                       </Row>

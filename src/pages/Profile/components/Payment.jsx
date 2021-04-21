@@ -103,7 +103,7 @@ export default function Payment() {
           }
           overflowWhenOpen='visible'
         >
-          <div className='card shadow-sm p-3 w-840 mt-4 ml-3'>
+          <div className='card shadow-sm p-3 max-w-840 mt-4 ml-3'>
             {!isEditing && (
               <PaymentMethods
                 setIsEditing={setIsEditing}

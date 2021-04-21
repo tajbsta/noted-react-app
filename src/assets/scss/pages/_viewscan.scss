@@ -63,7 +63,7 @@
   }
 
   .card-height {
-    height: 232px;
+    min-height: 232px;
   }
 
   .section-title {
@@ -148,7 +148,6 @@
     width: 38px;
   }
 
-
   .address-actions {
     display: flex;
     width: 100%;
@@ -175,7 +174,6 @@
       display: none;
     }
   }
-
 
   .pick-up-address-mobile {
     @media (min-width: 1024px) {

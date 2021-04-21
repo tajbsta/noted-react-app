@@ -9,6 +9,8 @@ import moment from 'moment';
 function PickUpConfirmed({ orderId = '' }) {
   const history = useHistory();
   const [currentOrder, setCurrentOrder] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
     const platform = window.navigator.platform;
     const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
@@ -45,8 +47,19 @@ function PickUpConfirmed({ orderId = '' }) {
     history.push('/view-return', { scheduledReturnId: orderId });
   };
 
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   return (
-    <div className='card shadow-sm w-840 card-height'>
+    <div className='card shadow-sm max-w-840 card-height'>
       <div className='card-body pt-4 pb-3 pl-4 m-0'>
         <Row>
           <div className='col-sm-12 p-0'>
@@ -68,7 +81,10 @@ function PickUpConfirmed({ orderId = '' }) {
             <p className='sofia-pro mb-0 text-14'>
               We have sent you a confirmation by email.
             </p>
-            <p className='sofia-pro text-14'>
+            <p
+              className='sofia-pro text-14'
+              style={{ marginBottom: isMobile ? '32px' : '' }}
+            >
               If you wish to cancel or modify this order:
               <span
                 className='ml-1 noted-purple sofia-pro pick-up-edit-or-btn text-14'
@@ -78,17 +94,35 @@ function PickUpConfirmed({ orderId = '' }) {
               </span>
             </p>
           </div>
-          <div className='col-sm-3'>
-            <button
-              className='btn btn-green back-to-products-btn'
-              onClick={() => history.push('/dashboard')}
-            >
-              <span className='sofia-pro mb-0 back-to-products-text '>
-                Back to My Products
-              </span>
-            </button>
-          </div>
+          {!isMobile && (
+            <>
+              <div className='col-sm-3'>
+                <button
+                  className='btn btn-green back-to-products-btn'
+                  onClick={() => history.push('/dashboard')}
+                >
+                  <span className='sofia-pro mb-0 back-to-products-text '>
+                    Back to My Products
+                  </span>
+                </button>
+              </div>
+            </>
+          )}
         </Row>
+        {isMobile && (
+          <>
+            <Row>
+              <button
+                className='btn btn-green'
+                onClick={() => history.push('/dashboard')}
+              >
+                <span className='sofia-pro mb-0 back-to-products-text '>
+                  Back to My Products
+                </span>
+              </button>
+            </Row>
+          </>
+        )}
       </div>
     </div>
   );

@@ -31,6 +31,7 @@ function DashboardPage() {
     [RETURNABLE]: [],
     [DONATE]: [],
   });
+  const [isMobile, setIsMobile] = useState(false);
 
   async function loadScans() {
     dispatch(clearSearchQuery());
@@ -92,6 +93,17 @@ function DashboardPage() {
     history.push('/request-permission');
   };
 
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   return (
     <div id='DashboardPage'>
       <div className='container mt-6 main-mobile-dashboard'>
@@ -113,10 +125,14 @@ function DashboardPage() {
             )} */}
             {(loading || showScanning) && (
               <>
-                <h3 className='sofia-pro text-16'>
+                <h3 className={`sofia-pro text-16 ${isMobile ? 'ml-3' : ''}`}>
                   Your online purchases - Last 90 Days
                 </h3>
-                <div className='card shadow-sm scanned-item-card mb-2 p-5 spinner-container'>
+                <div
+                  className={`card shadow-sm scanned-item-card mb-2 p-5 spinner-container ${
+                    isMobile ? 'ml-3 mr-3' : ''
+                  }`}
+                >
                   {showScanning && <Scanning />}
                   {loading && (
                     <Spinner className='dashboard-spinner' animation='border' />
