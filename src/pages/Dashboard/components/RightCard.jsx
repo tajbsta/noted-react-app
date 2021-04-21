@@ -84,7 +84,11 @@ function RightCard({ userId }) {
           minWidth: '248px',
         }}
       >
-        <div className='card shadow-sm' id={loading ? 'overlay' : ''}>
+        <div
+          className='card shadow-sm'
+          style={{ marginBottom: isMobile ? '0px' : '' }}
+          id={loading ? 'overlay' : ''}
+        >
           {!isMobile && (
             <div className='p-0 ml-1 d-inline-flex align-center'>
               <h5 className='card-title mb-0 p-3 sofia-pro card-title'>

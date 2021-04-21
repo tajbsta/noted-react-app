@@ -127,7 +127,11 @@ export default function AuthorizePage() {
         </Row>
       </Container>
       {/* MOBILE VIEW */}
-      <Container className='main-body-mobile' fluid='lg'>
+      <Container
+        className='main-body-mobile'
+        fluid='lg'
+        style={{ marginTop: '2.5rem' }}
+      >
         {errMsg && (
           <div
             className='alert alert-danger fade show'
