@@ -190,11 +190,13 @@ function ProductCard({
               style={{
                 marginTop: '5px',
                 width:
-                  (isMobile && removable && !selectable) || confirmed
+                  (isMobile && removable && !selectable) ||
+                  (isMobile && confirmed)
                     ? '83%'
                     : '',
                 maxWidth:
-                  (isMobileSmaller && removable && !selectable) || confirmed
+                  (isMobileSmaller && removable && !selectable) ||
+                  (isMobileSmaller && confirmed)
                     ? '75%'
                     : '',
               }}
