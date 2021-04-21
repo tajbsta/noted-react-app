@@ -12,6 +12,7 @@ import { updateOrders } from '../../actions/auth.action';
 import { useHistory } from 'react-router';
 import Row from '../../components/Row';
 import { RETURNABLE } from '../../constants/actions/runtime';
+import { scrollToTop } from '../../utils/window';
 
 function ViewConfirmedReturn({
   location: {
@@ -79,6 +80,7 @@ function ViewConfirmedReturn({
   });
 
   useEffect(() => {
+    scrollToTop();
     if (get(scheduledReturn, 'items', []).length === 0) {
       /**
        * CANCELS ORDER ENTIRELY

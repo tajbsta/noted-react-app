@@ -7,6 +7,7 @@ import DeleteAccount from './components/DeleteAccount';
 import UserInfo from './../Profile/components/UserInfo';
 import { Link } from 'react-scroll';
 import { getUser } from '../../utils/auth';
+import { scrollToTop } from '../../utils/window';
 
 export default function SettingsPage() {
   const [user, setUser] = useState({});
@@ -14,6 +15,7 @@ export default function SettingsPage() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    scrollToTop();
     function handleResize() {
       setIsMobile(window.innerWidth <= 991);
     }
