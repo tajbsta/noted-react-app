@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'react-feather';
 import { Link, useHistory } from 'react-router-dom';
 import { Form, Spinner } from 'react-bootstrap';
@@ -7,6 +7,7 @@ import { Auth } from 'aws-amplify';
 import { signInErrors } from '../library/errors.library';
 import { get } from 'lodash';
 import { Eye, EyeOff } from 'react-feather';
+import { scrollToTop } from '../utils/window';
 
 export default function LoginPage() {
   let history = useHistory();
@@ -18,6 +19,11 @@ export default function LoginPage() {
   const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
   };
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   const eyeOff = <EyeOff />;
   const eye = <Eye />;
 

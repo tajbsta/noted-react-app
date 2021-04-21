@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mail, Eye, EyeOff } from 'react-feather';
 import { Link, useHistory } from 'react-router-dom';
 import { Form, Spinner } from 'react-bootstrap';
@@ -8,6 +8,7 @@ import { signUpErrors } from '../library/errors.library';
 import { get } from 'lodash';
 import { useFormik } from 'formik';
 import { registerSchema } from '../models/formSchema';
+import { scrollToTop } from '../utils/window';
 
 export default function RegisterPage() {
   const history = useHistory();
@@ -17,6 +18,11 @@ export default function RegisterPage() {
   const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
   };
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   const eyeOff = <EyeOff />;
   const eye = <Eye />;
 
