@@ -99,11 +99,7 @@ function RightCard({ userId }) {
 
                 {!isEmpty(items) && (
                   <div>
-                    {pricing.totalReturns + pricing.totalDonations > 0 &&
-                      pricing.totalReturns + pricing.totalDonations}{' '}
-                    {pricing.totalReturns + pricing.totalDonations == 1
-                      ? 'product'
-                      : 'products'}{' '}
+                    {items.length} {items.length == 1 ? 'product' : 'products'}{' '}
                     selected
                   </div>
                 )}
