@@ -87,13 +87,26 @@ function RightCard({ userId }) {
           minWidth: '248px',
         }}
       >
-        <div className='card shadow-sm' id={loading ? 'overlay' : ''}>
+        <div
+          className='card shadow-sm'
+          style={{ marginBottom: isMobile ? '0px' : '' }}
+          id={loading ? 'overlay' : ''}
+        >
           {!isMobile && (
             <div className='p-0 ml-1 d-inline-flex align-center'>
-              <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
-                {pricing.totalReturns > 0
-                  ? 'Total past 90 days'
-                  : ' No Articles'}
+              <h5 className='card-title mb-0 p-3 sofia-pro'>
+                {isEmpty(items) && <div>Total past 90 days</div>}
+
+                {!isEmpty(items) && (
+                  <div>
+                    {pricing.totalReturns + pricing.totalDonations > 0 &&
+                      pricing.totalReturns + pricing.totalDonations}{' '}
+                    {pricing.totalReturns + pricing.totalDonations == 1
+                      ? 'product'
+                      : 'products'}{' '}
+                    selected
+                  </div>
+                )}
               </h5>
             </div>
           )}
@@ -155,7 +168,7 @@ function RightCard({ userId }) {
                 {isMobile && (
                   <>
                     <div className='p-0 ml-1 d-inline-flex align-center'>
-                      <h5 className='card-title mb-0 p-3 sofia-pro card-title'>
+                      <h5 className='card-title mb-0 p-3 sofia-pro'>
                         {isEmpty(items) && <div>Total past 90 days</div>}
 
                         {!isEmpty(items) && (

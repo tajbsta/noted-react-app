@@ -3,10 +3,13 @@ import { Col, Row, Accordion, Card, Button } from 'react-bootstrap';
 import Collapsible from 'react-collapsible';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import ReturnScore from '../../../components/ReturnsScore';
+import CancelOrderModal from './../../../modals/CancelOrderModal';
 
 export default function ScheduledReturn() {
   const [activeKey, setActiveKey] = useState('1');
   const products = [ProductPlaceholder, ProductPlaceholder, ProductPlaceholder];
+  const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
+
   const list = products.map((product) => (
     <li key={product}>
       <img src={ProductPlaceholder} />
@@ -145,10 +148,19 @@ export default function ScheduledReturn() {
                       <h4 className='sofia-pro product-price mt-1'>{`1 item`}</h4>
                     </Row>
                     <Row className='cancel-action-container'>
-                      <button className='btn btn-show p-0  m-0'>
+                      <button
+                        className='btn btn-show p-0 m-0'
+                        onClick={() => setShowCancelOrderModal(true)}
+                      >
                         Cancel return
                       </button>
                     </Row>
+                    <CancelOrderModal
+                      show={showCancelOrderModal}
+                      onHide={() => {
+                        setShowCancelOrderModal(false);
+                      }}
+                    />
                   </Col>
                 </Row>
               </div>

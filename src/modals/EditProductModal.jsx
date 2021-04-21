@@ -85,7 +85,7 @@ export default function EditProductModal(props) {
     return (
       <li
         key={file.path}
-        className='list-item'
+        className='edit-list-item'
         style={{ listStyle: 'none', display: 'flex', alignItems: 'center' }}
       >
         {getFileTypeIcon(file.path)}
@@ -233,6 +233,14 @@ export default function EditProductModal(props) {
                           }
                           defaultValue={moment(orderDate).toISOString()}
                         />
+                      </div>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Order Ref. #</Form.Label>
+                      <div>
+                        <Form.Control name='order ref' />
                       </div>
                     </Form.Group>
                   </Col>

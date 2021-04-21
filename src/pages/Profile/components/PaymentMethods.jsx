@@ -25,7 +25,7 @@ export default function PaymentMethods({ setIsEditing, setFieldValue }) {
       {/* <hr /> */}
       {isEmpty(paymentMethods) && (
         <div className='empty-payment-methods'>
-          <h5 className='empty-payment-methods-text text-14'>
+          <h5 className='empty-payment-methods-text text-14 text-center'>
             No saved payment method here yet. Please add a new one.
           </h5>
         </div>

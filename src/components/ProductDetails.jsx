@@ -44,7 +44,7 @@ function ProductDetails({ item, isHovering = false }) {
 
   return (
     <div
-      className={`col-sm-7 p-0 mt-1 p-details ml-2 ${
+      className={`col-sm-7 p-0 mt-1 p-details ml-3 ${
         orderViews.indexOf(pageLocation) != -1 ? 'scheduled-height' : ''
       }`}
     >
