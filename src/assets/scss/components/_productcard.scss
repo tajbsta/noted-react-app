@@ -63,6 +63,7 @@
     font-weight: 400;
     line-height: 19px;
     text-align: left;
+    z-index: 999999999 !important;
 
     @media (max-width: 991px) {
       line-height: 14px;

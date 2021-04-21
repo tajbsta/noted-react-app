@@ -1,11 +1,13 @@
-import React from 'react';
-import Row from './Row';
+import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Overlay, Tooltip, Row } from 'react-bootstrap';
 
 function ProductDetails({ item, isHovering = false }) {
   const history = useHistory();
   const pageLocation = history.location.pathname;
   const orderViews = ['/view-return', '/view-scan'];
+  const [show, setShow] = useState(false);
+  const target = useRef(null);
 
   const toTitleCase = (str) => {
     let replacedDash = str.replace('-', ' ');
@@ -29,6 +31,15 @@ function ProductDetails({ item, isHovering = false }) {
   const truncatedName = truncateProductNameInDesktop(formattedProductName);
 
   const inDashboard = ['/dashboard'].includes(pageLocation);
+
+  const onMouseOver = () => {
+    setShow(true);
+  };
+
+  const onMouseLeave = () => {
+    setShow(false);
+  };
+
   return (
     <div
       className={`col-sm-7 p-0 mt-1 p-details ${
@@ -41,7 +52,22 @@ function ProductDetails({ item, isHovering = false }) {
         </h4>
       </Row>
       <Row>
-        <h5 className='sofia-pro mb-2 product-name'>{truncatedName}</h5>
+        <h5
+          className='sofia-pro mb-2 product-name'
+          id='name'
+          ref={target}
+          onMouseOver={onMouseOver}
+          onMouseLeave={onMouseLeave}
+        >
+          {truncatedName}
+        </h5>
+        <Overlay target={target.current} show={show} placement='right'>
+          {(props) => (
+            <Tooltip id='overlay-example' {...props}>
+              {formattedProductName}
+            </Tooltip>
+          )}
+        </Overlay>
       </Row>
       <Row>
         <h4 className='sofia-pro mb-0 product-price'>
