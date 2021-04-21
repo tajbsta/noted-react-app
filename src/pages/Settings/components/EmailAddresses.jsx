@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { getAccounts } from '../../../utils/accountsApi';
 import { Spinner } from 'react-bootstrap';
+import DeleteEmailModal from '../../../modals/DeleteEmailModal';
 
 export default function EmailAddresses({ user }) {
   const [modalShow, setModalShow] = useState(false);
@@ -10,6 +11,7 @@ export default function EmailAddresses({ user }) {
   const [loading, setLoading] = useState(true);
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
+  const [modalDeleteShow, setModalDeleteShow] = useState(false);
 
   useEffect(() => {
     function handleResize() {
@@ -64,7 +66,15 @@ export default function EmailAddresses({ user }) {
       again.
     </small>
   );
-  console.log(accounts.metadata);
+
+  const deleteSuccess = (id) => {
+    const list = accounts;
+
+    setAccounts(list.filter((account) => account.id !== id));
+    setModalDeleteShow(false);
+
+    // TODO: alert delete success here
+  };
 
   return (
     <div id='EmailAddresses'>
@@ -84,22 +94,12 @@ export default function EmailAddresses({ user }) {
                   <Col>
                     <Form.Group className={isMobile ? 'm-form-group' : ''}>
                       <Form.Label>
-                        Account email
-                        {accounts.map((account, index) => (
-                          <h4
-                            key={account.id}
-                            style={{
-                              fontSize: '14px',
-                              marginBottom: '0px',
-                              // display: isMobile ? 'none' : '',
-                            }}
-                          >
-                            &nbsp;{' '}
-                            {user && user.email !== account.email
-                              ? '(not used for scraping)'
-                              : ''}
-                          </h4>
-                        ))}
+                        Account email{' '}
+                        {user &&
+                          !accounts.find(
+                            (account) => account.email === user.email
+                          ) &&
+                          '(not used for scraping)'}
                       </Form.Label>
                       <div className='main-email'>
                         <h4>{user && user.email}</h4>
@@ -118,54 +118,63 @@ export default function EmailAddresses({ user }) {
                     </div>
                   </>
                 )}
-                {!loading && (
+                {!loading && user && (
                   <>
-                    {accounts.map((account, index) => (
-                      <Row key={account.id}>
-                        <Col>
-                          <Form.Group
-                            className={isMobile ? 'm-form-group' : ''}
-                          >
-                            <div className='title-group'>
-                              <Form.Label>Email #{index + 1}</Form.Label>
-                              <Button className='btn delete-email'>
-                                Delete email
-                              </Button>
-                            </div>
-                            <div className='additional-email'>
-                              <h4>{account.email}</h4>
-                            </div>
-                            {account.valid == 0 && (
-                              <>
-                                <small className='form-text p-0 m-0 noted-red'>
-                                  {account.metadata.errMsg} Please{' '}
-                                  <a
-                                    className='noted-red'
-                                    style={{
-                                      fontSize: '0.8125rem',
-                                      color: 'red',
-                                      textDecoration: 'underline',
-                                    }}
-                                    href='/request-permission'
-                                  >
-                                    authorize noted
-                                  </a>{' '}
-                                  again.
-                                </small>
-                              </>
-                            )}
-                            {!account.valid == 0 &&
-                              account.metaData.errMsg.length > 0 && (
+                    {accounts
+                      .filter((account) => account.email !== user.email)
+                      .map((account, index) => (
+                        <Row key={account.id}>
+                          <Col>
+                            <Form.Group
+                              className={isMobile ? 'm-form-group' : ''}
+                            >
+                              <div className='title-group'>
+                                <Form.Label>Email #{index + 1}</Form.Label>
+                                <Button
+                                  className='btn delete-email'
+                                  onClick={() => setModalDeleteShow(true)}
+                                >
+                                  Delete email
+                                </Button>
+                                <DeleteEmailModal
+                                  show={modalDeleteShow}
+                                  account={account}
+                                  deletesuccess={() => {
+                                    deleteSuccess(account.id);
+                                  }}
+                                  onHide={() => {
+                                    setModalDeleteShow(false);
+                                  }}
+                                />
+                              </div>{' '}
+                              <div className='additional-email'>
+                                <h4>{account.email}</h4>
+                              </div>
+                              {account.valid == 0 && (
                                 <>
                                   <small className='form-text p-0 m-0 noted-red'>
-                                    {account.metadata.errMsg}
+                                    {account.metadata &&
+                                      account.metadata.errMsg}{' '}
+                                    Please delete email and
+                                    <a
+                                      className='noted-red'
+                                      style={{
+                                        fontSize: '0.8125rem',
+                                        color: 'red',
+                                        textDecoration: 'underline',
+                                      }}
+                                      href='/request-permission'
+                                    >
+                                      authorize noted
+                                    </a>{' '}
+                                    again.
                                   </small>
                                 </>
                               )}
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                    ))}
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                      ))}
                   </>
                 )}
                 <Row className={isMobile ? 'm-button-row' : 'button-row'}>
