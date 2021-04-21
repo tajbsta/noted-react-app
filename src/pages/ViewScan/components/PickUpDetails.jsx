@@ -256,7 +256,7 @@ function PickUpDetails() {
                         trigger={
                           <div>
                             <Row
-                              className='pl-3 pt-3 mt-2'
+                              className='pl-3 pt-3 mb-2'
                               style={{
                                 display: 'flex',
                                 justifyContent: 'space-between',
@@ -280,7 +280,7 @@ function PickUpDetails() {
                                   </div>
                                 )}
                                 <p
-                                  className='sofia-pro p-0 mb-0 tel mt-2 pb-1'
+                                  className='sofia-pro p-0 mb-0 tel mt-0 pb-1'
                                   style={{
                                     marginTop: `${IsAddressOpen ? '20px' : ''}`,
                                     transition: 'margin 0.5s',
@@ -303,7 +303,7 @@ function PickUpDetails() {
                           </div>
                         }
                       >
-                        <div className='card-body payment-details-card-body m-0 p-0'>
+                        <div className='card-body payment-details-card-body mt-3 mb-2 p-0'>
                           <div className='address-actions'>
                             <h4
                               className='text-instructions'
