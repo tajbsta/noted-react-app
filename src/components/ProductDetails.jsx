@@ -42,10 +42,17 @@ function ProductDetails({ item, isHovering = false }) {
 
   return (
     <div
-      className={`col-sm-7 p-0 mt-1 p-details ${
+      className={`col-sm-7 p-0 mt-1 p-details ml-2 ${
         orderViews.indexOf(pageLocation) != -1 ? 'scheduled-height' : ''
       }`}
     >
+      <Overlay target={target.current} show={show} placement='right'>
+        {(props) => (
+          <Tooltip id='overlay-example' {...props}>
+            {formattedProductName}
+          </Tooltip>
+        )}
+      </Overlay>
       <Row>
         <h4 className='mb-0 sofia-pro mb-1 distributor-name'>
           {item.vendor_data.name}
@@ -61,13 +68,6 @@ function ProductDetails({ item, isHovering = false }) {
         >
           {truncatedName}
         </h5>
-        <Overlay target={target.current} show={show} placement='right'>
-          {(props) => (
-            <Tooltip id='overlay-example' {...props}>
-              {formattedProductName}
-            </Tooltip>
-          )}
-        </Overlay>
       </Row>
       <Row>
         <h4 className='sofia-pro mb-0 product-price'>
