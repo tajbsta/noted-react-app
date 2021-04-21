@@ -115,7 +115,7 @@ export default function ChangePass() {
       .map((value) => get(value, 'length', 0))
       .reduce((acc, curr) => acc + curr) === 0;
 
-  console.log(isChangePassFormEmpty);
+  // console.log(isChangePassFormEmpty);
 
   return (
     <div id='ChangePass'>
