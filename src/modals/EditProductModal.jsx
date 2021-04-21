@@ -236,6 +236,14 @@ export default function EditProductModal(props) {
                       </div>
                     </Form.Group>
                   </Col>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Order Ref. #</Form.Label>
+                      <div>
+                        <Form.Control name='order ref' />
+                      </div>
+                    </Form.Group>
+                  </Col>
                 </Row>
                 <Row>
                   <Col>
