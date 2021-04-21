@@ -84,22 +84,12 @@ export default function EmailAddresses({ user }) {
                   <Col>
                     <Form.Group className={isMobile ? 'm-form-group' : ''}>
                       <Form.Label>
-                        Account email
-                        {accounts.map((account, index) => (
-                          <h4
-                            key={account.id}
-                            style={{
-                              fontSize: '14px',
-                              marginBottom: '0px',
-                              // display: isMobile ? 'none' : '',
-                            }}
-                          >
-                            &nbsp;{' '}
-                            {user && user.email !== account.email
-                              ? '(not used for scraping)'
-                              : ''}
-                          </h4>
-                        ))}
+                        Account email{' '}
+                        {user &&
+                          !accounts.find(
+                            (account) => account.email === user.email
+                          ) &&
+                          '(not used for scraping)'}
                       </Form.Label>
                       <div className='main-email'>
                         <h4>{user && user.email}</h4>
@@ -118,7 +108,7 @@ export default function EmailAddresses({ user }) {
                     </div>
                   </>
                 )}
-                {!loading && (
+                {!loading && user && (
                   <>
                     {accounts.map((account, index) => (
                       <Row key={account.id}>
@@ -138,7 +128,8 @@ export default function EmailAddresses({ user }) {
                             {account.valid == 0 && (
                               <>
                                 <small className='form-text p-0 m-0 noted-red'>
-                                  {account.metadata.errMsg} Please{' '}
+                                  {account.metadata && account.metadata.errMsg}{' '}
+                                  Please delete email and{' '}
                                   <a
                                     className='noted-red'
                                     style={{
@@ -154,14 +145,6 @@ export default function EmailAddresses({ user }) {
                                 </small>
                               </>
                             )}
-                            {!account.valid == 0 &&
-                              account.metaData.errMsg.length > 0 && (
-                                <>
-                                  <small className='form-text p-0 m-0 noted-red'>
-                                    {account.metadata.errMsg}
-                                  </small>
-                                </>
-                              )}
                           </Form.Group>
                         </Col>
                       </Row>
