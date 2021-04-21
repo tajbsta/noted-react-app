@@ -64,6 +64,7 @@ function ViewScanPage() {
   const checkoutTitle = inReturn.length > 0 ? 'returns' : 'donate';
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const platform = window.navigator.platform;
     const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
 
