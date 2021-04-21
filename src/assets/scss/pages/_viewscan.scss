@@ -154,12 +154,15 @@
     display: flex;
     justify-content: space-between;
     z-index: 99999;
+    margin-top: 24px;
+    margin-bottom: 15px;
 
     .text-instructions {
       font-family: 'Sofia Pro';
       font-size: 14px;
       line-height: 16px;
       color: #570097;
+      margin-bottom: 0px;
     }
   }
 
@@ -190,6 +193,9 @@
   .ending-text {
     display: flex;
     align-items: center;
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
   }
 
   .return-schedule-mobile {

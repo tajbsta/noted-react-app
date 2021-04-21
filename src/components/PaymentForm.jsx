@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { isFormEmpty } from '../utils/form';
 import $ from 'jquery';
+import { isEmpty } from 'lodash-es';
 
 export default function PaymentForm({
   fullName,
@@ -121,7 +122,8 @@ export default function PaymentForm({
                               value={fullName || ''}
                               onChange={handleChange}
                             />
-                            {renderInlineError(errors.fullName)}
+                            {!isEmpty(fullName) &&
+                              renderInlineError(errors.fullName)}
                           </Form.Group>
                         </Col>
                       </Row>
@@ -136,7 +138,8 @@ export default function PaymentForm({
                               onChange={handleChange}
                               maxLength={20}
                             />
-                            {renderInlineError(errors.cardNumber)}
+                            {!isEmpty(cardNumber) &&
+                              renderInlineError(errors.cardNumber)}
                           </Form.Group>
                         </Col>
                       </Row>
@@ -185,7 +188,8 @@ export default function PaymentForm({
                                 }}
                               />
                             </div>
-                            {renderInlineError(errors.expirationYear)}
+                            {!isEmpty(expirationYear) &&
+                              renderInlineError(errors.expirationYear)}
                           </Form.Group>
                         </Col>
                       </Row>
