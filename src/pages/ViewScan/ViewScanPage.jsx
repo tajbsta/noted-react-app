@@ -97,6 +97,7 @@ function ViewScanPage() {
       })
     );
     dispatch(clearForm());
+    scrollToTop();
   };
 
   const addSelected = (id) => {

@@ -19,7 +19,6 @@ function RightCard({ userId }) {
     items,
   }));
 
-  console.log(items);
   const previousCartItems = usePrevious(items);
 
   const [pricing, setPricing] = useState({
@@ -48,6 +47,8 @@ function RightCard({ userId }) {
     // }
     calculateCurrentCartPricing(items);
   }, [items]);
+
+  console.log(items);
 
   const calculateCurrentCartPricing = async (currentItems) => {
     try {
@@ -159,10 +160,8 @@ function RightCard({ userId }) {
 
                         {!isEmpty(items) && (
                           <div>
-                            {pricing.totalReturns + pricing.totalDonations}{' '}
-                            {pricing.totalReturns + pricing.totalDonations == 1
-                              ? 'product'
-                              : 'products'}{' '}
+                            {items.length}{' '}
+                            {items.length == 1 ? 'product' : 'products'}{' '}
                             selected
                           </div>
                         )}
