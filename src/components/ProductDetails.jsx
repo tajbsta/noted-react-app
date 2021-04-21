@@ -33,7 +33,9 @@ function ProductDetails({ item, isHovering = false }) {
   const inDashboard = ['/dashboard'].includes(pageLocation);
 
   const onMouseOver = () => {
-    setShow(true);
+    if (formattedProductName.length > 50) {
+      setShow(true);
+    }
   };
 
   const onMouseLeave = () => {
@@ -53,6 +55,7 @@ function ProductDetails({ item, isHovering = false }) {
           </Tooltip>
         )}
       </Overlay>
+
       <Row>
         <h4 className='mb-0 sofia-pro mb-1 distributor-name'>
           {item.vendor_data.name}
