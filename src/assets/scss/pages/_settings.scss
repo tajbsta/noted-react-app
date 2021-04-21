@@ -212,6 +212,27 @@
       }
     }
 
+    // ALERTS
+    .alert {
+      margin-top: 0px;
+      padding: 5px;
+      width: auto;
+
+      .text-alert {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-family: 'Sofia Pro';
+      }
+    }
+
+    .alert-danger,
+    .alert-success {
+      margin: auto;
+      margin-top: 15px;
+      margin-bottom: 20px;
+      max-width: 440px;
+    }
+
     // MOBILE
     .m-form-group {
       width: auto;

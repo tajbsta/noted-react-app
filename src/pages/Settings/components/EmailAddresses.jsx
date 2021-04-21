@@ -3,13 +3,18 @@ import { useHistory } from 'react-router-dom';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { getAccounts } from '../../../utils/accountsApi';
 import { Spinner } from 'react-bootstrap';
+import DeleteEmailModal from '../../../modals/DeleteEmailModal';
 
 export default function EmailAddresses({ user }) {
   const [modalShow, setModalShow] = useState(false);
   const [accounts, setAccounts] = useState([]);
+  const [toDeleteAccount, setToDeleteAccount] = useState(null);
   const [loading, setLoading] = useState(true);
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
+  const [modalDeleteShow, setModalDeleteShow] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     function handleResize() {
@@ -42,7 +47,7 @@ export default function EmailAddresses({ user }) {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user && user.sub) {
       fetchAccounts();
     }
   }, [user]);
@@ -65,9 +70,29 @@ export default function EmailAddresses({ user }) {
     </small>
   );
 
+  const deleteSuccess = (id) => {
+    const list = accounts;
+
+    setAccounts(list.filter((account) => account.id !== id));
+    setModalDeleteShow(false);
+    setToDeleteAccount(null);
+    setSuccess(true);
+  };
+
+  // console.log({ accounts });
+
   return (
     <div id='EmailAddresses'>
       <h3 className='sofia-pro text-18 mb-3 mt-5'>Email Addresses</h3>
+      {success && (
+        <div className='alert alert-success' role='alert'>
+          <div>
+            <h4 className='text-center text-alert'>
+              Successfully deleted the email!
+            </h4>
+          </div>
+        </div>
+      )}
       <div className='card shadow-sm mb-2 max-w-840'>
         <div className='card-body'>
           <Container>
@@ -109,47 +134,67 @@ export default function EmailAddresses({ user }) {
                 )}
                 {!loading && user && (
                   <>
-                    {accounts.map((account, index) => (
-                      <Row key={account.id}>
-                        <Col>
-                          <Form.Group
-                            className={isMobile ? 'm-form-group' : ''}
-                          >
-                            <div className='title-group'>
-                              <Form.Label>Email #{index + 1}</Form.Label>
-                              <Button className='btn delete-email'>
-                                Delete email
-                              </Button>
-                            </div>
-                            <div className='additional-email'>
-                              <h4>{account.email}</h4>
-                            </div>
-                            {account.valid == 0 && (
-                              <>
-                                <small className='form-text p-0 m-0 noted-red'>
-                                  {account.metadata && account.metadata.errMsg}{' '}
-                                  Please delete email and{' '}
-                                  <a
-                                    className='noted-red'
-                                    style={{
-                                      fontSize: '0.8125rem',
-                                      color: 'red',
-                                      textDecoration: 'underline',
-                                    }}
-                                    href='/request-permission'
-                                  >
-                                    authorize noted
-                                  </a>{' '}
-                                  again.
-                                </small>
-                              </>
-                            )}
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                    ))}
+                    {accounts
+                      .filter((account) => account.email !== user.email)
+                      .map((account, index) => (
+                        <Row key={account.id}>
+                          <Col>
+                            <Form.Group
+                              className={isMobile ? 'm-form-group' : ''}
+                            >
+                              <div className='title-group'>
+                                <Form.Label>Email #{index + 1}</Form.Label>
+                                <Button
+                                  className='btn delete-email'
+                                  onClick={() => {
+                                    setToDeleteAccount(account);
+                                    setModalDeleteShow(true);
+                                  }}
+                                >
+                                  Delete email
+                                </Button>
+                              </div>{' '}
+                              <div className='additional-email'>
+                                <h4>{account.email}</h4>
+                              </div>
+                              {account.valid == 0 && (
+                                <>
+                                  <small className='form-text p-0 m-0 noted-red'>
+                                    {account.metadata &&
+                                      account.metadata.errMsg}{' '}
+                                    Please delete email and{' '}
+                                    <a
+                                      className='noted-red'
+                                      style={{
+                                        fontSize: '0.8125rem',
+                                        color: 'red',
+                                        textDecoration: 'underline',
+                                      }}
+                                      href='/request-permission'
+                                    >
+                                      authorize noted
+                                    </a>{' '}
+                                    again.
+                                  </small>
+                                </>
+                              )}
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                      ))}
                   </>
                 )}
+                <DeleteEmailModal
+                  show={modalDeleteShow}
+                  account={toDeleteAccount}
+                  deletesuccess={() => {
+                    deleteSuccess(toDeleteAccount.id);
+                  }}
+                  onHide={() => {
+                    setModalDeleteShow(false);
+                    setToDeleteAccount(null);
+                  }}
+                />
                 <Row className={isMobile ? 'm-button-row' : 'button-row'}>
                   <Col className='btn-add-container'>
                     <Button className='add-new-email' onClick={goToAuthorize}>
