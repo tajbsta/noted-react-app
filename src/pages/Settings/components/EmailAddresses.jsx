@@ -64,7 +64,6 @@ export default function EmailAddresses({ user }) {
       again.
     </small>
   );
-  console.log(accounts.metadata);
 
   return (
     <div id='EmailAddresses'>
