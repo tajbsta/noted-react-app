@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
-import { Eye, EyeOff } from 'react-feather';
+import { AlertCircle, Eye, EyeOff } from 'react-feather';
 import { Auth } from 'aws-amplify';
 import { changePassErrors } from '../../../library/errors.library';
 import { PASSWORD_REGEX_FORMAT } from '../../../constants/errors/regexFormats';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { get, isEmpty } from 'lodash';
-import { AlertCircle } from 'react-feather';
 import PassChangeSuccessModal from '../../../modals/PassChangeSuccessModal';
 
 export default function ChangePass() {
@@ -115,7 +114,7 @@ export default function ChangePass() {
       .map((value) => get(value, 'length', 0))
       .reduce((acc, curr) => acc + curr) === 0;
 
-  console.log(isChangePassFormEmpty);
+  // console.log(isChangePassFormEmpty);
 
   return (
     <div id='ChangePass'>

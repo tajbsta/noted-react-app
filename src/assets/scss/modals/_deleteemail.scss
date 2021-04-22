@@ -1,4 +1,4 @@
-#CancelOrderModal {
+#DeleteEmailModal {
   justify-content: center;
 
   .modal-content {
@@ -55,6 +55,12 @@
     margin-bottom: 10px;
     text-align: center;
 
+    // .email {
+    //   font-family: 'Sofia Pro';
+    //   margin-bottom: 0px;
+    //   color: #570097;
+    // }
+
     @media (max-width: 767px) {
       max-width: 295px;
       margin-bottom: 24px;
@@ -75,23 +81,11 @@
     mix-blend-mode: normal;
     opacity: 0.6;
     max-width: 352px;
+    margin-top: 34px;
 
     @media (max-width: 767px) {
+      margin-top: 0px;
       max-width: 311px;
-    }
-  }
-
-  .view-link {
-    font-family: 'Sofia Pro';
-    font-size: 14px;
-    line-height: 16px;
-    text-align: center;
-    text-decoration-line: underline;
-    color: #570097;
-    margin-bottom: 59px;
-
-    @media (max-width: 767px) {
-      margin-bottom: 33px;
     }
   }
 
@@ -99,6 +93,7 @@
     display: grid;
     justify-content: center;
     align-items: center;
+    margin-top: 34px;
 
     .btn-cancel {
       background: #ff1c29;

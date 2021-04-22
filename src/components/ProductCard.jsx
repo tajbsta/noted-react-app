@@ -118,7 +118,7 @@ function ProductCard({
   return (
     <div id='productCard'>
       <div
-        className={`card scanned-item-card w-840 mb-3 p-0 ${
+        className={`card scanned-item-card max-w-840 mb-3 p-0 ${
           clickable && 'btn'
         } ${isMobile && selected ? 'selected-mobile' : ''}`}
         key={item.product_hash}

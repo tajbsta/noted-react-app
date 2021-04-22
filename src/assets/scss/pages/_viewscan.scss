@@ -7,6 +7,20 @@
     @media (max-width: 991px) {
       padding: 0px;
     }
+    // @media (min-width: 541px) and (max-width: 991px) {
+    //   max-width: 68%;
+    // }
+  }
+
+  .desktop-col {
+    @media (max-width: 991px) {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    @media (min-width: 992px) {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
   }
 
   .mobile-view-scan-col {
@@ -293,6 +307,14 @@
 
   .pick-up-card {
     width: 248px;
+
+    // @media (max-width: 1024px) {
+    //   width: 225px;
+    // }
+
+    // @media (max-width: 848px) {
+    //   width: 205px;
+    // }
   }
 
   .products-to-return {
@@ -454,7 +476,7 @@
 
   .pick-up-reminder {
     margin-top: 9px;
-    width: 216px;
+    max-width: 216px;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -594,6 +616,10 @@
     font-size: 14px;
     line-height: 16px;
     color: #2e1d3a;
+
+    @media (max-width: 991px) {
+      margin-top: 0px;
+    }
   }
 
   .first-title {

@@ -8,6 +8,13 @@ export const getAccounts = async (userId) => {
     return res.data.data
 }
 
+export const deleteAccount = async (userId, accountId) => {
+    const axios = await api();
+
+    await axios.delete(`/${userId}/accounts/${accountId}`);
+}
+
+
 // Launch scan on user's accounts
 // export const startAccountsScan = async (userId) => {
 //     const axios = await api();

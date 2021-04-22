@@ -22,8 +22,8 @@ function ReturnCategory({
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showNextPageButton, setShowNextPageButton] = useState(true);
-  const sortBy = 'order_date,name,_id';
-  const sort = 'desc,asc';
+  const sortBy = 'return_not_eligible_date,_id';
+  const sort = 'asc,asc';
   const [loadProgress, setLoadProgress] = useState(0);
 
   function timeout(delay) {
