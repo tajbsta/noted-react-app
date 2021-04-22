@@ -9,6 +9,7 @@ import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../../models/formSchema';
 import { updateUserAttributes } from '../../../utils/auth';
 import { AlertCircle, CheckCircle } from 'react-feather';
+import { isEmpty } from 'lodash-es';
 export default function Address({ user }) {
   const [isEditing, setIsEditing] = useState(false);
   const [modalShow, setModalShow] = useState(false);
@@ -188,7 +189,7 @@ export default function Address({ user }) {
                               {...noBorder}
                               onChange={handleChange}
                             />
-                            {(fullName && fullName.length > 0) ||
+                            {!isEmpty(fullName) &&
                               renderInlineError(errors.fullName)}
                           </Form.Group>
                         </Col>
@@ -221,8 +222,7 @@ export default function Address({ user }) {
                                 ))}
                               </Form.Control>
                             )}
-                            {(state && state.length > 0) ||
-                              renderInlineError(errors.state)}
+                            {!isEmpty(state) && renderInlineError(errors.state)}
 
                             {!isEditing && (
                               <Form.Control
@@ -253,7 +253,7 @@ export default function Address({ user }) {
                               value={zipCode || ''}
                               {...noBorder}
                             />
-                            {(zipCode && zipCode.length > 0) ||
+                            {!isEmpty(zipCode) &&
                               renderInlineError(errors.zipCode)}
                           </Form.Group>
                         </Col>
@@ -270,8 +270,7 @@ export default function Address({ user }) {
                               value={line1 || ''}
                               {...noBorder}
                             />
-                            {(line1 && line1.length > 0) ||
-                              renderInlineError(errors.line1)}
+                            {!isEmpty(line1) && renderInlineError(errors.line1)}
                           </Form.Group>
                         </Col>
                       </Row>
@@ -302,8 +301,7 @@ export default function Address({ user }) {
                               onChange={handleChange}
                               {...noBorder}
                             />
-                            {(city && city.length > 0) ||
-                              renderInlineError(errors.city)}
+                            {!isEmpty(city) && renderInlineError(errors.city)}
                           </Form.Group>
                         </Col>
                         <Col>
@@ -326,7 +324,8 @@ export default function Address({ user }) {
                               maxLength={13}
                               {...noBorder}
                             />
-                            {renderInlineError(errors.phoneNumber)}
+                            {!isEmpty(phoneNumber) &&
+                              renderInlineError(errors.phoneNumber)}
                           </Form.Group>
                         </Col>
                       </Row>
@@ -334,7 +333,10 @@ export default function Address({ user }) {
                         <Col className='add-pick-up'>
                           <button
                             className='btn-instructions'
-                            onClick={() => setModalShow(true)}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setModalShow(true);
+                            }}
                           >
                             <h4 className='text-instructions'>
                               Add pick-up instructions
@@ -402,7 +404,7 @@ export default function Address({ user }) {
                               {...noBorder}
                               onChange={handleChange}
                             />
-                            {(fullName && fullName.length > 0) ||
+                            {!isEmpty(fullName) &&
                               renderInlineError(errors.fullName)}
                           </Form.Group>
                         </Col>
@@ -433,8 +435,7 @@ export default function Address({ user }) {
                                 ))}
                               </Form.Control>
                             )}
-                            {(state && state.length > 0) ||
-                              renderInlineError(errors.state)}
+                            {!isEmpty(state) && renderInlineError(errors.state)}
 
                             {!isEditing && (
                               <Form.Control
@@ -465,7 +466,7 @@ export default function Address({ user }) {
                               value={zipCode || ''}
                               {...noBorder}
                             />
-                            {(zipCode && zipCode.length > 0) ||
+                            {!isEmpty(zipCode) &&
                               renderInlineError(errors.zipCode)}
                           </Form.Group>
                         </Col>
@@ -483,8 +484,7 @@ export default function Address({ user }) {
                               value={line1 || ''}
                               {...noBorder}
                             />
-                            {(line1 && line1.length > 0) ||
-                              renderInlineError(errors.line1)}
+                            {!isEmpty(line1) && renderInlineError(errors.line1)}
                           </Form.Group>
                         </Col>
                         <Col>
@@ -498,8 +498,7 @@ export default function Address({ user }) {
                               onChange={handleChange}
                               {...noBorder}
                             />
-                            {(city && city.length > 0) ||
-                              renderInlineError(errors.city)}
+                            {!isEmpty(city) && renderInlineError(errors.city)}
                           </Form.Group>
                         </Col>
                         <Col>
@@ -522,7 +521,8 @@ export default function Address({ user }) {
                               maxLength={13}
                               {...noBorder}
                             />
-                            {renderInlineError(errors.phoneNumber)}
+                            {!isEmpty(phoneNumber) &&
+                              renderInlineError(errors.phoneNumber)}
                           </Form.Group>
                         </Col>
                       </Row>
@@ -545,18 +545,16 @@ export default function Address({ user }) {
                         <Col className='add-pick-up'>
                           <button
                             className='btn-instructions'
-                            onClick={() => setModalShow(true)}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setModalShow(true);
+                            }}
                           >
                             <h4 className='text-instructions'>
                               Add pick-up instructions
                             </h4>
                           </button>
                         </Col>
-
-                        <AddPickupModal
-                          show={modalShow}
-                          onHide={() => setModalShow(false)}
-                        />
 
                         <Col className='btn-container'>
                           {isEditing && (
@@ -601,6 +599,7 @@ export default function Address({ user }) {
             )}
           </Collapsible>
         </div>
+        <AddPickupModal show={modalShow} onHide={() => setModalShow(false)} />
       </div>
     </>
   );
