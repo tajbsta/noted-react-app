@@ -297,13 +297,13 @@
   .pick-up-card {
     width: 248px;
 
-    @media (max-width: 1024px) {
-      width: 225px;
-    }
+    // @media (max-width: 1024px) {
+    //   width: 225px;
+    // }
 
-    @media (max-width: 848px) {
-      width: 205px;
-    }
+    // @media (max-width: 848px) {
+    //   width: 205px;
+    // }
   }
 
   .products-to-return {

@@ -42,7 +42,7 @@ function PickUpDetails() {
   const [isDatePickerOpen, setisDatePickerOpen] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
+  const [isTablet, setIsTablet] = useState(false);
   const [IsAddressOpen, setIsAddressOpen] = useState(false);
   const [IsPaymentOpen, setIsPaymentOpen] = useState(false);
   /**
@@ -159,6 +159,17 @@ function PickUpDetails() {
     };
   });
 
+  useEffect(() => {
+    function handleResize() {
+      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 980);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   return (
     <>
       {!showEditAddress && !showEditPayment && (
@@ -191,7 +202,7 @@ function PickUpDetails() {
              * MOBILE TITLE
              */}
 
-            <div className='col-sm-4'>
+            <div className={isTablet ? 'col-sm-12' : 'col-sm-4'}>
               {isMobile && (
                 <p className='mobile-form-title first-title'>Pick-up Address</p>
               )}
@@ -340,7 +351,7 @@ function PickUpDetails() {
               </div>
             </div>
             {/* PAYMENT DETAILS */}
-            <div className='col-sm-4'>
+            <div className={isTablet ? 'col-sm-12' : 'col-sm-4'}>
               {isMobile && (
                 <p className='mobile-form-title mt-4'>Payment method</p>
               )}
@@ -496,7 +507,7 @@ function PickUpDetails() {
               </div>
             </div>
             {/* RETURN SCHEDULE */}
-            <div className='col-sm-4'>
+            <div className={isTablet ? 'col-sm-12' : 'col-sm-4'}>
               {isMobile && <p className='mobile-form-title mt-4'>Pick up</p>}
               <div className='card shadow-sm'>
                 <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 return-schedule'>

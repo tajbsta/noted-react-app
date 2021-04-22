@@ -22,6 +22,8 @@ function ViewConfirmedReturn({
   const dispatch = useDispatch();
   const [confirmed, setconfirmed] = useState(false);
   const [modalShow, setModalShow] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
   const history = useHistory();
   const {
@@ -111,6 +113,28 @@ function ViewConfirmedReturn({
     history.push('/dashboard');
   };
 
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 980);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   return (
     <div id='ViewConfirmReturnPage'>
       <div className='container mt-6'>
@@ -136,6 +160,7 @@ function ViewConfirmedReturn({
                  */}
               </div>
             )}
+
             <h3 className='sofia-pro products-return text-18 section-title mobile-view-scan-col'>
               Your products to return
             </h3>

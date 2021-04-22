@@ -23,6 +23,7 @@ function ViewScanPage() {
   const scans = useSelector((state) => get(state, 'scans', []));
   const [orderId, setOrderId] = useState('');
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const { address, payment, details, cart } = useSelector(
     ({
       cart,
@@ -138,11 +139,22 @@ function ViewScanPage() {
     };
   });
 
+  useEffect(() => {
+    function handleResize() {
+      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 980);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   return (
     <div id='ViewScanPage'>
       <div className={`container  ${isMobile ? 'mt-4' : 'mt-6'}`}>
         <div className='row mobile-row'>
-          <div className='col-sm-9'>
+          <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed ? (
               <div className='mobile-view-scan-col'>
@@ -157,49 +169,52 @@ function ViewScanPage() {
               </div>
             )}
 
-            <h3 className='sofia-pro products-return text-18 section-title'>
-              Your products to {checkoutTitle}
-            </h3>
-            {isEmpty([...inReturn, ...inDonation]) && (
-              <h4 className='p-0 mb-0 mt-5 d-flex justify-content-center sofia-pro empty-message'>
-                No more products. Click here to go back to &nbsp;
-                <Link
-                  style={{
-                    textDecoration: 'underline',
-                    color: '#570097',
-                  }}
-                  to='/dashboard'
-                >
-                  dashboard
-                </Link>
-                .
-              </h4>
-            )}
+            <div className='col'>
+              <h3 className='sofia-pro products-return text-18 section-title'>
+                Your products to {checkoutTitle}
+              </h3>
+              {isEmpty([...inReturn, ...inDonation]) && (
+                <h4 className='p-0 mb-0 mt-5 d-flex justify-content-center sofia-pro empty-message'>
+                  No more products. Click here to go back to &nbsp;
+                  <Link
+                    style={{
+                      textDecoration: 'underline',
+                      color: '#570097',
+                    }}
+                    to='/dashboard'
+                  >
+                    dashboard
+                  </Link>
+                  .
+                </h4>
+              )}
 
-            {inReturn.map((item) => (
-              <ProductCard
-                removable={!confirmed}
-                scannedItem={item}
-                key={item.id}
-                item={item}
-                selectable={false}
-                clickable={false}
-                onRemove={onCartRemove}
-                confirmed={confirmed}
-              />
-            ))}
+              {inReturn.map((item) => (
+                <ProductCard
+                  removable={!confirmed}
+                  scannedItem={item}
+                  key={item.id}
+                  item={item}
+                  selectable={false}
+                  clickable={false}
+                  onRemove={onCartRemove}
+                  confirmed={confirmed}
+                />
+              ))}
 
-            {inDonation.map((item) => (
-              <ProductCard
-                scannedItem={item}
-                key={item.id}
-                selectable={false}
-                clickable={false}
-                item={item}
-                onRemove={onCartRemove}
-                confirmed={confirmed}
-              />
-            ))}
+              {inDonation.map((item) => (
+                <ProductCard
+                  scannedItem={item}
+                  key={item.id}
+                  selectable={false}
+                  clickable={false}
+                  item={item}
+                  onRemove={onCartRemove}
+                  confirmed={confirmed}
+                />
+              ))}
+            </div>
+
             <h3 className='sofia-pro miss-out section-title'>
               Don&apos;t miss out on other returns
             </h3>
@@ -222,7 +237,7 @@ function ViewScanPage() {
               />
             ))}
           </div>
-          <div className='col-sm-3'>
+          <div className={isTablet ? 'col' : 'col-sm-3'}>
             <div
               className='col right-card'
               style={{
