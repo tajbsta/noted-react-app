@@ -169,7 +169,7 @@ function ViewScanPage() {
               </div>
             )}
 
-            <div className='col'>
+            <div className='col desktop-col'>
               <h3 className='sofia-pro products-return text-18 section-title'>
                 Your products to {checkoutTitle}
               </h3>
@@ -237,6 +237,8 @@ function ViewScanPage() {
               />
             ))}
           </div>
+
+          {/* START OF RIGHT CARD */}
           <div className={isTablet ? 'col' : 'col-sm-3'}>
             <div
               className='col right-card'
@@ -354,6 +356,7 @@ function ViewScanPage() {
               </div>
             </div>
           </div>
+          {/* END OF RIGHT CARD */}
         </div>
       </div>
     </div>

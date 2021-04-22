@@ -109,7 +109,11 @@ function RightCard({ userId }) {
 
           {!isMobile && <HorizontalLine width='90%' />}
           <div className='card-body p-0'>
-            <div className='container p-2'>
+            <div
+              className={`container ${
+                isMobile ? 'mobile-padding pb-1' : 'p-2'
+              }`}
+            >
               {loading && (
                 <div className='d-flex justify-content-center mt-2 r-spin-container'>
                   <Spinner animation='border' size='md' className='spinner' />
@@ -213,6 +217,8 @@ function RightCard({ userId }) {
                 className='pr-3 pl-3 mt-3 pickup-value'
                 style={{
                   opacity: !items.length ? 0.37 : 1,
+                  paddingLeft: isMobile ? '16px' : '',
+                  paddingRight: isMobile ? '16px' : '',
                 }}
               >
                 <PickUpButton
