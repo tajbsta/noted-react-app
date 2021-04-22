@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import CheckoutCard from './../../components/CheckoutCard';
+import MobileCheckoutCard from './../../components/MobileCheckoutCard';
 import ProductCard from '../../components/ProductCard';
 import PickUpConfirmed from '../../components/PickUpConfirmed';
 import PickUpDetails from './components/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, isEmpty } from 'lodash';
-import SizeGuideModal from '../../modals/SizeGuideModal';
 import $ from 'jquery';
 import { submitOrder } from '../../actions/auth.action';
 import { nanoid } from 'nanoid';
@@ -18,7 +19,6 @@ import { scrollToTop } from '../../utils/window';
 function ViewScanPage() {
   const dispatch = useDispatch();
   const [confirmed, setconfirmed] = useState(false);
-  const [modalShow, setModalShow] = useState(false);
   const [newSelected, setNewSelected] = useState([]);
   const scans = useSelector((state) => get(state, 'scans', []));
   const [orderId, setOrderId] = useState('');
@@ -54,15 +54,9 @@ function ViewScanPage() {
   });
 
   const returnFee = Math.floor(Math.random() * 30) + 20;
-
   const tax = Math.floor(Math.random() * 0.212343) + 0.1234403;
-
   const taxes = returnFee * tax;
-
   const totalPayment = (returnFee + taxes).toFixed(2);
-
-  // const totalDonations = inDonation.length;
-
   const checkoutTitle = inReturn.length > 0 ? 'returns' : 'donate';
 
   useEffect(() => {
@@ -238,125 +232,34 @@ function ViewScanPage() {
             ))}
           </div>
 
-          {/* START OF RIGHT CARD */}
-          <div className={isTablet ? 'col' : 'col-sm-3'}>
-            <div
-              className='col right-card'
-              style={{
-                maxWidth: '248px',
-              }}
-            >
-              <div className='card shadow-sm p-3 pick-up-card'>
-                <h3 className='sofia-pro products-to-return mb-1'>
-                  {inReturn.length} product to return
-                </h3>
-                <h3 className='box-size-description'>
-                  All products need to fit in a 12”W x 12”H x 20”L box
-                </h3>
-                <button
-                  className='btn btn-more-info'
-                  onClick={() => setModalShow(true)}
-                >
-                  <h3 className='noted-purple sofia-pro more-pick-up-info mb-0'>
-                    More info
-                  </h3>
-                </button>
-                <SizeGuideModal
-                  show={modalShow}
-                  onHide={() => setModalShow(false)}
-                />
-                <hr className='line-break-1' />
-                {confirmed && (
-                  <div>
-                    <h3 className='sofia-pro pick-up-price mb-0'>
-                      ${potentialReturnValue.toFixed(2) || 0.0}
-                    </h3>
-                    <h3 className='return-type sofia-pro value-label mb-3'>
-                      Potential Return Value
-                    </h3>
-                    <h3 className='sofia-pro pick-up-price mb-0'>
-                      {inDonation.length}
-                    </h3>
-                    <h3 className='return-type sofia-pro value-label'>
-                      Donations
-                    </h3>
-                    <hr className='line-break-1' />
-                    <p className='pick-up-reminder sofia-pro'>
-                      Once the pick-up has been confirmed we’ll take care of
-                      contacting your merchants. They will then be in charge of
-                      the payment.
-                    </p>
-                  </div>
-                )}
+          {/* RIGHT CARDS */}
+          {!isMobile && (
+            <CheckoutCard
+              inReturn={inReturn}
+              confirmed={confirmed}
+              isTablet={isTablet}
+              potentialReturnValue={potentialReturnValue}
+              inDonation={inDonation}
+              returnFee={returnFee}
+              taxes={taxes}
+              totalPayment={totalPayment}
+              onReturnConfirm={onReturnConfirm}
+            />
+          )}
 
-                {!confirmed && (
-                  <>
-                    <h3 className='sofia-pro pick-up-price mb-0'>
-                      ${potentialReturnValue.toFixed(2) || 0.0}
-                    </h3>
-                    <h3 className='return-type sofia-pro value-label mb-3'>
-                      Potential Return Value
-                    </h3>
-
-                    <h3 className='sofia-pro pick-up-price mb-0'>
-                      {inDonation.length}
-                    </h3>
-                    <h3 className='return-type sofia-pro value-label'>
-                      Donations
-                    </h3>
-
-                    <hr className='line-break-2' />
-                    <div className='row'>
-                      <div className='col'>
-                        <h5 className='sofia-pro text-muted value-label'>
-                          Return total cost
-                        </h5>
-                      </div>
-                      <div className='col'>
-                        <h5 className='sofia-pro text-right'>${returnFee}</h5>
-                      </div>
-                    </div>
-                    <div className='row'>
-                      <div className='col'>
-                        <h5 className='sofia-pro text-muted value-label'>
-                          Taxes
-                        </h5>
-                      </div>
-                      <div className='col'>
-                        <h5 className='sofia-pro text-right'>
-                          ${taxes.toFixed(2)}
-                        </h5>
-                      </div>
-                    </div>
-                    <hr className='line-break-3' />
-                    <div className='row'>
-                      <div className='col'>
-                        <h5 className='sofia-pro text-muted'>
-                          Total to pay now
-                        </h5>
-                      </div>
-                      <div className='col'>
-                        <h5 className='sofia-pro text-right total-now'>
-                          ${totalPayment}
-                        </h5>
-                      </div>
-                    </div>
-                    <div
-                      className='btn btn-confirm text-16'
-                      style={{
-                        background: '#570097',
-                        border: 'none',
-                      }}
-                      onClick={onReturnConfirm}
-                    >
-                      Confirm Order
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-          {/* END OF RIGHT CARD */}
+          {isMobile && (
+            <MobileCheckoutCard
+              inReturn={inReturn}
+              confirmed={confirmed}
+              isTablet={isTablet}
+              potentialReturnValue={potentialReturnValue}
+              inDonation={inDonation}
+              returnFee={returnFee}
+              taxes={taxes}
+              totalPayment={totalPayment}
+              onReturnConfirm={onReturnConfirm}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -254,9 +254,19 @@
   }
 
   // MOBILE FOR RIGHT CARD
+  .mobile-padding {
+    padding: 16px;
+    padding-top: 0px;
+  }
+
+  .m-card-title {
+    margin-bottom: 22px;
+    margin-top: 13px;
+  }
+
   .m-right-card-row {
-    padding-left: 12px;
-    padding-right: 12px;
+    // padding-left: 12px;
+    // padding-right: 12px;
 
     .m-right-card-col {
       padding-left: 0px;
@@ -264,6 +274,7 @@
 
       .m-right-card-val {
         h4 {
+          font-family: 'Sofia Pro' !important;
           font-size: 22px;
           line-height: 26px;
           color: #21003a;
@@ -272,7 +283,12 @@
       }
 
       .m-label {
+        font-family: 'Sofia Pro' !important;
+        margin-bottom: 0px;
+
         h4 {
+          font-family: 'Sofia Pro' !important;
+          margin-bottom: 0px;
           font-size: 12px;
           line-height: 14px;
           color: #0e0018;

@@ -89,8 +89,12 @@ function RightCard({ userId }) {
       >
         <div
           className='card shadow-sm'
-          style={{ marginBottom: isMobile ? '0px' : '' }}
-          id={loading ? 'overlay' : ''}
+          style={{
+            marginBottom: isMobile ? '0px' : '',
+            borderRadius: isMobile ? '0px' : '',
+            filter: isMobile ? 'drop-shadow(2px 4px 8px black)' : '',
+          }}
+          id={loading && !isMobile ? 'overlay' : ''}
         >
           {!isMobile && (
             <div className='p-0 ml-1 d-inline-flex align-center'>
@@ -168,7 +172,7 @@ function RightCard({ userId }) {
                 {isMobile && (
                   <>
                     <div className='p-0 ml-1 d-inline-flex align-center'>
-                      <h5 className='card-title mb-0 p-3 sofia-pro'>
+                      <h5 className='card-title sofia-pro m-card-title'>
                         {isEmpty(items) && <div>Total past 90 days</div>}
 
                         {!isEmpty(items) && (
