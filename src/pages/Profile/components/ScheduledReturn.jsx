@@ -1,40 +1,18 @@
 import { get } from 'lodash-es';
 import React, { useState } from 'react';
-import { Col, Row, Accordion, Card, Button } from 'react-bootstrap';
-import Collapsible from 'react-collapsible';
+import { Col, Row, Accordion, Card } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
+import { useHistory } from 'react-router-dom';
 import ReturnScore from '../../../components/ReturnsScore';
 import CancelOrderModal from './../../../modals/CancelOrderModal';
 
 export default function ScheduledReturn() {
-  const [activeKey, setActiveKey] = useState('1');
-  const products = [ProductPlaceholder, ProductPlaceholder, ProductPlaceholder];
-  const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
-
+  const { push } = useHistory();
   const { scheduledReturns } = useSelector(
     ({ auth: { scheduledReturns } }) => ({
       scheduledReturns,
     })
   );
-
-  const allScheduledItems = scheduledReturns
-    .map((scheduledReturn) => {
-      return get(scheduledReturn, 'items', []);
-    })
-    .flat();
-
-  const renderAllScheduledItems = allScheduledItems
-    .slice(0, 5)
-    .map((product) => {
-      return (
-        <li key={product}>
-          <img src={product.thumbnail} />
-        </li>
-      );
-    });
-
-  const moreItemsCount = get(allScheduledItems, 'length', 0) - 5;
 
   const renderScheduledReturnItem = (item) => {
     const vendorName = get(item, 'vendor_name', '');
@@ -81,87 +59,41 @@ export default function ScheduledReturn() {
     );
   };
 
-  const renderScheduledReturn = (scheduleReturn) => {
-    const items = get(scheduleReturn, 'items', []);
+  const renderScheduledReturn = (scheduledReturn) => {
+    const [activeKey, setActiveKey] = useState('1');
+    const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
+    const items = get(scheduledReturn, 'items', []);
+    const renderAllScheduledItems = items.slice(0, 5).map((product) => {
+      return (
+        <li key={product}>
+          <img src={product.thumbnail} />
+        </li>
+      );
+    });
+
+    const moreItemsCount = get(items, 'length', 0) - 5;
+
+    const onCancel = () => {
+      push('/view-return', { scheduledReturnId: scheduledReturn.id });
+    };
+
+    const onHide = () => {
+      setShowCancelOrderModal(false);
+    };
 
     return (
-      <div className='p-4'>
-        {/**
-         * IS A CARD PRODUCT
-         */}
-        <Row
-          className='align-items-center'
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Col xs={2} className='title-col'>
-            <Row>
-              <div className='title'>Scheduled Return</div>
-            </Row>
-            <Row>
-              <div className='total'>1 item total</div>
-            </Row>
-          </Col>
-          <Col xs={2} className='title-col'>
-            <div className='button-col mr-3'>
-              <button
-                className='btn btn-show'
-                onClick={() => setActiveKey('1')}
-              >
-                Hide details
-              </button>
-              <span className='arrow'>▲</span>
-            </div>
-          </Col>
-        </Row>
-
-        {items.map((item) => renderScheduledReturnItem(item))}
-        <hr className='hr-line' />
-        <Row className='action-container'>
-          <Col xs={2}>
-            <Row className='pick-up-duration-container'>
-              <h5 className='sofia-pro mb-2 product-name'>Pick-up in</h5>
-              <h4 className='sofia-pro product-price mt-1'>{`59 minutes`}</h4>
-            </Row>
-            <Row className='total-items-container'>
-              <h5 className='sofia-pro mb-2 product-name'>Total</h5>
-              <h4 className='sofia-pro product-price mt-1'>{`1 item`}</h4>
-            </Row>
-            <Row className='cancel-action-container'>
-              <button
-                className='btn btn-show p-0 m-0'
-                onClick={() => setShowCancelOrderModal(true)}
-              >
-                Cancel return
-              </button>
-            </Row>
-            <CancelOrderModal
-              show={showCancelOrderModal}
-              onHide={() => {
-                setShowCancelOrderModal(false);
-              }}
-            />
-          </Col>
-        </Row>
-      </div>
-    );
-  };
-
-  return (
-    <div id='ScheduledReturn'>
       <div className='row'>
         <Accordion
           className='accordion-container'
           defaultActiveKey='1'
           activeKey={activeKey}
-          onChange={(e) => console.log(e)}
         >
-          <h3 className='sofia-pro text-18 mb-3-profile mb-3 triggerText ml-3'>
-            Your scheduled return
-          </h3>
           <Card>
+            <CancelOrderModal
+              show={showCancelOrderModal}
+              onHide={onHide}
+              onCancel={onCancel}
+            />
             {activeKey === '1' && (
               <div className='card-body'>
                 <Row className='align-items-center'>
@@ -171,7 +103,7 @@ export default function ScheduledReturn() {
                     </Row>
                     <Row>
                       <div className='total'>
-                        {get(allScheduledItems, 'length', 0)} items in total
+                        {get(items, 'length', 0)} items in total
                       </div>
                     </Row>
                   </Col>
@@ -179,8 +111,7 @@ export default function ScheduledReturn() {
                     {renderAllScheduledItems}
                   </Col>
                   <Col xs={1} className='plus-more'>
-                    {allScheduledItems.length > 5 &&
-                      `+${moreItemsCount} more...`}
+                    {items.length > 5 && `+${moreItemsCount} more...`}
                   </Col>
                   <Col xs={3} className='button-col'>
                     <div>
@@ -198,14 +129,81 @@ export default function ScheduledReturn() {
             )}
             <Accordion.Collapse eventKey='0'>
               <div>
-                {scheduledReturns.map((scheduledReturn) => {
-                  return renderScheduledReturn(scheduledReturn);
-                })}
+                <div className='p-4'>
+                  {/**
+                   * IS A CARD PRODUCT
+                   */}
+                  <Row
+                    className='align-items-center'
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <Col xs={2} className='title-col'>
+                      <Row>
+                        <div className='title'>Scheduled Return</div>
+                      </Row>
+                      <Row>
+                        <div className='total'>1 item total</div>
+                      </Row>
+                    </Col>
+                    <Col xs={2} className='title-col'>
+                      <div className='button-col mr-3'>
+                        <button
+                          className='btn btn-show'
+                          onClick={() => setActiveKey('1')}
+                        >
+                          Hide details
+                        </button>
+                        <span className='arrow'>▲</span>
+                      </div>
+                    </Col>
+                  </Row>
+
+                  {items.map((item) => renderScheduledReturnItem(item))}
+                  <hr className='hr-line' />
+                  <Row className='action-container'>
+                    <Col xs={2}>
+                      <Row className='pick-up-duration-container'>
+                        <h5 className='sofia-pro mb-2 product-name'>
+                          Pick-up in
+                        </h5>
+                        <h4 className='sofia-pro product-price mt-1'>{`59 minutes`}</h4>
+                      </Row>
+                      <Row className='total-items-container'>
+                        <h5 className='sofia-pro mb-2 product-name'>Total</h5>
+                        <h4 className='sofia-pro product-price mt-1'>{`1 item`}</h4>
+                      </Row>
+                      <Row className='cancel-action-container'>
+                        <button
+                          className='btn btn-show p-0 m-0'
+                          onClick={() => {
+                            setShowCancelOrderModal(true);
+                          }}
+                        >
+                          Cancel return
+                        </button>
+                      </Row>
+                    </Col>
+                  </Row>
+                </div>
               </div>
             </Accordion.Collapse>
           </Card>
         </Accordion>
       </div>
+    );
+  };
+
+  return (
+    <div id='ScheduledReturn'>
+      <h3 className='sofia-pro text-18 mb-3-profile mb-3 triggerText'>
+        Your scheduled return
+      </h3>
+      {scheduledReturns.map((scheduledReturn) => {
+        return renderScheduledReturn(scheduledReturn);
+      })}
     </div>
   );
 }
