@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Spinner } from 'react-bootstrap';
 import UserInfo from './components/UserInfo';
 import Address from './components/Address';
 import Payment from './components/Payment';
 import ReturnHistory from './components/ReturnHistory';
 import ScheduledReturn from './components/ScheduledReturn';
-import { useFormik } from 'formik';
-import {
-  paymentAddressSchema,
-  pickUpAddressSchema,
-} from '../../models/formSchema';
+
 import { getUser } from '../../utils/auth';
-import DatePicker from '../../components/DatePicker';
 import { scrollToTop } from '../../utils/window';
 
 export default function ProfilePage() {
