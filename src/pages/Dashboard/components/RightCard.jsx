@@ -31,7 +31,7 @@ function RightCard({ userId }) {
   // Check if device is mobile
   useEffect(() => {
     function handleResize() {
-      setIsMobile(window.innerWidth <= 639);
+      setIsMobile(window.innerWidth <= 767);
     }
     handleResize(); // Run on load to set the default value
     window.addEventListener('resize', handleResize);
@@ -89,8 +89,12 @@ function RightCard({ userId }) {
       >
         <div
           className='card shadow-sm'
-          style={{ marginBottom: isMobile ? '0px' : '' }}
-          id={loading ? 'overlay' : ''}
+          style={{
+            marginBottom: isMobile ? '0px' : '',
+            borderRadius: isMobile ? '0px' : '',
+            filter: isMobile ? 'drop-shadow(2px 4px 8px black)' : '',
+          }}
+          id={loading && !isMobile ? 'overlay' : ''}
         >
           {!isMobile && (
             <div className='p-0 ml-1 d-inline-flex align-center'>
@@ -109,7 +113,11 @@ function RightCard({ userId }) {
 
           {!isMobile && <HorizontalLine width='90%' />}
           <div className='card-body p-0'>
-            <div className='container p-2'>
+            <div
+              className={`container ${
+                isMobile ? 'mobile-padding pb-1' : 'p-2'
+              }`}
+            >
               {loading && (
                 <div className='d-flex justify-content-center mt-2 r-spin-container'>
                   <Spinner animation='border' size='md' className='spinner' />
@@ -164,7 +172,7 @@ function RightCard({ userId }) {
                 {isMobile && (
                   <>
                     <div className='p-0 ml-1 d-inline-flex align-center'>
-                      <h5 className='card-title mb-0 p-3 sofia-pro'>
+                      <h5 className='card-title sofia-pro m-card-title'>
                         {isEmpty(items) && <div>Total past 90 days</div>}
 
                         {!isEmpty(items) && (
@@ -213,6 +221,8 @@ function RightCard({ userId }) {
                 className='pr-3 pl-3 mt-3 pickup-value'
                 style={{
                   opacity: !items.length ? 0.37 : 1,
+                  paddingLeft: isMobile ? '16px' : '',
+                  paddingRight: isMobile ? '16px' : '',
                 }}
               >
                 <PickUpButton

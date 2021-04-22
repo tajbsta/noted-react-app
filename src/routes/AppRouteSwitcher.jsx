@@ -15,7 +15,7 @@ function AppRouteSwitcher() {
       {privateRoutes.map(({ path, component: Component }) => (
         <PrivateLayout key={path} path={path} exact component={Component} />
       ))}
-      <Redirect to='/' />
+      <Redirect to='/dashboard' />
     </Switch>
   );
 }

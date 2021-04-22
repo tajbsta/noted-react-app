@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { CheckCircle } from 'react-feather';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { getAccounts } from '../../../utils/accountsApi';
 import { Spinner } from 'react-bootstrap';
@@ -88,7 +89,7 @@ export default function EmailAddresses({ user }) {
         <div className='alert alert-success' role='alert'>
           <div>
             <h4 className='text-center text-alert'>
-              Successfully deleted the email!
+              <CheckCircle /> &nbsp; Successfully deleted email!
             </h4>
           </div>
         </div>
