@@ -27,7 +27,7 @@ const Topnav = () => {
   };
 
   useEffect(() => {
-    let mounted = true;
+    const mounted = true;
     if (showDropdown && mounted) {
       window.addEventListener('click', handleWindowClick);
     }

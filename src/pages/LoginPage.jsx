@@ -10,7 +10,7 @@ import { Eye, EyeOff } from 'react-feather';
 import { scrollToTop } from '../utils/window';
 
 export default function LoginPage() {
-  let history = useHistory();
+  const history = useHistory();
   const [error, setError] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

@@ -10,7 +10,7 @@ function ProductDetails({ item, isHovering = false }) {
   const target = useRef(null);
 
   const toTitleCase = (str) => {
-    let replacedDash = str.replace('-', ' ');
+    const replacedDash = str.replace('-', ' ');
     return replacedDash.replace(/\w\S*/g, function (txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
