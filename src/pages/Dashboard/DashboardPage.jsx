@@ -109,7 +109,7 @@ function DashboardPage() {
   return (
     <div id='DashboardPage'>
       <div className='container mt-6 main-mobile-dashboard'>
-        {/* <ScheduledCard /> */}
+        <ScheduledCard />
         <div className='row ipad-row'>
           <div className='col-sm-9 mt-4 w-840 bottom'>
             {' '}

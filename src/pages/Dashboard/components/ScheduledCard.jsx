@@ -2,8 +2,22 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import NoteeIcon from '../../../assets/icons/NoteeIcon.svg';
+import { useSelector } from 'react-redux';
+import { get } from 'lodash-es';
 
 export default function ScheduledCard() {
+  const { scheduledReturns } = useSelector(
+    ({ auth: { scheduledReturns } }) => ({
+      scheduledReturns,
+    })
+  );
+
+  const allScheduledItems = scheduledReturns
+    .map((scheduledReturn) => {
+      return get(scheduledReturn, 'items', []);
+    })
+    .flat();
+
   const history = useHistory();
 
   const profile = () => {
@@ -26,7 +40,8 @@ export default function ScheduledCard() {
               </Row>
               <Row>
                 <div className='items-info'>
-                  You have 8 items scheduled for return
+                  You have {get(allScheduledItems, 'length', 0)} items scheduled
+                  for return
                 </div>
               </Row>
             </Col>
