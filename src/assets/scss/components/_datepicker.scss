@@ -3,13 +3,20 @@
   justify-content: center;
   min-height: 372px;
   min-width: 373px;
+
+  @media (max-width: 991px) {
+    min-width: 350px !important;
+  }
+
   .flatpickr-calendar {
     box-shadow: none !important;
   }
+
   .flatpickr-disabled {
     color: #2e1d3a;
     opacity: 0.6;
   }
+
   .flatpickr-calendar,
   .flatpickr-innerContainer,
   .flatpickr-Container,
@@ -20,7 +27,12 @@
     // padding: 5px;
     border: none;
     color: #2e1d3a;
+
+    @media (max-width: 991px) {
+      min-width: 350px !important;
+    }
   }
+
   .flatpickr-day {
     border: none;
 
