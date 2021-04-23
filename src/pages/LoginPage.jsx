@@ -27,7 +27,8 @@ export default function LoginPage() {
   const eyeOff = <EyeOff />;
   const eye = <Eye />;
 
-  const login = async () => {
+  const login = async (e) => {
+    e.preventDefault();
     try {
       setError(null);
       setIsSubmitting(true);
