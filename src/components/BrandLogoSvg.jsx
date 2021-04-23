@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 function BrandLogoSvg() {
-  let history = useHistory();
+  const history = useHistory();
 
   const pageLocation = history.location.pathname;
 
