@@ -179,10 +179,10 @@ export default function ScheduledReturn() {
                         <button
                           className='btn btn-show p-0 m-0'
                           onClick={() => {
-                            setShowCancelOrderModal(true);
+                            onCancel();
                           }}
                         >
-                          Cancel return
+                          Modify or cancel return
                         </button>
                       </Row>
                     </Col>
