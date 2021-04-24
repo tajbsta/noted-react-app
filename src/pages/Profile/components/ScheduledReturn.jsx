@@ -36,6 +36,8 @@ export default function ScheduledReturn() {
                   width: '48px',
                   height: '48px',
                   background: '#fff',
+                  // marginLeft: '12px',
+                  // marginRight: '12px',
                 }}
                 src={thumbnail || ProductPlaceholder}
                 onError={(e) => {
@@ -137,13 +139,13 @@ export default function ScheduledReturn() {
                       {get(items, 'length', 0)} items in total
                     </div>
                   </Col>
-                  <Col className='product-img-col'>
+                  <div className='product-img-col col-6'>
                     {renderAllScheduledItems}
-                  </Col>
+                  </div>
                   {items.length > 5 && (
-                    <Col className='plus-more'>
+                    <div className='plus-more col-1'>
                       {items.length > 5 && `+${moreItemsCount} more...`}
-                    </Col>
+                    </div>
                   )}
 
                   <Col className='button-col'>
