@@ -179,6 +179,21 @@ export default function Address({ user }) {
                     <Form id='Info'>
                       <Row>
                         <Col>
+                          <Button
+                            type='button'
+                            className='btn close'
+                            data-dismiss='modal'
+                            aria-label='Close'
+                          >
+                            <span
+                              aria-hidden='true'
+                              style={{
+                                color: '#B1ADB2',
+                              }}
+                            >
+                              &times;
+                            </span>
+                          </Button>
                           <Form.Group>
                             <Form.Label>Full Name</Form.Label>
                             <Form.Control
