@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SizeGuideModal from '../modals/SizeGuideModal';
+import SizeGuideModal from '../../../modals/SizeGuideModal';
 
 export default function CheckoutCard({
   inReturn,

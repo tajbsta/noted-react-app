@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import CheckoutCard from './../../components/CheckoutCard';
-import MobileCheckoutCard from './../../components/MobileCheckoutCard';
+import CheckoutCard from './components/CheckoutCard';
+import MobileCheckoutCard from './components/MobileCheckoutCard';
 import ProductCard from '../../components/ProductCard';
 import PickUpConfirmed from '../../components/PickUpConfirmed';
 import PickUpDetails from './components/PickUpDetails';

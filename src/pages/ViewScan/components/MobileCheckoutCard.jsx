@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col, Spinner } from 'react-bootstrap';
-import SizeGuideModal from '../modals/SizeGuideModal';
+import SizeGuideModal from '../../../modals/SizeGuideModal';
 
 export default function MobileCheckoutCard({
   inReturn,
