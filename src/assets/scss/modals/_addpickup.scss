@@ -1,11 +1,16 @@
 #AddPickupModal {
   font-family: 'Sofia Pro';
   border-radius: 8px;
+  justify-content: center;
 
   .modal-content {
     padding: 32px 40px;
     min-height: 312px;
-    min-width: 528px;
+    max-width: 528px;
+
+    @media (max-width: 414px) {
+      padding: 20px 16px;
+    }
   }
 
   h1,
@@ -51,6 +56,10 @@
     display: flex;
     flex-direction: row-reverse;
     margin-top: 40px;
+
+    @media (max-width: 414px) {
+      margin-top: 23px;
+    }
 
     .btn-cancel {
       border: none;
