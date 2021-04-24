@@ -5,26 +5,23 @@ import PickUpConfirmed from '../../components/PickUpConfirmed';
 import PickUpDetails from './components/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, isEmpty } from 'lodash';
-import SizeGuideModal from '../../modals/SizeGuideModal';
 import $ from 'jquery';
-import CancelOrderModal from '../../modals/CancelOrderModal';
 import { updateOrders } from '../../actions/auth.action';
 import { useHistory } from 'react-router';
 import Row from '../../components/Row';
 import { RETURNABLE } from '../../constants/actions/runtime';
 import { scrollToTop } from '../../utils/window';
+import ModifyCheckoutCard from './components/ModifyCheckoutCard';
+import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
 
 function ViewConfirmedReturn({
   location: {
     state: { scheduledReturnId = '', hasModifications = false },
   },
 }) {
-  const dispatch = useDispatch();
   const [confirmed, setconfirmed] = useState(false);
-  const [modalShow, setModalShow] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
-  const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
   const history = useHistory();
   const {
     inDonation,
@@ -50,7 +47,6 @@ function ViewConfirmedReturn({
       cart,
     })
   );
-  // const totalDonations = inDonation.length;
 
   useEffect(() => {
     const platform = window.navigator.platform;
@@ -84,34 +80,9 @@ function ViewConfirmedReturn({
   useEffect(() => {
     scrollToTop();
     if (get(scheduledReturn, 'items', []).length === 0) {
-      /**
-       * CANCELS ORDER ENTIRELY
-       * WILL REDIRECT TO DASHBOARD FOR NOW
-       */
       history.push('/dashboard');
     }
   }, [scheduledReturn]);
-
-  const initiateCancelOrder = () => {
-    setShowCancelOrderModal(true);
-  };
-
-  const onConfirm = async () => {
-    /**
-     *
-     */
-
-    if (hasModifications) {
-      const filteredOrders = [
-        ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
-        orderInMemory,
-      ];
-
-      dispatch(await updateOrders(filteredOrders));
-      return setconfirmed(true);
-    }
-    history.push('/dashboard');
-  };
 
   useEffect(() => {
     function handleResize() {
@@ -137,9 +108,20 @@ function ViewConfirmedReturn({
 
   return (
     <div id='ViewConfirmReturnPage'>
+      {isMobile && (
+        <MobileModifyCheckoutCard
+          inReturn={inReturn}
+          confirmed={confirmed}
+          potentialReturnValue={potentialReturnValue}
+          inDonation={inDonation}
+          returnFee={returnFee}
+          taxes={taxes}
+          totalPayment={totalPayment}
+        />
+      )}
       <div className='container mt-6'>
         <div className='row mobile-view-no-m-row'>
-          <div className='col-sm-9'>
+          <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed ? (
               <div className='mobile-view-scan-col'>
@@ -180,7 +162,7 @@ function ViewConfirmedReturn({
              */}
             {!confirmed && (
               <div
-                className='card add-border scanned-item-card w-840 mb-3 p-0 btn mobile-view-add-col'
+                className='card add-border scanned-item-card max-w-840 mb-3 p-0 btn mobile-view-add-col'
                 onClick={() => {
                   /**
                    * @FUNCTION Show products like the one from dashboard
@@ -225,187 +207,31 @@ function ViewConfirmedReturn({
              * @END ADD PRODUCTS BTN
              */}
           </div>
-          {/**
-           * @START OF RIGHT CARD
-           */}
-          <div className='col-sm-3'>
-            <div
-              className='col right-card'
-              style={{
-                maxWidth: '248px',
-              }}
-            >
-              <div
-                className={`card shadow-sm p-3 pick-up-card ${
-                  confirmed == true ? 'h-292' : 'h-400'
-                }`}
-              >
-                <h3 className='sofia-pro products-to-return mb-1'>
-                  {items.length} product to return
-                </h3>
-                <h3 className='box-size-description'>
-                  All products need to fit in a 12”W x 12”H x 20”L box
-                </h3>
-                <button
-                  className='btn btn-more-info'
-                  onClick={() => setModalShow(true)}
-                >
-                  <h3 className='noted-purple sofia-pro more-pick-up-info mb-0'>
-                    More info
-                  </h3>
-                </button>
 
-                <hr className='line-break-1' />
-
-                <div>
-                  <h3 className='sofia-pro pick-up-price mb-0'>
-                    ${potentialReturnValue.toFixed(2) || 0.0}
-                  </h3>
-                  <h3 className='return-type sofia-pro value-label'>
-                    Potential Return Value
-                  </h3>
-                  {confirmed && (
-                    <p className='pick-up-reminder sofia-pro'>
-                      Once the pick-up has been confirmed we’ll take care of
-                      contacting your merchants. They will then be in charge of
-                      the payment.
-                    </p>
-                  )}
-                </div>
-                {!confirmed && (
-                  <>
-                    {/* <h2 className='sofia-pro mb-0 donate-quantity'>1</h2>
-                    <h5 className='sofia-pro text-muted value-label'>
-                      Donation
-                    </h5> */}
-
-                    {inDonation.length > 0 && (
-                      <>
-                        <h3 className='sofia-pro pick-up-price mb-0'>
-                          {inDonation.length}
-                        </h3>
-                        <h3 className='return-type sofia-pro value-label'>
-                          Donation
-                        </h3>
-                      </>
-                    )}
-                    <hr className='line-break-2' />
-                    <div className='row'>
-                      <div className='col'>
-                        <h5 className='sofia-pro text-muted value-label'>
-                          Return total cost
-                        </h5>
-                      </div>
-                      <div className='col'>
-                        <h5 className='sofia-pro text-right'>${returnFee}</h5>
-                      </div>
-                    </div>
-                    <div className='row'>
-                      <div className='col'>
-                        <h5 className='sofia-pro text-muted value-label'>
-                          Taxes
-                        </h5>
-                      </div>
-                      <div className='col'>
-                        <h5 className='sofia-pro text-right'>
-                          ${taxes.toFixed(2)}
-                        </h5>
-                      </div>
-                    </div>
-                    <hr className='line-break-3' />
-                    <div className='row'>
-                      <div className='col'>
-                        <h5 className='sofia-pro text-muted'>Total paid</h5>
-                      </div>
-                      <div className='col'>
-                        <h5 className='sofia-pro text-right total-now'>
-                          ${totalPayment}
-                        </h5>
-                      </div>
-                    </div>
-
-                    <hr />
-                    <div className='row'>
-                      <div className='col'>
-                        <button
-                          className='btn btn-more-info'
-                          onClick={initiateCancelOrder}
-                        >
-                          <h3 className='noted-red sofia-pro cancel-order mb-0'>
-                            Cancel order
-                          </h3>
-                        </button>
-                        <h3 className='cancel-info'>
-                          Canceling pick-ups less than 4h before schedule will
-                          result in a $5 penalty
-                        </h3>
-                        <a
-                          style={{ textDecoration: 'underline' }}
-                          className='cancel-info'
-                        >
-                          More info
-                        </a>
-                      </div>
-                    </div>
-                    {!isEmpty(orderInMemory) && hasModifications && (
-                      <div
-                        className='btn mt-2'
-                        style={{
-                          background: '#570097',
-                          border: 'none',
-                          color: '#FFFFFF',
-                        }}
-                        onClick={onConfirm}
-                      >
-                        Confirm
-                      </div>
-                    )}
-
-                    {!isEmpty(orderInMemory) && !hasModifications && (
-                      <div
-                        className='btn noted-purple mt-2'
-                        style={{
-                          background: '#EEE4F6',
-                          border: 'none',
-                          color: '#57009',
-                          display: 'flex',
-                          alignContent: 'center',
-                          justifyContent: 'center',
-                        }}
-                        onClick={() => history.push('/dashboard')}
-                      >
-                        No changes
-                      </div>
-                    )}
-                  </>
-                )}
+          {/* RIGHT CARD */}
+          {!isMobile && (
+            <>
+              <div className='col-sm-3'>
+                <ModifyCheckoutCard
+                  potentialReturnValue={potentialReturnValue}
+                  inDonation={inDonation}
+                  taxes={taxes}
+                  totalPayment={totalPayment}
+                  isEmpty={isEmpty}
+                  orderInMemory={orderInMemory}
+                  hasModifications={hasModifications}
+                  items={items}
+                  scheduledReturnId={scheduledReturnId}
+                  scheduledReturn={scheduledReturn}
+                  scheduledReturns={scheduledReturns}
+                  updateOrders={updateOrders}
+                  returnFee={returnFee}
+                />
               </div>
-            </div>
-          </div>
-          {/**
-           * @END RIGHT CARD
-           */}
+            </>
+          )}
         </div>
       </div>
-      {/* MODAL CITY HERE */}
-      <SizeGuideModal show={modalShow} onHide={() => setModalShow(false)} />
-      <CancelOrderModal
-        show={showCancelOrderModal}
-        onHide={() => setShowCancelOrderModal(false)}
-        onCancel={async () => {
-          /**
-           * CANCEL ORDER HERE
-           */
-          /**
-           * UPDATE SCHEDULED RETURNS BY FILTER
-           */
-          const filteredOrders = [
-            ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
-          ];
-          dispatch(updateOrders(filteredOrders));
-          history.push('/dashboard');
-        }}
-      />
     </div>
   );
 }
