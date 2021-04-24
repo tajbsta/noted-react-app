@@ -16,9 +16,9 @@ export default function CheckoutCard({
 
   return (
     <div id='CheckoutCard'>
-      <div className={isTablet ? 'col' : 'col-sm-3'}>
+      <div className=''>
         <div
-          className='col right-card'
+          // className='col right-card'
           style={{
             maxWidth: '248px',
           }}

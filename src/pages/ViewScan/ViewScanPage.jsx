@@ -247,17 +247,21 @@ function ViewScanPage() {
 
           {/* RIGHT CARDS */}
           {!isMobile && (
-            <CheckoutCard
-              inReturn={inReturn}
-              confirmed={confirmed}
-              isTablet={isTablet}
-              potentialReturnValue={potentialReturnValue}
-              inDonation={inDonation}
-              returnFee={returnFee}
-              taxes={taxes}
-              totalPayment={totalPayment}
-              onReturnConfirm={onReturnConfirm}
-            />
+            <>
+              <div className='col-sm-3'>
+                <CheckoutCard
+                  inReturn={inReturn}
+                  confirmed={confirmed}
+                  isTablet={isTablet}
+                  potentialReturnValue={potentialReturnValue}
+                  inDonation={inDonation}
+                  returnFee={returnFee}
+                  taxes={taxes}
+                  totalPayment={totalPayment}
+                  onReturnConfirm={onReturnConfirm}
+                />
+              </div>
+            </>
           )}
         </div>
       </div>
