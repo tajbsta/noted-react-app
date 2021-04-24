@@ -25,7 +25,7 @@ export default function ScheduledReturn() {
     return (
       <div id='ScheduledReturnProduct'>
         <Row className='mt-4'>
-          <Col className='sched-product-col'>
+          <Col className='sched-product-col col-9'>
             <div className='sched-img-col'>
               <img
                 className='product-img'
@@ -49,7 +49,7 @@ export default function ScheduledReturn() {
               <h4 className='sofia-pro sched-product-price'>${price}</h4>
             </div>
           </Col>
-          <Col className='sched-vendor-col'>
+          <Col className='sched-vendor-col col-3'>
             <div
               style={{
                 display: 'flex',
