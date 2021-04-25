@@ -13,7 +13,6 @@ import { LAST_CALL, RETURNABLE, DONATE } from '../../constants/actions/runtime';
 import AddProductModal from '../../modals/AddProductModal';
 import ScheduledCard from './components/ScheduledCard';
 import Scanning from './components/Scanning';
-import moment from 'moment';
 import { scrollToTop } from '../../utils/window';
 
 const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
@@ -21,7 +20,12 @@ const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 function DashboardPage() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { search } = useSelector(({ runtime: { search } }) => ({ search }));
+  const { search, scheduledReturns } = useSelector(
+    ({ runtime: { search }, auth: { scheduledReturns } }) => ({
+      search,
+      scheduledReturns,
+    })
+  );
   const [loading, setLoading] = useState(true);
   const [showScanning, setShowScanning] = useState(false);
   const [userId, setUserId] = useState('');
@@ -110,7 +114,11 @@ function DashboardPage() {
     <div id='DashboardPage'>
       <div className='container mt-6 main-mobile-dashboard'>
         <div className='row sched-row'>
-          <ScheduledCard />
+          {/**
+           * should only appear if there are scheduled returns
+           */}
+
+          {!isEmpty(scheduledReturns) && <ScheduledCard />}
         </div>
         <div className='row ipad-row'>
           <div className='col-sm-9 mt-4 w-840 bottom'>
