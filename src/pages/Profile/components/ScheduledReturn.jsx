@@ -1,4 +1,4 @@
-import { get } from 'lodash-es';
+import { get, isEmpty } from 'lodash-es';
 import React, { useState } from 'react';
 import { Col, Row, Accordion, Card } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -6,9 +6,11 @@ import { useHistory } from 'react-router-dom';
 import ReturnScore from '../../../components/ReturnsScore';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import CancelOrderModal from './../../../modals/CancelOrderModal';
+import Collapsible from 'react-collapsible';
 
 export default function ScheduledReturn() {
   const { push } = useHistory();
+  const [isOpen, setIsOpen] = useState(false);
   const { scheduledReturns } = useSelector(
     ({ auth: { scheduledReturns } }) => ({
       scheduledReturns,
@@ -243,14 +245,35 @@ export default function ScheduledReturn() {
     );
   };
 
+  const renderEmptiness = () => {
+    return <h5 className='sofia pro empty-message'>No scheduled returns</h5>;
+  };
+
   return (
     <div id='ScheduledReturn'>
-      <h3 className='sofia-pro text-18 mb-3-profile mb-3 triggerText'>
-        Your scheduled return
-      </h3>
-      {scheduledReturns.map((scheduledReturn) => {
-        return renderScheduledReturn(scheduledReturn);
-      })}
+      <div className='row'>
+        <Collapsible
+          open={isOpen}
+          onTriggerOpening={() => setIsOpen(true)}
+          onTriggerClosing={() => setIsOpen(false)}
+          trigger={
+            <div className='triggerContainer ml-3'>
+              <h3 className='sofia-pro text-18 mb-3-profile mb-0 triggerText'>
+                Your scheduled return
+              </h3>
+              <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
+            </div>
+          }
+        >
+          {scheduledReturns.map((scheduledReturn) => {
+            return renderScheduledReturn(scheduledReturn);
+          })}
+          {/**
+           * When there is nothing
+           */}
+          {isEmpty(scheduledReturns) && renderEmptiness()}
+        </Collapsible>
+      </div>
     </div>
   );
 }
