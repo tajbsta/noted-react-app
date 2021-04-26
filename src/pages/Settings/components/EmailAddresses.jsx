@@ -163,7 +163,7 @@ export default function EmailAddresses({ user }) {
                                   <small className='form-text p-0 m-0 noted-red'>
                                     {account.metadata &&
                                       account.metadata.errMsg}{' '}
-                                    Please delete email and{' '}
+                                    Please{' '}
                                     <a
                                       className='noted-red'
                                       style={{
@@ -173,9 +173,9 @@ export default function EmailAddresses({ user }) {
                                       }}
                                       href='/request-permission'
                                     >
-                                      authorize noted
-                                    </a>{' '}
-                                    again.
+                                      reauthorize noted
+                                    </a>
+                                    .
                                   </small>
                                 </>
                               )}
