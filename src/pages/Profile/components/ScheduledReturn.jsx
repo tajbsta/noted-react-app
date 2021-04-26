@@ -175,7 +175,11 @@ export default function ScheduledReturn() {
                   >
                     <Col className='title-col'>
                       <div className='title'>Scheduled Return</div>
-                      <div className='total'>1 item total</div>
+                      <div className='total'>
+                        {get(items, 'length', 0)}{' '}
+                        {`${get(items, 'length', 0) === 1 ? 'item' : 'items'}`}{' '}
+                        in total
+                      </div>
                     </Col>
                     <Col className='title-col'>
                       <div className='button-col'>

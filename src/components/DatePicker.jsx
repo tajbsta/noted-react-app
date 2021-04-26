@@ -4,12 +4,11 @@ import 'flatpickr/dist/themes/airbnb.css';
 import { get } from 'lodash-es';
 import moment from 'moment';
 
-const CustomInput = ({ value, defaultValue, inputRef, name, ...props }) => {
+const CustomInput = ({ inputRef, name, ...props }) => {
   return (
     <input
       {...props}
       name={name}
-      defaultValue={defaultValue}
       ref={inputRef}
       onLoad={() => inputRef.current.focus()}
       style={{
@@ -19,6 +18,7 @@ const CustomInput = ({ value, defaultValue, inputRef, name, ...props }) => {
   );
 };
 export default function DatePicker({ date, setFieldValue }) {
+  console.log(date);
   return (
     <div id='DatePicker'>
       <Flatpickr
@@ -33,10 +33,18 @@ export default function DatePicker({ date, setFieldValue }) {
             />
           );
         }}
-        onChange={(date) => {
-          setFieldValue('date', get(date, '0'));
-        }}
         options={{
+          onChange([date]) {
+            try {
+              const dateStr = `${date.getFullYear()}-${
+                date.getMonth() + 1
+              }-${date.getDate()} 00:00 UTC`;
+              const dateString = new Date(dateStr);
+              setFieldValue(name, dateString);
+            } catch (err) {
+              console.log(err);
+            }
+          },
           minDate: new Date().setDate(new Date().getDate() + 1),
           maxDate: new Date().setDate(new Date().getDate() + 5),
           inline: true,
