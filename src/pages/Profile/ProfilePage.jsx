@@ -49,7 +49,7 @@ export default function ProfilePage() {
               <hr />
               {showEditPayment && <Payment />}
               <hr />
-              <ScheduledReturn />
+              <ScheduledReturn user={user} />
               <hr />
               <ReturnHistory />
             </div>

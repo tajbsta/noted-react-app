@@ -489,12 +489,24 @@
 
   .empty-message {
     text-align: center;
-    font-size: 14px;
+    font-size: 18px !important;
     margin-bottom: 8px;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 18px;
     color: #0e0018;
+  }
+
+  .empty-submessage {
+    text-align: center;
+    font-size: 14px !important;
+    line-height: 18px;
+    color: #0e0018;
+
+    .start-returning {
+      color: #6aaf6a;
+      text-decoration: underline;
+    }
   }
 }

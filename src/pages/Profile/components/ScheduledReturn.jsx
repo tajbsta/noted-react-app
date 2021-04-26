@@ -8,7 +8,7 @@ import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import CancelOrderModal from './../../../modals/CancelOrderModal';
 import Collapsible from 'react-collapsible';
 
-export default function ScheduledReturn() {
+export default function ScheduledReturn({ user }) {
   const { push } = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const { scheduledReturns } = useSelector(
@@ -16,6 +16,7 @@ export default function ScheduledReturn() {
       scheduledReturns,
     })
   );
+  console.log(user);
 
   const renderScheduledReturnItem = (item) => {
     const vendorName = get(item, 'vendor_name', '');
@@ -123,7 +124,7 @@ export default function ScheduledReturn() {
           defaultActiveKey='1'
           activeKey={activeKey}
         >
-          <Card>
+          <Card className='mt-4 m-3 ml-4 shadow-sm'>
             <CancelOrderModal
               show={showCancelOrderModal}
               onHide={onHide}
@@ -246,7 +247,20 @@ export default function ScheduledReturn() {
   };
 
   const renderEmptiness = () => {
-    return <h5 className='sofia pro empty-message'>No scheduled returns</h5>;
+    return (
+      <>
+        <h5 className='sofia pro empty-message mt-4'>
+          Your scheduled return is Empty
+        </h5>
+        <h5 className='sofia pro empty-submessage mb-5'>
+          I&apos;m sorry {user.name || user.email}, I&apos;m afraid there&apos;s
+          nothing here. Change that by {''}
+          <a href='/dashboard' className='start-returning'>
+            start returning.
+          </a>
+        </h5>
+      </>
+    );
   };
 
   return (
