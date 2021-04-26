@@ -99,7 +99,7 @@
     width: 568px;
     margin-bottom: 16px;
     margin-top: 16px;
-    min-height: 110px;
+    max-height: 110px;
 
     @media (max-width: 767px) {
       max-width: 313px;

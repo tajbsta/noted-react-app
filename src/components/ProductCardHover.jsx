@@ -49,6 +49,7 @@ export default function ProductCardHover({ orderDate, show, item }) {
       itemName: get(item, 'name', ''),
       productUrl: '',
       imageUrl: get(item, 'thumbnail', ''),
+      vendorLogo: get(item, 'vendor_data.thumbnail', ''),
     },
     validationSchema: addProductSchema,
   });

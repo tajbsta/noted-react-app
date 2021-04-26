@@ -29,6 +29,7 @@ export default function EditProductModal(props) {
     orderDate,
     itemName,
     amount,
+    vendorLogo,
   } = values;
 
   const hiddenFileInput = React.useRef(null);
@@ -111,7 +112,7 @@ export default function EditProductModal(props) {
     setLoading(false);
   };
 
-  // Display Image Component
+  // Display Product Image Component
   const ImageThumb = ({ image }) => {
     return (
       <img
@@ -201,7 +202,10 @@ export default function EditProductModal(props) {
                         </div>
                         <div className='brand-img-container'>
                           <img
-                            src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                            src={vendorLogo || ProductPlaceholder}
+                            onError={(e) => {
+                              e.currentTarget.src = ProductPlaceholder;
+                            }}
                             alt=''
                             className='brand-img'
                           />
@@ -270,7 +274,7 @@ export default function EditProductModal(props) {
                         <Form.Control
                           name='amount'
                           onChange={handleChange}
-                          value={amount}
+                          value={amount.toFixed(2)}
                         />
                       </div>
                       {amount.length > 0 && renderInlineError(errors.amount)}

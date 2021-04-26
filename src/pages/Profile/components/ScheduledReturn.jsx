@@ -23,7 +23,7 @@ export default function ScheduledReturn({ user }) {
     const name = get(item, 'name', '');
     const price = get(item, 'price', '');
     const rating = get(item, 'vendor_data.rating', 1);
-    const thumbnail = get(item, 'thumbnail', '');
+    const thumbnail = get(item, 'thumbnail', ''); // product img
 
     return (
       <div id='ScheduledReturnProduct'>
@@ -51,7 +51,9 @@ export default function ScheduledReturn({ user }) {
             <div style={{ marginLeft: '16px' }}>
               <h4 className='sofia-pro sched-distributor-name'>{vendorName}</h4>
               <h4 className='sofia-pro sched-product-name'>{name}</h4>
-              <h4 className='sofia-pro sched-product-price'>${price}</h4>
+              <h4 className='sofia-pro sched-product-price'>
+                ${price.toFixed(2)}
+              </h4>
             </div>
           </Col>
           <Col className='sched-vendor-col col-3'>
@@ -70,7 +72,10 @@ export default function ScheduledReturn({ user }) {
               </Col>
               <div className='m-brand-logo-cont'>
                 <img
-                  src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                  src={item.vendor_data.thumbnail || ProductPlaceholder}
+                  onError={(e) => {
+                    e.currentTarget.src = ProductPlaceholder;
+                  }}
                   alt=''
                   className='m-brand-img'
                 />
