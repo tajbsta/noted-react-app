@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Overlay, Tooltip, Row } from 'react-bootstrap';
+import { get } from 'lodash-es';
+import { DONATE } from '../constants/actions/runtime';
 
 function ProductDetails({ item, isHovering = false }) {
   const history = useHistory();
@@ -42,6 +44,8 @@ function ProductDetails({ item, isHovering = false }) {
     setShow(false);
   };
 
+  const category = get(item, 'category', '');
+
   return (
     <div
       className={`col-sm-7 p-0 mt-1 p-details ml-3 ${
@@ -75,7 +79,7 @@ function ProductDetails({ item, isHovering = false }) {
       <Row>
         <h4 className='sofia-pro mb-0 product-price'>
           ${formatPrice}{' '}
-          {isHovering && inDashboard && (
+          {isHovering && inDashboard && category !== DONATE && (
             <>
               <button type='button' className='btn alternateActionText ml-2'>
                 Donate instead

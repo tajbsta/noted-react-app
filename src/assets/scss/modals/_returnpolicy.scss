@@ -54,8 +54,10 @@
       padding: 0px 16px;
     }
   }
+
   .b-row {
-    display: inline-flex;
+    // display: inline-flex;
+    // width: -webkit-fill-available;
 
     .brand-group {
       display: flex;
@@ -97,6 +99,7 @@
     width: 568px;
     margin-bottom: 16px;
     margin-top: 16px;
+    max-height: 110px;
 
     @media (max-width: 767px) {
       max-width: 313px;
@@ -116,6 +119,9 @@
     font-size: 14px;
     line-height: 16px;
     color: #570097;
+    &:hover {
+      color: #b079da;
+    }
   }
 
   .modal-footer {

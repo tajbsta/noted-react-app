@@ -49,6 +49,7 @@ export default function ProductCardHover({ orderDate, show, item }) {
       itemName: get(item, 'name', ''),
       productUrl: '',
       imageUrl: get(item, 'thumbnail', ''),
+      vendorLogo: get(item, 'vendor_data.thumbnail', ''),
     },
     validationSchema: addProductSchema,
   });
@@ -117,6 +118,7 @@ export default function ProductCardHover({ orderDate, show, item }) {
         editproductform={{ handleChange, values, setFieldValue, errors }}
       />
       <ReturnPolicyModal
+        item={item}
         show={modalPolicyShow}
         onHide={() => {
           setModalPolicyShow(false);

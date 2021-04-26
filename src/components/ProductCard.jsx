@@ -309,7 +309,10 @@ function ProductCard({
                   <Row>
                     <div className='m-brand-logo-cont'>
                       <img
-                        src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                        src={item.vendor_data.thumbnail || ProductPlaceholder}
+                        onError={(e) => {
+                          e.currentTarget.src = ProductPlaceholder;
+                        }}
                         alt=''
                         className='m-brand-img'
                       />
@@ -351,6 +354,7 @@ function ProductCard({
               </>
             )}
             <ReturnPolicyModal
+              item={item}
               show={modalPolicyShow}
               onHide={() => {
                 setModalPolicyShow(false);
@@ -414,7 +418,10 @@ function ProductCard({
 
               <div className='col-sm-3 return-item-brand'>
                 <img
-                  src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                  src={item.vendor_data.thumbnail || ProductPlaceholder}
+                  onError={(e) => {
+                    e.currentTarget.src = ProductPlaceholder;
+                  }}
                   alt=''
                   className='avatar-img ml-2 rounded-circle noted-border brand-img'
                   style={{

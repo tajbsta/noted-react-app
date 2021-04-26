@@ -1,4 +1,4 @@
-import { get } from 'lodash-es';
+import { get, isEmpty } from 'lodash-es';
 import React, { useState } from 'react';
 import { Col, Row, Accordion, Card } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -6,21 +6,24 @@ import { useHistory } from 'react-router-dom';
 import ReturnScore from '../../../components/ReturnsScore';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import CancelOrderModal from './../../../modals/CancelOrderModal';
+import Collapsible from 'react-collapsible';
 
-export default function ScheduledReturn() {
+export default function ScheduledReturn({ user }) {
   const { push } = useHistory();
+  const [isOpen, setIsOpen] = useState(false);
   const { scheduledReturns } = useSelector(
     ({ auth: { scheduledReturns } }) => ({
       scheduledReturns,
     })
   );
+  console.log(user);
 
   const renderScheduledReturnItem = (item) => {
     const vendorName = get(item, 'vendor_name', '');
     const name = get(item, 'name', '');
     const price = get(item, 'price', '');
     const rating = get(item, 'vendor_data.rating', 1);
-    const thumbnail = get(item, 'thumbnail', '');
+    const thumbnail = get(item, 'thumbnail', ''); // product img
 
     return (
       <div id='ScheduledReturnProduct'>
@@ -48,7 +51,9 @@ export default function ScheduledReturn() {
             <div style={{ marginLeft: '16px' }}>
               <h4 className='sofia-pro sched-distributor-name'>{vendorName}</h4>
               <h4 className='sofia-pro sched-product-name'>{name}</h4>
-              <h4 className='sofia-pro sched-product-price'>${price}</h4>
+              <h4 className='sofia-pro sched-product-price'>
+                ${price.toFixed(2)}
+              </h4>
             </div>
           </Col>
           <Col className='sched-vendor-col col-3'>
@@ -67,7 +72,10 @@ export default function ScheduledReturn() {
               </Col>
               <div className='m-brand-logo-cont'>
                 <img
-                  src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                  src={item.vendor_data.thumbnail || ProductPlaceholder}
+                  onError={(e) => {
+                    e.currentTarget.src = ProductPlaceholder;
+                  }}
                   alt=''
                   className='m-brand-img'
                 />
@@ -121,7 +129,7 @@ export default function ScheduledReturn() {
           defaultActiveKey='1'
           activeKey={activeKey}
         >
-          <Card>
+          <Card className='mt-4 m-3 ml-4 shadow-sm'>
             <CancelOrderModal
               show={showCancelOrderModal}
               onHide={onHide}
@@ -175,7 +183,11 @@ export default function ScheduledReturn() {
                   >
                     <Col className='title-col'>
                       <div className='title'>Scheduled Return</div>
-                      <div className='total'>1 item total</div>
+                      <div className='total'>
+                        {get(items, 'length', 0)}{' '}
+                        {`${get(items, 'length', 0) === 1 ? 'item' : 'items'}`}{' '}
+                        in total
+                      </div>
                     </Col>
                     <Col className='title-col'>
                       <div className='button-col'>
@@ -239,14 +251,48 @@ export default function ScheduledReturn() {
     );
   };
 
+  const renderEmptiness = () => {
+    return (
+      <>
+        <h5 className='sofia pro empty-message mt-4'>
+          Your scheduled return is Empty
+        </h5>
+        <h5 className='sofia pro empty-submessage mb-5'>
+          I&apos;m sorry {user.name || user.email}, I&apos;m afraid there&apos;s
+          nothing here. Change that by {''}
+          <a href='/dashboard' className='start-returning'>
+            start returning.
+          </a>
+        </h5>
+      </>
+    );
+  };
+
   return (
     <div id='ScheduledReturn'>
-      <h3 className='sofia-pro text-18 mb-3-profile mb-3 triggerText'>
-        Your scheduled return
-      </h3>
-      {scheduledReturns.map((scheduledReturn) => {
-        return renderScheduledReturn(scheduledReturn);
-      })}
+      <div className='row'>
+        <Collapsible
+          open={isOpen}
+          onTriggerOpening={() => setIsOpen(true)}
+          onTriggerClosing={() => setIsOpen(false)}
+          trigger={
+            <div className='triggerContainer ml-3'>
+              <h3 className='sofia-pro text-18 mb-3-profile mb-0 triggerText'>
+                Your scheduled return
+              </h3>
+              <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
+            </div>
+          }
+        >
+          {scheduledReturns.map((scheduledReturn) => {
+            return renderScheduledReturn(scheduledReturn);
+          })}
+          {/**
+           * When there is nothing
+           */}
+          {isEmpty(scheduledReturns) && renderEmptiness()}
+        </Collapsible>
+      </div>
     </div>
   );
 }

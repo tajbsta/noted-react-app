@@ -1,7 +1,22 @@
+import { get } from 'lodash-es';
 import React from 'react';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
+import { RETURN_SCORES } from '../constants/returns/scores';
+import ReturnScore from '../components/ReturnsScore';
+import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 
 export default function ReturnPolicyModal(props) {
+  const { item } = props;
+  const thumbnail = get(item, 'vendor_data.thumbnail', '');
+  const policy = get(item, 'vendor_data.policy', '');
+  const website = get(item, 'vendor_data.website', '');
+  const rating = get(item, 'vendor_data.rating', 1);
+  const score = RETURN_SCORES.find(
+    ({ rating: returnRating }) => rating === returnRating
+  );
+  const scoreTitle = get(score, 'title', '');
+  const vendor = get(item, 'vendor_name', '');
+
   return (
     <Modal
       {...props}
@@ -20,30 +35,31 @@ export default function ReturnPolicyModal(props) {
       </Modal.Header>
       <Modal.Body className='sofia-pro'>
         <Row className='b-row'>
-          <Col>
+          <Col xs={4}>
             <div className='brand-group'>
               <img
-                src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
+                src={thumbnail || ProductPlaceholder}
+                onError={(e) => {
+                  e.currentTarget.src = ProductPlaceholder;
+                }}
                 alt=''
                 className='brand-img'
               />
-              <h4 className='sofia-pro brand'>Nordstrom</h4>
+              <h4 className='sofia-pro brand'>{vendor}</h4>
             </div>
           </Col>
           <Col className='score-col'>
-            <h4 className='sofia-pro text-score'>Excellent Returns</h4>
+            <ReturnScore score={item.vendor_data.rating} />
+            <h4 className='ml-2 sofia-pro text-score'>{scoreTitle}</h4>
           </Col>
         </Row>
 
         <p className='sofia-pro info'>
-          Nordstrom returns are free, all the time. Due to increase volume and
-          the impact of COVID-19, returns processing by mail is delayed. For
-          faster returns, visit a Nordstrom store near you. For employee safety,
-          we hold items for 24 hours before processing any return, and refunds
-          should be expected 5-7 business days after the returns processing is
-          complete.
+          {policy == '' ? 'This is empty.' : policy}
         </p>
-        <a className='sofia-pro view-link'>View website</a>
+        <a className='sofia-pro view-link' href={website}>
+          View website
+        </a>
       </Modal.Body>
       <Modal.Footer>
         <Button className='btn-ok' onClick={props.onHide}>
