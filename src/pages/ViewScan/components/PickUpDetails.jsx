@@ -161,7 +161,7 @@ function PickUpDetails() {
 
   useEffect(() => {
     function handleResize() {
-      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 980);
+      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 1023);
     }
     handleResize();
     window.addEventListener('resize', handleResize);

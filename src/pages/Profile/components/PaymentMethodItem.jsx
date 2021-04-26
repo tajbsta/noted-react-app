@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import MastercardSvg from '../../../assets/img/mastercard.svg';
 import {
   clearPaymentForm,
   updatePaymentForm,
 } from '../../../actions/auth.action';
 import { useDispatch, useSelector } from 'react-redux';
+import { getCreditCardType } from '../../../utils/creditCards';
 
 export default function PaymentMethodItem({
   id = '',
   cvc = '',
   fullName = '',
   cardNumber = 'xxxx',
-  type = 'Visa',
   expirationMonth = '00',
   expirationYear = '00',
   isDefault = false,
@@ -70,13 +69,16 @@ export default function PaymentMethodItem({
     cardNumber.length + 1
   );
 
+  const cardType = getCreditCardType(cardNumber);
+  const type = cardType.text;
+  const cardImage = cardType.image;
   return (
     <div className='list-group-item'>
       <div className='row align-items-center'>
         <div className='col-auto'>
           <img
             className='img-fluid'
-            src={MastercardSvg}
+            src={cardImage}
             style={{
               width: 38,
               height: 38,

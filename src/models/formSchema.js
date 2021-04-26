@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { PASSWORD_REGEX_FORMAT } from '../constants/errors/regexFormats'
+import { PASSWORD_REGEX_FORMAT } from '../constants/errors/regexFormats';
 
 export const registerSchema = Yup.object({
   email: Yup.string()
@@ -23,9 +23,7 @@ export const forgotPasswordSchema = Yup.object({
 });
 
 export const resetPasswordSchema = Yup.object().shape({
-  code: Yup.number()
-    .min(6, 'Not correct length')
-    .required('Code is required'),
+  code: Yup.number().min(6, 'Not correct length').required('Code is required'),
   newPassword: Yup.string()
     .required(
       'Your password must be 8-20 characters long and must contain a letter, symbol and a number'
@@ -43,7 +41,6 @@ export const resetPasswordSchema = Yup.object().shape({
   }),
 });
 
-
 export const pickUpAddressSchema = Yup.object({
   fullName: Yup.string().required('Fill in your name'),
   phoneNumber: Yup.string().matches(
@@ -56,13 +53,12 @@ export const pickUpAddressSchema = Yup.object({
   zipCode: Yup.number()
     .min(4, 'Enter a valid zip code')
     .required('Zip code is required'),
-
 });
 
 export const paymentAddressSchema = Yup.object({
   fullName: Yup.string().required('Name on the card'),
   cardNumber: Yup.string()
-    .min(19, 'Enter a valid card number')
+    .min(16, 'Enter a valid card number')
     .required('Card number is required'),
   expirationMonth: Yup.number().required('Expiration month is required'),
   expirationYear: Yup.string()
@@ -78,7 +74,6 @@ export const pickUpDateSchema = Yup.object({
   time: Yup.string().required('Time is required'),
 });
 
-
 export const addProductSchema = Yup.object({
   productUrl: Yup.string()
     .url('Enter valid url')
@@ -87,10 +82,12 @@ export const addProductSchema = Yup.object({
   orderDate: Yup.string().required('Order date is required'),
   orderRefNo: Yup.string().required('Order ref # is required'),
   itemName: Yup.string().required('Product name is required'),
-  amount: Yup.number().required('Product\'s amount is required'),
-  returnDocument: Yup.object().shape({
-    name: Yup.string().required()
-  }).label('File')
+  amount: Yup.number().required("Product's amount is required"),
+  returnDocument: Yup.object()
+    .shape({
+      name: Yup.string().required(),
+    })
+    .label('File'),
 });
 
 export const editProductSchema = Yup.object({
@@ -101,8 +98,10 @@ export const editProductSchema = Yup.object({
   orderDate: Yup.string().required('Order date is required'),
   orderRefNo: Yup.string().required('Order ref # is required'),
   itemName: Yup.string().required('Product name is required'),
-  amount: Yup.number().required('Product\'s amount is required'),
-  returnDocument: Yup.object().shape({
-    name: Yup.string().required()
-  }).label('File')
+  amount: Yup.number().required("Product's amount is required"),
+  returnDocument: Yup.object()
+    .shape({
+      name: Yup.string().required(),
+    })
+    .label('File'),
 });

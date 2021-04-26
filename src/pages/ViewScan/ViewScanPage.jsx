@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import CheckoutCard from './../../components/CheckoutCard';
-import MobileCheckoutCard from './../../components/MobileCheckoutCard';
+import CheckoutCard from './components/CheckoutCard';
+import MobileCheckoutCard from './components/MobileCheckoutCard';
 import ProductCard from '../../components/ProductCard';
 import PickUpConfirmed from '../../components/PickUpConfirmed';
 import PickUpDetails from './components/PickUpDetails';
@@ -146,6 +146,19 @@ function ViewScanPage() {
 
   return (
     <div id='ViewScanPage'>
+      {isMobile && (
+        <MobileCheckoutCard
+          inReturn={inReturn}
+          confirmed={confirmed}
+          isTablet={isTablet}
+          potentialReturnValue={potentialReturnValue}
+          inDonation={inDonation}
+          returnFee={returnFee}
+          taxes={taxes}
+          totalPayment={totalPayment}
+          onReturnConfirm={onReturnConfirm}
+        />
+      )}
       <div className={`container  ${isMobile ? 'mt-4' : 'mt-6'}`}>
         <div className='row mobile-row'>
           <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
@@ -234,31 +247,21 @@ function ViewScanPage() {
 
           {/* RIGHT CARDS */}
           {!isMobile && (
-            <CheckoutCard
-              inReturn={inReturn}
-              confirmed={confirmed}
-              isTablet={isTablet}
-              potentialReturnValue={potentialReturnValue}
-              inDonation={inDonation}
-              returnFee={returnFee}
-              taxes={taxes}
-              totalPayment={totalPayment}
-              onReturnConfirm={onReturnConfirm}
-            />
-          )}
-
-          {isMobile && (
-            <MobileCheckoutCard
-              inReturn={inReturn}
-              confirmed={confirmed}
-              isTablet={isTablet}
-              potentialReturnValue={potentialReturnValue}
-              inDonation={inDonation}
-              returnFee={returnFee}
-              taxes={taxes}
-              totalPayment={totalPayment}
-              onReturnConfirm={onReturnConfirm}
-            />
+            <>
+              <div className='col-sm-3'>
+                <CheckoutCard
+                  inReturn={inReturn}
+                  confirmed={confirmed}
+                  isTablet={isTablet}
+                  potentialReturnValue={potentialReturnValue}
+                  inDonation={inDonation}
+                  returnFee={returnFee}
+                  taxes={taxes}
+                  totalPayment={totalPayment}
+                  onReturnConfirm={onReturnConfirm}
+                />
+              </div>
+            </>
           )}
         </div>
       </div>

@@ -36,7 +36,7 @@ export default function EmptyPayment(props) {
           </h4>
         </div>
         <div className='d-flex justify-content-center'>
-          <button className='btn btn-add-empty text-16' onClick={props.onClick}>
+          <button className='btn btn-add-empty' onClick={props.onClick}>
             Add Payment Method
           </button>
         </div>

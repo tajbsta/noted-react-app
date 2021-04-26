@@ -1,18 +1,19 @@
 #MobileCheckoutCard {
   font-family: 'Sofia Pro';
+
   .m-col {
     padding-left: 0px;
   }
 
   .card {
-    padding-left: 0px;
-    padding-right: 0px;
-    position: fixed;
-    bottom: 0;
     z-index: 999;
     width: -webkit-fill-available;
     filter: drop-shadow(2px 4px 8px black);
     border-radius: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    position: fixed;
+    bottom: 0;
   }
 
   .card-body {

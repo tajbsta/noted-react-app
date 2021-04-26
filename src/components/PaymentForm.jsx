@@ -53,7 +53,7 @@ export default function PaymentForm({
 
   useEffect(() => {
     function handleResize() {
-      setIsMobile(window.innerWidth <= 991);
+      setIsMobile(window.innerWidth <= 1199);
     }
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -145,7 +145,7 @@ export default function PaymentForm({
                       </Row>
                       <Row>
                         <Col>
-                          <Form.Group>
+                          <Form.Group style={{ display: 'grid' }}>
                             <Form.Label>Expiration Date</Form.Label>
                             <div
                               className='exp-form'

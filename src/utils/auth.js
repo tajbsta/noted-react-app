@@ -22,7 +22,7 @@ export const getUserSession = async () => {
     accessToken,
     idToken,
     refreshToken,
-    userId: tokenInfo.username
+    userId: tokenInfo.sub
   }
 }
 

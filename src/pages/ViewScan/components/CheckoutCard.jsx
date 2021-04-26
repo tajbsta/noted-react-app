@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SizeGuideModal from '../modals/SizeGuideModal';
+import SizeGuideModal from '../../../modals/SizeGuideModal';
 
 export default function CheckoutCard({
   inReturn,
@@ -16,9 +16,8 @@ export default function CheckoutCard({
 
   return (
     <div id='CheckoutCard'>
-      <div className={isTablet ? 'col' : 'col-sm-3'}>
+      <div>
         <div
-          className='col right-card'
           style={{
             maxWidth: '248px',
           }}
