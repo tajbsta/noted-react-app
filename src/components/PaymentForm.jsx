@@ -38,8 +38,6 @@ export default function PaymentForm({
     <small className='form-text p-0 m-0 noted-red'>{error}</small>
   );
 
-  console.log(errors);
-
   useEffect(() => {
     const platform = window.navigator.platform;
     const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];

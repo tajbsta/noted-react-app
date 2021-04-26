@@ -98,6 +98,17 @@ export default function Payment() {
     };
   });
 
+  function formatCardNumber(value) {
+    console.log(value);
+    return value
+      .replace(/[^0-9]/g, '')
+      .substr(0, 16)
+      .split('')
+      .reduce((str, l, i) => {
+        return str + (!i || i % 4 ? '' : '-') + l;
+      }, '');
+  }
+
   return (
     <div id='Payment'>
       <div className='row'>
@@ -177,7 +188,7 @@ export default function Payment() {
                               <Form.Control
                                 className='form-control'
                                 name='cardNumber'
-                                value={cardNumber}
+                                value={formatCardNumber(cardNumber) || ''}
                                 onChange={handlePaymentChange}
                                 {...noBorder}
                                 maxLength={20}
@@ -329,7 +340,7 @@ export default function Payment() {
                             <Form.Control
                               className='form-control-lg'
                               name='cardNumber'
-                              value={cardNumber}
+                              value={formatCardNumber(cardNumber) || ''}
                               onChange={handlePaymentChange}
                               {...noBorder}
                             />
