@@ -80,7 +80,7 @@ function ProductDetails({ item, isHovering = false }) {
       <Row>
         <h4 className='sofia-pro mb-0 product-price'>
           ${formatPrice}{' '}
-          {isHovering && inDashboard && category === DONATE && (
+          {isHovering && inDashboard && category !== DONATE && (
             <>
               <button type='button' className='btn alternateActionText ml-2'>
                 Donate instead
