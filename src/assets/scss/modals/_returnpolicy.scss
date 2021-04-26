@@ -11,6 +11,7 @@
     left: 0px;
     top: 0px;
     border-radius: 8px;
+    overflow: scroll;
 
     @media (max-width: 767px) {
       max-width: 343px;
@@ -54,6 +55,7 @@
       padding: 0px 16px;
     }
   }
+
   .b-row {
     display: inline-flex;
 

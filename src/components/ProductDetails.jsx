@@ -5,7 +5,6 @@ import { get } from 'lodash-es';
 import { DONATE } from '../constants/actions/runtime';
 
 function ProductDetails({ item, isHovering = false }) {
-  console.log(item);
   const history = useHistory();
   const pageLocation = history.location.pathname;
   const orderViews = ['/view-return', '/view-scan'];

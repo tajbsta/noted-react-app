@@ -57,7 +57,6 @@ function ProductCard({
   };
 
   const toTitleCase = (str) => {
-    console.log(typeof str);
     const replacedDash = str && str.replace('-', ' ');
     return replacedDash.replace(/\w\S*/g, function (txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -352,6 +351,7 @@ function ProductCard({
               </>
             )}
             <ReturnPolicyModal
+              item={item}
               show={modalPolicyShow}
               onHide={() => {
                 setModalPolicyShow(false);

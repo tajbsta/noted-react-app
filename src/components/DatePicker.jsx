@@ -1,7 +1,6 @@
 import React from 'react';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/airbnb.css';
-import { get } from 'lodash-es';
 import moment from 'moment';
 
 const CustomInput = ({ inputRef, name, ...props }) => {
@@ -18,7 +17,6 @@ const CustomInput = ({ inputRef, name, ...props }) => {
   );
 };
 export default function DatePicker({ date, setFieldValue }) {
-  console.log(date);
   return (
     <div id='DatePicker'>
       <Flatpickr
@@ -40,7 +38,7 @@ export default function DatePicker({ date, setFieldValue }) {
                 date.getMonth() + 1
               }-${date.getDate()} 00:00 UTC`;
               const dateString = new Date(dateStr);
-              setFieldValue(name, dateString);
+              setFieldValue('date', dateString);
             } catch (err) {
               console.log(err);
             }
