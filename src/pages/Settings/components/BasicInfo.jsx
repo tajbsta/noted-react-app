@@ -144,7 +144,7 @@ export default function BasicInfo({ user }) {
             </div>
           }
         >
-          <div className='card shadow-sm mt-3 mb-2 p-3 max-w-840'>
+          <div className='card shadow-sm mt-3 mb-2 p-3 mt-4 max-w-840'>
             <div className='m-card-body'>
               <Form id='Info'>
                 <Row>
