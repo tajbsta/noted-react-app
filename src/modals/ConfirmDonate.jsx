@@ -46,13 +46,12 @@ export default function ConfirmDonate(props) {
       <Modal.Body className='sofia-pro'>
         <div className='d-flex justify-content-center'>
           <p className='sofia-pro info'>
-            Please confirm and select products to donate in the checkout
-            process.
+            Are you sure you want to continue? This is a irreversible change.
           </p>
         </div>
 
         <div className='button-group'>
-          <Button className='btn-donate'>Donate</Button>
+          <Button className='btn-donate'>Yes, Donate it!</Button>
           <Button className='btn-dont' onClick={props.onHide}>
             Cancel
           </Button>

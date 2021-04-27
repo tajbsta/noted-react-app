@@ -8,8 +8,10 @@ import $ from 'jquery';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import moment from 'moment';
 import ReturnPolicyModal from '../modals/ReturnPolicyModal';
+import ConfirmDonate from '../modals/ConfirmDonate';
 import NotedCheckbox from './NotedCheckbox';
 import { get } from 'lodash-es';
+import EditProductModal from '../modals/EditProductModal';
 
 function ProductCard({
   selectable = true,
@@ -27,6 +29,7 @@ function ProductCard({
   const [isMobileSmaller, setIsMobileSmaller] = useState(false); // >320px
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
   const [modalEditShow, setModalEditShow] = useState(false);
+  const [modalDonateShow, setModalDonateShow] = useState(false);
 
   // Check if device is mobile
   useEffect(() => {
@@ -290,16 +293,26 @@ function ProductCard({
                   </Row>
                 </Container>
                 {selected && (
-                  <Container>
-                    <Row>
-                      <button
-                        className='sofia-pro btn btn-m-donate'
-                        type='submit'
-                      >
-                        Donate instead
-                      </button>
-                    </Row>
-                  </Container>
+                  <>
+                    <Container>
+                      <Row>
+                        <button
+                          className='sofia-pro btn btn-m-donate'
+                          type='submit'
+                          onClick={() => setModalDonateShow(true)}
+                          style={{ zIndex: '1' }}
+                        >
+                          Donate instead
+                        </button>
+                      </Row>
+                    </Container>
+                    <ConfirmDonate
+                      show={modalDonateShow}
+                      onHide={() => {
+                        setModalDonateShow(false);
+                      }}
+                    />
+                  </>
                 )}
               </div>
             </div>
@@ -365,9 +378,8 @@ function ProductCard({
               onHide={() => {
                 setModalEditShow(false);
               }}
-              // editproductform={{ handleChange, values, setFieldValue }}
+              editproductform={{ handleChange, values, setFieldValue }}
             /> */}
-
             <ProductDetails item={item} isHovering={showHoverContent} />
 
             <div
