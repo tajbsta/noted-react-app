@@ -311,6 +311,7 @@ function ProductCard({
                       onHide={() => {
                         setModalDonateShow(false);
                       }}
+                      item={item}
                     />
                   </>
                 )}

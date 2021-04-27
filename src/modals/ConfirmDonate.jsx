@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCartItems } from '../actions/cart.action';
+import { DONATE } from '../constants/actions/runtime';
+import { setCategory } from '../utils/productsApi';
 
 export default function ConfirmDonate(props) {
+  const dispatch = useDispatch();
+  const { item } = props;
+  const { items } = useSelector(({ cart: { items } }) => ({
+    items,
+  }));
+
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -15,6 +25,31 @@ export default function ConfirmDonate(props) {
       window.removeEventListener('resize', handleResize);
     };
   });
+
+  const onConfirm = async () => {
+    setLoading(true);
+    const productId = item._id;
+    try {
+      const { data } = await setCategory(productId, DONATE);
+      if (data.status === 'success') {
+        /**
+         * pop modal first
+         */
+        props.onHide();
+        /**
+         * set cart items
+         */
+        dispatch(setCartItems([...items, item]));
+      }
+    } catch (error) {
+      /**
+       * We need a show error here,
+       * @question should hide or throw error with modal on
+       */
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Modal
@@ -51,7 +86,9 @@ export default function ConfirmDonate(props) {
         </div>
 
         <div className='button-group'>
-          <Button className='btn-donate'>Yes, Donate it!</Button>
+          <Button className='btn-donate' onClick={onConfirm} disabled={loading}>
+            Yes, Donate it!
+          </Button>
           <Button className='btn-dont' onClick={props.onHide}>
             Cancel
           </Button>

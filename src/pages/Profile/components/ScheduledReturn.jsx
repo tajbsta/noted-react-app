@@ -16,7 +16,6 @@ export default function ScheduledReturn({ user }) {
       scheduledReturns,
     })
   );
-  console.log(user);
 
   const renderScheduledReturnItem = (item) => {
     const vendorName = get(item, 'vendor_name', '');

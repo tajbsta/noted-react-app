@@ -19,6 +19,8 @@ function RightCard({ userId }) {
     items,
   }));
 
+  console.log(items);
+
   const previousCartItems = usePrevious(items);
 
   const [pricing, setPricing] = useState({
@@ -48,20 +50,14 @@ function RightCard({ userId }) {
     calculateCurrentCartPricing(items);
   }, [items]);
 
-  console.log(items);
-
   const calculateCurrentCartPricing = async (currentItems) => {
     try {
       setLoading(true);
 
       const cartItems = [...currentItems];
-      console.log('CART items', cartItems);
       const productIds = cartItems.map((x) => x._id);
-      console.log('product ids', productIds);
 
       const data = await calculatePricing(userId, productIds);
-
-      console.log({ data });
 
       setPricing({
         totalReturns: data.totalReturns,

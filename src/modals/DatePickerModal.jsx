@@ -36,8 +36,6 @@ export default function SchedulingModal(props) {
     };
   });
 
-  console.log(isMobile);
-
   const {
     errors: pickUpDateErrors,
     setFieldValue,

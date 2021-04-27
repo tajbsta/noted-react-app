@@ -31,9 +31,9 @@ export const updateForReturn = ({ scans }) => ({
   data: scans,
 });
 
-export const updateForDonation = ({ scans }) => ({
+export const updateForDonation = (data) => ({
   type: UPDATE_FOR_DONATION,
-  data: scans,
+  data,
 });
 
 export const updateLastCall = ({ scans }) => ({

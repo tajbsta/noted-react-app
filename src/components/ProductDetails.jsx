@@ -99,6 +99,7 @@ function ProductDetails({ item, isHovering = false }) {
         onHide={() => {
           setModalDonateShow(false);
         }}
+        item={item}
       />
     </div>
   );
