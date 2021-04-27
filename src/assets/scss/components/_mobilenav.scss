@@ -8,6 +8,26 @@
     padding: 5px;
   }
 
+  .mobile-search-container {
+    display: inline-flex;
+
+    .form-inline {
+      max-width: 480px;
+
+      @media (max-width: 580px) {
+        width: auto;
+      }
+    }
+  }
+
+  .search-toggler-icon {
+    span {
+      background-image: url(../../icons/Search.svg) !important;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
   .m-search-container {
     position: relative;
     left: 15%;
