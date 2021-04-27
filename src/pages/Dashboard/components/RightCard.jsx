@@ -92,7 +92,7 @@ function RightCard({ userId }) {
           style={{
             marginBottom: isMobile ? '0px' : '',
             borderRadius: isMobile ? '0px' : '',
-            filter: isMobile ? 'drop-shadow(2px 4px 8px black)' : '',
+            boxShadow: '0 -5px 15px -5px #0e0018',
           }}
           id={loading && !isMobile ? 'overlay' : ''}
         >

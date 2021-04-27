@@ -26,7 +26,7 @@ function ProductCard({
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isMobileSmaller, setIsMobileSmaller] = useState(false); // >320px
+  const [isMobileSmaller, setIsMobileSmaller] = useState(false); // <320px
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
   const [modalEditShow, setModalEditShow] = useState(false);
   const [modalDonateShow, setModalDonateShow] = useState(false);

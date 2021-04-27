@@ -15,6 +15,7 @@ import { setCartItems } from '../../actions/cart.action';
 import { Link } from 'react-router-dom';
 import { DONATE, RETURNABLE } from '../../constants/actions/runtime';
 import { scrollToTop } from '../../utils/window';
+import SizeGuideModal from '../../modals/SizeGuideModal';
 
 function ViewScanPage() {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function ViewScanPage() {
   const [orderId, setOrderId] = useState('');
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
   const { address, payment, details, cart } = useSelector(
     ({
       cart,
@@ -221,6 +223,46 @@ function ViewScanPage() {
                 />
               ))}
             </div>
+
+            {isMobile && (
+              <>
+                <div className='mobile-billing'>
+                  <div className='m-billing-container mt-5'>
+                    <h4>Billing</h4>
+                  </div>
+                  <div className='card m-billing-card shadow-sm mt-4'>
+                    <div className='card-body'>
+                      <h4 className='m-size-description'>
+                        All products need to fit in a 50” x 30” x 20” box
+                      </h4>
+                      <button
+                        className='btn m-btn-info'
+                        onClick={() => setModalSizeGuideShow(true)}
+                      >
+                        More info
+                      </button>
+                      <div className='row mt-4'>
+                        <div className='col m-label'>Return total cost</div>
+                        <div className='col m-value'>$9.99</div>
+                      </div>
+                      <div className='row'>
+                        <div className='col m-label'>Taxes</div>
+                        <div className='col m-value'>$0.00</div>
+                      </div>
+                      <hr style={{ marginBottom: '21px', marginTop: '8px' }} />
+                      <div className='row'>
+                        <div className='col m-total-label'>Total paid</div>
+                        <div className='col m-total-value'>$9.99</div>
+                      </div>
+                    </div>
+                  </div>
+                  <SizeGuideModal
+                    show={modalSizeGuideShow}
+                    onHide={() => setModalSizeGuideShow(false)}
+                  />
+                </div>
+              </>
+            )}
 
             <h3 className='sofia-pro miss-out section-title'>
               Don&apos;t miss out on other returns
