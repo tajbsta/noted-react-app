@@ -133,7 +133,13 @@ const Topnav = () => {
       )}
 
       {isMobile && (
-        <MobileNav logout={logout} profile={profile} settings={settings} />
+        <MobileNav
+          logout={logout}
+          profile={profile}
+          settings={settings}
+          checkClearSearch={checkClearSearch}
+          submitSearch={submitSearch}
+        />
       )}
 
       {authenticatedViews.includes(pathname) && (

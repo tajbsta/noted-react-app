@@ -508,6 +508,115 @@
   .first-title {
     margin-top: 0px;
   }
+
+  // MOBILE BILLING CARD
+  .mobile-billing {
+    padding-bottom: 40px;
+  }
+
+  .mobile-billing-view-return {
+    // padding-bottom: 160px;
+  }
+
+  .m-billing-container {
+    margin-left: 16px;
+    margin-right: 16px;
+
+    h4 {
+      font-size: 18px;
+      line-height: 24px;
+      color: #2e1d3a;
+    }
+  }
+
+  .m-billing-card {
+    margin-left: 16px;
+    margin-right: 16px;
+
+    .m-size-description {
+      font-size: 14px;
+      line-height: 18px;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      margin-bottom: 8px;
+      max-width: 176px;
+    }
+
+    .m-btn-info {
+      font-size: 14px;
+      line-height: 16px;
+      color: #570097;
+      padding: 0px;
+      box-shadow: none;
+    }
+
+    .m-label {
+      font-size: 14px;
+      line-height: 19px;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      margin-bottom: 3px;
+    }
+
+    .m-value {
+      font-size: 14px;
+      line-height: 19px;
+      text-align: right;
+      color: #2e1d3a;
+    }
+
+    .m-total-label {
+      font-size: 14px;
+      line-height: 16px;
+      color: #0e0018;
+    }
+
+    .m-total-value {
+      font-size: 14px;
+      line-height: 16px;
+      text-align: right;
+      color: #2e1d3a;
+    }
+  }
+
+  // MOBILE CANCEL ORDER
+  .m-cancel-container {
+    padding-bottom: 200px;
+    display: grid;
+    justify-content: center;
+
+    .m-btn-cancel-order {
+      padding: 0px;
+      font-size: 14px;
+      line-height: 16px;
+      text-align: center;
+      color: #ff1c29;
+      margin-bottom: 11px;
+      box-shadow: none;
+    }
+
+    .m-cancel-sub {
+      font-size: 12px;
+      line-height: 14px;
+      text-align: center;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      max-width: 200px;
+      margin-bottom: 5px;
+    }
+
+    .m-info-link {
+      font-size: 12px;
+      line-height: 14px;
+      text-align: center;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+    }
+  }
 }
 
 .mobile-row {

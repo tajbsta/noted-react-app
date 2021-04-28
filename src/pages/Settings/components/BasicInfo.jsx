@@ -8,6 +8,7 @@ import { pickUpAddressSchema } from '../../../models/formSchema';
 import { updateUserAttributes } from '../../../utils/auth';
 import { AlertCircle, CheckCircle } from 'react-feather';
 import { isEmpty } from 'lodash-es';
+import Collapsible from 'react-collapsible';
 
 export default function BasicInfo({ user }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -15,6 +16,7 @@ export default function BasicInfo({ user }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     function handleResize() {
@@ -73,7 +75,6 @@ export default function BasicInfo({ user }) {
   } = addressFormValues;
 
   const updateBasicInfo = async () => {
-    console.log(addressFormValues);
     setError(false);
     setSuccess(false);
     setIsSubmitting(true);
@@ -100,7 +101,6 @@ export default function BasicInfo({ user }) {
         setSuccess(true);
       }
     } catch (err) {
-      console.log(err);
       setSuccess(false);
       setError(true);
 
@@ -128,33 +128,23 @@ export default function BasicInfo({ user }) {
       }
     : {};
 
-  return (
-    <div id='BasicInfo'>
-      <h3 className='sofia-pro text-18 mb-4'>Basic Information</h3>
-      {success && (
-        <div className='alert alert-success max-w-840' role='alert'>
-          <div>
-            <h4 className='text-center text-alert'>
-              <CheckCircle />
-              &nbsp;&nbsp;&nbsp;Success
-            </h4>
-          </div>
-        </div>
-      )}
-      {error && (
-        <div className='alert alert-danger max-w-840' role='alert'>
-          <div>
-            <h4 className='text-center text-alert'>
-              <AlertCircle />
-              &nbsp;&nbsp;&nbsp;{error}
-            </h4>
-          </div>
-        </div>
-      )}
-      {/* START OF MOBILE VIEW */}
-      {isMobile && (
-        <>
-          <div className='card shadow-sm mb-2 p-3 max-w-840'>
+  const renderMobileView = () => {
+    return (
+      <>
+        <Collapsible
+          open={isOpen}
+          onTriggerOpening={() => setIsOpen(true)}
+          onTriggerClosing={() => setIsOpen(false)}
+          trigger={
+            <div className='triggerContainer'>
+              <h3 className='sofia-pro text-18 mb-3-profile mb-0 ml-3 triggerText'>
+                Basic Information
+              </h3>
+              <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
+            </div>
+          }
+        >
+          <div className='card shadow-sm mt-3 mb-2 p-3 mt-4 max-w-840'>
             <div className='m-card-body'>
               <Form id='Info'>
                 <Row>
@@ -169,7 +159,7 @@ export default function BasicInfo({ user }) {
                         {...noBorder}
                         onChange={handleChange}
                       />
-                      {!isEmpty(fullName) && renderInlineError(errors.fullName)}
+                      {renderInlineError(errors.fullName)}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -347,203 +337,237 @@ export default function BasicInfo({ user }) {
               </Form>
             </div>
           </div>
-        </>
-      )}
-      {/* END OF MOBILE VIEW */}
-      {!isMobile && (
-        <>
-          <div className='card shadow-sm mb-2 p-3 max-w-840'>
-            <div className='card-body'>
-              <Form id='Info'>
-                <Row>
-                  <Col>
-                    <Form.Group>
-                      <Form.Label>Full Name</Form.Label>
-                      <Form.Control
-                        className='form-control-lg'
-                        type='name'
-                        name='fullName'
-                        value={fullName || ''}
-                        {...noBorder}
-                        onChange={handleChange}
-                      />
-                      {!isEmpty(fullName) && renderInlineError(errors.fullName)}
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group>
-                      <Form.Label>State</Form.Label>
-                      {isEditing && (
-                        <Form.Control
-                          className='form-control-md'
-                          as='select'
-                          value={state || ''}
-                          name='state'
-                          onChange={handleChange}
-                          placeholder='Select State'
-                          defaultValue='null'
-                          {...noBorder}
-                        >
-                          {[
-                            { abbreviation: '', name: 'Select State' },
-                            ...USA_STATES,
-                          ].map(({ name, abbreviation }) => (
-                            <option
-                              value={abbreviation}
-                              key={`${abbreviation}`}
-                            >
-                              {name}
-                            </option>
-                          ))}
-                        </Form.Control>
-                      )}
-                      {!isEmpty(state) && renderInlineError(errors.state)}
+        </Collapsible>
+        <hr />
+      </>
+    );
+  };
 
-                      {!isEditing && (
-                        <Form.Control
-                          className='form-control-sm'
-                          type='zip code'
-                          value={state}
-                          {...noBorder}
+  const renderDesktopView = () => {
+    return (
+      <>
+        <div className='card shadow-sm mb-2 p-3 max-w-840'>
+          <div className='card-body'>
+            <Form id='Info'>
+              <Row>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Full Name</Form.Label>
+                    <Form.Control
+                      className='form-control-lg'
+                      type='name'
+                      name='fullName'
+                      value={fullName || ''}
+                      {...noBorder}
+                      onChange={handleChange}
+                    />
+                    {!isEmpty(fullName) && renderInlineError(errors.fullName)}
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>State</Form.Label>
+                    {isEditing && (
+                      <Form.Control
+                        className='form-control-md'
+                        as='select'
+                        value={state || ''}
+                        name='state'
+                        onChange={handleChange}
+                        placeholder='Select State'
+                        defaultValue='null'
+                        {...noBorder}
+                      >
+                        {[
+                          { abbreviation: '', name: 'Select State' },
+                          ...USA_STATES,
+                        ].map(({ name, abbreviation }) => (
+                          <option value={abbreviation} key={`${abbreviation}`}>
+                            {name}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    )}
+                    {!isEmpty(state) && renderInlineError(errors.state)}
+
+                    {!isEditing && (
+                      <Form.Control
+                        className='form-control-sm'
+                        type='zip code'
+                        value={state}
+                        {...noBorder}
+                      />
+                    )}
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Zip Code</Form.Label>
+                    <Form.Control
+                      className='form-control-md'
+                      onChange={(e) => {
+                        const re = /^[0-9\b]+$/;
+                        if (e.target.value === '' || re.test(e.target.value)) {
+                          handleChange(e);
+                        }
+                      }}
+                      name='zipCode'
+                      type='zip code'
+                      value={zipCode || ''}
+                      {...noBorder}
+                    />
+                    {!isEmpty(zipCode) && renderInlineError(errors.zipCode)}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Address Line 1</Form.Label>
+                    <Form.Control
+                      className='form-control-lg'
+                      type='name'
+                      name='line1'
+                      onChange={handleChange}
+                      value={line1 || ''}
+                      {...noBorder}
+                    />
+                    {!isEmpty(line1) && renderInlineError(errors.line1)}
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>City</Form.Label>
+                    <Form.Control
+                      className='form-control-md'
+                      type='city'
+                      name='city'
+                      value={city || ''}
+                      onChange={handleChange}
+                      {...noBorder}
+                    />
+                    {!isEmpty(city) && renderInlineError(errors.city)}
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control
+                      className='form-control-md'
+                      type='phone number'
+                      onChange={(e) => {
+                        const re = /^[0-9\b]+$/;
+                        if (e.target.value === '' || re.test(e.target.value)) {
+                          handleChange(e);
+                        }
+                      }}
+                      value={formatPhoneNumber(phoneNumber) || ''}
+                      name='phoneNumber'
+                      maxLength={13}
+                      {...noBorder}
+                    />
+                    {!isEmpty(phoneNumber) &&
+                      renderInlineError(errors.phoneNumber)}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col xs={6}>
+                  <Form.Group>
+                    <Form.Label>Address Line 2</Form.Label>
+                    <Form.Control
+                      className='form-control-lg'
+                      type='name'
+                      value={line2 || ''}
+                      name='line2'
+                      onChange={handleChange}
+                      {...noBorder}
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col className='btn-container'>
+                  {isEditing && (
+                    <Button
+                      className='btn-done'
+                      type='submit'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsEditing(false);
+                        updateBasicInfo();
+                      }}
+                    >
+                      Done
+                    </Button>
+                  )}
+                  {!isEditing && (
+                    <Button
+                      className='btn-done'
+                      type='submit'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsEditing(true);
+                      }}
+                    >
+                      {!isSubmitting ? (
+                        'Edit'
+                      ) : (
+                        <Spinner
+                          animation='border'
+                          size='sm'
+                          className='spinner'
                         />
                       )}
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group>
-                      <Form.Label>Zip Code</Form.Label>
-                      <Form.Control
-                        className='form-control-md'
-                        onChange={(e) => {
-                          const re = /^[0-9\b]+$/;
-                          if (
-                            e.target.value === '' ||
-                            re.test(e.target.value)
-                          ) {
-                            handleChange(e);
-                          }
-                        }}
-                        name='zipCode'
-                        type='zip code'
-                        value={zipCode || ''}
-                        {...noBorder}
-                      />
-                      {!isEmpty(zipCode) && renderInlineError(errors.zipCode)}
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col>
-                    <Form.Group>
-                      <Form.Label>Address Line 1</Form.Label>
-                      <Form.Control
-                        className='form-control-lg'
-                        type='name'
-                        name='line1'
-                        onChange={handleChange}
-                        value={line1 || ''}
-                        {...noBorder}
-                      />
-                      {!isEmpty(line1) && renderInlineError(errors.line1)}
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group>
-                      <Form.Label>City</Form.Label>
-                      <Form.Control
-                        className='form-control-md'
-                        type='city'
-                        name='city'
-                        value={city || ''}
-                        onChange={handleChange}
-                        {...noBorder}
-                      />
-                      {!isEmpty(city) && renderInlineError(errors.city)}
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group>
-                      <Form.Label>Phone</Form.Label>
-                      <Form.Control
-                        className='form-control-md'
-                        type='phone number'
-                        onChange={(e) => {
-                          const re = /^[0-9\b]+$/;
-                          if (
-                            e.target.value === '' ||
-                            re.test(e.target.value)
-                          ) {
-                            handleChange(e);
-                          }
-                        }}
-                        value={formatPhoneNumber(phoneNumber) || ''}
-                        name='phoneNumber'
-                        maxLength={13}
-                        {...noBorder}
-                      />
-                      {!isEmpty(phoneNumber) &&
-                        renderInlineError(errors.phoneNumber)}
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col xs={6}>
-                    <Form.Group>
-                      <Form.Label>Address Line 2</Form.Label>
-                      <Form.Control
-                        className='form-control-lg'
-                        type='name'
-                        value={line2 || ''}
-                        name='line2'
-                        onChange={handleChange}
-                        {...noBorder}
-                      />
-                    </Form.Group>
-                  </Col>
-
-                  <Col className='btn-container'>
-                    {isEditing && (
-                      <Button
-                        className='btn-done'
-                        type='submit'
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setIsEditing(false);
-                          updateBasicInfo();
-                        }}
-                      >
-                        Done
-                      </Button>
-                    )}
-                    {!isEditing && (
-                      <Button
-                        className='btn-done'
-                        type='submit'
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setIsEditing(true);
-                        }}
-                      >
-                        {!isSubmitting ? (
-                          'Edit'
-                        ) : (
-                          <Spinner
-                            animation='border'
-                            size='sm'
-                            className='spinner'
-                          />
-                        )}
-                      </Button>
-                    )}
-                  </Col>
-                </Row>
-              </Form>
-            </div>
+                    </Button>
+                  )}
+                </Col>
+              </Row>
+            </Form>
           </div>
-        </>
+        </div>
+      </>
+    );
+  };
+
+  const renderDesktopTitle = () => {
+    {
+      return (
+        !isMobile && (
+          <h3 className='sofia-pro text-18 mb-4'>Basic Information</h3>
+        )
+      );
+    }
+  };
+
+  return (
+    <div id='BasicInfo'>
+      {renderDesktopTitle()}
+      {success && (
+        <div className='alert alert-success max-w-840' role='alert'>
+          <div>
+            <h4 className='text-center text-alert'>
+              <CheckCircle />
+              &nbsp;&nbsp;&nbsp;Success
+            </h4>
+          </div>
+        </div>
       )}
+      {error && (
+        <div className='alert alert-danger max-w-840' role='alert'>
+          <div>
+            <h4 className='text-center text-alert'>
+              <AlertCircle />
+              &nbsp;&nbsp;&nbsp;{error}
+            </h4>
+          </div>
+        </div>
+      )}
+      {/* START OF MOBILE VIEW */}
+      {isMobile && renderMobileView()}
+      {/* END OF MOBILE VIEW */}
+      {!isMobile && renderDesktopView()}
     </div>
   );
 }

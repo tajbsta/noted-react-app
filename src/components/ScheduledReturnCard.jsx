@@ -28,7 +28,7 @@ function ScheduledReturnCard({
   const history = useHistory();
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isMobileSmaller, setIsMobileSmaller] = useState(false); // >320px
+  const [isMobileSmaller, setIsMobileSmaller] = useState(false); // <320px
 
   // Check if device is mobile
   useEffect(() => {

@@ -13,6 +13,8 @@ import { RETURNABLE } from '../../constants/actions/runtime';
 import { scrollToTop } from '../../utils/window';
 import ModifyCheckoutCard from './components/ModifyCheckoutCard';
 import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
+import SizeGuideModal from '../../modals/SizeGuideModal';
+import CancelOrderModal from '../../modals/CancelOrderModal';
 
 function ViewConfirmedReturn({
   location: {
@@ -22,6 +24,8 @@ function ViewConfirmedReturn({
   const [confirmed, setconfirmed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
+  const [modalCancelOrderShow, setModalCancelOrderShow] = useState(false);
   const history = useHistory();
   const {
     inDonation,
@@ -232,6 +236,67 @@ function ViewConfirmedReturn({
           )}
         </div>
       </div>
+
+      {/* MOBILE BILLING CARD */}
+      {isMobile && (
+        <>
+          <div className='mobile-billing-view-return'>
+            <div className='m-billing-container mt-5'>
+              <h4>Billing</h4>
+            </div>
+            <div className='card m-billing-card shadow-sm mt-4'>
+              <div className='card-body'>
+                <h4 className='m-size-description'>
+                  All products need to fit in a 50” x 30” x 20” box
+                </h4>
+                <button
+                  className='btn m-btn-info'
+                  onClick={() => setModalSizeGuideShow(true)}
+                >
+                  More info
+                </button>
+                <div className='row mt-4'>
+                  <div className='col m-label'>Return total cost</div>
+                  <div className='col m-value'>$9.99</div>
+                </div>
+                <div className='row'>
+                  <div className='col m-label'>Taxes</div>
+                  <div className='col m-value'>$0.00</div>
+                </div>
+                <hr style={{ marginBottom: '21px', marginTop: '8px' }} />
+                <div className='row'>
+                  <div className='col m-total-label'>Total paid</div>
+                  <div className='col m-total-value'>$9.99</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className='m-cancel-container mt-6'>
+            <button
+              className='btn m-btn-cancel-order'
+              onClick={() => setModalCancelOrderShow(true)}
+            >
+              Cancel order
+            </button>
+            <h4 className='m-cancel-sub'>
+              Canceling pick-ups less than 4h before schedule will result in a
+              $5 penalty
+            </h4>
+            <a className='m-info-link'>More info</a>
+          </div>
+
+          {/* MOBILE MODALS */}
+          <SizeGuideModal
+            show={modalSizeGuideShow}
+            onHide={() => setModalSizeGuideShow(false)}
+          />
+          <CancelOrderModal
+            show={modalCancelOrderShow}
+            onHide={() => setModalCancelOrderShow(false)}
+          />
+        </>
+      )}
     </div>
   );
 }

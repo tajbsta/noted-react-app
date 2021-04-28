@@ -584,4 +584,26 @@
       padding-left: 16px;
     }
   }
+
+  .triggerContainer {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .triggerText {
+      @media (max-width: 991px) {
+        margin-left: 0px !important;
+      }
+    }
+
+    .triggerArrow {
+      color: #b1adb2;
+      font-size: 8px;
+
+      &:hover {
+        color: #570097;
+      }
+    }
+  }
 }

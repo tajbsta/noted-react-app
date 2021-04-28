@@ -6,7 +6,7 @@
     border: 1px solid #eae8eb;
     box-shadow: 0px 4px 30px rgba(78, 72, 103, 0.08);
     border-radius: 8px;
-    height: 382px;
+    height: auto;
     width: 680px;
     left: 0px;
     top: 0px;
@@ -76,6 +76,8 @@
         border-radius: 50%;
         height: 31px;
         width: 31px;
+        object-fit: contain;
+        background: #fff;
       }
     }
   }
@@ -99,7 +101,7 @@
     width: 568px;
     margin-bottom: 16px;
     margin-top: 16px;
-    max-height: 110px;
+    // max-height: 110px;
 
     @media (max-width: 767px) {
       max-width: 313px;

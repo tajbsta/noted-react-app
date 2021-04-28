@@ -39,6 +39,7 @@ export default function ScheduledReturn({ user }) {
                   width: '48px',
                   height: '48px',
                   background: '#fff',
+                  objectFit: 'contain',
                   // marginLeft: '12px',
                   // marginRight: '12px',
                 }}

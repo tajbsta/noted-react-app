@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Nav, Navbar } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import {
+  Nav,
+  NavDropdown,
+  Navbar,
+  Form,
+  FormControl,
+  Button,
+} from 'react-bootstrap';
 import BrandLogoSvg from './BrandLogoSvg';
-import Search from '../assets/icons/Search.svg';
 
 export default function MobileNav(props) {
   const history = useHistory();
@@ -10,6 +17,7 @@ export default function MobileNav(props) {
   const {
     location: { pathname },
   } = useHistory();
+  const [searchButton, setSearchButton] = useState(false);
 
   const guestViews = [
     '/',
@@ -45,17 +53,55 @@ export default function MobileNav(props) {
         {!guestViews.includes(pathname) && (
           <>
             <div className='m-search-container'>
-              <button className='m-btn-search btn'>
-                <img src={Search} className='m-search-icon' />
+              <button
+                aria-controls='basic-navbar-nav'
+                className='m-btn-search btn navbar-toggler collapsed'
+                label='Toggle navigation'
+              >
+                <Navbar.Toggle
+                  className='search-toggler-icon'
+                  aria-controls='basic-navbar-nav'
+                  onClick={(e) => {
+                    setSearchButton(true);
+                  }}
+                />
               </button>
             </div>
-            <Navbar.Toggle aria-controls='basic-navbar-nav' />
+
+            <Navbar.Toggle
+              aria-controls='basic-navbar-nav'
+              onClick={(e) => {
+                setSearchButton(false);
+              }}
+            />
             <Navbar.Collapse id='basic-navbar-nav'>
-              <Nav className='mr-auto'>
-                <Nav.Link onClick={props.profile}>Profile</Nav.Link>
-                <Nav.Link onClick={props.settings}>Settings</Nav.Link>
-                <Nav.Link onClick={props.logout}>Logout</Nav.Link>
-              </Nav>
+              {searchButton && (
+                <>
+                  <div className='mobile-search-container'>
+                    <Form inline>
+                      <FormControl
+                        type='text'
+                        placeholder='Search purchases'
+                        onChange={props.checkClearSearch}
+                        onKeyPress={props.submitSearch}
+                      />
+                    </Form>
+                    <Button variant='outline-primary' className='ml-3'>
+                      Go!
+                    </Button>
+                  </div>
+                </>
+              )}
+
+              {!searchButton && (
+                <>
+                  <Nav className='mr-auto'>
+                    <Nav.Link onClick={props.profile}>Profile</Nav.Link>
+                    <Nav.Link onClick={props.settings}>Settings</Nav.Link>
+                    <Nav.Link onClick={props.logout}>Logout</Nav.Link>
+                  </Nav>
+                </>
+              )}
             </Navbar.Collapse>
           </>
         )}

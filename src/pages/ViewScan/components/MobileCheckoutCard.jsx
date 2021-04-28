@@ -17,17 +17,16 @@ export default function MobileCheckoutCard({
 
   return (
     <div id='MobileCheckoutCard'>
-      <div className='col m-col'>
-        <div className='card shadow-sm'>
-          <div className='card-body'>
-            <Row>
-              <Col>
-                <h3 className='m-product-to-return'>
-                  {inReturn.length} product to return
-                </h3>
-              </Col>
-            </Row>
-            {/* <Row>
+      <div className='card shadow-sm'>
+        <div className='card-body'>
+          <Row>
+            <Col>
+              <h3 className='m-product-to-return'>
+                {inReturn.length} product to return
+              </h3>
+            </Col>
+          </Row>
+          {/* <Row>
               <Col>
                 <h3 className='m-box-size-description'>
                   All products need to fit in a 12”W x 12”H x 20”L box
@@ -48,35 +47,33 @@ export default function MobileCheckoutCard({
               show={modalShow}
               onHide={() => setModalShow(false)}
             /> */}
-            {confirmed && (
-              <>
-                <Row>
-                  <Col>
-                    <Row>
-                      <Col>
-                        <h3 className='m-value'>
-                          ${potentialReturnValue.toFixed(2) || 0.0}
-                        </h3>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <h3 className='m-value-label'>
-                          Potential Return Value
-                        </h3>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col>
-                    <Row>
-                      <h3 className='m-value'>{inDonation.length}</h3>
-                    </Row>
-                    <Row>
-                      <h3 className='m-value-label'>Donations</h3>
-                    </Row>
-                  </Col>
-                </Row>
-                {/* <Row>
+          {confirmed && (
+            <>
+              <Row>
+                <Col>
+                  <Row>
+                    <Col>
+                      <h3 className='m-value'>
+                        ${potentialReturnValue.toFixed(2) || 0.0}
+                      </h3>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <h3 className='m-value-label'>Potential Return Value</h3>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col>
+                  <Row>
+                    <h3 className='m-value'>{inDonation.length}</h3>
+                  </Row>
+                  <Row>
+                    <h3 className='m-value-label'>Donations</h3>
+                  </Row>
+                </Col>
+              </Row>
+              {/* <Row>
                   <Col>
                     <h3 className='m-confirmed-desc'>
                       Once the pick-up has been confirmed we’ll take care of
@@ -85,38 +82,36 @@ export default function MobileCheckoutCard({
                     </h3>
                   </Col>
                 </Row> */}
-              </>
-            )}
+            </>
+          )}
 
-            {!confirmed && (
-              <>
-                <Row>
-                  <Col>
-                    <Row>
-                      <Col>
-                        <h3 className='m-value'>
-                          ${potentialReturnValue.toFixed(2) || 0.0}
-                        </h3>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <h3 className='m-value-label'>
-                          Potential Return Value
-                        </h3>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col>
-                    <Row>
-                      <h3 className='m-value'>{inDonation.length}</h3>
-                    </Row>
-                    <Row>
-                      <h3 className='m-value-label'>Donations</h3>
-                    </Row>
-                  </Col>
-                </Row>
-                {/* <Row>
+          {!confirmed && (
+            <>
+              <Row>
+                <Col>
+                  <Row>
+                    <Col>
+                      <h3 className='m-value'>
+                        ${potentialReturnValue.toFixed(2) || 0.0}
+                      </h3>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <h3 className='m-value-label'>Potential Return Value</h3>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col>
+                  <Row>
+                    <h3 className='m-value'>{inDonation.length}</h3>
+                  </Row>
+                  <Row>
+                    <h3 className='m-value-label'>Donations</h3>
+                  </Row>
+                </Col>
+              </Row>
+              {/* <Row>
                   <Col>
                     <h3 className='m-value-label'>Return Total Cost</h3>
                   </Col>
@@ -140,19 +135,18 @@ export default function MobileCheckoutCard({
                     <h3 className='m-total-value'>${totalPayment}</h3>
                   </Col>
                 </Row> */}
-                <Row>
-                  <Col>
-                    <button
-                      className='btn m-btn-confirm'
-                      onClick={onReturnConfirm}
-                    >
-                      Confirm Order
-                    </button>
-                  </Col>
-                </Row>
-              </>
-            )}
-          </div>
+              <Row>
+                <Col>
+                  <button
+                    className='btn m-btn-confirm'
+                    onClick={onReturnConfirm}
+                  >
+                    Confirm Order
+                  </button>
+                </Col>
+              </Row>
+            </>
+          )}
         </div>
       </div>
     </div>

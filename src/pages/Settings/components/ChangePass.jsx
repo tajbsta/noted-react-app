@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { get, isEmpty } from 'lodash';
 import PassChangeSuccessModal from '../../../modals/PassChangeSuccessModal';
+import Collapsible from 'react-collapsible';
 
 export default function ChangePass() {
   const [oldPasswordShown, setOldPasswordShown] = useState(false);
@@ -18,6 +19,7 @@ export default function ChangePass() {
   const [success, setSuccess] = useState(null);
   const [modalShow, setModalShow] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     function handleResize() {
@@ -114,143 +116,306 @@ export default function ChangePass() {
       .map((value) => get(value, 'length', 0))
       .reduce((acc, curr) => acc + curr) === 0;
 
-  // console.log(isChangePassFormEmpty);
+  const renderDesktopView = () => {
+    return (
+      <>
+        <PassChangeSuccessModal
+          show={modalShow}
+          onChange={() => setModalShow(true)}
+          onHide={() => setModalShow(false)}
+        />
+        <div className='mt-5'>
+          <h3 className='sofia-pro text-18 mb-4'>Change Password</h3>
+          {error && (
+            <div className='alert alert-danger max-w-840' role='alert'>
+              <div>
+                <h4 className='text-center text-alert'>
+                  <AlertCircle />
+                  &nbsp;&nbsp;&nbsp;{error}
+                </h4>
+              </div>
+            </div>
+          )}
+          <div className='card shadow-sm mb-2 max-w-840 change-container'>
+            <div className='card-body'>
+              <Form>
+                <Row>
+                  <Col style={{ flexBasis: isMobile ? 'auto' : '0' }}>
+                    <div className='form-group'>
+                      <div className='col col-pass'>
+                        <label>Current Password</label>
+                      </div>
+                      <div className='input-group input-group-merge'>
+                        <input
+                          className='form-control form-control-appended form-pass'
+                          type={oldPasswordShown ? 'text' : 'password'}
+                          name='oldPassword'
+                          onChange={handleChange}
+                          value={values.oldPassword}
+                          disabled={loading}
+                        />
+                        <div className='input-group-append'>
+                          <span className='input-group-text'>
+                            <i
+                              className='fe fe-eye'
+                              onClick={toggleOldPasswordVisibility}
+                            >
+                              {oldPasswordShown ? eye : eyeOff}
+                            </i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Col>
+                  <Col>
+                    <Row>
+                      <Col>
+                        <div className='form-group'>
+                          <div className='col col-pass'>
+                            <label>New Password</label>
+                          </div>
+                          <div className='input-group input-group-merge'>
+                            <input
+                              className='form-control form-control-appended form-pass'
+                              type={newPasswordShown ? 'text' : 'password'}
+                              name='newPassword'
+                              onChange={handleChange}
+                              value={values.newPassword}
+                              disabled={loading}
+                            />
+                            <div className='input-group-append'>
+                              <span className='input-group-text'>
+                                <i
+                                  className='fe fe-eye'
+                                  onClick={toggleNewPasswordVisibility}
+                                >
+                                  {newPasswordShown ? eye : eyeOff}
+                                </i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <div className='form-group'>
+                          <div className='col col-pass'>
+                            <label>Confirm Password</label>
+                          </div>
+                          <div className='input-group input-group-merge'>
+                            <input
+                              className='form-control form-control-appended form-pass'
+                              type={confirmPasswordShown ? 'text' : 'password'}
+                              name='confirmPassword'
+                              onChange={handleChange}
+                              value={values.confirmPassword}
+                              disabled={loading}
+                            />
+                            <div className='input-group-append'>
+                              <span className='input-group-text'>
+                                <i
+                                  className='fe fe-eye'
+                                  onClick={toggleConfirmPasswordVisibility}
+                                >
+                                  {confirmPasswordShown ? eye : eyeOff}
+                                </i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className='btn btn-container'>
+                        <Button
+                          className='btn-change'
+                          type='submit'
+                          onClick={changePassword}
+                          disabled={loading || isChangePassFormEmpty}
+                        >
+                          {!loading ? (
+                            <>Change Password</>
+                          ) : (
+                            <Spinner
+                              animation='border'
+                              size='sm'
+                              className='spinner'
+                            />
+                          )}
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </Form>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const renderMobileView = () => {
+    return (
+      <>
+        <PassChangeSuccessModal
+          show={modalShow}
+          onChange={() => setModalShow(true)}
+          onHide={() => setModalShow(false)}
+        />
+
+        <Collapsible
+          onTriggerOpening={() => setIsOpen(true)}
+          onTriggerClosing={() => setIsOpen(false)}
+          trigger={
+            <div className='triggerContainer'>
+              <h3 className='sofia-pro text-18 mb-3-profile mb-0 ml-3 triggerText'>
+                Change Password
+              </h3>
+              <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
+            </div>
+          }
+        >
+          <div className='mt-4'>
+            {error && (
+              <div className='alert alert-danger max-w-840' role='alert'>
+                <div>
+                  <h4 className='text-center text-alert'>
+                    <AlertCircle />
+                    &nbsp;&nbsp;&nbsp;{error}
+                  </h4>
+                </div>
+              </div>
+            )}
+            <div className='card shadow-sm mb-2 max-w-840 change-container'>
+              <div className='card-body'>
+                <Form>
+                  <Row>
+                    <Col style={{ flexBasis: isMobile ? 'auto' : '0' }}>
+                      <div className='form-group'>
+                        <div className='col col-pass'>
+                          <label>Current Password</label>
+                        </div>
+                        <div className='input-group input-group-merge'>
+                          <input
+                            className='form-control form-control-appended form-pass'
+                            type={oldPasswordShown ? 'text' : 'password'}
+                            name='oldPassword'
+                            onChange={handleChange}
+                            value={values.oldPassword}
+                            disabled={loading}
+                          />
+                          <div className='input-group-append'>
+                            <span className='input-group-text'>
+                              <i
+                                className='fe fe-eye'
+                                onClick={toggleOldPasswordVisibility}
+                              >
+                                {oldPasswordShown ? eye : eyeOff}
+                              </i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </Col>
+                    <Col>
+                      <Row>
+                        <Col>
+                          <div className='form-group'>
+                            <div className='col col-pass'>
+                              <label>New Password</label>
+                            </div>
+                            <div className='input-group input-group-merge'>
+                              <input
+                                className='form-control form-control-appended form-pass'
+                                type={newPasswordShown ? 'text' : 'password'}
+                                name='newPassword'
+                                onChange={handleChange}
+                                value={values.newPassword}
+                                disabled={loading}
+                              />
+                              <div className='input-group-append'>
+                                <span className='input-group-text'>
+                                  <i
+                                    className='fe fe-eye'
+                                    onClick={toggleNewPasswordVisibility}
+                                  >
+                                    {newPasswordShown ? eye : eyeOff}
+                                  </i>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <div className='form-group'>
+                            <div className='col col-pass'>
+                              <label>Confirm Password</label>
+                            </div>
+                            <div className='input-group input-group-merge'>
+                              <input
+                                className='form-control form-control-appended form-pass'
+                                type={
+                                  confirmPasswordShown ? 'text' : 'password'
+                                }
+                                name='confirmPassword'
+                                onChange={handleChange}
+                                value={values.confirmPassword}
+                                disabled={loading}
+                              />
+                              <div className='input-group-append'>
+                                <span className='input-group-text'>
+                                  <i
+                                    className='fe fe-eye'
+                                    onClick={toggleConfirmPasswordVisibility}
+                                  >
+                                    {confirmPasswordShown ? eye : eyeOff}
+                                  </i>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col className='btn btn-container'>
+                          <Button
+                            className='btn-change'
+                            type='submit'
+                            onClick={changePassword}
+                            disabled={loading || isChangePassFormEmpty}
+                          >
+                            {!loading ? (
+                              <>Change Password</>
+                            ) : (
+                              <Spinner
+                                animation='border'
+                                size='sm'
+                                className='spinner'
+                              />
+                            )}
+                          </Button>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </Form>
+              </div>
+            </div>
+          </div>
+        </Collapsible>
+        <hr />
+      </>
+    );
+  };
 
   return (
     <div id='ChangePass'>
-      <PassChangeSuccessModal
-        show={modalShow}
-        onChange={() => setModalShow(true)}
-        onHide={() => setModalShow(false)}
-      />
-      <div className='mt-5'>
-        <h3 className='sofia-pro text-18 mb-4'>Change Password</h3>
-        {error && (
-          <div className='alert alert-danger max-w-840' role='alert'>
-            <div>
-              <h4 className='text-center text-alert'>
-                <AlertCircle />
-                &nbsp;&nbsp;&nbsp;{error}
-              </h4>
-            </div>
-          </div>
-        )}
-        <div className='card shadow-sm mb-2 max-w-840 change-container'>
-          <div className='card-body'>
-            <Form>
-              <Row>
-                <Col style={{ flexBasis: isMobile ? 'auto' : '0' }}>
-                  <div className='form-group'>
-                    <div className='col col-pass'>
-                      <label>Current Password</label>
-                    </div>
-                    <div className='input-group input-group-merge'>
-                      <input
-                        className='form-control form-control-appended form-pass'
-                        type={oldPasswordShown ? 'text' : 'password'}
-                        name='oldPassword'
-                        onChange={handleChange}
-                        value={values.oldPassword}
-                        disabled={loading}
-                      />
-                      <div className='input-group-append'>
-                        <span className='input-group-text'>
-                          <i
-                            className='fe fe-eye'
-                            onClick={toggleOldPasswordVisibility}
-                          >
-                            {oldPasswordShown ? eye : eyeOff}
-                          </i>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </Col>
-                <Col>
-                  <Row>
-                    <Col>
-                      <div className='form-group'>
-                        <div className='col col-pass'>
-                          <label>New Password</label>
-                        </div>
-                        <div className='input-group input-group-merge'>
-                          <input
-                            className='form-control form-control-appended form-pass'
-                            type={newPasswordShown ? 'text' : 'password'}
-                            name='newPassword'
-                            onChange={handleChange}
-                            value={values.newPassword}
-                            disabled={loading}
-                          />
-                          <div className='input-group-append'>
-                            <span className='input-group-text'>
-                              <i
-                                className='fe fe-eye'
-                                onClick={toggleNewPasswordVisibility}
-                              >
-                                {newPasswordShown ? eye : eyeOff}
-                              </i>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <div className='form-group'>
-                        <div className='col col-pass'>
-                          <label>Confirm Password</label>
-                        </div>
-                        <div className='input-group input-group-merge'>
-                          <input
-                            className='form-control form-control-appended form-pass'
-                            type={confirmPasswordShown ? 'text' : 'password'}
-                            name='confirmPassword'
-                            onChange={handleChange}
-                            value={values.confirmPassword}
-                            disabled={loading}
-                          />
-                          <div className='input-group-append'>
-                            <span className='input-group-text'>
-                              <i
-                                className='fe fe-eye'
-                                onClick={toggleConfirmPasswordVisibility}
-                              >
-                                {confirmPasswordShown ? eye : eyeOff}
-                              </i>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col className='btn btn-container'>
-                      <Button
-                        className='btn-change'
-                        type='submit'
-                        onClick={changePassword}
-                        disabled={loading || isChangePassFormEmpty}
-                      >
-                        {!loading ? (
-                          <>Change Password</>
-                        ) : (
-                          <Spinner
-                            animation='border'
-                            size='sm'
-                            className='spinner'
-                          />
-                        )}
-                      </Button>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            </Form>
-          </div>
-        </div>
-      </div>
+      {!isMobile && renderDesktopView()}
+      {isMobile && renderMobileView()}
     </div>
   );
 }

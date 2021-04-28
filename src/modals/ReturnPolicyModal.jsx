@@ -53,13 +53,17 @@ export default function ReturnPolicyModal(props) {
             <h4 className='ml-2 sofia-pro text-score'>{scoreTitle}</h4>
           </Col>
         </Row>
-
-        <p className='sofia-pro info'>
-          {policy == '' ? 'This is empty.' : policy}
-        </p>
-        <a className='sofia-pro view-link' href={website}>
-          View website
-        </a>
+        <Row className='ml-1'>
+          {' '}
+          <p className='sofia-pro info'>
+            {policy == '' ? 'This is empty.' : policy}
+          </p>
+        </Row>
+        <Row className='ml-1'>
+          <a className='sofia-pro view-link' href={website}>
+            View website
+          </a>
+        </Row>
       </Modal.Body>
       <Modal.Footer>
         <Button className='btn-ok' onClick={props.onHide}>
