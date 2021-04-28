@@ -88,11 +88,10 @@ function RightCard({ userId }) {
         }}
       >
         <div
-          className='card shadow-sm'
+          className={`card shadow-sm ${isMobile ? 'm-card-top-shadow' : ''}`}
           style={{
             marginBottom: isMobile ? '0px' : '',
             borderRadius: isMobile ? '0px' : '',
-            boxShadow: '0 -5px 15px -5px #0e0018',
           }}
           id={loading && !isMobile ? 'overlay' : ''}
         >
