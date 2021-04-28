@@ -11,7 +11,6 @@ import ReturnPolicyModal from '../modals/ReturnPolicyModal';
 import ConfirmDonate from '../modals/ConfirmDonate';
 import NotedCheckbox from './NotedCheckbox';
 import { get } from 'lodash-es';
-import EditProductModal from '../modals/EditProductModal';
 
 function ProductCard({
   selectable = true,
@@ -312,6 +311,7 @@ function ProductCard({
                         setModalDonateShow(false);
                       }}
                       item={item}
+                      toggleSelected={toggleSelected}
                     />
                   </>
                 )}

@@ -19,8 +19,6 @@ function RightCard({ userId }) {
     items,
   }));
 
-  console.log(items);
-
   const previousCartItems = usePrevious(items);
 
   const [pricing, setPricing] = useState({
