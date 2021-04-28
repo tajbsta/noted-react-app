@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCartItems } from '../actions/cart.action';
 import { DONATE } from '../constants/actions/runtime';
 import { setCategory } from '../utils/productsApi';
 
 export default function ConfirmDonate(props) {
-  const { item, toggleSelected } = props;
-
+  const dispatch = useDispatch();
+  const { item } = props;
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const { cartItems } = useSelector(({ cart: { items: cartItems } }) => ({
+    cartItems,
+  }));
 
   useEffect(() => {
     function handleResize() {
@@ -33,7 +39,7 @@ export default function ConfirmDonate(props) {
         /**
          * set cart items
          */
-        await toggleSelected({ transferred: true, ...item });
+        dispatch(setCartItems([...cartItems, { transferred: true, ...item }]));
       }
     } catch (error) {
       /**

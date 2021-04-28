@@ -381,7 +381,11 @@ function ProductCard({
               }}
               editproductform={{ handleChange, values, setFieldValue }}
             /> */}
-            <ProductDetails item={item} isHovering={showHoverContent} />
+            <ProductDetails
+              item={item}
+              isHovering={showHoverContent}
+              toggleSelected={toggleSelected}
+            />
 
             <div
               className='col-sm-12 return-details-container'

@@ -20,6 +20,9 @@ function ReturnCategory({
   width,
   percent,
 }) {
+  const { cartItems } = useSelector(({ cart: { items: cartItems } }) => ({
+    cartItems,
+  }));
   const { push } = useHistory();
   const [items, setItems] = useState([]);
 
@@ -31,11 +34,10 @@ function ReturnCategory({
   const [loadProgress, setLoadProgress] = useState(0);
 
   const [selectedItems, setSelectedItems] = useState([]);
+
   function timeout(delay) {
     return new Promise((res) => setTimeout(res, delay));
   }
-
-  const { cart } = useSelector(({ cart }) => ({ cart }));
 
   const fetchItems = async (nextPageToken) => {
     try {
@@ -66,7 +68,6 @@ function ReturnCategory({
         params.nextPageToken = nextPageToken;
       }
       const products = await getProducts(params);
-
       let newItems = [...products];
       if (nextPageToken) {
         newItems = items.concat(products);
@@ -114,7 +115,7 @@ function ReturnCategory({
 
     setSelectedItems(list);
 
-    if (get(cart.pop(), 'transferred', false)) {
+    if (item.transferred) {
       fetchItems();
     }
   };
@@ -137,6 +138,14 @@ function ReturnCategory({
       items: selectedItems,
     });
   }, [selectedItems]);
+
+  useEffect(() => {
+    return () => {
+      if (get(cartItems.pop(), 'transferred', false) === true) {
+        fetchItems();
+      }
+    };
+  }, [cartItems]);
 
   return (
     <div id='ReturnCategory'>
@@ -173,7 +182,7 @@ function ReturnCategory({
             key={item._id}
             disabled={false}
             item={item}
-            selected={!!cart.items.find((x) => x._id === item._id)}
+            selected={!!cartItems.find((x) => x._id === item._id)}
             toggleSelected={toggleSelected}
             onClick={() => {
               push(`/view-scan?scanId=${item._id}`);
