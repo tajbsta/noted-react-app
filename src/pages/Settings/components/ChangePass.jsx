@@ -277,7 +277,7 @@ export default function ChangePass() {
             </div>
           }
         >
-          <div className='mt-5'>
+          <div className='mt-4'>
             {error && (
               <div className='alert alert-danger max-w-840' role='alert'>
                 <div>

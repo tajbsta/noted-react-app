@@ -212,6 +212,11 @@
       opacity: 0.6;
     }
   }
+
+  .m-card-top-shadow {
+    box-shadow: 0 -5px 15px -5px #0e0018 !important;
+  }
+
   #overlay {
     width: 100%;
     height: 100%;

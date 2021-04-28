@@ -348,6 +348,8 @@
       border-radius: 50%;
       height: 31px;
       width: 31px;
+      object-fit: contain;
+      background-color: #fff;
     }
 
     .sched-time-container {

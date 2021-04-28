@@ -106,7 +106,7 @@ export default function EmailAddresses({ user }) {
               </div>
             </div>
           )}
-          <div className='card shadow-sm mb-2 max-w-840'>
+          <div className='card shadow-sm mb-2 mt-4 max-w-840'>
             <div className='card-body'>
               <Container>
                 <Row>
