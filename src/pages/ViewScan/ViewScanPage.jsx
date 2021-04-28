@@ -241,7 +241,8 @@ function ViewScanPage() {
                       >
                         More info
                       </button>
-                      <div className='row mt-4'>
+                      <hr style={{ marginTop: '8px' }} />
+                      <div className='row mt-3'>
                         <div className='col m-label'>Return total cost</div>
                         <div className='col m-value'>$9.99</div>
                       </div>

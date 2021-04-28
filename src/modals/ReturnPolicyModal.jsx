@@ -60,7 +60,7 @@ export default function ReturnPolicyModal(props) {
           </p>
         </Row>
         <Row className='ml-1'>
-          <a className='sofia-pro view-link' href={website}>
+          <a className='sofia-pro view-link' href={website} target="_blank" rel="noreferrer">
             View website
           </a>
         </Row>

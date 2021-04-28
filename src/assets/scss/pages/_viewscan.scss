@@ -515,7 +515,7 @@
   }
 
   .mobile-billing-view-return {
-    // padding-bottom: 160px;
+    padding-bottom: 160px;
   }
 
   .m-billing-container {
@@ -583,9 +583,9 @@
 
   // MOBILE CANCEL ORDER
   .m-cancel-container {
-    padding-bottom: 200px;
-    display: grid;
-    justify-content: center;
+    // padding-bottom: 200px;
+    // display: grid;
+    // justify-content: center;
 
     .m-btn-cancel-order {
       padding: 0px;
@@ -593,18 +593,18 @@
       line-height: 16px;
       text-align: center;
       color: #ff1c29;
-      margin-bottom: 11px;
+      margin-bottom: 3px;
       box-shadow: none;
     }
 
     .m-cancel-sub {
       font-size: 12px;
       line-height: 14px;
-      text-align: center;
+      text-align: left;
       color: #0e0018;
       mix-blend-mode: normal;
       opacity: 0.6;
-      max-width: 200px;
+      // max-width: 200px;
       margin-bottom: 5px;
     }
 

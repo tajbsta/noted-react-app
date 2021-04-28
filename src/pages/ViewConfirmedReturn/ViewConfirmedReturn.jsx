@@ -255,7 +255,8 @@ function ViewConfirmedReturn({
                 >
                   More info
                 </button>
-                <div className='row mt-4'>
+                <hr style={{ marginBottom: '18px', marginTop: '8px' }} />
+                <div className='row'>
                   <div className='col m-label'>Return total cost</div>
                   <div className='col m-value'>$9.99</div>
                 </div>
@@ -268,11 +269,25 @@ function ViewConfirmedReturn({
                   <div className='col m-total-label'>Total paid</div>
                   <div className='col m-total-value'>$9.99</div>
                 </div>
+                <hr style={{ marginBottom: '21px', marginTop: '21px' }} />
+                <div className='m-cancel-container'>
+                  <button
+                    className='btn m-btn-cancel-order'
+                    onClick={() => setModalCancelOrderShow(true)}
+                  >
+                    Cancel order
+                  </button>
+                  <h4 className='m-cancel-sub'>
+                    Canceling pick-ups less than 4h before schedule will result
+                    in a $5 penalty
+                  </h4>
+                  <a className='m-info-link'>More info</a>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className='m-cancel-container mt-6'>
+          {/* <div className='m-cancel-container mt-6'>
             <button
               className='btn m-btn-cancel-order'
               onClick={() => setModalCancelOrderShow(true)}
@@ -284,7 +299,7 @@ function ViewConfirmedReturn({
               $5 penalty
             </h4>
             <a className='m-info-link'>More info</a>
-          </div>
+          </div> */}
 
           {/* MOBILE MODALS */}
           <SizeGuideModal
