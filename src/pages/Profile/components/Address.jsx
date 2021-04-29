@@ -10,6 +10,7 @@ import { pickUpAddressSchema } from '../../../models/formSchema';
 import { updateUserAttributes } from '../../../utils/auth';
 import { AlertCircle, CheckCircle } from 'react-feather';
 import { isEmpty } from 'lodash-es';
+
 export default function Address({ user }) {
   const [isEditing, setIsEditing] = useState(false);
   const [modalShow, setModalShow] = useState(false);
@@ -134,6 +135,7 @@ export default function Address({ user }) {
     <>
       <div id='Address'>
         <Collapsible
+          animation={false}
           open={isOpen}
           onTriggerOpening={() => setIsOpen(true)}
           onTriggerClosing={() => setIsOpen(false)}

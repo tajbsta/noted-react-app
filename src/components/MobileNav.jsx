@@ -3,7 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
 import BrandLogoSvg from './BrandLogoSvg';
 
-export default function MobileNav(props) {
+export default function MobileNav({
+  checkclearsearch,
+  submitsearch,
+  profile,
+  settings,
+  logout,
+}) {
   const history = useHistory();
   const pageLocation = history.location.pathname;
   const {
@@ -32,7 +38,6 @@ export default function MobileNav(props) {
             guestViews.indexOf(pageLocation) != -1 ? '#FAF8FA' : '',
         }}
         expand='lg'
-        {...props}
       >
         <Navbar.Brand
           href={`${
@@ -45,19 +50,13 @@ export default function MobileNav(props) {
         {!guestViews.includes(pathname) && (
           <>
             <div className='m-search-container'>
-              <button
+              <Navbar.Toggle
+                className='search-toggler-icon'
                 aria-controls='basic-navbar-nav'
-                className='m-btn-search btn navbar-toggler collapsed'
-                label='Toggle navigation'
-              >
-                <Navbar.Toggle
-                  className='search-toggler-icon'
-                  aria-controls='basic-navbar-nav'
-                  onClick={() => {
-                    setSearchButton(true);
-                  }}
-                />
-              </button>
+                onClick={() => {
+                  setSearchButton(true);
+                }}
+              />
             </div>
 
             <Navbar.Toggle
@@ -74,8 +73,8 @@ export default function MobileNav(props) {
                       <FormControl
                         type='text'
                         placeholder='Search purchases'
-                        onChange={props.checkClearSearch}
-                        onKeyPress={props.submitSearch}
+                        onChange={checkclearsearch}
+                        onKeyPress={submitsearch}
                       />
                     </Form>
                     <Button variant='outline-primary' className='ml-3'>
@@ -88,9 +87,9 @@ export default function MobileNav(props) {
               {!searchButton && (
                 <>
                   <Nav className='mr-auto'>
-                    <Nav.Link onClick={props.profile}>Profile</Nav.Link>
-                    <Nav.Link onClick={props.settings}>Settings</Nav.Link>
-                    <Nav.Link onClick={props.logout}>Logout</Nav.Link>
+                    <Nav.Link onClick={profile}>Profile</Nav.Link>
+                    <Nav.Link onClick={settings}>Settings</Nav.Link>
+                    <Nav.Link onClick={logout}>Logout</Nav.Link>
                   </Nav>
                 </>
               )}
