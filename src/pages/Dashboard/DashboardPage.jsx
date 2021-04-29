@@ -37,6 +37,7 @@ function DashboardPage() {
     [DONATE]: [],
   });
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
 
   async function loadScans() {
     dispatch(clearSearchQuery());
@@ -110,6 +111,16 @@ function DashboardPage() {
     };
   });
 
+  useEffect(() => {
+    function handleResize() {
+      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 767);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
   return (
     <div id='DashboardPage'>
       <div className='container mt-6 main-mobile-dashboard'>
@@ -121,7 +132,7 @@ function DashboardPage() {
           {!isEmpty(scheduledReturns) && <ScheduledCard />}
         </div>
         <div className='row ipad-row'>
-          <div className='col-sm-9 mt-4 w-840 bottom'>
+          <div className={`mt-4 w-840 bottom ${isTablet ? 'col' : 'col-sm-9'}`}>
             {' '}
             {/* {loading && (
               <>
@@ -274,11 +285,22 @@ function DashboardPage() {
               </>
             )}
           </div>
-          <div className='col-sm-3 checkout-card'>
-            <RightCard userId={userId} />
-          </div>
+          {!isTablet && (
+            <>
+              <div className='col-sm-3 checkout-card'>
+                <RightCard userId={userId} />
+              </div>
+            </>
+          )}
         </div>
       </div>
+      {isTablet && (
+        <>
+          <div className='col checkout-card'>
+            <RightCard userId={userId} />
+          </div>
+        </>
+      )}
     </div>
   );
 }

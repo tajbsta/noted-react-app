@@ -112,11 +112,7 @@ function RightCard({ userId }) {
 
           {!isMobile && <HorizontalLine width='90%' />}
           <div className='card-body p-0'>
-            <div
-              className={`container ${
-                isMobile ? 'mobile-padding pb-1' : 'p-2'
-              }`}
-            >
+            <div className={`${isMobile ? 'mobile-padding pb-1' : 'p-2'}`}>
               {loading && (
                 <div className='d-flex justify-content-center mt-2 r-spin-container'>
                   <Spinner animation='border' size='md' className='spinner' />

@@ -34,7 +34,7 @@
   }
 
   .ipad-row {
-    @media (min-width: 768px) and (max-width: 991px) {
+    @media (min-width: 767px) and (max-width: 991px) {
       width: 640px;
     }
   }
@@ -185,7 +185,7 @@
 
 // START OF RIGHT CARD
 .checkout-card {
-  @media (max-width: 540px) {
+  @media (max-width: 767px) {
     padding-left: 0px;
     padding-right: 0px;
     position: fixed;
@@ -195,7 +195,7 @@
 }
 
 .right-card {
-  @media (max-width: 540px) {
+  @media (max-width: 767px) {
     padding-left: 0px;
     padding-right: 0px;
   }
@@ -230,7 +230,7 @@
     mix-blend-mode: normal;
     opacity: 0.6;
 
-    @media (max-width: 540px) {
+    @media (max-width: 767px) {
       // width: 89px !important;
       width: auto;
     }
