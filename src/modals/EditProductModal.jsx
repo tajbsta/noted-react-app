@@ -12,6 +12,7 @@ import moment from 'moment';
 import { getFileTypeIcon } from '../utils/file';
 
 export default function EditProductModal(props) {
+  console.log(props);
   const dispatch = useDispatch();
   const [file, setFile] = useState('');
   const { inEdit, scans } = useSelector(({ runtime: { inEdit }, scans }) => ({
@@ -19,7 +20,9 @@ export default function EditProductModal(props) {
     scans,
   }));
   const [loading, setLoading] = useState(false);
+
   const returnId = get(inEdit, 'id', '');
+
   const { handleChange, values, setFieldValue, errors } = props.editproductform;
 
   const {
@@ -197,7 +200,7 @@ export default function EditProductModal(props) {
                           <Form.Control
                             name='vendorTag'
                             onChange={handleChange}
-                            value={vendorTag}
+                            value={vendorTag || ''}
                           />
                         </div>
                         <div className='brand-img-container'>

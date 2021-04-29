@@ -11,6 +11,9 @@ import ReturnPolicyModal from '../modals/ReturnPolicyModal';
 import ConfirmDonate from '../modals/ConfirmDonate';
 import NotedCheckbox from './NotedCheckbox';
 import { get } from 'lodash-es';
+import EditProductModal from '../modals/EditProductModal';
+import { useFormik } from 'formik';
+import { addProductSchema } from '../models/formSchema';
 
 function ProductCard({
   selectable = true,
@@ -116,6 +119,19 @@ function ProductCard({
         );
 
   const isDonate = get(item, 'category', '') === 'DONATE';
+
+  const { handleChange, values, setFieldValue, errors } = useFormik({
+    initialValues: {
+      amount: get(item, 'price', ''),
+      vendorTag: get(item, 'vendor', ''),
+      orderDate: get(item, 'order_date', ''),
+      itemName: get(item, 'name', ''),
+      productUrl: '',
+      imageUrl: get(item, 'thumbnail', ''),
+      vendorLogo: get(item, 'vendor_data.thumbnail', ''),
+    },
+    validationSchema: addProductSchema,
+  });
 
   return (
     <div id='productCard'>
@@ -374,13 +390,13 @@ function ProductCard({
                 setModalPolicyShow(false);
               }}
             />
-            {/* <EditProductModal
+            <EditProductModal
               show={modalEditShow}
               onHide={() => {
                 setModalEditShow(false);
               }}
-              editproductform={{ handleChange, values, setFieldValue }}
-            /> */}
+              editproductform={{ handleChange, values, setFieldValue, errors }}
+            />
             <ProductDetails
               item={item}
               isHovering={showHoverContent}
@@ -399,6 +415,12 @@ function ProductCard({
                 orderDate={item.order_date}
                 show={showHoverContent}
                 item={item}
+                editproductform={{
+                  handleChange,
+                  values,
+                  setFieldValue,
+                  errors,
+                }}
               />
 
               {!isHover && !selected && !isDonate && (
