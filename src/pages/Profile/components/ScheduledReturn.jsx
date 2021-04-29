@@ -177,15 +177,17 @@ export default function ScheduledReturn({ user }) {
                     >
                       <div className='product-img-col col'>
                         {renderAllScheduledItems}
+                        {items.length > 5 && (
+                          <div
+                            className='plus-more'
+                            style={{ display: 'flex', alignItems: 'center' }}
+                          >
+                            {items.length > 5 && `+${moreItemsCount} more...`}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </>
-                )}
-
-                {items.length > 5 && (
-                  <div className='plus-more col-1'>
-                    {items.length > 5 && `+${moreItemsCount} more...`}
-                  </div>
                 )}
 
                 {!isMobile && (
@@ -202,7 +204,16 @@ export default function ScheduledReturn({ user }) {
                       </div>
                       <div className='product-img-col col-6'>
                         {renderAllScheduledItems}
+                        {items.length > 5 && (
+                          <div
+                            className='plus-more'
+                            style={{ display: 'flex', alignItems: 'center' }}
+                          >
+                            {items.length > 5 && `+${moreItemsCount} more...`}
+                          </div>
+                        )}
                       </div>
+
                       <div className='button-col col'>
                         <div>
                           <button
