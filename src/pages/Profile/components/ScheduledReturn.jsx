@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { get, isEmpty } from 'lodash-es';
 import { Col, Row, Accordion, Card } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -11,6 +11,19 @@ import Collapsible from 'react-collapsible';
 export default function ScheduledReturn({ user }) {
   const { push } = useHistory();
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   const { scheduledReturns } = useSelector(
     ({ auth: { scheduledReturns } }) => ({
       scheduledReturns,
@@ -40,8 +53,6 @@ export default function ScheduledReturn({ user }) {
                   height: '48px',
                   background: '#fff',
                   objectFit: 'contain',
-                  // marginLeft: '12px',
-                  // marginRight: '12px',
                 }}
                 src={thumbnail || ProductPlaceholder}
                 onError={(e) => {
@@ -103,6 +114,7 @@ export default function ScheduledReturn({ user }) {
               width: '48px',
               height: '48px',
               background: '#fff',
+              objectFit: 'contain',
             }}
             src={product.thumbnail || ProductPlaceholder}
             onError={(e) => {
@@ -130,7 +142,7 @@ export default function ScheduledReturn({ user }) {
           defaultActiveKey='1'
           activeKey={activeKey}
         >
-          <Card className='mt-4 m-3 ml-4 shadow-sm'>
+          <Card className={`mt-4 m-3 shadow-sm ${isMobile ? 'ml-0' : 'ml-4'}`}>
             <CancelOrderModal
               show={showCancelOrderModal}
               onHide={onHide}
@@ -138,37 +150,74 @@ export default function ScheduledReturn({ user }) {
             />
             {activeKey === '1' && (
               <div className='card-body initial-card-body'>
-                <Row
-                  className='align-items-center'
-                  style={{ marginLeft: '0px' }}
-                >
-                  <Col className='title-col'>
-                    <div className='title'>Scheduled Return</div>
-                    <div className='total'>
-                      {get(items, 'length', 0)} items in total
+                {isMobile && (
+                  <>
+                    <div className='row' style={{ paddingLeft: '12px' }}>
+                      <div className='title-col'>
+                        <div className='title'>Scheduled Return</div>
+                        <div className='total'>
+                          {get(items, 'length', 0)} items in total
+                        </div>
+                      </div>
+                      <div className='button-col col'>
+                        <div>
+                          <button
+                            className='btn btn-show'
+                            onClick={() => setActiveKey('0')}
+                          >
+                            Show details
+                          </button>
+                          <span className='arrow'>▼</span>
+                        </div>
+                      </div>
                     </div>
-                  </Col>
-                  <div className='product-img-col col-6'>
-                    {renderAllScheduledItems}
-                  </div>
-                  {items.length > 5 && (
-                    <div className='plus-more col-1'>
-                      {items.length > 5 && `+${moreItemsCount} more...`}
-                    </div>
-                  )}
 
-                  <Col className='button-col'>
-                    <div>
-                      <button
-                        className='btn btn-show'
-                        onClick={() => setActiveKey('0')}
-                      >
-                        Show details
-                      </button>
-                      <span className='arrow'>▼</span>
+                    <div
+                      className='row mt-3'
+                      style={{ justifyContent: 'center' }}
+                    >
+                      <div className='product-img-col col'>
+                        {renderAllScheduledItems}
+                      </div>
                     </div>
-                  </Col>
-                </Row>
+                  </>
+                )}
+
+                {items.length > 5 && (
+                  <div className='plus-more col-1'>
+                    {items.length > 5 && `+${moreItemsCount} more...`}
+                  </div>
+                )}
+
+                {!isMobile && (
+                  <>
+                    <Row
+                      className='align-items-center'
+                      style={{ marginLeft: '0px' }}
+                    >
+                      <div className='title-col col'>
+                        <div className='title'>Scheduled Return</div>
+                        <div className='total'>
+                          {get(items, 'length', 0)} items in total
+                        </div>
+                      </div>
+                      <div className='product-img-col col-6'>
+                        {renderAllScheduledItems}
+                      </div>
+                      <div className='button-col col'>
+                        <div>
+                          <button
+                            className='btn btn-show'
+                            onClick={() => setActiveKey('0')}
+                          >
+                            Show details
+                          </button>
+                          <span className='arrow'>▼</span>
+                        </div>
+                      </div>
+                    </Row>
+                  </>
+                )}
               </div>
             )}
             <Accordion.Collapse eventKey='0'>
@@ -182,15 +231,15 @@ export default function ScheduledReturn({ user }) {
                       marginLeft: '0px',
                     }}
                   >
-                    <Col className='title-col'>
+                    <div className={`title-col ${isMobile ? '' : 'col'}`}>
                       <div className='title'>Scheduled Return</div>
                       <div className='total'>
                         {get(items, 'length', 0)}{' '}
                         {`${get(items, 'length', 0) === 1 ? 'item' : 'items'}`}{' '}
                         in total
                       </div>
-                    </Col>
-                    <Col className='title-col'>
+                    </div>
+                    <div className={`title-col ${isMobile ? '' : 'col'}`}>
                       <div className='button-col'>
                         <button
                           className='btn btn-show'
@@ -200,7 +249,7 @@ export default function ScheduledReturn({ user }) {
                         </button>
                         <span className='arrow'>▲</span>
                       </div>
-                    </Col>
+                    </div>
                   </Row>
 
                   {items.map((item) => renderScheduledReturnItem(item))}

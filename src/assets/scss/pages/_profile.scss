@@ -300,19 +300,7 @@
     }
   }
 
-  #Address {
-    @media (max-width: 991px) {
-      padding-left: 16px;
-      padding-right: 16px;
-    }
-  }
-
   #Payment {
-    @media (max-width: 991px) {
-      padding-left: 16px;
-      padding-right: 16px;
-    }
-
     .alert {
       margin-top: 0px;
       padding: 5px;
@@ -333,11 +321,6 @@
 
   // SCHEDULED RETURN SECTION
   #ScheduledReturn {
-    @media (max-width: 991px) {
-      padding-left: 16px;
-      padding-right: 16px;
-    }
-
     .hr-line {
       width: 100%;
       margin-right: 0px;
