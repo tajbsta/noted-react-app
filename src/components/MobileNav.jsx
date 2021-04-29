@@ -1,14 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import {
-  Nav,
-  NavDropdown,
-  Navbar,
-  Form,
-  FormControl,
-  Button,
-} from 'react-bootstrap';
+import { Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
 import BrandLogoSvg from './BrandLogoSvg';
 
 export default function MobileNav(props) {
@@ -61,7 +53,7 @@ export default function MobileNav(props) {
                 <Navbar.Toggle
                   className='search-toggler-icon'
                   aria-controls='basic-navbar-nav'
-                  onClick={(e) => {
+                  onClick={() => {
                     setSearchButton(true);
                   }}
                 />
@@ -70,7 +62,7 @@ export default function MobileNav(props) {
 
             <Navbar.Toggle
               aria-controls='basic-navbar-nav'
-              onClick={(e) => {
+              onClick={() => {
                 setSearchButton(false);
               }}
             />

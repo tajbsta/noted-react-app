@@ -12,7 +12,6 @@ import moment from 'moment';
 import { getFileTypeIcon } from '../utils/file';
 
 export default function EditProductModal(props) {
-  console.log(props);
   const dispatch = useDispatch();
   const [file, setFile] = useState('');
   const { inEdit, scans } = useSelector(({ runtime: { inEdit }, scans }) => ({
