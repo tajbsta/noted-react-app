@@ -6,6 +6,9 @@ import QuestionMarkSvg from '../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';
 import { getProducts } from '../utils/productsApi';
 import NotedCheckbox from './NotedCheckbox';
+import { useSelector } from 'react-redux';
+import { DONATE } from '../constants/actions/runtime';
+import { get } from 'lodash-es';
 
 function ReturnCategory({
   userId,
@@ -17,14 +20,20 @@ function ReturnCategory({
   width,
   percent,
 }) {
+  const { cartItems } = useSelector(({ cart: { items: cartItems } }) => ({
+    cartItems,
+  }));
   const { push } = useHistory();
   const [items, setItems] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const [showNextPageButton, setShowNextPageButton] = useState(true);
-  const sortBy = 'return_not_eligible_date,_id';
-  const sort = 'asc,asc';
+  const sortBy =
+    category === DONATE ? 'updated_at' : 'return_not_eligible_date,_id';
+  const sort = category === DONATE ? 'desc' : 'asc,asc';
   const [loadProgress, setLoadProgress] = useState(0);
+
+  const [selectedItems, setSelectedItems] = useState([]);
 
   function timeout(delay) {
     return new Promise((res) => setTimeout(res, delay));
@@ -58,12 +67,14 @@ function ReturnCategory({
       if (nextPageToken) {
         params.nextPageToken = nextPageToken;
       }
-
       const products = await getProducts(params);
-
-      const newItems = items.concat(products);
+      let newItems = [...products];
+      if (nextPageToken) {
+        newItems = items.concat(products);
+      }
 
       setShowNextPageButton(products.length > 0 && products.length === size);
+
       setItems(newItems);
 
       setLoadProgress(100);
@@ -103,6 +114,10 @@ function ReturnCategory({
     }
 
     setSelectedItems(list);
+
+    if (item.transferred) {
+      fetchItems();
+    }
   };
 
   const handleSelectAll = () => {
@@ -123,6 +138,14 @@ function ReturnCategory({
       items: selectedItems,
     });
   }, [selectedItems]);
+
+  useEffect(() => {
+    return () => {
+      if (get(cartItems.pop(), 'transferred', false) === true) {
+        fetchItems();
+      }
+    };
+  }, [cartItems]);
 
   return (
     <div id='ReturnCategory'>
@@ -159,7 +182,7 @@ function ReturnCategory({
             key={item._id}
             disabled={false}
             item={item}
-            selected={!!selectedItems.find((x) => x._id === item._id)}
+            selected={!!cartItems.find((x) => x._id === item._id)}
             toggleSelected={toggleSelected}
             onClick={() => {
               push(`/view-scan?scanId=${item._id}`);

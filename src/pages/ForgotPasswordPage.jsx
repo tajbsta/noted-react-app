@@ -31,7 +31,6 @@ export default function ForgotPasswordPage() {
 
   const forgotPass = async (e) => {
     e.preventDefault();
-    console.log(values.email);
     setError(null);
     setSuccess(null);
     setIsSubmitting(true);

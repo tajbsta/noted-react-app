@@ -5,7 +5,7 @@ import { get } from 'lodash-es';
 import { DONATE } from '../constants/actions/runtime';
 import ConfirmDonate from '../modals/ConfirmDonate';
 
-function ProductDetails({ item, isHovering = false }) {
+function ProductDetails({ item, isHovering = false, toggleSelected }) {
   const history = useHistory();
   const pageLocation = history.location.pathname;
   const orderViews = ['/view-return', '/view-scan'];
@@ -99,6 +99,8 @@ function ProductDetails({ item, isHovering = false }) {
         onHide={() => {
           setModalDonateShow(false);
         }}
+        item={item}
+        toggleSelected={toggleSelected}
       />
     </div>
   );

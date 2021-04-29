@@ -19,7 +19,9 @@ export default function EditProductModal(props) {
     scans,
   }));
   const [loading, setLoading] = useState(false);
+
   const returnId = get(inEdit, 'id', '');
+
   const { handleChange, values, setFieldValue, errors } = props.editproductform;
 
   const {
@@ -197,7 +199,7 @@ export default function EditProductModal(props) {
                           <Form.Control
                             name='vendorTag'
                             onChange={handleChange}
-                            value={vendorTag}
+                            value={vendorTag || ''}
                           />
                         </div>
                         <div className='brand-img-container'>

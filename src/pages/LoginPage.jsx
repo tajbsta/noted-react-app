@@ -35,7 +35,7 @@ export default function LoginPage() {
       await Auth.signIn(email, password);
       history.push('/dashboard');
     } catch (error) {
-      console.log('Error signing in', error.code);
+      // console.log('Error signing in', error.code);
       setError(
         get(
           signInErrors.find(({ code }) => code === error.code),

@@ -99,7 +99,6 @@ export default function Payment() {
   });
 
   function formatCardNumber(value) {
-    console.log(value);
     return value
       .replace(/[^0-9]/g, '')
       .substr(0, 16)
