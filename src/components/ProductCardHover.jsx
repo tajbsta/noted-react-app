@@ -8,12 +8,16 @@ import {
   unmountProductedit,
 } from '../actions/runtime.action';
 import { useDispatch } from 'react-redux';
-import { useFormik } from 'formik';
-import { addProductSchema } from '../models/formSchema';
 import { RETURN_SCORES } from '../constants/returns/scores';
 import ReturnScore from './ReturnsScore';
 import { useHistory } from 'react-router';
-export default function ProductCardHover({ orderDate, show, item }) {
+
+export default function ProductCardHover({
+  orderDate,
+  show,
+  item,
+  editproductform,
+}) {
   const dispatch = useDispatch();
   const {
     location: { pathname },
@@ -41,18 +45,7 @@ export default function ProductCardHover({ orderDate, show, item }) {
     };
   });
 
-  const { handleChange, values, setFieldValue, errors } = useFormik({
-    initialValues: {
-      amount: get(item, 'price', ''),
-      vendorTag: get(item, 'vendor', ''),
-      orderDate: get(item, 'order_date', ''),
-      itemName: get(item, 'name', ''),
-      productUrl: '',
-      imageUrl: get(item, 'thumbnail', ''),
-      vendorLogo: get(item, 'vendor_data.thumbnail', ''),
-    },
-    validationSchema: addProductSchema,
-  });
+  const { handleChange, values, setFieldValue, errors } = editproductform;
 
   const onEdit = async () => {
     /**

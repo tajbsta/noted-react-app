@@ -12,6 +12,8 @@ import ConfirmDonate from '../modals/ConfirmDonate';
 import NotedCheckbox from './NotedCheckbox';
 import { get } from 'lodash-es';
 import EditProductModal from '../modals/EditProductModal';
+import { useFormik } from 'formik';
+import { addProductSchema } from '../models/formSchema';
 
 function ProductCard({
   selectable = true,
@@ -117,6 +119,20 @@ function ProductCard({
         );
 
   const isDonate = get(item, 'category', '') === 'DONATE';
+  const isLastCall = get(item, 'category', '') === 'LAST_CALL';
+
+  const { handleChange, values, setFieldValue, errors } = useFormik({
+    initialValues: {
+      amount: get(item, 'price', ''),
+      vendorTag: get(item, 'vendor', ''),
+      orderDate: get(item, 'order_date', ''),
+      itemName: get(item, 'name', ''),
+      productUrl: '',
+      imageUrl: get(item, 'thumbnail', ''),
+      vendorLogo: get(item, 'vendor_data.thumbnail', ''),
+    },
+    validationSchema: addProductSchema,
+  });
 
   return (
     <div id='productCard'>
@@ -249,7 +265,7 @@ function ProductCard({
                             <div
                               className='sofia-pro mobile-limit'
                               style={{
-                                color: '#8B888C',
+                                color: isLastCall ? 'red' : '#8B888C',
                               }}
                             >
                               {daysLeft} days left
@@ -311,6 +327,8 @@ function ProductCard({
                       onHide={() => {
                         setModalDonateShow(false);
                       }}
+                      item={item}
+                      toggleSelected={toggleSelected}
                     />
                   </>
                 )}
@@ -373,14 +391,18 @@ function ProductCard({
                 setModalPolicyShow(false);
               }}
             />
-            {/* <EditProductModal
+            <EditProductModal
               show={modalEditShow}
               onHide={() => {
                 setModalEditShow(false);
               }}
-              editproductform={{ handleChange, values, setFieldValue }}
-            /> */}
-            <ProductDetails item={item} isHovering={showHoverContent} />
+              editproductform={{ handleChange, values, setFieldValue, errors }}
+            />
+            <ProductDetails
+              item={item}
+              isHovering={showHoverContent}
+              toggleSelected={toggleSelected}
+            />
 
             <div
               className='col-sm-12 return-details-container'
@@ -394,6 +416,12 @@ function ProductCard({
                 orderDate={item.order_date}
                 show={showHoverContent}
                 item={item}
+                editproductform={{
+                  handleChange,
+                  values,
+                  setFieldValue,
+                  errors,
+                }}
               />
 
               {!isHover && !selected && !isDonate && (
@@ -401,7 +429,7 @@ function ProductCard({
                   <div
                     className='col-sm-6 sofia-pro return-time-left'
                     style={{
-                      color: '#8B888C',
+                      color: isLastCall ? 'red' : '#8B888C',
                     }}
                   >
                     {daysLeft} days left

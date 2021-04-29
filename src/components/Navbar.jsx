@@ -84,13 +84,13 @@ const Topnav = () => {
     history.push('/settings');
   };
 
-  const submitSearch = (e) => {
+  const submitsearch = (e) => {
     if (e.key === 'Enter') {
       dispatch(searchScans(e.target.value));
     }
   };
 
-  const checkClearSearch = _.debounce((e) => {
+  const checkclearsearch = _.debounce((e) => {
     const keyword = e.target.value || '';
 
     if (keyword.length === 0) {
@@ -137,8 +137,8 @@ const Topnav = () => {
           logout={logout}
           profile={profile}
           settings={settings}
-          checkClearSearch={checkClearSearch}
-          submitSearch={submitSearch}
+          checkclearsearch={checkclearsearch}
+          submitsearch={submitsearch}
         />
       )}
 
@@ -151,8 +151,8 @@ const Topnav = () => {
                   type='text'
                   className='form-control form-control-prepended list-search background-color sofia-pro text-16 color'
                   placeholder='Search purchases'
-                  onChange={checkClearSearch}
-                  onKeyPress={submitSearch}
+                  onChange={checkclearsearch}
+                  onKeyPress={submitsearch}
                 />
                 <div className='input-group-prepend'>
                   <div className='input-group-text background-color'>

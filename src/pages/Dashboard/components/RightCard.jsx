@@ -48,20 +48,14 @@ function RightCard({ userId }) {
     calculateCurrentCartPricing(items);
   }, [items]);
 
-  console.log(items);
-
   const calculateCurrentCartPricing = async (currentItems) => {
     try {
       setLoading(true);
 
       const cartItems = [...currentItems];
-      console.log('CART items', cartItems);
       const productIds = cartItems.map((x) => x._id);
-      console.log('product ids', productIds);
 
       const data = await calculatePricing(userId, productIds);
-
-      console.log({ data });
 
       setPricing({
         totalReturns: data.totalReturns,
@@ -112,11 +106,7 @@ function RightCard({ userId }) {
 
           {!isMobile && <HorizontalLine width='90%' />}
           <div className='card-body p-0'>
-            <div
-              className={`container ${
-                isMobile ? 'mobile-padding pb-1' : 'p-2'
-              }`}
-            >
+            <div className={`${isMobile ? 'mobile-padding pb-1' : 'p-2'}`}>
               {loading && (
                 <div className='d-flex justify-content-center mt-2 r-spin-container'>
                   <Spinner animation='border' size='md' className='spinner' />

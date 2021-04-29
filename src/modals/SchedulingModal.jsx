@@ -1,17 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import DatePicker from '../components/DatePicker';
 import moment from 'moment';
-import DownArrow from '../assets/icons/DownArrow.svg';
-
-const eveningTimeSlots = [
-  {
-    startTime: '1200',
-    endTime: '1500',
-    text: '12 P.M - 3 P.M',
-    disabled: false,
-  },
-];
+import { generateSchedules } from '../utils/schedule';
 
 const morningTimeSlots = [
   {
@@ -20,7 +10,15 @@ const morningTimeSlots = [
     text: '9 A.M - 12 P.M',
     disabled: false,
   },
+  {
+    startTime: '1200',
+    endTime: '1500',
+    text: '12 P.M - 3 P.M',
+    disabled: false,
+  },
 ];
+
+console.log(generateSchedules());
 
 export default function SchedulingModal(props) {
   const [isMobile, setIsMobile] = useState(false);
@@ -43,21 +41,19 @@ export default function SchedulingModal(props) {
     values: pickUpDateValues,
   } = form;
 
-  const onTimeSlotSelect = (fieldName, value, disabled) => {
-    if (!disabled) {
-      setFieldValue(fieldName, value);
-    }
-  };
-
   const renderSelectTimeSlot = () => {
     return (
-      <div className='col left-column'>
-        Select a time slot for
-        <div className='selectedDateContainer'>
-          {moment(pickUpDateValues.date).format('MMMM DD, YYYY')}
+      <div className='col left-column mt-6'>
+        <div
+          className='mb-5'
+          style={{
+            textAlign: 'center',
+          }}
+        >
+          Select a Time Slot
         </div>
         <div className='timeSlotsContainer'>
-          <div className='morningSlotsContainer'>
+          <div className='col morningSlotsContainer'>
             {morningTimeSlots.map((timeSlot) => {
               const isSelected =
                 pickUpDateValues.time === timeSlot.text ? `isSelected` : '';
@@ -68,145 +64,71 @@ export default function SchedulingModal(props) {
                   key={timeSlot.startTime}
                   onClick={() => setFieldValue('time', timeSlot.text)}
                 >
-                  <div
-                    className={`sofia-pro timeSlotText ${
-                      isSelected ? 'selected' : ''
-                    }`}
-                  >
-                    {timeSlot.text}
+                  <div className='col'>
+                    <div
+                      className={`row sofia-pro timeSlotText ${
+                        isSelected ? 'selected' : ''
+                      }`}
+                    >
+                      {timeSlot.text}
+                    </div>
+                    <div
+                      className={`row availableTimeSlot sofia-pro ${
+                        isSelected ? 'selected' : ''
+                      }`}
+                      style={{
+                        fontSize: 13,
+                        opacity: 0.6,
+                      }}
+                    >
+                      Slots available: 3
+                    </div>
                   </div>
                 </div>
               );
             })}
-            <span
-              className='sofia-pro availableTimeSlot'
-              style={{
-                fontSize: 13,
-                opacity: 0.6,
-              }}
-            >
-              Available Time Slots: 3
-            </span>
-          </div>
-          <div className='eveningSlotsContainer'>
-            {eveningTimeSlots.map((timeSlot) => {
-              const isSelected =
-                pickUpDateValues.time === timeSlot.text ? `isSelected` : '';
-              const isDisabled = timeSlot.disabled ? 'isDisabled' : '';
-              const isDisabledText = timeSlot.disabled
-                ? 'isDisabledText'
-                : 'timeSlotText';
-              return (
-                <div
-                  className={`btn timeSlotContainer ${isDisabled} ${isSelected}`}
-                  key={timeSlot.startTime}
-                  onClick={() =>
-                    onTimeSlotSelect('time', timeSlot.text, timeSlot.disabled)
-                  }
-                >
-                  <div
-                    className={`sofia-pro timeSlotText ${
-                      isSelected ? 'selected' : ''
-                    }`}
-                  >
-                    {timeSlot.text}
-                  </div>
-                </div>
-              );
-            })}
-            <span className='sofia-pro availableTimeSlot'>
-              Available Time Slots: 3
-            </span>
           </div>
         </div>
       </div>
     );
   };
 
-  const renderSelectTimeSlotMobile = () => {
+  const onDateSelect = (fieldName, value) => {
+    setFieldValue(fieldName, value);
+  };
+
+  const renderAvailableDays = () => {
+    return generateSchedules().map((day) => {
+      const dayTitle =
+        day.format('dddd') === moment().add('days', 1).format('dddd')
+          ? 'Tomorrow'
+          : day.format('dddd');
+
+      return (
+        <div
+          key={day}
+          className={`col ${
+            pickUpDateValues.date &&
+            pickUpDateValues.date.format('YYYY MM DD') ===
+              day.format('YYYY MM DD')
+              ? 'day-container-selected'
+              : 'day-container '
+          }`}
+          onClick={() => onDateSelect('date', day)}
+        >
+          <div className='row day'>{day && dayTitle}</div>
+          <div className='row date'>
+            {day !== null && day.format('MMMM DD')}
+          </div>
+        </div>
+      );
+    });
+  };
+
+  const renderEmptiness = () => {
     return (
-      <div
-        className='col left-column m-0 pl-5 pr-5'
-        style={{
-          maxWidth: '100%',
-        }}
-      >
-        <div className='row'>
-          <img
-            src={DownArrow}
-            alt=''
-            className='back-arrow-mobile'
-            onClick={() => {
-              setFieldValue('date', null);
-            }}
-          />
-          <div className='selectedDateContainer ml-7'>
-            {moment(pickUpDateValues.date).format('MMMM DD, YYYY')}
-          </div>
-        </div>
-        <div className='timeSlotsContainer'>
-          <div className='morningSlotsContainer'>
-            {morningTimeSlots.map((timeSlot) => {
-              const isSelected =
-                pickUpDateValues.time === timeSlot.text ? `isSelected` : '';
-              const className = `btn timeSlotContainer ${isSelected}`;
-              return (
-                <div
-                  className={className}
-                  key={timeSlot.startTime}
-                  onClick={() => setFieldValue('time', timeSlot.text)}
-                >
-                  <div
-                    className={`sofia-pro timeSlotText ${
-                      isSelected ? 'selected' : ''
-                    }`}
-                  >
-                    {timeSlot.text}
-                  </div>
-                </div>
-              );
-            })}
-            <span
-              className='sofia-pro availableTimeSlot'
-              style={{
-                fontSize: 13,
-                opacity: 0.6,
-              }}
-            >
-              Available Time Slots: 3
-            </span>
-          </div>
-          <div className='eveningSlotsContainer'>
-            {eveningTimeSlots.map((timeSlot) => {
-              const isSelected =
-                pickUpDateValues.time === timeSlot.text ? `isSelected` : '';
-              const isDisabled = timeSlot.disabled ? 'isDisabled' : '';
-              const isDisabledText = timeSlot.disabled
-                ? 'isDisabledText'
-                : 'timeSlotText';
-              return (
-                <div
-                  className={`btn timeSlotContainer ${isDisabled} ${isSelected}`}
-                  key={timeSlot.startTime}
-                  onClick={() =>
-                    onTimeSlotSelect('time', timeSlot.text, timeSlot.disabled)
-                  }
-                >
-                  <div
-                    className={`sofia-pro timeSlotText ${
-                      isSelected ? 'selected' : ''
-                    }`}
-                  >
-                    {timeSlot.text}
-                  </div>
-                </div>
-              );
-            })}
-            <span className='sofia-pro availableTimeSlot'>
-              Available Time Slots: 3
-            </span>
-          </div>
-        </div>
+      <div className='row mt-7'>
+        <h3 className='sofia-pro'>Select a day first</h3>
       </div>
     );
   };
@@ -234,42 +156,23 @@ export default function SchedulingModal(props) {
         </Button>
       </div>
       <Modal.Header>
-        <Modal.Title>Select a Date & Time Slot</Modal.Title>
+        <Modal.Title>Select a Date</Modal.Title>
       </Modal.Header>
       <Modal.Body className='sofia-pro'>
-        <div className='guide-container'>
-          <h4 className='sofia-pro date-guide'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et, eu ac
-            egestas placerat sit natoque.
-          </h4>
-        </div>
         {/**
          * @COMPONENT date picker component here
          */}
-
-        <div className='row'>
-          {!isMobile && (
-            <div className='col d-flex justify-content-center date-column'>
-              <DatePicker
-                setFieldValue={setFieldValue}
-                date={pickUpDateValues.date}
-              />
-            </div>
-          )}
-          {isMobile && pickUpDateValues.date === null && (
-            <div className='col d-flex justify-content-center date-column'>
-              <DatePicker
-                setFieldValue={setFieldValue}
-                date={pickUpDateValues.date}
-              />
-            </div>
-          )}
-          {pickUpDateValues.date !== null &&
-            !isMobile &&
-            renderSelectTimeSlot()}
-          {pickUpDateValues.date !== null &&
-            isMobile &&
-            renderSelectTimeSlotMobile()}
+        <div className='row days-container'>{renderAvailableDays()}</div>
+        <div
+          className='time-slot-container'
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          {pickUpDateValues.date !== null
+            ? renderSelectTimeSlot()
+            : renderEmptiness()}
         </div>
       </Modal.Body>
       <Modal.Footer>

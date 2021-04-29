@@ -25,6 +25,7 @@ import Collapsible from 'react-collapsible';
 import LeftArrow from '../../../assets/icons/RightArrow.svg';
 import DownArrow from '../../../assets/icons/DownArrow.svg';
 import { Col, Row } from 'react-bootstrap';
+import { truncateString } from '../../../utils/data';
 
 function PickUpDetails() {
   /**
@@ -276,37 +277,25 @@ function PickUpDetails() {
                               <Col className='p-0'>
                                 <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
                                   {addressFormValues.fullName}
-                                </h4>
-                                {IsAddressOpen && (
-                                  <div>
-                                    <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                      {addressFormValues.line1}
-                                    </h4>
-                                    <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                      {addressFormValues.line2}
-                                    </h4>
-                                    <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                      {addressFormValues.city},{' '}
-                                      {addressFormValues.state}{' '}
-                                      {addressFormValues.zipCode}
-                                    </h4>
-                                    <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                      United States
-                                    </h4>
-                                  </div>
-                                )}
-                                <p
-                                  className='sofia-pro p-0 mb-0 tel mt-0 pb-1'
-                                  style={{
-                                    // marginTop: `${IsAddressOpen ? '20px' : ''}`,
-                                    transition: 'margin 0.5s',
-                                  }}
-                                >
-                                  Tel:{' '}
-                                  {formatPhoneNumber(
-                                    addressFormValues.phoneNumber
+                                  {!IsAddressOpen && (
+                                    <>
+                                      {addressFormValues.line1.length > 12
+                                        ? `,${truncateString(
+                                            addressFormValues.line1,
+                                            12
+                                          )}`
+                                        : `,${addressFormValues.line1}`}
+                                    </>
                                   )}
-                                </p>
+                                </h4>
+                                {!IsAddressOpen && (
+                                  <p className='sofia-pro p-0 mb-0 tel mt-0 pb-1'>
+                                    Tel:{' '}
+                                    {formatPhoneNumber(
+                                      addressFormValues.phoneNumber
+                                    )}
+                                  </p>
+                                )}
                               </Col>
                               <div className='arrow-container'>
                                 {IsAddressOpen ? (
@@ -320,6 +309,30 @@ function PickUpDetails() {
                         }
                       >
                         <div className='card-body payment-details-card-body mt-2 mb-2 p-0'>
+                          {IsAddressOpen && (
+                            <div>
+                              <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                {addressFormValues.line1}
+                              </h4>
+                              <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                {addressFormValues.line2}
+                              </h4>
+                              <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                {addressFormValues.city},{' '}
+                                {addressFormValues.state}{' '}
+                                {addressFormValues.zipCode}
+                              </h4>
+                              <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                United States
+                              </h4>
+                              <p className='sofia-pro p-0 mb-0 tel mt-0 pb-1'>
+                                Tel:{' '}
+                                {formatPhoneNumber(
+                                  addressFormValues.phoneNumber
+                                )}
+                              </p>
+                            </div>
+                          )}
                           <div className='address-actions'>
                             <h4
                               className='text-instructions'

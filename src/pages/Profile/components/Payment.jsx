@@ -99,7 +99,6 @@ export default function Payment() {
   });
 
   function formatCardNumber(value) {
-    console.log(value);
     return value
       .replace(/[^0-9]/g, '')
       .substr(0, 16)
@@ -110,8 +109,8 @@ export default function Payment() {
   }
 
   return (
-    <div id='Payment'>
-      <div className='row'>
+    <>
+      <div id='Payment'>
         <Collapsible
           open={isOpen}
           onTriggerOpening={() => setIsOpen(true)}
@@ -133,7 +132,6 @@ export default function Payment() {
                 setFieldValue={setFieldValue}
               />
             )}
-
             {/* START OF MOBILE VIEW */}
             {isMobile && (
               <>
@@ -398,6 +396,6 @@ export default function Payment() {
           </div>
         </Collapsible>
       </div>
-    </div>
+    </>
   );
 }

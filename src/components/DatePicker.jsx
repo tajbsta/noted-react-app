@@ -16,10 +16,11 @@ const CustomInput = ({ inputRef, name, ...props }) => {
     />
   );
 };
+
 export default function DatePicker({ date, setFieldValue }) {
   return (
     <div id='DatePicker'>
-      <Flatpickr
+      {/* <Flatpickr
         render={({ defaultValue, value, ...props }, ref) => {
           return (
             <CustomInput
@@ -52,7 +53,8 @@ export default function DatePicker({ date, setFieldValue }) {
           monthSelectorType: 'static',
           showMonths: 1,
         }}
-      />
+      /> */}
+      <div>Date</div>
     </div>
   );
 }
