@@ -18,6 +18,85 @@
     }
   }
 
+  .days-container {
+    padding-left: 1em;
+    padding-right: 1em;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 0;
+
+    // Initial state
+    .day-container {
+      cursor: pointer;
+      margin-top: 6%;
+      border: 1px solid #EAE8EB;
+      box-sizing: border-box;
+      border-radius: 6px;
+      padding: 1em;
+      max-width: 145px;
+      min-height: 64px;
+
+      .row {
+        display: flex;
+        justify-content: center;
+      }
+
+      .day {
+        font-family: 'Sofia Pro';
+        font-size: 14px;
+        line-height: 16px;
+        text-align: center;
+        color: #6E6674;
+      }
+
+      .date {
+        font-family: 'Sofia Pro';
+        font-size: 12px;
+        line-height: 14px;
+        text-align: center;
+        color: #6E6674;
+      }
+    }
+
+    // Selected state
+    .day-container-selected {
+      cursor: pointer;
+      margin-top: 6%;
+      background: #EEE4F6;
+      border: 2px solid #570097;
+      box-sizing: border-box;
+      border-radius: 6px;
+      padding: 1em;
+      max-width: 145px;
+      min-height: 64px;
+
+      .row {
+        display: flex;
+        justify-content: center;
+      }
+
+      .day {
+        font-family: 'Sofia Pro';
+        font-size: 14px;
+        line-height: 16px;
+        text-align: center;
+        color: #570097;
+      }
+
+      .date {
+        font-family: 'Sofia Pro';
+        font-size: 12px;
+        line-height: 14px;
+        text-align: center;
+        color: #570097;
+      }
+    }
+  }
+
+
+
+
   .modal-content {
     min-height: 590px;
     left: 0px;
@@ -107,6 +186,7 @@
     margin-top: 12px;
     font-size: 18px;
     line-height: 24px;
+    max-width: 304px;
 
     .selectedDateContainer {
       color: #570097 !important;
@@ -151,6 +231,8 @@
       margin-bottom: 8px;
 
       .timeSlotText {
+        display: flex;
+        justify-content: center;
         font-family: 'Sofia Pro';
         font-style: normal;
         font-weight: normal;
@@ -162,6 +244,17 @@
         opacity: 0.6;
       }
 
+      .availableTimeSlot {
+        display: flex;
+        justify-content: center;
+        font-size: 13px;
+        text-align: right;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+      }
+
+
       .selected {
         font-family: 'Sofia Pro';
         font-size: 14px;
@@ -170,16 +263,6 @@
         color: #570097 !important;
         mix-blend-mode: normal;
         opacity: 1;
-      }
-    }
-
-    .eveningSlotsContainer {
-      .availableTimeSlot {
-        font-size: 13px;
-        text-align: right;
-        color: #0e0018;
-        mix-blend-mode: normal;
-        opacity: 0.6;
       }
     }
   }
