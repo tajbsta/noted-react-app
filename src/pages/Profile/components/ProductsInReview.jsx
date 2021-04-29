@@ -7,9 +7,7 @@ export default function ProductsInReview() {
   const renderEmptiness = () => {
     return (
       <>
-        <h5 className='sofia pro empty-message mt-4'>
-          Your scheduled return is Empty
-        </h5>
+        <h5 className='sofia pro empty-message mt-4'>No products found.</h5>
       </>
     );
   };
