@@ -1,5 +1,5 @@
-import { get, isEmpty } from 'lodash-es';
 import React, { useState } from 'react';
+import { get, isEmpty } from 'lodash-es';
 import { Col, Row, Accordion, Card } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -271,29 +271,27 @@ export default function ScheduledReturn({ user }) {
 
   return (
     <div id='ScheduledReturn'>
-      <div className='row'>
-        <Collapsible
-          open={isOpen}
-          onTriggerOpening={() => setIsOpen(true)}
-          onTriggerClosing={() => setIsOpen(false)}
-          trigger={
-            <div className='triggerContainer ml-3'>
-              <h3 className='sofia-pro text-18 mb-3-profile mb-0 triggerText'>
-                Your scheduled return
-              </h3>
-              <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
-            </div>
-          }
-        >
-          {scheduledReturns.map((scheduledReturn) => {
-            return renderScheduledReturn(scheduledReturn);
-          })}
-          {/**
-           * When there is nothing
-           */}
-          {isEmpty(scheduledReturns) && renderEmptiness()}
-        </Collapsible>
-      </div>
+      <Collapsible
+        open={isOpen}
+        onTriggerOpening={() => setIsOpen(true)}
+        onTriggerClosing={() => setIsOpen(false)}
+        trigger={
+          <div className='triggerContainer'>
+            <h3 className='sofia-pro text-18 mb-3-profile ml-3 mb-0 triggerText'>
+              Your Scheduled Return
+            </h3>
+            <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
+          </div>
+        }
+      >
+        {scheduledReturns.map((scheduledReturn) => {
+          return renderScheduledReturn(scheduledReturn);
+        })}
+        {/**
+         * When there is nothing
+         */}
+        {isEmpty(scheduledReturns) && renderEmptiness()}
+      </Collapsible>
     </div>
   );
 }

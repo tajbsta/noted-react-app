@@ -63,8 +63,8 @@
     align-items: center;
 
     .btn-instructions {
-      position: absolute;
-      top: 45%;
+      // position: absolute;
+      // top: 45%;
       font-size: 14px;
       line-height: 16px;
       color: #570097;
@@ -73,6 +73,10 @@
       padding: 0px;
       outline: none !important;
       box-shadow: none !important;
+
+      h4 {
+        margin-bottom: 0px;
+      }
 
       &:focus {
         outline: none !important;
