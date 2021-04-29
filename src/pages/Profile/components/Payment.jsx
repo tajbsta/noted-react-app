@@ -109,8 +109,8 @@ export default function Payment() {
   }
 
   return (
-    <div id='Payment'>
-      <div className='row'>
+    <>
+      <div id='Payment'>
         <Collapsible
           open={isOpen}
           onTriggerOpening={() => setIsOpen(true)}
@@ -132,7 +132,6 @@ export default function Payment() {
                 setFieldValue={setFieldValue}
               />
             )}
-
             {/* START OF MOBILE VIEW */}
             {isMobile && (
               <>
@@ -397,6 +396,6 @@ export default function Payment() {
           </div>
         </Collapsible>
       </div>
-    </div>
+    </>
   );
 }

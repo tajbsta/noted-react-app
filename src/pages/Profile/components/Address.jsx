@@ -133,487 +133,485 @@ export default function Address({ user }) {
   return (
     <>
       <div id='Address'>
-        <div className='row'>
-          <Collapsible
-            open={isOpen}
-            onTriggerOpening={() => setIsOpen(true)}
-            onTriggerClosing={() => setIsOpen(false)}
-            trigger={
-              <div className='triggerContainer'>
-                <h3 className='sofia-pro text-18 mb-3-profile mb-0 ml-3 triggerText'>
-                  Pick-up Address
-                </h3>
+        <Collapsible
+          open={isOpen}
+          onTriggerOpening={() => setIsOpen(true)}
+          onTriggerClosing={() => setIsOpen(false)}
+          trigger={
+            <div className='triggerContainer'>
+              <h3 className='sofia-pro text-18 mb-3-profile mb-0 ml-3 triggerText'>
+                Pick-up Address
+              </h3>
 
-                <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
-              </div>
-            }
-          >
-            <div className='alert-container max-w-840'>
-              {success && (
-                <div className='alert alert-success' role='alert'>
-                  <div>
-                    <h4 className='text-center text-alert'>
-                      <CheckCircle />
-                      &nbsp;&nbsp;&nbsp;Success
-                    </h4>
-                  </div>
-                </div>
-              )}
-              {error && (
-                <div className='alert alert-danger' role='alert'>
-                  <div>
-                    <h4 className='text-center text-alert'>
-                      <AlertCircle />
-                      &nbsp;&nbsp;&nbsp;{error}
-                    </h4>
-                  </div>
-                </div>
-              )}
+              <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
             </div>
+          }
+        >
+          <div className='alert-container max-w-840'>
+            {success && (
+              <div className='alert alert-success' role='alert'>
+                <div>
+                  <h4 className='text-center text-alert'>
+                    <CheckCircle />
+                    &nbsp;&nbsp;&nbsp;Success
+                  </h4>
+                </div>
+              </div>
+            )}
+            {error && (
+              <div className='alert alert-danger' role='alert'>
+                <div>
+                  <h4 className='text-center text-alert'>
+                    <AlertCircle />
+                    &nbsp;&nbsp;&nbsp;{error}
+                  </h4>
+                </div>
+              </div>
+            )}
+          </div>
 
-            {/* START OF MOBILE VIEW */}
-            {isMobile && (
-              <>
-                <div className='card shadow-sm mb-2 p-3 max-w-840'>
-                  <div className='m-card-body'>
-                    <Form id='Info'>
-                      <Row>
-                        <Col>
+          {/* START OF MOBILE VIEW */}
+          {isMobile && (
+            <>
+              <div className='card shadow-sm mb-2 p-3 max-w-840'>
+                <div className='m-card-body'>
+                  <Form id='Info'>
+                    <Row>
+                      <Col>
+                        <Button
+                          type='button'
+                          className='btn close'
+                          data-dismiss='modal'
+                          aria-label='Close'
+                        >
+                          <span
+                            aria-hidden='true'
+                            style={{
+                              color: '#B1ADB2',
+                            }}
+                          >
+                            &times;
+                          </span>
+                        </Button>
+                        <Form.Group>
+                          <Form.Label>Full Name</Form.Label>
+                          <Form.Control
+                            className='form-control'
+                            type='name'
+                            name='fullName'
+                            value={fullName || ''}
+                            {...noBorder}
+                            onChange={handleChange}
+                          />
+                          {!isEmpty(fullName) &&
+                            renderInlineError(errors.fullName)}
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>State</Form.Label>
+                          {isEditing && (
+                            <Form.Control
+                              className='form-control'
+                              as='select'
+                              value={state || ''}
+                              name='state'
+                              onChange={handleChange}
+                              placeholder='Select State'
+                              defaultValue='null'
+                              {...noBorder}
+                            >
+                              {[
+                                { abbreviation: '', name: 'Select State' },
+                                ...USA_STATES,
+                              ].map(({ name, abbreviation }) => (
+                                <option
+                                  value={abbreviation}
+                                  key={`${abbreviation}`}
+                                >
+                                  {name}
+                                </option>
+                              ))}
+                            </Form.Control>
+                          )}
+                          {!isEmpty(state) && renderInlineError(errors.state)}
+
+                          {!isEditing && (
+                            <Form.Control
+                              className='form-control'
+                              type='zip code'
+                              value={state}
+                              {...noBorder}
+                            />
+                          )}
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>Zip Code</Form.Label>
+                          <Form.Control
+                            className='form-control'
+                            onChange={(e) => {
+                              const re = /^[0-9\b]+$/;
+                              if (
+                                e.target.value === '' ||
+                                re.test(e.target.value)
+                              ) {
+                                handleChange(e);
+                              }
+                            }}
+                            name='zipCode'
+                            type='zip code'
+                            value={zipCode || ''}
+                            {...noBorder}
+                          />
+                          {!isEmpty(zipCode) &&
+                            renderInlineError(errors.zipCode)}
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>Address Line 1</Form.Label>
+                          <Form.Control
+                            className='form-control'
+                            type='name'
+                            name='line1'
+                            onChange={handleChange}
+                            value={line1 || ''}
+                            {...noBorder}
+                          />
+                          {!isEmpty(line1) && renderInlineError(errors.line1)}
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>Address Line 2</Form.Label>
+                          <Form.Control
+                            className='form-control'
+                            type='name'
+                            value={line2 || ''}
+                            name='line2'
+                            onChange={handleChange}
+                            {...noBorder}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>City</Form.Label>
+                          <Form.Control
+                            className='form-control'
+                            type='city'
+                            name='city'
+                            value={city || ''}
+                            onChange={handleChange}
+                            {...noBorder}
+                          />
+                          {!isEmpty(city) && renderInlineError(errors.city)}
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>Phone</Form.Label>
+                          <Form.Control
+                            className='form-control'
+                            type='phone number'
+                            onChange={(e) => {
+                              const re = /^[0-9\b]+$/;
+                              if (
+                                e.target.value === '' ||
+                                re.test(e.target.value)
+                              ) {
+                                handleChange(e);
+                              }
+                            }}
+                            value={formatPhoneNumber(phoneNumber) || ''}
+                            name='phoneNumber'
+                            maxLength={13}
+                            {...noBorder}
+                          />
+                          {!isEmpty(phoneNumber) &&
+                            renderInlineError(errors.phoneNumber)}
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className='add-pick-up'>
+                        <button
+                          className='btn-instructions'
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setModalShow(true);
+                          }}
+                        >
+                          <h4 className='text-instructions'>
+                            Add pick-up instructions
+                          </h4>
+                        </button>
+                      </Col>
+
+                      <Col className='m-btn-col'>
+                        {isEditing && (
                           <Button
-                            type='button'
-                            className='btn close'
-                            data-dismiss='modal'
-                            aria-label='Close'
+                            className='m-btn-done'
+                            type='submit'
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setIsEditing(false);
+                              updateAddress();
+                            }}
                           >
-                            <span
-                              aria-hidden='true'
-                              style={{
-                                color: '#B1ADB2',
-                              }}
-                            >
-                              &times;
-                            </span>
+                            Done
                           </Button>
-                          <Form.Group>
-                            <Form.Label>Full Name</Form.Label>
-                            <Form.Control
-                              className='form-control'
-                              type='name'
-                              name='fullName'
-                              value={fullName || ''}
-                              {...noBorder}
-                              onChange={handleChange}
-                            />
-                            {!isEmpty(fullName) &&
-                              renderInlineError(errors.fullName)}
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col>
-                          <Form.Group>
-                            <Form.Label>State</Form.Label>
-                            {isEditing && (
-                              <Form.Control
-                                className='form-control'
-                                as='select'
-                                value={state || ''}
-                                name='state'
-                                onChange={handleChange}
-                                placeholder='Select State'
-                                defaultValue='null'
-                                {...noBorder}
-                              >
-                                {[
-                                  { abbreviation: '', name: 'Select State' },
-                                  ...USA_STATES,
-                                ].map(({ name, abbreviation }) => (
-                                  <option
-                                    value={abbreviation}
-                                    key={`${abbreviation}`}
-                                  >
-                                    {name}
-                                  </option>
-                                ))}
-                              </Form.Control>
-                            )}
-                            {!isEmpty(state) && renderInlineError(errors.state)}
-
-                            {!isEditing && (
-                              <Form.Control
-                                className='form-control'
-                                type='zip code'
-                                value={state}
-                                {...noBorder}
-                              />
-                            )}
-                          </Form.Group>
-                        </Col>
-                        <Col>
-                          <Form.Group>
-                            <Form.Label>Zip Code</Form.Label>
-                            <Form.Control
-                              className='form-control'
-                              onChange={(e) => {
-                                const re = /^[0-9\b]+$/;
-                                if (
-                                  e.target.value === '' ||
-                                  re.test(e.target.value)
-                                ) {
-                                  handleChange(e);
-                                }
-                              }}
-                              name='zipCode'
-                              type='zip code'
-                              value={zipCode || ''}
-                              {...noBorder}
-                            />
-                            {!isEmpty(zipCode) &&
-                              renderInlineError(errors.zipCode)}
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col>
-                          <Form.Group>
-                            <Form.Label>Address Line 1</Form.Label>
-                            <Form.Control
-                              className='form-control'
-                              type='name'
-                              name='line1'
-                              onChange={handleChange}
-                              value={line1 || ''}
-                              {...noBorder}
-                            />
-                            {!isEmpty(line1) && renderInlineError(errors.line1)}
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col>
-                          <Form.Group>
-                            <Form.Label>Address Line 2</Form.Label>
-                            <Form.Control
-                              className='form-control'
-                              type='name'
-                              value={line2 || ''}
-                              name='line2'
-                              onChange={handleChange}
-                              {...noBorder}
-                            />
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col>
-                          <Form.Group>
-                            <Form.Label>City</Form.Label>
-                            <Form.Control
-                              className='form-control'
-                              type='city'
-                              name='city'
-                              value={city || ''}
-                              onChange={handleChange}
-                              {...noBorder}
-                            />
-                            {!isEmpty(city) && renderInlineError(errors.city)}
-                          </Form.Group>
-                        </Col>
-                        <Col>
-                          <Form.Group>
-                            <Form.Label>Phone</Form.Label>
-                            <Form.Control
-                              className='form-control'
-                              type='phone number'
-                              onChange={(e) => {
-                                const re = /^[0-9\b]+$/;
-                                if (
-                                  e.target.value === '' ||
-                                  re.test(e.target.value)
-                                ) {
-                                  handleChange(e);
-                                }
-                              }}
-                              value={formatPhoneNumber(phoneNumber) || ''}
-                              name='phoneNumber'
-                              maxLength={13}
-                              {...noBorder}
-                            />
-                            {!isEmpty(phoneNumber) &&
-                              renderInlineError(errors.phoneNumber)}
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col className='add-pick-up'>
-                          <button
-                            className='btn-instructions'
+                        )}
+                        {!isEditing && (
+                          <Button
+                            className='m-btn-edit'
+                            type='submit'
                             onClick={(e) => {
                               e.preventDefault();
-                              setModalShow(true);
+                              setIsEditing(true);
                             }}
                           >
-                            <h4 className='text-instructions'>
-                              Add pick-up instructions
-                            </h4>
-                          </button>
-                        </Col>
-
-                        <Col className='m-btn-col'>
-                          {isEditing && (
-                            <Button
-                              className='m-btn-done'
-                              type='submit'
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setIsEditing(false);
-                                updateAddress();
-                              }}
-                            >
-                              Done
-                            </Button>
-                          )}
-                          {!isEditing && (
-                            <Button
-                              className='m-btn-edit'
-                              type='submit'
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setIsEditing(true);
-                              }}
-                            >
-                              {!isSubmitting ? (
-                                'Edit'
-                              ) : (
-                                <Spinner
-                                  animation='border'
-                                  size='sm'
-                                  className='spinner'
-                                />
-                              )}
-                            </Button>
-                          )}
-                        </Col>
-                      </Row>
-                    </Form>
-                  </div>
-                </div>
-              </>
-            )}
-            {/* END OF MOBILE VIEW */}
-
-            {!isMobile && (
-              <>
-                <div className='card shadow-sm p-3 max-w-840 mt-4 ml-3'>
-                  <div className='card-body'>
-                    <Form id='Address'>
-                      <Row>
-                        <Col>
-                          <Form.Group>
-                            <Form.Label>Full Name</Form.Label>
-                            <Form.Control
-                              className='form-control-lg'
-                              type='name'
-                              name='fullName'
-                              value={fullName || ''}
-                              {...noBorder}
-                              onChange={handleChange}
-                            />
-                            {!isEmpty(fullName) &&
-                              renderInlineError(errors.fullName)}
-                          </Form.Group>
-                        </Col>
-                        <Col>
-                          <Form.Group>
-                            <Form.Label>State</Form.Label>
-                            {isEditing && (
-                              <Form.Control
-                                className='form-control-md'
-                                as='select'
-                                value={state || ''}
-                                name='state'
-                                onChange={handleChange}
-                                placeholder='Select State'
-                                defaultValue='null'
-                                {...noBorder}
-                              >
-                                {[
-                                  { abbreviation: '', name: 'Select State' },
-                                  ...USA_STATES,
-                                ].map(({ name, abbreviation }) => (
-                                  <option
-                                    value={abbreviation}
-                                    key={`${abbreviation}`}
-                                  >
-                                    {name}
-                                  </option>
-                                ))}
-                              </Form.Control>
-                            )}
-                            {!isEmpty(state) && renderInlineError(errors.state)}
-
-                            {!isEditing && (
-                              <Form.Control
-                                className='form-control-sm'
-                                type='zip code'
-                                value={state}
-                                {...noBorder}
+                            {!isSubmitting ? (
+                              'Edit'
+                            ) : (
+                              <Spinner
+                                animation='border'
+                                size='sm'
+                                className='spinner'
                               />
                             )}
-                          </Form.Group>
-                        </Col>
-                        <Col>
-                          <Form.Group>
-                            <Form.Label>Zip Code</Form.Label>
+                          </Button>
+                        )}
+                      </Col>
+                    </Row>
+                  </Form>
+                </div>
+              </div>
+            </>
+          )}
+          {/* END OF MOBILE VIEW */}
+
+          {!isMobile && (
+            <>
+              <div className='card shadow-sm p-3 max-w-840 mt-4 ml-3'>
+                <div className='card-body'>
+                  <Form id='Address'>
+                    <Row>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>Full Name</Form.Label>
+                          <Form.Control
+                            className='form-control-lg'
+                            type='name'
+                            name='fullName'
+                            value={fullName || ''}
+                            {...noBorder}
+                            onChange={handleChange}
+                          />
+                          {!isEmpty(fullName) &&
+                            renderInlineError(errors.fullName)}
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>State</Form.Label>
+                          {isEditing && (
                             <Form.Control
                               className='form-control-md'
-                              onChange={(e) => {
-                                const re = /^[0-9\b]+$/;
-                                if (
-                                  e.target.value === '' ||
-                                  re.test(e.target.value)
-                                ) {
-                                  handleChange(e);
-                                }
-                              }}
-                              name='zipCode'
+                              as='select'
+                              value={state || ''}
+                              name='state'
+                              onChange={handleChange}
+                              placeholder='Select State'
+                              defaultValue='null'
+                              {...noBorder}
+                            >
+                              {[
+                                { abbreviation: '', name: 'Select State' },
+                                ...USA_STATES,
+                              ].map(({ name, abbreviation }) => (
+                                <option
+                                  value={abbreviation}
+                                  key={`${abbreviation}`}
+                                >
+                                  {name}
+                                </option>
+                              ))}
+                            </Form.Control>
+                          )}
+                          {!isEmpty(state) && renderInlineError(errors.state)}
+
+                          {!isEditing && (
+                            <Form.Control
+                              className='form-control-sm'
                               type='zip code'
-                              value={zipCode || ''}
+                              value={state}
                               {...noBorder}
                             />
-                            {!isEmpty(zipCode) &&
-                              renderInlineError(errors.zipCode)}
-                          </Form.Group>
-                        </Col>
-                      </Row>
+                          )}
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>Zip Code</Form.Label>
+                          <Form.Control
+                            className='form-control-md'
+                            onChange={(e) => {
+                              const re = /^[0-9\b]+$/;
+                              if (
+                                e.target.value === '' ||
+                                re.test(e.target.value)
+                              ) {
+                                handleChange(e);
+                              }
+                            }}
+                            name='zipCode'
+                            type='zip code'
+                            value={zipCode || ''}
+                            {...noBorder}
+                          />
+                          {!isEmpty(zipCode) &&
+                            renderInlineError(errors.zipCode)}
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
-                      <Row>
-                        <Col>
-                          <Form.Group>
-                            <Form.Label>Address Line 1</Form.Label>
-                            <Form.Control
-                              className='form-control-lg'
-                              type='name'
-                              name='line1'
-                              onChange={handleChange}
-                              value={line1 || ''}
-                              {...noBorder}
-                            />
-                            {!isEmpty(line1) && renderInlineError(errors.line1)}
-                          </Form.Group>
-                        </Col>
-                        <Col>
-                          <Form.Group>
-                            <Form.Label>City</Form.Label>
-                            <Form.Control
-                              className='form-control-md'
-                              type='city'
-                              name='city'
-                              value={city || ''}
-                              onChange={handleChange}
-                              {...noBorder}
-                            />
-                            {!isEmpty(city) && renderInlineError(errors.city)}
-                          </Form.Group>
-                        </Col>
-                        <Col>
-                          <Form.Group>
-                            <Form.Label>Phone</Form.Label>
-                            <Form.Control
-                              className='form-control-md'
-                              type='phone number'
-                              onChange={(e) => {
-                                const re = /^[0-9\b]+$/;
-                                if (
-                                  e.target.value === '' ||
-                                  re.test(e.target.value)
-                                ) {
-                                  handleChange(e);
-                                }
-                              }}
-                              value={formatPhoneNumber(phoneNumber) || ''}
-                              name='phoneNumber'
-                              maxLength={13}
-                              {...noBorder}
-                            />
-                            {!isEmpty(phoneNumber) &&
-                              renderInlineError(errors.phoneNumber)}
-                          </Form.Group>
-                        </Col>
-                      </Row>
+                    <Row>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>Address Line 1</Form.Label>
+                          <Form.Control
+                            className='form-control-lg'
+                            type='name'
+                            name='line1'
+                            onChange={handleChange}
+                            value={line1 || ''}
+                            {...noBorder}
+                          />
+                          {!isEmpty(line1) && renderInlineError(errors.line1)}
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>City</Form.Label>
+                          <Form.Control
+                            className='form-control-md'
+                            type='city'
+                            name='city'
+                            value={city || ''}
+                            onChange={handleChange}
+                            {...noBorder}
+                          />
+                          {!isEmpty(city) && renderInlineError(errors.city)}
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>Phone</Form.Label>
+                          <Form.Control
+                            className='form-control-md'
+                            type='phone number'
+                            onChange={(e) => {
+                              const re = /^[0-9\b]+$/;
+                              if (
+                                e.target.value === '' ||
+                                re.test(e.target.value)
+                              ) {
+                                handleChange(e);
+                              }
+                            }}
+                            value={formatPhoneNumber(phoneNumber) || ''}
+                            name='phoneNumber'
+                            maxLength={13}
+                            {...noBorder}
+                          />
+                          {!isEmpty(phoneNumber) &&
+                            renderInlineError(errors.phoneNumber)}
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
-                      <Row>
-                        <Col xs={6}>
-                          <Form.Group>
-                            <Form.Label>Address Line 2</Form.Label>
-                            <Form.Control
-                              className='form-control-lg'
-                              type='name'
-                              value={line2 || ''}
-                              name='line2'
-                              onChange={handleChange}
-                              {...noBorder}
-                            />
-                          </Form.Group>
-                        </Col>
+                    <Row>
+                      <Col xs={6}>
+                        <Form.Group>
+                          <Form.Label>Address Line 2</Form.Label>
+                          <Form.Control
+                            className='form-control-lg'
+                            type='name'
+                            value={line2 || ''}
+                            name='line2'
+                            onChange={handleChange}
+                            {...noBorder}
+                          />
+                        </Form.Group>
+                      </Col>
 
-                        <Col className='add-pick-up'>
-                          <button
-                            className='btn-instructions'
+                      <Col className='add-pick-up'>
+                        <button
+                          className='btn-instructions'
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setModalShow(true);
+                          }}
+                        >
+                          <h4 className='text-instructions'>
+                            Add pick-up instructions
+                          </h4>
+                        </button>
+                      </Col>
+
+                      <Col className='btn-container'>
+                        {isEditing && (
+                          <Button
+                            className='btn-done'
+                            type='submit'
                             onClick={(e) => {
                               e.preventDefault();
-                              setModalShow(true);
+                              setIsEditing(false);
+                              updateAddress();
                             }}
                           >
-                            <h4 className='text-instructions'>
-                              Add pick-up instructions
-                            </h4>
-                          </button>
-                        </Col>
-
-                        <Col className='btn-container'>
-                          {isEditing && (
-                            <Button
-                              className='btn-done'
-                              type='submit'
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setIsEditing(false);
-                                updateAddress();
-                              }}
-                            >
-                              Done
-                            </Button>
-                          )}
-                          {!isEditing && (
-                            <Button
-                              className='btn-done'
-                              type='submit'
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setIsEditing(true);
-                              }}
-                            >
-                              {!isSubmitting ? (
-                                'Edit'
-                              ) : (
-                                <Spinner
-                                  animation='border'
-                                  size='sm'
-                                  className='spinner'
-                                />
-                              )}
-                            </Button>
-                          )}
-                        </Col>
-                      </Row>
-                    </Form>
-                  </div>
+                            Done
+                          </Button>
+                        )}
+                        {!isEditing && (
+                          <Button
+                            className='btn-done'
+                            type='submit'
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setIsEditing(true);
+                            }}
+                          >
+                            {!isSubmitting ? (
+                              'Edit'
+                            ) : (
+                              <Spinner
+                                animation='border'
+                                size='sm'
+                                className='spinner'
+                              />
+                            )}
+                          </Button>
+                        )}
+                      </Col>
+                    </Row>
+                  </Form>
                 </div>
-              </>
-            )}
-          </Collapsible>
-        </div>
+              </div>
+            </>
+          )}
+        </Collapsible>
         <AddPickupModal show={modalShow} onHide={() => setModalShow(false)} />
       </div>
     </>
