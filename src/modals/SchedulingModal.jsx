@@ -73,13 +73,15 @@ export default function SchedulingModal(props) {
                       {timeSlot.text}
                     </div>
                     <div
-                      className='row availableTimeSlot sofia-pro'
+                      className={`row availableTimeSlot sofia-pro ${
+                        isSelected ? 'selected' : ''
+                      }`}
                       style={{
                         fontSize: 13,
                         opacity: 0.6,
                       }}
                     >
-                      Available Time Slots: 3
+                      Slots available: 3
                     </div>
                   </div>
                 </div>
@@ -172,31 +174,6 @@ export default function SchedulingModal(props) {
             ? renderSelectTimeSlot()
             : renderEmptiness()}
         </div>
-        {/* <div className='row'>
-          {!isMobile && (
-            <div className='col d-flex justify-content-center date-column'>
-              <DatePicker
-                setFieldValue={setFieldValue}
-                date={pickUpDateValues.date}
-              />
-            </div>
-          )}
-          {isMobile && pickUpDateValues.date === null && (
-            <div className='col d-flex justify-content-center date-column'>
-              <DatePicker
-                setFieldValue={setFieldValue}
-                date={pickUpDateValues.date}
-              />
-            </div>
-          )}
-          {pickUpDateValues.date !== null &&
-            !isMobile &&
-            renderSelectTimeSlot()}
-          {pickUpDateValues.date !== null &&
-            isMobile &&
-            renderSelectTimeSlotMobile()}
-          {renderAvailableDays()}
-        </div> */}
       </Modal.Body>
       <Modal.Footer>
         {pickUpDateValues.date !== null && pickUpDateValues.time !== null && (
