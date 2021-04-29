@@ -321,6 +321,19 @@
 
   // SCHEDULED RETURN SECTION
   #ScheduledReturn {
+    .Collapsible__contentOuter {
+      @media (max-width: 540px) {
+        margin-right: -16px;
+        margin-left: -16px;
+      }
+    }
+
+    .card {
+      @media (max-width: 540px) {
+        border-radius: 0px !important;
+      }
+    }
+
     .hr-line {
       width: 100%;
       margin-right: 0px;
