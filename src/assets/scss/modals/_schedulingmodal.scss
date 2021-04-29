@@ -18,6 +18,11 @@
     }
   }
 
+
+  .days-container::-webkit-scrollbar {
+    visibility: hidden;
+  }
+
   .days-container {
     padding-left: 1em;
     padding-right: 1em;
@@ -25,6 +30,21 @@
     justify-content: space-between;
     width: 100%;
     margin-left: 0;
+
+    .row {
+      display: flex;
+      justify-content: center;
+    }
+
+    @media (max-width: 991px) {
+      display: inline-block;
+      max-height: 120px;
+      overflow-y: hidden;
+      overflow-x: scroll;
+      white-space: nowrap;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
 
     // Initial state
     .day-container {
@@ -37,10 +57,10 @@
       max-width: 145px;
       min-height: 64px;
 
-      .row {
-        display: flex;
-        justify-content: center;
+      @media (max-width: 991px) {
+        display: inline-block;
       }
+
 
       .day {
         font-family: 'Sofia Pro';
@@ -70,6 +90,11 @@
       padding: 1em;
       max-width: 145px;
       min-height: 64px;
+
+      @media (max-width: 991px) {
+        display: inline-block;
+      }
+
 
       .row {
         display: flex;
