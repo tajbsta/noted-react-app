@@ -117,6 +117,7 @@ function ProductCard({
         );
 
   const isDonate = get(item, 'category', '') === 'DONATE';
+  const isLastCall = get(item, 'category', '') === 'LAST_CALL';
 
   return (
     <div id='productCard'>
@@ -249,7 +250,7 @@ function ProductCard({
                             <div
                               className='sofia-pro mobile-limit'
                               style={{
-                                color: '#8B888C',
+                                color: isLastCall ? 'red' : '#8B888C',
                               }}
                             >
                               {daysLeft} days left
@@ -401,7 +402,7 @@ function ProductCard({
                   <div
                     className='col-sm-6 sofia-pro return-time-left'
                     style={{
-                      color: '#8B888C',
+                      color: isLastCall ? 'red' : '#8B888C',
                     }}
                   >
                     {daysLeft} days left
