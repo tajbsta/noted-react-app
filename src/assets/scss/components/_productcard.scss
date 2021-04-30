@@ -270,6 +270,20 @@
     margin-left: 34px;
   }
 
+  .tablet-brand-info-container {
+    //<540px && >767px
+    margin: 0px;
+
+    .m-brand-img {
+      border: 1px solid #f0f0f0;
+      border-radius: 50%;
+      height: 31px;
+      width: 31px;
+      object-fit: contain;
+      background-color: #fff;
+    }
+  }
+
   .m-brand-info-container {
     margin-top: 25px;
     margin-left: 53px;

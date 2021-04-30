@@ -1,6 +1,12 @@
 #Profile {
   padding-bottom: 163px;
 
+  .container {
+    @media (max-width: 767px) {
+      max-width: 720px;
+    }
+  }
+
   h1,
   h2,
   h3,

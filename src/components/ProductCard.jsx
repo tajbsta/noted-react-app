@@ -27,6 +27,7 @@ function ProductCard({
   confirmed = false,
 }) {
   const [isHover, setIsHover] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileSmaller, setIsMobileSmaller] = useState(false); // <320px
   const [modalPolicyShow, setModalPolicyShow] = useState(false);
@@ -57,6 +58,17 @@ function ProductCard({
     };
   });
 
+  useEffect(() => {
+    function handleResize() {
+      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 767);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
   const handleSelection = () => {
     toggleSelected(item);
   };
@@ -72,7 +84,16 @@ function ProductCard({
   const formatPrice = item.price.toFixed(2);
 
   // Truncate name if longer than 21 characters
-  const truncateProductName = (str, num = 21) => {
+  const truncateProductNameForTablet = (str, num = 41) => {
+    if (str && str.length > num) {
+      return str.slice(0, num) + '...';
+    } else {
+      return str;
+    }
+  };
+
+  // Truncate name if longer than 21 characters
+  const truncateProductNameForMobile = (str, num = 21) => {
     if (str && str.length > num) {
       return str.slice(0, num) + '...';
     } else {
@@ -97,6 +118,14 @@ function ProductCard({
       return str;
     }
   };
+
+  const mobileFormatProductName = isTablet
+    ? truncateProductNameForTablet(formattedProductName)
+    : truncateProductNameForMobile(formattedProductName);
+
+  const mobileFormatBrand = isTablet
+    ? item.vendor_data.name
+    : truncateBrand(item.vendor_data.name);
 
   const showHoverContent = isHover || selected;
 
@@ -227,7 +256,7 @@ function ProductCard({
                       className='mb-0 sofia-pro mb-1 distributor-name'
                       style={{ marginBottom: '0px' }}
                     >
-                      {truncateBrand(item.vendor_data.name)}
+                      {mobileFormatBrand}
                     </h4>
                     {isMobileSmaller && (
                       <h5 className='sofia-pro mb-2 product-name'>
@@ -240,7 +269,7 @@ function ProductCard({
 
                     {!isMobileSmaller && (
                       <h5 className='sofia-pro mb-2 product-name'>
-                        &nbsp;{truncateProductName(formattedProductName)}
+                        &nbsp;{mobileFormatProductName}
                       </h5>
                     )}
                   </div>
@@ -334,6 +363,27 @@ function ProductCard({
                 )}
               </div>
             </div>
+
+            {!selected && isTablet && (
+              <>
+                <div
+                  className='tablet-brand-info-container'
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <div className='m-brand-logo-cont'>
+                    <img
+                      src={item.vendor_data.thumbnail || ProductPlaceholder}
+                      onError={(e) => {
+                        e.currentTarget.src = ProductPlaceholder;
+                      }}
+                      alt=''
+                      className='m-brand-img'
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
             {isMobile && selected && (
               <>
                 <Container className='m-brand-info-container'>

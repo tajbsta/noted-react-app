@@ -3,6 +3,12 @@
 }
 
 #DashboardPage {
+  .container {
+    @media (max-width: 767px) {
+      max-width: 720px;
+    }
+  }
+
   .justify-center {
     display: flex;
     justify-content: center;

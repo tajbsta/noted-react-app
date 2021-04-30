@@ -50,6 +50,7 @@ function RightCard({ userId }) {
 
   const calculateCurrentCartPricing = async (currentItems) => {
     try {
+      // if (userId) {
       setLoading(true);
 
       const cartItems = [...currentItems];
@@ -64,6 +65,7 @@ function RightCard({ userId }) {
         pickupPrice: data.pickupPrice,
       });
       setLoading(false);
+      // }
     } catch (error) {
       if (!axios.isCancel(error)) {
         setLoading(false);
