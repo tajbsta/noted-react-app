@@ -134,19 +134,6 @@ function DashboardPage() {
         </div>
         <div className='row ipad-row'>
           <div className={`mt-4 w-840 bottom ${isTablet ? 'col' : 'col-sm-9'}`}>
-            {' '}
-            {/* {loading && (
-              <>
-                <div id='loader-con'>
-                  <h3 className='sofia-pro text-16'>
-                    Your online purchases - Last 90 Days
-                  </h3>
-                  <div className='card shadow-sm scanned-item-card mb-2 p-5 spinner-container'>
-                    <Spinner className='dashboard-spinner' animation='border' />
-                  </div>
-                </div>
-              </>
-            )} */}
             {(loading || showScanning) && (
               <>
                 <h3 className={`sofia-pro text-16 ${isMobile ? 'ml-3' : ''}`}>

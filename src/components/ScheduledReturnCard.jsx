@@ -62,7 +62,7 @@ function ScheduledReturnCard({
   };
 
   // Truncate name if longer than 21 characters
-  const truncateProductName = (str, num = 21) => {
+  const truncateProductNameForMobile = (str, num = 21) => {
     if (str && str.length > num) {
       return str.slice(0, num) + '...';
     } else {
@@ -152,7 +152,7 @@ function ScheduledReturnCard({
 
                     {!isMobileSmaller && (
                       <h5 className='sofia-pro mb-2 product-name'>
-                        &nbsp;{truncateProductName(itemName)}
+                        &nbsp;{truncateProductNameForMobile(itemName)}
                       </h5>
                     )}
                   </div>
