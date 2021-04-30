@@ -13,11 +13,23 @@ export default function SettingsPage() {
   const [user, setUser] = useState({});
   const [currentTab, setCurrenTab] = useState('');
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
 
   useEffect(() => {
     scrollToTop();
     function handleResize() {
       setIsMobile(window.innerWidth <= 991);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 990);
     }
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -128,7 +140,7 @@ export default function SettingsPage() {
         <div className='row'>
           {!isMobile && renderSettingsNavigation()}
           {/* RIGHT CARD */}
-          <div className='col-sm-9'>
+          <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
             <BasicInfo user={user} />
             <EmailAddresses user={user} />
             <ChangePass />
