@@ -83,7 +83,7 @@ function ProductCard({
   const formattedProductName = toTitleCase(item.name);
   const formatPrice = item.price.toFixed(2);
 
-  // Truncate name if longer than 21 characters
+  // Truncate name if longer than 41 characters
   const truncateProductNameForTablet = (str, num = 41) => {
     if (str && str.length > num) {
       return str.slice(0, num) + '...';
