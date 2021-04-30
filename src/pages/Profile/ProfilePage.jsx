@@ -12,11 +12,23 @@ export default function ProfilePage() {
   const [showEditPayment] = useState(true);
   const [user, setUser] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
 
   useEffect(() => {
     scrollToTop();
     function handleResize() {
       setIsMobile(window.innerWidth <= 1199);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 990);
     }
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -33,31 +45,33 @@ export default function ProfilePage() {
   }, []);
 
   return (
-    <div id='Profile'>
-      <div className='container mt-6'>
-        {!user && 'Loading...'}
-        {user && (
-          <div className='row'>
-            <div className={`col-sm-3 ${!isMobile ? '' : 'm-no-col'}`}>
-              {/*LEFT CARD*/}
-              <div className={`col ${!isMobile ? '' : 'm-no-col'}`}>
-                <UserInfo user={user} />
-              </div>
-            </div>
-            <div className={`col-sm-9 ${!isMobile ? '' : 'mt-4'}`}>
-              <Address user={user} />
-              <hr />
-              {showEditPayment && <Payment />}
-              <hr />
-              <ScheduledReturn user={user} />
-              <hr />
-              <ProductsInReview />
-              <hr />
-              <ReturnHistory />
+    <div id='Profile' className='container mt-6'>
+      {!user && 'Loading...'}
+      {user && (
+        <div className='row'>
+          <div className={isTablet ? 'col-sm-12' : 'col-sm-3'}>
+            {/*LEFT CARD*/}
+            <div className={`col ${!isMobile ? '' : 'm-no-col'}`}>
+              <UserInfo user={user} />
             </div>
           </div>
-        )}
-      </div>
+          <div
+            className={`${isTablet ? 'col-sm-12' : 'col-sm-9'} ${
+              isMobile ? 'mt-4' : ''
+            }`}
+          >
+            <Address user={user} />
+            <hr />
+            {showEditPayment && <Payment />}
+            <hr />
+            <ScheduledReturn user={user} />
+            <hr />
+            <ProductsInReview />
+            <hr />
+            <ReturnHistory />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

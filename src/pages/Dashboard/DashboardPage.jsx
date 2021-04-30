@@ -121,6 +121,7 @@ function DashboardPage() {
       window.removeEventListener('resize', handleResize);
     };
   });
+
   return (
     <div id='DashboardPage'>
       <div className='container mt-6 main-mobile-dashboard'>
