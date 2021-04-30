@@ -152,10 +152,7 @@
       line-height: 24px;
       color: #2e1d3a;
       margin-top: 16px;
-
-      @media (min-width: 768px) and (max-width: 1023px) {
-        width: 90%;
-      }
+      width: -webkit-fill-available;
     }
 
     .date {
@@ -165,6 +162,7 @@
       color: #0e0018 !important;
       mix-blend-mode: normal;
       opacity: 0.6;
+      width: -webkit-fill-available;
     }
 
     .line-break-user {
@@ -244,10 +242,10 @@
       text-align: initial;
     }
 
-    .m-btn-container {
-      padding-right: 16px;
-      padding-left: 16px;
-    }
+    // .m-btn-container {
+    //   padding-right: 16px;
+    //   padding-left: 16px;
+    // }
   }
 
   #Address {
