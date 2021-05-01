@@ -23,8 +23,8 @@ function ProductDetails({ item, isHovering = false, toggleSelected }) {
   const formattedProductName = toTitleCase(item.name);
   const formatPrice = item.price.toFixed(2);
 
-  // Truncate name if longer than 50 characters
-  const truncateProductNameInDesktop = (str, num = 50) => {
+  // Truncate name if longer than 45 characters
+  const truncateProductNameInDesktop = (str, num = 45) => {
     if (str && str.length > num) {
       return str.slice(0, num) + '...';
     } else {
