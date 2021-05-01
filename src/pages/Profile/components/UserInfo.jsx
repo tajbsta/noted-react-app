@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Card, Container, Col, Row, Spinner } from 'react-bootstrap';
+import { Check, AlertCircle } from 'react-feather';
 import ProfileIcon from '../../../assets/icons/Profile.svg';
 import moment from 'moment';
 import { Upload } from 'react-feather';
@@ -61,6 +62,8 @@ export default function UserInfo({ user: userData = {} }) {
       dispatch(updateProfilePicture(await toBase64(file)));
 
       await uploadProfilePic(user.sub, user.profile, file);
+      setLoading(false);
+
       setError(false);
       setSuccess(true);
     } catch (err) {
@@ -78,6 +81,7 @@ export default function UserInfo({ user: userData = {} }) {
           src={URL.createObjectURL(image)}
           alt={image.name}
           className='avatar-placeholder'
+          style={{ opacity: loading ? '0.7' : '1' }}
         />
       );
     }
@@ -110,6 +114,36 @@ export default function UserInfo({ user: userData = {} }) {
           {!isMobile && (
             <>
               <div className='img-container'>
+                {success && (
+                  <>
+                    <div className='profile-alert-icon'>
+                      <Check />
+                    </div>
+                  </>
+                )}
+                {error && (
+                  <>
+                    <div
+                      className='profile-alert-icon'
+                      style={{ color: 'red' }}
+                    >
+                      <AlertCircle />
+                    </div>
+                  </>
+                )}
+
+                {loading && (
+                  <Spinner
+                    animation='border'
+                    size='md'
+                    className='spinner btn-spinner'
+                    style={{
+                      color: '#570097',
+                      zIndex: 1,
+                      position: 'absolute',
+                    }}
+                  />
+                )}
                 {user.profile && !file && (
                   <img
                     src={user.profile}
@@ -151,6 +185,16 @@ export default function UserInfo({ user: userData = {} }) {
                   </i>
                 </div>
               </div>
+              {/* {error && (
+                <div className='alert alert-danger' role='alert'>
+                  <div>
+                    <h4 className='text-center text-alert'>
+                      File is too large! The maximum size for file upload is 5
+                      MB.
+                    </h4>
+                  </div>
+                </div>
+              )} */}
               <div>
                 <h2 className='card-title name'>{user.name || user.email}</h2>
                 <p className='small text-muted mb-3 date'>
@@ -166,6 +210,18 @@ export default function UserInfo({ user: userData = {} }) {
               <Row>
                 <Col xs={4}>
                   <div className='img-container'>
+                    {loading && (
+                      <Spinner
+                        animation='border'
+                        size='md'
+                        className='spinner btn-spinner'
+                        style={{
+                          color: '#570097',
+                          zIndex: 1,
+                          position: 'absolute',
+                        }}
+                      />
+                    )}
                     {!isEmpty(user.profile) && (
                       <img
                         src={get(user, 'profile', '')}

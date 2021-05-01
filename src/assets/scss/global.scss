@@ -52,6 +52,24 @@
   line-height: 16px;
 }
 
+// PROFILE IMAGE
+.profile-alert-icon {
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0.5;
+  z-index: 1;
+  color: #00d97e;
+  position: absolute;
+  transition: all 0.3s ease;
+  transform: scale(1.35);
+
+  svg {
+    width: 72px;
+    height: 72px;
+    padding: 15px;
+  }
+}
+
 .btn-green {
   background-color: #6aaf6a;
   border-color: #6aaf6a;
