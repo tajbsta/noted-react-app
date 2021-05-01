@@ -142,10 +142,10 @@ function ProductCard({
   const daysLeft =
     get(item, 'category', '') === 'DONATE'
       ? 'Donate'
-      : moment(get(item, 'return_not_eligible_date', '')).diff(
-          moment().startOf('day'),
-          'days'
-        );
+      : moment
+          .utc(get(item, 'return_not_eligible_date', ''))
+          .local()
+          .diff(moment().subtract(2, 'd').startOf('day'), 'days');
 
   const isDonate = get(item, 'category', '') === 'DONATE';
   const isLastCall = get(item, 'category', '') === 'LAST_CALL';

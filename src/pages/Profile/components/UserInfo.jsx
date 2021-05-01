@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Card, Container, Col, Row } from 'react-bootstrap';
+import { Card, Container, Col, Row, Spinner } from 'react-bootstrap';
 import ProfileIcon from '../../../assets/icons/Profile.svg';
 import moment from 'moment';
 import { Upload } from 'react-feather';
@@ -8,7 +8,7 @@ import { updateProfilePicture } from '../../../actions/runtime.action';
 import { get, isEmpty } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
 import { toBase64 } from '../../../utils/file';
-import { getUser } from '../../../utils/auth';
+import { getUser, uploadProfilePic } from '../../../utils/auth';
 
 export default function UserInfo({ user: userData = {} }) {
   const {
@@ -18,6 +18,8 @@ export default function UserInfo({ user: userData = {} }) {
   const [user, setUser] = useState({});
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 
   const { profileImage } = useSelector(({ auth: { profileImage } }) => ({
@@ -29,6 +31,7 @@ export default function UserInfo({ user: userData = {} }) {
   useEffect(() => {
     (async () => {
       const user = await getUser();
+      console.log(user);
       setUser(user);
     })();
   }, []);
@@ -39,18 +42,32 @@ export default function UserInfo({ user: userData = {} }) {
 
   // Handles file upload event and updates state
   const handleUpload = async (event) => {
-    // const file = event.target.files[0];
-    setFile(event.target.files[0]);
-    if (file && file.size > 5097152) {
-      alert('File is too large! The maximum size for file upload is 5 MB.');
-    }
-
     setLoading(true);
 
-    dispatch(updateProfilePicture(await toBase64(event.target.files[0])));
-    // Upload file to server (code goes under)
+    try {
+      setError(null);
+      setSuccess(null);
 
-    setLoading(false);
+      const file = event.target.files[0];
+
+      if (file && file.size > 5097152) {
+        throw new Error(
+          'File is too large! The maximum size for file upload is 5 MB.'
+        );
+      }
+
+      setFile(file);
+
+      dispatch(updateProfilePicture(await toBase64(file)));
+
+      await uploadProfilePic(user.sub, user.profile, file);
+      setError(false);
+      setSuccess(true);
+    } catch (err) {
+      setLoading(false);
+
+      setError(true);
+    }
   };
 
   // Display Image Component
@@ -93,7 +110,7 @@ export default function UserInfo({ user: userData = {} }) {
           {!isMobile && (
             <>
               <div className='img-container'>
-                {user.profile && (
+                {user.profile && !file && (
                   <img
                     src={user.profile}
                     className={`${
@@ -112,10 +129,7 @@ export default function UserInfo({ user: userData = {} }) {
                   />
                 )}
 
-                {file && isEmpty(profileImage) && <ImageThumb image={file} />}
-                {!isEmpty(profileImage) && (
-                  <ImageThumb base64URI={profileImage} />
-                )}
+                {file && <ImageThumb image={file} />}
 
                 <div className='upload-button'>
                   <i
@@ -132,6 +146,7 @@ export default function UserInfo({ user: userData = {} }) {
                       accept='.jpg, .jpeg, .png'
                       ref={hiddenFileInput}
                       onChange={handleUpload}
+                      disabled={loading}
                     />
                   </i>
                 </div>
