@@ -137,11 +137,7 @@
       width: 352px;
       margin-bottom: 0px;
 
-      @media (max-width: 991px) {
-        max-width: 352px;
-      }
-
-      @media (max-width: 375px) {
+      @media (max-width: 1199px) {
         width: auto;
       }
     }
