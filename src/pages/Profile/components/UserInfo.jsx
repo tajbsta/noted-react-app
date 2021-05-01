@@ -295,20 +295,17 @@ export default function UserInfo({ user: userData = {} }) {
             </div>
           </div>
         </div>
-        <Container
-          className={`d-flex justify-content-center ${
-            isMobile ? 'm-btn-container' : ''
-          }`}
-        >
-          <button className='btn'>
+        <div className='mt-4 button-container d-flex justify-content-center'>
+          <button className='btn btn-lg btn-account'>
             <a
+              style={{ color: '#570097' }}
+              className='btn-text'
               href={pathname === '/profile' ? '/settings' : '/profile'}
-              className='btn btn-lg btn-primary'
             >
               {pathname === '/profile' ? 'Account Settings' : 'Profile'}
             </a>
           </button>
-        </Container>
+        </div>
       </Card>
     </div>
   );
