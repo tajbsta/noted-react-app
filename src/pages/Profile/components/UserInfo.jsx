@@ -113,8 +113,27 @@ export default function UserInfo({ user: userData = {} }) {
         <div className='card-body text-center'>
           {!isMobile && (
             <>
+              {error && (
+                <div className='alert alert-danger mt-3' role='alert'>
+                  <div>
+                    <h4 className='text-center text-alert mb-0'>
+                      File is too large! The maximum size for file upload is 5
+                      MB.
+                    </h4>
+                  </div>
+                </div>
+              )}
+              {/* {success && (
+                <div className='alert alert-success mt-3' role='alert'>
+                  <div>
+                    <h4 className='text-center text-alert mb-0'>
+                      Upload Success!
+                    </h4>
+                  </div>
+                </div>
+              )} */}
               <div className='img-container'>
-                {success && (
+                {/* {success && (
                   <>
                     <div className='profile-alert-icon'>
                       <Check />
@@ -130,7 +149,7 @@ export default function UserInfo({ user: userData = {} }) {
                       <AlertCircle />
                     </div>
                   </>
-                )}
+                )} */}
 
                 {loading && (
                   <Spinner
@@ -185,16 +204,6 @@ export default function UserInfo({ user: userData = {} }) {
                   </i>
                 </div>
               </div>
-              {/* {error && (
-                <div className='alert alert-danger' role='alert'>
-                  <div>
-                    <h4 className='text-center text-alert'>
-                      File is too large! The maximum size for file upload is 5
-                      MB.
-                    </h4>
-                  </div>
-                </div>
-              )} */}
               <div>
                 <h2 className='card-title name'>{user.name || user.email}</h2>
                 <p className='small text-muted mb-3 date'>
@@ -207,6 +216,25 @@ export default function UserInfo({ user: userData = {} }) {
           {/* MOBILE VIEWS */}
           {isMobile && (
             <>
+              {error && (
+                <div className='alert alert-danger' role='alert'>
+                  <div>
+                    <h4 className='text-center text-alert mb-0'>
+                      File is too large! The maximum size for file upload is 5
+                      MB.
+                    </h4>
+                  </div>
+                </div>
+              )}
+              {success && (
+                <div className='alert alert-success' role='alert'>
+                  <div>
+                    <h4 className='text-center text-alert mb-0'>
+                      Upload Success!
+                    </h4>
+                  </div>
+                </div>
+              )}
               <Row>
                 <Col xs={4}>
                   <div className='img-container'>
