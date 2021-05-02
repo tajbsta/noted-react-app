@@ -9,7 +9,6 @@ import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../../models/formSchema';
 import { updateUserAttributes } from '../../../utils/auth';
 import { AlertCircle, CheckCircle } from 'react-feather';
-import { isEmpty } from 'lodash-es';
 
 export default function Address({ user }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -48,13 +47,15 @@ export default function Address({ user }) {
     validationSchema: pickUpAddressSchema,
   });
 
-  const renderInlineError = (errors) => (
-    <small className='form-text p-0 m-0 noted-red'>{errors}</small>
-  );
+  /**
+   * Handle focus
+   */
+
+  const [focused, setFocused] = useState({
+    ...Object.keys((key) => ({ [key]: false })),
+  });
 
   useEffect(() => {
-    // console.log({ user });
-
     if (user) {
       setFieldValue('fullName', user.name);
       setFieldValue('phoneNumber', user['custom:phone']);
@@ -67,17 +68,28 @@ export default function Address({ user }) {
   }, [user]);
 
   const {
-    fullName,
-    phoneNumber,
-    line1,
-    line2,
-    city,
-    state,
+    fullName = '',
+    phoneNumber = '',
+    line1 = '',
+    line2 = '',
+    city = '',
+    state = '',
     zipCode,
   } = addressFormValues;
 
+  const renderInlineValidationError = (fieldName) => {
+    const error = errors[fieldName];
+    return (
+      focused[fieldName] &&
+      error && <small className='form-text p-0 m-0 noted-red'>{error}</small>
+    );
+  };
+
+  const onFocus = (e) => {
+    setFocused({ ...focused, [e.target.name]: true });
+  };
+
   const updateAddress = async () => {
-    // console.log(addressFormValues);
     setError(false);
     setSuccess(false);
     setIsSubmitting(true);
@@ -131,6 +143,480 @@ export default function Address({ user }) {
       }
     : {};
 
+  const renderAddressMobileView = () => {
+    return (
+      <>
+        <div className='card shadow-sm mb-2 p-3 max-w-840'>
+          <div className='m-card-body'>
+            <Form id='Info'>
+              <Row>
+                <Col>
+                  <Button
+                    type='button'
+                    className='btn close'
+                    data-dismiss='modal'
+                    aria-label='Close'
+                  >
+                    <span
+                      aria-hidden='true'
+                      style={{
+                        color: '#B1ADB2',
+                      }}
+                    >
+                      &times;
+                    </span>
+                  </Button>
+                  <Form.Group>
+                    <Form.Label>Full Name</Form.Label>
+                    <Form.Control
+                      className='form-control'
+                      type='name'
+                      name='fullName'
+                      value={fullName || ''}
+                      {...noBorder}
+                      onChange={handleChange}
+                      onFocus={onFocus}
+                    />
+                    {renderInlineValidationError('fullName')}
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>State</Form.Label>
+                    {isEditing && (
+                      <Form.Control
+                        className='form-control'
+                        as='select'
+                        value={state || ''}
+                        name='state'
+                        onChange={handleChange}
+                        placeholder='Select State'
+                        defaultValue='null'
+                        {...noBorder}
+                        onFocus={onFocus}
+                      >
+                        {[
+                          { abbreviation: '', name: 'Select State' },
+                          ...USA_STATES,
+                        ].map(({ name, abbreviation }) => (
+                          <option value={abbreviation} key={`${abbreviation}`}>
+                            {name}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    )}
+                    {renderInlineValidationError('state')}
+
+                    {!isEditing && (
+                      <Form.Control
+                        className='form-control'
+                        type='zip code'
+                        value={state}
+                        {...noBorder}
+                      />
+                    )}
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Zip Code</Form.Label>
+                    <Form.Control
+                      className='form-control'
+                      onChange={(e) => {
+                        const re = /^[0-9\b]+$/;
+                        if (e.target.value === '' || re.test(e.target.value)) {
+                          handleChange(e);
+                        }
+                      }}
+                      name='zipCode'
+                      type='zip code'
+                      value={zipCode || ''}
+                      {...noBorder}
+                      onFocus={onFocus}
+                    />
+                    {renderInlineValidationError('zipCode')}
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Address Line 1</Form.Label>
+                    <Form.Control
+                      className='form-control'
+                      type='name'
+                      name='line1'
+                      onChange={handleChange}
+                      value={line1 || ''}
+                      {...noBorder}
+                      onFocus={onFocus}
+                    />
+                    {renderInlineValidationError('line1')}
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Address Line 2</Form.Label>
+                    <Form.Control
+                      className='form-control'
+                      type='name'
+                      value={line2 || ''}
+                      name='line2'
+                      onChange={handleChange}
+                      {...noBorder}
+                      onFocus={onFocus}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>City</Form.Label>
+                    <Form.Control
+                      className='form-control'
+                      type='city'
+                      name='city'
+                      value={city || ''}
+                      onChange={handleChange}
+                      {...noBorder}
+                      onFocus={onFocus}
+                    />
+                    {renderInlineValidationError('city')}
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control
+                      className='form-control'
+                      type='phone number'
+                      onChange={(e) => {
+                        const re = /^[0-9\b]+$/;
+                        if (e.target.value === '' || re.test(e.target.value)) {
+                          handleChange(e);
+                        }
+                      }}
+                      value={formatPhoneNumber(phoneNumber) || ''}
+                      name='phoneNumber'
+                      maxLength={13}
+                      {...noBorder}
+                      onFocus={onFocus}
+                    />
+                    {renderInlineValidationError('phoneNumber')}
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col className='add-pick-up'>
+                  <button
+                    className='btn-instructions'
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setModalShow(true);
+                    }}
+                  >
+                    <h4 className='text-instructions'>
+                      Add pick-up instructions
+                    </h4>
+                  </button>
+                </Col>
+
+                <Col className='m-btn-col'>
+                  {isEditing && (
+                    <Button
+                      className='m-btn-done'
+                      type='submit'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsEditing(false);
+                        updateAddress();
+                      }}
+                    >
+                      Done
+                    </Button>
+                  )}
+                  {!isEditing && (
+                    <Button
+                      className='m-btn-edit'
+                      type='submit'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsEditing(true);
+                      }}
+                    >
+                      {!isSubmitting ? (
+                        'Edit'
+                      ) : (
+                        <Spinner
+                          animation='border'
+                          size='sm'
+                          className='spinner'
+                        />
+                      )}
+                    </Button>
+                  )}
+                </Col>
+              </Row>
+            </Form>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const renderAddressDesktopView = () => {
+    return (
+      <>
+        <div className='card shadow-sm p-3 max-w-840 mt-4 ml-3'>
+          <div className='card-body'>
+            <Form id='Address'>
+              <Row>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Full Name</Form.Label>
+                    <Form.Control
+                      className='form-control-lg'
+                      type='name'
+                      name='fullName'
+                      value={fullName || ''}
+                      {...noBorder}
+                      onChange={handleChange}
+                      onFocus={onFocus}
+                    />
+
+                    {renderInlineValidationError('fullName')}
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>State</Form.Label>
+                    {isEditing && (
+                      <Form.Control
+                        className='form-control-md'
+                        as='select'
+                        value={state || ''}
+                        name='state'
+                        onChange={handleChange}
+                        placeholder='Select State'
+                        defaultValue='null'
+                        {...noBorder}
+                        onFocus={onFocus}
+                      >
+                        {[
+                          { abbreviation: '', name: 'Select State' },
+                          ...USA_STATES,
+                        ].map(({ name, abbreviation }) => (
+                          <option value={abbreviation} key={`${abbreviation}`}>
+                            {name}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    )}
+                    {renderInlineValidationError('state')}
+
+                    {!isEditing && (
+                      <Form.Control
+                        className='form-control-sm'
+                        type='zip code'
+                        value={state}
+                        {...noBorder}
+                      />
+                    )}
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Zip Code</Form.Label>
+                    <Form.Control
+                      className='form-control-md'
+                      onChange={(e) => {
+                        const re = /^[0-9\b]+$/;
+                        if (e.target.value === '' || re.test(e.target.value)) {
+                          handleChange(e);
+                        }
+                      }}
+                      name='zipCode'
+                      type='zip code'
+                      value={zipCode || ''}
+                      {...noBorder}
+                      onFocus={onFocus}
+                    />
+                    {renderInlineValidationError('zipCode')}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Address Line 1</Form.Label>
+                    <Form.Control
+                      className='form-control-lg'
+                      type='name'
+                      name='line1'
+                      onChange={handleChange}
+                      value={line1 || ''}
+                      {...noBorder}
+                      onFocus={onFocus}
+                    />
+                    {renderInlineValidationError('line1')}
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>City</Form.Label>
+                    <Form.Control
+                      className='form-control-md'
+                      type='city'
+                      name='city'
+                      value={city || ''}
+                      onChange={handleChange}
+                      {...noBorder}
+                      onFocus={onFocus}
+                    />
+                    {renderInlineValidationError('city')}
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control
+                      className='form-control-md'
+                      type='phone number'
+                      onChange={(e) => {
+                        const re = /^[0-9\b]+$/;
+                        if (e.target.value === '' || re.test(e.target.value)) {
+                          handleChange(e);
+                        }
+                      }}
+                      value={formatPhoneNumber(phoneNumber) || ''}
+                      name='phoneNumber'
+                      maxLength={13}
+                      {...noBorder}
+                      onFocus={onFocus}
+                    />
+                    {renderInlineValidationError('phoneNumber')}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col xs={6}>
+                  <Form.Group>
+                    <Form.Label>Address Line 2</Form.Label>
+                    <Form.Control
+                      className='form-control-lg'
+                      type='name'
+                      value={line2 || ''}
+                      name='line2'
+                      onChange={handleChange}
+                      {...noBorder}
+                      onFocus={onFocus}
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col className='add-pick-up'>
+                  <button
+                    className='btn-instructions'
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setModalShow(true);
+                    }}
+                  >
+                    <h4 className='text-instructions'>
+                      Add pick-up instructions
+                    </h4>
+                  </button>
+                </Col>
+
+                <Col className='btn-container'>
+                  {isEditing && (
+                    <Button
+                      className='btn-done'
+                      type='submit'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsEditing(false);
+                        updateAddress();
+                      }}
+                    >
+                      Done
+                    </Button>
+                  )}
+                  {!isEditing && (
+                    <Button
+                      className='btn-done'
+                      type='submit'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsEditing(true);
+                      }}
+                    >
+                      {!isSubmitting ? (
+                        'Edit'
+                      ) : (
+                        <Spinner
+                          animation='border'
+                          size='sm'
+                          className='spinner'
+                        />
+                      )}
+                    </Button>
+                  )}
+                </Col>
+              </Row>
+            </Form>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const renderMessages = () => {
+    return (
+      <div className='alert-container max-w-840'>
+        {success && (
+          <div className='alert alert-success' role='alert'>
+            <div>
+              <h4 className='text-center text-alert'>
+                <CheckCircle />
+                &nbsp;&nbsp;&nbsp;Success
+              </h4>
+            </div>
+          </div>
+        )}
+        {error && (
+          <div className='alert alert-danger' role='alert'>
+            <div>
+              <h4 className='text-center text-alert'>
+                <AlertCircle />
+                &nbsp;&nbsp;&nbsp;{error}
+              </h4>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderTrigger = () => {
+    return (
+      <div className='triggerContainer'>
+        <h3 className='sofia-pro text-18 mb-3-profile mb-0 ml-3 triggerText'>
+          Pick-up Address
+        </h3>
+
+        <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
+      </div>
+    );
+  };
+
   return (
     <>
       <div id='Address'>
@@ -139,480 +625,16 @@ export default function Address({ user }) {
           open={isOpen}
           onTriggerOpening={() => setIsOpen(true)}
           onTriggerClosing={() => setIsOpen(false)}
-          trigger={
-            <div className='triggerContainer'>
-              <h3 className='sofia-pro text-18 mb-3-profile mb-0 ml-3 triggerText'>
-                Pick-up Address
-              </h3>
-
-              <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
-            </div>
-          }
+          trigger={renderTrigger()}
         >
-          <div className='alert-container max-w-840'>
-            {success && (
-              <div className='alert alert-success' role='alert'>
-                <div>
-                  <h4 className='text-center text-alert'>
-                    <CheckCircle />
-                    &nbsp;&nbsp;&nbsp;Success
-                  </h4>
-                </div>
-              </div>
-            )}
-            {error && (
-              <div className='alert alert-danger' role='alert'>
-                <div>
-                  <h4 className='text-center text-alert'>
-                    <AlertCircle />
-                    &nbsp;&nbsp;&nbsp;{error}
-                  </h4>
-                </div>
-              </div>
-            )}
-          </div>
+          {/* ALERTS & MESSAGES*/}
+          {renderMessages()}
 
-          {/* START OF MOBILE VIEW */}
-          {isMobile && (
-            <>
-              <div className='card shadow-sm mb-2 p-3 max-w-840'>
-                <div className='m-card-body'>
-                  <Form id='Info'>
-                    <Row>
-                      <Col>
-                        <Button
-                          type='button'
-                          className='btn close'
-                          data-dismiss='modal'
-                          aria-label='Close'
-                        >
-                          <span
-                            aria-hidden='true'
-                            style={{
-                              color: '#B1ADB2',
-                            }}
-                          >
-                            &times;
-                          </span>
-                        </Button>
-                        <Form.Group>
-                          <Form.Label>Full Name</Form.Label>
-                          <Form.Control
-                            className='form-control'
-                            type='name'
-                            name='fullName'
-                            value={fullName || ''}
-                            {...noBorder}
-                            onChange={handleChange}
-                          />
-                          {!isEmpty(fullName) &&
-                            renderInlineError(errors.fullName)}
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Form.Group>
-                          <Form.Label>State</Form.Label>
-                          {isEditing && (
-                            <Form.Control
-                              className='form-control'
-                              as='select'
-                              value={state || ''}
-                              name='state'
-                              onChange={handleChange}
-                              placeholder='Select State'
-                              defaultValue='null'
-                              {...noBorder}
-                            >
-                              {[
-                                { abbreviation: '', name: 'Select State' },
-                                ...USA_STATES,
-                              ].map(({ name, abbreviation }) => (
-                                <option
-                                  value={abbreviation}
-                                  key={`${abbreviation}`}
-                                >
-                                  {name}
-                                </option>
-                              ))}
-                            </Form.Control>
-                          )}
-                          {!isEmpty(state) && renderInlineError(errors.state)}
+          {/* MOBILE VIEW */}
+          {isMobile && renderAddressMobileView()}
 
-                          {!isEditing && (
-                            <Form.Control
-                              className='form-control'
-                              type='zip code'
-                              value={state}
-                              {...noBorder}
-                            />
-                          )}
-                        </Form.Group>
-                      </Col>
-                      <Col>
-                        <Form.Group>
-                          <Form.Label>Zip Code</Form.Label>
-                          <Form.Control
-                            className='form-control'
-                            onChange={(e) => {
-                              const re = /^[0-9\b]+$/;
-                              if (
-                                e.target.value === '' ||
-                                re.test(e.target.value)
-                              ) {
-                                handleChange(e);
-                              }
-                            }}
-                            name='zipCode'
-                            type='zip code'
-                            value={zipCode || ''}
-                            {...noBorder}
-                          />
-                          {!isEmpty(zipCode) &&
-                            renderInlineError(errors.zipCode)}
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Form.Group>
-                          <Form.Label>Address Line 1</Form.Label>
-                          <Form.Control
-                            className='form-control'
-                            type='name'
-                            name='line1'
-                            onChange={handleChange}
-                            value={line1 || ''}
-                            {...noBorder}
-                          />
-                          {!isEmpty(line1) && renderInlineError(errors.line1)}
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Form.Group>
-                          <Form.Label>Address Line 2</Form.Label>
-                          <Form.Control
-                            className='form-control'
-                            type='name'
-                            value={line2 || ''}
-                            name='line2'
-                            onChange={handleChange}
-                            {...noBorder}
-                          />
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Form.Group>
-                          <Form.Label>City</Form.Label>
-                          <Form.Control
-                            className='form-control'
-                            type='city'
-                            name='city'
-                            value={city || ''}
-                            onChange={handleChange}
-                            {...noBorder}
-                          />
-                          {!isEmpty(city) && renderInlineError(errors.city)}
-                        </Form.Group>
-                      </Col>
-                      <Col>
-                        <Form.Group>
-                          <Form.Label>Phone</Form.Label>
-                          <Form.Control
-                            className='form-control'
-                            type='phone number'
-                            onChange={(e) => {
-                              const re = /^[0-9\b]+$/;
-                              if (
-                                e.target.value === '' ||
-                                re.test(e.target.value)
-                              ) {
-                                handleChange(e);
-                              }
-                            }}
-                            value={formatPhoneNumber(phoneNumber) || ''}
-                            name='phoneNumber'
-                            maxLength={13}
-                            {...noBorder}
-                          />
-                          {!isEmpty(phoneNumber) &&
-                            renderInlineError(errors.phoneNumber)}
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col className='add-pick-up'>
-                        <button
-                          className='btn-instructions'
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setModalShow(true);
-                          }}
-                        >
-                          <h4 className='text-instructions'>
-                            Add pick-up instructions
-                          </h4>
-                        </button>
-                      </Col>
-
-                      <Col className='m-btn-col'>
-                        {isEditing && (
-                          <Button
-                            className='m-btn-done'
-                            type='submit'
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setIsEditing(false);
-                              updateAddress();
-                            }}
-                          >
-                            Done
-                          </Button>
-                        )}
-                        {!isEditing && (
-                          <Button
-                            className='m-btn-edit'
-                            type='submit'
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setIsEditing(true);
-                            }}
-                          >
-                            {!isSubmitting ? (
-                              'Edit'
-                            ) : (
-                              <Spinner
-                                animation='border'
-                                size='sm'
-                                className='spinner'
-                              />
-                            )}
-                          </Button>
-                        )}
-                      </Col>
-                    </Row>
-                  </Form>
-                </div>
-              </div>
-            </>
-          )}
-          {/* END OF MOBILE VIEW */}
-
-          {!isMobile && (
-            <>
-              <div className='card shadow-sm p-3 max-w-840 mt-4 ml-3'>
-                <div className='card-body'>
-                  <Form id='Address'>
-                    <Row>
-                      <Col>
-                        <Form.Group>
-                          <Form.Label>Full Name</Form.Label>
-                          <Form.Control
-                            className='form-control-lg'
-                            type='name'
-                            name='fullName'
-                            value={fullName || ''}
-                            {...noBorder}
-                            onChange={handleChange}
-                          />
-                          {!isEmpty(fullName) &&
-                            renderInlineError(errors.fullName)}
-                        </Form.Group>
-                      </Col>
-                      <Col>
-                        <Form.Group>
-                          <Form.Label>State</Form.Label>
-                          {isEditing && (
-                            <Form.Control
-                              className='form-control-md'
-                              as='select'
-                              value={state || ''}
-                              name='state'
-                              onChange={handleChange}
-                              placeholder='Select State'
-                              defaultValue='null'
-                              {...noBorder}
-                            >
-                              {[
-                                { abbreviation: '', name: 'Select State' },
-                                ...USA_STATES,
-                              ].map(({ name, abbreviation }) => (
-                                <option
-                                  value={abbreviation}
-                                  key={`${abbreviation}`}
-                                >
-                                  {name}
-                                </option>
-                              ))}
-                            </Form.Control>
-                          )}
-                          {!isEmpty(state) && renderInlineError(errors.state)}
-
-                          {!isEditing && (
-                            <Form.Control
-                              className='form-control-sm'
-                              type='zip code'
-                              value={state}
-                              {...noBorder}
-                            />
-                          )}
-                        </Form.Group>
-                      </Col>
-                      <Col>
-                        <Form.Group>
-                          <Form.Label>Zip Code</Form.Label>
-                          <Form.Control
-                            className='form-control-md'
-                            onChange={(e) => {
-                              const re = /^[0-9\b]+$/;
-                              if (
-                                e.target.value === '' ||
-                                re.test(e.target.value)
-                              ) {
-                                handleChange(e);
-                              }
-                            }}
-                            name='zipCode'
-                            type='zip code'
-                            value={zipCode || ''}
-                            {...noBorder}
-                          />
-                          {!isEmpty(zipCode) &&
-                            renderInlineError(errors.zipCode)}
-                        </Form.Group>
-                      </Col>
-                    </Row>
-
-                    <Row>
-                      <Col>
-                        <Form.Group>
-                          <Form.Label>Address Line 1</Form.Label>
-                          <Form.Control
-                            className='form-control-lg'
-                            type='name'
-                            name='line1'
-                            onChange={handleChange}
-                            value={line1 || ''}
-                            {...noBorder}
-                          />
-                          {!isEmpty(line1) && renderInlineError(errors.line1)}
-                        </Form.Group>
-                      </Col>
-                      <Col>
-                        <Form.Group>
-                          <Form.Label>City</Form.Label>
-                          <Form.Control
-                            className='form-control-md'
-                            type='city'
-                            name='city'
-                            value={city || ''}
-                            onChange={handleChange}
-                            {...noBorder}
-                          />
-                          {!isEmpty(city) && renderInlineError(errors.city)}
-                        </Form.Group>
-                      </Col>
-                      <Col>
-                        <Form.Group>
-                          <Form.Label>Phone</Form.Label>
-                          <Form.Control
-                            className='form-control-md'
-                            type='phone number'
-                            onChange={(e) => {
-                              const re = /^[0-9\b]+$/;
-                              if (
-                                e.target.value === '' ||
-                                re.test(e.target.value)
-                              ) {
-                                handleChange(e);
-                              }
-                            }}
-                            value={formatPhoneNumber(phoneNumber) || ''}
-                            name='phoneNumber'
-                            maxLength={13}
-                            {...noBorder}
-                          />
-                          {!isEmpty(phoneNumber) &&
-                            renderInlineError(errors.phoneNumber)}
-                        </Form.Group>
-                      </Col>
-                    </Row>
-
-                    <Row>
-                      <Col xs={6}>
-                        <Form.Group>
-                          <Form.Label>Address Line 2</Form.Label>
-                          <Form.Control
-                            className='form-control-lg'
-                            type='name'
-                            value={line2 || ''}
-                            name='line2'
-                            onChange={handleChange}
-                            {...noBorder}
-                          />
-                        </Form.Group>
-                      </Col>
-
-                      <Col className='add-pick-up'>
-                        <button
-                          className='btn-instructions'
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setModalShow(true);
-                          }}
-                        >
-                          <h4 className='text-instructions'>
-                            Add pick-up instructions
-                          </h4>
-                        </button>
-                      </Col>
-
-                      <Col className='btn-container'>
-                        {isEditing && (
-                          <Button
-                            className='btn-done'
-                            type='submit'
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setIsEditing(false);
-                              updateAddress();
-                            }}
-                          >
-                            Done
-                          </Button>
-                        )}
-                        {!isEditing && (
-                          <Button
-                            className='btn-done'
-                            type='submit'
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setIsEditing(true);
-                            }}
-                          >
-                            {!isSubmitting ? (
-                              'Edit'
-                            ) : (
-                              <Spinner
-                                animation='border'
-                                size='sm'
-                                className='spinner'
-                              />
-                            )}
-                          </Button>
-                        )}
-                      </Col>
-                    </Row>
-                  </Form>
-                </div>
-              </div>
-            </>
-          )}
+          {/*DESKTOP VIEW */}
+          {!isMobile && renderAddressDesktopView()}
         </Collapsible>
         <AddPickupModal show={modalShow} onHide={() => setModalShow(false)} />
       </div>
