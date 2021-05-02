@@ -258,18 +258,17 @@ function ProductCard({
                     >
                       {item.vendor_data.name}
                     </h4>
+                    &nbsp;
                     {isMobileSmaller && (
                       <h5 className='sofia-pro mb-2 product-name'>
-                        &nbsp;
                         {truncateProductNameForSmallerScreens(
                           formattedProductName
                         )}
                       </h5>
                     )}
-
                     {!isMobileSmaller && (
                       <h5 className='sofia-pro mb-2 product-name'>
-                        &nbsp;{mobileFormatProductName}
+                        {mobileFormatProductName}
                       </h5>
                     )}
                   </div>
