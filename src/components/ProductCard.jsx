@@ -14,6 +14,7 @@ import { get } from 'lodash-es';
 import EditProductModal from '../modals/EditProductModal';
 import { useFormik } from 'formik';
 import { addProductSchema } from '../models/formSchema';
+import { useHistory } from 'react-router';
 
 function ProductCard({
   selectable = true,
@@ -25,6 +26,7 @@ function ProductCard({
   toggleSelected,
   onRemove = () => {},
   confirmed = false,
+  key = '',
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -162,6 +164,8 @@ function ProductCard({
     },
     validationSchema: addProductSchema,
   });
+
+  const isViewScan = useHistory().location.pathname !== '/view-scan';
 
   return (
     <div id='productCard'>
@@ -474,7 +478,7 @@ function ProductCard({
                 }}
               />
 
-              {!isHover && !selected && !isDonate && (
+              {!isHover && !selected && !isDonate && isViewScan && (
                 <>
                   <div
                     className='col-sm-6 sofia-pro return-time-left'

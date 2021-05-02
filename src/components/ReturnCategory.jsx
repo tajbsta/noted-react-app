@@ -9,6 +9,7 @@ import NotedCheckbox from './NotedCheckbox';
 import { useSelector } from 'react-redux';
 import { DONATE } from '../constants/actions/runtime';
 import { get } from 'lodash-es';
+import { timeout } from '../utils/time';
 
 function ReturnCategory({
   userId,
@@ -34,10 +35,6 @@ function ReturnCategory({
   const [loadProgress, setLoadProgress] = useState(0);
 
   const [selectedItems, setSelectedItems] = useState([]);
-
-  function timeout(delay) {
-    return new Promise((res) => setTimeout(res, delay));
-  }
 
   const fetchItems = async (nextPageToken) => {
     try {
@@ -139,14 +136,6 @@ function ReturnCategory({
     });
   }, [selectedItems]);
 
-  useEffect(() => {
-    return () => {
-      if (get(cartItems.pop(), 'transferred', false) === true) {
-        fetchItems();
-      }
-    };
-  }, [cartItems]);
-
   return (
     <div id='ReturnCategory'>
       <Row>
@@ -155,7 +144,11 @@ function ReturnCategory({
             <NotedCheckbox
               onChangeState={handleSelectAll}
               checked={
-                items.length > 0 && selectedItems.length === items.length
+                selectedItems.length > 0 &&
+                items.length ===
+                  cartItems.filter(
+                    ({ category: itemCategory }) => itemCategory === category
+                  ).length
               }
               disabled={items.length === 0}
             />

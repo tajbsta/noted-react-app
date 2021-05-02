@@ -1,6 +1,6 @@
 import { get, isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { Spinner } from 'react-bootstrap';
+import { Col, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import $ from 'jquery';
@@ -11,6 +11,7 @@ import InReturnBox from './components/InReturnBox';
 import { updateCurrentOrder } from '../../actions/runtime.action';
 import { dedupeByKey } from '../../utils/data';
 import { scrollToTop } from '../../utils/window';
+import NotedCheckbox from '../../components/NotedCheckbox';
 
 function EditOrder({
   location: {
@@ -57,7 +58,7 @@ function EditOrder({
 
   const items = dedupeByKey(
     [...get(scheduledReturn, 'items', []), ...currentOrderItems],
-    'id'
+    '_id'
   );
 
   const unSelectedReturns = scans.filter(
@@ -119,6 +120,129 @@ function EditOrder({
     };
     dispatch(updateCurrentOrder(newOrder));
     history.push('/view-return', { scheduledReturnId, hasModifications: true });
+  };
+
+  const hasSelected =
+    [...inBoxSelected, ...returnableSelected, ...lastCallSelected].length > 0;
+
+  const selectedCount = [
+    ...inBoxSelected,
+    ...returnableSelected,
+    ...lastCallSelected,
+  ].length;
+
+  const renderRightCard = () => {
+    return (
+      <div className='col-sm-3'>
+        <div
+          className='col right-card'
+          style={{
+            maxWidth: '248px',
+          }}
+        >
+          <div className={`card shadow-sm p-3 pick-up-card h-400`}>
+            <div className='row'>
+              {hasSelected && (
+                <Col xs={1}>
+                  <NotedCheckbox
+                    onChangeState={() => {
+                      setInBoxSelected([]);
+                      setReturnableSelected([]);
+                      setLastCallSelected([]);
+                    }}
+                    checked={hasSelected}
+                  />
+                </Col>
+              )}
+              <Col>
+                <h3 className='sofia-pro products-to-return mb-1'>
+                  {selectedCount} {selectedCount < 2 ? 'product' : 'products'}{' '}
+                  to return
+                </h3>
+              </Col>
+            </div>
+            <h3 className='box-size-description'>
+              All products need to fit in a 12”W x 12”H x 20”L box
+            </h3>
+            <button
+              className='btn btn-more-info'
+              onClick={() => setModalShow(true)}
+            >
+              <h3 className='noted-purple sofia-pro more-pick-up-info mb-0'>
+                More info
+              </h3>
+            </button>
+
+            <hr className='line-break-1' />
+
+            <>
+              {/* <h2 className='sofia-pro mb-0 donate-quantity'>1</h2>
+               <h5 className='sofia-pro text-muted value-label'>
+                 Donation
+               </h5> */}
+
+              {items.length > 0 && (
+                <>
+                  <h3 className='sofia-pro pick-up-price mb-0'>
+                    ${potentialReturnValue.toFixed(2) || 0.0}
+                  </h3>
+                  <h3 className='return-type sofia-pro value-label'>
+                    Potential Return Value
+                  </h3>
+                </>
+              )}
+
+              <hr className='line-break-2' />
+              <div className='row'>
+                <div className='col'>
+                  <h5 className='sofia-pro text-muted value-label'>
+                    Extra cost
+                  </h5>
+                </div>
+                <div className='col'>
+                  <h5 className='sofia-pro text-right'>${extraCost}</h5>
+                </div>
+              </div>
+              <hr className='line-break-3' />
+              <div
+                className='btn  noted-purple'
+                style={{
+                  background: '#EEE4F6',
+                  border: 'none',
+                  color: '#57009',
+                  display: 'flex',
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                }}
+                onClick={() => {
+                  /**
+                   * @STEP clear orderInMemory first
+                   */
+                  dispatch(updateCurrentOrder(scheduledReturn));
+                  history.push('/dashboard');
+                }}
+              >
+                Cancel
+              </div>
+
+              {hasChanges && (
+                <div
+                  className='btn mt-2'
+                  style={{
+                    background: '#570097',
+                    border: 'none',
+                    color: '#FFFFFF',
+                  }}
+                  onClick={onConfirm}
+                >
+                  Confirm
+                </div>
+              )}
+            </>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -212,104 +336,7 @@ function EditOrder({
               </>
             )}
           </div>
-          {/**
-           * @START OF RIGHT CARD
-           */}
-          <div className='col-sm-3'>
-            <div
-              className='col right-card'
-              style={{
-                maxWidth: '248px',
-              }}
-            >
-              <div className={`card shadow-sm p-3 pick-up-card h-400`}>
-                <h3 className='sofia-pro products-to-return mb-1'>
-                  {items.length} product to return
-                </h3>
-                <h3 className='box-size-description'>
-                  All products need to fit in a 12”W x 12”H x 20”L box
-                </h3>
-                <button
-                  className='btn btn-more-info'
-                  onClick={() => setModalShow(true)}
-                >
-                  <h3 className='noted-purple sofia-pro more-pick-up-info mb-0'>
-                    More info
-                  </h3>
-                </button>
-
-                <hr className='line-break-1' />
-
-                <>
-                  {/* <h2 className='sofia-pro mb-0 donate-quantity'>1</h2>
-                    <h5 className='sofia-pro text-muted value-label'>
-                      Donation
-                    </h5> */}
-
-                  {items.length > 0 && (
-                    <>
-                      <h3 className='sofia-pro pick-up-price mb-0'>
-                        ${potentialReturnValue.toFixed(2) || 0.0}
-                      </h3>
-                      <h3 className='return-type sofia-pro value-label'>
-                        Potential Return Value
-                      </h3>
-                    </>
-                  )}
-
-                  <hr className='line-break-2' />
-                  <div className='row'>
-                    <div className='col'>
-                      <h5 className='sofia-pro text-muted value-label'>
-                        Extra cost
-                      </h5>
-                    </div>
-                    <div className='col'>
-                      <h5 className='sofia-pro text-right'>${extraCost}</h5>
-                    </div>
-                  </div>
-                  <hr className='line-break-3' />
-                  <div
-                    className='btn  noted-purple'
-                    style={{
-                      background: '#EEE4F6',
-                      border: 'none',
-                      color: '#57009',
-                      display: 'flex',
-                      alignContent: 'center',
-                      justifyContent: 'center',
-                    }}
-                    onClick={() => {
-                      /**
-                       * @STEP clear orderInMemory first
-                       */
-                      dispatch(updateCurrentOrder(scheduledReturn));
-                      history.push('/dashboard');
-                    }}
-                  >
-                    Cancel
-                  </div>
-
-                  {hasChanges && (
-                    <div
-                      className='btn mt-2'
-                      style={{
-                        background: '#570097',
-                        border: 'none',
-                        color: '#FFFFFF',
-                      }}
-                      onClick={onConfirm}
-                    >
-                      Confirm
-                    </div>
-                  )}
-                </>
-              </div>
-            </div>
-          </div>
-          {/**
-           * @END RIGHT CARD
-           */}
+          {renderRightCard()}
         </div>
       </div>
     </div>
