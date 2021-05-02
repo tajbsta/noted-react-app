@@ -375,12 +375,16 @@
 
     width: 75%;
 
-    @media (max-width: 360px) {
+    @media (max-width: 384px) {
       width: 73%;
     }
 
     @media (max-width: 358px) {
       width: 65%;
+    }
+
+    @media (max-width: 279px) {
+      width: 60%;
     }
 
     .title-container {
