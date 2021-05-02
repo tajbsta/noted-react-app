@@ -173,6 +173,7 @@ function DashboardPage() {
                         size={5}
                         category={LAST_CALL}
                         updateSelectedItems={updateSelectedItems}
+                        selectedProducts={selectedProducts[LAST_CALL]}
                       />
                     </div>
                     <div className='mt-4 returnable-items'>
@@ -182,6 +183,7 @@ function DashboardPage() {
                         size={5}
                         category={RETURNABLE}
                         updateSelectedItems={updateSelectedItems}
+                        selectedProducts={selectedProducts[RETURNABLE]}
                       />
                     </div>
                     <div>
@@ -196,6 +198,7 @@ function DashboardPage() {
                         size={5}
                         category={DONATE}
                         updateSelectedItems={updateSelectedItems}
+                        selectedProducts={selectedProducts[DONATE]}
                       />
                     </div>
                     <div>
@@ -276,7 +279,10 @@ function DashboardPage() {
           {!isTablet && (
             <>
               <div className='col-sm-3 checkout-card'>
-                <RightCard userId={userId} />
+                <RightCard
+                  userId={userId}
+                  setSelectedProducts={setSelectedProducts}
+                />
               </div>
             </>
           )}

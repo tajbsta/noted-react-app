@@ -11,8 +11,13 @@ import axios from 'axios';
 import { calculatePricing } from '../../../utils/productsApi';
 import NotedCheckbox from '../../../components/NotedCheckbox';
 import { setCartItems } from '../../../actions/cart.action';
+import {
+  DONATE,
+  LAST_CALL,
+  RETURNABLE,
+} from '../../../constants/actions/runtime';
 
-function RightCard({ userId }) {
+function RightCard({ userId, setSelectedProducts }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
@@ -77,9 +82,12 @@ function RightCard({ userId }) {
   };
 
   const handleCheckboxChange = () => {
-    if (items.length > 0) {
-      dispatch(setCartItems([]));
-    }
+    setSelectedProducts({
+      [LAST_CALL]: [],
+      [RETURNABLE]: [],
+      [DONATE]: [],
+    });
+    dispatch(setCartItems([]));
   };
 
   return (

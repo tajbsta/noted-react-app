@@ -26,7 +26,6 @@ function ProductCard({
   toggleSelected,
   onRemove = () => {},
   confirmed = false,
-  key = '',
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
