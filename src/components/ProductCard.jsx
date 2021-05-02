@@ -14,6 +14,7 @@ import { get } from 'lodash-es';
 import EditProductModal from '../modals/EditProductModal';
 import { useFormik } from 'formik';
 import { addProductSchema } from '../models/formSchema';
+import { useHistory } from 'react-router';
 
 function ProductCard({
   selectable = true,
@@ -474,21 +475,24 @@ function ProductCard({
                 }}
               />
 
-              {!isHover && !selected && !isDonate && (
-                <>
-                  <div
-                    className='col-sm-6 sofia-pro return-time-left'
-                    style={{
-                      color: isLastCall ? 'red' : '#8B888C',
-                    }}
-                  >
-                    {daysLeft} days left
-                  </div>
-                  <div className='col-sm-3 return-score'>
-                    <ReturnScore score={item.vendor_data.rating} />
-                  </div>
-                </>
-              )}
+              {!isHover &&
+                !selected &&
+                !isDonate &&
+                useHistory().location.pathname !== '/view-scan' && (
+                  <>
+                    <div
+                      className='col-sm-6 sofia-pro return-time-left'
+                      style={{
+                        color: isLastCall ? 'red' : '#8B888C',
+                      }}
+                    >
+                      {daysLeft} days left
+                    </div>
+                    <div className='col-sm-3 return-score'>
+                      <ReturnScore score={item.vendor_data.rating} />
+                    </div>
+                  </>
+                )}
 
               {!isHover && !selected && isDonate && (
                 <>
