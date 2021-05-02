@@ -26,6 +26,7 @@ function ProductCard({
   toggleSelected,
   onRemove = () => {},
   confirmed = false,
+  key = '',
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -163,6 +164,8 @@ function ProductCard({
     },
     validationSchema: addProductSchema,
   });
+
+  const isViewScan = useHistory().location.pathname !== '/view-scan';
 
   return (
     <div id='productCard'>
@@ -475,24 +478,21 @@ function ProductCard({
                 }}
               />
 
-              {!isHover &&
-                !selected &&
-                !isDonate &&
-                useHistory().location.pathname !== '/view-scan' && (
-                  <>
-                    <div
-                      className='col-sm-6 sofia-pro return-time-left'
-                      style={{
-                        color: isLastCall ? 'red' : '#8B888C',
-                      }}
-                    >
-                      {daysLeft} days left
-                    </div>
-                    <div className='col-sm-3 return-score'>
-                      <ReturnScore score={item.vendor_data.rating} />
-                    </div>
-                  </>
-                )}
+              {!isHover && !selected && !isDonate && isViewScan && (
+                <>
+                  <div
+                    className='col-sm-6 sofia-pro return-time-left'
+                    style={{
+                      color: isLastCall ? 'red' : '#8B888C',
+                    }}
+                  >
+                    {daysLeft} days left
+                  </div>
+                  <div className='col-sm-3 return-score'>
+                    <ReturnScore score={item.vendor_data.rating} />
+                  </div>
+                </>
+              )}
 
               {!isHover && !selected && isDonate && (
                 <>

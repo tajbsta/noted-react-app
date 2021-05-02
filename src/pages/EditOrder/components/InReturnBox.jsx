@@ -46,7 +46,7 @@ function InReturnBox({
 
   const items = dedupeByKey(
     [...get(scheduledReturn, 'items', []), ...currentOrderItems],
-    'id'
+    '_id'
   );
 
   const isSelected = (itemId) =>
@@ -113,7 +113,7 @@ function InReturnBox({
         return (
           <ProductCard
             disabled={disabled}
-            key={scannedItem.id}
+            key={scannedItem._id}
             scannedItem={scannedItem}
             selected={isSelected(scannedItem.id)}
             item={scannedItem}
