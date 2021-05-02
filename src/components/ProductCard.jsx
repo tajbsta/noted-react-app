@@ -338,7 +338,13 @@ function ProductCard({
                 </Container>
                 <Container>
                   <Row>
-                    <h4 className='sofia-pro mobile-price'>${formatPrice}</h4>
+                    {daysLeft === 2 || daysLeft === 1 ? (
+                      <h4 className='sofia-pro mb-0 not-eligible-text'>
+                        This item is not eligible for pick up
+                      </h4>
+                    ) : (
+                      <h4 className='sofia-pro mobile-price'>${formatPrice}</h4>
+                    )}
                   </Row>
                 </Container>
                 {selected && (
@@ -454,6 +460,7 @@ function ProductCard({
             />
             <ProductDetails
               item={item}
+              daysLeft={daysLeft}
               isHovering={showHoverContent}
               toggleSelected={toggleSelected}
             />

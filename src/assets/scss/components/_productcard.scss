@@ -31,6 +31,10 @@
       padding: 0px;
       color: #570097;
       box-shadow: none;
+
+      &:hover {
+        color: #b079da;
+      }
     }
 
     @media (max-width: 991px) {
@@ -77,6 +81,14 @@
     font-weight: 700;
     font-size: 14px;
     line-height: 15px;
+  }
+
+  .not-eligible-text {
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
   }
 
   .col-sm-5 {
@@ -189,6 +201,10 @@
         color: #570097;
         padding: 0;
 
+        &:hover {
+          color: #b079da;
+        }
+
         &:focus {
           outline: none !important;
           box-shadow: none;
@@ -219,6 +235,10 @@
         text-decoration-line: underline;
         color: #570097;
         padding: 0;
+
+        &:hover {
+          color: #b079da;
+        }
 
         &:focus {
           outline: none !important;
