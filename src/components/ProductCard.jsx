@@ -125,10 +125,6 @@ function ProductCard({
     ? truncateProductNameForTablet(formattedProductName)
     : truncateProductNameForMobile(formattedProductName);
 
-  const mobileFormatBrand = isTablet
-    ? item.vendor_data.name
-    : truncateBrand(item.vendor_data.name);
-
   const showHoverContent = isHover || selected;
 
   useEffect(() => {
@@ -260,7 +256,7 @@ function ProductCard({
                       className='mb-0 sofia-pro mb-1 distributor-name'
                       style={{ marginBottom: '0px' }}
                     >
-                      {mobileFormatBrand}
+                      {item.vendor_data.name}
                     </h4>
                     {isMobileSmaller && (
                       <h5 className='sofia-pro mb-2 product-name'>
