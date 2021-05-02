@@ -4,22 +4,22 @@ import { useHistory } from 'react-router';
 import HorizontalLine from '../../../components/HorizontalLine';
 import Row from '../../../components/Row';
 import PickUpButton from './PickUpButton';
-import { useSelector } from 'react-redux';
-import usePrevious from '../../../utils/usePrevious';
-import { isEmpty, isEqual, xorWith } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+import { isEmpty } from 'lodash';
 import axios from 'axios';
 
 import { calculatePricing } from '../../../utils/productsApi';
+import NotedCheckbox from '../../../components/NotedCheckbox';
+import { setCartItems } from '../../../actions/cart.action';
 
 function RightCard({ userId }) {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(false);
   const { items } = useSelector(({ cart: { items } }) => ({
     items,
   }));
-
-  const previousCartItems = usePrevious(items);
 
   const [pricing, setPricing] = useState({
     totalReturns: 0,
@@ -69,9 +69,16 @@ function RightCard({ userId }) {
     } catch (error) {
       if (!axios.isCancel(error)) {
         setLoading(false);
-        console.log(error);
-        // TODO: handle error
+        /**
+         * A toast error should be added here
+         */
       }
+    }
+  };
+
+  const handleCheckboxChange = () => {
+    if (items.length > 0) {
+      dispatch(setCartItems([]));
     }
   };
 
@@ -97,9 +104,18 @@ function RightCard({ userId }) {
                 {isEmpty(items) && <div>Total past 90 days</div>}
 
                 {!isEmpty(items) && (
-                  <div>
-                    {items.length} {items.length == 1 ? 'product' : 'products'}{' '}
-                    selected
+                  <div className='row'>
+                    <Col xs={1}>
+                      <NotedCheckbox
+                        disabled={loading}
+                        checked={items.length > 0}
+                        onChangeState={handleCheckboxChange}
+                      />
+                    </Col>
+                    <Col>
+                      {items.length}{' '}
+                      {items.length == 1 ? 'product' : 'products'} selected
+                    </Col>
                   </div>
                 )}
               </h5>
@@ -167,10 +183,19 @@ function RightCard({ userId }) {
                         {isEmpty(items) && <div>Total past 90 days</div>}
 
                         {!isEmpty(items) && (
-                          <div>
-                            {items.length}{' '}
-                            {items.length == 1 ? 'product' : 'products'}{' '}
-                            selected
+                          <div className='row'>
+                            <Col xs={1}>
+                              <NotedCheckbox
+                                disabled={loading}
+                                checked={items.length > 0}
+                                onChangeState={handleCheckboxChange}
+                              />
+                            </Col>
+                            <Col>
+                              {items.length}{' '}
+                              {items.length == 1 ? 'product' : 'products'}{' '}
+                              selected
+                            </Col>
                           </div>
                         )}
                       </h5>

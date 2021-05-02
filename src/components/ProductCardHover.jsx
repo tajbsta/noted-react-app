@@ -12,12 +12,7 @@ import { RETURN_SCORES } from '../constants/returns/scores';
 import ReturnScore from './ReturnsScore';
 import { useHistory } from 'react-router';
 
-export default function ProductCardHover({
-  orderDate,
-  show,
-  item,
-  editproductform,
-}) {
+export default function ProductCardHover({ show, item, editproductform }) {
   const dispatch = useDispatch();
   const {
     location: { pathname },
@@ -57,6 +52,7 @@ export default function ProductCardHover({
   };
 
   const inDashboard = ['/dashboard'].includes(pathname);
+  const inCheckout = ['/view-scan'].includes(pathname);
 
   return (
     <div>
@@ -64,10 +60,10 @@ export default function ProductCardHover({
         <div
           id='OnHoverProductCard'
           style={{
-            display: show ? 'block' : 'none',
+            display: show || inCheckout ? 'block' : 'none',
           }}
         >
-          {inDashboard && (
+          {(inDashboard || inCheckout) && (
             <div className='container-1'>
               <h4 className='date text-14 sofia-pro line-height-16'>
                 {moment(item.order_date).format('MMM DD, YYYY')}
@@ -78,7 +74,6 @@ export default function ProductCardHover({
                   className='btn-hover-edit sofia-pro btn'
                   onClick={onEdit}
                 >
-                  {' '}
                   Edit
                 </button>
               </div>

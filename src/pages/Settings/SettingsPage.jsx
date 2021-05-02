@@ -132,8 +132,12 @@ export default function SettingsPage() {
       <div id='Settings' className='container mt-6'>
         {isMobile && (
           <>
-            <div style={{ margin: '-12px', paddingBottom: '48px' }}>
-              <UserInfo user={user} />
+            <div className='row' style={{ paddingBottom: '48px' }}>
+              <div className={isTablet ? 'col-sm-12' : 'col-sm-3'}>
+                <div className={`col ${!isMobile ? '' : 'm-no-col'}`}>
+                  <UserInfo user={user} />
+                </div>
+              </div>
             </div>
           </>
         )}

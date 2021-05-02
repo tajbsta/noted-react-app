@@ -14,6 +14,7 @@ import { get } from 'lodash-es';
 import EditProductModal from '../modals/EditProductModal';
 import { useFormik } from 'formik';
 import { addProductSchema } from '../models/formSchema';
+import { useHistory } from 'react-router';
 
 function ProductCard({
   selectable = true,
@@ -25,6 +26,7 @@ function ProductCard({
   toggleSelected,
   onRemove = () => {},
   confirmed = false,
+  key = '',
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -123,10 +125,6 @@ function ProductCard({
     ? truncateProductNameForTablet(formattedProductName)
     : truncateProductNameForMobile(formattedProductName);
 
-  const mobileFormatBrand = isTablet
-    ? item.vendor_data.name
-    : truncateBrand(item.vendor_data.name);
-
   const showHoverContent = isHover || selected;
 
   useEffect(() => {
@@ -142,10 +140,10 @@ function ProductCard({
   const daysLeft =
     get(item, 'category', '') === 'DONATE'
       ? 'Donate'
-      : moment(get(item, 'return_not_eligible_date', '')).diff(
-          moment().startOf('day'),
-          'days'
-        );
+      : moment
+          .utc(get(item, 'return_not_eligible_date', ''))
+          .local()
+          .diff(moment().subtract(2, 'd').startOf('day'), 'days');
 
   const isDonate = get(item, 'category', '') === 'DONATE';
   const isLastCall = get(item, 'category', '') === 'LAST_CALL';
@@ -162,6 +160,8 @@ function ProductCard({
     },
     validationSchema: addProductSchema,
   });
+
+  const isViewScan = useHistory().location.pathname !== '/view-scan';
 
   return (
     <div id='productCard'>
@@ -256,7 +256,7 @@ function ProductCard({
                       className='mb-0 sofia-pro mb-1 distributor-name'
                       style={{ marginBottom: '0px' }}
                     >
-                      {mobileFormatBrand}
+                      {item.vendor_data.name}
                     </h4>
                     {isMobileSmaller && (
                       <h5 className='sofia-pro mb-2 product-name'>
@@ -334,7 +334,13 @@ function ProductCard({
                 </Container>
                 <Container>
                   <Row>
-                    <h4 className='sofia-pro mobile-price'>${formatPrice}</h4>
+                    {daysLeft === 2 || daysLeft === 1 ? (
+                      <h4 className='sofia-pro mb-0 not-eligible-text'>
+                        This item is not eligible for pick up
+                      </h4>
+                    ) : (
+                      <h4 className='sofia-pro mobile-price'>${formatPrice}</h4>
+                    )}
                   </Row>
                 </Container>
                 {selected && (
@@ -450,6 +456,7 @@ function ProductCard({
             />
             <ProductDetails
               item={item}
+              daysLeft={daysLeft}
               isHovering={showHoverContent}
               toggleSelected={toggleSelected}
             />
@@ -474,7 +481,7 @@ function ProductCard({
                 }}
               />
 
-              {!isHover && !selected && !isDonate && (
+              {!isHover && !selected && !isDonate && isViewScan && (
                 <>
                   <div
                     className='col-sm-6 sofia-pro return-time-left'

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Card, Container, Col, Row } from 'react-bootstrap';
+import { Card, Container, Col, Row, Spinner } from 'react-bootstrap';
+import { Check, AlertCircle } from 'react-feather';
 import ProfileIcon from '../../../assets/icons/Profile.svg';
 import moment from 'moment';
 import { Upload } from 'react-feather';
@@ -8,7 +9,7 @@ import { updateProfilePicture } from '../../../actions/runtime.action';
 import { get, isEmpty } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
 import { toBase64 } from '../../../utils/file';
-import { getUser } from '../../../utils/auth';
+import { getUser, uploadProfilePic } from '../../../utils/auth';
 
 export default function UserInfo({ user: userData = {} }) {
   const {
@@ -18,6 +19,8 @@ export default function UserInfo({ user: userData = {} }) {
   const [user, setUser] = useState({});
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 
   const { profileImage } = useSelector(({ auth: { profileImage } }) => ({
@@ -29,6 +32,7 @@ export default function UserInfo({ user: userData = {} }) {
   useEffect(() => {
     (async () => {
       const user = await getUser();
+      console.log(user);
       setUser(user);
     })();
   }, []);
@@ -39,18 +43,34 @@ export default function UserInfo({ user: userData = {} }) {
 
   // Handles file upload event and updates state
   const handleUpload = async (event) => {
-    // const file = event.target.files[0];
-    setFile(event.target.files[0]);
-    if (file && file.size > 5097152) {
-      alert('File is too large! The maximum size for file upload is 5 MB.');
-    }
-
     setLoading(true);
 
-    dispatch(updateProfilePicture(await toBase64(event.target.files[0])));
-    // Upload file to server (code goes under)
+    try {
+      setError(null);
+      setSuccess(null);
 
-    setLoading(false);
+      const file = event.target.files[0];
+
+      if (file && file.size > 5097152) {
+        throw new Error(
+          'File is too large! The maximum size for file upload is 5 MB.'
+        );
+      }
+
+      setFile(file);
+
+      dispatch(updateProfilePicture(await toBase64(file)));
+
+      await uploadProfilePic(user.sub, user.profile, file);
+      setLoading(false);
+
+      setError(false);
+      setSuccess(true);
+    } catch (err) {
+      setLoading(false);
+
+      setError(true);
+    }
   };
 
   // Display Image Component
@@ -61,6 +81,7 @@ export default function UserInfo({ user: userData = {} }) {
           src={URL.createObjectURL(image)}
           alt={image.name}
           className='avatar-placeholder'
+          style={{ opacity: loading ? '0.7' : '1' }}
         />
       );
     }
@@ -92,8 +113,57 @@ export default function UserInfo({ user: userData = {} }) {
         <div className='card-body text-center'>
           {!isMobile && (
             <>
+              {error && (
+                <div className='alert alert-danger mt-3' role='alert'>
+                  <div>
+                    <h4 className='text-center text-alert mb-0'>
+                      File is too large! The maximum size for file upload is 5
+                      MB.
+                    </h4>
+                  </div>
+                </div>
+              )}
+              {/* {success && (
+                <div className='alert alert-success mt-3' role='alert'>
+                  <div>
+                    <h4 className='text-center text-alert mb-0'>
+                      Upload Success!
+                    </h4>
+                  </div>
+                </div>
+              )} */}
               <div className='img-container'>
-                {user.profile && (
+                {/* {success && (
+                  <>
+                    <div className='profile-alert-icon'>
+                      <Check />
+                    </div>
+                  </>
+                )}
+                {error && (
+                  <>
+                    <div
+                      className='profile-alert-icon'
+                      style={{ color: 'red' }}
+                    >
+                      <AlertCircle />
+                    </div>
+                  </>
+                )} */}
+
+                {loading && (
+                  <Spinner
+                    animation='border'
+                    size='md'
+                    className='spinner btn-spinner'
+                    style={{
+                      color: '#570097',
+                      zIndex: 1,
+                      position: 'absolute',
+                    }}
+                  />
+                )}
+                {user.profile && !file && (
                   <img
                     src={user.profile}
                     className={`${
@@ -112,10 +182,7 @@ export default function UserInfo({ user: userData = {} }) {
                   />
                 )}
 
-                {file && isEmpty(profileImage) && <ImageThumb image={file} />}
-                {!isEmpty(profileImage) && (
-                  <ImageThumb base64URI={profileImage} />
-                )}
+                {file && <ImageThumb image={file} />}
 
                 <div className='upload-button'>
                   <i
@@ -132,6 +199,7 @@ export default function UserInfo({ user: userData = {} }) {
                       accept='.jpg, .jpeg, .png'
                       ref={hiddenFileInput}
                       onChange={handleUpload}
+                      disabled={loading}
                     />
                   </i>
                 </div>
@@ -148,9 +216,40 @@ export default function UserInfo({ user: userData = {} }) {
           {/* MOBILE VIEWS */}
           {isMobile && (
             <>
+              {error && (
+                <div className='alert alert-danger' role='alert'>
+                  <div>
+                    <h4 className='text-center text-alert mb-0'>
+                      File is too large! The maximum size for file upload is 5
+                      MB.
+                    </h4>
+                  </div>
+                </div>
+              )}
+              {success && (
+                <div className='alert alert-success' role='alert'>
+                  <div>
+                    <h4 className='text-center text-alert mb-0'>
+                      Upload Success!
+                    </h4>
+                  </div>
+                </div>
+              )}
               <Row>
                 <Col xs={4}>
                   <div className='img-container'>
+                    {loading && (
+                      <Spinner
+                        animation='border'
+                        size='md'
+                        className='spinner btn-spinner'
+                        style={{
+                          color: '#570097',
+                          zIndex: 1,
+                          position: 'absolute',
+                        }}
+                      />
+                    )}
                     {!isEmpty(user.profile) && (
                       <img
                         src={get(user, 'profile', '')}
@@ -224,20 +323,17 @@ export default function UserInfo({ user: userData = {} }) {
             </div>
           </div>
         </div>
-        <Container
-          className={`d-flex justify-content-center ${
-            isMobile ? 'm-btn-container' : ''
-          }`}
-        >
-          <button className='btn'>
+        <div className='mt-4 button-container d-flex justify-content-center'>
+          <button className='btn btn-lg btn-account'>
             <a
+              style={{ color: '#570097' }}
+              className='btn-text'
               href={pathname === '/profile' ? '/settings' : '/profile'}
-              className='btn btn-lg btn-primary'
             >
               {pathname === '/profile' ? 'Account Settings' : 'Profile'}
             </a>
           </button>
-        </Container>
+        </div>
       </Card>
     </div>
   );

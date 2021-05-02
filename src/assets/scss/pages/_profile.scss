@@ -20,11 +20,6 @@
 
   hr {
     border-top: 1px solid #e8e7e9 !important;
-    margin-right: -12px;
-
-    @media (max-width: 991px) {
-      margin-right: 0px;
-    }
   }
 
   .m-no-col {
@@ -62,7 +57,7 @@
 
     .card-body {
       background-color: #faf8fa;
-      padding: 0 1.5rem;
+      padding: 0 0.5rem;
     }
 
     // AVATAR
@@ -207,6 +202,10 @@
       }
     }
 
+    .button-container {
+      width: -webkit-fill-available !important;
+    }
+
     .btn {
       box-shadow: none;
 
@@ -214,27 +213,21 @@
         padding: initial;
         width: 100%;
       }
+    }
 
-      .btn-primary {
-        position: absolute;
-        height: 52px;
-        left: 0px;
-        right: 0px;
-        top: 264px;
-        border: none;
-        background: #eee4f6;
-        border-radius: 6px;
+    .btn-account {
+      width: inherit;
+      border: none;
+      background: #eee4f6;
+      border-radius: 6px;
+      line-height: 19px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+      color: #570097;
+      box-shadow: none;
+
+      .btn-text {
         font-size: 16px;
-        line-height: 19px;
-        padding-top: 16px;
-        color: #570097;
-        box-shadow: none;
-
-        @media (max-width: 1199px) {
-          position: initial;
-          width: 100%;
-          margin-top: 28px;
-        }
       }
     }
 
@@ -247,11 +240,6 @@
       flex: auto;
       text-align: initial;
     }
-
-    // .m-btn-container {
-    //   padding-right: 16px;
-    //   padding-left: 16px;
-    // }
   }
 
   #Address {

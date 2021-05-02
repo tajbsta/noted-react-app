@@ -40,7 +40,7 @@ export default function LoginPage() {
         get(
           signInErrors.find(({ code }) => code === error.code),
           'message',
-          'An error occurred signing up'
+          'An error occurred signing in'
         )
       );
       setIsSubmitting(false);
