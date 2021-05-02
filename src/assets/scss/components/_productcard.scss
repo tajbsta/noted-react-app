@@ -61,6 +61,7 @@
   .distributor-name {
     font-weight: 700;
     font-size: 14px;
+    text-align: left;
   }
 
   .product-name {
@@ -375,7 +376,11 @@
 
     width: 75%;
 
-    @media (max-width: 384px) {
+    @media (min-width: 376px) and (max-width: 384px) {
+      width: 73%;
+    }
+
+    @media (min-width: 360px) and (max-width: 374px) {
       width: 73%;
     }
 
