@@ -190,7 +190,7 @@ function ProductCard({
                 }}
               >
                 <NotedCheckbox
-                  disabled={disabled || daysLeft > 2}
+                  disabled={disabled || daysLeft <= 2}
                   checked={selected}
                   onChangeState={handleSelection}
                 />
