@@ -54,6 +54,7 @@ function PickUpDetails() {
     errors: addressFormErrors,
     handleChange: handleAddressChange,
     values: addressFormValues,
+    setFieldValue,
   } = useFormik({
     initialValues: {
       fullName: '',
@@ -62,6 +63,7 @@ function PickUpDetails() {
       line1: '',
       city: '',
       phoneNumber: '',
+      instructions: '',
     },
     validationSchema: pickUpAddressSchema,
   });
@@ -192,6 +194,7 @@ function PickUpDetails() {
             errors={addressFormErrors}
             handleChange={handleAddressChange}
             onDoneClick={saveAddress}
+            setFieldValue={setFieldValue}
           />
         )}
 
