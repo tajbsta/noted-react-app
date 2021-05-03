@@ -5,9 +5,11 @@ import PaymentMethodItem from './PaymentMethodItem';
 import { nanoid } from 'nanoid';
 
 export default function PaymentMethods({ setIsEditing, setFieldValue }) {
-  const { paymentMethods } = useSelector(({ auth: { paymentMethods } }) => ({
-    paymentMethods,
-  }));
+  const { paymentMethods = [] } = useSelector(
+    ({ auth: { paymentMethods } }) => ({
+      paymentMethods,
+    })
+  );
 
   return (
     <div id='PaymentMethods'>
