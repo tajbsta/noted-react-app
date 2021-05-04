@@ -9,7 +9,12 @@ import { getUserId, getUser } from '../../utils/auth';
 import { getAccounts } from '../../utils/accountsApi';
 import { clearSearchQuery } from '../../actions/runtime.action';
 import { setCartItems } from '../../actions/cart.action';
-import { LAST_CALL, RETURNABLE, DONATE } from '../../constants/actions/runtime';
+import {
+  LAST_CALL,
+  NOT_ELIGIBLE,
+  RETURNABLE,
+  DONATE,
+} from '../../constants/actions/runtime';
 import AddProductModal from '../../modals/AddProductModal';
 import ScheduledCard from './components/ScheduledCard';
 import Scanning from './components/Scanning';
@@ -33,6 +38,7 @@ function DashboardPage() {
   const [modalProductShow, setModalProductShow] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState({
     [LAST_CALL]: [],
+    [NOT_ELIGIBLE]: [],
     [RETURNABLE]: [],
     [DONATE]: [],
   });
@@ -171,8 +177,9 @@ function DashboardPage() {
                         typeTitle='Last Call!'
                         userId={userId}
                         size={5}
-                        category={LAST_CALL}
+                        category={LAST_CALL && NOT_ELIGIBLE}
                         updateSelectedItems={updateSelectedItems}
+                        selectedProducts={selectedProducts[LAST_CALL]}
                       />
                     </div>
                     <div className='mt-4 returnable-items'>
@@ -182,6 +189,7 @@ function DashboardPage() {
                         size={5}
                         category={RETURNABLE}
                         updateSelectedItems={updateSelectedItems}
+                        selectedProducts={selectedProducts[RETURNABLE]}
                       />
                     </div>
                     <div>
@@ -196,6 +204,7 @@ function DashboardPage() {
                         size={5}
                         category={DONATE}
                         updateSelectedItems={updateSelectedItems}
+                        selectedProducts={selectedProducts[DONATE]}
                       />
                     </div>
                     <div>
@@ -276,7 +285,10 @@ function DashboardPage() {
           {!isTablet && (
             <>
               <div className='col-sm-3 checkout-card'>
-                <RightCard userId={userId} />
+                <RightCard
+                  userId={userId}
+                  setSelectedProducts={setSelectedProducts}
+                />
               </div>
             </>
           )}

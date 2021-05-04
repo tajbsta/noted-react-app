@@ -2,15 +2,10 @@ import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Overlay, Tooltip, Row } from 'react-bootstrap';
 import { get } from 'lodash-es';
-import { DONATE } from '../constants/actions/runtime';
+import { DONATE, NOT_ELIGIBLE } from '../constants/actions/runtime';
 import ConfirmDonate from '../modals/ConfirmDonate';
 
-function ProductDetails({
-  item,
-  isHovering = false,
-  toggleSelected,
-  daysLeft,
-}) {
+function ProductDetails({ item, isHovering = false, toggleSelected }) {
   const history = useHistory();
   const pageLocation = history.location.pathname;
   const orderViews = ['/view-return', '/view-scan'];
@@ -84,29 +79,37 @@ function ProductDetails({
         </h5>
       </Row>
       <Row>
-        {daysLeft === 2 || daysLeft === 1 ? (
+        {category == NOT_ELIGIBLE ? (
           <>
             <h4 className='sofia-pro mb-0 not-eligible-text'>
               This item is not eligible for pick up
             </h4>
-            <h4 className='sofia-pro mb-0' style={{ color: '#570097' }}>
-              &nbsp;-
-            </h4>
-          </>
-        ) : (
-          <h4 className='sofia-pro mb-0 product-price'>${formatPrice} </h4>
-        )}
-        {isHovering && inDashboard && category !== DONATE && (
-          <>
+            <h4 className='sofia-pro mb-0 alternateActionText'>&nbsp;-</h4>
             <button
               type='button'
-              className='btn alternateActionText ml-2'
+              className='btn alternateActionText ml-1'
               onClick={() => setModalDonateShow(true)}
             >
               Donate instead
             </button>
           </>
+        ) : (
+          <h4 className='sofia-pro mb-0 product-price'>${formatPrice} </h4>
         )}
+        {isHovering &&
+          inDashboard &&
+          category !== DONATE &&
+          category !== NOT_ELIGIBLE && (
+            <>
+              <button
+                type='button'
+                className='btn alternateActionText ml-2'
+                onClick={() => setModalDonateShow(true)}
+              >
+                Donate instead
+              </button>
+            </>
+          )}
       </Row>
       <ConfirmDonate
         show={modalDonateShow}

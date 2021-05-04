@@ -2,20 +2,24 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
 import BrandLogoSvg from './BrandLogoSvg';
+import { searchScans } from '../actions/runtime.action';
+import { useDispatch } from 'react-redux';
 
 export default function MobileNav({
   checkclearsearch,
-  submitsearch,
   profile,
   settings,
   logout,
 }) {
+  const dispatch = useDispatch();
   const history = useHistory();
   const pageLocation = history.location.pathname;
   const {
     location: { pathname },
   } = useHistory();
   const [searchButton, setSearchButton] = useState(false);
+
+  const [searchQuery, setSearchQuery] = useState('');
 
   const guestViews = [
     '/',
@@ -29,6 +33,12 @@ export default function MobileNav({
     '/code/',
     '/code/verify',
   ];
+
+  const submitsearch = (e) => {
+    if (e.key === 'Enter') {
+      dispatch(searchScans(e.target.value));
+    }
+  };
 
   return (
     <div id='MobileNav-dashboard' style={{ width: '100%' }}>
@@ -69,15 +79,35 @@ export default function MobileNav({
               {searchButton && (
                 <>
                   <div className='mobile-search-container'>
-                    <Form inline>
-                      <FormControl
+                    <Form inline onSubmit={(e) => e.preventDefault()}>
+                      <Form.Control
                         type='text'
                         placeholder='Search purchases'
-                        onChange={checkclearsearch}
-                        onKeyPress={submitsearch}
+                        onKeyPress={(e) => {
+                          checkclearsearch(e);
+                          submitsearch(e);
+                        }}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchQuery}
                       />
                     </Form>
-                    <Button variant='outline-primary' className='ml-3'>
+                    <Button
+                      variant='outline-primary'
+                      className='ml-3'
+                      onClick={() => {
+                        checkclearsearch({
+                          target: {
+                            value: searchQuery,
+                          },
+                        });
+                        submitsearch({
+                          key: 'Enter',
+                          target: {
+                            value: searchQuery,
+                          },
+                        });
+                      }}
+                    >
                       Go!
                     </Button>
                   </div>

@@ -29,6 +29,12 @@ export const UPDATE_LAST_CALL = 'UPDATE_LAST_CALL';
 export const LAST_CALL = 'LAST_CALL';
 
 /**
+ * NOT_ELIGIBLE
+ */
+export const UPDATE_NOT_ELIGIBLE = 'UPDATE_NOT_ELIGIBLE';
+export const NOT_ELIGIBLE = 'NOT_ELIGIBLE';
+
+/**
  * @FORMS
  */
 export const CLEAR_FORM = 'CLEAR_FORM';

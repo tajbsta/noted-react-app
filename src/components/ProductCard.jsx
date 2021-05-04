@@ -26,7 +26,6 @@ function ProductCard({
   toggleSelected,
   onRemove = () => {},
   confirmed = false,
-  key = '',
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -147,6 +146,7 @@ function ProductCard({
 
   const isDonate = get(item, 'category', '') === 'DONATE';
   const isLastCall = get(item, 'category', '') === 'LAST_CALL';
+  const isNotEligible = get(item, 'category', '') === 'NOT_ELIGIBLE';
 
   const { handleChange, values, setFieldValue, errors } = useFormik({
     initialValues: {
@@ -191,7 +191,7 @@ function ProductCard({
                 }}
               >
                 <NotedCheckbox
-                  disabled={disabled}
+                  disabled={disabled || daysLeft <= 2}
                   checked={selected}
                   onChangeState={handleSelection}
                 />
@@ -236,7 +236,7 @@ function ProductCard({
             <div
               id='mobile-product-info'
               style={{
-                marginTop: '5px',
+                // marginTop: '0px',
                 width:
                   (isMobile && removable && !selectable) ||
                   (isMobile && confirmed)
@@ -253,23 +253,29 @@ function ProductCard({
                 <Container>
                   <div className='title-container'>
                     <h4
-                      className='mb-0 sofia-pro mb-1 distributor-name'
-                      style={{ marginBottom: '0px' }}
+                      className='mb-0 sofia-pro distributor-name'
+                      style={{ marginBottom: '0px', lineHeight: 'inherit' }}
                     >
                       {item.vendor_data.name}
                     </h4>
                     &nbsp;
                     {isMobileSmaller && (
-                      <h5 className='sofia-pro mb-2 product-name'>
+                      <h4
+                        className='sofia-pro mb-2 product-name'
+                        style={{ lineHeight: 'inherit' }}
+                      >
                         {truncateProductNameForSmallerScreens(
                           formattedProductName
                         )}
-                      </h5>
+                      </h4>
                     )}
                     {!isMobileSmaller && (
-                      <h5 className='sofia-pro mb-2 product-name'>
+                      <h4
+                        className='sofia-pro mb-2 product-name'
+                        style={{ lineHeight: 'inherit' }}
+                      >
                         {mobileFormatProductName}
-                      </h5>
+                      </h4>
                     )}
                   </div>
                 </Container>
@@ -293,7 +299,7 @@ function ProductCard({
                             <div
                               className='sofia-pro mobile-limit'
                               style={{
-                                color: isLastCall ? 'red' : '#8B888C',
+                                color: isNotEligible ? 'red' : '#8B888C',
                               }}
                             >
                               {daysLeft} days left
@@ -485,7 +491,7 @@ function ProductCard({
                   <div
                     className='col-sm-6 sofia-pro return-time-left'
                     style={{
-                      color: isLastCall ? 'red' : '#8B888C',
+                      color: isNotEligible ? 'red' : '#8B888C',
                     }}
                   >
                     {daysLeft} days left
