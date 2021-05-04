@@ -48,7 +48,7 @@ export const getProducts = async ({
 
 let cancelTokenSource;
 
-export const calculatePricing = async (userId, productIds) => {
+export const calculateMetrics = async (userId, productIds) => {
   const axios = await api();
 
   if (cancelTokenSource) {
@@ -58,7 +58,7 @@ export const calculatePricing = async (userId, productIds) => {
   cancelTokenSource = axiosLib.CancelToken.source();
 
   const res = await axios.post(
-    `/${userId}/products/pricing`,
+    `/${userId}/products/metrics`,
     { productIds },
     { cancelToken: cancelTokenSource.token }
   );
