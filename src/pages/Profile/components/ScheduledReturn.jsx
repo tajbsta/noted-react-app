@@ -270,8 +270,16 @@ export default function ScheduledReturn({ user }) {
                       style={{ marginRight: '0px', justifyContent: 'flex-end' }}
                     >
                       <div className='sched-time-container'>
-                        <h4>Pick-up in &nbsp;</h4>
-                        <h4 className='sched-value'>{`59 minutes`}</h4>
+                        <h4>Pick-up on &nbsp;</h4>
+                        <h4 className='sched-value'>June 5, 2021</h4>
+                      </div>
+                    </Row>
+                    <Row
+                      style={{ marginRight: '0px', justifyContent: 'flex-end' }}
+                    >
+                      <div className='sched-time-container'>
+                        <h4>Between &nbsp;</h4>
+                        <h4 className='sched-value'>9 am to 12 pm </h4>
                       </div>
                     </Row>
                     <Row
@@ -290,6 +298,7 @@ export default function ScheduledReturn({ user }) {
                       className='cancel-action-container'
                       style={{
                         marginRight: '0px',
+                        justifyContent: 'flex-end',
                       }}
                     >
                       <button
