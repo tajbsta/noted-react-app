@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ReturnCategory from '../../components/ReturnCategory';
 import RightCard from './components/RightCard';
-import { getUserId, getUser } from '../../utils/auth';
+import { getUserId, getUser, updateUserAttributes } from '../../utils/auth';
 import { getAccounts } from '../../utils/accountsApi';
 import { clearSearchQuery } from '../../actions/runtime.action';
 import { setCartItems } from '../../actions/cart.action';
@@ -19,6 +19,7 @@ import AddProductModal from '../../modals/AddProductModal';
 import ScheduledCard from './components/ScheduledCard';
 import Scanning from './components/Scanning';
 import { scrollToTop } from '../../utils/window';
+import { scrapeOlderEmails } from '../../utils/auth';
 
 const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 
@@ -33,8 +34,9 @@ function DashboardPage() {
   );
   const [loading, setLoading] = useState(true);
   const [showScanning, setShowScanning] = useState(false);
+  const [user, setUser] = useState('');
   const [userId, setUserId] = useState('');
-  const [modalEmailShow, setModalEmailShow] = useState(false);
+  const [showScanOlderButton, setShowScanOlderButton] = useState(false);
   const [modalProductShow, setModalProductShow] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState({
     [LAST_CALL]: [],
@@ -86,6 +88,19 @@ function DashboardPage() {
     }
   }
 
+  const scanOlderRequest = async () => {
+    setShowScanOlderButton(false);
+    try {
+      setLoading(true);
+      await scrapeOlderEmails(userId);
+      await updateUserAttributes({ 'custom:scan_older_done': '1' });
+      setLoading(false);
+    } catch (error) {
+      // TODO: show error alert here
+      setLoading(false);
+    }
+  };
+
   const updateSelectedItems = (data) => {
     const updatedSelectedProducts = selectedProducts;
 
@@ -127,6 +142,20 @@ function DashboardPage() {
       window.removeEventListener('resize', handleResize);
     };
   });
+
+  useEffect(() => {
+    (async () => {
+      // await updateUserAttributes({ 'custom:scan_older_done': '0' });
+      const user = await getUser();
+      console.log({
+        user,
+      });
+      setUser(user);
+      setShowScanOlderButton(user['custom:scan_older_done'] !== '1');
+    })();
+  }, []);
+
+  console.log(user['custom:scan_older_done']);
 
   return (
     <div id='DashboardPage'>
@@ -246,9 +275,9 @@ function DashboardPage() {
                             onClick={() => setModalProductShow(true)}
                             style={{ padding: '0px' }}
                           >
-                            <div className='noted-purple sofia-pro line-height-16 text-add'>
+                            <h4 className='mb-0 noted-purple sofia-pro line-height-16 text-add'>
                               &nbsp; Add it manually
-                            </div>
+                            </h4>
                           </button>
                         </div>
                       </div>
@@ -267,16 +296,30 @@ function DashboardPage() {
                       show={modalProductShow}
                       onHide={() => setModalProductShow(false)}
                     />
-
-                    <div className='row justify-center mt-2 mobile-footer-row'>
-                      <div className='col-sm-6 text-center'>
-                        <button className='btn btn-footer'>
-                          <div className='text-center noted-purple sofia-pro line-height-16 text-new-email'>
-                            Scan for older items
+                    {showScanOlderButton && (
+                      <>
+                        <div className='row justify-center mt-2 mobile-footer-row'>
+                          <div className='col-sm-6 text-center'>
+                            {loading && (
+                              <Spinner
+                                className='mr-3 noted-purple'
+                                animation='border'
+                                size='md'
+                                style={{ height: '1.5rem', width: '1.5rem' }}
+                              />
+                            )}
+                            <button
+                              className='btn btn-footer'
+                              onClick={scanOlderRequest}
+                            >
+                              <h4 className='text-center mb-0 noted-purple sofia-pro line-height-16 text-new-email'>
+                                Scan for older items
+                              </h4>
+                            </button>
                           </div>
-                        </button>
-                      </div>
-                    </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 )}
               </>

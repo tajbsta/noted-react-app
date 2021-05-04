@@ -100,3 +100,15 @@ export const uploadProfilePic = async (userId, currentProfile = null, file) => {
     profile: photoPublicUrl
   })
 }
+
+// scan emails older than 90 days
+export const scrapeOlderEmails = async (userId) => {
+  try {
+    const axios = await api();
+    await axios.post(`/${userId}/scrape/older`);
+    localStorage.setItem('scan_older_done', true)
+  } catch (error) {
+    // TODO: Error
+    console.log('Show error alert')
+  }
+}

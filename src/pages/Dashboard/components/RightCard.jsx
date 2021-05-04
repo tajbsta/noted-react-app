@@ -250,7 +250,7 @@ function RightCard({ userId, setSelectedProducts }) {
                 }}
               >
                 <PickUpButton
-                  leadingText='Pickup later'
+                  leadingText='Pickup'
                   disabled={!items.length || loading}
                   price='9.99'
                   backgroundColor='#570097'
