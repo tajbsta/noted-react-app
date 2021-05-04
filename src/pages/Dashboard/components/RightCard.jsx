@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import axios from 'axios';
 
-import { calculatePricing } from '../../../utils/productsApi';
+import { calculateMetrics } from '../../../utils/productsApi';
 import NotedCheckbox from '../../../components/NotedCheckbox';
 import { setCartItems } from '../../../actions/cart.action';
 import {
@@ -61,7 +61,7 @@ function RightCard({ userId, setSelectedProducts }) {
       const cartItems = [...currentItems];
       const productIds = cartItems.map((x) => x._id);
 
-      const data = await calculatePricing(userId, productIds);
+      const data = await calculateMetrics(userId, productIds);
 
       setPricing({
         totalReturns: data.totalReturns,

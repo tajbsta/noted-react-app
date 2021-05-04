@@ -30,6 +30,7 @@ function PickUpDetails({ address, payment, details }) {
     errors: addressFormErrors,
     handleChange: handleAddressChange,
     values: addressFormValues,
+    setFieldValue,
   } = useFormik({
     initialValues: {
       fullName: get(address, 'fullName', ''),
@@ -39,6 +40,7 @@ function PickUpDetails({ address, payment, details }) {
       line1: get(address, 'line1', ''),
       line2: get(address, 'line2', ''),
       phoneNumber: get(address, 'phoneNumber', ''),
+      instructions: get(address, 'instructions', ''),
     },
     validationSchema: pickUpAddressSchema,
   });
@@ -185,7 +187,9 @@ function PickUpDetails({ address, payment, details }) {
 
                 <AddPickupModal
                   show={modalShow}
+                  instructions={addressFormValues.instructions}
                   onHide={() => setModalShow(false)}
+                  setFieldValue={setFieldValue}
                 />
 
                 {isAddressFormEmpty && (

@@ -290,7 +290,13 @@ export default function ScheduledReturn({ user }) {
                     >
                       <div className='total-items-container'>
                         <h4>Total&nbsp;</h4>
-                        <h4 className='sched-value'>{`1 item`}</h4>
+                        <h4 className='sched-value'>
+                          {' '}
+                          {get(items, 'length', 0)}{' '}
+                          {`${
+                            get(items, 'length', 0) === 1 ? 'item' : 'items'
+                          }`}{' '}
+                        </h4>
                       </div>
                     </Row>
 

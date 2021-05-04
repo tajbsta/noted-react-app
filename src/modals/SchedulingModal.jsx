@@ -18,8 +18,6 @@ const morningTimeSlots = [
   },
 ];
 
-console.log(generateSchedules());
-
 export default function SchedulingModal(props) {
   const [isMobile, setIsMobile] = useState(false);
   const { form, onConfirm } = props;
@@ -108,7 +106,7 @@ export default function SchedulingModal(props) {
         <div
           key={day}
           className={`col ${
-            pickUpDateValues.date &&
+            pickUpDateValues.date instanceof moment &&
             pickUpDateValues.date.format('YYYY MM DD') ===
               day.format('YYYY MM DD')
               ? 'day-container-selected'
