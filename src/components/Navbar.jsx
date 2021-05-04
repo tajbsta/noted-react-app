@@ -85,6 +85,7 @@ const Topnav = () => {
   };
 
   const submitsearch = (e) => {
+    console.log(e);
     if (e.key === 'Enter') {
       dispatch(searchScans(e.target.value));
     }

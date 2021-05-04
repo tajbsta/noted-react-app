@@ -16,7 +16,14 @@ export default function AddPickupModal(props) {
       >
         <div className='header'>
           <Modal.Title>Add Pick-up instructions</Modal.Title>
-          <Button className='clear'>Clear Instructions</Button>
+          <Button
+            className='clear'
+            onClick={() => {
+              props.setFieldValue('instructions', '');
+            }}
+          >
+            Clear Instructions
+          </Button>
         </div>
         <Modal.Body>
           <Form>
@@ -33,6 +40,10 @@ export default function AddPickupModal(props) {
             name the sales order is under must be present and would be able to
             pick up with an valid ID.
             '
+                value={props.instructions}
+                onChange={(e) => {
+                  props.setFieldValue('instructions', e.target.value);
+                }}
               />
             </Form.Group>
             <div className='button-group'>

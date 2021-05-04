@@ -26,7 +26,6 @@ function ProductCard({
   toggleSelected,
   onRemove = () => {},
   confirmed = false,
-  key = '',
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -192,7 +191,7 @@ function ProductCard({
                 }}
               >
                 <NotedCheckbox
-                  disabled={disabled}
+                  disabled={disabled || daysLeft <= 2}
                   checked={selected}
                   onChangeState={handleSelection}
                 />

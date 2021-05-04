@@ -13,9 +13,11 @@ export default function AddressForm({
   line2 = '',
   city = '',
   phoneNumber = '',
+  instructions = '',
   errors,
-  handleChange,
-  onDoneClick,
+  handleChange = () => {},
+  onDoneClick = () => {},
+  setFieldValue = () => {},
 }) {
   const [modalShow, setModalShow] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -251,18 +253,24 @@ export default function AddressForm({
                 >
                   <button
                     className='btn mobile-address-form-instructions'
-                    onClick={() => setModalShow(true)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setModalShow(true);
+                    }}
                   >
                     <h4
                       className='text-instructions'
                       style={{ marginBottom: '0px' }}
                     >
-                      Add pick-up instructions
+                      {instructions.length > 0 ? 'Edit' : 'Add'} pick-up
+                      instructions
                     </h4>
                   </button>
                 </Col>
 
                 <AddPickupModal
+                  instructions={instructions}
+                  setFieldValue={setFieldValue}
                   show={modalShow}
                   onHide={() => setModalShow(false)}
                 />
@@ -433,12 +441,15 @@ export default function AddressForm({
                     onClick={() => setModalShow(true)}
                   >
                     <h4 className='text-instructions'>
-                      Add pick-up instructions
+                      {instructions.length > 0 ? 'Edit' : 'Add'} pick-up
+                      instructions
                     </h4>
                   </button>
                 </Col>
 
                 <AddPickupModal
+                  instructions={instructions}
+                  setFieldValue={setFieldValue}
                   show={modalShow}
                   onHide={() => setModalShow(false)}
                 />

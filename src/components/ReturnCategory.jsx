@@ -8,7 +8,6 @@ import { getProducts } from '../utils/productsApi';
 import NotedCheckbox from './NotedCheckbox';
 import { useSelector } from 'react-redux';
 import { DONATE } from '../constants/actions/runtime';
-import { get } from 'lodash-es';
 import { timeout } from '../utils/time';
 
 function ReturnCategory({
@@ -18,6 +17,7 @@ function ReturnCategory({
   category,
   search,
   updateSelectedItems = () => {},
+  selectedProducts = [],
   width,
   percent,
 }) {
@@ -100,16 +100,18 @@ function ReturnCategory({
     fetchItems(nextPageToken);
   };
 
-  const toggleSelected = (item) => {
-    const list = [...selectedItems];
+  const toggleSelected = async (item) => {
+    const list = [...selectedProducts];
 
     const index = list.findIndex((x) => x._id === item._id);
+    /**
+     * should we query database for
+     */
     if (index !== -1) {
       list.splice(index, 1);
     } else {
       list.push(item);
     }
-
     setSelectedItems(list);
 
     if (item.transferred) {
@@ -144,11 +146,8 @@ function ReturnCategory({
             <NotedCheckbox
               onChangeState={handleSelectAll}
               checked={
-                selectedItems.length > 0 &&
-                items.length ===
-                  cartItems.filter(
-                    ({ category: itemCategory }) => itemCategory === category
-                  ).length
+                selectedProducts.length > 0 &&
+                items.length === selectedProducts.length
               }
               disabled={items.length === 0}
             />
