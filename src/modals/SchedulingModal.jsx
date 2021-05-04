@@ -112,7 +112,10 @@ export default function SchedulingModal(props) {
               ? 'day-container-selected'
               : 'day-container '
           }`}
-          onClick={() => onDateSelect('date', day)}
+          onClick={() => {
+            onDateSelect('date', day);
+            onDateSelect('time', null);
+          }}
         >
           <div className='row day'>{day && dayTitle}</div>
           <div className='row date'>
