@@ -66,6 +66,5 @@ export const CLEAR_CURRENT_ORDER = 'CLEAR_CURRENT_ORDER';
 /**
  * @FORM :: edit a product
  */
-
 export const MOUNT_PRODUCT_IN_EDIT = 'MOUNT_PRODUCT_IN_EDIT';
 export const UNMOUNT_PRODUCT_IN_EDIT = 'UNMOUNT_PRODUCT_IN_EDIT';

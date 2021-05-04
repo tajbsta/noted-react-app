@@ -357,6 +357,8 @@ function PickUpDetails() {
                 )}
 
                 <AddPickupModal
+                  instructions={addressFormValues.instructions}
+                  setFieldValue={setFieldValue}
                   show={modalShow}
                   onHide={() => setModalShow(false)}
                 />

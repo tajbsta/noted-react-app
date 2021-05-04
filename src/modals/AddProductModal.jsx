@@ -7,8 +7,11 @@ import Flatpickr from 'react-flatpickr';
 import { addProductSchema } from '../models/formSchema';
 import { useFormik } from 'formik';
 import { getFileTypeIcon } from '../utils/file';
+import { useDispatch } from 'react-redux';
+import { addProductInReview } from '../actions/products.action';
 
 export default function AddProductModal(props) {
+  const dispatch = useDispatch();
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -45,7 +48,7 @@ export default function AddProductModal(props) {
 
   const hiddenFileInput = useRef(null);
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     hiddenFileInput.current.click();
   };
 
@@ -106,6 +109,7 @@ export default function AddProductModal(props) {
 
   // Display Image Component
   const ImageThumb = ({ image }) => {
+    console.log(image);
     return (
       <img
         src={URL.createObjectURL(image)}
@@ -113,6 +117,23 @@ export default function AddProductModal(props) {
         className='product-placeholder'
       />
     );
+  };
+
+  const onSave = (e) => {
+    e.preventDefault();
+    const newProduct = {
+      productUrl,
+      vendorTag,
+      orderDate,
+      orderRef,
+      itemName,
+      amount,
+      returnDocument,
+      thumbnail: URL.createObjectURL(file),
+    };
+
+    dispatch(addProductInReview(newProduct));
+    props.onHide();
   };
 
   return (
@@ -299,7 +320,7 @@ export default function AddProductModal(props) {
                 <Button className='btn-cancel' onClick={props.onHide}>
                   Cancel
                 </Button>
-                <Button className='btn-save' type='submit'>
+                <Button className='btn-save' type='submit' onClick={onSave}>
                   Save Changes
                 </Button>
               </Col>
