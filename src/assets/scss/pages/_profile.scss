@@ -499,4 +499,77 @@
       text-decoration: underline;
     }
   }
+
+  #ProductsInReview {
+    #productCard {
+      margin-top: 20px;
+
+      .product-img-container {
+        display: flex !important;
+        align-items: center !important;
+        align-content: center !important;
+      }
+
+      .product-name {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 19px;
+        text-align: left;
+        z-index: 1;
+
+        @media (max-width: 991px) {
+          line-height: 14px;
+          margin-bottom: 0px !important;
+          z-index: inherit;
+        }
+      }
+
+      .product-price {
+
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 15px;
+      }
+
+      .pending-status {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        line-height: 14px;
+        color: #0E0018;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+      }
+
+      .rejected-status {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        line-height: 14px;
+        text-align: right;
+        color: #EB5757;
+        mix-blend-mode: normal;
+      }
+
+      .accepted-status {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        line-height: 14px;
+        text-align: right;
+        color: #2E1D3A;
+        mix-blend-mode: normal;
+      }
+
+      .return-item-brand {
+        display: flex;
+        align-items: center;
+        width: 10%;
+      }
+
+      .return-score {
+        margin-bottom: 5px !important;
+      }
+    }
+  }
 }
