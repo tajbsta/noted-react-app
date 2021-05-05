@@ -14,7 +14,7 @@ function products(state = initialState, { type, data }) {
         items: data,
       };
     case ADD_PRODUCT_IN_REVIEW:
-      return { items: [...state.items, data] };
+      return { items: [...state.items, { ...data, status: 'pending' }] };
     default:
       return state;
   }
