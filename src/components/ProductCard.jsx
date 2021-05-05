@@ -302,7 +302,7 @@ function ProductCard({
                                 color: isNotEligible ? 'red' : '#8B888C',
                               }}
                             >
-                              {daysLeft} days left
+                              {daysLeft} {daysLeft == 1 ? 'day' : 'days'} left
                             </div>
                           </>
                         )}
@@ -494,7 +494,7 @@ function ProductCard({
                       color: isNotEligible ? 'red' : '#8B888C',
                     }}
                   >
-                    {daysLeft} days left
+                    {daysLeft} {daysLeft == 1 ? 'day' : 'days'} left
                   </div>
                   <div className='col-sm-3 return-score'>
                     <ReturnScore score={item.vendor_data.rating} />
