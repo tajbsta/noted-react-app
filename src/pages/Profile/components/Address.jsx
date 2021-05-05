@@ -66,6 +66,7 @@ export default function Address({ user }) {
       setFieldValue('city', user['custom:city']);
       setFieldValue('state', user['custom:state']);
       setFieldValue('zipCode', user['custom:zipcode']);
+      setFieldValue('instructions', user['custom:pickup_instructions']);
     }
   }, [user]);
 
@@ -77,6 +78,7 @@ export default function Address({ user }) {
     city = '',
     state = '',
     zipCode,
+    instructions = '',
   } = addressFormValues;
 
   const renderInlineValidationError = (fieldName) => {
@@ -105,6 +107,7 @@ export default function Address({ user }) {
         'custom:city': city || '',
         'custom:state': state || '',
         'custom:zipcode': zipCode || '',
+        'custom:pickup_instructions': instructions,
       };
 
       await updateUserAttributes(attributes);
@@ -323,7 +326,8 @@ export default function Address({ user }) {
                     }}
                   >
                     <h4 className='text-instructions'>
-                      Add pick-up instructions
+                      {instructions.length > 0 ? 'Edit' : 'Add'} pick-up
+                      instructions
                     </h4>
                   </button>
                 </Col>
@@ -532,7 +536,8 @@ export default function Address({ user }) {
                     }}
                   >
                     <h4 className='text-instructions'>
-                      Add pick-up instructions
+                      {instructions.length > 0 ? 'Edit' : 'Add'} pick-up
+                      instructions
                     </h4>
                   </button>
                 </Col>
@@ -642,6 +647,7 @@ export default function Address({ user }) {
           show={modalShow}
           onHide={() => setModalShow(false)}
           setFieldValue={setFieldValue}
+          instructions={instructions}
         />
       </div>
     </>
