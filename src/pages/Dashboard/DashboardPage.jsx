@@ -145,7 +145,7 @@ function DashboardPage() {
 
   useEffect(() => {
     (async () => {
-      await updateUserAttributes({ 'custom:scan_older_done': '0' });
+      // await updateUserAttributes({ 'custom:scan_older_done': '0' });
       const user = await getUser();
       console.log({
         user,
