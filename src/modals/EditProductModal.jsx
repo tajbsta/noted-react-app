@@ -30,7 +30,7 @@ export default function EditProductModal(props) {
     vendorTag,
     orderDate,
     itemName,
-    amount,
+    amount = Number(0),
     vendorLogo,
   } = values;
 
@@ -276,7 +276,10 @@ export default function EditProductModal(props) {
                         <Form.Control
                           name='amount'
                           onChange={handleChange}
-                          value={amount.toFixed(2)}
+                          value={
+                            typeof amount === 'number' && amount.toFixed(2)
+                          }
+                          type='number'
                         />
                       </div>
                       {amount.length > 0 && renderInlineError(errors.amount)}
