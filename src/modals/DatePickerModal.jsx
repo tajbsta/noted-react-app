@@ -75,7 +75,7 @@ export default function SchedulingModal(props) {
               className='sofia-pro availableTimeSlot'
               style={{
                 fontSize: 11,
-                opacity: 0.6,
+                // opacity: 0.6,
               }}
             >
               Available Time Slots: 2
