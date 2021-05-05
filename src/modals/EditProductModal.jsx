@@ -275,11 +275,10 @@ export default function EditProductModal(props) {
                       <div>
                         <Form.Control
                           name='amount'
-                          onChange={handleChange}
-                          value={
-                            typeof amount === 'number' && amount.toFixed(2)
-                          }
-                          type='number'
+                          onChange={(e) => {
+                            setFieldValue('amount', Number(e.target.value));
+                          }}
+                          value={amount.toFixed(2)}
                         />
                       </div>
                       {amount.length > 0 && renderInlineError(errors.amount)}
