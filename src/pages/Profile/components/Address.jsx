@@ -43,6 +43,7 @@ export default function Address({ user }) {
       city: '',
       state: '',
       zipCode: '',
+      instructions: '',
     },
     validationSchema: pickUpAddressSchema,
   });
@@ -57,6 +58,7 @@ export default function Address({ user }) {
 
   useEffect(() => {
     if (user) {
+      console.log(user);
       setFieldValue('fullName', user.name);
       setFieldValue('phoneNumber', user['custom:phone']);
       setFieldValue('line1', user.address);
@@ -636,7 +638,11 @@ export default function Address({ user }) {
           {/*DESKTOP VIEW */}
           {!isMobile && renderAddressDesktopView()}
         </Collapsible>
-        <AddPickupModal show={modalShow} onHide={() => setModalShow(false)} />
+        <AddPickupModal
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          setFieldValue={setFieldValue}
+        />
       </div>
     </>
   );
