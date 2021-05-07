@@ -502,7 +502,7 @@ function ProductCard({
                 </>
               )}
 
-              {!isHover && !selected && isDonate && (
+              {!isHover && !selected && isDonate && isViewScan && (
                 <>
                   <div
                     className='col-sm-6 sofia-pro return-time-left'
