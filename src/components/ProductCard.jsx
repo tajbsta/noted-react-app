@@ -15,6 +15,7 @@ import EditProductModal from '../modals/EditProductModal';
 import { useFormik } from 'formik';
 import { addProductSchema } from '../models/formSchema';
 import { useHistory } from 'react-router';
+import numeral from 'numeral';
 
 function ProductCard({
   selectable = true,
@@ -150,7 +151,7 @@ function ProductCard({
 
   const { handleChange, values, setFieldValue, errors } = useFormik({
     initialValues: {
-      amount: get(item, 'price', ''),
+      amount: numeral(get(item, 'price', 0)).format('$0.00'),
       vendorTag: get(item, 'vendor', ''),
       orderDate: get(item, 'order_date', ''),
       itemName: get(item, 'name', ''),

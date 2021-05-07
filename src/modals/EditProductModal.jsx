@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
@@ -31,7 +31,7 @@ export default function EditProductModal(props) {
     vendorTag,
     orderDate,
     itemName,
-    amount = Number(0),
+    amount,
     vendorLogo,
   } = values;
 
@@ -281,7 +281,7 @@ export default function EditProductModal(props) {
                           onBlur={(e) =>
                             setFieldValue(
                               'amount',
-                              numeral(e.target.value).format('0.0')
+                              numeral(e.target.value).format('$0.00')
                             )
                           }
                         />

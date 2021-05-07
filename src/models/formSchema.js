@@ -82,7 +82,7 @@ export const addProductSchema = Yup.object({
   orderDate: Yup.string().required('Order date is required'),
   orderRefNo: Yup.string().required('Order ref # is required'),
   itemName: Yup.string().required('Product name is required'),
-  amount: Yup.number().required("Product's amount is required"),
+  amount: Yup.string().required("Product's amount is required"),
   returnDocument: Yup.object()
     .shape({
       name: Yup.string().required(),
