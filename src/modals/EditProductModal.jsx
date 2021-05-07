@@ -5,11 +5,12 @@ import { UploadCloud } from 'react-feather';
 import { useDropzone } from 'react-dropzone';
 import Flatpickr from 'react-flatpickr';
 import { useDispatch, useSelector } from 'react-redux';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { updateScans } from '../actions/scans.action';
 import { unmountProductedit } from '../actions/runtime.action';
 import moment from 'moment';
 import { getFileTypeIcon } from '../utils/file';
+import numeral from 'numeral';
 
 export default function EditProductModal(props) {
   const dispatch = useDispatch();
@@ -275,10 +276,14 @@ export default function EditProductModal(props) {
                       <div>
                         <Form.Control
                           name='amount'
-                          onChange={(e) => {
-                            setFieldValue('amount', Number(e.target.value));
-                          }}
-                          value={amount.toFixed(2)}
+                          onChange={handleChange}
+                          value={amount}
+                          onBlur={(e) =>
+                            setFieldValue(
+                              'amount',
+                              numeral(e.target.value).format('0.0')
+                            )
+                          }
                         />
                       </div>
                       {amount.length > 0 && renderInlineError(errors.amount)}
