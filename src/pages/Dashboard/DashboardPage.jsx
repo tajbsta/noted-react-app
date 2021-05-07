@@ -147,15 +147,10 @@ function DashboardPage() {
     (async () => {
       // await updateUserAttributes({ 'custom:scan_older_done': '0' });
       const user = await getUser();
-      console.log({
-        user,
-      });
       setUser(user);
       setShowScanOlderButton(user['custom:scan_older_done'] !== '1');
     })();
   }, []);
-
-  console.log(user['custom:scan_older_done']);
 
   return (
     <div id='DashboardPage'>
@@ -208,7 +203,7 @@ function DashboardPage() {
                         size={5}
                         category={LAST_CALL && NOT_ELIGIBLE}
                         updateSelectedItems={updateSelectedItems}
-                        selectedProducts={selectedProducts[LAST_CALL]}
+                        selectedProducts={selectedProducts.LAST_CALL}
                       />
                     </div>
                     <div className='mt-4 returnable-items'>
@@ -218,7 +213,7 @@ function DashboardPage() {
                         size={5}
                         category={RETURNABLE}
                         updateSelectedItems={updateSelectedItems}
-                        selectedProducts={selectedProducts[RETURNABLE]}
+                        selectedProducts={selectedProducts.RETURNABLE}
                       />
                     </div>
                     <div>
@@ -233,7 +228,7 @@ function DashboardPage() {
                         size={5}
                         category={DONATE}
                         updateSelectedItems={updateSelectedItems}
-                        selectedProducts={selectedProducts[DONATE]}
+                        selectedProducts={selectedProducts.DONATE}
                       />
                     </div>
                     <div>

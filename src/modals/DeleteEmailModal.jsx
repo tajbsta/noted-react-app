@@ -21,7 +21,6 @@ export default function DeleteEmailModal(props) {
     try {
       setLoading(true);
       const account = props.account;
-      console.log({ account });
       await deleteAccount(account.user, account.id);
       props.deletesuccess();
       setLoading(false);
