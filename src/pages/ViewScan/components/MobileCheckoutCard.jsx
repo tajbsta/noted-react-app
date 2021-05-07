@@ -19,7 +19,8 @@ export default function MobileCheckoutCard({
           <Row>
             <Col>
               <h3 className='m-product-to-return'>
-                {inReturn.length} product to return
+                {inReturn.length} {inReturn.length > 1 ? 'products' : 'product'}{' '}
+                to return
               </h3>
             </Col>
           </Row>

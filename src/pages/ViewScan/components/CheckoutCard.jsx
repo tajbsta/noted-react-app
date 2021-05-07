@@ -24,7 +24,8 @@ export default function CheckoutCard({
         >
           <div className='card shadow-sm p-3 pick-up-card'>
             <h3 className='sofia-pro products-to-return mb-1'>
-              {inReturn.length} product to return
+              {inReturn.length} {inReturn.length > 1 ? 'products' : 'product'}{' '}
+              to return
             </h3>
             <h3 className='box-size-description'>
               All products need to fit in a 12”W x 12”H x 20”L box

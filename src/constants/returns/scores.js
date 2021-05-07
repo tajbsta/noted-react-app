@@ -2,7 +2,7 @@ import BelowIconSvg from "../../assets/icons/Below.svg";
 import ExcellentIconSvg from "../../assets/icons/Excellent.svg";
 import FairIconSvg from "../../assets/icons/Fair.svg";
 import GreatIconSVg from "../../assets/icons/Great.svg";
-import QuestionMarkSvg from "../../assets/icons/QuestionMark";
+import QuestionMarkSvg from "../../assets/icons/QuestionMark.svg";
 
 export const EXCELLENT = "excellent";
 export const GREAT = "great";
