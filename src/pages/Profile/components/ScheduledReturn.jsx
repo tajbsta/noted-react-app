@@ -155,7 +155,11 @@ export default function ScheduledReturn({ user }) {
                       <div className='title-col'>
                         <div className='title'>Scheduled Return</div>
                         <div className='total'>
-                          {get(items, 'length', 0)} items in total
+                          {get(items, 'length', 0)}{' '}
+                          {`${
+                            get(items, 'length', 0) === 1 ? 'item' : 'items'
+                          }`}{' '}
+                          in total
                         </div>
                       </div>
                       <div className='button-col col'>
@@ -199,7 +203,11 @@ export default function ScheduledReturn({ user }) {
                       <div className='title-col col'>
                         <div className='title'>Scheduled Return</div>
                         <div className='total'>
-                          {get(items, 'length', 0)} items in total
+                          {get(items, 'length', 0)}{' '}
+                          {`${
+                            get(items, 'length', 0) === 1 ? 'item' : 'items'
+                          }`}{' '}
+                          in total
                         </div>
                       </div>
                       <div className='product-img-col col-6'>
