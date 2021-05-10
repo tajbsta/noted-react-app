@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, forwardRef } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
@@ -10,6 +10,8 @@ import { getFileTypeIcon } from '../utils/file';
 import { useDispatch } from 'react-redux';
 import { addProductInReview } from '../actions/products.action';
 import { formatCurrency } from '../library/number';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/src/stylesheets/datepicker.scss';
 
 export default function AddProductModal(props) {
   const dispatch = useDispatch();
@@ -137,6 +139,32 @@ export default function AddProductModal(props) {
     props.onHide();
   };
 
+  const renderDatePicker = () => {
+    const [startDate, setStartDate] = useState(new Date());
+    // eslint-disable-next-line react/display-name
+    const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
+      <button
+        className='btn'
+        onClick={(e) => {
+          e.preventDefault();
+          onClick();
+        }}
+        ref={ref}
+      >
+        {value}
+      </button>
+    ));
+    return (
+      <div id='DatePicker'>
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
+          customInput={<ExampleCustomInput />}
+        />
+      </div>
+    );
+  };
+
   return (
     <div>
       <Modal
@@ -233,17 +261,7 @@ export default function AddProductModal(props) {
                   <Col>
                     <Form.Group>
                       <Form.Label>Order Date</Form.Label>
-                      <div>
-                        <Flatpickr
-                          className='c-date-picker'
-                          options={{
-                            dateFormat: 'M j, Y',
-                            monthSelectorType: 'static',
-                            showMonths: 1,
-                          }}
-                        />
-                      </div>
-                      {/* {renderInlineError(errors.orderDate)} */}
+                      <div>{renderDatePicker()}</div>
                     </Form.Group>
                   </Col>
                   <Col>
