@@ -9,7 +9,7 @@ import { useFormik } from 'formik';
 import { getFileTypeIcon } from '../utils/file';
 import { useDispatch } from 'react-redux';
 import { addProductInReview } from '../actions/products.action';
-import numeral from 'numeral';
+import { formatCurrency } from '../library/number';
 
 export default function AddProductModal(props) {
   const dispatch = useDispatch();
@@ -289,7 +289,7 @@ export default function AddProductModal(props) {
                           onBlur={(e) =>
                             setFieldValue(
                               'amount',
-                              numeral(e.target.value).format('$0.00')
+                              formatCurrency(e.target.value)
                             )
                           }
                         />

@@ -10,7 +10,7 @@ import { updateScans } from '../actions/scans.action';
 import { unmountProductedit } from '../actions/runtime.action';
 import moment from 'moment';
 import { getFileTypeIcon } from '../utils/file';
-import numeral from 'numeral';
+import { formatCurrency } from '../library/number';
 
 export default function EditProductModal(props) {
   const dispatch = useDispatch();
@@ -281,7 +281,7 @@ export default function EditProductModal(props) {
                           onBlur={(e) =>
                             setFieldValue(
                               'amount',
-                              numeral(e.target.value).format('$0.00')
+                              formatCurrency(e.target.value)
                             )
                           }
                         />
