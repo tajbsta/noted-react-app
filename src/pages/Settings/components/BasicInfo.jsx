@@ -50,6 +50,22 @@ export default function BasicInfo({ user }) {
     <small className='form-text p-0 m-0 noted-red'>{errors}</small>
   );
 
+  const [focused, setFocused] = useState({
+    ...Object.keys((key) => ({ [key]: false })),
+  });
+
+  const onFocus = (e) => {
+    setFocused({ ...focused, [e.target.name]: true });
+  };
+
+  const renderInlineValidationError = (fieldName) => {
+    const error = errors[fieldName];
+    return (
+      focused[fieldName] &&
+      error && <small className='form-text p-0 m-0 noted-red'>{error}</small>
+    );
+  };
+
   useEffect(() => {
     // console.log({ user });
 
@@ -155,11 +171,12 @@ export default function BasicInfo({ user }) {
                         className='form-control'
                         type='name'
                         name='fullName'
+                        onFocus={onFocus}
                         value={fullName || ''}
                         {...noBorder}
                         onChange={handleChange}
                       />
-                      {renderInlineError(errors.fullName)}
+                      {renderInlineValidationError('fullName')}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -175,6 +192,7 @@ export default function BasicInfo({ user }) {
                           name='state'
                           onChange={handleChange}
                           placeholder='Select State'
+                          onFocus={onFocus}
                           defaultValue='null'
                           {...noBorder}
                         >
@@ -191,10 +209,11 @@ export default function BasicInfo({ user }) {
                           ))}
                         </Form.Control>
                       )}
-                      {!isEmpty(state) && renderInlineError(errors.state)}
+                      {renderInlineValidationError('state')}
 
                       {!isEditing && (
                         <Form.Control
+                          onFocus={onFocus}
                           className='form-control'
                           type='zip code'
                           value={state}
@@ -207,6 +226,7 @@ export default function BasicInfo({ user }) {
                     <Form.Group>
                       <Form.Label>Zip Code</Form.Label>
                       <Form.Control
+                        onFocus={onFocus}
                         className='form-control'
                         onChange={(e) => {
                           const re = /^[0-9\b]+$/;
@@ -222,7 +242,7 @@ export default function BasicInfo({ user }) {
                         value={zipCode || ''}
                         {...noBorder}
                       />
-                      {!isEmpty(zipCode) && renderInlineError(errors.zipCode)}
+                      {renderInlineValidationError('zipCode')}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -231,6 +251,7 @@ export default function BasicInfo({ user }) {
                     <Form.Group>
                       <Form.Label>Address Line 1</Form.Label>
                       <Form.Control
+                        onFocus={onFocus}
                         className='form-control'
                         type='name'
                         name='line1'
@@ -238,7 +259,7 @@ export default function BasicInfo({ user }) {
                         value={line1 || ''}
                         {...noBorder}
                       />
-                      {!isEmpty(line1) && renderInlineError(errors.line1)}
+                      {renderInlineValidationError('line1')}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -247,6 +268,7 @@ export default function BasicInfo({ user }) {
                     <Form.Group>
                       <Form.Label>Address Line 2</Form.Label>
                       <Form.Control
+                        onFocus={onFocus}
                         className='form-control'
                         type='name'
                         value={line2 || ''}
@@ -262,6 +284,7 @@ export default function BasicInfo({ user }) {
                     <Form.Group>
                       <Form.Label>City</Form.Label>
                       <Form.Control
+                        onFocus={onFocus}
                         className='form-control'
                         type='city'
                         name='city'
@@ -269,13 +292,14 @@ export default function BasicInfo({ user }) {
                         onChange={handleChange}
                         {...noBorder}
                       />
-                      {!isEmpty(city) && renderInlineError(errors.city)}
+                      {renderInlineValidationError('city')}
                     </Form.Group>
                   </Col>
                   <Col>
                     <Form.Group>
                       <Form.Label>Phone</Form.Label>
                       <Form.Control
+                        onFocus={onFocus}
                         className='form-control'
                         type='phone number'
                         onChange={(e) => {
@@ -292,8 +316,7 @@ export default function BasicInfo({ user }) {
                         maxLength={13}
                         {...noBorder}
                       />
-                      {!isEmpty(phoneNumber) &&
-                        renderInlineError(errors.phoneNumber)}
+                      {renderInlineValidationError('phoneNumber')}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -354,6 +377,7 @@ export default function BasicInfo({ user }) {
                   <Form.Group>
                     <Form.Label>Full Name</Form.Label>
                     <Form.Control
+                      onFocus={onFocus}
                       className='form-control-lg'
                       type='name'
                       name='fullName'
@@ -361,7 +385,7 @@ export default function BasicInfo({ user }) {
                       {...noBorder}
                       onChange={handleChange}
                     />
-                    {!isEmpty(fullName) && renderInlineError(errors.fullName)}
+                    {renderInlineValidationError('fullName')}
                   </Form.Group>
                 </Col>
                 <Col>
@@ -369,6 +393,7 @@ export default function BasicInfo({ user }) {
                     <Form.Label>State</Form.Label>
                     {isEditing && (
                       <Form.Control
+                        onFocus={onFocus}
                         className='form-control-md'
                         as='select'
                         value={state || ''}
@@ -388,10 +413,11 @@ export default function BasicInfo({ user }) {
                         ))}
                       </Form.Control>
                     )}
-                    {!isEmpty(state) && renderInlineError(errors.state)}
+                    {renderInlineValidationError('state')}
 
                     {!isEditing && (
                       <Form.Control
+                        onFocus={onFocus}
                         className='form-control-sm'
                         type='zip code'
                         value={state}
@@ -404,6 +430,7 @@ export default function BasicInfo({ user }) {
                   <Form.Group>
                     <Form.Label>Zip Code</Form.Label>
                     <Form.Control
+                      onFocus={onFocus}
                       className='form-control-md'
                       onChange={(e) => {
                         const re = /^[0-9\b]+$/;
@@ -416,7 +443,7 @@ export default function BasicInfo({ user }) {
                       value={zipCode || ''}
                       {...noBorder}
                     />
-                    {!isEmpty(zipCode) && renderInlineError(errors.zipCode)}
+                    {renderInlineValidationError('zipCode')}
                   </Form.Group>
                 </Col>
               </Row>
@@ -426,6 +453,7 @@ export default function BasicInfo({ user }) {
                   <Form.Group>
                     <Form.Label>Address Line 1</Form.Label>
                     <Form.Control
+                      onFocus={onFocus}
                       className='form-control-lg'
                       type='name'
                       name='line1'
@@ -433,13 +461,14 @@ export default function BasicInfo({ user }) {
                       value={line1 || ''}
                       {...noBorder}
                     />
-                    {!isEmpty(line1) && renderInlineError(errors.line1)}
+                    {renderInlineValidationError('line1')}
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group>
                     <Form.Label>City</Form.Label>
                     <Form.Control
+                      onFocus={onFocus}
                       className='form-control-md'
                       type='city'
                       name='city'
@@ -447,13 +476,14 @@ export default function BasicInfo({ user }) {
                       onChange={handleChange}
                       {...noBorder}
                     />
-                    {!isEmpty(city) && renderInlineError(errors.city)}
+                    {renderInlineValidationError('city')}
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group>
                     <Form.Label>Phone</Form.Label>
                     <Form.Control
+                      onFocus={onFocus}
                       className='form-control-md'
                       type='phone number'
                       onChange={(e) => {
@@ -467,8 +497,7 @@ export default function BasicInfo({ user }) {
                       maxLength={13}
                       {...noBorder}
                     />
-                    {!isEmpty(phoneNumber) &&
-                      renderInlineError(errors.phoneNumber)}
+                    {renderInlineValidationError('phoneNumber')}
                   </Form.Group>
                 </Col>
               </Row>
@@ -478,6 +507,7 @@ export default function BasicInfo({ user }) {
                   <Form.Group>
                     <Form.Label>Address Line 2</Form.Label>
                     <Form.Control
+                      onFocus={onFocus}
                       className='form-control-lg'
                       type='name'
                       value={line2 || ''}

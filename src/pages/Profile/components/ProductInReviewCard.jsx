@@ -8,8 +8,6 @@ export default function ProductInReviewCard({ item }) {
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileSmaller, setIsMobileSmaller] = useState(false); // <320px
 
-  console.log(item);
-
   // Check if device is mobile
   useEffect(() => {
     function handleResize() {

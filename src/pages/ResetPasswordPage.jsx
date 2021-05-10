@@ -70,7 +70,6 @@ export default function ResetPasswordPage(props) {
         history.push('/login');
       }, 3500);
     } catch (err) {
-      console.log(err);
       setIsSubmitting(false);
 
       setError(

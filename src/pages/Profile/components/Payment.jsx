@@ -74,8 +74,6 @@ export default function Payment() {
     cvc,
   } = paymentFormValues;
 
-  console.log(fullName);
-
   const [focused, setFocused] = useState({
     ...Object.keys((key) => ({ [key]: false })),
   });

@@ -58,7 +58,6 @@ export default function Address({ user }) {
 
   useEffect(() => {
     if (user) {
-      console.log(user);
       setFieldValue('fullName', user.name);
       setFieldValue('phoneNumber', user['custom:phone']);
       setFieldValue('line1', user.address);

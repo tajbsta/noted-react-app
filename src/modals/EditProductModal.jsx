@@ -1,15 +1,16 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
 import { useDropzone } from 'react-dropzone';
 import Flatpickr from 'react-flatpickr';
 import { useDispatch, useSelector } from 'react-redux';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { updateScans } from '../actions/scans.action';
 import { unmountProductedit } from '../actions/runtime.action';
 import moment from 'moment';
 import { getFileTypeIcon } from '../utils/file';
+import { formatCurrency } from '../library/number';
 
 export default function EditProductModal(props) {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ export default function EditProductModal(props) {
     vendorTag,
     orderDate,
     itemName,
-    amount = Number(0),
+    amount,
     vendorLogo,
   } = values;
 
@@ -276,10 +277,13 @@ export default function EditProductModal(props) {
                         <Form.Control
                           name='amount'
                           onChange={handleChange}
-                          value={
-                            typeof amount === 'number' && amount.toFixed(2)
+                          value={amount}
+                          onBlur={(e) =>
+                            setFieldValue(
+                              'amount',
+                              formatCurrency(e.target.value)
+                            )
                           }
-                          type='number'
                         />
                       </div>
                       {amount.length > 0 && renderInlineError(errors.amount)}

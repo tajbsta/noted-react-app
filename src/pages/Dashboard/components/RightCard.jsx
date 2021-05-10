@@ -14,6 +14,7 @@ import { setCartItems } from '../../../actions/cart.action';
 import {
   DONATE,
   LAST_CALL,
+  NOT_ELIGIBLE,
   RETURNABLE,
 } from '../../../constants/actions/runtime';
 
@@ -84,6 +85,7 @@ function RightCard({ userId, setSelectedProducts }) {
   const handleCheckboxChange = () => {
     setSelectedProducts({
       [LAST_CALL]: [],
+      [NOT_ELIGIBLE]: [],
       [RETURNABLE]: [],
       [DONATE]: [],
     });
