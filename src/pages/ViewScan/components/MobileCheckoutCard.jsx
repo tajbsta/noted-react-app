@@ -14,7 +14,7 @@ export default function MobileCheckoutCard({
 }) {
   return (
     <div id='MobileCheckoutCard'>
-      <div className='card shadow-sm'>
+      <div className='card shadow-sm' style={{ borderRadius: '0' }}>
         <div className='card-body'>
           <Row>
             <Col>
