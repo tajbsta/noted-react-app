@@ -3,7 +3,6 @@ import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
 import { useDropzone } from 'react-dropzone';
-import Flatpickr from 'react-flatpickr';
 import { addProductSchema } from '../models/formSchema';
 import { useFormik } from 'formik';
 import { getFileTypeIcon } from '../utils/file';
@@ -142,7 +141,7 @@ export default function AddProductModal(props) {
   const renderDatePicker = () => {
     const [startDate, setStartDate] = useState(new Date());
     // eslint-disable-next-line react/display-name
-    const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
+    const CustomInput = forwardRef(({ value, onClick }, ref) => (
       <button
         className='btn'
         onClick={(e) => {
@@ -155,12 +154,14 @@ export default function AddProductModal(props) {
       </button>
     ));
     return (
-      <div id='DatePicker'>
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          customInput={<ExampleCustomInput />}
-        />
+      <div className='form-control' style={{ alignItems: 'center' }}>
+        <div id='DatePicker'>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            customInput={<CustomInput />}
+          />
+        </div>
       </div>
     );
   };

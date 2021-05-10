@@ -10,7 +10,6 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "dotenv": "^8.2.0",
-    "flatpickr": "^4.6.9",
     "formik": "^2.2.6",
     "history": "^4.10.1",
     "jquery": "^3.6.0",

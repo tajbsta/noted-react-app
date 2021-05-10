@@ -1,6 +1,4 @@
 import React from 'react';
-import Flatpickr from 'react-flatpickr';
-import 'flatpickr/dist/themes/airbnb.css';
 import moment from 'moment';
 
 const CustomInput = ({ inputRef, name, ...props }) => {
