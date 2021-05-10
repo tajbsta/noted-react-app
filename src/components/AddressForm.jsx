@@ -296,7 +296,7 @@ export default function AddressForm({
     return (
       <>
         <h3 className='sofia-pro text-18 mb-4'>Pick-up Address</h3>
-        <div className='card shadow-sm mb-2 p-3 w-840'>
+        <div className='card shadow-sm mb-2 p-3 max-w-840'>
           <div className='card-body'>
             <Form
               id='AddressFormConfirmed'
@@ -474,11 +474,8 @@ export default function AddressForm({
   return (
     <div>
       <div className='container mt-0'>
-        <div className='row' style={{ margin: isMobile ? 'auto' : '' }}>
-          <div
-            className='col-sm-9 mt-2'
-            style={{ margin: isMobile ? '16px' : '' }}
-          >
+        <div style={{ margin: isMobile ? 'auto' : '' }}>
+          <div className='mt-2' style={{ margin: isMobile ? '16px' : '' }}>
             {/* START OF MOBILE VIEW */}
             {isMobile && renderAddressFormMobile()}
 

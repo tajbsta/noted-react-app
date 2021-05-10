@@ -63,11 +63,8 @@ export default function PaymentForm({
   return (
     <div style={{ width: isMobile ? '-webkit-fill-available' : '' }}>
       <div className='container mt-0'>
-        <div className='row' style={{ margin: isMobile ? 'auto' : '' }}>
-          <div
-            className='col-sm-9 mt-2'
-            style={{ margin: isMobile ? '16px' : '' }}
-          >
+        <div style={{ margin: isMobile ? 'auto' : '' }}>
+          <div className='mt-2' style={{ margin: isMobile ? '16px' : '' }}>
             {/* START OF MOBILE VIEW */}
             {isMobile && (
               <>
@@ -238,7 +235,7 @@ export default function PaymentForm({
             {!isMobile && (
               <>
                 <h3 className='sofia-pro text-18 mb-4'>Payment Method</h3>
-                <div className='card shadow-sm mb-2 p-3 w-840'>
+                <div className='card shadow-sm mb-2 p-3 max-w-840'>
                   <div className='card-body'>
                     <Form id='PaymentForm'>
                       <Row>
