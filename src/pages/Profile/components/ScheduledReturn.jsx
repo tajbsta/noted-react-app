@@ -330,7 +330,7 @@ export default function ScheduledReturn({ user }) {
     return (
       <>
         <h5 className='sofia pro empty-message mt-4'>
-          Your scheduled return is Empty
+          Your scheduled return is empty
         </h5>
         <h5 className='sofia pro empty-submessage mb-5'>
           I&apos;m sorry {user.name || user.email}, I&apos;m afraid there&apos;s
