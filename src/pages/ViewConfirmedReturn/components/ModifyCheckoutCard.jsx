@@ -57,7 +57,8 @@ export default function ModifyCheckoutCard({
             }`}
           >
             <h3 className='sofia-pro products-to-return mb-1'>
-              {items.length} product to return
+              {items.length} {items.length > 1 ? 'products' : 'product'} to
+              return
             </h3>
             <h3 className='box-size-description'>
               All products need to fit in a 12”W x 12”H x 20”L box

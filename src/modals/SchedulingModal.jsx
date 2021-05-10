@@ -76,7 +76,7 @@ export default function SchedulingModal(props) {
                       }`}
                       style={{
                         fontSize: 13,
-                        opacity: 0.6,
+                        // opacity: 0.6,
                       }}
                     >
                       Slots available: 3

@@ -14,12 +14,13 @@ export default function MobileCheckoutCard({
 }) {
   return (
     <div id='MobileCheckoutCard'>
-      <div className='card shadow-sm'>
+      <div className='card shadow-sm' style={{ borderRadius: '0' }}>
         <div className='card-body'>
           <Row>
             <Col>
               <h3 className='m-product-to-return'>
-                {inReturn.length} product to return
+                {inReturn.length} {inReturn.length > 1 ? 'products' : 'product'}{' '}
+                to return
               </h3>
             </Col>
           </Row>

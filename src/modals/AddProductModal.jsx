@@ -9,6 +9,7 @@ import { useFormik } from 'formik';
 import { getFileTypeIcon } from '../utils/file';
 import { useDispatch } from 'react-redux';
 import { addProductInReview } from '../actions/products.action';
+import { formatCurrency } from '../library/number';
 
 export default function AddProductModal(props) {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ export default function AddProductModal(props) {
     errors,
     handleChange: handleProductChange,
     values: productValues,
+    setFieldValue,
   } = useFormik({
     initialValues: {
       productUrl: '',
@@ -109,7 +111,6 @@ export default function AddProductModal(props) {
 
   // Display Image Component
   const ImageThumb = ({ image }) => {
-    console.log(image);
     return (
       <img
         src={URL.createObjectURL(image)}
@@ -280,12 +281,17 @@ export default function AddProductModal(props) {
                       <Form.Label>Price</Form.Label>
                       <div>
                         <Form.Control
-                          type='number'
                           isValid={!errors.amount && amount.length > 0}
                           isInvalid={errors.amount}
                           name='amount'
                           value={amount}
                           onChange={handleProductChange}
+                          onBlur={(e) =>
+                            setFieldValue(
+                              'amount',
+                              formatCurrency(e.target.value)
+                            )
+                          }
                         />
                         {amount.length > 0 && renderInlineError(errors.amount)}
                       </div>

@@ -15,6 +15,7 @@ import EditProductModal from '../modals/EditProductModal';
 import { useFormik } from 'formik';
 import { addProductSchema } from '../models/formSchema';
 import { useHistory } from 'react-router';
+import { formatCurrency } from '../library/number';
 
 function ProductCard({
   selectable = true,
@@ -150,7 +151,7 @@ function ProductCard({
 
   const { handleChange, values, setFieldValue, errors } = useFormik({
     initialValues: {
-      amount: get(item, 'price', ''),
+      amount: formatCurrency(get(item, 'price', 0)),
       vendorTag: get(item, 'vendor', ''),
       orderDate: get(item, 'order_date', ''),
       itemName: get(item, 'name', ''),
@@ -502,7 +503,7 @@ function ProductCard({
                 </>
               )}
 
-              {!isHover && !selected && isDonate && (
+              {!isHover && !selected && isDonate && isViewScan && (
                 <>
                   <div
                     className='col-sm-6 sofia-pro return-time-left'

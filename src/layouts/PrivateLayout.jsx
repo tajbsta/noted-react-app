@@ -9,11 +9,6 @@ function PrivateLayout({ component: Component, ...allProps }) {
   useEffect(() => {
     (async () => {
       const isLoggedIn = await isAuthenticated();
-
-      // console.log({
-      //   isLoggedIn,
-      //   path: allProps.path,
-      // });
       if (!isLoggedIn) {
         history.push('/login');
       }

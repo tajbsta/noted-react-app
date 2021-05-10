@@ -112,7 +112,11 @@ function ReturnCategory({
     } else {
       list.push(item);
     }
-    setSelectedItems(list);
+
+    updateSelectedItems({
+      key: category,
+      items: list,
+    });
 
     if (item.transferred) {
       fetchItems();
@@ -120,11 +124,16 @@ function ReturnCategory({
   };
 
   const handleSelectAll = () => {
-    const list = [...items];
-    setSelectedItems(list);
-    if (items.length > 0 && selectedItems.length === items.length) {
-      setSelectedItems([]);
+    if (selectedProducts.length === items.length) {
+      return updateSelectedItems({
+        key: category,
+        items: [],
+      });
     }
+    return updateSelectedItems({
+      key: category,
+      items: items,
+    });
   };
 
   useEffect(() => {
@@ -134,9 +143,9 @@ function ReturnCategory({
   useEffect(() => {
     updateSelectedItems({
       key: category,
-      items: selectedItems,
+      items: selectedProducts,
     });
-  }, [selectedItems]);
+  }, [selectedProducts]);
 
   return (
     <div id='ReturnCategory'>
@@ -149,7 +158,7 @@ function ReturnCategory({
                 selectedProducts.length > 0 &&
                 items.length === selectedProducts.length
               }
-              disabled={items.length === 0}
+              disabled={items.length < 1}
             />
           </div>
           <h4 className='sofia-pro purchase-types purchase-type-title'>
