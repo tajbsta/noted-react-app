@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Card, Container, Col, Row, Spinner } from 'react-bootstrap';
-import { Check, AlertCircle } from 'react-feather';
+import { Card, Col, Row, Spinner } from 'react-bootstrap';
 import ProfileIcon from '../../../assets/icons/Profile.svg';
 import moment from 'moment';
 import { Upload } from 'react-feather';
@@ -22,10 +21,6 @@ export default function UserInfo({ user: userData = {} }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-
-  const { profileImage } = useSelector(({ auth: { profileImage } }) => ({
-    profileImage,
-  }));
 
   const hiddenFileInput = useRef(null);
 

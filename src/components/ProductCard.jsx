@@ -103,19 +103,10 @@ function ProductCard({
     }
   };
 
-  // Truncate name if longer than 15 characters
+  // Truncate name if longer than 12 characters
   const truncateProductNameForSmallerScreens = (str, num = 12) => {
     if (str && str.length > num) {
       return str.slice(0, num) + '...';
-    } else {
-      return str;
-    }
-  };
-
-  // Truncate name if longer than 8 characters
-  const truncateBrand = (str, num = 8) => {
-    if (str && str.length > num) {
-      return str.slice(0, num);
     } else {
       return str;
     }
@@ -146,7 +137,6 @@ function ProductCard({
           .diff(moment().subtract(2, 'd').startOf('day'), 'days');
 
   const isDonate = get(item, 'category', '') === 'DONATE';
-  const isLastCall = get(item, 'category', '') === 'LAST_CALL';
   const isNotEligible = get(item, 'category', '') === 'NOT_ELIGIBLE';
 
   const { handleChange, values, setFieldValue, errors } = useFormik({
