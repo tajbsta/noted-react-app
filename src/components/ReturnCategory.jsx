@@ -30,7 +30,7 @@ export default function ReturnCategory({
   const [loading, setLoading] = useState(false);
   const [showNextPageButton, setShowNextPageButton] = useState(true);
   const sortBy =
-    category === DONATE ? 'updated_at' : 'return_not_eligible_date,_id';
+    category === DONATE ? 'updated_at,_id' : 'return_not_eligible_date,_id';
   const sort = category === DONATE ? 'desc' : 'asc,asc';
   const [loadProgress, setLoadProgress] = useState(0);
 
@@ -173,7 +173,6 @@ export default function ReturnCategory({
             }}
             data-toggle='tooltip'
             data-placement='top'
-            title='Tooltip message here :)'
           />
         </div>
       </Row>
