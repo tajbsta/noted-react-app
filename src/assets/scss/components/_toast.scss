@@ -1,0 +1,32 @@
+@mixin buttonTextWhite {
+    button {
+        color: white !important
+    }
+}
+
+.toast-success {
+    background-color: #570097 !important;
+    color: white !important;
+
+    @include buttonTextWhite();
+
+    h3,
+    h4 {
+
+        font-family: 'Sofia Pro';
+    }
+}
+
+.toast-warning {
+    background-color: #f7912c !important;
+    color: white !important;
+
+    @include buttonTextWhite()
+}
+
+.toast-error {
+    background-color: #c25041 !important;
+    color: white !important;
+
+    @include buttonTextWhite()
+}
