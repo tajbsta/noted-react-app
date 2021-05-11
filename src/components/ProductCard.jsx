@@ -207,7 +207,7 @@ function ProductCard({
                 marginTop: isMobile && selected ? '7px' : '',
               }}
             >
-              {removable && !selectable && !confirmed && isViewScan !== false && (
+              {removable && !selectable && !confirmed && (
                 <div
                   className='removeProduct'
                   onClick={() => {
