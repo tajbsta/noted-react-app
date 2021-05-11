@@ -23,7 +23,7 @@ import { scrapeOlderEmails } from '../../utils/auth';
 
 const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 
-function DashboardPage() {
+export default function DashboardPage() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { search, scheduledReturns } = useSelector(
@@ -342,5 +342,3 @@ function DashboardPage() {
     </div>
   );
 }
-
-export default DashboardPage;

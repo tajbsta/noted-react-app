@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { DONATE } from '../constants/actions/runtime';
 import { timeout } from '../utils/time';
 
-function ReturnCategory({
+export default function ReturnCategory({
   userId,
   typeTitle,
   size,
@@ -216,5 +216,3 @@ function ReturnCategory({
     </div>
   );
 }
-
-export default ReturnCategory;

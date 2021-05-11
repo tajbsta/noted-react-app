@@ -7,7 +7,7 @@ import ProductDetails from './ProductDetails';
 import OnHoverScheduledReturn from './OnHoverScheduledReturn';
 import { useHistory } from 'react-router';
 
-function ScheduledReturnCard({
+export default function ScheduledReturnCard({
   scheduledReturnId,
   selectable = true,
   selected,
@@ -236,5 +236,3 @@ function ScheduledReturnCard({
     </div>
   );
 }
-
-export default ScheduledReturnCard;

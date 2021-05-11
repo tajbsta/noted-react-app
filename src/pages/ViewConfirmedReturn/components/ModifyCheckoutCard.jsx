@@ -146,7 +146,7 @@ export default function ModifyCheckoutCard({
                       </h3>
                     </button>
                     <h3 className='cancel-info'>
-                      Canceling pick-ups less than 4h before schedule will
+                      Canceling pick-ups less than 24h before schedule will
                       result in a $5 penalty
                     </h3>
                     <a

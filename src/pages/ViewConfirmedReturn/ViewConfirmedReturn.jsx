@@ -16,7 +16,7 @@ import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import CancelOrderModal from '../../modals/CancelOrderModal';
 
-function ViewConfirmedReturn({
+export default function ViewConfirmedReturn({
   location: {
     state: { scheduledReturnId = '', hasModifications = false },
   },
@@ -278,7 +278,7 @@ function ViewConfirmedReturn({
                     Cancel order
                   </button>
                   <h4 className='m-cancel-sub'>
-                    Canceling pick-ups less than 4h before schedule will result
+                    Canceling pick-ups less than 24h before schedule will result
                     in a $5 penalty
                   </h4>
                   <a className='m-info-link'>More info</a>
@@ -295,7 +295,7 @@ function ViewConfirmedReturn({
               Cancel order
             </button>
             <h4 className='m-cancel-sub'>
-              Canceling pick-ups less than 4h before schedule will result in a
+              Canceling pick-ups less than 24h before schedule will result in a
               $5 penalty
             </h4>
             <a className='m-info-link'>More info</a>
@@ -315,5 +315,3 @@ function ViewConfirmedReturn({
     </div>
   );
 }
-
-export default ViewConfirmedReturn;

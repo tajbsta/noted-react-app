@@ -17,7 +17,7 @@ import { DONATE, RETURNABLE } from '../../constants/actions/runtime';
 import { scrollToTop } from '../../utils/window';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 
-function ViewScanPage() {
+export default function ViewScanPage() {
   const dispatch = useDispatch();
   const [confirmed, setconfirmed] = useState(false);
   const [newSelected, setNewSelected] = useState([]);
@@ -317,5 +317,3 @@ function ViewScanPage() {
     </div>
   );
 }
-
-export default ViewScanPage;

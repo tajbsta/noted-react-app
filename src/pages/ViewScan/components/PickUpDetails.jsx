@@ -27,7 +27,7 @@ import DownArrow from '../../../assets/icons/DownArrow.svg';
 import { Col, Row } from 'react-bootstrap';
 import { truncateString } from '../../../utils/data';
 
-function PickUpDetails({
+export default function PickUpDetails({
   setValidAddress,
   setValidPayment,
   setValidPickUpDetails,
@@ -629,5 +629,3 @@ function PickUpDetails({
     </>
   );
 }
-
-export default PickUpDetails;

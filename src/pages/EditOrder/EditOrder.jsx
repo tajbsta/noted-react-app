@@ -13,7 +13,7 @@ import { dedupeByKey } from '../../utils/data';
 import { scrollToTop } from '../../utils/window';
 import NotedCheckbox from '../../components/NotedCheckbox';
 
-function EditOrder({
+export default function EditOrder({
   location: {
     state: { scheduledReturnId },
   },
@@ -342,5 +342,3 @@ function EditOrder({
     </div>
   );
 }
-
-export default EditOrder;
