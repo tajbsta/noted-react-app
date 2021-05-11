@@ -133,7 +133,8 @@ export default function SchedulingModal(props) {
   const renderAvailableDays = () => {
     return generateSchedules().map((day) => {
       const dayTitle =
-        day.format('dddd') === moment().add('days', 1).format('dddd')
+        day.format('dddd') ===
+        moment().utc().local().add('days', 1).format('dddd')
           ? 'Tomorrow'
           : day.format('dddd');
 
