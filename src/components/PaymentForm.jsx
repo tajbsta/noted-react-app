@@ -13,6 +13,7 @@ export default function PaymentForm({
   errors,
   handleChange,
   onDoneClick,
+  setShowEditPayment = () => {},
 }) {
   const disableSubmit =
     isFormEmpty({
@@ -98,6 +99,9 @@ export default function PaymentForm({
                             className='btn close'
                             data-dismiss='modal'
                             aria-label='Close'
+                            onClick={() => {
+                              setShowEditPayment(false);
+                            }}
                           >
                             <span
                               aria-hidden='true'

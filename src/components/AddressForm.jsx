@@ -18,6 +18,7 @@ export default function AddressForm({
   handleChange = () => {},
   onDoneClick = () => {},
   setFieldValue = () => {},
+  setShowEditAddress = () => {},
 }) {
   const [modalShow, setModalShow] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -101,6 +102,7 @@ export default function AddressForm({
                     className='btn close'
                     data-dismiss='modal'
                     aria-label='Close'
+                    onClick={() => setShowEditAddress(false)}
                   >
                     <span
                       aria-hidden='true'

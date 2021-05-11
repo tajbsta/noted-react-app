@@ -139,7 +139,7 @@ export default function AddProductModal(props) {
   };
 
   const renderDatePicker = () => {
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(null);
     // eslint-disable-next-line react/display-name
     const CustomInput = forwardRef(({ value, onClick }, ref) => (
       <button
