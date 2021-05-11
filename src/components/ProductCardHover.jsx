@@ -63,7 +63,7 @@ export default function ProductCardHover({ show, item, editproductform }) {
             display: show || inCheckout ? 'block' : 'none',
           }}
         >
-          {(inDashboard || inCheckout) && (
+          {inDashboard && (
             <div className='container-1'>
               <h4 className='date text-14 sofia-pro line-height-16'>
                 {moment(item.order_date).format('MMM DD, YYYY')}

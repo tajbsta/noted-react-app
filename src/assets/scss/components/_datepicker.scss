@@ -1,63 +1,25 @@
 #DatePicker {
-  display: flex;
-  justify-content: center;
-  min-height: 372px;
-  min-width: 373px;
 
-  @media (max-width: 991px) {
-    min-width: 350px !important;
+  .react-datepicker {
+    min-width: 300px;
+    border: 1px solid grey;
   }
 
-  .flatpickr-calendar {
-    box-shadow: none !important;
+  .react-datepicker__header {
+    background-color: #fff;
+    min-width: 300px;
+    border-bottom: none;
   }
 
-  .flatpickr-disabled {
-    color: #2e1d3a;
-    opacity: 0.6;
-  }
-
-  .flatpickr-calendar,
-  .flatpickr-innerContainer,
-  .flatpickr-Container,
-  .flatpickr-days,
-  .dayContainer {
-    min-width: 432px !important;
-    height: 432px !important;
-    // padding: 5px;
-    border: none;
-    color: #2e1d3a;
-
-    @media (max-width: 991px) {
-      min-width: 350px !important;
-    }
-  }
-
-  .flatpickr-day {
-    border: none;
-
-    &:hover {
-      border-radius: 8px !important;
-      color: #570097 !important;
-      background: #eee4f6;
-    }
-  }
-
-  .selected {
-    color: #570097 !important;
-    background: #eee4f6;
-    border-radius: 8px !important;
-  }
-
-  .flatpickr-weekday {
-    top: 0px;
-
+  .react-datepicker__day-names {
     font-family: 'Sofia Pro';
-    font-size: 12px;
-    line-height: 16px;
-    text-align: center;
-    letter-spacing: 0.2px;
+  }
 
-    color: #0e0018;
+  .react-datepicker__current-month {
+    font-family: 'Sofia Pro';
+  }
+
+  .react-datepicker__week {
+    font-family: 'Sofia Pro';
   }
 }

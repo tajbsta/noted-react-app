@@ -179,13 +179,14 @@ function PickUpDetails() {
         <h3 className='sofia-pro text-18'>Pick-up details</h3>
       )}
 
-      <div className='row'>
+      <div style={{ display: isMobile || isTablet ? 'block' : 'flex' }}>
         {showEditPayment && (
           <PaymentForm
             {...paymentFormValues}
             errors={paymentFormErrors}
             handleChange={handlePaymentChange}
             onDoneClick={savePayment}
+            setShowEditPayment={setShowEditPayment}
           />
         )}
         {showEditAddress && (
@@ -195,6 +196,7 @@ function PickUpDetails() {
             handleChange={handleAddressChange}
             onDoneClick={saveAddress}
             setFieldValue={setFieldValue}
+            setShowEditAddress={setShowEditAddress}
           />
         )}
 

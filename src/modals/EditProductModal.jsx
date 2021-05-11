@@ -1,9 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, forwardRef } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
 import { useDropzone } from 'react-dropzone';
-import Flatpickr from 'react-flatpickr';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, isEmpty } from 'lodash';
 import { updateScans } from '../actions/scans.action';
@@ -11,6 +10,8 @@ import { unmountProductedit } from '../actions/runtime.action';
 import moment from 'moment';
 import { getFileTypeIcon } from '../utils/file';
 import { formatCurrency } from '../library/number';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/src/stylesheets/datepicker.scss';
 
 export default function EditProductModal(props) {
   const dispatch = useDispatch();
@@ -130,6 +131,34 @@ export default function EditProductModal(props) {
     <small className='form-text p-0 m-0 noted-red'>{error}</small>
   );
 
+  const renderDatePicker = () => {
+    const [startDate, setStartDate] = useState(orderDate);
+    // eslint-disable-next-line react/display-name
+    const CustomInput = forwardRef(({ value, onClick }, ref) => (
+      <button
+        className='btn'
+        onClick={(e) => {
+          e.preventDefault();
+          onClick();
+        }}
+        ref={ref}
+      >
+        {value}
+      </button>
+    ));
+    return (
+      <div className='form-control' style={{ alignItems: 'center' }}>
+        <div id='DatePicker'>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            customInput={<CustomInput />}
+          />
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div>
       <Modal
@@ -223,24 +252,7 @@ export default function EditProductModal(props) {
                   <Col>
                     <Form.Group>
                       <Form.Label>Order Date</Form.Label>
-                      <div>
-                        <Flatpickr
-                          className='c-date-picker'
-                          options={{
-                            dateFormat: 'M j, Y',
-                            monthSelectorType: 'static',
-                            showMonths: 1,
-                          }}
-                          name='orderDate'
-                          onChange={(date) =>
-                            setFieldValue(
-                              'orderDate',
-                              moment(get(date, '[0]', '')).format('YYYY-MM-DD')
-                            )
-                          }
-                          defaultValue={moment(orderDate).toISOString()}
-                        />
-                      </div>
+                      {renderDatePicker()}
                     </Form.Group>
                   </Col>
                   <Col>
