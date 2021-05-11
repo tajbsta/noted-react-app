@@ -11,6 +11,7 @@ export default function CheckoutCard({
   taxes,
   totalPayment,
   onReturnConfirm,
+  validOrder = false,
 }) {
   const [modalShow, setModalShow] = useState(false);
 
@@ -113,10 +114,15 @@ export default function CheckoutCard({
                 <div
                   className='btn btn-confirm text-16'
                   style={{
-                    background: '#570097',
+                    background: validOrder ? '#570097' : 'grey',
                     border: 'none',
+                    cursor: validOrder ? 'pointer' : 'default',
                   }}
-                  onClick={onReturnConfirm}
+                  onClick={() => {
+                    if (validOrder) {
+                      onReturnConfirm();
+                    }
+                  }}
                 >
                   Confirm Order
                 </div>

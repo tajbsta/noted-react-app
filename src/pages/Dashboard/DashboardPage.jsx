@@ -20,7 +20,6 @@ import ScheduledCard from './components/ScheduledCard';
 import Scanning from './components/Scanning';
 import { scrollToTop } from '../../utils/window';
 import { scrapeOlderEmails } from '../../utils/auth';
-import { showSuccess } from '../../library/notifications.library';
 
 const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 
@@ -65,10 +64,6 @@ function DashboardPage() {
 
   async function fetchAccounts(userId) {
     try {
-      showSuccess({
-        title: 'Successfully logged in',
-        message: 'Enjoy your stay',
-      });
       const accounts = await getAccounts(userId);
 
       // Redirect to request-permission if user has no accounts

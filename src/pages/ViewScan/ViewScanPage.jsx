@@ -40,6 +40,10 @@ function ViewScanPage() {
     })
   );
 
+  const [validAddress, setValidAddress] = useState(false);
+  const [validPayment, setValidPayment] = useState(false);
+  const [validPickUpDetails, setValidPickUpDetails] = useState(false);
+
   const inDonation = get(cart, 'items', []).filter(
     ({ category }) => category === DONATE
   );
@@ -107,16 +111,6 @@ function ViewScanPage() {
     ]);
   };
 
-  const handleSelectAll = () => {
-    if (newSelected.length === forgottenReturns.length) {
-      setNewSelected([]);
-    }
-
-    if (newSelected.length !== forgottenReturns.length) {
-      setNewSelected([...forgottenReturns.map((scannedItem) => scannedItem)]);
-    }
-  };
-
   const onCartRemove = (itemId) => {
     const newItems = [
       ...get(cart, 'items', []).filter(({ _id }) => itemId !== _id),
@@ -146,6 +140,12 @@ function ViewScanPage() {
     };
   });
 
+  const validOrder =
+    validAddress &&
+    validPayment &&
+    validPickUpDetails &&
+    (inReturn.length > 0 || inDonation.length > 0);
+
   return (
     <div id='ViewScanPage'>
       {isMobile && (
@@ -159,6 +159,7 @@ function ViewScanPage() {
           taxes={taxes}
           totalPayment={totalPayment}
           onReturnConfirm={onReturnConfirm}
+          validOrder={validOrder}
         />
       )}
       <div className={`container  ${isMobile ? 'mt-4' : 'mt-6'}`}>
@@ -174,7 +175,11 @@ function ViewScanPage() {
               </div>
             ) : (
               <div className='mobile-view-scan-col'>
-                <PickUpDetails />
+                <PickUpDetails
+                  setValidAddress={setValidAddress}
+                  setValidPayment={setValidPayment}
+                  setValidPickUpDetails={setValidPickUpDetails}
+                />
               </div>
             )}
 
@@ -302,6 +307,7 @@ function ViewScanPage() {
                   taxes={taxes}
                   totalPayment={totalPayment}
                   onReturnConfirm={onReturnConfirm}
+                  validOrder={validOrder}
                 />
               </div>
             </>

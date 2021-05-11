@@ -8,7 +8,6 @@ import { signInErrors } from '../library/errors.library';
 import { get } from 'lodash';
 import { Eye, EyeOff } from 'react-feather';
 import { scrollToTop } from '../utils/window';
-import { showSuccess } from '../library/notifications.library';
 
 export default function LoginPage() {
   const history = useHistory();
