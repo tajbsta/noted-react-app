@@ -1,26 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Spinner } from 'react-bootstrap';
 import moment from 'moment';
 import { generateSchedules } from '../utils/schedule';
-
-const morningTimeSlots = [
-  {
-    startTime: '0900',
-    endTime: '1200',
-    text: '9 A.M - 12 P.M',
-    disabled: false,
-  },
-  {
-    startTime: '1200',
-    endTime: '1500',
-    text: '12 P.M - 3 P.M',
-    disabled: false,
-  },
-];
+import { getPickupSlots } from '../utils/scheduleApi';
+import { getUserId } from '../utils/auth';
+import { isEmpty } from 'lodash-es';
+import { Loader } from 'react-feather';
 
 export default function SchedulingModal(props) {
   const [isMobile, setIsMobile] = useState(false);
   const { form, onConfirm } = props;
+  const [loading, setLoading] = useState(false);
+  const [slots, setSlots] = useState({ AM: 0, PM: 0 });
+  const fetchPickupSlots = async () => {
+    if (!isEmpty(form.values.date)) {
+      try {
+        setLoading(true);
+        const pickupSlots = await getPickupSlots(
+          await getUserId(),
+          form.values.date
+        );
+        setSlots(pickupSlots);
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        // TODO: ERROR HANDLING
+        console.log(err);
+      }
+    }
+  };
+
+  const timeSlots = [
+    {
+      startTime: '0900',
+      endTime: '1200',
+      text: '9 A.M - 12 P.M',
+      disabled: false,
+      numberOfSlots: slots.AM,
+    },
+    {
+      startTime: '1200',
+      endTime: '1500',
+      text: '12 P.M - 3 P.M',
+      disabled: false,
+      numberOfSlots: slots.PM,
+    },
+  ];
+
+  useEffect(() => {
+    fetchPickupSlots();
+  }, [form.values.date]);
 
   useEffect(() => {
     function handleResize() {
@@ -39,8 +68,14 @@ export default function SchedulingModal(props) {
     values: pickUpDateValues,
   } = form;
 
+  const renderLoading = () => {
+    return <Spinner className='spinner' animation='border' />;
+  };
+
   const renderSelectTimeSlot = () => {
-    return (
+    return loading ? (
+      renderLoading()
+    ) : (
       <div className='col left-column mt-6'>
         <div
           className='mb-5'
@@ -52,7 +87,7 @@ export default function SchedulingModal(props) {
         </div>
         <div className='timeSlotsContainer'>
           <div className='col morningSlotsContainer'>
-            {morningTimeSlots.map((timeSlot) => {
+            {timeSlots.map((timeSlot) => {
               const isSelected =
                 pickUpDateValues.time === timeSlot.text ? `isSelected` : '';
               const className = `btn timeSlotContainer ${isSelected}`;
@@ -79,7 +114,7 @@ export default function SchedulingModal(props) {
                         // opacity: 0.6,
                       }}
                     >
-                      Slots available: 3
+                      Slots available: {timeSlot.numberOfSlots}
                     </div>
                   </div>
                 </div>
@@ -129,7 +164,9 @@ export default function SchedulingModal(props) {
   const renderEmptiness = () => {
     return (
       <div className='row mt-7'>
-        <h3 className='sofia-pro'>Select a day first</h3>
+        <h3 className='sofia-pro'>{`${
+          loading ? 'Selecting a day' : 'Select a day first'
+        }`}</h3>
       </div>
     );
   };
@@ -171,7 +208,7 @@ export default function SchedulingModal(props) {
             justifyContent: 'center',
           }}
         >
-          {pickUpDateValues.date !== null
+          {pickUpDateValues.date !== null && !loading
             ? renderSelectTimeSlot()
             : renderEmptiness()}
         </div>
