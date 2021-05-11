@@ -96,7 +96,7 @@ function PickUpDetails({ address, payment, details }) {
 
   useEffect(() => {
     function handleResize() {
-      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 980);
+      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 1023);
     }
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -111,7 +111,7 @@ function PickUpDetails({ address, payment, details }) {
         <h3 className='sofia-pro text-18'>Pick-up details</h3>
       )}
 
-      <div className='row'>
+      <div style={{ display: isMobile || isTablet ? 'block' : 'flex' }}>
         {showEditPayment && (
           <PaymentForm
             {...paymentFormValues}
