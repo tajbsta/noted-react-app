@@ -91,11 +91,18 @@ export default function SchedulingModal(props) {
               const isSelected =
                 pickUpDateValues.time === timeSlot.text ? `isSelected` : '';
               const className = `btn timeSlotContainer ${isSelected}`;
+
               return (
                 <div
                   className={className}
                   key={timeSlot.startTime}
-                  onClick={() => setFieldValue('time', timeSlot.text)}
+                  onClick={() => {
+                    setFieldValue('time', timeSlot.text);
+                  }}
+                  style={{
+                    cursor:
+                      timeSlot.numberOfSlots === 0 ? 'not-allowed' : 'pointer',
+                  }}
                 >
                   <div className='col'>
                     <div
@@ -111,7 +118,6 @@ export default function SchedulingModal(props) {
                       }`}
                       style={{
                         fontSize: 13,
-                        // opacity: 0.6,
                       }}
                     >
                       Slots available: {timeSlot.numberOfSlots}

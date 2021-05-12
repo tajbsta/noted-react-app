@@ -112,7 +112,7 @@ export default function CheckoutCard({
                   style={{
                     background: validOrder ? '#570097' : 'grey',
                     border: 'none',
-                    cursor: validOrder ? 'pointer' : 'default',
+                    cursor: validOrder ? 'pointer' : 'not-allowed',
                   }}
                   onClick={() => {
                     if (validOrder) {
