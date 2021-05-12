@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from '../Row';
 
-function ProductsToReturn() {
+export default function ProductsToReturn() {
   return (
     <div className='card shadow-sm'>
       <div className='card-body pt-4 pb-3 pl-4 m-0'>
@@ -43,5 +43,3 @@ function ProductsToReturn() {
     </div>
   );
 }
-
-export default ProductsToReturn;

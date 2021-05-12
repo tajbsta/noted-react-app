@@ -17,7 +17,7 @@ import SchedulingModal from '../../../modals/SchedulingModal';
 import { updatePickUpDetails } from '../../../actions/runtime.action';
 import { useDispatch } from 'react-redux';
 
-function PickUpDetails({ address, payment, details }) {
+export default function PickUpDetails({ address, payment, details }) {
   const dispatch = useDispatch();
   const [showEditAddress, setShowEditAddress] = useState(false);
   const [showEditPayment, setShowEditPayment] = useState(false);
@@ -309,5 +309,3 @@ function PickUpDetails({ address, payment, details }) {
     </>
   );
 }
-
-export default PickUpDetails;

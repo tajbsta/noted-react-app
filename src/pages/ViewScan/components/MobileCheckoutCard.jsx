@@ -11,6 +11,7 @@ export default function MobileCheckoutCard({
   taxes,
   totalPayment,
   onReturnConfirm,
+  validOrder = false,
 }) {
   return (
     <div id='MobileCheckoutCard'>
@@ -84,6 +85,7 @@ export default function MobileCheckoutCard({
                   <button
                     className='btn m-btn-confirm'
                     onClick={onReturnConfirm}
+                    disabled={!validOrder}
                   >
                     Confirm Order
                   </button>

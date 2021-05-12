@@ -1,6 +1,10 @@
 #SchedulingModal {
   justify-content: center;
 
+  .spinner {
+    color: #570097;
+  }
+
   .close-container {
     display: flex;
     justify-content: flex-end;

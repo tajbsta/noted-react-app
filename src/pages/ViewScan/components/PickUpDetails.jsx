@@ -19,7 +19,7 @@ import {
   updateReturnAdddress,
 } from '../../../actions/runtime.action';
 import SchedulingModal from '../../../modals/SchedulingModal';
-import { get } from 'lodash-es';
+import { get, isEmpty } from 'lodash-es';
 import moment from 'moment';
 import Collapsible from 'react-collapsible';
 import LeftArrow from '../../../assets/icons/RightArrow.svg';
@@ -27,7 +27,11 @@ import DownArrow from '../../../assets/icons/DownArrow.svg';
 import { Col, Row } from 'react-bootstrap';
 import { truncateString } from '../../../utils/data';
 
-function PickUpDetails() {
+export default function PickUpDetails({
+  setValidAddress,
+  setValidPayment,
+  setValidPickUpDetails,
+}) {
   /**
    * @UTILITY
    * @returns misc hooks
@@ -68,6 +72,18 @@ function PickUpDetails() {
     validationSchema: pickUpAddressSchema,
   });
 
+  useEffect(() => {
+    setValidAddress(
+      Object.values(addressFormValues)
+        .map((addressField) => {
+          return addressField.length;
+        })
+        .filter((addressField) => {
+          return addressField === 0;
+        }).length < 1
+    );
+  }, [addressFormValues]);
+
   /**
    * @FORMSTATE by FORMIK
    * @returns payment
@@ -86,6 +102,19 @@ function PickUpDetails() {
     },
     validationSchema: paymentAddressSchema,
   });
+
+  useEffect(() => {
+    setValidPayment(
+      Object.values(paymentFormValues)
+        .map((paymentField) => {
+          return paymentField.length;
+        })
+        .filter((paymentField) => {
+          return paymentField === 0;
+        }).length < 1
+    );
+  }, [paymentFormValues]);
+
   /**
    * @FORMSTATE by FORMIK
    * @returns pickup date
@@ -97,6 +126,13 @@ function PickUpDetails() {
     },
     validationSchema: pickUpDateSchema,
   });
+
+  useEffect(() => {
+    setValidPickUpDetails(
+      Object.values(pickUpDateForm.values).filter((field) => field === null)
+        .length < 1
+    );
+  }, [pickUpDateForm.values]);
 
   /**
    * @VALIDATION
@@ -593,5 +629,3 @@ function PickUpDetails() {
     </>
   );
 }
-
-export default PickUpDetails;

@@ -47,7 +47,7 @@ export default function CancelOrderModal(props) {
       <Modal.Body className='sofia-pro'>
         <div className='d-flex justify-content-center'>
           <p className='sofia-pro info'>
-            Canceling pick-ups less than 4h before schedule will result in a $5
+            Canceling pick-ups less than 24h before schedule will result in a $5
             penalty.
           </p>
         </div>

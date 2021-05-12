@@ -5,6 +5,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import './assets/scss/theme.scss';
 import './assets/scss/App.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 /*
 IMPORTS ROUTES

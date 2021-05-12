@@ -2,7 +2,7 @@ import React from 'react';
 import ScanningIcon from '../../../assets/icons/Scanning.svg';
 import Row from '../../../components/Row';
 
-function Scanning() {
+export default function Scanning() {
   return (
     <>
       <div className='card-body'>
@@ -27,5 +27,3 @@ function Scanning() {
     </>
   );
 }
-
-export default Scanning;

@@ -8,14 +8,12 @@ import DeleteEmailModal from '../../../modals/DeleteEmailModal';
 import Collapsible from 'react-collapsible';
 
 export default function EmailAddresses({ user }) {
-  const [modalShow, setModalShow] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const [toDeleteAccount, setToDeleteAccount] = useState(null);
   const [loading, setLoading] = useState(true);
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
   const [modalDeleteShow, setModalDeleteShow] = useState(false);
-  const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
