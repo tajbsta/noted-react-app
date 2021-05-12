@@ -59,6 +59,8 @@ export default function PickUpDetails({
     handleChange: handleAddressChange,
     values: addressFormValues,
     setFieldValue,
+    handleBlur: handleAddressFormBlur,
+    touched: addressTouched,
   } = useFormik({
     initialValues: {
       fullName: '',
@@ -70,6 +72,7 @@ export default function PickUpDetails({
       instructions: '',
     },
     validationSchema: pickUpAddressSchema,
+    validateOnBlur: true,
   });
 
   useEffect(() => {
@@ -95,6 +98,8 @@ export default function PickUpDetails({
     errors: paymentFormErrors,
     handleChange: handlePaymentChange,
     values: paymentFormValues,
+    touched: paymentTouched,
+    handleBlur: handlePaymentFormBlur,
   } = useFormik({
     initialValues: {
       fullName: '',
@@ -226,6 +231,8 @@ export default function PickUpDetails({
             handleChange={handlePaymentChange}
             onDoneClick={savePayment}
             setShowEditPayment={setShowEditPayment}
+            handlePaymentFormBlur={handlePaymentFormBlur}
+            paymentTouched={paymentTouched}
           />
         )}
         {showEditAddress && (
@@ -236,6 +243,8 @@ export default function PickUpDetails({
             onDoneClick={saveAddress}
             setFieldValue={setFieldValue}
             setShowEditAddress={setShowEditAddress}
+            handleAddressFormBlur={handleAddressFormBlur}
+            addressTouched={addressTouched}
           />
         )}
 

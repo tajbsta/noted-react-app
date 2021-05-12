@@ -25,6 +25,8 @@ export default function Payment() {
     values: paymentFormValues,
     handleSubmit,
     resetForm,
+    touched,
+    handleBlur,
   } = useFormik({
     initialValues: {
       fullName: '',
@@ -74,20 +76,12 @@ export default function Payment() {
     cvc,
   } = paymentFormValues;
 
-  const [focused, setFocused] = useState({
-    ...Object.keys((key) => ({ [key]: false })),
-  });
-
   const renderInlineValidationError = (fieldName) => {
     const error = paymentFormErrors[fieldName];
     return (
-      focused[fieldName] &&
+      touched[fieldName] &&
       error && <small className='form-text p-0 m-0 noted-red'>{error}</small>
     );
-  };
-
-  const onFocus = (e) => {
-    setFocused({ ...focused, [e.target.name]: true });
   };
 
   const [isEditing, setIsEditing] = useState(false);
@@ -165,6 +159,7 @@ export default function Payment() {
                         value={fullName}
                         onChange={handlePaymentChange}
                         {...noBorder}
+                        onBlur={handleBlur}
                       />
                       {renderInlineValidationError('fullName')}
                     </Form.Group>
@@ -181,6 +176,7 @@ export default function Payment() {
                         onChange={handlePaymentChange}
                         {...noBorder}
                         maxLength={20}
+                        onBlur={handleBlur}
                       />
                       {renderInlineValidationError('cardNumber')}
                     </Form.Group>
@@ -201,6 +197,7 @@ export default function Payment() {
                           value={expirationMonth || ''}
                           onChange={handlePaymentChange}
                           {...noBorder}
+                          onBlur={handleBlur}
                         />
                         <div
                           className='separator d-flex'
@@ -215,6 +212,7 @@ export default function Payment() {
                           value={expirationYear || ''}
                           onChange={handlePaymentChange}
                           {...noBorder}
+                          onBlur={handleBlur}
                         />
                       </div>
                     </Form.Group>
@@ -231,6 +229,7 @@ export default function Payment() {
                         onChange={handlePaymentChange}
                         {...noBorder}
                         maxLength={4}
+                        onBlur={handleBlur}
                       />
                       {renderInlineValidationError('cvc')}
                     </Form.Group>
@@ -293,6 +292,7 @@ export default function Payment() {
                       value={fullName}
                       onChange={handlePaymentChange}
                       {...noBorder}
+                      onBlur={handleBlur}
                     />
                     {renderInlineValidationError('fullName')}
                   </Form.Group>
@@ -307,6 +307,7 @@ export default function Payment() {
                         value={expirationMonth}
                         onChange={handlePaymentChange}
                         {...noBorder}
+                        onBlur={handleBlur}
                       />
                       <div className='separator'>
                         <h4>&nbsp;&nbsp;/&nbsp;&nbsp;</h4>
@@ -317,6 +318,7 @@ export default function Payment() {
                         value={expirationYear}
                         onChange={handlePaymentChange}
                         {...noBorder}
+                        onBlur={handleBlur}
                       />
                     </div>
                   </Form.Group>
@@ -333,6 +335,7 @@ export default function Payment() {
                       value={formatCardNumber(cardNumber) || ''}
                       onChange={handlePaymentChange}
                       {...noBorder}
+                      onBlur={handleBlur}
                     />
                     {renderInlineValidationError('cardNumber')}
                   </Form.Group>
@@ -347,6 +350,7 @@ export default function Payment() {
                       value={cvc}
                       onChange={handlePaymentChange}
                       {...noBorder}
+                      onBlur={handleBlur}
                     />
                     {renderInlineValidationError('cvc')}
                   </Form.Group>

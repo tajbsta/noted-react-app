@@ -33,6 +33,8 @@ export default function BasicInfo({ user }) {
     errors: addressFormErrors,
     handleChange,
     values: addressFormValues,
+    touched,
+    handleBlur,
   } = useFormik({
     initialValues: {
       fullName: user.name,
@@ -46,18 +48,10 @@ export default function BasicInfo({ user }) {
     enableReinitialize: true,
   });
 
-  const [focused, setFocused] = useState({
-    ...Object.keys((key) => ({ [key]: false })),
-  });
-
-  const onFocus = (e) => {
-    setFocused({ ...focused, [e.target.name]: true });
-  };
-
   const renderInlineValidationError = (fieldName) => {
     const error = addressFormErrors[fieldName];
     return (
-      focused[fieldName] &&
+      touched[fieldName] &&
       error && <small className='form-text p-0 m-0 noted-red'>{error}</small>
     );
   };
@@ -71,8 +65,6 @@ export default function BasicInfo({ user }) {
     state,
     zipCode,
   } = addressFormValues;
-
-  console.log(addressFormValues);
 
   const updateBasicInfo = async () => {
     setError(false);
@@ -157,7 +149,7 @@ export default function BasicInfo({ user }) {
                         className='form-control'
                         type='name'
                         name='fullName'
-                        onFocus={onFocus}
+                        onBlur={handleBlur}
                         value={fullName || ''}
                         {...noBorder}
                         onChange={handleChange}
@@ -178,7 +170,7 @@ export default function BasicInfo({ user }) {
                           name='state'
                           onChange={handleChange}
                           placeholder='Select State'
-                          onFocus={onFocus}
+                          onBlur={handleBlur}
                           defaultValue='null'
                           {...noBorder}
                         >
@@ -199,7 +191,7 @@ export default function BasicInfo({ user }) {
 
                       {!isEditing && (
                         <Form.Control
-                          onFocus={onFocus}
+                          onBlur={handleBlur}
                           className='form-control'
                           type='zip code'
                           value={state}
@@ -212,7 +204,7 @@ export default function BasicInfo({ user }) {
                     <Form.Group>
                       <Form.Label>Zip Code</Form.Label>
                       <Form.Control
-                        onFocus={onFocus}
+                        onBlur={handleBlur}
                         className='form-control'
                         onChange={(e) => {
                           const re = /^[0-9\b]+$/;
@@ -237,7 +229,7 @@ export default function BasicInfo({ user }) {
                     <Form.Group>
                       <Form.Label>Address Line 1</Form.Label>
                       <Form.Control
-                        onFocus={onFocus}
+                        onBlur={handleBlur}
                         className='form-control'
                         type='name'
                         name='line1'
@@ -254,7 +246,7 @@ export default function BasicInfo({ user }) {
                     <Form.Group>
                       <Form.Label>Address Line 2</Form.Label>
                       <Form.Control
-                        onFocus={onFocus}
+                        onBlur={handleBlur}
                         className='form-control'
                         type='name'
                         value={line2 || ''}
@@ -270,7 +262,7 @@ export default function BasicInfo({ user }) {
                     <Form.Group>
                       <Form.Label>City</Form.Label>
                       <Form.Control
-                        onFocus={onFocus}
+                        onBlur={handleBlur}
                         className='form-control'
                         type='city'
                         name='city'
@@ -285,7 +277,7 @@ export default function BasicInfo({ user }) {
                     <Form.Group>
                       <Form.Label>Phone</Form.Label>
                       <Form.Control
-                        onFocus={onFocus}
+                        onBlur={handleBlur}
                         className='form-control'
                         type='phone number'
                         onChange={(e) => {
@@ -363,7 +355,7 @@ export default function BasicInfo({ user }) {
                   <Form.Group>
                     <Form.Label>Full Name</Form.Label>
                     <Form.Control
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                       className='form-control-lg'
                       type='name'
                       name='fullName'
@@ -379,7 +371,7 @@ export default function BasicInfo({ user }) {
                     <Form.Label>State</Form.Label>
                     {isEditing && (
                       <Form.Control
-                        onFocus={onFocus}
+                        onBlur={handleBlur}
                         className='form-control-md'
                         as='select'
                         value={state || ''}
@@ -403,7 +395,7 @@ export default function BasicInfo({ user }) {
 
                     {!isEditing && (
                       <Form.Control
-                        onFocus={onFocus}
+                        onBlur={handleBlur}
                         className='form-control-sm'
                         type='zip code'
                         value={state}
@@ -416,7 +408,7 @@ export default function BasicInfo({ user }) {
                   <Form.Group>
                     <Form.Label>Zip Code</Form.Label>
                     <Form.Control
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                       className='form-control-md'
                       onChange={(e) => {
                         const re = /^[0-9\b]+$/;
@@ -439,7 +431,7 @@ export default function BasicInfo({ user }) {
                   <Form.Group>
                     <Form.Label>Address Line 1</Form.Label>
                     <Form.Control
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                       className='form-control-lg'
                       type='name'
                       name='line1'
@@ -454,7 +446,7 @@ export default function BasicInfo({ user }) {
                   <Form.Group>
                     <Form.Label>City</Form.Label>
                     <Form.Control
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                       className='form-control-md'
                       type='city'
                       name='city'
@@ -469,7 +461,7 @@ export default function BasicInfo({ user }) {
                   <Form.Group>
                     <Form.Label>Phone</Form.Label>
                     <Form.Control
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                       className='form-control-md'
                       type='phone number'
                       onChange={(e) => {
@@ -493,7 +485,7 @@ export default function BasicInfo({ user }) {
                   <Form.Group>
                     <Form.Label>Address Line 2</Form.Label>
                     <Form.Control
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                       className='form-control-lg'
                       type='name'
                       value={line2 || ''}

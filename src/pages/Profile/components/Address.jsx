@@ -36,6 +36,8 @@ export default function Address({ user }) {
     handleChange,
     setFieldValue,
     values: addressFormValues,
+    touched,
+    handleBlur,
   } = useFormik({
     initialValues: {
       fullName: user.name,
@@ -52,10 +54,6 @@ export default function Address({ user }) {
    * Handle focus
    */
 
-  const [focused, setFocused] = useState({
-    ...Object.keys((key) => ({ [key]: false })),
-  });
-
   const {
     fullName = '',
     phoneNumber = '',
@@ -70,13 +68,9 @@ export default function Address({ user }) {
   const renderInlineValidationError = (fieldName) => {
     const error = errors[fieldName];
     return (
-      focused[fieldName] &&
+      touched[fieldName] &&
       error && <small className='form-text p-0 m-0 noted-red'>{error}</small>
     );
-  };
-
-  const onFocus = (e) => {
-    setFocused({ ...focused, [e.target.name]: true });
   };
 
   const updateAddress = async () => {
@@ -161,7 +155,7 @@ export default function Address({ user }) {
                       value={fullName || ''}
                       {...noBorder}
                       onChange={handleChange}
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                     />
                     {renderInlineValidationError('fullName')}
                   </Form.Group>
@@ -181,7 +175,7 @@ export default function Address({ user }) {
                         placeholder='Select State'
                         defaultValue='null'
                         {...noBorder}
-                        onFocus={onFocus}
+                        onBlur={handleBlur}
                       >
                         {[
                           { abbreviation: '', name: 'Select State' },
@@ -220,7 +214,7 @@ export default function Address({ user }) {
                       type='zip code'
                       value={zipCode || ''}
                       {...noBorder}
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                     />
                     {renderInlineValidationError('zipCode')}
                   </Form.Group>
@@ -237,7 +231,7 @@ export default function Address({ user }) {
                       onChange={handleChange}
                       value={line1 || ''}
                       {...noBorder}
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                     />
                     {renderInlineValidationError('line1')}
                   </Form.Group>
@@ -254,7 +248,7 @@ export default function Address({ user }) {
                       name='line2'
                       onChange={handleChange}
                       {...noBorder}
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                     />
                   </Form.Group>
                 </Col>
@@ -270,7 +264,7 @@ export default function Address({ user }) {
                       value={city || ''}
                       onChange={handleChange}
                       {...noBorder}
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                     />
                     {renderInlineValidationError('city')}
                   </Form.Group>
@@ -291,7 +285,7 @@ export default function Address({ user }) {
                       name='phoneNumber'
                       maxLength={13}
                       {...noBorder}
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                     />
                     {renderInlineValidationError('phoneNumber')}
                   </Form.Group>
@@ -373,7 +367,7 @@ export default function Address({ user }) {
                       value={fullName || ''}
                       {...noBorder}
                       onChange={handleChange}
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                     />
 
                     {renderInlineValidationError('fullName')}
@@ -392,7 +386,7 @@ export default function Address({ user }) {
                         placeholder='Select State'
                         defaultValue='null'
                         {...noBorder}
-                        onFocus={onFocus}
+                        onBlur={handleBlur}
                       >
                         {[
                           { abbreviation: '', name: 'Select State' },
@@ -431,7 +425,7 @@ export default function Address({ user }) {
                       type='zip code'
                       value={zipCode || ''}
                       {...noBorder}
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                     />
                     {renderInlineValidationError('zipCode')}
                   </Form.Group>
@@ -449,7 +443,7 @@ export default function Address({ user }) {
                       onChange={handleChange}
                       value={line1 || ''}
                       {...noBorder}
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                     />
                     {renderInlineValidationError('line1')}
                   </Form.Group>
@@ -464,7 +458,7 @@ export default function Address({ user }) {
                       value={city || ''}
                       onChange={handleChange}
                       {...noBorder}
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                     />
                     {renderInlineValidationError('city')}
                   </Form.Group>
@@ -485,7 +479,7 @@ export default function Address({ user }) {
                       name='phoneNumber'
                       maxLength={13}
                       {...noBorder}
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                     />
                     {renderInlineValidationError('phoneNumber')}
                   </Form.Group>
@@ -503,7 +497,7 @@ export default function Address({ user }) {
                       name='line2'
                       onChange={handleChange}
                       {...noBorder}
-                      onFocus={onFocus}
+                      onBlur={handleBlur}
                     />
                   </Form.Group>
                 </Col>
