@@ -55,16 +55,15 @@
     margin-bottom: 10px;
     text-align: center;
 
-    // .email {
-    //   font-family: 'Sofia Pro';
-    //   margin-bottom: 0px;
-    //   color: #570097;
-    // }
-
     @media (max-width: 767px) {
       max-width: 295px;
       margin-bottom: 24px;
     }
+  }
+
+  .text-address {
+    color: #570097;
+    text-decoration: underline;
   }
 
   .modal-body {

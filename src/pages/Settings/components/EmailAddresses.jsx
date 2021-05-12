@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { CheckCircle } from 'react-feather';
+import { AlertCircle, CheckCircle } from 'react-feather';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { getAccounts } from '../../../utils/accountsApi';
 import { Spinner } from 'react-bootstrap';
 import DeleteEmailModal from '../../../modals/DeleteEmailModal';
 import Collapsible from 'react-collapsible';
+import { showSuccess } from '../../../library/notifications.library';
 
 export default function EmailAddresses({ user }) {
   const [accounts, setAccounts] = useState([]);
@@ -77,7 +78,16 @@ export default function EmailAddresses({ user }) {
     setAccounts(list.filter((account) => account.id !== id));
     setModalDeleteShow(false);
     setToDeleteAccount(null);
-    setSuccess(true);
+    showSuccess({
+      message: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <CheckCircle />
+          <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+            Successfully deleted email!
+          </h4>
+        </div>
+      ),
+    });
   };
 
   const renderMobileView = () => {
