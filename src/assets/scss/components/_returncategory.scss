@@ -39,6 +39,11 @@
   .progress {
     margin-top: 40px;
     margin-bottom: 40px;
+
+    @media (max-width: 540px) {
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
   }
 
   .btn-show-more {
