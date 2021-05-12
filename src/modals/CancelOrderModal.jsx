@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { timeout } from '../utils/time';
+import { showWarning } from '../library/notifications.library';
 
 export default function CancelOrderModal(props) {
   const [isMobile, setIsMobile] = useState(false);
@@ -55,7 +57,14 @@ export default function CancelOrderModal(props) {
           <a className='sofia-pro view-link'>More info</a>
         </div>
         <div className='button-group'>
-          <Button className='btn-cancel' onClick={props.onCancel}>
+          <Button
+            className='btn-cancel'
+            onClick={() => {
+              showWarning({ message: 'Order cancelled' });
+              timeout({ duration: 1000 });
+              props.onCancel();
+            }}
+          >
             Cancel order
           </Button>
           <Button className='btn-dont' onClick={props.onHide}>

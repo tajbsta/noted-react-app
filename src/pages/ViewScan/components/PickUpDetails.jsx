@@ -78,8 +78,11 @@ export default function PickUpDetails({
         .map((addressField) => {
           return addressField.length;
         })
-        .filter((addressField) => {
-          return addressField === 0;
+        .filter((addressField, index) => {
+          return (
+            addressField === 0 &&
+            index !== Object.keys(addressFormValues).length - 1
+          );
         }).length < 1
     );
   }, [addressFormValues]);
@@ -355,9 +358,13 @@ export default function PickUpDetails({
                               <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
                                 {addressFormValues.line1}
                               </h4>
-                              <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                {addressFormValues.line2}
-                              </h4>
+                              {addressFormValues.line2 ? (
+                                <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                  {addressFormValues.line2}
+                                </h4>
+                              ) : (
+                                ''
+                              )}
                               <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
                                 {addressFormValues.city},{' '}
                                 {addressFormValues.state}{' '}

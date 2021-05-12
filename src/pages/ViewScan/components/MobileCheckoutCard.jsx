@@ -87,7 +87,8 @@ export default function MobileCheckoutCard({
                     onClick={onReturnConfirm}
                     disabled={!validOrder}
                   >
-                    Confirm Order
+                    <span>Confirm Order</span>
+                    <span>$9.99</span>
                   </button>
                 </Col>
               </Row>

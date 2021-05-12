@@ -9,6 +9,8 @@ import { get, isEmpty } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
 import { toBase64 } from '../../../utils/file';
 import { getUser, uploadProfilePic } from '../../../utils/auth';
+import { showError, showSuccess } from '../../../library/notifications.library';
+import { AlertCircle, CheckCircle } from 'react-feather';
 
 export default function UserInfo({ user: userData = {} }) {
   const {
@@ -55,16 +57,28 @@ export default function UserInfo({ user: userData = {} }) {
       setFile(file);
 
       dispatch(updateProfilePicture(await toBase64(file)));
-
       await uploadProfilePic(user.sub, user.profile, file);
+      showSuccess({
+        message: (
+          <div>
+            <CheckCircle />
+            &nbsp;&nbsp;Image uploaded successfully!
+          </div>
+        ),
+      });
       setLoading(false);
-
-      setError(false);
-      setSuccess(true);
     } catch (err) {
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              File is too large! Maximum size for file upload is 5 MB.
+            </h4>
+          </div>
+        ),
+      });
       setLoading(false);
-
-      setError(true);
     }
   };
 
@@ -108,44 +122,7 @@ export default function UserInfo({ user: userData = {} }) {
         <div className='card-body text-center'>
           {!isMobile && (
             <>
-              {error && (
-                <div className='alert alert-danger mt-3' role='alert'>
-                  <div>
-                    <h4 className='text-center text-alert mb-0'>
-                      File is too large! The maximum size for file upload is 5
-                      MB.
-                    </h4>
-                  </div>
-                </div>
-              )}
-              {/* {success && (
-                <div className='alert alert-success mt-3' role='alert'>
-                  <div>
-                    <h4 className='text-center text-alert mb-0'>
-                      Upload Success!
-                    </h4>
-                  </div>
-                </div>
-              )} */}
               <div className='img-container'>
-                {/* {success && (
-                  <>
-                    <div className='profile-alert-icon'>
-                      <Check />
-                    </div>
-                  </>
-                )}
-                {error && (
-                  <>
-                    <div
-                      className='profile-alert-icon'
-                      style={{ color: 'red' }}
-                    >
-                      <AlertCircle />
-                    </div>
-                  </>
-                )} */}
-
                 {loading && (
                   <Spinner
                     animation='border'

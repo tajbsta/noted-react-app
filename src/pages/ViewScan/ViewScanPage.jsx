@@ -16,6 +16,8 @@ import { Link } from 'react-router-dom';
 import { DONATE, RETURNABLE } from '../../constants/actions/runtime';
 import { scrollToTop } from '../../utils/window';
 import SizeGuideModal from '../../modals/SizeGuideModal';
+import { showSuccess } from '../../library/notifications.library';
+import { Box } from 'react-feather';
 
 export default function ViewScanPage() {
   const dispatch = useDispatch();
@@ -99,6 +101,14 @@ export default function ViewScanPage() {
     );
     dispatch(clearForm());
     scrollToTop();
+    showSuccess({
+      message: (
+        <div>
+          <Box />
+          &nbsp;&nbsp;Success! Order Confirmed!
+        </div>
+      ),
+    });
   };
 
   const addSelected = (id) => {
@@ -253,12 +263,12 @@ export default function ViewScanPage() {
                       </div>
                       <div className='row'>
                         <div className='col m-label'>Taxes</div>
-                        <div className='col m-value'>$0.00</div>
+                        <div className='col m-value'>$0.70</div>
                       </div>
                       <hr style={{ marginBottom: '21px', marginTop: '8px' }} />
                       <div className='row'>
                         <div className='col m-total-label'>Total paid</div>
-                        <div className='col m-total-value'>$9.99</div>
+                        <div className='col m-total-value'>$10.69</div>
                       </div>
                     </div>
                   </div>

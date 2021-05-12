@@ -87,7 +87,7 @@ export default function CheckoutCard({
                     </h5>
                   </div>
                   <div className='col'>
-                    <h5 className='sofia-pro text-right'>${returnFee}</h5>
+                    <h5 className='sofia-pro text-right'>$9.99</h5>
                   </div>
                 </div>
                 <div className='row'>
@@ -95,9 +95,7 @@ export default function CheckoutCard({
                     <h5 className='sofia-pro text-muted value-label'>Taxes</h5>
                   </div>
                   <div className='col'>
-                    <h5 className='sofia-pro text-right'>
-                      ${taxes.toFixed(2)}
-                    </h5>
+                    <h5 className='sofia-pro text-right'>$0.70</h5>
                   </div>
                 </div>
                 <hr className='line-break-3' />
@@ -106,9 +104,7 @@ export default function CheckoutCard({
                     <h5 className='sofia-pro text-muted'>Total to pay now</h5>
                   </div>
                   <div className='col'>
-                    <h5 className='sofia-pro text-right total-now'>
-                      ${totalPayment}
-                    </h5>
+                    <h5 className='sofia-pro text-right total-now'>$10.69</h5>
                   </div>
                 </div>
                 <div

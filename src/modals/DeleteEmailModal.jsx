@@ -54,7 +54,10 @@ export default function DeleteEmailModal(props) {
       )}
       <Modal.Header>
         <Modal.Title id='contained-modal-title-vcenter'>
-          Are you sure you want to delete {props.account && props.account.email}{' '}
+          Are you sure you want to delete{' '}
+          <a className='sofia-pro text-address'>
+            {props.account && props.account.email}
+          </a>{' '}
           email?
         </Modal.Title>
       </Modal.Header>

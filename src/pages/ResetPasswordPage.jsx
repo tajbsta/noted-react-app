@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Form, Spinner } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import { Eye, EyeOff } from 'react-feather';
+import { Eye, EyeOff, AlertCircle, CheckCircle } from 'react-feather';
 import { Auth } from 'aws-amplify';
 import { get } from 'lodash';
 import { resetPassErrors } from '../library/errors.library';
 import { resetPasswordSchema } from '../models/formSchema';
 import { scrollToTop } from '../utils/window';
+import { showError, showSuccess } from '../library/notifications.library';
 
 export default function ResetPasswordPage(props) {
   const history = useHistory();
@@ -64,7 +65,17 @@ export default function ResetPasswordPage(props) {
       );
 
       setIsSubmitting(false);
-      setSuccess(true);
+
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Success! Please login with your new password.
+            </h4>
+          </div>
+        ),
+      });
 
       setTimeout(() => {
         history.push('/login');
@@ -72,13 +83,18 @@ export default function ResetPasswordPage(props) {
     } catch (err) {
       setIsSubmitting(false);
 
-      setError(
-        get(
+      showError({
+        message: get(
           resetPassErrors.find(({ code }) => code === err.code),
           'message',
-          'An error occurred resetting password'
-        )
-      );
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              An error occurred resetting password
+            </h4>
+          </div>
+        ),
+      });
     }
   };
 
@@ -92,23 +108,6 @@ export default function ResetPasswordPage(props) {
               <p>Please choose your new password</p>
             </div>
             <Form>
-              {error && (
-                <div className='alert alert-danger w-840' role='alert'>
-                  <div>
-                    <h4 className='text-center text-alert'>{error}</h4>
-                  </div>
-                </div>
-              )}
-              {success && (
-                <div className='alert alert-success w-840' role='alert'>
-                  <div>
-                    <h4 className='text-center text-alert'>
-                      Success! Please login with your new password.
-                    </h4>
-                  </div>
-                </div>
-              )}
-
               <div className='form-group'>
                 <input
                   className='form-control form-control-appended'

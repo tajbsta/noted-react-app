@@ -79,7 +79,7 @@ export const resetPassErrors = [
 export const scraperGmailErrors = [
   {
     code: ACCOUNT_ALREADY_EXIST,
-    message: "This account has already been added by an existing user",
+    message: "The Gmail account has already been added by an existing user",
   },
   {
     code: INVALID_REQUEST,
