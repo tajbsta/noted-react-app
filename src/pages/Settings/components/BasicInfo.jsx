@@ -112,17 +112,30 @@ export default function BasicInfo({ user }) {
 
       if (!fullName || !phoneNumber || !city || !line1 || !state || !zipCode) {
         setSuccess(false);
-        showError({ message: 'Missing field. Please complete the form.' });
+        showError({
+          message: (
+            <div>
+              <AlertCircle />
+              &nbsp;&nbsp;Please complete the form.
+            </div>
+          ),
+        });
       } else {
-        showSuccess({ message: 'Updated address information' });
+        showSuccess({
+          message: (
+            <div>
+              <CheckCircle />
+              &nbsp;&nbsp;Successfully updated!
+            </div>
+          ),
+        });
         setError(false);
         setSuccess(true);
       }
     } catch (err) {
-      showSuccess({ message: 'Error updating address information' });
+      showSuccess({ message: error });
       setSuccess(false);
       setError(true);
-
       setIsSubmitting(false);
     }
   };
@@ -577,29 +590,7 @@ export default function BasicInfo({ user }) {
   return (
     <div id='BasicInfo'>
       {renderDesktopTitle()}
-      {success && (
-        <div className='alert alert-success max-w-840' role='alert'>
-          <div>
-            <h4 className='text-center text-alert'>
-              <CheckCircle />
-              &nbsp;&nbsp;&nbsp;Success
-            </h4>
-          </div>
-        </div>
-      )}
-      {error && (
-        <div className='alert alert-danger max-w-840' role='alert'>
-          <div>
-            <h4 className='text-center text-alert'>
-              <AlertCircle />
-              &nbsp;&nbsp;&nbsp;{error}
-            </h4>
-          </div>
-        </div>
-      )}
-      {/* START OF MOBILE VIEW */}
       {isMobile && renderMobileView()}
-      {/* END OF MOBILE VIEW */}
       {!isMobile && renderDesktopView()}
     </div>
   );

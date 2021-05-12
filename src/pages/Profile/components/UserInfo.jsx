@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { toBase64 } from '../../../utils/file';
 import { getUser, uploadProfilePic } from '../../../utils/auth';
 import { showError, showSuccess } from '../../../library/notifications.library';
+import { AlertCircle, CheckCircle } from 'react-feather';
 
 export default function UserInfo({ user: userData = {} }) {
   const {
@@ -57,10 +58,24 @@ export default function UserInfo({ user: userData = {} }) {
 
       dispatch(updateProfilePicture(await toBase64(file)));
       await uploadProfilePic(user.sub, user.profile, file);
-      showSuccess({ message: 'Profile image updated successfully' });
+      showSuccess({
+        message: (
+          <div>
+            <CheckCircle />
+            &nbsp;&nbsp;Image uploaded successfully!
+          </div>
+        ),
+      });
       setLoading(false);
     } catch (err) {
-      showError({ message: 'We failed to update your profile image' });
+      showError({
+        message: (
+          <div>
+            <AlertCircle />
+            &nbsp;&nbsp;File is too large! Maximum size for file upload is 5 MB.
+          </div>
+        ),
+      });
       setLoading(false);
     }
   };
@@ -115,34 +130,8 @@ export default function UserInfo({ user: userData = {} }) {
                   </div>
                 </div>
               )}
-              {/* {success && (
-                <div className='alert alert-success mt-3' role='alert'>
-                  <div>
-                    <h4 className='text-center text-alert mb-0'>
-                      Upload Success!
-                    </h4>
-                  </div>
-                </div>
-              )} */}
-              <div className='img-container'>
-                {/* {success && (
-                  <>
-                    <div className='profile-alert-icon'>
-                      <Check />
-                    </div>
-                  </>
-                )}
-                {error && (
-                  <>
-                    <div
-                      className='profile-alert-icon'
-                      style={{ color: 'red' }}
-                    >
-                      <AlertCircle />
-                    </div>
-                  </>
-                )} */}
 
+              <div className='img-container'>
                 {loading && (
                   <Spinner
                     animation='border'

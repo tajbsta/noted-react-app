@@ -113,12 +113,33 @@ export default function Address({ user }) {
 
       if (!fullName || !phoneNumber || !city || !line1 || !state || !zipCode) {
         setSuccess(false);
-        showError({ message: 'Missing field. Please complete the form.' });
+        showError({
+          message: (
+            <div>
+              <AlertCircle />
+              &nbsp;&nbsp;Please complete the form.
+            </div>
+          ),
+        });
       } else {
-        showSuccess({ message: 'Successfull updated address information' });
+        showSuccess({
+          message: (
+            <div>
+              <CheckCircle />
+              &nbsp;&nbsp;Successfully updated!
+            </div>
+          ),
+        });
       }
     } catch (err) {
-      showError({ message: 'We failed to update address information' });
+      showError({
+        message: (
+          <div>
+            <CheckCircle />
+            &nbsp;&nbsp;Error updating information
+          </div>
+        ),
+      });
       setIsSubmitting(false);
     }
   };

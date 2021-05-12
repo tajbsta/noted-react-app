@@ -17,6 +17,7 @@ import { DONATE, RETURNABLE } from '../../constants/actions/runtime';
 import { scrollToTop } from '../../utils/window';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import { showSuccess } from '../../library/notifications.library';
+import { Box } from 'react-feather';
 
 export default function ViewScanPage() {
   const dispatch = useDispatch();
@@ -100,7 +101,14 @@ export default function ViewScanPage() {
     );
     dispatch(clearForm());
     scrollToTop();
-    showSuccess({ message: 'Successfully confirmed order' });
+    showSuccess({
+      message: (
+        <div>
+          <Box />
+          &nbsp;&nbsp;Success! Order Confirmed!
+        </div>
+      ),
+    });
   };
 
   const addSelected = (id) => {
