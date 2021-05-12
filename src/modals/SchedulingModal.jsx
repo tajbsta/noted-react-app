@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Spinner } from 'react-bootstrap';
+import { Modal, Button, Spinner, Col, Row } from 'react-bootstrap';
 import moment from 'moment';
 import { generateSchedules } from '../utils/schedule';
 import { getPickupSlots } from '../utils/scheduleApi';
@@ -86,40 +86,54 @@ export default function SchedulingModal(props) {
           Select a Time Slot
         </div>
         <div className='timeSlotsContainer'>
-          <div className='col morningSlotsContainer'>
-            {timeSlots.map((timeSlot) => {
-              const isSelected =
-                pickUpDateValues.time === timeSlot.text ? `isSelected` : '';
-              const className = `btn timeSlotContainer ${isSelected}`;
-              return (
-                <div
-                  className={className}
-                  key={timeSlot.startTime}
-                  onClick={() => setFieldValue('time', timeSlot.text)}
-                >
-                  <div className='col'>
-                    <div
-                      className={`row sofia-pro timeSlotText ${
-                        isSelected ? 'selected' : ''
-                      }`}
+          <div
+            className='col morningSlotsContainer'
+            style={{
+              display: 'flex',
+            }}
+          >
+            <Col>
+              {timeSlots.map((timeSlot) => {
+                const isSelected =
+                  pickUpDateValues.time === timeSlot.text ? `isSelected` : '';
+                const className = `btn timeSlotContainer ${isSelected}`;
+                return (
+                  <Row
+                    key={timeSlot.startTime}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Button
+                      className={className}
+                      onClick={() => setFieldValue('time', timeSlot.text)}
                     >
-                      {timeSlot.text}
-                    </div>
-                    <div
-                      className={`row availableTimeSlot sofia-pro ${
-                        isSelected ? 'selected' : ''
-                      }`}
-                      style={{
-                        fontSize: 13,
-                        // opacity: 0.6,
-                      }}
-                    >
-                      Slots available: {timeSlot.numberOfSlots}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                      <div className='col'>
+                        <div
+                          className={`row sofia-pro timeSlotText ${
+                            isSelected ? 'selected' : ''
+                          }`}
+                        >
+                          {timeSlot.text}
+                        </div>
+                        <div
+                          className={`row availableTimeSlot sofia-pro ${
+                            isSelected ? 'selected' : ''
+                          }`}
+                          style={{
+                            fontSize: 13,
+                            // opacity: 0.6,
+                          }}
+                        >
+                          Slots available: {timeSlot.numberOfSlots}
+                        </div>
+                      </div>
+                    </Button>
+                  </Row>
+                );
+              })}
+            </Col>
           </div>
         </div>
       </div>
