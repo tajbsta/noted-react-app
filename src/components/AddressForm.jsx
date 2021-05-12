@@ -179,7 +179,7 @@ export default function AddressForm({
                       value={zipCode || ''}
                       maxLength={6}
                     />
-                    {renderInlineError(errors.zipCode)}
+                    {zipCode.length > 0 && renderInlineError(errors.zipCode)}
                   </Form.Group>
                 </Col>
               </Row>
@@ -381,7 +381,7 @@ export default function AddressForm({
                       name='zipCode'
                       maxLength={6}
                     />
-                    {renderInlineError(errors.zipCode)}
+                    {zipCode.length > 0 && renderInlineError(errors.zipCode)}
                   </Form.Group>
                 </Col>
               </Row>

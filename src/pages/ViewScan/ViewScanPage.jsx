@@ -253,12 +253,12 @@ export default function ViewScanPage() {
                       </div>
                       <div className='row'>
                         <div className='col m-label'>Taxes</div>
-                        <div className='col m-value'>$0.00</div>
+                        <div className='col m-value'>$0.70</div>
                       </div>
                       <hr style={{ marginBottom: '21px', marginTop: '8px' }} />
                       <div className='row'>
                         <div className='col m-total-label'>Total paid</div>
-                        <div className='col m-total-value'>$9.99</div>
+                        <div className='col m-total-value'>$10.69</div>
                       </div>
                     </div>
                   </div>

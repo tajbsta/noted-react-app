@@ -355,9 +355,13 @@ export default function PickUpDetails({
                               <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
                                 {addressFormValues.line1}
                               </h4>
-                              <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                {addressFormValues.line2}
-                              </h4>
+                              {addressFormValues.line2 ? (
+                                <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                  {addressFormValues.line2}
+                                </h4>
+                              ) : (
+                                ''
+                              )}
                               <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
                                 {addressFormValues.city},{' '}
                                 {addressFormValues.state}{' '}
