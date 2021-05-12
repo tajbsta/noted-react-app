@@ -109,7 +109,7 @@ export const pickUpAddressSchema = Yup.object({
   fullName: Yup.string().required('Fill in your name'),
   phoneNumber: Yup.string().matches(
     /^(\d{3})(\d{3})(\d{4})$/,
-    'Phone number is not valid'
+    'Not a valid phone number'
   ),
   line1: Yup.string().required('Address line 1 is required'),
   city: Yup.string().required('City is required'),

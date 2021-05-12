@@ -79,6 +79,10 @@ export default function AddressForm({
     );
   };
 
+  const renderInlineError = (error) => (
+    <small className='form-text p-0 m-0 noted-red'>{error}</small>
+  );
+
   const renderAddressFormMobile = () => {
     return (
       <>
@@ -173,10 +177,9 @@ export default function AddressForm({
                       name='zipCode'
                       type='zip code'
                       value={zipCode || ''}
-                      onFocus={onFocus}
-                      onBlur={onBlur}
+                      maxLength={6}
                     />
-                    {renderInlineValidationError('zipCode')}
+                    {renderInlineError(errors.zipCode)}
                   </Form.Group>
                 </Col>
               </Row>
@@ -375,12 +378,10 @@ export default function AddressForm({
                       }}
                       type='zip code'
                       value={zipCode || ''}
-                      onBlur={onBlur}
                       name='zipCode'
                       maxLength={6}
-                      onFocus={onFocus}
                     />
-                    {renderInlineValidationError('zipCode')}
+                    {renderInlineError(errors.zipCode)}
                   </Form.Group>
                 </Col>
               </Row>
