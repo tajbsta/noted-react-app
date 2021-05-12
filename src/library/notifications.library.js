@@ -8,7 +8,7 @@ export const showSuccess = ({ title = '', message = '' }) => {
   });
 };
 
-export const showWarning = ({ title, message }) => {
+export const showWarning = async ({ title, message }) => {
   return toast(<ToastContent title={title} message={message} />, {
     hideProgressBar: true,
     className: 'toast-warning',

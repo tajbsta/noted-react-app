@@ -25,6 +25,18 @@ export default function PaymentForm({
     }) || !isFormEmpty({ ...errors });
   const [isMobile, setIsMobile] = useState(false);
 
+  const [focused, setFocused] = useState({
+    fullName: false,
+    cardNumber: false,
+    expirationMonth: false,
+    expirationYear: false,
+    cvc,
+  });
+
+  const onFocus = (e) => {
+    setFocused({ ...focused, [e.target.name]: true });
+  };
+
   function formatCardNumber(value) {
     return value
       .replace(/[^0-9]/g, '')
@@ -35,10 +47,13 @@ export default function PaymentForm({
       }, '');
   }
 
-  const renderInlineError = (error) => (
-    <small className='form-text p-0 m-0 noted-red'>{error}</small>
-  );
-
+  const renderInlineValidationError = (fieldName) => {
+    const error = errors[fieldName];
+    return (
+      focused[fieldName] &&
+      error && <small className='form-text p-0 m-0 noted-red'>{error}</small>
+    );
+  };
   useEffect(() => {
     const platform = window.navigator.platform;
     const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
@@ -120,9 +135,9 @@ export default function PaymentForm({
                               name='fullName'
                               value={fullName || ''}
                               onChange={handleChange}
+                              onFocus={onFocus}
                             />
-                            {!isEmpty(fullName) &&
-                              renderInlineError(errors.fullName)}
+                            {renderInlineValidationError('fullName')}
                           </Form.Group>
                         </Col>
                       </Row>
@@ -136,9 +151,9 @@ export default function PaymentForm({
                               value={formatCardNumber(cardNumber) || ''}
                               onChange={handleChange}
                               maxLength={20}
+                              onFocus={onFocus}
                             />
-                            {!isEmpty(cardNumber) &&
-                              renderInlineError(errors.cardNumber)}
+                            {renderInlineValidationError('cardNumber')}
                           </Form.Group>
                         </Col>
                       </Row>
@@ -164,6 +179,7 @@ export default function PaymentForm({
                                     handleChange(e);
                                   }
                                 }}
+                                onFocus={onFocus}
                               />
                               <div
                                 className='separator d-flex'
@@ -185,10 +201,10 @@ export default function PaymentForm({
                                     handleChange(e);
                                   }
                                 }}
+                                onFocus={onFocus}
                               />
                             </div>
-                            {!isEmpty(expirationYear) &&
-                              renderInlineError(errors.expirationYear)}
+                            {renderInlineValidationError('expirationYear')}
                           </Form.Group>
                         </Col>
                       </Row>
@@ -209,6 +225,7 @@ export default function PaymentForm({
                                   handleChange(e);
                                 }
                               }}
+                              onFocus={onFocus}
                               maxLength={4}
                             />
                           </Form.Group>
@@ -252,8 +269,9 @@ export default function PaymentForm({
                               name='fullName'
                               value={fullName || ''}
                               onChange={handleChange}
+                              onFocus={onFocus}
                             />
-                            {renderInlineError(errors.fullName)}
+                            {renderInlineValidationError('fullName')}
                           </Form.Group>
                         </Col>
                         <Col>
@@ -274,6 +292,7 @@ export default function PaymentForm({
                                     handleChange(e);
                                   }
                                 }}
+                                onFocus={onFocus}
                               />
                               <div className='separator'>
                                 <h4>&nbsp;&nbsp;/&nbsp;&nbsp;</h4>
@@ -292,9 +311,10 @@ export default function PaymentForm({
                                     handleChange(e);
                                   }
                                 }}
+                                onFocus={onFocus}
                               />
                             </div>
-                            {renderInlineError(errors.expirationYear)}
+                            {renderInlineValidationError('expirationYear')}
                           </Form.Group>
                         </Col>
                       </Row>
@@ -309,8 +329,9 @@ export default function PaymentForm({
                               value={formatCardNumber(cardNumber) || ''}
                               onChange={handleChange}
                               maxLength={20}
+                              onFocus={onFocus}
                             />
-                            {renderInlineError(errors.cardNumber)}
+                            {renderInlineValidationError('cardNumber')}
                           </Form.Group>
                         </Col>
                         <Col xs={6} md={3}>
@@ -329,6 +350,7 @@ export default function PaymentForm({
                                   handleChange(e);
                                 }
                               }}
+                              onFocus={onFocus}
                               maxLength={4}
                             />
                           </Form.Group>

@@ -70,9 +70,11 @@ export default function UserInfo({ user: userData = {} }) {
     } catch (err) {
       showError({
         message: (
-          <div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <AlertCircle />
-            &nbsp;&nbsp;File is too large! Maximum size for file upload is 5 MB.
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              File is too large! Maximum size for file upload is 5 MB.
+            </h4>
           </div>
         ),
       });
@@ -120,17 +122,6 @@ export default function UserInfo({ user: userData = {} }) {
         <div className='card-body text-center'>
           {!isMobile && (
             <>
-              {error && (
-                <div className='alert alert-danger mt-3' role='alert'>
-                  <div>
-                    <h4 className='text-center text-alert mb-0'>
-                      File is too large! The maximum size for file upload is 5
-                      MB.
-                    </h4>
-                  </div>
-                </div>
-              )}
-
               <div className='img-container'>
                 {loading && (
                   <Spinner

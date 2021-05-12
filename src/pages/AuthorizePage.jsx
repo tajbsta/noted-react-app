@@ -10,6 +10,7 @@ import { scraperGmailErrors } from '../library/errors.library';
 import { get, isEmpty } from 'lodash';
 import { timeout } from '../utils/time';
 import { scrollToTop } from '../utils/window';
+import { showError } from '../library/notifications.library';
 
 export default function AuthorizePage() {
   const history = useHistory();
@@ -40,13 +41,13 @@ export default function AuthorizePage() {
     });
 
     if (query.error) {
-      setErrMsg(
-        get(
+      showError({
+        message: get(
           scraperGmailErrors.find(({ code }) => code === query.error),
           'message',
           'An error occurred'
-        )
-      );
+        ),
+      });
     }
 
     // console.log({ query });
@@ -78,16 +79,6 @@ export default function AuthorizePage() {
   return (
     <div id='Authorize'>
       <Container className='main-body' fluid='lg'>
-        {errMsg && (
-          <div
-            className='alert alert-danger fade show'
-            role='alert'
-            style={{ position: 'relative' }}
-          >
-            <AlertCircle />{' '}
-            <strong className='error-msg text-center'>{errMsg}</strong>
-          </div>
-        )}
         <Row md='2' className='text-left align-items-end'>
           <Col xs='6' className='info'>
             <h1 className='bold text-title'>Everything is automatic</h1>
@@ -134,15 +125,6 @@ export default function AuthorizePage() {
         fluid='lg'
         style={{ marginTop: '2.5rem' }}
       >
-        {errMsg && (
-          <div
-            className='alert alert-danger fade show'
-            role='alert'
-            style={{ position: 'relative' }}
-          >
-            <strong className='text-center'>{errMsg}</strong>
-          </div>
-        )}
         <Row md='2' className='text-left align-items-end'>
           <Col xs='6'>
             <div className='authorize-img-mobile'>
