@@ -111,7 +111,7 @@ export default function ViewConfirmedReturn({
   });
 
   return (
-    <div id='ViewConfirmReturnPage'>
+    <div id='ViewOrderPage'>
       {isMobile && (
         <MobileModifyCheckoutCard
           inReturn={inReturn}
@@ -128,14 +128,14 @@ export default function ViewConfirmedReturn({
           <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed ? (
-              <div className='mobile-view-scan-col'>
+              <div className='mobile-checkout-col'>
                 <h3 className='sofia-pro text-18 section-title'>
                   Pick-up confirmed
                 </h3>
                 <PickUpConfirmed />
               </div>
             ) : (
-              <div className='mobile-view-scan-col'>
+              <div className='mobile-checkout-col'>
                 <PickUpDetails
                   address={address}
                   payment={payment}
@@ -147,7 +147,7 @@ export default function ViewConfirmedReturn({
               </div>
             )}
 
-            <h3 className='sofia-pro products-return text-18 section-title mobile-view-scan-col'>
+            <h3 className='sofia-pro products-return text-18 section-title mobile-checkout-col'>
               Your products to return
             </h3>
             {items.map((item) => (
@@ -240,7 +240,7 @@ export default function ViewConfirmedReturn({
       {/* MOBILE BILLING CARD */}
       {isMobile && (
         <>
-          <div className='mobile-billing-view-return'>
+          <div className='mobile-billing-order/:orderId'>
             <div className='m-billing-container mt-5'>
               <h4>Billing</h4>
             </div>

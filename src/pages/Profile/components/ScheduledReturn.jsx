@@ -127,7 +127,7 @@ export default function ScheduledReturn({ user }) {
     const moreItemsCount = get(items, 'length', 0) - 5;
 
     const onCancel = () => {
-      push('/view-return', { scheduledReturnId: scheduledReturn.id });
+      push('/order/' + scheduledReturn.id);
     };
 
     const onHide = () => {

@@ -97,7 +97,6 @@ function InReturnBox({
             }}
             data-toggle='tooltip'
             data-placement='top'
-            title='Tooltip message here :)'
           />
         </div>
       </Row>
@@ -111,7 +110,7 @@ function InReturnBox({
             addSelected={addSelected}
             removeSelected={removeSelected}
             onClick={() => {
-              push(`/view-scan?scanId=${scannedItem.id}`);
+              push(`/checkout?scanId=${scannedItem.id}`);
             }}
           />
         );

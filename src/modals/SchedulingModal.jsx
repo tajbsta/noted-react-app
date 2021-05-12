@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Button, Spinner } from 'react-bootstrap';
 import moment from 'moment';
 import { generateSchedules } from '../utils/schedule';
-import { getPickupSlots } from '../utils/scheduleApi';
+import { getPickupSlots } from '../utils/orderApi';
 import { getUserId } from '../utils/auth';
 import { isEmpty } from 'lodash-es';
 import { Loader } from 'react-feather';

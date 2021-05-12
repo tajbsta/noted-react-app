@@ -19,7 +19,7 @@ import SizeGuideModal from '../../modals/SizeGuideModal';
 import { showSuccess } from '../../library/notifications.library';
 import { Box } from 'react-feather';
 
-export default function ViewScanPage() {
+export default function CheckoutPage() {
   const dispatch = useDispatch();
   const [confirmed, setconfirmed] = useState(false);
   const [newSelected, setNewSelected] = useState([]);
@@ -157,7 +157,7 @@ export default function ViewScanPage() {
     (inReturn.length > 0 || inDonation.length > 0);
 
   return (
-    <div id='ViewScanPage'>
+    <div id='CheckoutPage'>
       {isMobile && (
         <MobileCheckoutCard
           inReturn={inReturn}
@@ -177,14 +177,14 @@ export default function ViewScanPage() {
           <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed ? (
-              <div className='mobile-view-scan-col'>
+              <div className='mobile-checkout-col'>
                 <h3 className='sofia-pro text-18 section-title'>
                   Pick-up confirmed
                 </h3>
                 <PickUpConfirmed orderId={orderId} />
               </div>
             ) : (
-              <div className='mobile-view-scan-col'>
+              <div className='mobile-checkout-col'>
                 <PickUpDetails
                   setValidAddress={setValidAddress}
                   setValidPayment={setValidPayment}
@@ -239,6 +239,7 @@ export default function ViewScanPage() {
               ))}
             </div>
 
+            {/* BILLING */}
             {isMobile && (
               <>
                 <div className='mobile-billing'>
@@ -313,9 +314,6 @@ export default function ViewScanPage() {
                   isTablet={isTablet}
                   potentialReturnValue={potentialReturnValue}
                   inDonation={inDonation}
-                  returnFee={returnFee}
-                  taxes={taxes}
-                  totalPayment={totalPayment}
                   onReturnConfirm={onReturnConfirm}
                   validOrder={validOrder}
                 />

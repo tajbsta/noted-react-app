@@ -120,7 +120,7 @@ function InReturnBox({
             addSelected={addSelected}
             removeSelected={removeSelected}
             onClick={() => {
-              push(`/view-scan?scanId=${scannedItem.id}`);
+              push(`/checkout?scanId=${scannedItem.id}`);
             }}
           />
         );

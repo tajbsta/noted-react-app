@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
+import { getPickupSlots } from '../../../utils/orderApi';
 
 export default function CheckoutCard({
   inReturn,
@@ -7,9 +8,6 @@ export default function CheckoutCard({
   isTablet,
   potentialReturnValue,
   inDonation,
-  returnFee,
-  taxes,
-  totalPayment,
   onReturnConfirm,
   validOrder = false,
 }) {
