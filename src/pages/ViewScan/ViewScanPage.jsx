@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { DONATE, RETURNABLE } from '../../constants/actions/runtime';
 import { scrollToTop } from '../../utils/window';
 import SizeGuideModal from '../../modals/SizeGuideModal';
+import { showSuccess } from '../../library/notifications.library';
 
 export default function ViewScanPage() {
   const dispatch = useDispatch();
@@ -99,6 +100,7 @@ export default function ViewScanPage() {
     );
     dispatch(clearForm());
     scrollToTop();
+    showSuccess({ message: 'Successfully confirmed order' });
   };
 
   const addSelected = (id) => {

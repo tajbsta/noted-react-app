@@ -78,8 +78,11 @@ export default function PickUpDetails({
         .map((addressField) => {
           return addressField.length;
         })
-        .filter((addressField) => {
-          return addressField === 0;
+        .filter((addressField, index) => {
+          return (
+            addressField === 0 &&
+            index !== Object.keys(addressFormValues).length - 1
+          );
         }).length < 1
     );
   }, [addressFormValues]);

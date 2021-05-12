@@ -9,6 +9,7 @@ import { get, isEmpty } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
 import { toBase64 } from '../../../utils/file';
 import { getUser, uploadProfilePic } from '../../../utils/auth';
+import { showError, showSuccess } from '../../../library/notifications.library';
 
 export default function UserInfo({ user: userData = {} }) {
   const {
@@ -55,16 +56,12 @@ export default function UserInfo({ user: userData = {} }) {
       setFile(file);
 
       dispatch(updateProfilePicture(await toBase64(file)));
-
       await uploadProfilePic(user.sub, user.profile, file);
+      showSuccess({ message: 'Profile image updated successfully' });
       setLoading(false);
-
-      setError(false);
-      setSuccess(true);
     } catch (err) {
+      showError({ message: 'We failed to update your profile image' });
       setLoading(false);
-
-      setError(true);
     }
   };
 

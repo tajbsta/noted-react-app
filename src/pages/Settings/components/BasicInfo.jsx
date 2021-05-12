@@ -9,6 +9,7 @@ import { updateUserAttributes } from '../../../utils/auth';
 import { AlertCircle, CheckCircle } from 'react-feather';
 import { isEmpty } from 'lodash-es';
 import Collapsible from 'react-collapsible';
+import { showError, showSuccess } from '../../../library/notifications.library';
 
 export default function BasicInfo({ user }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -111,12 +112,14 @@ export default function BasicInfo({ user }) {
 
       if (!fullName || !phoneNumber || !city || !line1 || !state || !zipCode) {
         setSuccess(false);
-        setError('Missing field. Please complete the form.');
+        showError({ message: 'Missing field. Please complete the form.' });
       } else {
+        showSuccess({ message: 'Updated address information' });
         setError(false);
         setSuccess(true);
       }
     } catch (err) {
+      showSuccess({ message: 'Error updating address information' });
       setSuccess(false);
       setError(true);
 

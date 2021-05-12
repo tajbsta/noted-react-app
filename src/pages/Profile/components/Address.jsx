@@ -9,6 +9,7 @@ import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../../models/formSchema';
 import { updateUserAttributes } from '../../../utils/auth';
 import { AlertCircle, CheckCircle } from 'react-feather';
+import { showError, showSuccess } from '../../../library/notifications.library';
 
 export default function Address({ user }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -93,8 +94,6 @@ export default function Address({ user }) {
   };
 
   const updateAddress = async () => {
-    setError(false);
-    setSuccess(false);
     setIsSubmitting(true);
 
     try {
@@ -114,15 +113,12 @@ export default function Address({ user }) {
 
       if (!fullName || !phoneNumber || !city || !line1 || !state || !zipCode) {
         setSuccess(false);
-        setError('Missing field. Please complete the form.');
+        showError({ message: 'Missing field. Please complete the form.' });
       } else {
-        setError(false);
-        setSuccess(true);
+        showSuccess({ message: 'Successfull updated address information' });
       }
     } catch (err) {
-      setSuccess(false);
-      setError(true);
-
+      showError({ message: 'We failed to update address information' });
       setIsSubmitting(false);
     }
   };
