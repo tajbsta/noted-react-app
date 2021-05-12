@@ -9,6 +9,7 @@ import { get } from 'lodash';
 import { resetPassErrors } from '../library/errors.library';
 import { resetPasswordSchema } from '../models/formSchema';
 import { scrollToTop } from '../utils/window';
+import { showError, showSuccess } from '../library/notifications.library';
 
 export default function ResetPasswordPage(props) {
   const history = useHistory();
@@ -64,7 +65,8 @@ export default function ResetPasswordPage(props) {
       );
 
       setIsSubmitting(false);
-      setSuccess(true);
+
+      showSuccess({ message: 'Password updated successfully' });
 
       setTimeout(() => {
         history.push('/login');
@@ -72,13 +74,13 @@ export default function ResetPasswordPage(props) {
     } catch (err) {
       setIsSubmitting(false);
 
-      setError(
-        get(
+      showError({
+        message: get(
           resetPassErrors.find(({ code }) => code === err.code),
           'message',
           'An error occurred resetting password'
-        )
-      );
+        ),
+      });
     }
   };
 

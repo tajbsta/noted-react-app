@@ -10,6 +10,7 @@ import { scraperGmailErrors } from '../library/errors.library';
 import { get, isEmpty } from 'lodash';
 import { timeout } from '../utils/time';
 import { scrollToTop } from '../utils/window';
+import { showError } from '../library/notifications.library';
 
 export default function AuthorizePage() {
   const history = useHistory();
@@ -40,13 +41,13 @@ export default function AuthorizePage() {
     });
 
     if (query.error) {
-      setErrMsg(
-        get(
+      showError({
+        message: get(
           scraperGmailErrors.find(({ code }) => code === query.error),
           'message',
           'An error occurred'
-        )
-      );
+        ),
+      });
     }
 
     // console.log({ query });
