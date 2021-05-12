@@ -7,7 +7,6 @@ import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../../models/formSchema';
 import { updateUserAttributes } from '../../../utils/auth';
 import { AlertCircle, CheckCircle } from 'react-feather';
-import { isEmpty } from 'lodash-es';
 import Collapsible from 'react-collapsible';
 import { showError, showSuccess } from '../../../library/notifications.library';
 
@@ -31,25 +30,21 @@ export default function BasicInfo({ user }) {
   });
 
   const {
-    errors,
+    errors: addressFormErrors,
     handleChange,
-    setFieldValue,
     values: addressFormValues,
   } = useFormik({
     initialValues: {
-      fullName: '',
-      phoneNumber: '',
-      line1: '',
-      city: '',
-      state: '',
-      zipCode: '',
+      fullName: user.name,
+      phoneNumber: user['custom:phone'],
+      line1: user.address,
+      city: user['custom:city'],
+      state: user['custom:state'],
+      zipCode: user['custom:zipcode'],
     },
     validationSchema: pickUpAddressSchema,
+    enableReinitialize: true,
   });
-
-  const renderInlineError = (errors) => (
-    <small className='form-text p-0 m-0 noted-red'>{errors}</small>
-  );
 
   const [focused, setFocused] = useState({
     ...Object.keys((key) => ({ [key]: false })),
@@ -60,26 +55,12 @@ export default function BasicInfo({ user }) {
   };
 
   const renderInlineValidationError = (fieldName) => {
-    const error = errors[fieldName];
+    const error = addressFormErrors[fieldName];
     return (
       focused[fieldName] &&
       error && <small className='form-text p-0 m-0 noted-red'>{error}</small>
     );
   };
-
-  useEffect(() => {
-    // console.log({ user });
-
-    if (user) {
-      setFieldValue('fullName', user.name);
-      setFieldValue('phoneNumber', user['custom:phone']);
-      setFieldValue('line1', user.address);
-      setFieldValue('line2', user['custom:address_2']);
-      setFieldValue('city', user['custom:city']);
-      setFieldValue('state', user['custom:state']);
-      setFieldValue('zipCode', user['custom:zipcode']);
-    }
-  }, [user]);
 
   const {
     fullName,
@@ -90,6 +71,8 @@ export default function BasicInfo({ user }) {
     state,
     zipCode,
   } = addressFormValues;
+
+  console.log(addressFormValues);
 
   const updateBasicInfo = async () => {
     setError(false);

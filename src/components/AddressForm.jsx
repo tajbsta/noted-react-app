@@ -20,6 +20,7 @@ export default function AddressForm({
   setFieldValue = () => {},
   setShowEditAddress = () => {},
 }) {
+  console.log(errors);
   const [modalShow, setModalShow] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [focused, setFocused] = useState({

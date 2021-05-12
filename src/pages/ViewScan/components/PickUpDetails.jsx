@@ -19,7 +19,7 @@ import {
   updateReturnAdddress,
 } from '../../../actions/runtime.action';
 import SchedulingModal from '../../../modals/SchedulingModal';
-import { get, isEmpty } from 'lodash-es';
+import { get } from 'lodash-es';
 import moment from 'moment';
 import Collapsible from 'react-collapsible';
 import LeftArrow from '../../../assets/icons/RightArrow.svg';

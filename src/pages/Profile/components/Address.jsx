@@ -38,13 +38,12 @@ export default function Address({ user }) {
     values: addressFormValues,
   } = useFormik({
     initialValues: {
-      fullName: '',
-      phoneNumber: '',
-      line1: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      instructions: '',
+      fullName: user.name,
+      phoneNumber: user['custom:phone'],
+      line1: user.address,
+      city: user['custom:city'],
+      state: user['custom:state'],
+      zipCode: user['custom:zipcode'],
     },
     validationSchema: pickUpAddressSchema,
   });
@@ -56,19 +55,6 @@ export default function Address({ user }) {
   const [focused, setFocused] = useState({
     ...Object.keys((key) => ({ [key]: false })),
   });
-
-  useEffect(() => {
-    if (user) {
-      setFieldValue('fullName', user.name);
-      setFieldValue('phoneNumber', user['custom:phone']);
-      setFieldValue('line1', user.address);
-      setFieldValue('line2', user['custom:address_2']);
-      setFieldValue('city', user['custom:city']);
-      setFieldValue('state', user['custom:state']);
-      setFieldValue('zipCode', user['custom:zipcode']);
-      setFieldValue('instructions', user['custom:pickup_instructions']);
-    }
-  }, [user]);
 
   const {
     fullName = '',
