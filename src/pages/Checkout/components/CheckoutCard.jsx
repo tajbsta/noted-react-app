@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
-import { getPickupSlots } from '../../../utils/orderApi';
+import { Spinner } from 'react-bootstrap';
 
 export default function CheckoutCard({
   confirmed,
   isTablet,
   onReturnConfirm,
+  loading,
   validOrder = false,
 }) {
   const [modalShow, setModalShow] = useState(false);
@@ -107,12 +108,14 @@ export default function CheckoutCard({
                     <h5 className='sofia-pro text-right total-now'>$10.69</h5>
                   </div>
                 </div>
-                <div
+                <button
+                  disabled={loading}
                   className='btn btn-confirm text-16'
                   style={{
                     background: validOrder ? '#570097' : 'grey',
                     border: 'none',
                     cursor: validOrder ? 'pointer' : 'not-allowed',
+                    opacity: loading ? '0.6' : '1',
                   }}
                   onClick={() => {
                     if (validOrder) {
@@ -120,8 +123,15 @@ export default function CheckoutCard({
                     }
                   }}
                 >
+                  {loading && (
+                    <Spinner
+                      animation='border'
+                      size='sm'
+                      className='mr-3 spinner btn-spinner'
+                    />
+                  )}
                   Confirm Order
-                </div>
+                </button>
               </>
             )}
           </div>

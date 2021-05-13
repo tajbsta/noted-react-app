@@ -1,9 +1,11 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 
 export default function MobileCheckoutCard({
   confirmed,
   isTablet,
+  loading,
   onReturnConfirm,
   validOrder = false,
 }) {
@@ -56,12 +58,22 @@ export default function MobileCheckoutCard({
               <Row>
                 <Col>
                   <button
-                    className='btn m-btn-confirm'
+                    className={`btn ${loading ? 'm-loader' : 'm-btn-confirm'}`}
                     onClick={onReturnConfirm}
-                    disabled={!validOrder}
+                    disabled={!validOrder || loading}
                   >
-                    <span>Confirm Order</span>
-                    <span>$9.99</span>
+                    {loading ? (
+                      <Spinner
+                        animation='border'
+                        size='sm'
+                        className='spinner btn-spinner'
+                      />
+                    ) : (
+                      <>
+                        <span>Confirm Order</span>
+                        <span>$9.99</span>
+                      </>
+                    )}
                   </button>
                 </Col>
               </Row>

@@ -16,7 +16,7 @@ import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import CancelOrderModal from '../../modals/CancelOrderModal';
 
-export default function ViewConfirmedReturn({
+function ViewOrderPage({
   location: {
     state: { scheduledReturnId = '', hasModifications = false },
   },
@@ -315,3 +315,5 @@ export default function ViewConfirmedReturn({
     </div>
   );
 }
+
+export default ViewOrderPage;

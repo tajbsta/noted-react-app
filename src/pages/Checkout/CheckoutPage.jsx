@@ -26,6 +26,7 @@ export default function CheckoutPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { address, payment, details, items } = useSelector(
     ({
       cart: { items },
@@ -66,6 +67,7 @@ export default function CheckoutPage() {
 
     try {
       setPlacingOrder(true);
+      setLoading(true);
 
       const newOrder = {
         orderItems: items.map((item) => item._id),
@@ -88,6 +90,7 @@ export default function CheckoutPage() {
       setOrder(order);
       setConfirmed(true);
       setPlacingOrder(false);
+      setLoading(false);
 
       dispatch(clearForm());
 
@@ -103,6 +106,8 @@ export default function CheckoutPage() {
       });
     } catch (error) {
       setPlacingOrder(false);
+      setLoading(false);
+
       // console.log(error.response.data.details);
       showError({
         message: get(
@@ -155,6 +160,7 @@ export default function CheckoutPage() {
           isTablet={isTablet}
           onReturnConfirm={onReturnConfirm}
           validOrder={validOrder}
+          loading={loading}
         />
       )}
       <div className={`container  ${isMobile ? 'mt-4' : 'mt-6'}`}>
@@ -278,6 +284,7 @@ export default function CheckoutPage() {
                   isTablet={isTablet}
                   onReturnConfirm={onReturnConfirm}
                   validOrder={validOrder}
+                  loading={loading}
                 />
               </div>
             </>

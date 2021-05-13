@@ -29,7 +29,7 @@ export default function UserInfo({ user: userData = {} }) {
   useEffect(() => {
     (async () => {
       const user = await getUser();
-      console.log(user);
+      // console.log(user);
       setUser(user);
     })();
   }, []);
