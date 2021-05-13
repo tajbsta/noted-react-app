@@ -23,6 +23,13 @@
     }
   }
 
+  .confirmed-container {
+    @media (max-width: 767px) {
+      margin-left: 16px;
+      margin-right: 16px;
+    }
+  }
+
   .mobile-checkout-col {
     flex-wrap: wrap;
     margin-right: -12px;
