@@ -36,6 +36,7 @@ export default function SchedulingModal(props) {
       endTime: '1200',
       text: '9 A.M - 12 P.M',
       disabled: false,
+      value: 'AM',
       numberOfSlots: slots.AM,
     },
     {
@@ -43,6 +44,7 @@ export default function SchedulingModal(props) {
       endTime: '1500',
       text: '12 P.M - 3 P.M',
       disabled: false,
+      value: 'PM',
       numberOfSlots: slots.PM,
     },
   ];
@@ -97,7 +99,7 @@ export default function SchedulingModal(props) {
                   className={className}
                   key={timeSlot.startTime}
                   onClick={() => {
-                    setFieldValue('time', timeSlot.text);
+                    setFieldValue('time', timeSlot.value);
                   }}
                   style={{
                     cursor:
@@ -155,7 +157,7 @@ export default function SchedulingModal(props) {
               : 'day-container '
           }`}
           onClick={() => {
-            onDateSelect('date', day);
+            onDateSelect('date', day.format('MM/DD/YYYY'));
             onDateSelect('time', null);
           }}
         >

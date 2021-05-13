@@ -11,18 +11,7 @@ export const getPickupSlots = async (userId, date) => {
 
 export const createOrder = async (userId, order) => {
   const axios = await api();
-  const res = await axios.post(`/${userId}/orders`, {
-    orderItems: order.orderItems,
-    fullName: order.fullName,
-    state: order.state,
-    zipcode: order.zipCode,
-    addressLine1: order.line1,
-    addressLine2: order.line2,
-    city: order.city,
-    phone: order.phoneNumber,
-    pickupInstructions: order.instructions,
-    pickupDate: order.date,
-    pickupTime: order.timeSlot
-  });
+  const res = await axios.post(`/${userId}/orders`, order);
+
   return res.data.data;
 };

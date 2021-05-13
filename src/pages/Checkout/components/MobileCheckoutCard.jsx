@@ -2,17 +2,19 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
 export default function MobileCheckoutCard({
-  inReturn,
   confirmed,
   isTablet,
-  potentialReturnValue,
-  inDonation,
-  returnFee,
-  taxes,
-  totalPayment,
   onReturnConfirm,
   validOrder = false,
 }) {
+  // TODO: hookup pricing
+  const inReturn = [];
+  const potentialReturnValue = 123;
+  const inDonation = [];
+  const returnFee = 123;
+  const taxes = 123;
+  const totalPayment = 123;
+
   return (
     <div id='MobileCheckoutCard'>
       <div className='card shadow-sm' style={{ borderRadius: '0' }}>
@@ -25,61 +27,32 @@ export default function MobileCheckoutCard({
               </h3>
             </Col>
           </Row>
-          {confirmed && (
-            <>
-              <Row>
-                <Col>
-                  <Row>
-                    <Col>
-                      <h3 className='m-value'>
-                        ${potentialReturnValue.toFixed(2) || 0.0}
-                      </h3>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <h3 className='m-value-label'>Potential Return Value</h3>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col>
-                  <Row>
-                    <h3 className='m-value'>{inDonation.length}</h3>
-                  </Row>
-                  <Row>
-                    <h3 className='m-value-label'>Donations</h3>
-                  </Row>
-                </Col>
-              </Row>
-            </>
-          )}
-
-          {!confirmed && (
-            <>
-              <Row>
-                <Col>
-                  <Row>
-                    <Col>
-                      <h3 className='m-value'>
-                        ${potentialReturnValue.toFixed(2) || 0.0}
-                      </h3>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <h3 className='m-value-label'>Potential Return Value</h3>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col>
-                  <Row>
-                    <h3 className='m-value'>{inDonation.length}</h3>
-                  </Row>
-                  <Row>
-                    <h3 className='m-value-label'>Donations</h3>
-                  </Row>
-                </Col>
-              </Row>
+          <>
+            <Row>
+              <Col>
+                <Row>
+                  <Col>
+                    <h3 className='m-value'>
+                      ${potentialReturnValue.toFixed(2) || 0.0}
+                    </h3>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <h3 className='m-value-label'>Potential Return Value</h3>
+                  </Col>
+                </Row>
+              </Col>
+              <Col>
+                <Row>
+                  <h3 className='m-value'>{inDonation.length}</h3>
+                </Row>
+                <Row>
+                  <h3 className='m-value-label'>Donations</h3>
+                </Row>
+              </Col>
+            </Row>
+            {!confirmed && (
               <Row>
                 <Col>
                   <button
@@ -92,8 +65,8 @@ export default function MobileCheckoutCard({
                   </button>
                 </Col>
               </Row>
-            </>
-          )}
+            )}
+          </>
         </div>
       </div>
     </div>
