@@ -244,9 +244,7 @@
     .timeSlotContainer {
       min-width: 214px;
       min-height: 52px;
-      display: flex;
       align-items: center;
-      justify-content: center;
       background: #ffffff;
       border: 1px solid #eae8eb;
       box-sizing: border-box;
@@ -286,6 +284,16 @@
         color: #570097 !important;
         mix-blend-mode: normal;
         opacity: 1;
+      }
+
+      .timeSlotText.selected {
+        font-weight: normal;
+        font-size: 14px;
+      }
+
+      .availableTimeSlot.selected {
+        font-weight: normal;
+        font-size: 13px;
       }
     }
   }

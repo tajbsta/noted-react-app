@@ -74,16 +74,15 @@ export default function PickUpDetails({
 
   useEffect(() => {
     setValidAddress(
-      Object.values(addressFormValues)
-        .map((addressField) => {
-          return addressField.length;
-        })
-        .filter((addressField, index) => {
-          return (
-            addressField === 0 &&
-            index !== Object.keys(addressFormValues).length - 1
-          );
-        }).length < 1
+      Object.values(addressFormValues).map((addressField) => {
+        return addressField.length;
+      })
+      // .filter((addressField, index) => {
+      //   return (
+      //     addressField === 0 &&
+      //     index !== Object.keys(addressFormValues).length - 1
+      //   );
+      // }).length < 1
     );
   }, [addressFormValues]);
 

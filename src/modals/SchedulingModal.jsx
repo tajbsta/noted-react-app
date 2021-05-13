@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Spinner } from 'react-bootstrap';
+import { Modal, Button, Spinner, Col, Row } from 'react-bootstrap';
 import moment from 'moment';
 import { generateSchedules } from '../utils/schedule';
 import { getPickupSlots } from '../utils/orderApi';
 import { getUserId } from '../utils/auth';
 import { isEmpty } from 'lodash-es';
-import { Loader } from 'react-feather';
+import { showError } from '../library/notifications.library';
 
 export default function SchedulingModal(props) {
-  const [isMobile, setIsMobile] = useState(false);
   const { form, onConfirm } = props;
   const [loading, setLoading] = useState(false);
   const [slots, setSlots] = useState({ AM: 0, PM: 0 });
@@ -24,45 +23,14 @@ export default function SchedulingModal(props) {
         setLoading(false);
       } catch (err) {
         setLoading(false);
-        // TODO: ERROR HANDLING
-        console.log(err);
+        showError('We failed to get time slots for you');
       }
     }
   };
 
-  const timeSlots = [
-    {
-      startTime: '0900',
-      endTime: '1200',
-      text: '9 A.M - 12 P.M',
-      disabled: false,
-      value: 'AM',
-      numberOfSlots: slots.AM,
-    },
-    {
-      startTime: '1200',
-      endTime: '1500',
-      text: '12 P.M - 3 P.M',
-      disabled: false,
-      value: 'PM',
-      numberOfSlots: slots.PM,
-    },
-  ];
-
   useEffect(() => {
     fetchPickupSlots();
   }, [form.values.date]);
-
-  useEffect(() => {
-    function handleResize() {
-      setIsMobile(window.innerWidth <= 991);
-    }
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
 
   const {
     errors: pickUpDateErrors,
@@ -71,65 +39,106 @@ export default function SchedulingModal(props) {
   } = form;
 
   const renderLoading = () => {
-    return <Spinner className='spinner' animation='border' />;
+    return loading && <Spinner className='spinner' animation='border' />;
   };
 
-  const renderSelectTimeSlot = () => {
-    return loading ? (
-      renderLoading()
-    ) : (
-      <div className='col left-column mt-6'>
-        <div
-          className='mb-5'
+  const renderMorningTimeSlot = () => {
+    const isSelected = pickUpDateValues.time === 'AM' ? `isSelected` : '';
+    const buttonClassname = `btn timeSlotContainer ${isSelected}`;
+    const rangeTextClassname = `row sofia-pro timeSlotText ${
+      isSelected ? 'selected' : ''
+    }`;
+    const slotsAvailableClassname = `row availableTimeSlot sofia-pro ${
+      isSelected ? 'selected' : ''
+    }`;
+    return (
+      <Row
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Col
           style={{
-            textAlign: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Button
+            className={buttonClassname}
+            onClick={() => {
+              setFieldValue('time', 'AM');
+            }}
+            style={{
+              cursor: slots.AM === 0 ? 'not-allowed' : 'pointer',
+            }}
+          >
+            <Row className={rangeTextClassname}>9 A.M. - 12 P.M.</Row>
+            <Row className={slotsAvailableClassname}>
+              Slots available: {slots.AM}
+            </Row>
+          </Button>
+        </Col>
+      </Row>
+    );
+  };
+
+  const renderEveningTimeSlot = () => {
+    const isSelected = pickUpDateValues.time === 'PM' ? `isSelected` : '';
+    const buttonClassname = `btn timeSlotContainer ${isSelected}`;
+    const rangeTextClassname = `row sofia-pro timeSlotText ${
+      isSelected ? 'selected' : ''
+    }`;
+    const slotsAvailableClassname = `row availableTimeSlot sofia-pro ${
+      isSelected ? 'selected' : ''
+    }`;
+    return (
+      <Row
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Col
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Button
+            className={buttonClassname}
+            onClick={() => {
+              setFieldValue('time', 'PM');
+            }}
+            style={{
+              cursor: slots.PM === 0 ? 'not-allowed' : 'pointer',
+            }}
+          >
+            <Row className={rangeTextClassname}>12 P.M. - 3 P.M.</Row>
+            <Row className={slotsAvailableClassname}>
+              Slots available: {slots.PM}
+            </Row>
+          </Button>
+        </Col>
+      </Row>
+    );
+  };
+
+  const renderNewTimeSlot = () => {
+    return (
+      <div className='col left-column mt-6'>
+        <Row
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
           }}
         >
           Select a Time Slot
-        </div>
-        <div className='timeSlotsContainer'>
-          <div className='col morningSlotsContainer'>
-            {timeSlots.map((timeSlot) => {
-              const isSelected =
-                pickUpDateValues.time === timeSlot.text ? `isSelected` : '';
-              const className = `btn timeSlotContainer ${isSelected}`;
+        </Row>
+        {renderMorningTimeSlot()}
+        {renderEveningTimeSlot()}
 
-              return (
-                <div
-                  className={className}
-                  key={timeSlot.startTime}
-                  onClick={() => {
-                    setFieldValue('time', timeSlot.value);
-                  }}
-                  style={{
-                    cursor:
-                      timeSlot.numberOfSlots === 0 ? 'not-allowed' : 'pointer',
-                  }}
-                >
-                  <div className='col'>
-                    <div
-                      className={`row sofia-pro timeSlotText ${
-                        isSelected ? 'selected' : ''
-                      }`}
-                    >
-                      {timeSlot.text}
-                    </div>
-                    <div
-                      className={`row availableTimeSlot sofia-pro ${
-                        isSelected ? 'selected' : ''
-                      }`}
-                      style={{
-                        fontSize: 13,
-                      }}
-                    >
-                      Slots available: {timeSlot.numberOfSlots}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        {renderLoading()}
       </div>
     );
   };
@@ -176,6 +185,7 @@ export default function SchedulingModal(props) {
         <h3 className='sofia-pro'>{`${
           loading ? 'Selecting a day' : 'Select a day first'
         }`}</h3>
+        <Spinner />
       </div>
     );
   };
@@ -197,7 +207,11 @@ export default function SchedulingModal(props) {
           className='close'
           data-dismiss='modal'
           aria-label='Close'
-          onClick={props.onHide}
+          onClick={() => {
+            setFieldValue('date', null);
+            setFieldValue('time', null);
+            props.onHide();
+          }}
         >
           <span aria-hidden='true'>&times;</span>
         </Button>
@@ -218,7 +232,7 @@ export default function SchedulingModal(props) {
           }}
         >
           {pickUpDateValues.date !== null && !loading
-            ? renderSelectTimeSlot()
+            ? renderNewTimeSlot()
             : renderEmptiness()}
         </div>
       </Modal.Body>
