@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { toBase64 } from '../../../utils/file';
 import { getUser, uploadProfilePic } from '../../../utils/auth';
 import { showError, showSuccess } from '../../../library/notifications.library';
-import { AlertCircle, CheckCircle } from 'react-feather';
+import { CheckCircle } from 'react-feather';
 
 export default function UserInfo({ user: userData = {} }) {
   const {
@@ -70,14 +70,7 @@ export default function UserInfo({ user: userData = {} }) {
     } catch (err) {
       setLoading(false);
       showError({
-        message: (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <AlertCircle />
-            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              File is too large! Maximum size for file upload is 5 MB.
-            </h4>
-          </div>
-        ),
+        message: 'File is too large! Maximum size for file upload is 5 MB.',
       });
     }
   };

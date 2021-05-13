@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { AlertCircle, CheckCircle } from 'react-feather';
+import { CheckCircle } from 'react-feather';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { getAccounts } from '../../../utils/accountsApi';
 import { Spinner } from 'react-bootstrap';
 import DeleteEmailModal from '../../../modals/DeleteEmailModal';
 import Collapsible from 'react-collapsible';
-import { showSuccess } from '../../../library/notifications.library';
+import { showSuccess, showError } from '../../../library/notifications.library';
 
 export default function EmailAddresses({ user }) {
   const [accounts, setAccounts] = useState([]);
@@ -15,7 +15,6 @@ export default function EmailAddresses({ user }) {
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
   const [modalDeleteShow, setModalDeleteShow] = useState(false);
-  const [success, setSuccess] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -42,9 +41,8 @@ export default function EmailAddresses({ user }) {
       setLoading(false);
     } catch (err) {
       setLoading(false);
-
-      // TODO: ERROR HANDLING
       console.log(err);
+      showError({ message: 'An error occurred deleting your email' });
     }
   };
 
@@ -105,15 +103,6 @@ export default function EmailAddresses({ user }) {
             </div>
           }
         >
-          {success && (
-            <div className='alert alert-success' role='alert'>
-              <div>
-                <h4 className='text-center text-alert'>
-                  <CheckCircle /> &nbsp; Successfully deleted email!
-                </h4>
-              </div>
-            </div>
-          )}
           <div className='card shadow-sm mb-2 mt-4 max-w-840'>
             <div className='card-body'>
               <Container>
@@ -241,15 +230,6 @@ export default function EmailAddresses({ user }) {
     return (
       <>
         <h3 className='sofia-pro text-18 mb-3 mt-5'>Email Addresses</h3>
-        {success && (
-          <div className='alert alert-success' role='alert'>
-            <div>
-              <h4 className='text-center text-alert'>
-                <CheckCircle /> &nbsp; Successfully deleted email!
-              </h4>
-            </div>
-          </div>
-        )}
         <div className='card shadow-sm mb-2 max-w-840'>
           <div className='card-body'>
             <Container>
