@@ -312,7 +312,7 @@ export default function PickUpDetails({
                         trigger={
                           <div>
                             <Row
-                              className='pl-3 pt-3 mb-2'
+                              className='p-3'
                               style={{
                                 display: 'flex',
                                 justifyContent: 'space-between',
@@ -513,15 +513,13 @@ export default function PickUpDetails({
                                   )}
                                 </div>
                               </Col>
-                              <Col xs={1}>
-                                <div className='arrow-container'>
-                                  {IsPaymentOpen ? (
-                                    <img src={LeftArrow} />
-                                  ) : (
-                                    <img src={DownArrow} />
-                                  )}
-                                </div>
-                              </Col>
+                              <div className='arrow-container'>
+                                {IsPaymentOpen ? (
+                                  <img src={LeftArrow} />
+                                ) : (
+                                  <img src={DownArrow} />
+                                )}
+                              </div>
                             </Row>
                           </div>
                         }
