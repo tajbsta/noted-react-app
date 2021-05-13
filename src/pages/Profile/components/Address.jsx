@@ -8,7 +8,7 @@ import Collapsible from 'react-collapsible';
 import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../../models/formSchema';
 import { updateUserAttributes } from '../../../utils/auth';
-import { AlertCircle, CheckCircle } from 'react-feather';
+import { CheckCircle } from 'react-feather';
 import { showError, showSuccess } from '../../../library/notifications.library';
 
 export default function Address({ user }) {
@@ -113,14 +113,7 @@ export default function Address({ user }) {
 
       if (!fullName || !phoneNumber || !city || !line1 || !state || !zipCode) {
         setSuccess(false);
-        showError({
-          message: (
-            <div>
-              <AlertCircle />
-              &nbsp;&nbsp;Please complete the form.
-            </div>
-          ),
-        });
+        showError({ message: 'Please complete the form.' });
       } else {
         showSuccess({
           message: (
@@ -132,14 +125,8 @@ export default function Address({ user }) {
         });
       }
     } catch (err) {
-      showError({
-        message: (
-          <div>
-            <CheckCircle />
-            &nbsp;&nbsp;Error updating information
-          </div>
-        ),
-      });
+      showError({ message: 'Error updating information' });
+
       setIsSubmitting(false);
     }
   };
@@ -601,33 +588,6 @@ export default function Address({ user }) {
     );
   };
 
-  const renderMessages = () => {
-    return (
-      <div className='alert-container max-w-840'>
-        {success && (
-          <div className='alert alert-success' role='alert'>
-            <div>
-              <h4 className='text-center text-alert'>
-                <CheckCircle />
-                &nbsp;&nbsp;&nbsp;Success
-              </h4>
-            </div>
-          </div>
-        )}
-        {error && (
-          <div className='alert alert-danger' role='alert'>
-            <div>
-              <h4 className='text-center text-alert'>
-                <AlertCircle />
-                &nbsp;&nbsp;&nbsp;{error}
-              </h4>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
   const renderTrigger = () => {
     return (
       <div className='triggerContainer'>
@@ -650,13 +610,7 @@ export default function Address({ user }) {
           onTriggerClosing={() => setIsOpen(false)}
           trigger={renderTrigger()}
         >
-          {/* ALERTS & MESSAGES*/}
-          {renderMessages()}
-
-          {/* MOBILE VIEW */}
           {isMobile && renderAddressMobileView()}
-
-          {/*DESKTOP VIEW */}
           {!isMobile && renderAddressDesktopView()}
         </Collapsible>
         <AddPickupModal

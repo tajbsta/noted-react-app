@@ -6,7 +6,7 @@ import $ from 'jquery';
 import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../../models/formSchema';
 import { updateUserAttributes } from '../../../utils/auth';
-import { AlertCircle, CheckCircle } from 'react-feather';
+import { CheckCircle } from 'react-feather';
 import { isEmpty } from 'lodash-es';
 import Collapsible from 'react-collapsible';
 import { showError, showSuccess } from '../../../library/notifications.library';
@@ -112,14 +112,7 @@ export default function BasicInfo({ user }) {
 
       if (!fullName || !phoneNumber || !city || !line1 || !state || !zipCode) {
         setSuccess(false);
-        showError({
-          message: (
-            <div>
-              <AlertCircle />
-              &nbsp;&nbsp;Please complete the form.
-            </div>
-          ),
-        });
+        showError({ message: 'Please complete the form.' });
       } else {
         showSuccess({
           message: (
@@ -133,7 +126,7 @@ export default function BasicInfo({ user }) {
         setSuccess(true);
       }
     } catch (err) {
-      showSuccess({ message: error });
+      showError({ message: error });
       setSuccess(false);
       setError(true);
       setIsSubmitting(false);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
-import { AlertCircle, Eye, EyeOff } from 'react-feather';
+import { Eye, EyeOff } from 'react-feather';
 import { Auth } from 'aws-amplify';
 import { changePassErrors } from '../../../library/errors.library';
 import { PASSWORD_REGEX_FORMAT } from '../../../constants/errors/regexFormats';
@@ -9,6 +9,7 @@ import { useFormik } from 'formik';
 import { get, isEmpty } from 'lodash';
 import PassChangeSuccessModal from '../../../modals/PassChangeSuccessModal';
 import Collapsible from 'react-collapsible';
+import { showError } from '../../../library/notifications.library';
 
 export default function ChangePass() {
   const [oldPasswordShown, setOldPasswordShown] = useState(false);
@@ -82,11 +83,13 @@ export default function ChangePass() {
 
     try {
       if (values.oldPassword === values.newPassword) {
-        setError('New password cannot be the same as old password');
+        showError({
+          message: 'New password cannot be the same as old password',
+        });
         setLoading(false);
         return;
       } else if (values.newPassword !== values.confirmPassword) {
-        setError('New passwords do not match');
+        showError({ message: 'New passwords do not match' });
         setLoading(false);
         return;
       }
@@ -100,14 +103,13 @@ export default function ChangePass() {
       setModalShow(true);
     } catch (err) {
       setLoading(false);
-
-      setError(
-        get(
+      showError({
+        message: get(
           changePassErrors.find(({ code }) => code === err.code),
           'message',
           'An error occurred changing password'
-        )
-      );
+        ),
+      });
     }
   };
 
@@ -126,16 +128,7 @@ export default function ChangePass() {
         />
         <div className='mt-5'>
           <h3 className='sofia-pro text-18 mb-4'>Change Password</h3>
-          {error && (
-            <div className='alert alert-danger max-w-840' role='alert'>
-              <div>
-                <h4 className='text-center text-alert'>
-                  <AlertCircle />
-                  &nbsp;&nbsp;&nbsp;{error}
-                </h4>
-              </div>
-            </div>
-          )}
+
           <div className='card shadow-sm mb-2 max-w-840 change-container'>
             <div className='card-body'>
               <Form>
@@ -278,16 +271,6 @@ export default function ChangePass() {
           }
         >
           <div className='mt-4'>
-            {error && (
-              <div className='alert alert-danger max-w-840' role='alert'>
-                <div>
-                  <h4 className='text-center text-alert'>
-                    <AlertCircle />
-                    &nbsp;&nbsp;&nbsp;{error}
-                  </h4>
-                </div>
-              </div>
-            )}
             <div className='card shadow-sm mb-2 max-w-840 change-container'>
               <div className='card-body'>
                 <Form>

@@ -3,15 +3,17 @@ import SizeGuideModal from '../../../modals/SizeGuideModal';
 import { getPickupSlots } from '../../../utils/orderApi';
 
 export default function CheckoutCard({
-  inReturn,
   confirmed,
   isTablet,
-  potentialReturnValue,
-  inDonation,
   onReturnConfirm,
   validOrder = false,
 }) {
   const [modalShow, setModalShow] = useState(false);
+
+  // TODO: hookup pricing
+  const potentialReturnValue = 123;
+  const inReturn = [];
+  const inDonation = [];
 
   return (
     <div id='CheckoutCard'>
