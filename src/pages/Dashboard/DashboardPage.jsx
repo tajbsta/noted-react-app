@@ -20,6 +20,8 @@ import ScheduledCard from './components/ScheduledCard';
 import Scanning from './components/Scanning';
 import { scrollToTop } from '../../utils/window';
 import { scrapeOlderEmails } from '../../utils/auth';
+import { showError, showSuccess } from '../../library/notifications.library';
+import { AlertCircle, CheckCircle } from 'react-feather';
 
 const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
 
@@ -94,10 +96,30 @@ export default function DashboardPage() {
       setLoading(true);
       await scrapeOlderEmails(userId);
       await updateUserAttributes({ 'custom:scan_older_done': '1' });
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '19px' }}>
+              Success! Please wait a few seconds
+            </h4>
+          </div>
+        ),
+      });
       setLoading(false);
     } catch (error) {
       // TODO: show error alert here
       setLoading(false);
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              File is too large! Maximum size for file upload is 5 MB.
+            </h4>
+          </div>
+        ),
+      });
     }
   };
 

@@ -68,6 +68,7 @@ export default function UserInfo({ user: userData = {} }) {
       });
       setLoading(false);
     } catch (err) {
+      setLoading(false);
       showError({
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -78,7 +79,6 @@ export default function UserInfo({ user: userData = {} }) {
           </div>
         ),
       });
-      setLoading(false);
     }
   };
 
