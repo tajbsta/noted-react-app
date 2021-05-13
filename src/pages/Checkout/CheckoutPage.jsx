@@ -7,35 +7,34 @@ import PickUpDetails from './components/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, isEmpty } from 'lodash';
 import $ from 'jquery';
-import { submitOrder } from '../../actions/auth.action';
-import { nanoid } from 'nanoid';
-import moment from 'moment';
 import { clearForm } from '../../actions/runtime.action';
 import { setCartItems } from '../../actions/cart.action';
 import { Link } from 'react-router-dom';
-import { DONATE, RETURNABLE } from '../../constants/actions/runtime';
 import { scrollToTop } from '../../utils/window';
 import SizeGuideModal from '../../modals/SizeGuideModal';
-import { showSuccess } from '../../library/notifications.library';
+import { showError, showSuccess } from '../../library/notifications.library';
 import { Box } from 'react-feather';
+import { createOrder } from '../../utils/orderApi';
+import { getUserId } from '../../utils/auth';
+import { orderErrors } from '../../library/errors.library';
 
-export default function ViewScanPage() {
+export default function CheckoutPage() {
   const dispatch = useDispatch();
-  const [confirmed, setconfirmed] = useState(false);
-  const [newSelected, setNewSelected] = useState([]);
-  const scans = useSelector((state) => get(state, 'scans', []));
-  const [orderId, setOrderId] = useState('');
+  const [placingOrder, setPlacingOrder] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
+  const [order, setOrder] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
-  const { address, payment, details, cart } = useSelector(
+  const [loading, setLoading] = useState(false);
+  const { address, payment, details, items } = useSelector(
     ({
-      cart,
+      cart: { items },
       runtime: {
         form: { address, payment, details },
       },
     }) => ({
-      cart,
+      items,
       address,
       payment,
       details,
@@ -43,29 +42,9 @@ export default function ViewScanPage() {
   );
 
   const [validAddress, setValidAddress] = useState(false);
-  const [validPayment, setValidPayment] = useState(false);
+  const [validPayment, setValidPayment] = useState(true); // Default to true for now
   const [validPickUpDetails, setValidPickUpDetails] = useState(false);
-
-  const inDonation = get(cart, 'items', []).filter(
-    ({ category }) => category === DONATE
-  );
-  const inReturn = get(cart, 'items', []).filter(
-    ({ category }) => category === RETURNABLE
-  );
-
-  const potentialReturnValue = [...inReturn]
-    .map(({ price }) => parseFloat(price))
-    .reduce((acc, curr) => (acc += curr), 0);
-
-  const forgottenReturns = [...scans].filter(({ id }) => {
-    return ![...inReturn].map(({ id }) => id).includes(id);
-  });
-
-  const returnFee = Math.floor(Math.random() * 30) + 20;
-  const tax = Math.floor(Math.random() * 0.212343) + 0.1234403;
-  const taxes = returnFee * tax;
-  const totalPayment = (returnFee + taxes).toFixed(2);
-  const checkoutTitle = inReturn.length > 0 ? 'returns' : 'donate';
+  const checkoutTitle = items.length > 0 ? 'returns' : 'donate';
 
   useEffect(() => {
     scrollToTop();
@@ -79,52 +58,72 @@ export default function ViewScanPage() {
   }, []);
 
   const onReturnConfirm = async () => {
-    setconfirmed(true);
-    /**
-     * SUBMIT ORDER HERE
-     */
-    /**
-     * THIS ID GENERATION IS TEMPORARY
-     */
-    const newUniqueId = `${moment().format('MM-DD-YY-hh:mm')}${nanoid()}`;
-    setOrderId(newUniqueId);
-    dispatch(
-      submitOrder({
-        id: newUniqueId,
-        payment,
-        address,
-        details,
-        items: [...inReturn, ...newSelected],
-        returnFee: returnFee,
-        taxes,
-      })
-    );
-    dispatch(clearForm());
-    scrollToTop();
-    showSuccess({
-      message: (
-        <div>
-          <Box />
-          &nbsp;&nbsp;Success! Order Confirmed!
-        </div>
-      ),
+    console.log({
+      payment,
+      address,
+      details,
+      items,
     });
-  };
 
-  const addSelected = (id) => {
-    if (newSelected.map(({ id }) => id).includes(id)) {
-      return;
+    try {
+      setPlacingOrder(true);
+      setLoading(true);
+
+      const newOrder = {
+        orderItems: items.map((item) => item._id),
+        fullName: address.fullName,
+        state: address.state,
+        zipcode: address.zipCode,
+        addressLine1: address.line1,
+        addressLine2: address.line2,
+        city: address.city,
+        phone: address.phoneNumber,
+        pickupInstruction: address.instructions,
+        pickupDate: details.date,
+        pickupTime: details.time,
+      };
+
+      const userId = await getUserId();
+
+      const order = await createOrder(userId, newOrder);
+
+      setOrder(order);
+      setConfirmed(true);
+      setPlacingOrder(false);
+      setLoading(false);
+
+      dispatch(clearForm());
+
+      scrollToTop();
+
+      showSuccess({
+        message: (
+          <div>
+            <Box />
+            &nbsp;&nbsp;Successfully placed order!
+          </div>
+        ),
+      });
+    } catch (error) {
+      setPlacingOrder(false);
+      setLoading(false);
+
+      // console.log(error.response.data.details);
+      showError({
+        message: get(
+          orderErrors.find(
+            ({ details }) => details === error.response.data.details
+          ),
+          'message',
+          'Cannot place order at this time'
+        ),
+      });
     }
-    setNewSelected([
-      ...newSelected,
-      forgottenReturns.find((item) => item.id === id),
-    ]);
   };
 
   const onCartRemove = (itemId) => {
-    const newItems = [
-      ...get(cart, 'items', []).filter(({ _id }) => itemId !== _id),
-    ];
+    const newItems = items.filter(({ _id }) => itemId !== _id);
+
     dispatch(setCartItems(newItems));
   };
 
@@ -151,40 +150,34 @@ export default function ViewScanPage() {
   });
 
   const validOrder =
-    validAddress &&
-    validPayment &&
-    validPickUpDetails &&
-    (inReturn.length > 0 || inDonation.length > 0);
+    validAddress && validPayment && validPickUpDetails && items.length > 0;
 
   return (
-    <div id='ViewScanPage'>
+    <div id='CheckoutPage'>
       {isMobile && (
         <MobileCheckoutCard
-          inReturn={inReturn}
           confirmed={confirmed}
           isTablet={isTablet}
-          potentialReturnValue={potentialReturnValue}
-          inDonation={inDonation}
-          returnFee={returnFee}
-          taxes={taxes}
-          totalPayment={totalPayment}
           onReturnConfirm={onReturnConfirm}
           validOrder={validOrder}
+          loading={loading}
         />
       )}
       <div className={`container  ${isMobile ? 'mt-4' : 'mt-6'}`}>
         <div className='row mobile-row'>
           <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
-            {confirmed ? (
-              <div className='mobile-view-scan-col'>
+            {confirmed && order ? (
+              <div>
                 <h3 className='sofia-pro text-18 section-title'>
                   Pick-up confirmed
                 </h3>
-                <PickUpConfirmed orderId={orderId} />
+                <div className='confirmed-container'>
+                  <PickUpConfirmed orderId={order.id} />
+                </div>
               </div>
             ) : (
-              <div className='mobile-view-scan-col'>
+              <div className='mobile-checkout-col'>
                 <PickUpDetails
                   setValidAddress={setValidAddress}
                   setValidPayment={setValidPayment}
@@ -197,7 +190,7 @@ export default function ViewScanPage() {
               <h3 className='sofia-pro products-return text-18 section-title'>
                 Your products to {checkoutTitle}
               </h3>
-              {isEmpty([...inReturn, ...inDonation]) && (
+              {isEmpty(items) && (
                 <h4 className='p-0 mb-0 mt-5 d-flex justify-content-center sofia-pro empty-message'>
                   No more products. Click here to go back to &nbsp;
                   <Link
@@ -213,7 +206,7 @@ export default function ViewScanPage() {
                 </h4>
               )}
 
-              {inReturn.map((item) => (
+              {items.map((item) => (
                 <ProductCard
                   removable={!confirmed}
                   scannedItem={item}
@@ -225,20 +218,9 @@ export default function ViewScanPage() {
                   confirmed={confirmed}
                 />
               ))}
-
-              {inDonation.map((item) => (
-                <ProductCard
-                  scannedItem={item}
-                  key={item.id}
-                  selectable={false}
-                  clickable={false}
-                  item={item}
-                  onRemove={onCartRemove}
-                  confirmed={confirmed}
-                />
-              ))}
             </div>
 
+            {/* BILLING */}
             {isMobile && (
               <>
                 <div className='mobile-billing'>
@@ -291,16 +273,6 @@ export default function ViewScanPage() {
               />
               <h4 className='sofia-pro noted-purple ml-4 mb-0 p-0'>Add all</h4>
             </div> */}
-            {forgottenReturns.map((item) => (
-              <ProductCard
-                scannedItem={item}
-                key={item.id}
-                selected={newSelected.map(({ id }) => id).includes(item.id)}
-                addSelected={() => {
-                  addSelected(item.id);
-                }}
-              />
-            ))}
           </div>
 
           {/* RIGHT CARDS */}
@@ -308,16 +280,11 @@ export default function ViewScanPage() {
             <>
               <div className='col-sm-3'>
                 <CheckoutCard
-                  inReturn={inReturn}
                   confirmed={confirmed}
                   isTablet={isTablet}
-                  potentialReturnValue={potentialReturnValue}
-                  inDonation={inDonation}
-                  returnFee={returnFee}
-                  taxes={taxes}
-                  totalPayment={totalPayment}
                   onReturnConfirm={onReturnConfirm}
                   validOrder={validOrder}
+                  loading={loading}
                 />
               </div>
             </>

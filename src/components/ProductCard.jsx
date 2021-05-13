@@ -152,7 +152,7 @@ function ProductCard({
     validationSchema: addProductSchema,
   });
 
-  const isViewScan = useHistory().location.pathname !== '/view-scan';
+  const isViewScan = useHistory().location.pathname !== '/checkout';
 
   return (
     <div id='productCard'>

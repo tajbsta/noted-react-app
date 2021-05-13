@@ -52,7 +52,7 @@ export default function ProductCardHover({ show, item, editproductform }) {
   };
 
   const inDashboard = ['/dashboard'].includes(pathname);
-  const inCheckout = ['/view-scan'].includes(pathname);
+  const inCheckout = ['/checkout'].includes(pathname);
 
   return (
     <div>

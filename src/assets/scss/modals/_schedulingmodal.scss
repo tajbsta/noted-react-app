@@ -22,7 +22,6 @@
     }
   }
 
-
   .days-container::-webkit-scrollbar {
     visibility: hidden;
   }
@@ -52,9 +51,9 @@
 
     // Initial state
     .day-container {
-      cursor: pointer;
+      // cursor: pointer;
       margin-top: 6%;
-      border: 1px solid #EAE8EB;
+      border: 1px solid #eae8eb;
       box-sizing: border-box;
       border-radius: 6px;
       padding: 1em;
@@ -71,7 +70,7 @@
         font-size: 14px;
         line-height: 16px;
         text-align: center;
-        color: #6E6674;
+        color: #6e6674;
       }
 
       .date {
@@ -79,7 +78,7 @@
         font-size: 12px;
         line-height: 14px;
         text-align: center;
-        color: #6E6674;
+        color: #6e6674;
       }
     }
 
@@ -87,7 +86,7 @@
     .day-container-selected {
       cursor: pointer;
       margin-top: 6%;
-      background: #EEE4F6;
+      background: #eee4f6;
       border: 2px solid #570097;
       box-sizing: border-box;
       border-radius: 6px;
@@ -99,7 +98,6 @@
         display: inline-block;
         margin-right: 0.6em;
       }
-
 
       .row {
         display: flex;
@@ -123,9 +121,6 @@
       }
     }
   }
-
-
-
 
   .modal-content {
     min-height: 590px;
@@ -249,9 +244,7 @@
     .timeSlotContainer {
       min-width: 214px;
       min-height: 52px;
-      display: flex;
       align-items: center;
-      justify-content: center;
       background: #ffffff;
       border: 1px solid #eae8eb;
       box-sizing: border-box;
@@ -283,7 +276,6 @@
         opacity: 0.6;
       }
 
-
       .selected {
         font-family: 'Sofia Pro';
         font-size: 14px;
@@ -292,6 +284,16 @@
         color: #570097 !important;
         mix-blend-mode: normal;
         opacity: 1;
+      }
+
+      .timeSlotText.selected {
+        font-weight: normal;
+        font-size: 14px;
+      }
+
+      .availableTimeSlot.selected {
+        font-weight: normal;
+        font-size: 13px;
       }
     }
   }

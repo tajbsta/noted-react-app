@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateOrders } from '../../../actions/auth.action';
+import { useDispatch } from 'react-redux';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
 import CancelOrderModal from '../../../modals/CancelOrderModal';
 

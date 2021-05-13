@@ -108,6 +108,22 @@
     }
   }
 
+  .m-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #570097;
+    opacity: 0.6;
+    border-radius: 6px;
+    color: #fff;
+    width: inherit;
+    height: 52px;
+    padding: 6px;
+    font-weight: 500;
+    font-size: 16px;
+    margin-top: 12px;
+  }
+
   .m-confirmed-desc {
     font-size: 12px;
     line-height: 14px;

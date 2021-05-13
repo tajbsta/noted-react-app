@@ -8,7 +8,7 @@ import ConfirmDonate from '../modals/ConfirmDonate';
 function ProductDetails({ item, isHovering = false, toggleSelected }) {
   const history = useHistory();
   const pageLocation = history.location.pathname;
-  const orderViews = ['/view-return', '/view-scan'];
+  const orderViews = ['/order/:orderId', '/checkout'];
   const [show, setShow] = useState(false);
   const [modalDonateShow, setModalDonateShow] = useState(false);
   const target = useRef(null);

@@ -44,7 +44,7 @@ function PickUpConfirmed({ orderId = '' }) {
   const time = get(scheduledReturn, 'details.time', '');
 
   const onEdit = () => {
-    history.push('/view-return', { scheduledReturnId: orderId });
+    history.push('/order/:orderId', { scheduledReturnId: orderId });
   };
 
   useEffect(() => {

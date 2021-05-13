@@ -50,11 +50,10 @@ const Topnav = () => {
   ];
   const authenticatedViews = [
     '/dashboard',
-    '/view-scan',
+    '/checkout',
     '/profile',
     '/settings',
-    '/view-return',
-    '/edit-order',
+    '/order',
   ];
   const {
     location: { pathname },

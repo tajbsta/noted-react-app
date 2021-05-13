@@ -119,7 +119,9 @@ export default function EditOrder({
       items: [...inBoxSelected, ...returnableSelected, ...lastCallSelected],
     };
     dispatch(updateCurrentOrder(newOrder));
-    history.push('/view-return', { scheduledReturnId, hasModifications: true });
+    history.push('/order/' + scheduledReturnId, {
+      hasModifications: true,
+    });
   };
 
   const hasSelected =

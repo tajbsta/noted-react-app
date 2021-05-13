@@ -258,7 +258,7 @@ function RightCard({ userId, setSelectedProducts }) {
                   backgroundColor='#570097'
                   textColor='white'
                   onClick={() => {
-                    history.push('/view-scan');
+                    history.push('/checkout');
                   }}
                 />
               </div>

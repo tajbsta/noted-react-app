@@ -184,9 +184,9 @@ export default function ReturnCategory({
             item={item}
             selected={!!cartItems.find((x) => x._id === item._id)}
             toggleSelected={toggleSelected}
-            onClick={() => {
-              push(`/view-scan?scanId=${item._id}`);
-            }}
+            // onClick={() => {
+            //   push(`/checkout?scanId=${item._id}`);
+            // }}
           />
         );
       })}

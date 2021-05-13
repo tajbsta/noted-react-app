@@ -9,7 +9,14 @@ import {
   ACCOUNT_ALREADY_EXIST,
   INVALID_REQUEST,
   SERVER_ERROR,
-  GOOGLE_AUTH_ACCESS_DENIED
+  GOOGLE_AUTH_ACCESS_DENIED,
+  NOT_FOUND,
+  ORDER_ZIPCODE_INVALID,
+  ORDER_PICKUP_SLOT_NOT_AVAILABLE,
+  ORDER_CONTAINS_INVALID_PRODUCTS,
+  ORDER_INVALID_PICKUP_DATE,
+  ORDER_NOT_FOUND,
+  ORDER_CANCEL_NOT_AVAILABLE
 } from "../constants/errors/errorCodes";
 
 export const signUpErrors = [
@@ -96,4 +103,30 @@ export const scraperGmailErrors = [
   }
 ];
 
-
+export const orderErrors = [
+  {
+    details: ORDER_ZIPCODE_INVALID,
+    message: "noted service is not yet available in your area",
+  },
+  {
+    details: ORDER_CONTAINS_INVALID_PRODUCTS,
+    message:
+      "Order contains invalid products",
+  },
+  {
+    details: ORDER_PICKUP_SLOT_NOT_AVAILABLE,
+    message: "Selected pickup slot is not available",
+  },
+  {
+    details: ORDER_INVALID_PICKUP_DATE,
+    message: "Invalid pickup date",
+  },
+  {
+    details: ORDER_NOT_FOUND,
+    message: "Order not found"
+  },
+  {
+    details: ORDER_CANCEL_NOT_AVAILABLE,
+    message: "Cannot cancel order at this time"
+  },
+];

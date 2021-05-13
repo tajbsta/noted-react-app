@@ -1,5 +1,5 @@
-#ViewScanPage,
-#ViewConfirmReturnPage,
+#CheckoutPage,
+#ViewOrderPage,
 #EditOrderPage {
   padding-bottom: 73px;
 
@@ -23,7 +23,14 @@
     }
   }
 
-  .mobile-view-scan-col {
+  .confirmed-container {
+    @media (max-width: 767px) {
+      margin-left: 16px;
+      margin-right: 16px;
+    }
+  }
+
+  .mobile-checkout-col {
     flex-wrap: wrap;
     margin-right: -12px;
     margin-left: -12px;
@@ -197,10 +204,6 @@
   .pick-up-address-mobile {
     @media (min-width: 1024px) {
       display: none;
-    }
-
-    .arrow-container {
-      margin-right: 2.5%;
     }
   }
 
@@ -517,7 +520,7 @@
     padding-bottom: 150px;
   }
 
-  .mobile-billing-view-return {
+  .mobile-billing-order {
     padding-bottom: 160px;
   }
 
