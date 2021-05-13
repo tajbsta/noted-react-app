@@ -207,7 +207,11 @@ export default function SchedulingModal(props) {
           className='close'
           data-dismiss='modal'
           aria-label='Close'
-          onClick={props.onHide}
+          onClick={() => {
+            setFieldValue('date', null);
+            setFieldValue('time', null);
+            props.onHide();
+          }}
         >
           <span aria-hidden='true'>&times;</span>
         </Button>
