@@ -7,18 +7,9 @@ import PickUpDetails from './components/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, isEmpty } from 'lodash';
 import $ from 'jquery';
-import { submitOrder } from '../../actions/auth.action';
-import { nanoid } from 'nanoid';
-import moment from 'moment';
 import { clearForm } from '../../actions/runtime.action';
 import { setCartItems } from '../../actions/cart.action';
 import { Link } from 'react-router-dom';
-import {
-  DONATE,
-  RETURNABLE,
-  LAST_CALL,
-  NOT_ELIGIBLE,
-} from '../../constants/actions/runtime';
 import { scrollToTop } from '../../utils/window';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import { showError, showSuccess } from '../../library/notifications.library';
@@ -52,26 +43,6 @@ export default function CheckoutPage() {
   const [validAddress, setValidAddress] = useState(false);
   const [validPayment, setValidPayment] = useState(true); // Default to true for now
   const [validPickUpDetails, setValidPickUpDetails] = useState(false);
-
-  // const inDonation = get(cart, 'items', []).filter(
-  //   ({ category }) => category === DONATE || NOT_ELIGIBLE
-  // );
-  // const inReturn = get(cart, 'items', []).filter(
-  //   ({ category }) => category === RETURNABLE || LAST_CALL
-  // );
-
-  // const potentialReturnValue = [...inReturn]
-  //   .map(({ price }) => parseFloat(price))
-  //   .reduce((acc, curr) => (acc += curr), 0);
-
-  // const forgottenReturns = [...scans].filter(({ id }) => {
-  //   return ![...inReturn].map(({ id }) => id).includes(id);
-  // });
-
-  // const returnFee = Math.floor(Math.random() * 30) + 20;
-  // const tax = Math.floor(Math.random() * 0.212343) + 0.1234403;
-  // const taxes = returnFee * tax;
-  // const totalPayment = (returnFee + taxes).toFixed(2);
   const checkoutTitle = items.length > 0 ? 'returns' : 'donate';
 
   useEffect(() => {
@@ -86,20 +57,6 @@ export default function CheckoutPage() {
   }, []);
 
   const onReturnConfirm = async () => {
-    // const newUniqueId = `${moment().format('MM-DD-YY-hh:mm')}${nanoid()}`;
-    // setOrderId(newUniqueId);
-    // dispatch(
-    //   submitOrder({
-    //     id: newUniqueId,
-    //     payment,
-    //     address,
-    //     details,
-    //     items: [...inReturn, ...newSelected],
-    //     returnFee: returnFee,
-    //     taxes,
-    //   })
-    // );
-
     console.log({
       payment,
       address,
@@ -255,17 +212,6 @@ export default function CheckoutPage() {
                   confirmed={confirmed}
                 />
               ))}
-              {/* {inDonation.map((item) => (
-                <ProductCard
-                  scannedItem={item}
-                  key={item.id}
-                  selectable={false}
-                  clickable={false}
-                  item={item}
-                  onRemove={onCartRemove}
-                  confirmed={confirmed}
-                />
-              ))} */}
             </div>
 
             {/* BILLING */}
