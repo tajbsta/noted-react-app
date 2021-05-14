@@ -101,7 +101,7 @@ function ViewOrderPage({
 
   useEffect(() => {
     function handleResize() {
-      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 980);
+      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 991);
     }
     handleResize();
     window.addEventListener('resize', handleResize);

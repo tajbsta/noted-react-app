@@ -247,7 +247,7 @@ export default function PickUpDetails({
              */}
 
             <div className={isTablet ? 'col-sm-12' : 'col-sm-4'}>
-              {isMobile && (
+              {(isTablet || isMobile) && (
                 <p className='mobile-form-title first-title'>Pick-up Address</p>
               )}
               <div className='card shadow-sm'>
@@ -414,7 +414,7 @@ export default function PickUpDetails({
             </div>
             {/* PAYMENT DETAILS */}
             <div className={isTablet ? 'col-sm-12' : 'col-sm-4'}>
-              {isMobile && (
+              {(isTablet || isMobile) && (
                 <p className='mobile-form-title mt-4'>Payment method</p>
               )}
               <div className='card shadow-sm'>
@@ -568,7 +568,9 @@ export default function PickUpDetails({
             </div>
             {/* RETURN SCHEDULE */}
             <div className={isTablet ? 'col-sm-12' : 'col-sm-4'}>
-              {isMobile && <p className='mobile-form-title mt-4'>Pick up</p>}
+              {(isTablet || isMobile) && (
+                <p className='mobile-form-title mt-4'>Pick up</p>
+              )}
               <div className='card shadow-sm'>
                 <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 return-schedule'>
                   <div
