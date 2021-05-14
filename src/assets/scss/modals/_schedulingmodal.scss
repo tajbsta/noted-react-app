@@ -51,6 +51,7 @@
 
     // Initial state
     .day-container {
+      background: white;
       cursor: pointer;
       margin-top: 6%;
       border: 1px solid #eae8eb;
@@ -84,6 +85,7 @@
 
     // Selected state
     .day-container-selected {
+      background: white;
       cursor: pointer;
       margin-top: 6%;
       background: #eee4f6;
@@ -242,10 +244,9 @@
     }
 
     .timeSlotContainer {
-      min-width: 300px;
+      min-width: 25vw;
       min-height: 52px;
       align-items: center;
-      background: #ffffff;
       border: 1px solid #eae8eb;
       box-sizing: border-box;
       border-radius: 4px;

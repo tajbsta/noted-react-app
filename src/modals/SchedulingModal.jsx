@@ -11,6 +11,7 @@ export default function SchedulingModal(props) {
   const { form, onConfirm } = props;
   const [loading, setLoading] = useState(false);
   const [slots, setSlots] = useState({ AM: 0, PM: 0 });
+
   const fetchPickupSlots = async () => {
     if (!isEmpty(form.values.date)) {
       try {
@@ -44,7 +45,8 @@ export default function SchedulingModal(props) {
 
   const renderMorningTimeSlot = () => {
     const isSelected = pickUpDateValues.time === 'AM' ? `isSelected` : '';
-    const buttonClassname = `btn timeSlotContainer ${isSelected}`;
+    const unAvailable = slots.AM === 0 ? 'unavailable' : '';
+    const buttonClassname = `btn timeSlotContainer ${unAvailable} ${isSelected}`;
     const rangeTextClassname = `row sofia-pro timeSlotText ${
       isSelected ? 'selected' : ''
     }`;
@@ -65,12 +67,14 @@ export default function SchedulingModal(props) {
           }}
         >
           <Button
+            disabled={slots.AM === 0}
             className={buttonClassname}
             onClick={() => {
               setFieldValue('time', 'AM');
             }}
             style={{
               cursor: slots.AM === 0 ? 'not-allowed' : 'pointer',
+              backgroundColor: slots.AM === 0 ? '#ffcccb' : '#ffffff',
             }}
           >
             <Row className={rangeTextClassname}>9 A.M. - 12 P.M.</Row>
@@ -106,12 +110,14 @@ export default function SchedulingModal(props) {
           }}
         >
           <Button
+            disabled={slots.PM === 0}
             className={buttonClassname}
             onClick={() => {
               setFieldValue('time', 'PM');
             }}
             style={{
-              cursor: slots.PM === 0 ? 'not-allowed' : 'pointer',
+              cursor: slots.AM === 0 ? 'not-allowed' : 'pointer',
+              backgroundColor: slots.AM === 0 ? '#ffcccb' : '#ffffff',
             }}
           >
             <Row className={rangeTextClassname}>12 P.M. - 3 P.M.</Row>
@@ -159,11 +165,11 @@ export default function SchedulingModal(props) {
         day.format('MM/DD/YYYY') === pickUpDateValues.date;
 
       const dayContainerClassname = `col ${
-        isSelected ? 'day-container-selected' : 'day-container '
+        isSelected ? 'day-container-selected' : 'day-container'
       }`;
 
       return (
-        <div
+        <Button
           key={day}
           className={dayContainerClassname}
           onClick={() => {
@@ -175,7 +181,7 @@ export default function SchedulingModal(props) {
           <div className='row date'>
             {day !== null && day.format('MMMM DD')}
           </div>
-        </div>
+        </Button>
       );
     });
   };
