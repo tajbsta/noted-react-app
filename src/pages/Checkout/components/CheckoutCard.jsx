@@ -5,7 +5,6 @@ import InfoIcon from '../../../components/InfoIcon'
 
 export default function CheckoutCard({
   confirmed,
-  isTablet,
   onReturnConfirm,
   loading,
   validOrder = false,

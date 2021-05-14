@@ -5,7 +5,6 @@ import InfoIcon from '../../../components/InfoIcon'
 
 export default function MobileCheckoutCard({
   confirmed,
-  isTablet,
   loading,
   onReturnConfirm,
   validOrder = false,
