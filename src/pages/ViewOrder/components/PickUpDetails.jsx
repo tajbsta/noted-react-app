@@ -24,7 +24,6 @@ export default function PickUpDetails({ address, payment, details }) {
   const [modalShow, setModalShow] = useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
 
   const {
     errors: addressFormErrors,
@@ -85,18 +84,7 @@ export default function PickUpDetails({ address, payment, details }) {
 
   useEffect(() => {
     function handleResize() {
-      setIsMobile(window.innerWidth <= 991);
-    }
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
-
-  useEffect(() => {
-    function handleResize() {
-      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 1023);
+      setIsMobile(window.innerWidth <= 1023);
     }
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -111,7 +99,7 @@ export default function PickUpDetails({ address, payment, details }) {
         <h3 className='sofia-pro text-18'>Pick-up details</h3>
       )}
 
-      <div style={{ display: isMobile || isTablet ? 'block' : 'flex' }}>
+      <div style={{ display: isMobile ? 'block' : 'flex' }}>
         {showEditPayment && (
           <PaymentForm
             {...paymentFormValues}
@@ -133,7 +121,7 @@ export default function PickUpDetails({ address, payment, details }) {
 
         {!showEditAddress && !showEditPayment && (
           <>
-            <div className={isTablet ? 'col-sm-12' : 'col-sm-4'}>
+            <div className={isMobile ? 'col-sm-12' : 'col-sm-4'}>
               {isMobile && (
                 <p className='mobile-form-title first-title'>Pick-up Address</p>
               )}
@@ -198,7 +186,7 @@ export default function PickUpDetails({ address, payment, details }) {
               </div>
             </div>
             {/* PAYMENT DETAILS */}
-            <div className={isTablet ? 'col-sm-12' : 'col-sm-4'}>
+            <div className={isMobile ? 'col-sm-12' : 'col-sm-4'}>
               {isMobile && (
                 <p className='mobile-form-title mt-4'>Payment method</p>
               )}
@@ -261,7 +249,7 @@ export default function PickUpDetails({ address, payment, details }) {
               </div>
             </div>
             {/* RETURN SCHEDULE */}
-            <div className={isTablet ? 'col-sm-12' : 'col-sm-4'}>
+            <div className={isMobile ? 'col-sm-12' : 'col-sm-4'}>
               {isMobile && <p className='mobile-form-title mt-4'>Pick up</p>}
               <div className='card shadow-sm'>
                 <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0'>

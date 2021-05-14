@@ -24,7 +24,6 @@ export default function CheckoutPage() {
   const [confirmed, setConfirmed] = useState(false);
   const [order, setOrder] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const { address, payment, details, items } = useSelector(
@@ -138,17 +137,6 @@ export default function CheckoutPage() {
     };
   });
 
-  useEffect(() => {
-    function handleResize() {
-      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 980);
-    }
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
-
   const validOrder =
     validAddress && validPayment && validPickUpDetails && items.length > 0;
 
@@ -157,7 +145,6 @@ export default function CheckoutPage() {
       {isMobile && (
         <MobileCheckoutCard
           confirmed={confirmed}
-          isTablet={isTablet}
           onReturnConfirm={onReturnConfirm}
           validOrder={validOrder}
           loading={loading}
@@ -165,7 +152,7 @@ export default function CheckoutPage() {
       )}
       <div className={`container  ${isMobile ? 'mt-4' : 'mt-6'}`}>
         <div className='row mobile-row'>
-          <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
+          <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed && order ? (
               <div>
@@ -281,7 +268,6 @@ export default function CheckoutPage() {
               <div className='col-sm-3'>
                 <CheckoutCard
                   confirmed={confirmed}
-                  isTablet={isTablet}
                   onReturnConfirm={onReturnConfirm}
                   validOrder={validOrder}
                   loading={loading}
