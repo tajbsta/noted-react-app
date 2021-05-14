@@ -29,9 +29,9 @@ export default function SchedulingModal(props) {
     }
   };
 
-  // useEffect(() => {
-  //   fetchPickupSlots();
-  // }, [form.values.date]);
+  useEffect(() => {
+    fetchPickupSlots();
+  }, [form.values.date]);
 
   const {
     errors: pickUpDateErrors,
