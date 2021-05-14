@@ -1,0 +1,20 @@
+.tooltip-inner {
+  text-align: left !important;
+  width: 150px;
+}
+
+.info-icon svg {
+  width: 18px;
+
+  &:hover {
+    color: #570097;
+    opacity: 1;
+    cursor: pointer;
+  }
+}
+
+@media screen and (min-width: 1069px) and (max-width: 1200px) {
+  .tooltip-inner {
+    width: 130px;
+  }
+}
