@@ -1,0 +1,304 @@
+#SchedulingModal {
+  justify-content: center;
+
+  .spinner {
+    color: #570097;
+  }
+
+  .close-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 28px;
+    margin-top: 28px;
+
+    .close {
+      box-shadow: none;
+      color: #b1adb2;
+
+      &:hover {
+        background: inherit;
+        color: black;
+      }
+    }
+  }
+
+  .days-container::-webkit-scrollbar {
+    visibility: hidden;
+  }
+
+  .days-container {
+    padding-left: 1em;
+    padding-right: 1em;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 0;
+
+    .row {
+      display: flex;
+      justify-content: center;
+    }
+
+    @media (max-width: 991px) {
+      display: inline-block;
+      max-height: 120px;
+      overflow-y: hidden;
+      overflow-x: scroll;
+      white-space: nowrap;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    // Initial state
+    .day-container {
+      // cursor: pointer;
+      margin-top: 6%;
+      border: 1px solid #eae8eb;
+      box-sizing: border-box;
+      border-radius: 6px;
+      padding: 1em;
+      max-width: 145px;
+      min-height: 64px;
+
+      @media (max-width: 991px) {
+        display: inline-block;
+        margin-right: 0.6em;
+      }
+
+      .day {
+        font-family: 'Sofia Pro';
+        font-size: 14px;
+        line-height: 16px;
+        text-align: center;
+        color: #6e6674;
+      }
+
+      .date {
+        font-family: 'Sofia Pro';
+        font-size: 12px;
+        line-height: 14px;
+        text-align: center;
+        color: #6e6674;
+      }
+    }
+
+    // Selected state
+    .day-container-selected {
+      cursor: pointer;
+      margin-top: 6%;
+      background: #eee4f6;
+      border: 2px solid #570097;
+      box-sizing: border-box;
+      border-radius: 6px;
+      padding: 1em;
+      max-width: 145px;
+      min-height: 64px;
+
+      @media (max-width: 991px) {
+        display: inline-block;
+        margin-right: 0.6em;
+      }
+
+      .row {
+        display: flex;
+        justify-content: center;
+      }
+
+      .day {
+        font-family: 'Sofia Pro';
+        font-size: 14px;
+        line-height: 16px;
+        text-align: center;
+        color: #570097;
+      }
+
+      .date {
+        font-family: 'Sofia Pro';
+        font-size: 12px;
+        line-height: 14px;
+        text-align: center;
+        color: #570097;
+      }
+    }
+  }
+
+  .modal-content {
+    min-height: 590px;
+    left: 0px;
+    top: 0px;
+    border-radius: 8px;
+  }
+
+  .modal-header {
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    justify-content: center;
+
+    .modal-title {
+      font-size: 18px !important;
+      line-height: 24px;
+      color: #2e1d3a;
+      margin-bottom: 10px;
+    }
+  }
+
+  .modal-body {
+    justify-content: center;
+    padding: 0px;
+    margin: 0px;
+    padding-bottom: 78px;
+
+    .guide-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .date-guide {
+        text-align: center;
+        width: 400px;
+        font-size: 14px;
+        line-height: 20px;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+        margin-bottom: 32px;
+      }
+    }
+  }
+
+  .date-column {
+    margin-left: 20px;
+    margin-right: 10px;
+
+    @media (max-width: 991px) {
+      margin-left: 5px;
+      display: flex;
+      align-items: center;
+      justify-items: center;
+    }
+  }
+
+  .modal-footer {
+    border: none;
+
+    .confirmPickUpText {
+      font-family: 'Sofia Pro';
+      font-size: 14px;
+      line-height: 16px;
+      text-align: center;
+
+      color: #f8efff;
+    }
+
+    .cancelPickUpButton {
+      background-color: white !important;
+      border: none;
+      box-shadow: none;
+
+      .cancelPickUpText {
+        font-family: 'Sofia Pro';
+        font-size: 14px;
+        line-height: 16px;
+        text-align: right;
+        color: #2e1d3a;
+      }
+    }
+  }
+
+  .left-column {
+    margin-top: 12px;
+    font-size: 18px;
+    line-height: 24px;
+    max-width: 304px;
+
+    .selectedDateContainer {
+      color: #570097 !important;
+    }
+
+    .isSelected {
+      background: #eee4f6 !important;
+      border: 1px solid #570097 !important;
+      color: #570097 !important;
+    }
+
+    .isDisabled {
+      background: #faf8fa;
+      border: 1px solid #f0f0f0;
+      box-sizing: border-box;
+      border-radius: 4px;
+
+      .isDisabledText {
+        font-family: 'Sofia Pro';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: right;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.4;
+      }
+    }
+
+    .timeSlotContainer {
+      min-width: 214px;
+      min-height: 52px;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid #eae8eb;
+      box-sizing: border-box;
+      border-radius: 4px;
+      margin-top: 20px;
+      margin-bottom: 8px;
+
+      .timeSlotText {
+        display: flex;
+        justify-content: center;
+        font-family: 'Sofia Pro';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: right;
+        color: #0e0018 !important;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+      }
+
+      .availableTimeSlot {
+        display: flex;
+        justify-content: center;
+        font-size: 13px;
+        text-align: right;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+      }
+
+      .selected {
+        font-family: 'Sofia Pro';
+        font-size: 14px;
+        line-height: 20px;
+        text-align: right;
+        color: #570097 !important;
+        mix-blend-mode: normal;
+        opacity: 1;
+      }
+
+      .timeSlotText.selected {
+        font-weight: normal;
+        font-size: 14px;
+      }
+
+      .availableTimeSlot.selected {
+        font-weight: normal;
+        font-size: 13px;
+      }
+    }
+  }
+
+  .back-arrow-mobile {
+    transform: rotate(90deg);
+  }
+}

@@ -1,0 +1,25 @@
+#DatePicker {
+
+  .react-datepicker {
+    min-width: 300px;
+    border: 1px solid grey;
+  }
+
+  .react-datepicker__header {
+    background-color: #fff;
+    min-width: 300px;
+    border-bottom: none;
+  }
+
+  .react-datepicker__day-names {
+    font-family: 'Sofia Pro';
+  }
+
+  .react-datepicker__current-month {
+    font-family: 'Sofia Pro';
+  }
+
+  .react-datepicker__week {
+    font-family: 'Sofia Pro';
+  }
+}

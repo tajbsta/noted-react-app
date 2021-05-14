@@ -1,0 +1,134 @@
+#MobileCheckoutCard {
+  font-family: 'Sofia Pro';
+
+  .m-col {
+    padding-left: 0px;
+  }
+
+  .card {
+    z-index: 999;
+    width: -webkit-fill-available;
+    box-shadow: 0 -5px 15px -5px #0e0018 !important;
+    border-radius: 15px 15px 15px 15px;
+    padding-left: 0px;
+    padding-right: 0px;
+    position: fixed;
+    bottom: 0;
+  }
+
+  .card-body {
+    padding: 16px;
+    padding-top: 0px;
+    padding-bottom: 12px;
+  }
+
+  .m-product-to-return {
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    margin-bottom: 22px;
+    margin-top: 13px;
+  }
+
+  .m-box-size-description {
+    font-size: 14px;
+    line-height: 18px;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+    margin-bottom: 0px;
+  }
+
+  .m-btn {
+    padding: 0px;
+    box-shadow: none;
+
+    .m-btn-info {
+      font-size: 14px;
+      line-height: 16px;
+      color: #570097;
+    }
+  }
+
+  .m-value {
+    margin-bottom: 0px;
+    font-size: 22px;
+    line-height: 26px;
+    color: #21003a;
+  }
+
+  .m-value-label {
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+    margin-bottom: 0px !important;
+  }
+
+  .m-cost-value {
+    font-size: 14px;
+    line-height: 19px;
+    text-align: right;
+    color: #2e1d3a;
+  }
+
+  .m-total-pay {
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018;
+  }
+
+  .m-total-value {
+    font-size: 14px;
+    line-height: 16px;
+    text-align: right;
+    color: #2e1d3a;
+  }
+
+  .m-btn-confirm {
+    background: #570097;
+    border-radius: 6px;
+    color: #fff;
+    width: inherit;
+    height: 52px;
+    padding: 6px;
+    font-weight: 500;
+    font-size: 16px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span {
+      margin-left: 24px;
+      margin-right: 24px;
+    }
+  }
+
+  .m-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #570097;
+    opacity: 0.6;
+    border-radius: 6px;
+    color: #fff;
+    width: inherit;
+    height: 52px;
+    padding: 6px;
+    font-weight: 500;
+    font-size: 16px;
+    margin-top: 12px;
+  }
+
+  .m-confirmed-desc {
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+}

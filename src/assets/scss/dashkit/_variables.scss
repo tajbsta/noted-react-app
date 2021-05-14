@@ -35,7 +35,7 @@ $gray-800-dark: #152e4d !default;
 $gray-900-dark: #132a46 !default;
 $black-dark: #12263f !default;
 
-$blue: #2c7be5 !default;
+$blue: #570097 !default;
 $indigo: #727cf5 !default; // NOT USED
 $purple: #6b5eae !default;
 $pink: #ff679b !default; // NOT USED
@@ -102,38 +102,38 @@ $spacers: map-merge(
       $spacer * 0.125,
     ),
     // 3px
-      2:
+    2:
       (
         $spacer * 0.25,
       ),
     // 6px
-      3:
+    3:
       (
         $spacer * 0.5,
       ),
     // 12px
-      4: $spacer,
+    4: $spacer,
     // 24px
-      5:
+    5:
       (
         $spacer * 1.5,
       ),
     // 36px
-      6:
+    6:
       (
         $spacer * 3,
       ),
     // 72px
-      7:
+    7:
       (
         $spacer * 4.5,
       ),
     // 108px
-      8:
+    8:
       (
         $spacer * 9,
       )
-      // 216px,,
+      // 216px,,,,,,
   ),
   $spacers
 );
@@ -336,7 +336,7 @@ $input-placeholder-color: $gray-500 !default;
 $input-height-inner-sm: ($font-size-sm * $input-btn-line-height-sm) +
   ($input-btn-padding-y-sm * 2) !default;
 
-$form-group-margin-bottom: 1.375rem !default;
+$form-group-margin-bottom: 16px !default;
 
 $input-group-addon-bg: $input-bg !default;
 $input-group-addon-color: $text-muted !default;

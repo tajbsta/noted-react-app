@@ -1,0 +1,123 @@
+#MobileNav-dashboard {
+  background-color: #fff !important;
+  font-family: 'Sofia Pro';
+
+  .navbar {
+    border: none;
+    box-shadow: none;
+    padding: 5px;
+  }
+
+  .mobile-search-container {
+    display: inline-flex;
+
+    .form-inline {
+      max-width: 480px;
+
+      @media (max-width: 580px) {
+        width: auto;
+      }
+    }
+  }
+
+  .search-toggler-icon {
+    span {
+      background-image: url(../../icons/Search.svg) !important;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .m-search-container {
+    position: relative;
+    left: 15%;
+
+    @media (max-width: 991px) {
+      left: 37%;
+    }
+
+    @media (max-width: 922px) {
+      left: 36%;
+    }
+
+    @media (max-width: 860px) {
+      left: 35%;
+    }
+
+    @media (max-width: 819px) {
+      left: 34%;
+    }
+
+    @media (max-width: 772px) {
+      left: 33%;
+    }
+
+    @media (max-width: 718px) {
+      left: 32%;
+    }
+
+    @media (max-width: 641px) {
+      left: 29%;
+    }
+
+    @media (max-width: 525px) {
+      left: 25%;
+    }
+
+    @media (max-width: 540px) {
+      left: 26%;
+    }
+
+    @media (max-width: 454px) {
+      left: 20%;
+    }
+
+    @media (max-width: 414px) {
+      left: 17%;
+    }
+
+    @media (max-width: 375px) {
+      left: 16%;
+    }
+
+    @media (max-width: 360px) {
+      left: 14%;
+    }
+
+    @media (max-width: 320px) {
+      left: 10%;
+    }
+
+    @media (max-width: 280px) {
+      left: 4%;
+    }
+
+    .m-btn-search {
+      padding: 0px;
+      box-shadow: none;
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  .navbar-collapse {
+    text-align: end;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .navbar-collapse:before {
+    border: none !important;
+  }
+
+  .navbar-toggler-icon {
+    background-image: url(../../icons/ProfileDropdown.svg);
+    width: 48px;
+    height: 32px;
+  }
+}

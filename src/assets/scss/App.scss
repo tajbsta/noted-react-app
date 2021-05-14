@@ -6,14 +6,55 @@
 */
 
 @font-face {
-  font-family: "Sofia Pro";
-  src: url("../fonts/SofiaPro/Sofia\ Pro\ Regular.otf") format("opentype");
+  font-family: 'Sofia Pro';
+  src: url('../fonts/SofiaPro/Sofia\ Pro\ Regular.otf') format('opentype');
+}
+
+html {
+  background-color: white;
 }
 
 /* Pages styling */
-@import "./pages/register.scss";
-@import "./pages/login.scss";
-@import "./pages/authorize.scss";
-@import "./pages/brandlogo.scss";
-@import "./pages/navbar.scss";
-@import "./pages/dashboard.scss";
+@import './pages/register';
+@import './pages/login';
+@import './pages/forgotpass';
+@import './pages/resetpass';
+@import './pages/authorize';
+@import './pages/code';
+@import './pages/dashboard';
+@import './pages/scanning';
+@import './pages/checkout';
+@import './pages/profile';
+@import './pages/settings';
+
+/* Components in Pages styling */
+@import './components/brandlogo';
+@import './components/navbar';
+@import './components/mobilenav';
+@import './components/returncategory';
+@import './components/productcard';
+@import './components/addressform';
+@import './components/paymentform';
+@import './components/datepicker';
+@import './components/scheduledcard';
+@import './components/paymentmethod';
+@import './components/checkoutcard'; //includes ModifyCheckoutCard scss
+@import './components/mobilecheckoutcard';
+@import './components/productsinreview';
+@import './components/toast';
+
+/* Modals */
+@import './modals/returnpolicy';
+@import './modals/sizeguide';
+@import './modals/cancelorder';
+@import './modals/passchangesuccess';
+@import './modals/addpickup';
+@import './modals/addeditproduct';
+@import './modals/schedulingmodal';
+@import './modals/deleteemail';
+@import './modals/confirmdonate';
+
+html,
+body {
+  background-color: #faf8fa;
+}

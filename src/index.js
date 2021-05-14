@@ -1,10 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import Amplify, { Auth, Hub } from 'aws-amplify';
-import authListener from './utils/authListener';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import Amplify from "aws-amplify";
 
 Amplify.configure({
   Auth: {
@@ -14,11 +13,11 @@ Amplify.configure({
     mandatorySignIn: false,
     oauth: {
       domain: process.env.REACT_APP_OAUTH_DOMAIN,
-      scope: ['email', 'profile', 'openid'],
+      scope: ["email", "profile", "openid", "aws.cognito.signin.user.admin"],
       redirectSignIn: process.env.REACT_APP_OAUTH_REDIRECT_SIGN_IN,
       redirectSignOut: process.env.REACT_APP_OAUTH_REDIRECT_SIGN_OUT,
-      responseType: 'code'
-    }
+      responseType: "code",
+    },
   }
 });
 
@@ -28,7 +27,7 @@ ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('root'),
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

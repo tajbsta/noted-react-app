@@ -1,0 +1,608 @@
+#Settings {
+  padding-bottom: 163px;
+
+  .container {
+    @media (max-width: 767px) {
+      max-width: 720px;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  a,
+  p,
+  div {
+    font-family: 'Sofia Pro';
+  }
+
+  .m-no-col {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .col-sm-9 {
+    @media (max-width: 1199px) {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  #leftCard {
+    background: #faf8fa;
+    border: none;
+    box-shadow: none;
+  }
+
+  .card-title {
+    font-family: 'Sofia Pro';
+    font-size: 18px;
+    line-height: 24px;
+    color: #2e1d3a;
+    margin-bottom: 14px;
+  }
+
+  ul,
+  li,
+  a {
+    font-family: 'Sofia Pro';
+    font-size: 14px;
+    line-height: 16px;
+    color: #6c6372;
+    cursor: pointer;
+
+    &:hover {
+      color: #570097;
+    }
+  }
+
+  .active {
+    color: #570097;
+  }
+
+  #BasicInfo {
+    .alert {
+      margin-top: 0px;
+      padding: 5px;
+      min-width: auto;
+    }
+
+    .text-alert {
+      margin-top: 3px;
+      margin-bottom: 3px;
+      font-family: 'Sofia Pro';
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  #EmailAddresses {
+    .card-body {
+      padding: 24px 25px;
+    }
+
+    .spinner-container {
+      max-width: 352px;
+      display: flex;
+      justify-content: center;
+
+      .settings-spinner {
+        color: #570097;
+      }
+    }
+
+    .info-col {
+      padding-left: 0px;
+    }
+
+    .main-email {
+      padding: 0.5rem 0.75rem;
+      height: calc(1.5em + 1rem + 2px);
+      border-radius: 4px;
+      border: 1px solid #d2ddec;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      line-height: 16px;
+      color: #827889;
+      background: #faf8fa;
+
+      h4 {
+        margin-bottom: 0px;
+      }
+    }
+
+    .additional-email {
+      padding: 0.5rem 0.75rem;
+      height: calc(1.5em + 1rem + 2px);
+      border-radius: 4px;
+      border: 1px solid #d2ddec;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      line-height: 16px;
+      color: #2e1d3a;
+      background: #fff;
+
+      h4 {
+        margin-bottom: 0px;
+      }
+    }
+
+    .section-info {
+      font-size: 14px;
+      line-height: 18px;
+      color: #0e0018;
+      width: 352px;
+      margin-bottom: 0px;
+
+      @media (max-width: 1199px) {
+        width: auto;
+      }
+    }
+
+    .email-column {
+      margin-left: -10px;
+
+      @media (max-width: 767px) {
+        margin-left: 0px;
+      }
+    }
+
+    .form-group {
+      width: 352px;
+      margin-bottom: 24px;
+    }
+
+    .title-group {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 3px;
+
+      .delete-email {
+        padding: 0px;
+        margin: 0px;
+        font-size: 14px;
+        line-height: 16px;
+        color: #570097;
+        background-color: inherit;
+        border: none;
+
+        &:focus {
+          outline: none !important;
+          box-shadow: none;
+        }
+
+        &:hover {
+          color: #b079da;
+        }
+      }
+    }
+
+    .form-label {
+      font-size: 14px;
+      line-height: 16px;
+      color: #2e1d3a;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      margin-bottom: 3px;
+    }
+
+    .form-control {
+      border: 1px solid #ece4f2;
+      border-radius: 4px;
+    }
+
+    .button-row {
+      padding-right: 28px;
+    }
+
+    .btn-add-container {
+      margin-top: 16px;
+      display: flex;
+      justify-content: flex-end;
+
+      .add-new-email {
+        height: 40px;
+        width: 156px;
+        border-radius: 6px;
+        background: #570097;
+        font-size: 14px;
+        line-height: 16px;
+        border: none;
+      }
+    }
+
+    // ALERTS
+    .alert {
+      margin-top: 0px;
+      padding: 5px;
+      width: auto;
+
+      .text-alert {
+        margin-top: 3px;
+        margin-bottom: 3px;
+        font-family: 'Sofia Pro';
+      }
+    }
+
+    .alert-danger,
+    .alert-success {
+      margin: auto;
+      margin-top: 15px;
+      margin-bottom: 20px;
+    }
+
+    // MOBILE
+    .m-form-group {
+      width: auto;
+    }
+
+    .m-button-row {
+      padding: 0px;
+    }
+  }
+
+  #ChangePass {
+    .change-container {
+      padding: 24px 25px;
+      min-height: 268px;
+    }
+
+    .card-body {
+      padding: 0px;
+    }
+
+    .alert {
+      margin-top: 0px;
+      padding: 5px;
+      width: auto;
+    }
+
+    .text-alert {
+      margin-top: 3px;
+      margin-bottom: 3px;
+      font-family: 'Sofia Pro';
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    input {
+      border: 1px solid #ece4f2;
+    }
+
+    label {
+      font-size: 14px;
+      line-height: 16px;
+      color: #2e1d3a;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      margin-bottom: 3px;
+    }
+
+    .input-group {
+      max-width: 352px;
+    }
+
+    .col-pass {
+      padding-left: 0px;
+    }
+
+    .form-pass {
+      border-right: none;
+    }
+
+    .input-group-text {
+      padding: 0 10px;
+      border: 1px solid #ece4f2 !important;
+      background: #fff !important;
+
+      .fe-eye {
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.2;
+      }
+    }
+
+    .btn-container {
+      justify-content: flex-end;
+      display: flex;
+      margin-right: 24px;
+
+      @media (max-width: 1200px) {
+        margin-right: 0px !important;
+      }
+    }
+
+    .btn-change {
+      // margin-top: 7px;
+      background: #570097;
+      border: none;
+      // position: absolute;
+      // right: 5%;
+      height: 40px;
+      width: 194px;
+      border-radius: 6px;
+      font-family: 'Sofia Pro';
+      font-size: 14px;
+      line-height: 16px;
+      text-align: center;
+      color: #f8efff;
+
+      // @media (max-width: 991px) {
+      //   position: initial;
+      // }
+    }
+
+    // MOBILE
+    .m-current-color {
+      flex-basis: auto !important;
+    }
+  }
+
+  #DeleteAccount {
+    .delete-info {
+      font-size: 14px;
+      line-height: 18px;
+      color: #0e0018;
+      max-width: 352px;
+
+      @media (max-width: 991px) {
+        margin-bottom: 24px;
+      }
+    }
+
+    .btn-delete {
+      font-size: 14px;
+      line-height: 16px;
+      color: #570097;
+      max-width: 352px;
+      margin-bottom: 0px;
+      box-shadow: none;
+      position: relative;
+      left: 11%;
+
+      @media (max-width: 991px) {
+        position: initial;
+      }
+
+      &:hover {
+        color: #b079da;
+      }
+    }
+  }
+
+  #UserInfo {
+    border: none;
+    box-shadow: none;
+    background-color: #faf8fa;
+    position: absolute;
+    width: 248px;
+    height: 316px;
+    top: 20%;
+
+    @media (max-width: 1199px) {
+      width: auto;
+      position: initial;
+      height: auto;
+    }
+
+    .card-body {
+      background-color: #faf8fa;
+      padding: 0 0.5rem;
+    }
+
+    // AVATAR
+    .img-container {
+      background: #fff;
+      border: 1px solid #eae8eb;
+      border-radius: 50%;
+      width: 96px;
+      height: 96px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      transition: all 0.4s ease;
+
+      &:hover {
+        transform: scale(1.05);
+        opacity: 0.7;
+        background-color: #570097;
+        box-shadow: 1px 1px 15px -5px black;
+      }
+
+      .default-avatar {
+        width: 32px;
+        height: 32px;
+        position: absolute;
+      }
+
+      .no-default-avatar {
+        display: none;
+      }
+
+      .avatar-placeholder {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        position: absolute;
+        transition: all 0.3s ease;
+      }
+
+      // Image file upload
+      .upload-button {
+        border-radius: 50%;
+        position: relative;
+        top: 1px;
+        left: 1px;
+
+        .fa-upload-icon {
+          position: relative;
+          top: 0px;
+          left: -1px;
+          text-align: center;
+          opacity: 0;
+          transition: all 0.3s ease;
+          color: #fff;
+
+          svg {
+            height: 96px;
+            width: 96px;
+            padding: 33px;
+            border-radius: 50%;
+            background: #570097;
+          }
+
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+
+      // Get rid of Choose file upload button css
+      input {
+        outline: none !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+
+      .file-upload {
+        box-shadow: none;
+        border: none;
+
+        &:hover {
+          outline: none !important;
+          box-shadow: none !important;
+          border: none !important;
+          cursor: pointer !important;
+        }
+      }
+    }
+
+    .name {
+      font-size: 18px;
+      line-height: 24px;
+      color: #2e1d3a;
+      margin-top: 16px;
+      width: -webkit-fill-available;
+    }
+
+    .date {
+      font-size: 12px;
+      line-height: 14px;
+      text-align: center;
+      color: #0e0018 !important;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      width: -webkit-fill-available;
+    }
+
+    .line-break-user {
+      margin-top: 16px !important;
+      margin-bottom: 16px !important;
+    }
+
+    .m-info-row {
+      margin: 0px;
+    }
+
+    hr {
+      border-top: 1px solid #e8e7e9;
+    }
+
+    .total {
+      font-size: 22px;
+      line-height: 26px;
+      color: #21003a;
+      margin-bottom: 5px;
+
+      @media (max-width: 1199px) {
+        margin-bottom: 0px;
+      }
+    }
+
+    .total-label {
+      font-size: 12px;
+      line-height: 14px;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+
+      @media (max-width: 1199px) {
+        margin-bottom: 0px;
+      }
+    }
+
+    .button-container {
+      width: -webkit-fill-available !important;
+    }
+
+    .btn {
+      box-shadow: none;
+
+      @media (max-width: 1199px) {
+        padding: initial;
+        width: 100%;
+      }
+    }
+
+    .btn-account {
+      width: inherit;
+      border: none;
+      background: #eee4f6;
+      border-radius: 6px;
+      font-size: 16px;
+      line-height: 19px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+      color: #570097;
+      box-shadow: none;
+
+      .btn-text {
+        font-size: 16px;
+      }
+    }
+
+    // MOBILE
+    .m-user-details {
+      display: flex;
+    }
+
+    .m-col-auto {
+      flex: auto;
+      text-align: initial;
+    }
+  }
+
+  .triggerContainer {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .triggerText {
+      @media (max-width: 991px) {
+        margin-left: 0px !important;
+      }
+    }
+
+    .triggerArrow {
+      color: #b1adb2;
+      font-size: 8px;
+
+      &:hover {
+        color: #570097;
+      }
+    }
+  }
+}

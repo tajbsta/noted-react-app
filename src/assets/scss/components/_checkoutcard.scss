@@ -1,0 +1,107 @@
+#CheckoutCard,
+#ModifyCheckoutCard {
+  font-family: 'Sofia Pro';
+  .h-292 {
+    height: 292px;
+  }
+
+  .h-363 {
+    height: 363px;
+  }
+
+  .pick-up-card {
+    width: 248px;
+  }
+
+  .products-to-return {
+    font-size: 14px;
+    line-height: 16px;
+    color: #0e0018;
+  }
+
+  .box-size-description {
+    width: 176px;
+    margin-bottom: 8px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
+  .empty-message {
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    color: #0e0018;
+  }
+
+  .line-break-1 {
+    margin-top: 11px !important;
+    margin-bottom: 16px !important;
+    color: #e8e7e9;
+  }
+
+  .donate-quantity {
+    color: #21003a;
+  }
+
+  .text-muted {
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018 !important;
+    margin-bottom: 0px;
+  }
+
+  .value-label {
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
+  .edit-line-break {
+    background: #e8e7e9;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .line-break-2 {
+    margin-top: 12px !important;
+    margin-bottom: 18px !important;
+    color: #e8e7e9;
+  }
+
+  .line-break-3 {
+    margin-top: 12px !important;
+    margin-bottom: 23px !important;
+    color: #e8e7e9;
+  }
+
+  .total-now {
+    color: #2e1d3a;
+  }
+
+  .btn-confirm {
+    margin-top: 9px;
+    color: #fff;
+    border-radius: 6px;
+    padding: 10px;
+    padding-top: 12px;
+    padding-bottom: 10px;
+  }
+
+  .btn-more-info {
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+
+    &:focus {
+      outline: none !important;
+      box-shadow: none;
+    }
+  }
+}

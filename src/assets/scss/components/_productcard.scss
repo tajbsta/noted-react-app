@@ -1,0 +1,457 @@
+//Product Cards
+#productCard,
+#ReturnCategory,
+#ScheduledReturnProduct {
+  .container {
+    @media (max-width: 991px) {
+      padding: 0px;
+    }
+  }
+
+  .p-details {
+    padding-left: 16px !important;
+    height: 48px;
+
+    .compensationText {
+      font-family: 'Sofia Pro';
+      font-size: 12px;
+      line-height: 14px;
+
+      color: #0e0018;
+
+      mix-blend-mode: normal;
+      opacity: 0.6;
+    }
+
+    .alternateActionText {
+      font-family: 'Sofia Pro';
+      font-size: 12px;
+      line-height: 14px;
+      padding: 0px;
+      color: #570097;
+      box-shadow: none;
+
+      &:hover {
+        color: #b079da;
+      }
+    }
+
+    @media (max-width: 991px) {
+      display: none !important;
+    }
+  }
+
+  .card {
+    @media (max-width: 991px) {
+      width: auto;
+      min-height: 90px;
+      border-radius: 0;
+    }
+
+    @media (min-width: 580px) {
+      border-radius: 8px;
+    }
+  }
+
+  .product-checkbox {
+    padding-right: 16px !important;
+  }
+
+  .distributor-name {
+    font-weight: 700;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .product-name {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 19px;
+    text-align: left;
+    z-index: 1;
+
+    @media (max-width: 991px) {
+      line-height: 14px;
+      margin-bottom: 0px !important;
+      z-index: inherit;
+    }
+  }
+
+  .product-price {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 15px;
+  }
+
+  .not-eligible-text {
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
+  .col-sm-5 {
+    @media (max-width: 991px) {
+      width: auto;
+    }
+  }
+
+  .product-img-container {
+    margin-left: 12px;
+
+    .product-img {
+      border: 1px solid #f0f0f0;
+      border-radius: 8px;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: #fff;
+    }
+  }
+
+  // Scheduled Return Card
+  .scheduled-height {
+    height: 60px;
+  }
+
+  .m-scheduled-card {
+    margin-top: 5px;
+    width: 82% !important;
+  }
+
+  .product-img {
+    img {
+      border: 1px solid #f0f0f0;
+      border-radius: 8px !important;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: #fff;
+    }
+  }
+
+  .sched-product-col {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .sched-vendor-col {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .sched-distributor-name {
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 20px;
+    color: #2e1d3a;
+    margin-bottom: 0px !important;
+  }
+
+  .sched-product-name {
+    font-size: 14px;
+    line-height: 19px;
+    color: #2e1d3a;
+    margin-bottom: 0px !important;
+  }
+
+  .sched-product-price {
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 18px;
+    color: #2e1d3a;
+    margin-bottom: 0px !important;
+  }
+
+  // OnHoverProductCard
+  #OnHoverProductCard {
+    .container-1 {
+      // width: 20%;
+      position: absolute;
+      bottom: 40%;
+      height: 19px;
+      right: 28.46%;
+
+      .date {
+        margin-bottom: 0px;
+        color: #2e1d3a;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .info-container {
+        display: inline-flex;
+      }
+
+      .text-wrong-info {
+        font-size: 12px;
+        line-height: 14px;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+        margin: 1px;
+      }
+
+      .btn-hover-edit {
+        line-height: 14px;
+        font-size: 12px;
+        text-decoration-line: underline;
+        color: #570097;
+        padding: 0;
+
+        &:hover {
+          color: #b079da;
+        }
+
+        &:focus {
+          outline: none !important;
+          box-shadow: none;
+        }
+      }
+    }
+
+    .container-2 {
+      position: absolute;
+      bottom: 40%;
+      height: 19px;
+      right: 22.46%;
+    }
+
+    .container-3 {
+      position: absolute;
+      bottom: 40%;
+      height: 19px;
+      right: 10.46%;
+
+      .text-score {
+        margin-bottom: 0px;
+      }
+
+      .btn-policy {
+        line-height: 14px;
+        font-size: 12px;
+        text-decoration-line: underline;
+        color: #570097;
+        padding: 0;
+
+        &:hover {
+          color: #b079da;
+        }
+
+        &:focus {
+          outline: none !important;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+
+  // MOBILE VIEWS OF PRODUCT DETAILS
+
+  // START OF PRODUCT IS SELECTED
+  .selected-mobile {
+    height: 212.42px;
+    background: #eee4f6;
+    border: none !important;
+  }
+
+  .m-date-col {
+    padding-left: 0px;
+    margin-left: 4px;
+    position: relative;
+    bottom: 1%;
+
+    .m-date {
+      font-size: 13px;
+      line-height: 17px;
+      color: #b1adb3;
+      width: max-content;
+    }
+  }
+
+  .btn-m-donate {
+    padding: 0px;
+    font-size: 12px;
+    line-height: 14px;
+    text-decoration-line: underline;
+    color: #570097;
+    box-shadow: none;
+  }
+
+  .btn-m-policy {
+    padding: 0px;
+    font-size: 12px;
+    line-height: 14px;
+    text-decoration-line: underline;
+    color: #570097;
+    box-shadow: none;
+    margin-left: 34px;
+  }
+
+  .tablet-brand-info-container {
+    //<540px && >767px
+    margin: 0px;
+
+    .m-brand-img {
+      border: 1px solid #f0f0f0;
+      border-radius: 50%;
+      height: 31px;
+      width: 31px;
+      object-fit: contain;
+      background-color: #fff;
+    }
+  }
+
+  .m-brand-info-container {
+    margin-top: 25px;
+    margin-left: 53px;
+
+    .m-brand-img {
+      border: 1px solid #f0f0f0;
+      border-radius: 50%;
+      height: 31px;
+      width: 31px;
+      object-fit: contain;
+      background-color: #fff;
+    }
+  }
+
+  .m-score-container {
+    display: flex;
+    align-items: flex-start;
+    margin-left: 9px;
+    margin-right: 7px;
+    position: relative;
+    top: -2%;
+  }
+
+  .m-score-text {
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
+    margin-bottom: 4px;
+  }
+
+  .m-edit-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 28px;
+
+    .m-edit-col {
+      display: flex;
+      align-items: flex-start;
+      margin-right: 16px;
+
+      h4 {
+        font-size: 12px;
+        line-height: 14px;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+      }
+
+      .btn-m-edit {
+        padding: 0px;
+        font-size: 12px;
+        line-height: 14px;
+        text-decoration-line: underline;
+        color: #570097;
+        box-shadow: none;
+      }
+    }
+  }
+
+  // END OF PRODUCT IS SELECTED
+
+  #mobile-product-info {
+    padding-left: 12px;
+    padding-right: 12px;
+
+    @media (min-width: 991px) {
+      display: none;
+    }
+
+    width: 75%;
+
+    @media (min-width: 376px) and (max-width: 384px) {
+      width: 73%;
+    }
+
+    @media (min-width: 360px) and (max-width: 374px) {
+      width: 73%;
+    }
+
+    @media (max-width: 358px) {
+      width: 65%;
+    }
+
+    @media (max-width: 279px) {
+      width: 60%;
+    }
+
+    .title-container {
+      display: flex;
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+    .s-container {
+      padding-right: 0px;
+      padding-left: 0px;
+    }
+
+    .col-days-left {
+      display: flex;
+      justify-content: flex-start;
+      padding: 0px;
+    }
+
+    .m-col-d {
+      width: auto !important;
+      flex-basis: initial;
+      flex-grow: initial;
+    }
+
+    .col-score {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 0px;
+    }
+
+    .mobile-price {
+      margin-bottom: 3px;
+    }
+  }
+
+  .removeProduct {
+    background: #ffffff;
+    border: 1px solid #eae8eb;
+    box-shadow: 0px 2px 4px rgba(78, 72, 103, 0.08);
+    opacity: 1;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    position: absolute;
+    top: 13px;
+    left: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    .x {
+      font-family: 'Sofia Pro';
+      border-radius: 100%;
+      display: flex;
+      align-content: center;
+      color: black;
+      font-size: 20px;
+      margin-bottom: 4px;
+      position: relative;
+      top: 13.5%;
+      left: 1.5%;
+    }
+  }
+}

@@ -1,0 +1,57 @@
+#ReturnCategory {
+  .category-title {
+    display: flex;
+    line-height: 16px;
+  }
+
+  .checkbox {
+    position: relative;
+    bottom: -1px;
+  }
+
+  .purchase-types {
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
+    margin-left: 16px;
+  }
+
+  .question-mark {
+    margin-left: 13.6px;
+    margin-bottom: 14px;
+  }
+
+  .purchase-type-checkbox-container {
+    max-width: 5px;
+  }
+
+  .m-row {
+    @media (max-width: 767px) {
+      margin: auto;
+    }
+  }
+
+  .empty-category {
+    font-size: 16px;
+    margin-top: 15px;
+  }
+
+  .progress {
+    margin-top: 40px;
+    margin-bottom: 40px;
+
+    @media (max-width: 540px) {
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+  }
+
+  .btn-show-more {
+    margin-top: 15px;
+    box-shadow: none;
+
+    &:hover {
+      color: #b079da;
+    }
+  }
+}

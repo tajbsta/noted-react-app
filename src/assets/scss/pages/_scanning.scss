@@ -1,0 +1,30 @@
+#ScanningPage {
+  .scanned-item-card {
+    background: #ffffff;
+    border: 1px solid #eae8eb;
+    border-radius: 8px;
+    height: 200px;
+
+    @media (max-width: 540px) {
+      height: 222px;
+    }
+  }
+
+  .mt-6 {
+    @media (max-width: 540px) {
+      margin-top: 0rem !important;
+    }
+  }
+
+  .mt-4 {
+    margin-top: 29px !important;
+  }
+
+  .mb-4 {
+    margin-bottom: 26px;
+  }
+
+  .text-subtitle {
+    margin-bottom: 10px;
+  }
+}

@@ -1,4 +1,4 @@
-# Logs
+ Logs
 logs
 *.log
 npm-debug.log*
@@ -74,9 +74,10 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
-.env.development
-.env.production
-.env.staging
+# .env.local
+# .env.development
+# .env.production
+# .env.staging
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -110,7 +111,7 @@ dist
 .tern-port
 
 # installation locks
-package-lock.json
+# package-lock.json
 yarn.lock
 
 build
@@ -134,4 +135,4 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 .eslintcache
-package-lock.json
+.prettierrc

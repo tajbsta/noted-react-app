@@ -1,0 +1,671 @@
+#CheckoutPage,
+#ViewOrderPage,
+#EditOrderPage {
+  padding-bottom: 73px;
+
+  .col-sm-9 {
+    @media (max-width: 991px) {
+      padding: 0px;
+    }
+    // @media (min-width: 541px) and (max-width: 991px) {
+    //   max-width: 68%;
+    // }
+  }
+
+  .desktop-col {
+    @media (max-width: 991px) {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    @media (min-width: 992px) {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+  }
+
+  .confirmed-container {
+    @media (max-width: 767px) {
+      margin-left: 16px;
+      margin-right: 16px;
+    }
+  }
+
+  .mobile-checkout-col {
+    flex-wrap: wrap;
+    margin-right: -12px;
+    margin-left: -12px;
+
+    @media (max-width: 991px) {
+      margin: 0px;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  .mobile-view-add-col {
+    @media (max-width: 991px) {
+      margin: 12px;
+    }
+  }
+
+  .mobile-view-no-m-row {
+    @media (max-width: 991px) {
+      margin: auto;
+    }
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  .noted-red {
+    color: #ff1c29 !important;
+  }
+
+  p,
+  div,
+  a,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Sofia Pro';
+  }
+
+  .card {
+    margin-bottom: 0px;
+  }
+
+  .card-height {
+    min-height: 232px;
+  }
+
+  .section-title {
+    color: #2e1d3a;
+
+    @media (max-width: 991px) {
+      margin-left: 16px;
+    }
+  }
+
+  .title-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .btn-edit {
+    cursor: pointer;
+    color: #570097;
+  }
+
+  .btn-add-instructions {
+    cursor: pointer;
+    color: #570097;
+  }
+
+  .btn-instructions {
+    font-size: 14px;
+    line-height: 16px;
+    color: #570097;
+    background: inherit;
+    border: none;
+    padding: 0px;
+    outline: none !important;
+    box-shadow: none !important;
+
+    &:focus {
+      outline: none !important;
+      border: none;
+    }
+
+    &:hover {
+      color: #b079da;
+    }
+  }
+
+  .pick-up-message {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #2e1d3a;
+  }
+
+  .payment-details-card-body {
+    min-height: 232px;
+    max-height: 232px;
+
+    @media (max-width: 991px) {
+      min-height: auto;
+      width: 100%;
+    }
+  }
+
+  .payment-trigger {
+    .arrow-container {
+      margin-left: 3px;
+    }
+  }
+
+  .pick-up-address-title-mobile,
+  .payment-details-mobile {
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
+  .arrow-container {
+    margin-bottom: 2%;
+  }
+
+  .payment-card-logo {
+    width: 38px;
+  }
+
+  .address-actions {
+    display: flex;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 99999;
+    margin-bottom: 15px;
+
+    .text-instructions {
+      font-family: 'Sofia Pro';
+      font-size: 14px;
+      line-height: 16px;
+      color: #570097;
+      margin-bottom: 0px;
+    }
+  }
+
+  .payment-method-title-mobile {
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
+  .pick-up-address {
+    @media (max-width: 1025px) {
+      display: none;
+    }
+  }
+
+  .pick-up-address-mobile {
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
+  .payment-method {
+    @media (max-width: 1025px) {
+      display: none;
+    }
+  }
+
+  .ending-text {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
+  }
+
+  .return-schedule-mobile {
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
+  .return-schedule-trigger {
+    .arrow-container {
+      width: auto;
+      margin-top: 10px;
+      position: absolute;
+      right: 1vh;
+    }
+  }
+
+  .postal-name {
+    color: #0e0018;
+  }
+
+  .postal-address {
+    color: #0e0018;
+    font-size: 14px;
+    line-height: 18px;
+    width: auto;
+  }
+
+  .line1 {
+    color: #0e0018;
+    font-size: 14px;
+    line-height: 18px;
+    width: 140px;
+  }
+
+  .tel {
+    color: #0e0018;
+  }
+
+  // Card details
+  .end {
+    display: inline-flex;
+
+    .img-container {
+      margin-right: 8px;
+
+      .img-fluid {
+        height: 32px;
+        width: 40px;
+        left: 0px;
+        top: 0px;
+        border-radius: 4px;
+      }
+    }
+
+    .text {
+      position: relative;
+      top: 8px;
+    }
+  }
+
+  .c-add {
+    color: #0e0018;
+  }
+
+  .text-price-sched {
+    color: #2e1d3a !important;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
+  .call-to-action-container {
+    position: absolute;
+  }
+
+  .pick-up-edit-or-btn {
+    text-decoration: underline;
+  }
+
+  .pick-up-edit-or-btn:hover {
+    cursor: pointer;
+  }
+
+  // Your Products to return section
+  .products-return {
+    margin-top: 39px;
+  }
+
+  //  ProductCard stylings inside productcard.scss
+
+  // Don't miss out section
+  .miss-out {
+    margin-top: 55px;
+    margin-bottom: 17px;
+  }
+
+  .all-checkbox {
+    padding-top: 0px !important;
+    padding-bottom: 13px !important;
+  }
+
+  // START OF PICKUP CONFIRMED
+  .request-msg {
+    max-width: 680px;
+    margin-bottom: 18px;
+  }
+
+  .pick-up-day {
+    font-size: 16px;
+    line-height: 19px;
+    font-weight: 600;
+    color: #0e0018;
+    margin-bottom: 6px !important;
+  }
+
+  .pick-up-time {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 21px;
+    color: #0e0018;
+  }
+
+  .more-pick-up-info {
+    font-size: 14px;
+    line-height: 16px;
+    color: #570097;
+  }
+
+  .pick-up-price {
+    font-size: 22px;
+    line-height: 26px;
+    color: #21003a;
+  }
+
+  .return-type {
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+    margin-bottom: 0px;
+  }
+
+  .pick-up-reminder {
+    margin-top: 9px;
+    max-width: 216px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
+  .back-to-products-btn {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: #6aaf6a;
+    border: none;
+    border-radius: 8px;
+    width: 160px;
+    height: 40px;
+    padding: 11px;
+  }
+
+  .back-to-products-text {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 16px;
+    height: 40px;
+    color: #ffffff;
+  }
+
+  // END OF PICKUP CONFIRMED
+
+  // START OF MODIFY ORDER
+  .cancel-order {
+    font-size: 14px;
+    line-height: 16px;
+    padding-bottom: 3px;
+  }
+
+  .cancel-info {
+    margin-bottom: 0px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
+  .add-border {
+    border: 1px dashed #b1adb3;
+    mix-blend-mode: normal;
+    background: initial;
+  }
+
+  .add-row {
+    display: flex;
+    align-items: center;
+  }
+
+  .add-title {
+    font-size: 14px;
+    line-height: 16px;
+    color: #b1adb3;
+    margin-bottom: 5px;
+  }
+
+  .add-product-info {
+    margin-bottom: 0px;
+    text-align: left;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #b1adb3;
+  }
+
+  .add-product-container {
+    width: 48px;
+    height: 48px;
+    background: white;
+    border: 1px solid #eae8eb;
+    border-radius: 8px;
+    opacity: 0.6;
+    margin-left: 16px;
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+
+    @media (max-width: 991px) {
+      width: 32px;
+      height: 32px !important;
+      padding: 0px;
+      height: 64px;
+    }
+  }
+
+  // END OF MODIFY ORDER
+
+  .m-add-product {
+    @media (max-width: 991px) {
+      width: 75%;
+    }
+  }
+
+  // MOBILE
+  .container {
+    @media (max-width: 991px) {
+      padding: 0px;
+    }
+  }
+
+  .m-brand-info-container,
+  .m-edit-container {
+    padding-right: 12px;
+    padding-left: 12px;
+    margin-right: auto;
+  }
+
+  #mobile-product-info {
+    padding-left: 12px;
+    padding-right: 12px;
+
+    .col-days-left {
+      padding: 0px;
+      // padding-left: 12px;
+    }
+  }
+
+  .mobile-form-title {
+    //Pickup address/Payment method/Pick up
+    margin-bottom: 8px;
+    margin-top: 17px;
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
+
+    @media (max-width: 991px) {
+      margin-top: 0px;
+    }
+  }
+
+  .first-title {
+    margin-top: 0px;
+  }
+
+  // MOBILE BILLING CARD
+  .mobile-billing {
+    padding-bottom: 150px;
+  }
+
+  .mobile-billing-order {
+    padding-bottom: 160px;
+  }
+
+  .m-billing-container {
+    margin-left: 16px;
+    margin-right: 16px;
+
+    h4 {
+      font-size: 18px;
+      line-height: 24px;
+      color: #2e1d3a;
+    }
+  }
+
+  .m-billing-card {
+    margin-left: 16px;
+    margin-right: 16px;
+
+    .m-size-description {
+      font-size: 14px;
+      line-height: 18px;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      margin-bottom: 8px;
+      max-width: 176px;
+    }
+
+    .m-btn-info {
+      font-size: 14px;
+      line-height: 16px;
+      color: #570097;
+      padding: 0px;
+      box-shadow: none;
+    }
+
+    .m-label {
+      font-size: 14px;
+      line-height: 19px;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      margin-bottom: 3px;
+    }
+
+    .m-value {
+      font-size: 14px;
+      line-height: 19px;
+      text-align: right;
+      color: #2e1d3a;
+    }
+
+    .m-total-label {
+      font-size: 14px;
+      line-height: 16px;
+      color: #0e0018;
+    }
+
+    .m-total-value {
+      font-size: 14px;
+      line-height: 16px;
+      text-align: right;
+      color: #2e1d3a;
+    }
+  }
+
+  // MOBILE CANCEL ORDER
+  .m-cancel-container {
+    // padding-bottom: 200px;
+    // display: grid;
+    // justify-content: center;
+
+    .m-btn-cancel-order {
+      padding: 0px;
+      font-size: 14px;
+      line-height: 16px;
+      text-align: center;
+      color: #ff1c29;
+      margin-bottom: 3px;
+      box-shadow: none;
+    }
+
+    .m-cancel-sub {
+      font-size: 12px;
+      line-height: 14px;
+      text-align: left;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      // max-width: 200px;
+      margin-bottom: 5px;
+    }
+
+    .m-info-link {
+      font-size: 12px;
+      line-height: 14px;
+      text-align: center;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+    }
+  }
+}
+
+.mobile-row {
+  @media (max-width: 991px) {
+    margin: auto !important;
+  }
+}
+
+// Empty Address and Payment
+#EmptyState {
+  padding-top: 52px;
+
+  @media (max-width: 991px) {
+    padding-top: 8px;
+  }
+
+  .empty-header {
+    color: #2e1d3a;
+  }
+
+  .empty-sub {
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
+  .margin-bottom {
+    margin-bottom: 8px;
+  }
+
+  .btn-add-empty {
+    margin-top: 24px;
+    color: #fff;
+    border-radius: 6px;
+    padding: 10px;
+    background: #570097;
+    border: none;
+    width: 215px;
+    min-height: 40px;
+    font-size: 16px;
+
+    @media (max-width: 991px) {
+      margin-top: 8px;
+    }
+  }
+}

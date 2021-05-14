@@ -1,0 +1,575 @@
+#Profile {
+  padding-bottom: 163px;
+
+  .container {
+    @media (max-width: 767px) {
+      max-width: 720px;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a {
+    font-family: 'Sofia Pro';
+  }
+
+  hr {
+    border-top: 1px solid #e8e7e9 !important;
+  }
+
+  .m-no-col {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .col-sm-3 {
+    @media (max-width: 1199px) {
+      flex: initial;
+    }
+  }
+
+  .col-sm-9 {
+    @media (max-width: 1199px) {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  #UserInfo {
+    border: none;
+    box-shadow: none;
+    background-color: #faf8fa;
+    position: absolute;
+    width: 248px;
+    height: 316px;
+    top: 20%;
+
+    @media (max-width: 1199px) {
+      width: auto;
+      position: initial;
+      height: auto;
+    }
+
+    .card-body {
+      background-color: #faf8fa;
+      padding: 0 0.5rem;
+    }
+
+    // AVATAR
+    .img-container {
+      background: #fff;
+      border: 1px solid #eae8eb;
+      border-radius: 50%;
+      width: 96px;
+      height: 96px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      transition: all 0.4s ease;
+
+      &:hover {
+        transform: scale(1.05);
+        opacity: 0.7;
+        background-color: #570097;
+        box-shadow: 1px 1px 15px -5px black;
+      }
+
+      .default-avatar {
+        width: 32px;
+        height: 32px;
+        position: absolute;
+      }
+
+      .no-default-avatar {
+        display: none;
+      }
+
+      .avatar-placeholder {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        position: absolute;
+        transition: all 0.3s ease;
+      }
+
+      // Image file upload
+      .upload-button {
+        border-radius: 50%;
+        position: relative;
+        top: 1px;
+        left: 1px;
+
+        .fa-upload-icon {
+          position: relative;
+          top: 0px;
+          left: -1px;
+          text-align: center;
+          opacity: 0;
+          transition: all 0.3s ease;
+          color: #fff;
+
+          svg {
+            height: 96px;
+            width: 96px;
+            padding: 33px;
+            border-radius: 50%;
+            background: #570097;
+          }
+
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+
+      // Get rid of Choose file upload button css
+      input {
+        outline: none !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+
+      .file-upload {
+        box-shadow: none;
+        border: none;
+
+        &:hover {
+          outline: none !important;
+          box-shadow: none !important;
+          border: none !important;
+          cursor: pointer !important;
+        }
+      }
+    }
+
+    .name {
+      font-size: 18px;
+      line-height: 24px;
+      color: #2e1d3a;
+      margin-top: 16px;
+      width: -webkit-fill-available;
+    }
+
+    .date {
+      font-size: 12px;
+      line-height: 14px;
+      text-align: center;
+      color: #0e0018 !important;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      width: -webkit-fill-available;
+    }
+
+    .line-break-user {
+      margin-top: 16px !important;
+      margin-bottom: 16px !important;
+    }
+
+    .m-info-row {
+      margin: 0px;
+    }
+
+    hr {
+      border-top: 1px solid #e8e7e9;
+    }
+
+    .total {
+      font-size: 22px;
+      line-height: 26px;
+      color: #21003a;
+      margin-bottom: 5px;
+
+      @media (max-width: 1199px) {
+        margin-bottom: 0px;
+      }
+    }
+
+    .total-label {
+      font-size: 12px;
+      line-height: 14px;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+
+      @media (max-width: 1199px) {
+        margin-bottom: 0px;
+      }
+    }
+
+    .button-container {
+      width: -webkit-fill-available !important;
+    }
+
+    .btn {
+      box-shadow: none;
+
+      @media (max-width: 1199px) {
+        padding: initial;
+        width: 100%;
+      }
+    }
+
+    .btn-account {
+      width: inherit;
+      border: none;
+      background: #eee4f6;
+      border-radius: 6px;
+      line-height: 19px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+      color: #570097;
+      box-shadow: none;
+
+      .btn-text {
+        font-size: 16px;
+      }
+    }
+
+    // MOBILE
+    .m-user-details {
+      display: flex;
+    }
+
+    .m-col-auto {
+      flex: auto;
+      text-align: initial;
+    }
+  }
+
+  #Address {
+    .alert-container {
+      margin-left: 10px;
+      margin-top: 15px;
+
+      @media (max-width: 991px) {
+        margin-left: 0px;
+      }
+    }
+
+    .alert {
+      margin-top: 0px;
+      padding: 5px;
+      min-width: auto;
+    }
+
+    .text-alert {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-family: 'Sofia Pro';
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .triggerContainer {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .triggerText {
+        @media (max-width: 991px) {
+          margin-left: 0px !important;
+        }
+      }
+
+      .triggerArrow {
+        color: #b1adb2;
+        font-size: 8px;
+
+        &:hover {
+          color: #570097;
+        }
+      }
+    }
+  }
+
+  #Payment {
+    .alert {
+      margin-top: 0px;
+      padding: 5px;
+      min-width: auto;
+    }
+
+    .text-alert {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-family: 'Sofia Pro';
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  // SCHEDULED RETURN SECTION
+  #ScheduledReturn {
+    .Collapsible__contentOuter {
+      @media (max-width: 540px) {
+        margin-right: -16px;
+        margin-left: -16px;
+      }
+    }
+
+    .card {
+      @media (max-width: 540px) {
+        border-radius: 0px !important;
+      }
+    }
+
+    .hr-line {
+      width: 100%;
+      margin-right: 0px;
+    }
+
+    .m-brand-img {
+      border: 1px solid #f0f0f0;
+      border-radius: 50%;
+      height: 31px;
+      width: 31px;
+      object-fit: contain;
+      background-color: #fff;
+    }
+
+    .sched-time-container {
+      display: inline-flex;
+      font-size: 14px;
+      line-height: 16px;
+      text-align: right;
+      color: #2e1d3a;
+
+      .sched-value {
+        font-weight: bold;
+      }
+
+      h4 {
+        margin-bottom: 4px;
+      }
+    }
+
+    .total-items-container {
+      display: inline-flex;
+      font-size: 14px;
+      line-height: 16px;
+      text-align: right;
+      color: #2e1d3a;
+
+      .sched-value {
+        font-weight: bold;
+      }
+
+      h4 {
+        margin-bottom: 4px;
+      }
+    }
+
+    .sched-info-container {
+      justify-content: flex-end;
+      display: grid;
+    }
+
+    .accordion-container {
+      width: 100%;
+    }
+
+    .initial-card-body {
+      padding: 24px;
+    }
+
+    .sched-img-col {
+      display: flex;
+      align-items: center;
+    }
+
+    .title-col {
+      display: block;
+      align-items: center;
+      padding: 0px;
+
+      .title {
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 20px;
+        color: #2e1d3a;
+      }
+
+      .total {
+        font-size: 14px;
+        line-height: 16px;
+        color: #2e1d3a;
+      }
+    }
+
+    .product-img-col {
+      list-style: none;
+      display: flex;
+      justify-content: space-evenly;
+      padding: 0px;
+    }
+
+    .plus-more {
+      font-size: 12px;
+      line-height: 14px;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      padding: 0px;
+    }
+
+    .btn-show {
+      padding: 0px;
+      margin-right: 8px;
+      box-shadow: none;
+      font-size: 14px;
+      line-height: 16px;
+      text-decoration-line: underline;
+      color: #570097;
+    }
+
+    .arrow {
+      font-size: 7px;
+      margin-right: 12px;
+      color: #570097;
+      text-decoration: white;
+    }
+
+    .button-col {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0px;
+    }
+  }
+
+  // ACCORDION
+  .Collapsible {
+    width: -webkit-fill-available;
+  }
+
+  .triggerContainer {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .triggerText {
+      @media (max-width: 991px) {
+        margin-left: 0px !important;
+      }
+    }
+
+    .triggerArrow {
+      color: #b1adb2;
+      font-size: 8px;
+
+      &:hover {
+        color: #570097;
+      }
+    }
+  }
+
+  .empty-message {
+    text-align: center;
+    font-size: 18px !important;
+    margin-bottom: 8px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    color: #0e0018;
+  }
+
+  .empty-submessage {
+    text-align: center;
+    font-size: 14px !important;
+    line-height: 18px;
+    color: #0e0018;
+
+    .start-returning {
+      color: #6aaf6a;
+      text-decoration: underline;
+    }
+  }
+
+  #ProductsInReview {
+    #productCard {
+      margin-top: 20px;
+
+      .product-img-container {
+        display: flex !important;
+        align-items: center !important;
+        align-content: center !important;
+      }
+
+      .product-name {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 19px;
+        text-align: left;
+        z-index: 1;
+
+        @media (max-width: 991px) {
+          line-height: 14px;
+          margin-bottom: 0px !important;
+          z-index: inherit;
+        }
+      }
+
+      .product-price {
+
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 15px;
+      }
+
+      .pending-status {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        line-height: 14px;
+        color: #0E0018;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+      }
+
+      .rejected-status {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        line-height: 14px;
+        text-align: right;
+        color: #EB5757;
+        mix-blend-mode: normal;
+      }
+
+      .accepted-status {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        line-height: 14px;
+        text-align: right;
+        color: #2E1D3A;
+        mix-blend-mode: normal;
+      }
+
+      .return-item-brand {
+        display: flex;
+        align-items: center;
+        width: 10%;
+      }
+
+      .return-score {
+        margin-bottom: 5px !important;
+      }
+    }
+  }
+}

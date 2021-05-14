@@ -1,0 +1,145 @@
+#ReturnPolicyModal {
+  justify-content: center;
+
+  .modal-content {
+    background: #ffffff;
+    border: 1px solid #eae8eb;
+    box-shadow: 0px 4px 30px rgba(78, 72, 103, 0.08);
+    border-radius: 8px;
+    height: auto;
+    width: 680px;
+    left: 0px;
+    top: 0px;
+    border-radius: 8px;
+
+    @media (max-width: 767px) {
+      max-width: 343px;
+      min-height: 400px;
+    }
+
+    @media (max-width: 320px) {
+      max-width: 300px;
+      min-height: 429px;
+    }
+
+    @media (max-width: 280px) {
+      max-width: 254px;
+      min-height: 475px;
+    }
+  }
+
+  .modal-header {
+    border: none;
+    margin-top: 40px;
+    margin-left: 56px;
+    padding: 0px;
+
+    @media (max-width: 767px) {
+      margin-top: 24px;
+      margin-left: 16px;
+    }
+
+    .modal-title {
+      font-size: 18px !important;
+      line-height: 24px;
+      color: #2e1d3a;
+      margin-bottom: 11px;
+    }
+  }
+
+  .modal-body {
+    padding: 0px 56px;
+
+    @media (max-width: 767px) {
+      padding: 0px 16px;
+    }
+  }
+
+  .b-row {
+    // display: inline-flex;
+    // width: -webkit-fill-available;
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+
+      .brand {
+        font-size: 14px;
+        line-height: 16px;
+        color: #2e1d3a;
+        margin-bottom: 0px;
+        margin-left: 8.5px;
+      }
+
+      .brand-img {
+        border: 1px solid #f0f0f0;
+        border-radius: 50%;
+        height: 31px;
+        width: 31px;
+        object-fit: contain;
+        background: #fff;
+      }
+    }
+  }
+
+  .score-col {
+    display: flex;
+    align-items: center;
+
+    .text-score {
+      font-size: 14px;
+      line-height: 16px;
+      color: #2e1d3a;
+      margin-bottom: 0px;
+    }
+  }
+
+  .info {
+    font-size: 14px;
+    line-height: 22px;
+    color: #2e1d3a;
+    width: 568px;
+    margin-bottom: 16px;
+    margin-top: 16px;
+    // max-height: 110px;
+
+    @media (max-width: 767px) {
+      max-width: 313px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 320px) {
+      max-width: 277px;
+    }
+
+    @media (max-width: 280px) {
+      max-width: 220px;
+    }
+  }
+
+  .view-link {
+    font-size: 14px;
+    line-height: 16px;
+    color: #570097;
+    &:hover {
+      color: #b079da;
+    }
+  }
+
+  .modal-footer {
+    border: none;
+  }
+
+  .btn-ok {
+    background: #570097;
+    border-radius: 6px;
+    border: none;
+    width: 110px;
+    font-family: 'Sofia Pro';
+
+    &:focus {
+      outline: none !important;
+      box-shadow: none;
+    }
+  }
+}

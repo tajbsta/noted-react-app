@@ -1,0 +1,119 @@
+#SizeGuideModal {
+  justify-content: center;
+
+  .modal-content {
+    background: #ffffff;
+    border: 1px solid #eae8eb;
+    box-shadow: 0px 4px 30px rgba(78, 72, 103, 0.08);
+    border-radius: 8px;
+    min-height: 470px;
+    max-width: 680px;
+    left: 0px;
+    top: 0px;
+    border-radius: 8px;
+
+    @media (max-width: 767px) {
+      max-width: 343px;
+      min-height: 427px;
+    }
+
+    @media (max-width: 320px) {
+      max-width: 295px;
+    }
+
+    @media (max-width: 280px) {
+      max-width: 249px;
+    }
+  }
+
+  .modal-header {
+    border: none;
+    margin-left: 56px;
+    margin-top: 40px;
+    padding: 0px;
+
+    @media (max-width: 767px) {
+      margin-left: 16px;
+      margin-top: 24px;
+    }
+
+    .modal-title {
+      font-size: 18px !important;
+      line-height: 24px;
+      color: #2e1d3a;
+      margin-bottom: 18px;
+    }
+  }
+
+  .modal-body {
+    padding: 0px;
+  }
+
+  .info {
+    min-height: 66px;
+    max-width: 568px;
+    margin-left: 56px;
+    font-size: 14px;
+    line-height: 22px;
+    color: #2e1d3a;
+    margin-bottom: 48px;
+
+    @media (max-width: 767px) {
+      margin-left: 16px;
+      max-width: 313px;
+    }
+  }
+
+  .container {
+    height: 162px;
+    color: #570097;
+    font-family: 'Sofia Pro';
+    font-weight: 700;
+
+    h4,
+    li {
+      font-family: 'Sofia Pro';
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    ul {
+      margin-left: -24px;
+    }
+
+    .guide-img-col {
+      margin-left: 76px;
+    }
+
+    .sample-fit {
+      display: flex;
+      align-items: center;
+
+      .sample-col {
+        margin-left: 75px;
+
+        @media (max-width: 767px) {
+          margin-left: 4px;
+        }
+      }
+    }
+  }
+
+  .modal-footer {
+    border: none;
+  }
+
+  .btn-ok {
+    background: #570097;
+    border-radius: 6px;
+    border: none;
+    width: 110px;
+    font-family: 'Sofia Pro';
+
+    &:focus {
+      outline: none !important;
+      box-shadow: none;
+    }
+  }
+}

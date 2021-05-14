@@ -3,6 +3,73 @@
   // background-color: gray;
 }
 
+.btn {
+  cursor: pointer;
+  font-family: 'Sofia Pro';
+}
+
+.btn-spinner {
+  padding: 8px;
+}
+
+.noted-red {
+  color: red;
+}
+
+.noted-purple {
+  color: #570097;
+}
+
+.noted-border {
+  border: 1px solid #f0f0f0;
+}
+
+.text-14 {
+  font-size: 14px;
+}
+
+.text-16 {
+  font-size: 16px;
+}
+
+.text-18 {
+  font-size: 18px;
+}
+
+.w-840 {
+  width: 840px;
+
+  @media (min-width: 767px) and (max-width: 1200px) {
+    width: auto;
+  }
+}
+
+.max-w-840 {
+  max-width: 840px;
+}
+
+.line-height-16 {
+  line-height: 16px;
+}
+
+// PROFILE IMAGE
+.profile-alert-icon {
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0.5;
+  z-index: 1;
+  color: #00d97e;
+  position: absolute;
+  transition: all 0.3s ease;
+  transform: scale(1.35);
+
+  svg {
+    width: 72px;
+    height: 72px;
+    padding: 15px;
+  }
+}
+
 .btn-green {
   background-color: #6aaf6a;
   border-color: #6aaf6a;
@@ -15,19 +82,8 @@
   &:active {
     background-color: #6aaf6a !important;
   }
-}
-
-.loading {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  border: 2px solid rgba($primary, 0.2);
-  border-radius: 50%;
-  border-top-color: $primary;
-  animation: spin 1s ease-in-out infinite;
-  -webkit-animation: spin 1s ease-in-out infinite;
-  left: calc(50% - 15px);
-  top: calc(50% - 15px);
-  position: fixed;
-  z-index: 1;
+  &:focus {
+    background-color: #6aaf6a !important;
+    border-color: #6aaf6a !important;
+  }
 }

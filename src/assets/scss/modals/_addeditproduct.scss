@@ -1,0 +1,249 @@
+#AddProductModal,
+#EditProductModal {
+  justify-content: center;
+  border-radius: 8px;
+
+  .modal-content {
+    min-height: 547px;
+    max-width: 528px;
+  }
+
+  .m-row {
+    @media (max-width: 539px) {
+      display: block;
+    }
+  }
+
+  .modal-body {
+    padding: 24px 24px;
+  }
+
+  .form-label {
+    font-size: 14px;
+    line-height: 16px;
+    color: #2e1d3a;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
+  //   IMAGE
+  .productImg-form-group {
+    @media (max-width: 767px) {
+      margin-bottom: 16px;
+    }
+  }
+  .img-container {
+    background: #fff;
+    border: 1px solid #eae8eb;
+    border-radius: 8px;
+
+    max-height: 64px;
+    max-width: 64px;
+    object-fit: contain;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: all 0.4s ease;
+
+    img {
+      max-height: 64px;
+      max-width: 64px;
+      object-fit: contain;
+    }
+
+    &:hover {
+      transform: scale(1.05);
+      opacity: 0.7;
+      background: #570097;
+      box-shadow: 1px 1px 15px -5px black;
+    }
+
+    .no-placeholder {
+      display: none;
+    }
+
+    .product-placeholder {
+      height: 64px;
+      width: 64px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    // Image file upload
+    .upload-button {
+      height: 64px;
+      width: 64px;
+      border-radius: 8px;
+      position: absolute;
+      top: 0px;
+      left: 13px;
+
+      .fa-upload-icon {
+        position: relative;
+        top: -20px;
+        left: -30px;
+        text-align: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+        color: #fff;
+
+        svg {
+          height: 96px;
+          width: 96px;
+          padding: 33px;
+          background: #570097;
+        }
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+
+    // Get rid of Choose file upload button css
+    input {
+      outline: none !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+
+    .file-upload {
+      box-shadow: none;
+      border: none;
+
+      &:hover {
+        outline: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        cursor: pointer !important;
+      }
+    }
+  }
+  //   End of Image
+
+  .merchant-container {
+    display: flex;
+
+    .merchant-form-control {
+      width: -webkit-fill-available;
+    }
+
+    .brand-img-container {
+      display: flex;
+      align-items: center;
+      margin-left: 16.5px;
+
+      .brand-img {
+        border: 1px solid #f0f0f0;
+        border-radius: 50%;
+        height: 31px;
+        width: 31px;
+        object-fit: contain;
+        background: #fff;
+      }
+    }
+  }
+
+  // DATE PICKER
+  .c-date-picker {
+    border: 1px solid #ece4f2;
+    border-radius: 4px;
+    height: calc(1.5em + 1rem + 2px);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9375rem;
+    width: -webkit-fill-available;
+  }
+
+  .flatpickr-calendar {
+    border: none;
+
+    &:hover {
+      border-radius: 8px !important;
+      color: #570097 !important;
+      background: #eee4f6;
+    }
+  }
+
+  #DatePicker {
+    .react-datepicker-wrapper,
+    .react-datepicker__input-container {
+      width: -webkit-fill-available !important;
+    }
+
+    .btn {
+      padding: 0px;
+      width: -webkit-fill-available !important;
+      text-align: inherit;
+
+      &:focus {
+        outline: none !important;
+        box-shadow: none;
+      }
+    }
+  }
+
+  //   DROPZONE
+  .documents-title {
+    font-size: 13px;
+  }
+  .dropzone-container {
+    cursor: pointer;
+    padding: 39px 94px;
+    box-shadow: none;
+    outline: none;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='4' ry='4' stroke='%23ECE4F2FF' stroke-width='3' stroke-dasharray='5%2c11 ' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    border-radius: 4px;
+    height: 96px;
+    max-width: 400px;
+
+    @media (max-width: 767px) {
+      padding: 39px 4px;
+    }
+  }
+  .text-drag {
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    margin-bottom: 0px;
+    color: #827889;
+  }
+
+  .list-item {
+    margin-top: 2px;
+  }
+
+  .edit-list-item {
+    margin-top: -20px;
+  }
+
+  .row {
+    flex-wrap: initial;
+  }
+
+  .form-control {
+    max-width: 400px;
+  }
+
+  .btn-container {
+    padding: 5px;
+  }
+
+  .btn-cancel {
+    padding: 0px;
+    padding-right: 24px;
+    background: inherit;
+    border: none;
+    box-shadow: none;
+    color: #2e1d3a;
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .btn-save {
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 16px;
+    padding: 12px 24px;
+  }
+}

@@ -1,0 +1,68 @@
+#ScheduledCard {
+  font-family: 'Sofia Pro';
+
+  // .card {
+  //   background-color: aquamarine;
+  // }
+
+  .icon-col {
+    display: flex;
+    justify-content: flex-start;
+
+    .notee-container {
+      img {
+        width: 48px;
+        height: 48px;
+      }
+    }
+  }
+
+  .title {
+    font-size: 14px;
+    line-height: 20px;
+    color: #2e1d3a;
+  }
+
+  .info-col {
+    @media (max-width: 768px) {
+      margin-left: 12px;
+    }
+
+    @media (max-width: 991px) {
+      margin-left: 45px !important;
+    }
+  }
+
+  .items-info {
+    font-size: 14px;
+    line-height: 19px;
+    color: #0e0018;
+    opacity: 0.6;
+    @media (max-width: 540px) {
+      margin-bottom: 5px;
+    }
+  }
+
+  .button-col {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .btn-view-scheduled {
+    font-size: 14px;
+    line-height: 16px;
+    text-align: right;
+    text-decoration-line: underline;
+    color: #570097;
+    box-shadow: none;
+
+    &:hover {
+      color: #b079da;
+    }
+
+    @media (max-width: 540px) {
+      padding: 0px;
+    }
+  }
+}
