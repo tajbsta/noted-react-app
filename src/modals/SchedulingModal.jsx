@@ -154,17 +154,18 @@ export default function SchedulingModal(props) {
         moment().utc().local().add('days', 1).format('dddd')
           ? 'Tomorrow'
           : day.format('dddd');
+      const isSelected =
+        day instanceof moment &&
+        day.format('MM/DD/YYYY') === pickUpDateValues.date;
+
+      const dayContainerClassname = `col ${
+        isSelected ? 'day-container-selected' : 'day-container '
+      }`;
 
       return (
         <div
           key={day}
-          className={`col ${
-            pickUpDateValues.date instanceof moment &&
-            pickUpDateValues.date.format('YYYY MM DD') ===
-              day.format('YYYY MM DD')
-              ? 'day-container-selected'
-              : 'day-container '
-          }`}
+          className={dayContainerClassname}
           onClick={() => {
             onDateSelect('date', day.format('MM/DD/YYYY'));
             onDateSelect('time', null);
