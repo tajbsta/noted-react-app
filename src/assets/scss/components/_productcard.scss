@@ -369,17 +369,13 @@
     padding-left: 12px;
     padding-right: 12px;
 
-    @media (min-width: 991px) {
+    @media (min-width: 992px) {
       display: none;
     }
 
     width: 75%;
 
-    @media (min-width: 376px) and (max-width: 384px) {
-      width: 73%;
-    }
-
-    @media (min-width: 360px) and (max-width: 374px) {
+    @media (min-width: 360px) and (max-width: 384px) {
       width: 73%;
     }
 
