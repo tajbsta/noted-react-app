@@ -4,7 +4,6 @@ import { Spinner } from 'react-bootstrap';
 
 export default function MobileCheckoutCard({
   confirmed,
-  isTablet,
   loading,
   onReturnConfirm,
   validOrder = false,

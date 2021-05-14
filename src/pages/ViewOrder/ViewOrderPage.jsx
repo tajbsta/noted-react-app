@@ -23,7 +23,6 @@ function ViewOrderPage({
 }) {
   const [confirmed, setconfirmed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
   const [modalCancelOrderShow, setModalCancelOrderShow] = useState(false);
   const history = useHistory();
@@ -99,17 +98,6 @@ function ViewOrderPage({
     };
   });
 
-  useEffect(() => {
-    function handleResize() {
-      setIsTablet(window.innerWidth >= 541 && window.innerWidth <= 991);
-    }
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
-
   return (
     <div id='ViewOrderPage'>
       {isMobile && (
@@ -125,7 +113,7 @@ function ViewOrderPage({
       )}
       <div className='container mt-6'>
         <div className='row mobile-view-no-m-row'>
-          <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
+          <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed ? (
               <div className='mobile-checkout-col'>
