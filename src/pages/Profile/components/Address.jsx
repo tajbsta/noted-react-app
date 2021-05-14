@@ -154,7 +154,7 @@ export default function Address({ user }) {
   const renderAddressMobileView = () => {
     return (
       <>
-        <div className='card shadow-sm mb-2 p-3 max-w-840'>
+        <div className='card shadow-sm mb-2 p-3 max-w-840 mt-4'>
           <div className='m-card-body'>
             <Form id='Info'>
               <Row>
