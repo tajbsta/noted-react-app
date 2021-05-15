@@ -7,6 +7,7 @@ import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import Collapsible from 'react-collapsible';
 import { getOrders } from '../../../utils/orderApi';
 import { getUserId } from '../../../utils/auth';
+import moment from 'moment';
 
 export default function ScheduledReturn({ user }) {
   const { push } = useHistory();
@@ -14,7 +15,7 @@ export default function ScheduledReturn({ user }) {
   const [isMobile, setIsMobile] = useState(false);
   const [orders, setOrders] = useState([]);
   const [fetchingOrders, setFetchingOrders] = useState(false);
-  const [activeKeys, setActiveKeys] = useState({});
+  // const [activeKeys, setActiveKeys] = useState({});
 
   const getScheduledOrders = async () => {
     try {
@@ -293,7 +294,9 @@ export default function ScheduledReturn({ user }) {
                     >
                       <div className='sched-time-container'>
                         <h4>Pick-up on &nbsp;</h4>
-                        <h4 className='sched-value'>{order.pickupDate}</h4>
+                        <h4 className='sched-value'>
+                          {moment(order.pickupDate).format('MMMM DD, YYYY')}
+                        </h4>
                       </div>
                     </Row>
                     <Row

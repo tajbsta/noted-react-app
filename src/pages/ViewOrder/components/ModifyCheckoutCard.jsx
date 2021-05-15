@@ -4,21 +4,22 @@ import { useDispatch } from 'react-redux';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
 import CancelOrderModal from '../../../modals/CancelOrderModal';
 
-export default function ModifyCheckoutCard({
-  potentialReturnValue,
-  inDonation,
-  taxes,
-  totalPayment,
-  items,
-  isEmpty,
-  orderInMemory,
-  hasModifications,
-  scheduledReturn,
-  scheduledReturns,
-  scheduledReturnId,
-  updateOrders,
-  returnFee,
-}) {
+export default function ModifyCheckoutCard() {
+  // {
+  //   potentialReturnValue,
+  //   inDonation,
+  //   taxes,
+  //   totalPayment,
+  //   items,
+  //   isEmpty,
+  //   orderInMemory,
+  //   hasModifications,
+  //   scheduledReturn,
+  //   scheduledReturns,
+  //   scheduledReturnId,
+  //   updateOrders,
+  //   returnFee,
+  // }
   const dispatch = useDispatch();
   const [confirmed, setconfirmed] = useState(false);
   const [modalShow, setModalShow] = useState(false);
@@ -30,15 +31,15 @@ export default function ModifyCheckoutCard({
   };
 
   const onConfirm = async () => {
-    if (hasModifications) {
-      const filteredOrders = [
-        ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
-        orderInMemory,
-      ];
+    // if (hasModifications) {
+    //   const filteredOrders = [
+    //     ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
+    //     orderInMemory,
+    //   ];
 
-      dispatch(await updateOrders(filteredOrders));
-      return setconfirmed(true);
-    }
+    //   dispatch(await updateOrders(filteredOrders));
+    //   return setconfirmed(true);
+    // }
     history.push('/dashboard');
   };
 
@@ -56,8 +57,8 @@ export default function ModifyCheckoutCard({
             }`}
           >
             <h3 className='sofia-pro products-to-return mb-1'>
-              {items.length} {items.length > 1 ? 'products' : 'product'} to
-              return
+              {/* {items.length} {items.length > 1 ? 'products' : 'product'} to
+              return */}
             </h3>
             <h3 className='box-size-description'>
               All products need to fit in a 12”W x 12”H x 20”L box
@@ -75,9 +76,9 @@ export default function ModifyCheckoutCard({
 
             <div>
               <h3 className='sofia-pro pick-up-price mb-0'>
-                ${potentialReturnValue.toFixed(2) || 0.0}
+                {/* ${potentialReturnValue.toFixed(2) || 0.0} */}$100
               </h3>
-              <h3 className='return-type sofia-pro value-label'>
+              <h3 className='return-type sofia-pro value-label mb-3'>
                 Potential Return Value
               </h3>
               {confirmed && (
@@ -90,16 +91,14 @@ export default function ModifyCheckoutCard({
             </div>
             {!confirmed && (
               <>
-                {inDonation.length > 0 && (
-                  <>
-                    <h3 className='sofia-pro pick-up-price mb-0'>
-                      {inDonation.length}
-                    </h3>
-                    <h3 className='return-type sofia-pro value-label'>
-                      Donation
-                    </h3>
-                  </>
-                )}
+                <div>
+                  <h3 className='sofia-pro pick-up-price mb-0'>
+                    {/* {inDonation.length} */} 1
+                  </h3>
+                  <h3 className='return-type sofia-pro value-label'>
+                    Donations
+                  </h3>
+                </div>
                 <hr className='line-break-2' />
                 <div className='row'>
                   <div className='col'>
@@ -108,7 +107,7 @@ export default function ModifyCheckoutCard({
                     </h5>
                   </div>
                   <div className='col'>
-                    <h5 className='sofia-pro text-right'>${returnFee}</h5>
+                    <h5 className='sofia-pro text-right'>$9.99</h5>
                   </div>
                 </div>
                 <div className='row'>
@@ -117,7 +116,7 @@ export default function ModifyCheckoutCard({
                   </div>
                   <div className='col'>
                     <h5 className='sofia-pro text-right'>
-                      ${taxes.toFixed(2)}
+                      {/* ${taxes.toFixed(2)} */}
                     </h5>
                   </div>
                 </div>
@@ -128,7 +127,7 @@ export default function ModifyCheckoutCard({
                   </div>
                   <div className='col'>
                     <h5 className='sofia-pro text-right total-now'>
-                      ${totalPayment}
+                      {/* ${totalPayment} */}
                     </h5>
                   </div>
                 </div>
@@ -156,7 +155,7 @@ export default function ModifyCheckoutCard({
                     </a>
                   </div>
                 </div>
-                {!isEmpty(orderInMemory) && hasModifications && (
+                {/* {!isEmpty(orderInMemory) && hasModifications && (
                   <div
                     className='btn mt-2'
                     style={{
@@ -168,9 +167,9 @@ export default function ModifyCheckoutCard({
                   >
                     Confirm
                   </div>
-                )}
+                )} */}
 
-                {!isEmpty(orderInMemory) && !hasModifications && (
+                {/* {!isEmpty(orderInMemory) && !hasModifications && (
                   <div
                     className='btn btn-no-changes noted-purple mt-2'
                     style={{
@@ -185,7 +184,7 @@ export default function ModifyCheckoutCard({
                   >
                     No changes
                   </div>
-                )}
+                )} */}
               </>
             )}
           </div>
@@ -196,13 +195,13 @@ export default function ModifyCheckoutCard({
       <CancelOrderModal
         show={showCancelOrderModal}
         onHide={() => setShowCancelOrderModal(false)}
-        onCancel={async () => {
-          const filteredOrders = [
-            ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
-          ];
-          dispatch(updateOrders(filteredOrders));
-          history.push('/dashboard');
-        }}
+        // onCancel={async () => {
+        //   const filteredOrders = [
+        //     ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
+        //   ];
+        //   dispatch(updateOrders(filteredOrders));
+        //   history.push('/dashboard');
+        // }}
       />
     </div>
   );
