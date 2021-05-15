@@ -1,6 +1,6 @@
 .tooltip-inner {
   text-align: left !important;
-  width: 150px;
+  max-width: 150px;
 }
 
 #InfoIcon {
@@ -17,6 +17,6 @@
 
 @media screen and (min-width: 1069px) and (max-width: 1200px) {
   .tooltip-inner {
-    width: 130px;
+    max-width: 130px;
   }
 }

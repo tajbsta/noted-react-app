@@ -3,14 +3,14 @@ import { Overlay, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import * as Icon from 'react-feather'
 
 const InfoIcon = (props) => {
-  const pos = 'right'
+  const pos = props.isMobile || window.innerWidth <= 1023 ? 'top' : 'bottom'
   const [show, setShow] = useState(false)
   const target = useRef(null)
 
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" className="tooltip-inner" {...props}>
       <span>
-        Noted determines potential return value by the original purchase
+        noted determines potential return value by the original purchase
         price.The actual returns will be based on the product&apos;s return
         condition and return policies.
       </span>
