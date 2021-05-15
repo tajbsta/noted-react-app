@@ -57,7 +57,9 @@ function ProductDetails({ item, isHovering = false, toggleSelected }) {
       <Overlay target={target.current} show={show} placement='right'>
         {(props) => (
           <Tooltip id='overlay-example' {...props}>
-            {formattedProductName}
+            <span style={{ fontFamily: 'Sofia Pro !important' }}>
+              {formattedProductName}
+            </span>
           </Tooltip>
         )}
       </Overlay>
