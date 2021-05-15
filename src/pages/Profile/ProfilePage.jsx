@@ -4,13 +4,15 @@ import Address from './components/Address';
 import Payment from './components/Payment';
 import ReturnHistory from './components/ReturnHistory';
 import ScheduledReturn from './components/ScheduledReturn';
-import { getUser } from '../../utils/auth';
+import { getUser, getUserId } from '../../utils/auth';
 import { scrollToTop } from '../../utils/window';
 import ProductsInReview from './components/ProductsInReview';
+import { getOrders } from '../../utils/orderApi';
 
 export default function ProfilePage() {
   const [showEditPayment] = useState(true);
   const [user, setUser] = useState(null);
+  const [orders, setOrders] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
 

@@ -4,7 +4,6 @@ import EmptyPayment from '../../../components/EmptyPayment';
 import AddressForm from '../../../components/AddressForm';
 import PaymentForm from '../../../components/PaymentForm';
 import AddPickupModal from '../../../modals/AddPickupModal';
-
 import { useFormik } from 'formik';
 import { formatPhoneNumber, isFormEmpty } from '../../../utils/form';
 import {

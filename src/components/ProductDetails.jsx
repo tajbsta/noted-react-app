@@ -94,7 +94,7 @@ function ProductDetails({ item, isHovering = false, toggleSelected }) {
             </button>
           </>
         ) : (
-          <h4 className='sofia-pro mb-0 product-price'>${formatPrice} </h4>
+          <h4 className='sofia-pro mb-0 product-price'>${formatPrice}</h4>
         )}
         {isHovering &&
           inDashboard &&
