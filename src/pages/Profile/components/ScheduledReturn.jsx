@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { get, isEmpty } from 'lodash-es';
 import { Col, Row, Accordion, Card, ProgressBar } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ReturnScore from '../../../components/ReturnsScore';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
@@ -27,7 +26,7 @@ export default function ScheduledReturn({ user }) {
       setOrders(res.orders);
       console.log(res.orders);
     } catch (error) {
-      // TODO: CAPTURING ERROR HANDLING
+      // TODO: ERROR HANDLING
       console.log(error);
     }
   };

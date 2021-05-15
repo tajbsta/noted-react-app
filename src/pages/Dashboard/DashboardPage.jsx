@@ -22,8 +22,7 @@ import { scrollToTop } from '../../utils/window';
 import { scrapeOlderEmails } from '../../utils/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
-
-const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
+import { getOrders } from '../../utils/orderApi';
 
 export default function DashboardPage() {
   const history = useHistory();
@@ -48,6 +47,30 @@ export default function DashboardPage() {
   });
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [orders, setOrders] = useState([]);
+  const [fetchingOrders, setFetchingOrders] = useState(false);
+
+  const getScheduledOrders = async () => {
+    try {
+      setFetchingOrders(true);
+      const userId = await getUserId();
+      const res = await getOrders(userId, 'active');
+
+      setFetchingOrders(false);
+      setOrders(res.orders);
+      // console.log(res.orders);
+    } catch (error) {
+      // TODO: ERROR HANDLING
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    // empty orders
+    if (orders.length === 0) {
+      getScheduledOrders();
+    }
+  }, []);
 
   async function loadScans() {
     dispatch(clearSearchQuery());
@@ -178,11 +201,8 @@ export default function DashboardPage() {
     <div id='DashboardPage'>
       <div className='container mt-6 main-mobile-dashboard'>
         <div className='row sched-row'>
-          {/**
-           * should only appear if there are scheduled returns
-           */}
-
-          {!isEmpty(scheduledReturns) && <ScheduledCard />}
+          {/* If there are in progress orders */}
+          {!isEmpty(orders) && <ScheduledCard orders={orders} />}
         </div>
         <div className='row ipad-row'>
           <div className={`mt-4 w-840 bottom ${isTablet ? 'col' : 'col-sm-9'}`}>
