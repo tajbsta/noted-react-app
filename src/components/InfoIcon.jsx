@@ -3,7 +3,7 @@ import { Overlay, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import * as Icon from 'react-feather'
 
 const InfoIcon = (props) => {
-  const pos = props.isMobile ? 'top' : 'right'
+  const pos = 'right'
   const [show, setShow] = useState(false)
   const target = useRef(null)
 
