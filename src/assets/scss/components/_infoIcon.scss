@@ -3,13 +3,15 @@
   width: 150px;
 }
 
-.info-icon svg {
-  width: 18px;
+#InfoIcon {
+  .info-icon svg {
+    width: 18px;
 
-  &:hover {
-    color: #570097;
-    opacity: 1;
-    cursor: pointer;
+    &:hover {
+      color: #570097;
+      opacity: 1;
+      cursor: pointer;
+    }
   }
 }
 

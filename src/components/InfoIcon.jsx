@@ -1,9 +1,12 @@
-import React from 'react'
-import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import React, { useState, useRef } from 'react'
+import { Overlay, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import * as Icon from 'react-feather'
 
 const InfoIcon = (props) => {
-  const pos = props.isMobile ? 'top' : 'bottom'
+  const pos = props.isMobile ? 'top' : 'right'
+  const [show, setShow] = useState(false)
+  const target = useRef(null)
+
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" className="tooltip-inner" {...props}>
       <span>
@@ -14,19 +17,38 @@ const InfoIcon = (props) => {
     </Tooltip>
   )
   return (
-    <div className="info-icon">
-      <OverlayTrigger
-        trigger="hover"
-        className="info-icon"
-        placement={pos}
-        delay={{ show: 250, hide: 400 }}
-        // overlay={
-        //   <div style={{ background: 'red !important' }}>renderTooltip</div>
-        // }
-        overlay={renderTooltip}
-      >
-        <Icon.Info />
-      </OverlayTrigger>
+    <div id="InfoIcon">
+      {props.isMobile ? (
+        <>
+          <div
+            className="info-icon"
+            ref={target}
+            onClick={() => setShow(!show)}
+          >
+            <Icon.Info />
+          </div>
+          <Overlay
+            className="info-icon"
+            target={target.current}
+            show={show}
+            placement={pos}
+          >
+            {renderTooltip}
+          </Overlay>
+        </>
+      ) : (
+        <div className="info-icon">
+          <OverlayTrigger
+            trigger="hover"
+            className="info-icon"
+            placement={pos}
+            delay={{ show: 250, hide: 400 }}
+            overlay={renderTooltip}
+          >
+            <Icon.Info />
+          </OverlayTrigger>
+        </div>
+      )}
     </div>
   )
 }
