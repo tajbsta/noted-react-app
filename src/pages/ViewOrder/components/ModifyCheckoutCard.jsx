@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { useDispatch } from 'react-redux';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
 import CancelOrderModal from '../../../modals/CancelOrderModal';
+import { cancelOrder } from '../../../utils/orderApi';
+import { getUserId } from '../../../utils/auth';
 
 export default function ModifyCheckoutCard() {
   // {
@@ -24,6 +26,7 @@ export default function ModifyCheckoutCard() {
   const [confirmed, setconfirmed] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
+  const { id: orderId } = useParams();
   const history = useHistory();
 
   const initiateCancelOrder = () => {
@@ -40,7 +43,17 @@ export default function ModifyCheckoutCard() {
     //   dispatch(await updateOrders(filteredOrders));
     //   return setconfirmed(true);
     // }
-    history.push('/dashboard');
+    try {
+      const userId = await getUserId();
+      await cancelOrder(userId, orderId);
+      setconfirmed(true);
+
+      console.log(orderId);
+    } catch (error) {
+      // TODO: ERROR HANDLING
+      console.log(error);
+    }
+    history.push('/dashboard'); // for now
   };
 
   return (
@@ -195,6 +208,7 @@ export default function ModifyCheckoutCard() {
       <CancelOrderModal
         show={showCancelOrderModal}
         onHide={() => setShowCancelOrderModal(false)}
+        onConfirm={onConfirm}
         // onCancel={async () => {
         //   const filteredOrders = [
         //     ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),

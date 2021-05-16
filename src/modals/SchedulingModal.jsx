@@ -24,7 +24,7 @@ export default function SchedulingModal(props) {
         setLoading(false);
       } catch (err) {
         setLoading(false);
-        showError('We failed to get time slots for you');
+        showError('No pickup slots available at this time');
       }
     }
   };

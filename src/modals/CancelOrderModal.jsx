@@ -60,9 +60,9 @@ export default function CancelOrderModal(props) {
           <Button
             className='btn-cancel'
             onClick={() => {
-              showWarning({ message: 'Order cancelled' });
-              timeout({ duration: 1000 });
-              props.onCancel();
+              // showWarning({ message: 'Order cancelled' });
+              // timeout({ duration: 1000 });
+              props.onConfirm();
             }}
           >
             Cancel order

@@ -34,6 +34,5 @@ export const getOrders = async (userId, type, size = 5, nextToken = null) => {
 // Cancel Order
 export const cancelOrder = async (userId, orderId) => {
   const axios = await api();
-  const res = await axios.post(`/${userId}/orders/${orderId}/cancel`);
-  return res.data.data;
+  await axios.post(`/${userId}/orders/${orderId}/cancel`);
 };
