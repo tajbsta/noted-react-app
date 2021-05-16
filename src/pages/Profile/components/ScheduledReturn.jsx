@@ -154,7 +154,7 @@ export default function ScheduledReturn({ user }) {
 
     const moreItemsCount = get(items, 'length', 0) - 5;
 
-    const onCancel = () => {
+    const viewOrder = () => {
       push('/order/' + order.id);
     };
 
@@ -339,7 +339,7 @@ export default function ScheduledReturn({ user }) {
                       <button
                         className='btn btn-show p-0 m-0'
                         onClick={() => {
-                          onCancel();
+                          viewOrder();
                         }}
                       >
                         Modify or cancel return

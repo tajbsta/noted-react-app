@@ -20,22 +20,30 @@ export default function MobileModifyCheckoutCard() {
   //   returnFee,
   //   inReturn,
   // }
-  const dispatch = useDispatch();
-  const [confirmed, setconfirmed] = useState(false);
-  const history = useHistory();
+  // const dispatch = useDispatch();
+  const [confirmed, setConfirmed] = useState(false);
+  // const history = useHistory();
 
-  const onConfirm = async () => {
-    // if (hasModifications) {
-    //   const filteredOrders = [
-    //     ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
-    //     orderInMemory,
-    //   ];
+  // const ConfirmCancellation = async () => {
+  //   // if (hasModifications) {
+  //   //   const filteredOrders = [
+  //   //     ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
+  //   //     orderInMemory,
+  //   //   ];
 
-    //   dispatch(await updateOrders(filteredOrders));
-    //   return setconfirmed(true);
-    // }
-    history.push('/dashboard');
-  };
+  //   //   dispatch(await updateOrders(filteredOrders));
+  //   //   return setconfirmed(true);
+  //   // }
+  //   history.push('/dashboard');
+  // };
+
+  // const initiateCancelOrder = () => {
+  //   setShowCancelOrderModal(true);
+  // };
+
+  // const removeCancelOrderModal = () => {
+  //   setShowCancelOrderModal(false);
+  // };
 
   return (
     <div id='MobileCheckoutCard'>
@@ -111,7 +119,10 @@ export default function MobileModifyCheckoutCard() {
                 </Row>
                 <Row>
                   <Col>
-                    <button className='btn m-btn-confirm' onClick={onConfirm}>
+                    <button
+                      className='btn m-btn-confirm'
+                      // onClick={ConfirmCancellation}
+                    >
                       Confirm Order
                     </button>
                   </Col>

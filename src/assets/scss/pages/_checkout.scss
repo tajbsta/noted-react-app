@@ -48,7 +48,7 @@
     }
   }
 
-  .mobile-view-no-m-row {
+  .m-order-row {
     @media (max-width: 991px) {
       margin: auto;
     }
@@ -370,9 +370,6 @@
   }
 
   .back-to-products-btn {
-    position: absolute;
-    right: 0;
-    bottom: 0;
     background: #6aaf6a;
     border: none;
     border-radius: 8px;

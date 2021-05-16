@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { useHistory, useParams } from 'react-router';
-import { useDispatch } from 'react-redux';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
 import CancelOrderModal from '../../../modals/CancelOrderModal';
-import { cancelOrder } from '../../../utils/orderApi';
-import { getUserId } from '../../../utils/auth';
 
-export default function ModifyCheckoutCard() {
+export default function ModifyCheckoutCard({
+  showCancelOrderModal,
+  ConfirmCancellation,
+  initiateCancelOrder,
+  removeCancelOrderModal,
+  loading,
+}) {
   // {
   //   potentialReturnValue,
   //   inDonation,
@@ -22,39 +24,8 @@ export default function ModifyCheckoutCard() {
   //   updateOrders,
   //   returnFee,
   // }
-  const dispatch = useDispatch();
-  const [confirmed, setconfirmed] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
   const [modalShow, setModalShow] = useState(false);
-  const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
-  const { id: orderId } = useParams();
-  const history = useHistory();
-
-  const initiateCancelOrder = () => {
-    setShowCancelOrderModal(true);
-  };
-
-  const onConfirm = async () => {
-    // if (hasModifications) {
-    //   const filteredOrders = [
-    //     ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
-    //     orderInMemory,
-    //   ];
-
-    //   dispatch(await updateOrders(filteredOrders));
-    //   return setconfirmed(true);
-    // }
-    try {
-      const userId = await getUserId();
-      await cancelOrder(userId, orderId);
-      setconfirmed(true);
-
-      console.log(orderId);
-    } catch (error) {
-      // TODO: ERROR HANDLING
-      console.log(error);
-    }
-    history.push('/dashboard'); // for now
-  };
 
   return (
     <div id='ModifyCheckoutCard'>
@@ -176,7 +147,7 @@ export default function ModifyCheckoutCard() {
                       border: 'none',
                       color: '#FFFFFF',
                     }}
-                    onClick={onConfirm}
+                    onClick={ConfirmCancellation}
                   >
                     Confirm
                   </div>
@@ -207,15 +178,11 @@ export default function ModifyCheckoutCard() {
       <SizeGuideModal show={modalShow} onHide={() => setModalShow(false)} />
       <CancelOrderModal
         show={showCancelOrderModal}
-        onHide={() => setShowCancelOrderModal(false)}
-        onConfirm={onConfirm}
-        // onCancel={async () => {
-        //   const filteredOrders = [
-        //     ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
-        //   ];
-        //   dispatch(updateOrders(filteredOrders));
-        //   history.push('/dashboard');
-        // }}
+        onHide={removeCancelOrderModal}
+        ConfirmCancellation={ConfirmCancellation}
+        initiateCancelOrder={initiateCancelOrder}
+        removeCancelOrderModal={removeCancelOrderModal}
+        loading={loading}
       />
     </div>
   );
