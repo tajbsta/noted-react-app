@@ -48,13 +48,13 @@ const Topnav = () => {
     '/code/',
     '/code/verify',
   ];
-  const authenticatedViews = [
-    '/dashboard',
-    '/checkout',
-    '/profile',
-    '/settings',
-    '/order',
-  ];
+  // const authenticatedViews = [
+  //   '/dashboard',
+  //   '/checkout',
+  //   '/profile',
+  //   '/settings',
+  //   '/order',
+  // ];
   const {
     location: { pathname },
   } = useHistory();
@@ -141,7 +141,7 @@ const Topnav = () => {
         />
       )}
 
-      {authenticatedViews.includes(pathname) && (
+      {!guestViews.includes(pathname) && (
         <>
           <div id='DashboardNav'>
             <Container className='ml-3'>

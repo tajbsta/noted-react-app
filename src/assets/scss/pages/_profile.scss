@@ -500,6 +500,14 @@
     }
   }
 
+  #ReturnHistory {
+    .section-title {
+      @media (min-width: 992px) {
+        margin-left: 0.75rem;
+      }
+    }
+  }
+
   #ProductsInReview {
     #productCard {
       margin-top: 20px;
@@ -525,7 +533,6 @@
       }
 
       .product-price {
-
         font-weight: 700;
         font-size: 14px;
         line-height: 15px;
@@ -536,7 +543,7 @@
         align-items: center;
         font-size: 12px;
         line-height: 14px;
-        color: #0E0018;
+        color: #0e0018;
         mix-blend-mode: normal;
         opacity: 0.6;
       }
@@ -547,7 +554,7 @@
         font-size: 12px;
         line-height: 14px;
         text-align: right;
-        color: #EB5757;
+        color: #eb5757;
         mix-blend-mode: normal;
       }
 
@@ -557,7 +564,7 @@
         font-size: 12px;
         line-height: 14px;
         text-align: right;
-        color: #2E1D3A;
+        color: #2e1d3a;
         mix-blend-mode: normal;
       }
 

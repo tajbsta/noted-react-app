@@ -85,8 +85,8 @@ function ProductCard({
   const formattedProductName = toTitleCase(item.name);
   const formatPrice = item.price.toFixed(2);
 
-  // Truncate name if longer than 41 characters
-  const truncateProductNameForTablet = (str, num = 41) => {
+  // Truncate name if longer than 34 characters
+  const truncateProductNameForTablet = (str, num = 34) => {
     if (str && str.length > num) {
       return str.slice(0, num) + '...';
     } else {
@@ -229,12 +229,12 @@ function ProductCard({
               style={{
                 // marginTop: '0px',
                 width:
-                  (isMobile && removable && !selectable) ||
-                  (isMobile && confirmed)
+                  (isMobile && !selectable) || (isMobile && confirmed)
                     ? '83%'
                     : '',
                 maxWidth:
                   (isMobileSmaller && removable && !selectable) ||
+                  removable ||
                   (isMobileSmaller && confirmed)
                     ? '75%'
                     : '',

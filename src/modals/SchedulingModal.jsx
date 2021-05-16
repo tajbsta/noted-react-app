@@ -10,7 +10,7 @@ import { showError } from '../library/notifications.library';
 export default function SchedulingModal(props) {
   const { form, onConfirm } = props;
   const [loading, setLoading] = useState(false);
-  const [slots, setSlots] = useState({ AM: 0, PM: 0 });
+  const [slots, setSlots] = useState({ AM: 0, PM: 2 });
 
   const fetchPickupSlots = async () => {
     if (!isEmpty(form.values.date)) {
@@ -24,7 +24,7 @@ export default function SchedulingModal(props) {
         setLoading(false);
       } catch (err) {
         setLoading(false);
-        showError('We failed to get time slots for you');
+        showError('No pickup slots available at this time');
       }
     }
   };
@@ -45,8 +45,7 @@ export default function SchedulingModal(props) {
 
   const renderMorningTimeSlot = () => {
     const isSelected = pickUpDateValues.time === 'AM' ? `isSelected` : '';
-    const unAvailable = slots.AM === 0 ? 'unavailable' : '';
-    const buttonClassname = `btn timeSlotContainer ${unAvailable} ${isSelected}`;
+    const buttonClassname = `btn timeSlotContainer ${isSelected}`;
     const rangeTextClassname = `row sofia-pro timeSlotText ${
       isSelected ? 'selected' : ''
     }`;
@@ -116,8 +115,8 @@ export default function SchedulingModal(props) {
               setFieldValue('time', 'PM');
             }}
             style={{
-              cursor: slots.AM === 0 ? 'not-allowed' : 'pointer',
-              backgroundColor: slots.AM === 0 ? '#ffcccb' : '#ffffff',
+              cursor: slots.PM === 0 ? 'not-allowed' : 'pointer',
+              backgroundColor: slots.PM === 0 ? '#ffcccb' : '#ffffff',
             }}
           >
             <Row className={rangeTextClassname}>12 P.M. - 3 P.M.</Row>

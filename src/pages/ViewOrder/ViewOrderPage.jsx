@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Plus } from 'react-feather';
+import { Frown, Plus } from 'react-feather';
 import ProductCard from '../../components/ProductCard';
 import PickUpConfirmed from '../../components/PickUpConfirmed';
+import PickUpCancelled from '../../components/PickUpCancelled';
 import PickUpDetails from './components/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, isEmpty } from 'lodash';
 import $ from 'jquery';
 import { updateOrders } from '../../actions/auth.action';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import Row from '../../components/Row';
 import { RETURNABLE } from '../../constants/actions/runtime';
 import { scrollToTop } from '../../utils/window';
@@ -15,17 +16,21 @@ import ModifyCheckoutCard from './components/ModifyCheckoutCard';
 import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import CancelOrderModal from '../../modals/CancelOrderModal';
+import { getOrders, cancelOrder } from '../../utils/orderApi';
+import { getUserId } from '../../utils/auth';
+import { showError, showSuccess } from '../../library/notifications.library';
+import { orderErrors } from '../../library/errors.library';
 
-function ViewOrderPage({
-  location: {
-    state: { scheduledReturnId = '', hasModifications = false },
-  },
-}) {
-  const [confirmed, setconfirmed] = useState(false);
+function ViewOrderPage() {
+  const [confirmed, setConfirmed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
-  const [modalCancelOrderShow, setModalCancelOrderShow] = useState(false);
+  const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const [orders, setOrders] = useState([]);
+  const [fetchingOrders, setFetchingOrders] = useState(false);
+  const { id: orderId } = useParams();
   const {
     inDonation,
     scheduledReturns,
@@ -51,6 +56,67 @@ function ViewOrderPage({
     })
   );
 
+  const getScheduledOrders = async () => {
+    try {
+      setFetchingOrders(true);
+      const userId = await getUserId();
+      const res = await getOrders(userId, 'active');
+
+      setFetchingOrders(false);
+      setOrders(res.orders);
+      console.log(res.orders);
+    } catch (error) {
+      // TODO: ERROR HANDLING
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getScheduledOrders();
+  }, []);
+
+  const ConfirmCancellation = async () => {
+    setLoading(true);
+    try {
+      const userId = await getUserId();
+      await cancelOrder(userId, orderId);
+      setConfirmed(true);
+      setShowCancelOrderModal(false);
+      setLoading(false);
+
+      console.log(orderId);
+      showSuccess({
+        message: (
+          <div>
+            <Frown />
+            &nbsp;&nbsp;Order cancelled successfully!
+          </div>
+        ),
+      });
+    } catch (error) {
+      console.log(error);
+      setShowCancelOrderModal(false);
+      setLoading(false);
+      showError({
+        message: get(
+          orderErrors.find(
+            ({ details }) => details === error.response.data.details
+          ),
+          'message',
+          'Cannot cancel order at this time'
+        ),
+      });
+    }
+  };
+
+  const initiateCancelOrder = () => {
+    setShowCancelOrderModal(true);
+  };
+
+  const removeCancelOrderModal = () => {
+    setShowCancelOrderModal(false);
+  };
+
   useEffect(() => {
     const platform = window.navigator.platform;
     const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
@@ -61,31 +127,31 @@ function ViewOrderPage({
     }
   }, []);
 
-  const scheduledReturn = hasModifications
-    ? orderInMemory
-    : scheduledReturns.find(({ id }) => id === scheduledReturnId);
+  // const scheduledReturn = hasModifications
+  //   ? orderInMemory
+  //   : scheduledReturns.find(({ id }) => id === scheduledReturnId);
 
-  const { returnFee, taxes, address, payment, details } = scheduledReturn;
-  const items = get(scheduledReturn, 'items', []);
-  const orderId = get(scheduledReturn, 'id', '');
-  const inReturn = get(cart, 'items', []).filter(
-    ({ category }) => category === RETURNABLE
-  );
+  // const { returnFee, taxes, address, payment, details } = scheduledReturn;
+  // const items = get(scheduledReturn, 'items', []);
+  // const orderId = get(scheduledReturn, 'id', '');
+  // const inReturn = get(cart, 'items', []).filter(
+  //   ({ category }) => category === RETURNABLE
+  // );
 
-  const potentialReturnValue = [...inReturn]
-    .map(({ price }) => parseFloat(price))
-    .reduce((acc, curr) => (acc += curr), 0);
-  const totalPayment = (returnFee + taxes).toFixed(2);
-  const forgottenReturns = [...scans].filter(({ id }) => {
-    return ![...items].map(({ id }) => id).includes(id);
-  });
+  // const potentialReturnValue = [...inReturn]
+  //   .map(({ price }) => parseFloat(price))
+  //   .reduce((acc, curr) => (acc += curr), 0);
+  // const totalPayment = (returnFee + taxes).toFixed(2);
+  // const forgottenReturns = [...scans].filter(({ id }) => {
+  //   return ![...items].map(({ id }) => id).includes(id);
+  // });
 
-  useEffect(() => {
-    scrollToTop();
-    if (get(scheduledReturn, 'items', []).length === 0) {
-      history.push('/dashboard');
-    }
-  }, [scheduledReturn]);
+  // useEffect(() => {
+  //   scrollToTop();
+  //   if (get(scheduledReturn, 'items', []).length === 0) {
+  //     history.push('/dashboard');
+  //   }
+  // }, [scheduledReturn]);
 
   useEffect(() => {
     function handleResize() {
@@ -102,65 +168,65 @@ function ViewOrderPage({
     <div id='ViewOrderPage'>
       {isMobile && (
         <MobileModifyCheckoutCard
-          inReturn={inReturn}
-          confirmed={confirmed}
-          potentialReturnValue={potentialReturnValue}
-          inDonation={inDonation}
-          returnFee={returnFee}
-          taxes={taxes}
-          totalPayment={totalPayment}
+        // inReturn={inReturn}
+        // confirmed={confirmed}
+        // potentialReturnValue={potentialReturnValue}
+        // inDonation={inDonation}
+        // returnFee={returnFee}
+        // taxes={taxes}
+        // totalPayment={totalPayment}
         />
       )}
       <div className='container mt-6'>
-        <div className='row mobile-view-no-m-row'>
+        <div className='row m-order-row'>
           <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
-            {confirmed ? (
+            {!confirmed ? (
               <div className='mobile-checkout-col'>
                 <h3 className='sofia-pro text-18 section-title'>
-                  Pick-up confirmed
+                  Pick-up cancelled
                 </h3>
-                <PickUpConfirmed />
+                <div className='confirmed-container'>
+                  <PickUpCancelled />
+                  {/* <PickUpConfirmed /> */}
+                </div>
               </div>
             ) : (
               <div className='mobile-checkout-col'>
                 <PickUpDetails
-                  address={address}
-                  payment={payment}
-                  details={details}
+                // address={address}
+                // payment={payment}
+                // details={details}
                 />
-                {/**
-                 * PICK UP DETAILS
-                 */}
               </div>
             )}
 
             <h3 className='sofia-pro products-return text-18 section-title mobile-checkout-col'>
               Your products to return
             </h3>
-            {items.map((item) => (
-              <ProductCard
-                orderId={orderId}
-                scannedItem={item}
-                key={item.id}
-                item={item}
-                selectable={false}
-                clickable={false}
-                removable={!confirmed}
-              />
-            ))}
+            {/* {items.map((item) => ( */}
+            {/* <ProductCard
+              // orderId={orderId}
+              // scannedItem={item}
+              key={item.id}
+              // item={item}
+              selectable={false}
+              clickable={false}
+              removable={!confirmed}
+            /> */}
+            {/* ))} */}
             {/**
              * @START ADD PRODUCTS BTN
              */}
             {!confirmed && (
               <div
                 className='card add-border scanned-item-card max-w-840 mb-3 p-0 btn mobile-view-add-col'
-                onClick={() => {
-                  /**
-                   * @FUNCTION Show products like the one from dashboard
-                   */
-                  history.push('/edit-order', { scheduledReturnId });
-                }}
+                // onClick={() => {
+                //   /**
+                //    * @FUNCTION Show products like the one from dashboard
+                //    */
+                //   history.push('/edit-order', { scheduledReturnId });
+                // }}
               >
                 <div className='card-body pt-3 pb-3 p-0 m-0'>
                   <Row className='add-row'>
@@ -190,9 +256,9 @@ function ViewOrderPage({
                     Add all
                   </h4>
                 </div>
-                {forgottenReturns.map((item) => (
+                {/* {forgottenReturns.map((item) => (
                   <ProductCard scannedItem={item} key={item.id} />
-                ))}
+                ))} */}
               </>
             )}
             {/**
@@ -203,21 +269,26 @@ function ViewOrderPage({
           {/* RIGHT CARD */}
           {!isMobile && (
             <>
-              <div className='col-sm-3'>
+              <div className='col-1'>
                 <ModifyCheckoutCard
-                  potentialReturnValue={potentialReturnValue}
-                  inDonation={inDonation}
-                  taxes={taxes}
-                  totalPayment={totalPayment}
-                  isEmpty={isEmpty}
-                  orderInMemory={orderInMemory}
-                  hasModifications={hasModifications}
-                  items={items}
-                  scheduledReturnId={scheduledReturnId}
-                  scheduledReturn={scheduledReturn}
-                  scheduledReturns={scheduledReturns}
-                  updateOrders={updateOrders}
-                  returnFee={returnFee}
+                  ConfirmCancellation={ConfirmCancellation}
+                  showCancelOrderModal={showCancelOrderModal}
+                  setShowCancelOrderModal={setShowCancelOrderModal}
+                  initiateCancelOrder={initiateCancelOrder}
+                  removeCancelOrderModal={removeCancelOrderModal}
+                  loading={loading}
+                  // potentialReturnValue={potentialReturnValue}
+                  // inDonation={inDonation}
+                  // taxes={taxes}
+                  // totalPayment={totalPayment}
+                  // isEmpty={isEmpty}
+                  // orderInMemory={orderInMemory}
+                  // hasModifications={hasModifications}
+                  // scheduledReturnId={scheduledReturnId}
+                  // scheduledReturn={scheduledReturn}
+                  // scheduledReturns={scheduledReturns}
+                  // updateOrders={updateOrders}
+                  // returnFee={returnFee}
                 />
               </div>
             </>
@@ -228,7 +299,7 @@ function ViewOrderPage({
       {/* MOBILE BILLING CARD */}
       {isMobile && (
         <>
-          <div className='mobile-billing-order/:orderId'>
+          <div className='mobile-billing-order'>
             <div className='m-billing-container mt-5'>
               <h4>Billing</h4>
             </div>
@@ -261,7 +332,7 @@ function ViewOrderPage({
                 <div className='m-cancel-container'>
                   <button
                     className='btn m-btn-cancel-order'
-                    onClick={() => setModalCancelOrderShow(true)}
+                    onClick={initiateCancelOrder}
                   >
                     Cancel order
                   </button>
@@ -275,28 +346,18 @@ function ViewOrderPage({
             </div>
           </div>
 
-          {/* <div className='m-cancel-container mt-6'>
-            <button
-              className='btn m-btn-cancel-order'
-              onClick={() => setModalCancelOrderShow(true)}
-            >
-              Cancel order
-            </button>
-            <h4 className='m-cancel-sub'>
-              Canceling pick-ups less than 24h before schedule will result in a
-              $5 penalty
-            </h4>
-            <a className='m-info-link'>More info</a>
-          </div> */}
-
           {/* MOBILE MODALS */}
           <SizeGuideModal
             show={modalSizeGuideShow}
             onHide={() => setModalSizeGuideShow(false)}
           />
           <CancelOrderModal
-            show={modalCancelOrderShow}
-            onHide={() => setModalCancelOrderShow(false)}
+            loading={loading}
+            show={showCancelOrderModal}
+            onHide={removeCancelOrderModal}
+            ConfirmCancellation={ConfirmCancellation}
+            initiateCancelOrder={initiateCancelOrder}
+            removeCancelOrderModal={removeCancelOrderModal}
           />
         </>
       )}

@@ -4,7 +4,6 @@ import EmptyPayment from '../../../components/EmptyPayment';
 import AddressForm from '../../../components/AddressForm';
 import PaymentForm from '../../../components/PaymentForm';
 import AddPickupModal from '../../../modals/AddPickupModal';
-
 import { useFormik } from 'formik';
 import { formatPhoneNumber, isFormEmpty } from '../../../utils/form';
 import {
@@ -599,13 +598,6 @@ export default function PickUpDetails({
                       </h4>
                     </>
                   )}
-                  <hr />
-                  <a className='btn-edit p-0 m-0 sofia-pro noted-purple mt-2 text-14 line-height-16'>
-                    Schedule another date
-                  </a>
-                  <h5 className='sofia-pro text-muted text-price-sched text-14'>
-                    (-$10.99)
-                  </h5>
                 </div>
               </div>
             </div>

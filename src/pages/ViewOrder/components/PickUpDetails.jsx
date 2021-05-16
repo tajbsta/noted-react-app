@@ -280,7 +280,7 @@ export default function PickUpDetails({ address, payment, details }) {
                     Schedule another date
                   </a>
                   <h5 className='sofia-pro text-muted text-price-sched text-14'>
-                    (-$10.99)
+                    (-$5.00)
                   </h5>
                 </div>
               </div>

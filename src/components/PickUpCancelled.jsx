@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { get } from 'lodash-es';
 import moment from 'moment';
 
-function PickUpConfirmed({ orderId = '' }) {
+function PickUpCancelled({ orderId = '' }) {
   const history = useHistory();
   const [currentOrder, setCurrentOrder] = useState({});
   const [isMobile, setIsMobile] = useState(false);
@@ -64,44 +64,23 @@ function PickUpConfirmed({ orderId = '' }) {
         <Row>
           <div className='col-sm-12 p-0'>
             <p className='request-msg text-16 sofia-pro'>
-              Your pick-up request has been received and a member of noted’s
-              pick-up team will arrive at your address on:
+              Your pickup has been successfully cancelled. We&apos;re sorry this
+              pickup didn&apos;t work out for you. But we hope we&apos;ll see
+              you again...right?
             </p>
           </div>
         </Row>
-        <h4 className='p-0 m-0 pick-up-day sofia-pro'>{date}</h4>
-        <Row>
-          <h5 className='sofia-pro pick-up-time'>
-            Between {time.replace('-', 'and')}
-          </h5>
-        </Row>
+        {/* <h4 className='p-0 m-0 pick-up-day sofia-pro'>{date}</h4> */}
 
         <Row>
-          <div className='col-sm-9 p-0'>
-            <p className='sofia-pro mb-0 text-14'>
-              We have sent you a confirmation by email.
-            </p>
-            <p
-              className='sofia-pro text-14'
-              style={{ marginBottom: isMobile ? '32px' : '' }}
-            >
-              If you wish to cancel or modify this order:
-              <span
-                className='ml-1 noted-purple sofia-pro pick-up-edit-or-btn text-14'
-                onClick={onEdit}
-              >
-                Edit order
-              </span>
-            </p>
-          </div>
           {!isMobile && (
             <>
-              <div className='col-sm-3'>
+              <div className='mt-3'>
                 <button
                   className='btn btn-green back-to-products-btn'
                   onClick={() => history.push('/dashboard')}
                 >
-                  <span className='sofia-pro mb-0 back-to-products-text'>
+                  <span className='sofia-pro mb-0 back-to-products-text '>
                     Back to My Products
                   </span>
                 </button>
@@ -111,7 +90,7 @@ function PickUpConfirmed({ orderId = '' }) {
         </Row>
         {isMobile && (
           <>
-            <Row>
+            <Row className='mt-3'>
               <button
                 className='btn btn-green'
                 onClick={() => history.push('/dashboard')}
@@ -128,4 +107,4 @@ function PickUpConfirmed({ orderId = '' }) {
   );
 }
 
-export default PickUpConfirmed;
+export default PickUpCancelled;

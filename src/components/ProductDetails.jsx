@@ -57,7 +57,9 @@ function ProductDetails({ item, isHovering = false, toggleSelected }) {
       <Overlay target={target.current} show={show} placement='right'>
         {(props) => (
           <Tooltip id='overlay-example' {...props}>
-            {formattedProductName}
+            <span style={{ fontFamily: 'Sofia Pro !important' }}>
+              {formattedProductName}
+            </span>
           </Tooltip>
         )}
       </Overlay>
@@ -94,7 +96,7 @@ function ProductDetails({ item, isHovering = false, toggleSelected }) {
             </button>
           </>
         ) : (
-          <h4 className='sofia-pro mb-0 product-price'>${formatPrice} </h4>
+          <h4 className='sofia-pro mb-0 product-price'>${formatPrice}</h4>
         )}
         {isHovering &&
           inDashboard &&

@@ -2,22 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import NoteeIcon from '../../../assets/icons/NoteeIcon.svg';
-import { useSelector } from 'react-redux';
 import { get } from 'lodash-es';
 
-export default function ScheduledCard() {
+export default function ScheduledCard({ orders }) {
   const [isMobile, setIsMobile] = useState(false);
-  const { scheduledReturns } = useSelector(
-    ({ auth: { scheduledReturns } }) => ({
-      scheduledReturns,
-    })
-  );
 
-  const allScheduledItems = scheduledReturns
-    .map((scheduledReturn) => {
-      return get(scheduledReturn, 'items', []);
-    })
-    .flat();
+  const scheduledOrders = orders.map((order) => {
+    return get(order, 'items', []);
+  });
+
+  console.log(scheduledOrders);
 
   const history = useHistory();
 
@@ -43,7 +37,7 @@ export default function ScheduledCard() {
           <Row style={{ alignItems: 'center' }}>
             <Col xs={1} className='icon-col'>
               <div className='notee-container'>
-                <img src={NoteeIcon} />
+                <img src={NoteeIcon} alt='NoteeIcon' />
               </div>
             </Col>
             {!isMobile && (
@@ -54,7 +48,7 @@ export default function ScheduledCard() {
                   </Row>
                   <Row>
                     <div className='items-info'>
-                      You have {get(allScheduledItems, 'length', 0)} items
+                      You have {get(scheduledOrders, 'length', 0)} items
                       scheduled for return
                     </div>
                   </Row>
@@ -80,7 +74,7 @@ export default function ScheduledCard() {
                   </Row>
                   <Row>
                     <div className='items-info'>
-                      You have {get(allScheduledItems, 'length', 0)} items
+                      You have {get(scheduledOrders, 'length', 0)} items
                       scheduled for return
                     </div>
                   </Row>

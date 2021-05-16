@@ -26,7 +26,6 @@ export default function ReturnCategory({
   }));
   const { push } = useHistory();
   const [items, setItems] = useState([]);
-
   const [loading, setLoading] = useState(false);
   const [showNextPageButton, setShowNextPageButton] = useState(true);
   const sortBy =

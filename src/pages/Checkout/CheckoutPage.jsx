@@ -45,17 +45,6 @@ export default function CheckoutPage() {
   const [validPickUpDetails, setValidPickUpDetails] = useState(false);
   const checkoutTitle = items.length > 0 ? 'returns' : 'donate';
 
-  useEffect(() => {
-    scrollToTop();
-    const platform = window.navigator.platform;
-    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
-
-    if (windowsPlatforms.indexOf(platform) !== -1) {
-      // Windows 10 Chrome
-      $('.btn-confirm').css('padding-top', '10px');
-    }
-  }, []);
-
   const onReturnConfirm = async () => {
     console.log({
       payment,
@@ -89,12 +78,11 @@ export default function CheckoutPage() {
       setOrder(order);
       setConfirmed(true);
       setPlacingOrder(false);
-      setLoading(false);
 
       dispatch(clearForm());
 
       scrollToTop();
-
+      setLoading(false);
       showSuccess({
         message: (
           <div>
@@ -136,6 +124,17 @@ export default function CheckoutPage() {
       window.removeEventListener('resize', handleResize);
     };
   });
+
+  useEffect(() => {
+    scrollToTop();
+    const platform = window.navigator.platform;
+    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+
+    if (windowsPlatforms.indexOf(platform) !== -1) {
+      // Windows 10 Chrome
+      $('.btn-confirm').css('padding-top', '10px');
+    }
+  }, []);
 
   const validOrder =
     validAddress && validPayment && validPickUpDetails && items.length > 0;
