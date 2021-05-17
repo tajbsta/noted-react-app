@@ -3,15 +3,66 @@ import { useHistory } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import NoteeIcon from '../../../assets/icons/NoteeIcon.svg';
 import { get } from 'lodash-es';
+import { getUserId } from '../../../utils/auth';
+import { getActiveOrderCounts } from '../../../utils/orderApi';
 
 export default function ScheduledCard({ orders }) {
   const [isMobile, setIsMobile] = useState(false);
+  const [orderCount, setOrderCount] = useState(false);
+  const [fetchingOrderCount, setFetchingOrderCount] = useState(false);
 
-  const scheduledOrders = orders.map((order) => {
-    return get(order, 'items', []);
-  });
+  const getOrderItemActiveCount = async () => {
+    try {
+      setFetchingOrderCount(true);
+      const userId = await getUserId();
+      const orderCount = await getActiveOrderCounts(userId);
 
-  console.log(scheduledOrders);
+      setFetchingOrderCount(false);
+      setOrderCount(orderCount);
+      // console.log(orderCount);
+    } catch (error) {
+      // TODO: ERROR HANDLING
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getOrderItemActiveCount();
+  }, []);
+
+  const totalBoth = () => {
+    orderCount.totalReturns.length > 0 && orderCount.totalDonations.length > 0;
+  };
+
+  const totalActiveCounts = () => {
+    if (orderCount && orderCount.totalReturns.length > 0) {
+      return (
+        <h4 className='items-info'>
+          You have {orderCount.totalReturns}{' '}
+          {orderCount && orderCount.totalReturns > 1 ? 'items' : 'item'}{' '}
+          scheduled for return
+        </h4>
+      );
+    } else if (orderCount && orderCount.totalDonations.length > 0) {
+      return (
+        <h4 className='items-info'>
+          You have {orderCount.totalDonations}{' '}
+          {orderCount && orderCount.totalDonations > 1 ? 'items' : 'item'}{' '}
+          scheduled for donate
+        </h4>
+      );
+    } else if (totalBoth) {
+      return (
+        <h4 className='items-info'>
+          You have {orderCount.totalReturns}{' '}
+          {orderCount && orderCount.totalReturns > 1 ? 'items' : 'item'}{' '}
+          scheduled for return and {orderCount.totalDonations}{' '}
+          {orderCount && orderCount.totalDonations > 1 ? 'items' : 'item'} for
+          donate
+        </h4>
+      );
+    }
+  };
 
   const history = useHistory();
 
@@ -47,10 +98,7 @@ export default function ScheduledCard({ orders }) {
                     <div className='title'>Your scheduled return</div>
                   </Row>
                   <Row>
-                    <div className='items-info'>
-                      You have {get(scheduledOrders, 'length', 0)} items
-                      scheduled for return
-                    </div>
+                    <div className='items-info'>{totalActiveCounts()}</div>
                   </Row>
                 </Col>
                 <Col className='button-col'>
@@ -73,10 +121,7 @@ export default function ScheduledCard({ orders }) {
                     <div className='title'>Your scheduled return</div>
                   </Row>
                   <Row>
-                    <div className='items-info'>
-                      You have {get(scheduledOrders, 'length', 0)} items
-                      scheduled for return
-                    </div>
+                    <div className='items-info'>{totalActiveCounts()}</div>
                   </Row>
                   <Row>
                     <button

@@ -42,6 +42,26 @@ export const getOrder = async (orderId) => {
   return res.data.data;
 };
 
+// Get Order Counts (History)
+export const getOrderHistoryCounts = async () => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+
+  const res = await axios.get(`/${userId}/orders/total/history`);
+
+  return res.data.data;
+};
+
+// Get Order Counts (Active)
+export const getActiveOrderCounts = async () => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+
+  const res = await axios.get(`/${userId}/orders/total/active`);
+
+  return res.data.data;
+};
+
 // Cancel Order
 export const cancelOrder = async (userId, orderId) => {
   const axios = await api();
