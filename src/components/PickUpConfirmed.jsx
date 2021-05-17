@@ -56,6 +56,16 @@ function PickUpConfirmed({ orderId = '' }) {
   const orderDate = get(currentOrder, 'pickupDate', '');
   const orderTime = get(currentOrder, 'pickupTime', '');
 
+  const renderDate = () => {
+    return (
+      <Row>
+        <h5 className='sofia-pro pick-up-time'>
+          {moment(orderDate).format('MMMM, DD YYYY')}
+        </h5>
+      </Row>
+    );
+  };
+
   const getDayTitle = () => {
     return moment(orderDate).format('dddd') ===
       moment().utc().local().add('days', 1).format('dddd')
@@ -63,7 +73,7 @@ function PickUpConfirmed({ orderId = '' }) {
       : moment(orderDate).format('dddd');
   };
 
-  const renderDate = () => {
+  const renderDay = () => {
     return (
       <h4 className='p-0 m-0 pick-up-day sofia-pro'>
         {isEmpty(orderDate) || !moment(orderDate).isValid()
@@ -98,6 +108,7 @@ function PickUpConfirmed({ orderId = '' }) {
           </div>
         </Row>
         {renderDate()}
+        {renderDay()}
         {renderTime()}
         <Row>
           <div className='col-sm-9 p-0'>
