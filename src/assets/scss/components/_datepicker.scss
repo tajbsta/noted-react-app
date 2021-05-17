@@ -1,4 +1,10 @@
 #DatePicker {
+  .react-datepicker__input-container {
+    .btn {
+      cursor: text;
+      height: 25px;
+    }
+  }
 
   .react-datepicker {
     min-width: 300px;
