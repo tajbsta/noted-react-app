@@ -5,6 +5,7 @@ import { useHistory } from 'react-router';
 import { useSelector } from 'react-redux';
 import { get } from 'lodash-es';
 import moment from 'moment';
+import { scrollToTop } from '../utils/window';
 
 function PickUpCancelled({ orderId = '' }) {
   const history = useHistory();
@@ -46,6 +47,10 @@ function PickUpCancelled({ orderId = '' }) {
   const onEdit = () => {
     history.push('/order/:orderId', { scheduledReturnId: orderId });
   };
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   useEffect(() => {
     function handleResize() {

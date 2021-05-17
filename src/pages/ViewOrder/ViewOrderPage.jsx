@@ -4,7 +4,7 @@ import ProductCard from '../../components/ProductCard';
 import PickUpConfirmed from '../../components/PickUpConfirmed';
 import PickUpCancelled from '../../components/PickUpCancelled';
 import PickUpDetails from './components/PickUpDetails';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { get, isEmpty } from 'lodash';
 import $ from 'jquery';
 import { updateOrders } from '../../actions/auth.action';
@@ -23,6 +23,7 @@ import { orderErrors } from '../../library/errors.library';
 
 function ViewOrderPage() {
   const [confirmed, setConfirmed] = useState(false);
+  const [cancelled, setCancelled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
   const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
@@ -80,7 +81,6 @@ function ViewOrderPage() {
     try {
       const userId = await getUserId();
       await cancelOrder(userId, orderId);
-      setConfirmed(true);
       setShowCancelOrderModal(false);
       setLoading(false);
 
@@ -93,6 +93,7 @@ function ViewOrderPage() {
           </div>
         ),
       });
+      setCancelled(true);
     } catch (error) {
       console.log(error);
       setShowCancelOrderModal(false);
@@ -146,12 +147,9 @@ function ViewOrderPage() {
   //   return ![...items].map(({ id }) => id).includes(id);
   // });
 
-  // useEffect(() => {
-  //   scrollToTop();
-  //   if (get(scheduledReturn, 'items', []).length === 0) {
-  //     history.push('/dashboard');
-  //   }
-  // }, [scheduledReturn]);
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   useEffect(() => {
     function handleResize() {
@@ -181,14 +179,13 @@ function ViewOrderPage() {
         <div className='row m-order-row'>
           <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
-            {!confirmed ? (
+            {confirmed || cancelled ? (
               <div className='mobile-checkout-col'>
                 <h3 className='sofia-pro text-18 section-title'>
-                  Pick-up cancelled
+                  Pick-up {cancelled ? 'cancelled' : 'confirmed'}
                 </h3>
                 <div className='confirmed-container'>
-                  <PickUpCancelled />
-                  {/* <PickUpConfirmed /> */}
+                  {cancelled ? <PickUpCancelled /> : <PickUpConfirmed />}
                 </div>
               </div>
             ) : (
