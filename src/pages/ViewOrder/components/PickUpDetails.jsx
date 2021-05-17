@@ -271,7 +271,7 @@ export default function PickUpDetails({ address, payment, details }) {
                       </p>
                     </div>
                   </div>
-                  <h4 className='sofia-pro mb-4'>
+                  <h4 className='sofia-pro mb-3'>
                     {' '}
                     {moment(get(pickUpDateForm, 'values.date', '')).format(
                       'MMMM DD, YYYY'

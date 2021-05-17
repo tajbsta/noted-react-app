@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useHistory } from 'react-router';
-import { useDispatch } from 'react-redux';
 
 export default function MobileModifyCheckoutCard() {
   //   {
@@ -20,30 +19,8 @@ export default function MobileModifyCheckoutCard() {
   //   returnFee,
   //   inReturn,
   // }
-  // const dispatch = useDispatch();
   const [confirmed, setConfirmed] = useState(false);
-  // const history = useHistory();
-
-  // const ConfirmCancellation = async () => {
-  //   // if (hasModifications) {
-  //   //   const filteredOrders = [
-  //   //     ...scheduledReturns.filter(({ id }) => id !== scheduledReturnId),
-  //   //     orderInMemory,
-  //   //   ];
-
-  //   //   dispatch(await updateOrders(filteredOrders));
-  //   //   return setconfirmed(true);
-  //   // }
-  //   history.push('/dashboard');
-  // };
-
-  // const initiateCancelOrder = () => {
-  //   setShowCancelOrderModal(true);
-  // };
-
-  // const removeCancelOrderModal = () => {
-  //   setShowCancelOrderModal(false);
-  // };
+  const history = useHistory();
 
   return (
     <div id='MobileCheckoutCard'>
@@ -95,9 +72,7 @@ export default function MobileModifyCheckoutCard() {
                   <Col>
                     <Row>
                       <Col>
-                        <h3 className='m-value'>
-                          {/* ${potentialReturnValue.toFixed(2) || 0.0} */}
-                        </h3>
+                        <h3 className='m-value'>$100</h3>
                       </Col>
                     </Row>
                     <Row>
@@ -110,23 +85,32 @@ export default function MobileModifyCheckoutCard() {
                   </Col>
                   <Col>
                     <Row>
-                      <h3 className='m-value'>{/* {inDonation.length} */}</h3>
+                      <h3 className='m-value'>1</h3>
                     </Row>
                     <Row>
                       <h3 className='m-value-label'>Donations</h3>
                     </Row>
                   </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col>
-                    <button
-                      className='btn m-btn-confirm'
-                      // onClick={ConfirmCancellation}
-                    >
-                      Confirm Order
-                    </button>
+                    <button className='btn m-btn-confirm'>Confirm Order</button>
                   </Col>
-                </Row>
+                </Row> */}
+                <div
+                  className='btn btn-no-changes noted-purple mt-3'
+                  style={{
+                    background: '#EEE4F6',
+                    border: 'none',
+                    color: '#570097',
+                    display: 'flex',
+                    alignContent: 'center',
+                    justifyContent: 'flex-start',
+                  }}
+                  onClick={() => history.push('/dashboard')}
+                >
+                  No changes
+                </div>
               </>
             )}
           </div>
