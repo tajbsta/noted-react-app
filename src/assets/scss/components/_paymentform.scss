@@ -1,3 +1,21 @@
+#paymentCheck {
+  input {
+    mix-blend-mode: normal;
+    opacity: 0.4;
+    border: 1.5px solid #b1adb3;
+    border-radius: 2px;
+  }
+
+  label {
+    // font-family: SofiaPro;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 500;
+    color: #570097;
+    margin-top: 3px;
+  }
+}
+
 #PaymentForm,
 #Payment {
   .form-label {
