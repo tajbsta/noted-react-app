@@ -6,6 +6,9 @@ import { useSelector } from 'react-redux';
 import { get } from 'lodash-es';
 import moment from 'moment';
 import { scrollToTop } from '../utils/window';
+import { getOrder } from '../utils/orderApi';
+import { isEmpty } from 'lodash';
+import { Spinner } from 'react-bootstrap';
 
 function PickUpConfirmed({ orderId = '' }) {
   const history = useHistory();
@@ -21,28 +24,6 @@ function PickUpConfirmed({ orderId = '' }) {
       $('.back-to-products-btn').css('padding-top', '9px');
     }
   }, []);
-
-  const { scheduledReturns } = useSelector(
-    ({ auth: { scheduledReturns } }) => ({
-      scheduledReturns,
-    })
-  );
-
-  const scheduledReturn = scheduledReturns.find(({ id }) => orderId === id);
-
-  useEffect(() => {
-    /**
-     * @FUNCTION load order here
-     */
-    const scheduledReturn = scheduledReturns.find(({ id }) => orderId === id);
-    setCurrentOrder(scheduledReturn);
-  }, []);
-
-  const date = moment(get(scheduledReturn, 'details.date', '')).format(
-    'MMMM DD, YYYY'
-  );
-
-  const time = get(scheduledReturn, 'details.time', '');
 
   const onEdit = () => {
     history.push('/order/:orderId', { scheduledReturnId: orderId });
@@ -63,6 +44,58 @@ function PickUpConfirmed({ orderId = '' }) {
     };
   });
 
+  async function loadOrder() {
+    const order = await getOrder(orderId);
+    setCurrentOrder(order);
+  }
+
+  useEffect(() => {
+    loadOrder();
+  }, []);
+
+  const orderDate = get(currentOrder, 'pickupDate', '');
+  const orderTime = get(currentOrder, 'pickupTime', '');
+
+  const renderDate = () => {
+    return (
+      <Row>
+        <h5 className='sofia-pro pick-up-time'></h5>
+      </Row>
+    );
+  };
+
+  const getDayTitle = () => {
+    return moment(orderDate).format('dddd') ===
+      moment().utc().local().add('days', 1).format('dddd')
+      ? `Tomorrow ,${moment(orderDate).format('MMMM, DD, YYYY')}`
+      : `${moment(orderDate).format('dddd')}, ${moment(orderDate).format(
+          'MMMM, DD, YYYY'
+        )}`;
+  };
+
+  const renderDay = () => {
+    return (
+      <h4 className='p-0 m-0 pick-up-day sofia-pro'>
+        {isEmpty(orderDate) || !moment(orderDate).isValid()
+          ? ''
+          : getDayTitle()}
+      </h4>
+    );
+  };
+
+  const renderTime = () => {
+    const timeText =
+      orderTime === 'AM' ? '9 A.M. - 12 P.M.' : '12 P.M. - 3 P.M.';
+
+    return (
+      <Row>
+        <h5 className='sofia-pro pick-up-time'>
+          Between {timeText.replace('-', 'and').replace(new RegExp(/\./g), '')}
+        </h5>
+      </Row>
+    );
+  };
+
   return (
     <div className='card shadow-sm max-w-840 card-height'>
       <div className='card-body pt-4 pb-3 pl-4 m-0'>
@@ -74,13 +107,9 @@ function PickUpConfirmed({ orderId = '' }) {
             </p>
           </div>
         </Row>
-        <h4 className='p-0 m-0 pick-up-day sofia-pro'>{date}</h4>
-        <Row>
-          <h5 className='sofia-pro pick-up-time'>
-            Between {time.replace('-', 'and')}
-          </h5>
-        </Row>
-
+        {renderDate()}
+        {renderDay()}
+        {renderTime()}
         <Row>
           <div className='col-sm-9 p-0'>
             <p className='sofia-pro mb-0 text-14'>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
 import CancelOrderModal from '../../../modals/CancelOrderModal';
 
@@ -8,6 +9,7 @@ export default function ModifyCheckoutCard({
   initiateCancelOrder,
   removeCancelOrderModal,
   loading,
+  cancelled,
 }) {
   // {
   //   potentialReturnValue,
@@ -26,6 +28,7 @@ export default function ModifyCheckoutCard({
   // }
   const [confirmed, setConfirmed] = useState(false);
   const [modalShow, setModalShow] = useState(false);
+  const history = useHistory();
 
   return (
     <div id='ModifyCheckoutCard'>
@@ -101,6 +104,7 @@ export default function ModifyCheckoutCard({
                   <div className='col'>
                     <h5 className='sofia-pro text-right'>
                       {/* ${taxes.toFixed(2)} */}
+                      $0.70
                     </h5>
                   </div>
                 </div>
@@ -112,34 +116,38 @@ export default function ModifyCheckoutCard({
                   <div className='col'>
                     <h5 className='sofia-pro text-right total-now'>
                       {/* ${totalPayment} */}
+                      $10.69
                     </h5>
                   </div>
                 </div>
 
-                <hr />
-                <div className='row'>
-                  <div className='col'>
-                    <button
-                      className='btn btn-more-info'
-                      onClick={initiateCancelOrder}
-                    >
-                      <h3 className='noted-red sofia-pro cancel-order mb-0'>
-                        Cancel order
-                      </h3>
-                    </button>
-                    <h3 className='cancel-info'>
-                      Canceling pick-ups less than 24h before schedule will
-                      result in a $5 penalty
-                    </h3>
-                    <a
-                      style={{ textDecoration: 'underline' }}
-                      className='cancel-info'
-                    >
-                      More info
-                    </a>
-                  </div>
-                </div>
-                {/* {!isEmpty(orderInMemory) && hasModifications && (
+                {!cancelled && (
+                  <>
+                    <hr />
+                    <div className='row'>
+                      <div className='col'>
+                        <button
+                          className='btn btn-more-info'
+                          onClick={initiateCancelOrder}
+                        >
+                          <h3 className='noted-red sofia-pro cancel-order mb-0'>
+                            Cancel order
+                          </h3>
+                        </button>
+                        <h3 className='cancel-info'>
+                          Canceling pick-ups less than 24h before schedule will
+                          result in a $5 penalty
+                        </h3>
+                        <a
+                          style={{ textDecoration: 'underline' }}
+                          className='cancel-info'
+                        >
+                          More info
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* {!isEmpty(orderInMemory) && hasModifications && (
                   <div
                     className='btn mt-2'
                     style={{
@@ -153,22 +161,24 @@ export default function ModifyCheckoutCard({
                   </div>
                 )} */}
 
-                {/* {!isEmpty(orderInMemory) && !hasModifications && (
-                  <div
-                    className='btn btn-no-changes noted-purple mt-2'
-                    style={{
-                      background: '#EEE4F6',
-                      border: 'none',
-                      color: '#570097',
-                      display: 'flex',
-                      alignContent: 'center',
-                      justifyContent: 'center',
-                    }}
-                    onClick={() => history.push('/dashboard')}
-                  >
-                    No changes
-                  </div>
-                )} */}
+                    {/* {!isEmpty(orderInMemory) && !hasModifications && ( */}
+                    <div
+                      className='btn btn-no-changes noted-purple mt-2'
+                      style={{
+                        background: '#EEE4F6',
+                        border: 'none',
+                        color: '#570097',
+                        display: 'flex',
+                        alignContent: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onClick={() => history.push('/dashboard')}
+                    >
+                      No changes
+                    </div>
+                    {/* )} */}
+                  </>
+                )}
               </>
             )}
           </div>
