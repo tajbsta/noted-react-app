@@ -95,16 +95,16 @@ export default function CheckoutPage() {
       setPlacingOrder(false);
       setLoading(false);
 
-      // console.log(error.response.data.details);
-      showError({
-        message: get(
-          orderErrors.find(
-            ({ details }) => details === error.response.data.details
-          ),
-          'message',
-          'Cannot place order at this time'
-        ),
-      });
+      console.log(error);
+      // showError({
+      //   message: get(
+      //     orderErrors.find(
+      //       ({ details }) => details === error.response.data.details
+      //     ),
+      //     'message',
+      //     'Cannot place order at this time'
+      //   ),
+      // });
     }
   };
 
