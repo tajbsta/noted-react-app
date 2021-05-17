@@ -61,10 +61,11 @@ export default function PickUpDetails({ address, payment, details }) {
 
   const pickUpDateForm = useFormik({
     initialValues: {
-      date: get(details, 'date', null),
-      time: get(details, 'time', null),
+      date: details.date,
+      time: details.time,
     },
     validationSchema: pickUpDateSchema,
+    enableReinitialize: true,
   });
 
   const isAddressFormEmpty = isFormEmpty(addressFormValues);

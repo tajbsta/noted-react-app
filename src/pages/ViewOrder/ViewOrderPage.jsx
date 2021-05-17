@@ -16,7 +16,7 @@ import ModifyCheckoutCard from './components/ModifyCheckoutCard';
 import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import CancelOrderModal from '../../modals/CancelOrderModal';
-import { getOrders, cancelOrder } from '../../utils/orderApi';
+import { cancelOrder, getOrder } from '../../utils/orderApi';
 import { getUserId } from '../../utils/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { orderErrors } from '../../library/errors.library';
@@ -28,52 +28,24 @@ function ViewOrderPage() {
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
   const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
-  const [orders, setOrders] = useState([]);
+  const [order, setOrder] = useState(false);
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const { id: orderId } = useParams();
-  const {
-    inDonation,
-    scheduledReturns,
-    scans,
-    orderInMemory,
-    cart,
-  } = useSelector(
-    ({
-      runtime: { forReturn, lastCall, forDonation, orderInMemory },
-      auth: { scheduledReturns },
-      scans,
-      cart,
-    }) => ({
-      localDonationsCount: forDonation.length,
-      forReturn,
-      lastCall,
-      scheduledReturns,
-      inReturn: [...forReturn, ...lastCall],
-      inDonation: [...forDonation],
-      scans,
-      orderInMemory,
-      cart,
-    })
-  );
 
-  const getScheduledOrders = async () => {
+  const loadOrder = async () => {
     try {
-      setFetchingOrders(true);
-      const userId = await getUserId();
-      const res = await getOrders(userId, 'active');
-
-      setFetchingOrders(false);
-      setOrders(res.orders);
-      console.log(res.orders);
+      const data = await getOrder(orderId);
+      setOrder(data);
     } catch (error) {
-      // TODO: ERROR HANDLING
-      console.log(error);
+      showError({ message: 'Error loading order' });
     }
   };
 
+  const orderDate = get(order, 'pickupDate', '');
+  const orderTime = get(order, 'pickupTime', '');
+
   useEffect(() => {
-    getScheduledOrders();
+    loadOrder();
   }, []);
 
   const ConfirmCancellation = async () => {
@@ -83,8 +55,6 @@ function ViewOrderPage() {
       await cancelOrder(userId, orderId);
       setShowCancelOrderModal(false);
       setLoading(false);
-
-      console.log(orderId);
       showSuccess({
         message: (
           <div>
@@ -95,7 +65,6 @@ function ViewOrderPage() {
       });
       setCancelled(true);
     } catch (error) {
-      console.log(error);
       setShowCancelOrderModal(false);
       setLoading(false);
       showError({
@@ -191,9 +160,9 @@ function ViewOrderPage() {
             ) : (
               <div className='mobile-checkout-col'>
                 <PickUpDetails
-                // address={address}
-                // payment={payment}
-                // details={details}
+                  // address={address}
+                  // payment={payment}
+                  details={{ date: orderDate, time: orderTime }}
                 />
               </div>
             )}
