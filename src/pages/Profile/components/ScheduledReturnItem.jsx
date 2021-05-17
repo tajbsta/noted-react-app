@@ -59,6 +59,9 @@ export const ScheduledReturnCard = ({ order }) => {
     const price = get(item, 'price', '');
     const rating = get(item, 'vendor_data.rating', 1);
     const thumbnail = get(item, 'thumbnail', ''); // product img
+    const category = get(item, 'category', '');
+
+    const formattedPrice = price.toFixed(2);
 
     return (
       <div id='ScheduledReturnProduct'>
@@ -86,7 +89,7 @@ export const ScheduledReturnCard = ({ order }) => {
               <h4 className='sofia-pro sched-distributor-name'>{vendorName}</h4>
               <h4 className='sofia-pro sched-product-name'>{name}</h4>
               <h4 className='sofia-pro sched-product-price'>
-                ${price.toFixed(2)}
+                {category == 'DONATE' ? 'Donate' : `$${formattedPrice}`}
               </h4>
             </div>
           </Col>
