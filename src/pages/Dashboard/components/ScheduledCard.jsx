@@ -19,7 +19,7 @@ export default function ScheduledCard({ orders }) {
 
       setFetchingOrderCount(false);
       setOrderCount(orderCount);
-      // console.log(orderCount);
+      console.log(orderCount);
     } catch (error) {
       // TODO: ERROR HANDLING
       console.log(error);
@@ -30,35 +30,36 @@ export default function ScheduledCard({ orders }) {
     getOrderItemActiveCount();
   }, []);
 
+  const { totalReturns, totalDonations } = orderCount;
+
   const totalBoth = () => {
-    orderCount.totalReturns.length > 0 && orderCount.totalDonations.length > 0;
+    totalReturns !== 0 && totalDonations !== 0;
   };
 
   const totalActiveCounts = () => {
-    if (orderCount && orderCount.totalReturns.length > 0) {
+    if (orderCount && totalReturns > 0) {
       return (
         <h4 className='items-info'>
-          You have {orderCount.totalReturns}{' '}
-          {orderCount && orderCount.totalReturns > 1 ? 'items' : 'item'}{' '}
-          scheduled for return
+          You have {totalReturns}{' '}
+          {orderCount && totalReturns > 1 ? 'items' : 'item'} scheduled for
+          return
         </h4>
       );
-    } else if (orderCount && orderCount.totalDonations.length > 0) {
+    } else if (orderCount && totalDonations > 0) {
       return (
         <h4 className='items-info'>
-          You have {orderCount.totalDonations}{' '}
-          {orderCount && orderCount.totalDonations > 1 ? 'items' : 'item'}{' '}
-          scheduled for donate
+          You have {totalDonations}{' '}
+          {orderCount && totalDonations > 1 ? 'items' : 'item'} scheduled for
+          donate
         </h4>
       );
     } else if (totalBoth) {
       return (
         <h4 className='items-info'>
-          You have {orderCount.totalReturns}{' '}
-          {orderCount && orderCount.totalReturns > 1 ? 'items' : 'item'}{' '}
-          scheduled for return and {orderCount.totalDonations}{' '}
-          {orderCount && orderCount.totalDonations > 1 ? 'items' : 'item'} for
-          donate
+          You have {totalReturns}{' '}
+          {orderCount && totalReturns > 1 ? 'items' : 'item'} scheduled for
+          return and {totalDonations}{' '}
+          {orderCount && totalDonations > 1 ? 'items' : 'item'} for donate
         </h4>
       );
     }
