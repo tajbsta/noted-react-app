@@ -16,6 +16,7 @@ import moment from 'moment';
 import SchedulingModal from '../../../modals/SchedulingModal';
 import { updatePickUpDetails } from '../../../actions/runtime.action';
 import { useDispatch } from 'react-redux';
+import { Row } from 'react-bootstrap';
 
 export default function PickUpDetails({ address, payment, details }) {
   const dispatch = useDispatch();
@@ -93,6 +94,15 @@ export default function PickUpDetails({ address, payment, details }) {
       window.removeEventListener('resize', handleResize);
     };
   });
+
+  const renderTime = () => {
+    const timeText =
+      pickUpDateForm.time === 'AM' ? '9 A.M. - 12 P.M.' : '12 P.M. - 3 P.M.';
+
+    return `Between ${timeText
+      .replace('-', 'and')
+      .replace(new RegExp(/\./g), '')}`;
+  };
 
   return (
     <>
@@ -267,9 +277,7 @@ export default function PickUpDetails({ address, payment, details }) {
                       'MMMM DD, YYYY'
                     )}
                   </h4>
-                  <h4 className='p-0 m-0 sofia-pro'>
-                    Between {pickUpDateForm.values.time}
-                  </h4>
+                  <h4 className='p-0 m-0 sofia-pro'>{renderTime()}</h4>
                   <h4
                     className='p-0 m-0 sofia-pro mt-2 btn-edit'
                     onClick={openDatePickerModal}

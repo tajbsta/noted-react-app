@@ -59,9 +59,7 @@ function PickUpConfirmed({ orderId = '' }) {
   const renderDate = () => {
     return (
       <Row>
-        <h5 className='sofia-pro pick-up-time'>
-          {moment(orderDate).format('MMMM, DD YYYY')}
-        </h5>
+        <h5 className='sofia-pro pick-up-time'></h5>
       </Row>
     );
   };
@@ -69,8 +67,10 @@ function PickUpConfirmed({ orderId = '' }) {
   const getDayTitle = () => {
     return moment(orderDate).format('dddd') ===
       moment().utc().local().add('days', 1).format('dddd')
-      ? 'Tomorrow'
-      : moment(orderDate).format('dddd');
+      ? `Tomorrow ,${moment(orderDate).format('MMMM, DD, YYYY')}`
+      : `${moment(orderDate).format('dddd')}, ${moment(orderDate).format(
+          'MMMM, DD, YYYY'
+        )}`;
   };
 
   const renderDay = () => {
@@ -90,7 +90,7 @@ function PickUpConfirmed({ orderId = '' }) {
     return (
       <Row>
         <h5 className='sofia-pro pick-up-time'>
-          Between {timeText.replace('-', 'and')}
+          Between {timeText.replace('-', 'and').replace(new RegExp(/\./g), '')}
         </h5>
       </Row>
     );
