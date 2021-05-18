@@ -257,7 +257,7 @@ export const ReturnHistoryItem = ({ order }) => {
                     style={{ marginRight: '0px', justifyContent: 'flex-end' }}
                   >
                     <div className='sched-time-container'>
-                      <h4>Picked-up on &nbsp;</h4>
+                      <h4>Picked up on &nbsp;</h4>
                       <h4 className='sched-value'>
                         {moment(order.pickupDate).format('MMMM DD, YYYY')}
                       </h4>
