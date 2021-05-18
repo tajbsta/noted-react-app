@@ -263,7 +263,7 @@ function ViewOrderPage() {
       {/* MOBILE BILLING CARD */}
       {isMobile && (
         <>
-          <div className='mobile-billing-order'>
+          <div className='mobile-billing-order container'>
             <div className='m-billing-container mt-5'>
               <h4>Billing</h4>
             </div>
