@@ -591,9 +591,12 @@ export default function PickUpDetails({
                   ) : (
                     <>
                       <h4 className='sofia-pro mb-4'>
-                        {moment(get(pickUpDateForm, 'values.date', '')).format(
-                          'MMMM DD, YYYY'
-                        )}
+                        {moment(
+                          get(pickUpDateForm, 'values.date', '')
+                        ).isValid() &&
+                          moment(get(pickUpDateForm, 'values.date', '')).format(
+                            'MMMM DD, YYYY'
+                          )}
                       </h4>
                       <h4 className='p-0 m-0 sofia-pro'>
                         Between {get(pickUpDateForm, 'values.time', '')}
