@@ -477,7 +477,7 @@ export default function AddressForm({
   };
 
   return (
-    <div>
+    <div style={{ width: '-webkit-fill-available' }}>
       <div className='container mt-0'>
         <div style={{ margin: isMobile ? 'auto' : '' }}>
           <div className='mt-2' style={{ margin: isMobile ? '16px' : '' }}>

@@ -144,7 +144,7 @@ function ViewOrderPage() {
         // totalPayment={totalPayment}
         />
       )}
-      <div className='container mt-6'>
+      <div className={`container ${isMobile ? 'mt-4' : 'mt-6'}`}>
         <div className='row m-order-row'>
           <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
@@ -263,7 +263,7 @@ function ViewOrderPage() {
       {/* MOBILE BILLING CARD */}
       {isMobile && (
         <>
-          <div className='mobile-billing-order'>
+          <div className='mobile-billing-order container'>
             <div className='m-billing-container mt-5'>
               <h4>Billing</h4>
             </div>
