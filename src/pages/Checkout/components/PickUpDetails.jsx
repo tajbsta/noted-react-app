@@ -112,16 +112,6 @@ export default function PickUpDetails({
       line2: '',
       city: '',
       phoneNumber: '',
-
-      // name: address.fullName,
-      // state: !billingAddress ? address.state : '',
-      // zipCode: !billingAddress ? address.zipCode : '',
-      // line1: !billingAddress ? address.line1 : '',
-      // line2: !billingAddress ? address.line2 : '',
-      // city: !billingAddress ? address.city : '',
-      // phoneNumber: !billingAddress
-      //   ? formatPhoneNumber(address.phoneNumber)
-      //   : '',
       instructions: '',
     },
     validationSchema: paymentAddressSchema,
@@ -132,13 +122,14 @@ export default function PickUpDetails({
     setBillingAddress((prevState) => !prevState)
     if (!billingAddress) {
       // console.log(address)
-      paymentFormValues.name = address.fullName
-      paymentFormValues.state = address.state
-      paymentFormValues.zipCode = address.zipCode
-      paymentFormValues.line1 = address.line1
-      paymentFormValues.line2 = address.line2
-      paymentFormValues.city = address.city
-      paymentFormValues.phoneNumber = formatPhoneNumber(address.phoneNumber)
+      paymentFormValues.name = address && address.fullName
+      paymentFormValues.state = address && address.state
+      paymentFormValues.zipCode = address && address.zipCode
+      paymentFormValues.line1 = address && address.line1
+      paymentFormValues.line2 = address && address.line2
+      paymentFormValues.city = address && address.city
+      paymentFormValues.phoneNumber =
+        address && formatPhoneNumber(address.phoneNumber)
 
       paymentFormErrors.name = null
       paymentFormErrors.state = null
@@ -154,13 +145,6 @@ export default function PickUpDetails({
       paymentFormValues.line2 = ''
       paymentFormValues.city = ''
       paymentFormValues.phoneNumber = ''
-
-      paymentFormErrors.name = paymentFormErrors
-      paymentFormErrors.state = paymentFormErrors
-      paymentFormErrors.zipCode = paymentFormErrors
-      paymentFormErrors.line1 = paymentFormErrors
-      paymentFormErrors.line2 = paymentFormErrors
-      paymentFormErrors.city = paymentFormErrors
     }
   }
 
