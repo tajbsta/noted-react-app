@@ -208,7 +208,9 @@ export default function PickUpDetails({
 
   const renderTime = () => {
     const timeText =
-      pickUpDateForm.time === 'AM' ? '9 A.M. - 12 P.M.' : '12 P.M. - 3 P.M.';
+      pickUpDateForm.values.time === 'AM'
+        ? '9 A.M. - 12 P.M.'
+        : '12 P.M. - 3 P.M.';
 
     return `Between ${timeText
       .replace('-', 'and')
