@@ -25,7 +25,7 @@ export default function ReturnHistory({ user }) {
   };
 
   useEffect(() => {
-    // open and empty orders
+    // empty orders
     if (orders.length === 0) {
       getOrderHistory();
     }
@@ -34,9 +34,7 @@ export default function ReturnHistory({ user }) {
   const renderEmptiness = () => {
     return (
       <>
-        <h5 className='sofia pro empty-message mt-4'>
-          Your scheduled return is empty
-        </h5>
+        <h5 className='sofia pro empty-message mt-4'>No returns yet!</h5>
         <h5 className='sofia pro empty-submessage mb-5'>
           I&apos;m sorry {(user && user.name) || (user && user.email)}, I&apos;m
           afraid there&apos;s nothing here. Change that by {''}

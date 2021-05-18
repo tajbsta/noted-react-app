@@ -8,7 +8,7 @@ import ConfirmDonate from '../modals/ConfirmDonate';
 function ProductDetails({ item, isHovering = false, toggleSelected }) {
   const history = useHistory();
   const pageLocation = history.location.pathname;
-  const orderViews = ['/order/:orderId', '/checkout'];
+  const notOrderViews = ['/dashboard', '/profile'];
   const [show, setShow] = useState(false);
   const [modalDonateShow, setModalDonateShow] = useState(false);
   const target = useRef(null);
@@ -51,7 +51,7 @@ function ProductDetails({ item, isHovering = false, toggleSelected }) {
   return (
     <div
       className={`col-sm-7 p-0 mt-1 p-details ml-3 ${
-        orderViews.indexOf(pageLocation) != -1 ? 'scheduled-height' : ''
+        !notOrderViews.indexOf(pageLocation) != -1 ? 'scheduled-height' : ''
       }`}
     >
       <Overlay target={target.current} show={show} placement='right'>

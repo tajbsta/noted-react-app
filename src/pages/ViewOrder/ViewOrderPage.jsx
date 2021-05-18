@@ -147,11 +147,11 @@ function ViewOrderPage() {
         />
       )}
       <div className={`container ${isMobile ? 'mt-4' : 'mt-6'}`}>
-        <div className='row m-order-row'>
+        <div className='row mobile-row'>
           <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed || cancelled ? (
-              <div className='mobile-checkout-col'>
+              <div>
                 <h3 className='sofia-pro text-18 section-title'>
                   Pick-up {cancelled ? 'cancelled' : 'confirmed'}
                 </h3>
@@ -169,26 +169,28 @@ function ViewOrderPage() {
               </div>
             )}
 
-            <h3 className='sofia-pro products-return text-18 section-title mobile-checkout-col'>
-              {cancelled
-                ? 'Your cancelled products'
-                : 'Your products to return'}
-            </h3>
-            {/* {items.map((item) => ( */}
-            {products.map((product) => {
-              return (
-                <ProductCard
-                  // orderId={orderId}
-                  scannedItem={product}
-                  key={product.id}
-                  item={product}
-                  selectable={false}
-                  clickable={false}
-                  removable={!confirmed}
-                />
-              );
-            })}
-            {/* ))} */}
+            <div className='col desktop-col'>
+              <h3 className='sofia-pro products-return text-18 section-title'>
+                {cancelled
+                  ? 'Your cancelled products'
+                  : 'Your products to return'}
+              </h3>
+
+              {products.map((product) => {
+                return (
+                  <ProductCard
+                    // orderId={orderId}
+                    scannedItem={product}
+                    key={product.id}
+                    item={product}
+                    selectable={false}
+                    clickable={false}
+                    removable={!confirmed}
+                  />
+                );
+              })}
+            </div>
+
             {/**
              * @START ADD PRODUCTS BTN
              */}
