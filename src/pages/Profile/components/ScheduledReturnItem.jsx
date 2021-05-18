@@ -7,7 +7,7 @@ import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import ReturnScore from '../../../components/ReturnsScore';
 
 export const ScheduledReturnCard = ({ order }) => {
-  const [eventKey, setEventKey] = useState('1');
+  const [eventKey, setEventKey] = useState('0');
   const { push } = useHistory();
   const [isMobile, setIsMobile] = useState(false);
 
