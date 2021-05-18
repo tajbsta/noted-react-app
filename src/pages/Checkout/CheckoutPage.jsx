@@ -137,7 +137,7 @@ export default function CheckoutPage() {
   }, []);
 
   const validOrder =
-    validAddress && !validPayment && validPickUpDetails && items.length > 0;
+    validAddress && validPayment && validPickUpDetails && items.length > 0;
 
   return (
     <div id='CheckoutPage'>
