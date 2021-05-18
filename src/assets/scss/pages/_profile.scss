@@ -314,10 +314,17 @@
   // SCHEDULED RETURN SECTION
   #ScheduledReturn,
   #ReturnHistory {
-    .Collapsible__contentOuter {
+    .Collapsible__contentOuter,
+    .history-row {
       @media (max-width: 540px) {
         margin-right: -16px;
         margin-left: -16px;
+      }
+    }
+
+    .m-history-title {
+      @media (max-width: 315px) {
+        width: min-content;
       }
     }
 

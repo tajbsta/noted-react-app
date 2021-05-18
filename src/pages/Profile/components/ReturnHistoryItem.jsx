@@ -122,19 +122,19 @@ export const ReturnHistoryItem = ({ order }) => {
   };
 
   return (
-    <div className='row' key={order.id}>
+    <div className='row history-row' key={order.id}>
       <Accordion
         className='accordion-container'
         defaultActiveKey='1'
         activeKey={activeKey}
       >
-        <Card className={`mt-4 m-3 shadow-sm ${isMobile ? 'ml-0' : 'ml-4'}`}>
+        <Card className={`mt-4 shadow-sm ${isMobile ? 'ml-0' : 'ml-4 m-3'}`}>
           <div className='card-body initial-card-body'>
             {isMobile && (
               <>
                 <div className='row' style={{ paddingLeft: '12px' }}>
                   <div className='title-col'>
-                    <div className='title'>
+                    <div className='title m-history-title'>
                       Ordered:{' '}
                       {moment(order.order_date).format('MMMM DD, YYYY')}
                     </div>
