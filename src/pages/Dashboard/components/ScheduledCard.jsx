@@ -37,7 +37,7 @@ export default function ScheduledCard({ orders }) {
   };
 
   const totalActiveCounts = () => {
-    if (orderCount && totalReturns > 0) {
+    if (orderCount && totalReturns > 0 && totalDonations == 0) {
       return (
         <h4 className='items-info'>
           You have {totalReturns}{' '}
@@ -45,7 +45,7 @@ export default function ScheduledCard({ orders }) {
           return
         </h4>
       );
-    } else if (orderCount && totalDonations > 0) {
+    } else if (orderCount && totalDonations > 0 && totalReturns == 0) {
       return (
         <h4 className='items-info'>
           You have {totalDonations}{' '}
