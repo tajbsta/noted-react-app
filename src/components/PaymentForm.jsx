@@ -373,7 +373,8 @@ export default function PaymentForm({
                                   value={zipCode || ''}
                                   maxLength={6}
                                 />
-                                {zipCode.length > 0 &&
+                                {zipCode &&
+                                  zipCode.length > 0 &&
                                   renderInlineError(errors.zipCode)}
                               </Form.Group>
                             </Col>

@@ -144,7 +144,7 @@ function ViewOrderPage() {
         // totalPayment={totalPayment}
         />
       )}
-      <div className='container mt-4'>
+      <div className={`container ${isMobile ? 'mt-4' : 'mt-6'}`}>
         <div className='row m-order-row'>
           <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
