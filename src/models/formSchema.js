@@ -141,7 +141,6 @@ export const paymentAddressSchema = Yup.object({
   city: Yup.string().required('City is required'),
   state: Yup.string().required('State is required'),
   zipCode: Yup.string()
-    .oneOf(supportedZipcode, 'Not yet available in your area')
     .min(4, 'Enter a valid zip code')
     .required('Zip code is required'),
 })
