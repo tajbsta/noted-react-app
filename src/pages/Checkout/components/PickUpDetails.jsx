@@ -206,6 +206,15 @@ export default function PickUpDetails({
     };
   });
 
+  const renderTime = () => {
+    const timeText =
+      pickUpDateForm.time === 'AM' ? '9 A.M. - 12 P.M.' : '12 P.M. - 3 P.M.';
+
+    return `Between ${timeText
+      .replace('-', 'and')
+      .replace(new RegExp(/\./g), '')}`;
+  };
+
   return (
     <>
       {!showEditAddress && !showEditPayment && (
@@ -598,9 +607,7 @@ export default function PickUpDetails({
                             'MMMM DD, YYYY'
                           )}
                       </h4>
-                      <h4 className='p-0 m-0 sofia-pro'>
-                        Between {get(pickUpDateForm, 'values.time', '')}
-                      </h4>
+                      {renderTime()}
                       <h4
                         className='p-0 m-0 sofia-pro mt-2 btn-edit'
                         onClick={openDatePickerModal}
