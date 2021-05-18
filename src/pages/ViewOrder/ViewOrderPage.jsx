@@ -31,10 +31,12 @@ function ViewOrderPage() {
   const [order, setOrder] = useState(false);
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const { id: orderId } = useParams();
+  const [products, setProducts] = useState([]);
 
   const loadOrder = async () => {
     try {
       const data = await getOrder(orderId);
+      setProducts(get(data, 'orderItems', []));
       setOrder(data);
     } catch (error) {
       showError({ message: 'Error loading order' });
@@ -173,15 +175,19 @@ function ViewOrderPage() {
                 : 'Your products to return'}
             </h3>
             {/* {items.map((item) => ( */}
-            {/* <ProductCard
-              // orderId={orderId}
-              // scannedItem={item}
-              key={item.id}
-              // item={item}
-              selectable={false}
-              clickable={false}
-              removable={!confirmed}
-            /> */}
+            {products.map((product) => {
+              return (
+                <ProductCard
+                  // orderId={orderId}
+                  scannedItem={product}
+                  key={product.id}
+                  item={product}
+                  selectable={false}
+                  clickable={false}
+                  removable={!confirmed}
+                />
+              );
+            })}
             {/* ))} */}
             {/**
              * @START ADD PRODUCTS BTN
