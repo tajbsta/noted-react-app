@@ -25,6 +25,15 @@ export const ReturnHistoryItem = ({ order }) => {
   const activeKey = '1';
   const items = get(order, 'orderItems', []);
 
+  const toTitleCase = (str) => {
+    const replacedDash = str && str.replace('-', ' ');
+    return replacedDash.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  };
+
+  const formattedOrderStatus = toTitleCase(order.status);
+
   const renderAllScheduledItems = items.slice(0, 5).map((product) => {
     return (
       <li key={product._id}>
@@ -143,6 +152,11 @@ export const ReturnHistoryItem = ({ order }) => {
                       {`${get(items, 'length', 0) === 1 ? 'item' : 'items'}`} in
                       total
                     </div>
+                    {formattedOrderStatus == 'Cancelled' && (
+                      <div className='title' style={{ color: 'red' }}>
+                        {formattedOrderStatus}
+                      </div>
+                    )}
                   </div>
                   <div className='button-col col'>
                     <div>
@@ -203,6 +217,11 @@ export const ReturnHistoryItem = ({ order }) => {
                       {`${get(items, 'length', 0) === 1 ? 'item' : 'items'}`} in
                       total
                     </div>
+                    {formattedOrderStatus == 'Cancelled' && (
+                      <div className='title' style={{ color: 'red' }}>
+                        {formattedOrderStatus}
+                      </div>
+                    )}
                   </div>
                   <div className='product-img-col col-6'>
                     {eventKey === '0' && renderAllScheduledItems}
