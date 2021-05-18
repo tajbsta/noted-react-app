@@ -4,6 +4,7 @@ import { formatPhoneNumber, isFormEmpty } from '../utils/form'
 import USA_STATES from '../assets/usa_states.json'
 import $ from 'jquery'
 import { isEmpty } from 'lodash-es'
+import { useSelector } from 'react-redux'
 
 export default function PaymentForm({
   fullName,
@@ -32,14 +33,16 @@ export default function PaymentForm({
       expirationMonth,
       expirationYear,
       cvc,
-      zipCode,
-      name,
-      line1,
-      line2,
-      city,
-      phoneNumber,
     }) || !isFormEmpty({ ...errors })
   const [isMobile, setIsMobile] = useState(false)
+  const { address } = useSelector(({ runtime: { form: { address } } }) => ({
+    address,
+  }))
+
+  // const [paymentInfo, setPaymentInfo] = useState([{
+  //   name: address.fullName,
+
+  // }])
 
   const [focused, setFocused] = useState({
     fullName: false,
@@ -47,12 +50,6 @@ export default function PaymentForm({
     expirationMonth: false,
     expirationYear: false,
     cvc,
-    zipCode,
-    name,
-    line1,
-    line2,
-    city,
-    phoneNumber,
   })
 
   const onFocus = (e) => {
@@ -287,6 +284,7 @@ export default function PaymentForm({
                         <div className="px-0" style={{ margin: 'auto 0' }}>
                           <Form.Check
                             className="check"
+                            checked={billingAddress}
                             onChange={onBtnCheck}
                             label="Same as pickup address"
                           />
@@ -307,7 +305,9 @@ export default function PaymentForm({
                           )}
                         </div>
                       </Row>
-                      {!billingAddress ? (
+                      {billingAddress ? (
+                        ''
+                      ) : (
                         <div
                           className="m-card-body"
                           style={{
@@ -462,7 +462,7 @@ export default function PaymentForm({
                             </Button>
                           </Row>
                         </div>
-                      ) : null}
+                      )}
                     </Form>
                   </div>
                 </div>
@@ -601,7 +601,6 @@ export default function PaymentForm({
                           {billingAddress && (
                             <Button
                               disabled={disableSubmit}
-                              // disabled={billingAddress ? '' :disableSubmit}
                               className="btn-save"
                               type="submit"
                               onClick={onDoneClick}
@@ -623,9 +622,9 @@ export default function PaymentForm({
                                   <Form.Control
                                     className="form-control-lg"
                                     type="name"
-                                    name={billingAddress ? '' : 'name'}
+                                    name="name"
                                     // value={name || ''}
-                                    value={billingAddress ? '' : name}
+                                    value={name || ''}
                                     onChange={handleChange}
                                     onFocus={onFocus}
                                   />
@@ -638,9 +637,8 @@ export default function PaymentForm({
                                   <Form.Control
                                     className="form-control-md"
                                     as="select"
-                                    value={billingAddress ? '' : state}
-                                    // value={state || ''}
-                                    name={billingAddress ? '' : 'state'}
+                                    value={state || ''}
+                                    name="state"
                                     onChange={handleChange}
                                     placeholder="Select State"
                                     defaultValue="null"
@@ -679,9 +677,8 @@ export default function PaymentForm({
                                       }
                                     }}
                                     type="zip code"
-                                    // value={zipCode || ''}
-                                    value={billingAddress ? '' : zipCode}
-                                    name={billingAddress ? '' : 'zipCode'}
+                                    value={zipCode || ''}
+                                    name="zipCode"
                                     maxLength={6}
                                   />
                                   {zipCode &&
@@ -699,9 +696,8 @@ export default function PaymentForm({
                                     className="form-control-lg"
                                     onChange={handleChange}
                                     type="name"
-                                    // value={line1 || ''}
-                                    value={billingAddress ? '' : line1}
-                                    name={billingAddress ? '' : 'line1'}
+                                    value={line1 || ''}
+                                    name="line1"
                                     onFocus={onFocus}
                                   />
                                   {renderInlineValidationError('line1')}
@@ -713,9 +709,8 @@ export default function PaymentForm({
                                   <Form.Control
                                     className="form-control-md"
                                     type="city"
-                                    name={billingAddress ? '' : 'city'}
-                                    // value={city || ''}
-                                    value={billingAddress ? '' : city}
+                                    name="city"
+                                    value={city || ''}
                                     onChange={handleChange}
                                     onFocus={onFocus}
                                   />
@@ -736,12 +731,8 @@ export default function PaymentForm({
                                         handleChange(e)
                                       }
                                     }}
-                                    value={
-                                      billingAddress
-                                        ? ''
-                                        : formatPhoneNumber(phoneNumber)
-                                    }
-                                    name={billingAddress ? '' : 'phoneNumber'}
+                                    value={formatPhoneNumber(phoneNumber) || ''}
+                                    name="phoneNumber"
                                     maxLength={13}
                                     onFocus={onFocus}
                                   />
