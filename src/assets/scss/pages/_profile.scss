@@ -312,7 +312,8 @@
   }
 
   // SCHEDULED RETURN SECTION
-  #ScheduledReturn {
+  #ScheduledReturn,
+  #ReturnHistory {
     .Collapsible__contentOuter {
       @media (max-width: 540px) {
         margin-right: -16px;
@@ -449,7 +450,6 @@
       padding: 0px;
     }
 
-
     .scheduled-return-item-image {
       transition: display 1s;
       animation: fadeInFromNone 0.2s ease-out;
@@ -471,7 +471,6 @@
         transform: scale(1);
       }
     }
-
   }
 
   // ACCORDION

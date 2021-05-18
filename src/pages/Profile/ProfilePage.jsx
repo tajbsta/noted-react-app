@@ -70,7 +70,7 @@ export default function ProfilePage() {
             <hr />
             <ScheduledReturn user={user} />
             <hr />
-            <ReturnHistory />
+            <ReturnHistory user={user} />
           </div>
         </div>
       )}
