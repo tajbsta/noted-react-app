@@ -66,7 +66,7 @@ export default function ScheduledReturn({ user }) {
         }
       >
         {fetchingOrders && (
-          <ProgressBar animated striped now={80} className='mt-4' />
+          <ProgressBar animated striped now={80} className='mt-4 m-bar' />
         )}
         {!fetchingOrders &&
           orders.map((order) => (
