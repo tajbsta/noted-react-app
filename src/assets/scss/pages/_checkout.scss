@@ -40,6 +40,11 @@
       padding-left: 16px;
       padding-right: 16px;
     }
+
+    @media (max-width: 766px) {
+      margin: 0px;
+      padding: 0px;
+    }
   }
 
   .mobile-view-add-col {
