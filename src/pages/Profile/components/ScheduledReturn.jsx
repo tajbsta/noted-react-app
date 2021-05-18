@@ -8,10 +8,8 @@ import { ScheduledReturnCard } from './ScheduledReturnItem';
 
 export default function ScheduledReturn({ user }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [orders, setOrders] = useState([]);
   const [fetchingOrders, setFetchingOrders] = useState(false);
-  // const [activeKeys, setActiveKeys] = useState({});
 
   const getScheduledOrders = async () => {
     try {
@@ -21,7 +19,7 @@ export default function ScheduledReturn({ user }) {
 
       setFetchingOrders(false);
       setOrders(res.orders);
-      console.log(res.orders);
+      // console.log(res.orders);
     } catch (error) {
       // TODO: ERROR HANDLING
       console.log(error);
@@ -34,17 +32,6 @@ export default function ScheduledReturn({ user }) {
       getScheduledOrders();
     }
   }, [isOpen]);
-
-  useEffect(() => {
-    function handleResize() {
-      setIsMobile(window.innerWidth <= 991);
-    }
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
 
   const renderEmptiness = () => {
     return (
@@ -79,7 +66,7 @@ export default function ScheduledReturn({ user }) {
         }
       >
         {fetchingOrders && (
-          <ProgressBar animated striped now={80} className='mt-4' />
+          <ProgressBar animated striped now={80} className='mt-4 m-bar' />
         )}
         {!fetchingOrders &&
           orders.map((order) => (

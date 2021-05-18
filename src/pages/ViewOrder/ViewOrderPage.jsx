@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ProgressBar } from 'react-bootstrap';
 import { Frown, Plus } from 'react-feather';
 import ProductCard from '../../components/ProductCard';
 import PickUpConfirmed from '../../components/PickUpConfirmed';
@@ -28,15 +29,21 @@ function ViewOrderPage() {
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
   const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [orderLoading, setOrderLoading] = useState(false);
   const [order, setOrder] = useState(false);
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const { id: orderId } = useParams();
+  const [products, setProducts] = useState([]);
 
   const loadOrder = async () => {
+    setOrderLoading(true);
     try {
       const data = await getOrder(orderId);
+      setProducts(get(data, 'orderItems', []));
       setOrder(data);
+      setOrderLoading(false);
     } catch (error) {
+      setOrderLoading(false);
       showError({ message: 'Error loading order' });
     }
   };
@@ -145,11 +152,11 @@ function ViewOrderPage() {
         />
       )}
       <div className={`container ${isMobile ? 'mt-4' : 'mt-6'}`}>
-        <div className='row m-order-row'>
+        <div className='row mobile-row'>
           <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed || cancelled ? (
-              <div className='mobile-checkout-col'>
+              <div>
                 <h3 className='sofia-pro text-18 section-title'>
                   Pick-up {cancelled ? 'cancelled' : 'confirmed'}
                 </h3>
@@ -167,27 +174,35 @@ function ViewOrderPage() {
               </div>
             )}
 
-            <h3 className='sofia-pro products-return text-18 section-title mobile-checkout-col'>
-              {cancelled
-                ? 'Your cancelled products'
-                : 'Your products to return'}
-            </h3>
-            {/* {items.map((item) => ( */}
-            {/* <ProductCard
-              // orderId={orderId}
-              // scannedItem={item}
-              key={item.id}
-              // item={item}
-              selectable={false}
-              clickable={false}
-              removable={!confirmed}
-            /> */}
-            {/* ))} */}
-            {/**
-             * @START ADD PRODUCTS BTN
-             */}
-            {!!cancelled ||
-              (!confirmed && (
+            <div className='col desktop-col'>
+              <h3 className='sofia-pro products-return text-18 section-title'>
+                {cancelled
+                  ? 'Your cancelled products'
+                  : 'Your products to return'}
+              </h3>
+
+              {orderLoading && (
+                <ProgressBar animated striped now={80} className='mt-5 mb-5' />
+              )}
+
+              {products.map((product) => {
+                return (
+                  <ProductCard
+                    // orderId={orderId}
+                    scannedItem={product}
+                    key={product.id}
+                    item={product}
+                    selectable={false}
+                    clickable={false}
+                    removable={!confirmed}
+                  />
+                );
+              })}
+            </div>
+
+            {/* ADD PRODUCT BUTTON */}
+            {(!orderLoading && !!cancelled) ||
+              (!orderLoading && !confirmed && (
                 <div
                   className='card add-border scanned-item-card max-w-840 mb-3 p-0 btn mobile-view-add-col'
                   // onClick={() => {

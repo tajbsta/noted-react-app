@@ -11,7 +11,7 @@ import {
   pickUpAddressSchema,
   pickUpDateSchema,
 } from '../../../models/formSchema';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   updatePaymentInfo,
   updatePickUpDetails,
@@ -48,6 +48,12 @@ export default function PickUpDetails({
   const [isMobile, setIsMobile] = useState(false);
   const [IsAddressOpen, setIsAddressOpen] = useState(false);
   const [IsPaymentOpen, setIsPaymentOpen] = useState(false);
+  const [billingAddress, setBillingAddress] = useState(false);
+
+  const { address } = useSelector(({ runtime: { form: { address } } }) => ({
+    address,
+  }));
+
   /**
    * @FORMSTATE by FORMIK
    * @returns customer address
@@ -109,20 +115,50 @@ export default function PickUpDetails({
       instructions: '',
     },
     validationSchema: paymentAddressSchema,
+    // paymentAddressSchemaBilling,
   });
 
-  useEffect(() => {
-    setValidPayment(
-      Object.values(paymentFormValues)
-        .map((paymentField) => {
-          return paymentField.length;
-        })
-        .filter((paymentField) => {
-          return paymentField === 0;
-        }).length < 1
-    );
-  }, [paymentFormValues]);
+  const onBtnCheck = () => {
+    setBillingAddress((prevState) => !prevState);
+    if (!billingAddress) {
+      // console.log(address)
+      paymentFormValues.name = address && address.fullName;
+      paymentFormValues.state = address && address.state;
+      paymentFormValues.zipCode = address && address.zipCode;
+      paymentFormValues.line1 = address && address.line1;
+      paymentFormValues.line2 = address && address.line2;
+      paymentFormValues.city = address && address.city;
+      paymentFormValues.phoneNumber =
+        address && formatPhoneNumber(address.phoneNumber);
 
+      paymentFormErrors.name = null;
+      paymentFormErrors.state = null;
+      paymentFormErrors.zipCode = null;
+      paymentFormErrors.line1 = null;
+      paymentFormErrors.line2 = null;
+      paymentFormErrors.city = null;
+    } else {
+      paymentFormValues.name = '';
+      paymentFormValues.state = '';
+      paymentFormValues.zipCode = '';
+      paymentFormValues.line1 = '';
+      paymentFormValues.line2 = '';
+      paymentFormValues.city = '';
+      paymentFormValues.phoneNumber = '';
+    }
+  };
+
+  // useEffect(() => {
+  //   setValidPayment(
+  //     Object.values(paymentFormValues)
+  //       .map((paymentField) => {
+  //         return paymentField.length
+  //       })
+  //       .filter((paymentField) => {
+  //         return paymentField === 0
+  //       }).length < 1,
+  //   )
+  // }, [paymentFormValues])
   /**
    * @FORMSTATE by FORMIK
    * @returns pickup date
@@ -154,7 +190,7 @@ export default function PickUpDetails({
    * @submits payment form state
    */
   const savePayment = async () => {
-    dispatch(
+    await dispatch(
       updatePaymentInfo({
         formData: { ...paymentFormValues, errors: paymentFormErrors },
       })
@@ -206,6 +242,17 @@ export default function PickUpDetails({
     };
   });
 
+  const renderTime = () => {
+    const timeText =
+      pickUpDateForm.values.time === 'AM'
+        ? '9 A.M. - 12 P.M.'
+        : '12 P.M. - 3 P.M.';
+
+    return `Between ${timeText
+      .replace('-', 'and')
+      .replace(new RegExp(/\./g), '')}`;
+  };
+
   return (
     <>
       {!showEditAddress && !showEditPayment && (
@@ -216,10 +263,13 @@ export default function PickUpDetails({
         {showEditPayment && (
           <PaymentForm
             {...paymentFormValues}
+            address={address}
             errors={paymentFormErrors}
             handleChange={handlePaymentChange}
             onDoneClick={savePayment}
+            billingAddress={billingAddress}
             setShowEditPayment={setShowEditPayment}
+            onBtnCheck={onBtnCheck}
           />
         )}
         {showEditAddress && (
@@ -595,9 +645,10 @@ export default function PickUpDetails({
                           'MMMM DD, YYYY'
                         )}
                       </h4>
-                      <h4 className='p-0 m-0 sofia-pro'>
+                      {/* <h4 className='p-0 m-0 sofia-pro'>
                         Between {get(pickUpDateForm, 'values.time', '')}
-                      </h4>
+                      </h4> */}
+                      {renderTime()}
                       <h4
                         className='p-0 m-0 sofia-pro mt-2 btn-edit'
                         onClick={openDatePickerModal}

@@ -312,17 +312,33 @@
   }
 
   // SCHEDULED RETURN SECTION
-  #ScheduledReturn {
-    .Collapsible__contentOuter {
+  #ScheduledReturn,
+  #ReturnHistory {
+    .Collapsible__contentOuter,
+    .history-row {
       @media (max-width: 540px) {
         margin-right: -16px;
         margin-left: -16px;
       }
     }
 
+    .m-history-title {
+      @media (max-width: 315px) {
+        width: min-content;
+      }
+    }
+
     .card {
       @media (max-width: 540px) {
         border-radius: 0px !important;
+      }
+    }
+
+    // Progress Bar
+    .m-bar {
+      @media (max-width: 540px) {
+        margin-left: 0.75rem;
+        margin-right: 0.75rem;
       }
     }
 
@@ -449,7 +465,6 @@
       padding: 0px;
     }
 
-
     .scheduled-return-item-image {
       transition: display 1s;
       animation: fadeInFromNone 0.2s ease-out;
@@ -471,7 +486,6 @@
         transform: scale(1);
       }
     }
-
   }
 
   // ACCORDION

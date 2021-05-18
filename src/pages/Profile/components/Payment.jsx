@@ -105,7 +105,7 @@ export default function Payment() {
 
   useEffect(() => {
     function handleResize() {
-      setIsMobile(window.innerWidth <= 1199);
+      setIsMobile(window.innerWidth <= 991);
     }
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -423,7 +423,11 @@ export default function Payment() {
           trigger={renderTrigger()}
           overflowWhenOpen='visible'
         >
-          <div className='card shadow-sm p-3 max-w-840 mt-4'>
+          <div
+            className={`card shadow-sm p-3 max-w-840 mt-4 ${
+              !isMobile ? 'ml-3' : ''
+            }`}
+          >
             {!isEditing && renderPaymentMethods()}
             {/* MOBILE VIEW */}
             {isMobile && renderPaymentMobileView()}

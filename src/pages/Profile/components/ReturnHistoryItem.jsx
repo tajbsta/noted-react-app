@@ -6,7 +6,7 @@ import { useHistory } from 'react-router';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import ReturnScore from '../../../components/ReturnsScore';
 
-export const ScheduledReturnCard = ({ order }) => {
+export const ReturnHistoryItem = ({ order }) => {
   const [eventKey, setEventKey] = useState('0');
   const { push } = useHistory();
   const [isMobile, setIsMobile] = useState(false);
@@ -24,6 +24,16 @@ export const ScheduledReturnCard = ({ order }) => {
 
   const activeKey = '1';
   const items = get(order, 'orderItems', []);
+
+  const toTitleCase = (str) => {
+    const replacedDash = str && str.replace('-', ' ');
+    return replacedDash.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  };
+
+  const formattedOrderStatus = toTitleCase(order.status);
+
   const renderAllScheduledItems = items.slice(0, 5).map((product) => {
     return (
       <li key={product._id}>
@@ -49,22 +59,18 @@ export const ScheduledReturnCard = ({ order }) => {
 
   const moreItemsCount = get(items, 'length', 0) - 5;
 
-  const viewOrder = () => {
-    push('/order/' + order.id);
-  };
-
-  const renderScheduledReturnItem = (item) => {
+  const renderReturnHistoryItem = (item) => {
     const vendorName = get(item, 'vendor_name', '');
     const name = get(item, 'name', '');
     const price = get(item, 'price', '');
     const rating = get(item, 'vendor_data.rating', 1);
     const thumbnail = get(item, 'thumbnail', ''); // product img
     const category = get(item, 'category', '');
-
+    const orderDate = get(item, 'order_date', '');
     const formattedPrice = price.toFixed(2);
 
     return (
-      <div id='ScheduledReturnProduct'>
+      <div id='ReturnHistoryItem'>
         <Row className='mt-4'>
           <Col className='sched-product-col col-9'>
             <div className='sched-img-col'>
@@ -125,24 +131,32 @@ export const ScheduledReturnCard = ({ order }) => {
   };
 
   return (
-    <div className='row' key={order.id}>
+    <div className='row history-row' key={order.id}>
       <Accordion
         className='accordion-container'
         defaultActiveKey='1'
         activeKey={activeKey}
       >
-        <Card className={`mt-4 m-3 shadow-sm ${isMobile ? 'ml-0' : 'ml-4'}`}>
+        <Card className={`mt-4 shadow-sm ${isMobile ? 'ml-0' : 'ml-4 m-3'}`}>
           <div className='card-body initial-card-body'>
             {isMobile && (
               <>
                 <div className='row' style={{ paddingLeft: '12px' }}>
                   <div className='title-col'>
-                    <div className='title'>Scheduled Return</div>
+                    <div className='title m-history-title'>
+                      Ordered:{' '}
+                      {moment(order.order_date).format('MMMM DD, YYYY')}
+                    </div>
                     <div className='total'>
                       {get(items, 'length', 0)}{' '}
                       {`${get(items, 'length', 0) === 1 ? 'item' : 'items'}`} in
                       total
                     </div>
+                    {formattedOrderStatus == 'Cancelled' && (
+                      <div className='title' style={{ color: 'red' }}>
+                        {formattedOrderStatus}
+                      </div>
+                    )}
                   </div>
                   <div className='button-col col'>
                     <div>
@@ -194,12 +208,20 @@ export const ScheduledReturnCard = ({ order }) => {
                   style={{ marginLeft: '0px' }}
                 >
                   <div className='title-col col'>
-                    <div className='title'>Scheduled Return</div>
+                    <div className='title'>
+                      Ordered:{' '}
+                      {moment(order.order_date).format('MMMM DD, YYYY')}
+                    </div>
                     <div className='total'>
                       {order.orderItems.length}{' '}
                       {`${get(items, 'length', 0) === 1 ? 'item' : 'items'}`} in
                       total
                     </div>
+                    {formattedOrderStatus == 'Cancelled' && (
+                      <div className='title' style={{ color: 'red' }}>
+                        {formattedOrderStatus}
+                      </div>
+                    )}
                   </div>
                   <div className='product-img-col col-6'>
                     {eventKey === '0' && renderAllScheduledItems}
@@ -246,7 +268,7 @@ export const ScheduledReturnCard = ({ order }) => {
           <Accordion.Collapse eventKey={eventKey}>
             <div>
               <div style={{ padding: '24px', paddingBottom: '39px' }}>
-                {items.map((item) => renderScheduledReturnItem(item))}
+                {items.map((item) => renderReturnHistoryItem(item))}
                 <hr className='hr-line' />
 
                 <div className='sched-info-container'>
@@ -254,21 +276,9 @@ export const ScheduledReturnCard = ({ order }) => {
                     style={{ marginRight: '0px', justifyContent: 'flex-end' }}
                   >
                     <div className='sched-time-container'>
-                      <h4>Pick-up on &nbsp;</h4>
+                      <h4>Picked up on &nbsp;</h4>
                       <h4 className='sched-value'>
                         {moment(order.pickupDate).format('MMMM DD, YYYY')}
-                      </h4>
-                    </div>
-                  </Row>
-                  <Row
-                    style={{ marginRight: '0px', justifyContent: 'flex-end' }}
-                  >
-                    <div className='sched-time-container'>
-                      <h4>Between &nbsp;</h4>
-                      <h4 className='sched-value'>
-                        {order.pickupTime == 'AM'
-                          ? '9 am to 12 pm'
-                          : '12pm to 3pm'}
                       </h4>
                     </div>
                   </Row>
@@ -286,23 +296,6 @@ export const ScheduledReturnCard = ({ order }) => {
                         {`${get(items, 'length', 0) === 1 ? 'item' : 'items'}`}{' '}
                       </h4>
                     </div>
-                  </Row>
-
-                  <Row
-                    className='cancel-action-container'
-                    style={{
-                      marginRight: '0px',
-                      justifyContent: 'flex-end',
-                    }}
-                  >
-                    <button
-                      className='btn btn-show p-0 m-0'
-                      onClick={() => {
-                        viewOrder();
-                      }}
-                    >
-                      Modify or cancel return
-                    </button>
                   </Row>
                 </div>
               </div>

@@ -65,12 +65,15 @@ function PickUpConfirmed({ orderId = '' }) {
   };
 
   const getDayTitle = () => {
-    return moment(orderDate).format('dddd') ===
-      moment().utc().local().add('days', 1).format('dddd')
-      ? `Tomorrow ,${moment(orderDate).format('MMMM, DD, YYYY')}`
-      : `${moment(orderDate).format('dddd')}, ${moment(orderDate).format(
-          'MMMM, DD, YYYY'
-        )}`;
+    if (moment(orderDate).isValid()) {
+      return moment(orderDate).format('dddd') ===
+        moment().utc().local().add('days', 1).format('dddd')
+        ? `Tomorrow, ${moment(orderDate).format('MMMM DD, YYYY')}`
+        : `${moment(orderDate).format('dddd')}, ${moment(orderDate).format(
+            'MMMM DD, YYYY'
+          )}`;
+    }
+    return '';
   };
 
   const renderDay = () => {

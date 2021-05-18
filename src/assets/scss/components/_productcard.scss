@@ -1,7 +1,8 @@
 //Product Cards
 #productCard,
 #ReturnCategory,
-#ScheduledReturnProduct {
+#ScheduledReturnProduct,
+#ReturnHistoryItem {
   .container {
     @media (max-width: 991px) {
       padding: 0px;
