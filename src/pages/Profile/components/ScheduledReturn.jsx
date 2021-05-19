@@ -27,53 +27,56 @@ export default function ScheduledReturn({ user }) {
   };
 
   useEffect(() => {
-    // open and empty orders
-    if (isOpen && orders.length === 0) {
+    // empty orders
+    if (orders.length === 0) {
       getScheduledOrders();
+      setIsOpen(true);
     }
-  }, [isOpen]);
+  }, []);
 
   const renderEmptiness = () => {
     return (
       <>
-        <h5 className='sofia pro empty-message mt-4'>
+        <h3 className='sofia pro empty-message mt-5 mb-4'>
           Your scheduled return is empty
-        </h5>
-        <h5 className='sofia pro empty-submessage mb-5'>
-          I&apos;m sorry {user.name || user.email}, I&apos;m afraid there&apos;s
-          nothing here. Change that by {''}
-          <a href='/dashboard' className='start-returning'>
-            start returning.
-          </a>
-        </h5>
+        </h3>
+      </>
+    );
+  };
+
+  const activeOrders = () => {
+    return (
+      <>
+        <Collapsible
+          open={isOpen}
+          onTriggerOpening={() => setIsOpen(true)}
+          onTriggerClosing={() => setIsOpen(false)}
+          trigger={
+            <div className='triggerContainer'>
+              <h3 className='sofia-pro text-18 mb-3-profile ml-3 mb-0 triggerText'>
+                Your Scheduled Return
+              </h3>
+              <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
+            </div>
+          }
+        >
+          {fetchingOrders && (
+            <ProgressBar animated striped now={80} className='mt-4 m-3' />
+          )}
+          {!fetchingOrders &&
+            orders.map((order) => (
+              <ScheduledReturnCard order={order} key={order._id} />
+            ))}
+          {!fetchingOrders && isEmpty(orders) && renderEmptiness()}
+        </Collapsible>
       </>
     );
   };
 
   return (
     <div id='ScheduledReturn'>
-      <Collapsible
-        open={isOpen}
-        onTriggerOpening={() => setIsOpen(true)}
-        onTriggerClosing={() => setIsOpen(false)}
-        trigger={
-          <div className='triggerContainer'>
-            <h3 className='sofia-pro text-18 mb-3-profile ml-3 mb-0 triggerText'>
-              Your Scheduled Return
-            </h3>
-            <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
-          </div>
-        }
-      >
-        {fetchingOrders && (
-          <ProgressBar animated striped now={80} className='mt-4 m-bar' />
-        )}
-        {!fetchingOrders &&
-          orders.map((order) => (
-            <ScheduledReturnCard order={order} key={order._id} />
-          ))}
-        {!fetchingOrders && isEmpty(orders) && renderEmptiness()}
-      </Collapsible>{' '}
+      {isOpen && activeOrders()}
+      {!isOpen && activeOrders()}
     </div>
   );
 }
