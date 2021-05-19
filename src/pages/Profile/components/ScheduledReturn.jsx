@@ -4,7 +4,7 @@ import { ProgressBar } from 'react-bootstrap';
 import Collapsible from 'react-collapsible';
 import { getOrders } from '../../../utils/orderApi';
 import { getUserId } from '../../../utils/auth';
-import { ScheduledReturnCard } from './ScheduledReturnItem';
+import { ScheduledReturnItem } from './ScheduledReturnItem';
 
 export default function ScheduledReturn({ user }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,7 +65,7 @@ export default function ScheduledReturn({ user }) {
           )}
           {!fetchingOrders &&
             orders.map((order) => (
-              <ScheduledReturnCard order={order} key={order._id} />
+              <ScheduledReturnItem order={order} key={order._id} />
             ))}
           {!fetchingOrders && isEmpty(orders) && renderEmptiness()}
         </Collapsible>
