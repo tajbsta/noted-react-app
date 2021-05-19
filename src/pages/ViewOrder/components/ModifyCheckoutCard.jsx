@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
 import CancelOrderModal from '../../../modals/CancelOrderModal';
+import { isEmpty } from 'lodash';
 
 export default function ModifyCheckoutCard({
   showCancelOrderModal,
@@ -10,6 +11,7 @@ export default function ModifyCheckoutCard({
   removeCancelOrderModal,
   loading,
   cancelled,
+  hasModifications,
 }) {
   // {
   //   potentialReturnValue,
@@ -147,36 +149,36 @@ export default function ModifyCheckoutCard({
                       </div>
                     </div>
 
-                    {/* {!isEmpty(orderInMemory) && hasModifications && (
-                  <div
-                    className='btn mt-2'
-                    style={{
-                      background: '#570097',
-                      border: 'none',
-                      color: '#FFFFFF',
-                    }}
-                    onClick={ConfirmCancellation}
-                  >
-                    Confirm
-                  </div>
-                )} */}
+                    {hasModifications && (
+                      <div
+                        className='btn mt-2'
+                        style={{
+                          background: '#570097',
+                          border: 'none',
+                          color: '#FFFFFF',
+                        }}
+                        onClick={ConfirmCancellation}
+                      >
+                        Confirm
+                      </div>
+                    )}
 
-                    {/* {!isEmpty(orderInMemory) && !hasModifications && ( */}
-                    <div
-                      className='btn btn-no-changes noted-purple mt-2'
-                      style={{
-                        background: '#EEE4F6',
-                        border: 'none',
-                        color: '#570097',
-                        display: 'flex',
-                        alignContent: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onClick={() => history.push('/dashboard')}
-                    >
-                      No changes
-                    </div>
-                    {/* )} */}
+                    {!hasModifications && (
+                      <div
+                        className='btn btn-no-changes noted-purple mt-2'
+                        style={{
+                          background: '#EEE4F6',
+                          border: 'none',
+                          color: '#570097',
+                          display: 'flex',
+                          alignContent: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onClick={() => history.push('/dashboard')}
+                      >
+                        No changes
+                      </div>
+                    )}
                   </>
                 )}
               </>

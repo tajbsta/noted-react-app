@@ -26,7 +26,7 @@ function PickUpConfirmed({ orderId = '' }) {
   }, []);
 
   const onEdit = () => {
-    history.push('/order/:orderId', { scheduledReturnId: orderId });
+    history.push(`/order/${orderId}`);
   };
 
   useEffect(() => {

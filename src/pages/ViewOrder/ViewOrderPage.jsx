@@ -34,12 +34,14 @@ function ViewOrderPage() {
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const { id: orderId } = useParams();
   const [products, setProducts] = useState([]);
+  const [originalProducts, setOriginalProducts] = useState([]);
 
   const loadOrder = async () => {
     setOrderLoading(true);
     try {
       const data = await getOrder(orderId);
       setProducts(get(data, 'orderItems', []));
+      setOriginalProducts(get(data, 'orderItems', []));
       setOrder(data);
       setOrderLoading(false);
     } catch (error) {
@@ -104,6 +106,26 @@ function ViewOrderPage() {
     }
   }, []);
 
+  const hasModification = () => {
+    /**
+     * check for changes here
+     */
+    const productsIds = products.map((product) => get(product, '_id', ''));
+    const originalProductsIds = originalProducts.map((product) =>
+      get(product, '_id', '')
+    );
+    const consolidation = originalProductsIds.filter((product) =>
+      productsIds.includes(product)
+    );
+
+    if (consolidation.length !== originalProductsIds.length) {
+      /**
+       * change in products detected
+       */
+      return true;
+    }
+    return false;
+  };
   // const scheduledReturn = hasModifications
   //   ? orderInMemory
   //   : scheduledReturns.find(({ id }) => id === scheduledReturnId);
@@ -137,6 +159,18 @@ function ViewOrderPage() {
       window.removeEventListener('resize', handleResize);
     };
   });
+
+  const removeProduct = (product) => {
+    if (products.length !== 1) {
+      const { _id: productId } = product;
+      /**
+       * @function remove from current state items
+       */
+      return setProducts([...products.filter(({ _id }) => productId !== _id)]);
+    }
+
+    return setShowCancelOrderModal(true);
+  };
 
   return (
     <div id='ViewOrderPage'>
@@ -195,6 +229,9 @@ function ViewOrderPage() {
                     selectable={false}
                     clickable={false}
                     removable={!confirmed}
+                    onRemove={() => {
+                      removeProduct(product);
+                    }}
                   />
                 );
               })}
@@ -262,7 +299,7 @@ function ViewOrderPage() {
                   // totalPayment={totalPayment}
                   // isEmpty={isEmpty}
                   // orderInMemory={orderInMemory}
-                  // hasModifications={hasModifications}
+                  hasModifications={hasModification()}
                   // scheduledReturnId={scheduledReturnId}
                   // scheduledReturn={scheduledReturn}
                   // scheduledReturns={scheduledReturns}
