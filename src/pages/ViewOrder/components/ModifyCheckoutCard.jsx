@@ -157,7 +157,7 @@ export default function ModifyCheckoutCard({
                           border: 'none',
                           color: '#FFFFFF',
                         }}
-                        onClick={ConfirmCancellation}
+                        onClick={() => history.push('/dashboard')}
                       >
                         Confirm
                       </div>
