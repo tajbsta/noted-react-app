@@ -34,7 +34,7 @@ export default function ReturnHistory({ user }) {
   const renderEmptiness = () => {
     return (
       <>
-        <h5 className='sofia pro empty-message mt-4'>No returns yet!</h5>
+        <h3 className='sofia pro empty-message mt-5'>No returns yet!</h3>
         <h5 className='sofia pro empty-submessage mb-5'>
           I&apos;m sorry {(user && user.name) || (user && user.email)}, I&apos;m
           afraid there&apos;s nothing here. Change that by {''}
@@ -58,7 +58,7 @@ export default function ReturnHistory({ user }) {
         </div>
       </div>
       {fetchingOrders && (
-        <ProgressBar animated striped now={80} className='mt-4' />
+        <ProgressBar animated striped now={80} className='mt-4 m-3' />
       )}
       {!fetchingOrders &&
         orders.map((order) => (
