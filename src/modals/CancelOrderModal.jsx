@@ -70,7 +70,7 @@ export default function CancelOrderModal(props) {
                 className='mr-3 spinner btn-spinner'
               />
             )}
-            Cancel order
+            {props.loading ? 'Canceling' : 'Cancel order'}
           </Button>
           <Button className='btn-dont' onClick={props.removeCancelOrderModal}>
             Do not cancel order
