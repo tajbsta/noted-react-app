@@ -43,7 +43,7 @@ export default function CheckoutPage() {
   const [validAddress, setValidAddress] = useState(false);
   const [validPayment, setValidPayment] = useState(true); // Default to true for now
   const [validPickUpDetails, setValidPickUpDetails] = useState(false);
-  const checkoutTitle = items.length > 0 ? 'returns' : 'donate';
+  const checkoutTitle = items.length > 0 ? 'return' : 'donate';
 
   const onReturnConfirm = async () => {
     console.log({
@@ -74,6 +74,8 @@ export default function CheckoutPage() {
       const userId = await getUserId();
 
       const order = await createOrder(userId, newOrder);
+
+      // console.log(order);
 
       setOrder(order);
       setConfirmed(true);
