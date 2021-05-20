@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { formatPhoneNumber, isFormEmpty } from '../utils/form'
 import USA_STATES from '../assets/usa_states.json'
 import $ from 'jquery'
-import { isEmpty } from 'lodash-es'
+// import { isEmpty } from 'lodash-es'
+// import { useSelector } from 'react-redux'
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { useSelector } from 'react-redux'
 
 export default function PaymentForm({
@@ -22,9 +24,13 @@ export default function PaymentForm({
   line2,
   city,
   phoneNumber,
-  billingAddress,
-  onBtnCheck,
+  paymentFormValues,
+  // phoneNumber,
+  // touched,
+  // billingAddress,
+  // onBtnCheck,
   setShowEditPayment = () => {},
+  props,
 }) {
   const disableSubmit =
     isFormEmpty({
@@ -35,9 +41,10 @@ export default function PaymentForm({
       cvc,
     }) || !isFormEmpty({ ...errors })
   const [isMobile, setIsMobile] = useState(false)
-  const { address } = useSelector(({ runtime: { form: { address } } }) => ({
-    address,
-  }))
+  // const { address } = useSelector(({ runtime: { form: { address } } }) => ({
+  //   address,
+  // }))
+  const phoneForm = useRef('')
 
   // const [paymentInfo, setPaymentInfo] = useState([{
   //   name: address.fullName,
@@ -51,6 +58,11 @@ export default function PaymentForm({
     expirationYear: false,
     cvc,
   })
+  const [billingAddress, setBillingAddress] = useState(false)
+
+  const { payment } = useSelector(({ runtime: { form: { payment } } }) => ({
+    payment,
+  }))
 
   const onFocus = (e) => {
     setFocused({ ...focused, [e.target.name]: true })
@@ -97,6 +109,49 @@ export default function PaymentForm({
       window.removeEventListener('resize', handleResize)
     }
   })
+
+  const onBtnCheck = () => {
+    setBillingAddress((prevState) => !prevState)
+    if (!billingAddress) {
+      // console.log(paymentFormValues)
+
+      name = payment && payment.fullName
+      state = payment && payment.state
+      zipCode = payment && payment.zipCode
+      line1 = payment && payment.line1
+      line2 = payment && payment.line2
+      city = payment && payment.city
+      phoneNumber = payment && formatPhoneNumber(payment.phoneNumber)
+
+      errors.name = null
+      errors.state = null
+      errors.zipCode = null
+      errors.line1 = null
+      errors.line2 = null
+      errors.city = null
+      errors.phoneNumber = null
+      console.log(errors)
+    } else {
+      // paymentFormValues.name = ''
+      // paymentFormValues.state = ''
+      // paymentFormValues.zipCode = ''
+      // paymentFormValues.line1 = ''
+      // paymentFormValues.line2 = ''
+      // paymentFormValues.city = ''
+      // paymentFormValues.phoneNumber = ''
+    }
+  }
+
+  const formatPhone = (e) => {
+    let num = e.target.value
+    if (num) {
+      const newPhoneNumber = parsePhoneNumberFromString(num, 'US')
+      const format = newPhoneNumber.formatNational()
+      phoneForm.current = format
+      e.target.value = phoneForm.current
+    } else e.target.value = phoneForm.current
+    // parsePhoneNumberFromString
+  }
 
   return (
     <div style={{ width: isMobile ? '-webkit-fill-available' : '' }}>
@@ -320,7 +375,7 @@ export default function PaymentForm({
                               className="form-control"
                               type="name"
                               name="name"
-                              value={name || ''}
+                              // value={name || ''}
                               onChange={handleChange}
                               onFocus={onFocus}
                             />
@@ -334,7 +389,7 @@ export default function PaymentForm({
                                 <Form.Control
                                   className="form-control"
                                   as="select"
-                                  value={state || ''}
+                                  // value={state || ''}
                                   name="state"
                                   onChange={handleChange}
                                   placeholder="Select State"
@@ -372,7 +427,7 @@ export default function PaymentForm({
                                   }}
                                   name="zipCode"
                                   type="zip code"
-                                  value={zipCode || ''}
+                                  // value={zipCode || ''}
                                   maxLength={6}
                                 />
                                 {zipCode &&
@@ -390,7 +445,7 @@ export default function PaymentForm({
                                   type="name"
                                   name="line1"
                                   onChange={handleChange}
-                                  value={line1 || ''}
+                                  // value={line1 || ''}
                                   onFocus={onFocus}
                                 />
                                 {renderInlineValidationError('line1')}
@@ -404,7 +459,7 @@ export default function PaymentForm({
                                 <Form.Control
                                   className="form-control"
                                   type="name"
-                                  value={line2 || ''}
+                                  // value={line2 || ''}
                                   name="line2"
                                   onChange={handleChange}
                                   onFocus={onFocus}
@@ -421,7 +476,7 @@ export default function PaymentForm({
                                   className="form-control"
                                   type="city"
                                   name="city"
-                                  value={city || ''}
+                                  // value={city || ''}
                                   onChange={handleChange}
                                   onFocus={onFocus}
                                 />
@@ -443,10 +498,14 @@ export default function PaymentForm({
                                       handleChange(e)
                                     }
                                   }}
-                                  value={formatPhoneNumber(phoneNumber) || ''}
+                                  onBlur={(e) => formatPhone(e)}
+                                  // value={formatPhoneNumber(phoneNumber) || ''}
                                   name="phoneNumber"
-                                  maxLength={13}
+                                  maxLength={10}
                                   onFocus={onFocus}
+                                  // isInvalid={
+                                  //   touched.phoneNumber && !!errors.phoneNumber
+                                  // }
                                 />
                                 {renderInlineValidationError('phoneNumber')}
                               </Form.Group>
@@ -625,7 +684,7 @@ export default function PaymentForm({
                                     type="name"
                                     name="name"
                                     // value={name || ''}
-                                    value={name || ''}
+                                    // value={name || ''}
                                     onChange={handleChange}
                                     onFocus={onFocus}
                                   />
@@ -638,7 +697,7 @@ export default function PaymentForm({
                                   <Form.Control
                                     className="form-control-md"
                                     as="select"
-                                    value={state || ''}
+                                    // value={state || ''}
                                     name="state"
                                     onChange={handleChange}
                                     placeholder="Select State"
@@ -678,7 +737,7 @@ export default function PaymentForm({
                                       }
                                     }}
                                     type="zip code"
-                                    value={zipCode || ''}
+                                    // value={zipCode || ''}
                                     name="zipCode"
                                     maxLength={6}
                                   />
@@ -697,7 +756,7 @@ export default function PaymentForm({
                                     className="form-control-lg"
                                     onChange={handleChange}
                                     type="name"
-                                    value={line1 || ''}
+                                    // value={line1 || ''}
                                     name="line1"
                                     onFocus={onFocus}
                                   />
@@ -711,7 +770,7 @@ export default function PaymentForm({
                                     className="form-control-md"
                                     type="city"
                                     name="city"
-                                    value={city || ''}
+                                    // value={city || ''}
                                     onChange={handleChange}
                                     onFocus={onFocus}
                                   />
@@ -732,10 +791,15 @@ export default function PaymentForm({
                                         handleChange(e)
                                       }
                                     }}
-                                    value={formatPhoneNumber(phoneNumber) || ''}
+                                    onBlur={(e) => formatPhone(e)}
+                                    // value={formatPhoneNumber(phoneNumber) || ''}
                                     name="phoneNumber"
-                                    maxLength={13}
+                                    maxLength={10}
                                     onFocus={onFocus}
+                                    // isInvalid={
+                                    //   touched.phoneNumber &&
+                                    //   !!errors.phoneNumber
+                                    // }
                                   />
                                   {renderInlineValidationError('phoneNumber')}
                                 </Form.Group>
@@ -748,7 +812,7 @@ export default function PaymentForm({
                                   <Form.Control
                                     className="form-control-lg"
                                     type="name"
-                                    value={line2 || ''}
+                                    // value={line2 || ''}
                                     name="line2"
                                     onChange={handleChange}
                                     onFocus={onFocus}
