@@ -143,13 +143,14 @@ export default function PaymentForm({
   }
 
   const formatPhone = (e) => {
-    let num = e.target.value
-    if (num) {
-      const newPhoneNumber = parsePhoneNumberFromString(num, 'US')
-      const format = newPhoneNumber.formatNational()
-      phoneForm.current = format
-      e.target.value = phoneForm.current
-    } else e.target.value = phoneForm.current
+    e.target.value = formatPhoneNumber(phoneNumber)
+    // let num = e.target.value
+    // if (num) {
+    //   const newPhoneNumber = parsePhoneNumberFromString(num, 'US')
+    //   const format = newPhoneNumber.formatNational()
+    //   phoneForm.current = format
+    //   e.target.value = phoneForm.current
+    // } else e.target.value = phoneForm.current
     // parsePhoneNumberFromString
   }
 
