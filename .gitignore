@@ -116,7 +116,7 @@ yarn.lock
 
 build
 
-package-lock.js
+package-lock.json
 
 #amplify
 amplify/\#current-cloud-backend
