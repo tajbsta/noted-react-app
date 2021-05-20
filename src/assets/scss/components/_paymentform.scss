@@ -16,6 +16,12 @@
   }
 }
 
+@media screen and (max-width: 411px) {
+  label {
+    width: 115px;
+  }
+}
+
 #PaymentForm,
 #Payment {
   .form-label {
