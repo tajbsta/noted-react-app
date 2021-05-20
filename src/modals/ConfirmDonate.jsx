@@ -10,7 +10,7 @@ export default function ConfirmDonate(props) {
   const dispatch = useDispatch();
   const { item } = props;
   const [isMobile, setIsMobile] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const { cartItems } = useSelector(({ cart: { items: cartItems } }) => ({
     cartItems,
@@ -95,7 +95,7 @@ export default function ConfirmDonate(props) {
 
         <div className='button-group'>
           <Button className='btn-donate' onClick={onConfirm} disabled={loading}>
-            {loading ? RenderLoadingSpinner() : 'Yes, Donate it!'}
+            {loading && RenderLoadingSpinner()} Yes, Donate it!
           </Button>
           <Button className='btn-dont' onClick={props.onHide}>
             Cancel
