@@ -1,69 +1,67 @@
-import React, { useEffect, useState } from 'react';
-import { ProgressBar } from 'react-bootstrap';
-import { Frown, Plus } from 'react-feather';
-import ProductCard from '../../components/ProductCard';
-import PickUpConfirmed from '../../components/PickUpConfirmed';
-import PickUpCancelled from '../../components/PickUpCancelled';
-import PickUpDetails from './components/PickUpDetails';
-import { useSelector } from 'react-redux';
-import { get, isEmpty } from 'lodash';
-import $ from 'jquery';
-import { updateOrders } from '../../actions/auth.action';
-import { useHistory, useParams } from 'react-router';
-import Row from '../../components/Row';
-import { RETURNABLE } from '../../constants/actions/runtime';
-import { scrollToTop } from '../../utils/window';
-import ModifyCheckoutCard from './components/ModifyCheckoutCard';
-import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
-import SizeGuideModal from '../../modals/SizeGuideModal';
-import CancelOrderModal from '../../modals/CancelOrderModal';
-import { cancelOrder, getOrder } from '../../utils/orderApi';
-import { getUserId } from '../../utils/auth';
-import { showError, showSuccess } from '../../library/notifications.library';
-import { orderErrors } from '../../library/errors.library';
+import React, { useEffect, useState } from 'react'
+import { ProgressBar } from 'react-bootstrap'
+import { Frown, Plus } from 'react-feather'
+import ProductCard from '../../components/ProductCard'
+import PickUpConfirmed from '../../components/PickUpConfirmed'
+import PickUpCancelled from '../../components/PickUpCancelled'
+import PickUpDetails from './components/PickUpDetails'
+import { get } from 'lodash'
+import $ from 'jquery'
+import { useParams } from 'react-router'
+import Row from '../../components/Row'
+// import { RETURNABLE } from '../../constants/actions/runtime'
+import { scrollToTop } from '../../utils/window'
+import ModifyCheckoutCard from './components/ModifyCheckoutCard'
+import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard'
+import SizeGuideModal from '../../modals/SizeGuideModal'
+import CancelOrderModal from '../../modals/CancelOrderModal'
+import { cancelOrder, getOrder } from '../../utils/orderApi'
+import { getUserId } from '../../utils/auth'
+import { showError, showSuccess } from '../../library/notifications.library'
+import { orderErrors } from '../../library/errors.library'
 
 function ViewOrderPage() {
-  const [confirmed, setConfirmed] = useState(false);
-  const [cancelled, setCancelled] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
-  const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [orderLoading, setOrderLoading] = useState(false);
-  const [order, setOrder] = useState(false);
-  const [fetchingOrders, setFetchingOrders] = useState(false);
-  const { id: orderId } = useParams();
-  const [products, setProducts] = useState([]);
-  const [originalProducts, setOriginalProducts] = useState([]);
+  const [confirmed, setConfirmed] = useState(false)
+  const [cancelled, setCancelled] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false)
+  const [showCancelOrderModal, setShowCancelOrderModal] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [orderLoading, setOrderLoading] = useState(false)
+  const [order, setOrder] = useState(false)
+  // const [fetchingOrders, setFetchingOrders] = useState(false)
+  const { id: orderId } = useParams()
+  const [products, setProducts] = useState([])
+  const [originalProducts, setOriginalProducts] = useState([])
 
   const loadOrder = async () => {
-    setOrderLoading(true);
+    setOrderLoading(true)
     try {
-      const data = await getOrder(orderId);
-      setProducts(get(data, 'orderItems', []));
-      setOriginalProducts(get(data, 'orderItems', []));
-      setOrder(data);
-      setOrderLoading(false);
+      const data = await getOrder(orderId)
+      setProducts(get(data, 'orderItems', []))
+      setOriginalProducts(get(data, 'orderItems', []))
+      setOrder(data)
+      setOrderLoading(false)
     } catch (error) {
-      setOrderLoading(false);
-      showError({ message: 'Error loading order' });
+      setOrderLoading(false)
+      showError({ message: 'Error loading order' })
     }
-  };
+  }
 
-  const orderDate = get(order, 'pickupDate', '');
-  const orderTime = get(order, 'pickupTime', '');
+  const orderDate = get(order, 'pickupDate', '')
+  const orderTime = get(order, 'pickupTime', '')
 
   useEffect(() => {
-    loadOrder();
-  }, []);
+    loadOrder()
+  }, [])
 
   const ConfirmCancellation = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const userId = await getUserId();
-      await cancelOrder(userId, orderId);
-      setShowCancelOrderModal(false);
-      setLoading(false);
+      const userId = await getUserId()
+      await cancelOrder(userId, orderId)
+      setShowCancelOrderModal(false)
+      setLoading(false)
       showSuccess({
         message: (
           <div>
@@ -71,61 +69,61 @@ function ViewOrderPage() {
             &nbsp;&nbsp;Order cancelled successfully!
           </div>
         ),
-      });
-      setCancelled(true);
+      })
+      setCancelled(true)
     } catch (error) {
-      setShowCancelOrderModal(false);
-      setLoading(false);
+      setShowCancelOrderModal(false)
+      setLoading(false)
       showError({
         message: get(
           orderErrors.find(
-            ({ details }) => details === error.response.data.details
+            ({ details }) => details === error.response.data.details,
           ),
           'message',
-          'Cannot cancel order at this time'
+          'Cannot cancel order at this time',
         ),
-      });
+      })
     }
-  };
+  }
 
   const initiateCancelOrder = () => {
-    setShowCancelOrderModal(true);
-  };
+    setShowCancelOrderModal(true)
+  }
 
   const removeCancelOrderModal = () => {
-    setShowCancelOrderModal(false);
-  };
+    setShowCancelOrderModal(false)
+  }
 
   useEffect(() => {
-    const platform = window.navigator.platform;
-    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+    const platform = window.navigator.platform
+    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE']
 
     if (windowsPlatforms.indexOf(platform) !== -1) {
       // Windows 10 Chrome
-      $('.btn-confirm').css('padding-top', '10px');
+      $('.btn-confirm').css('padding-top', '10px')
     }
-  }, []);
+  }, [])
 
   const hasModification = () => {
     /**
      * check for changes here
      */
-    const productsIds = products.map((product) => get(product, '_id', ''));
+    const productsIds = products.map((product) => get(product, '_id', ''))
     const originalProductsIds = originalProducts.map((product) =>
-      get(product, '_id', '')
-    );
+      get(product, '_id', ''),
+    )
     const consolidation = originalProductsIds.filter((product) =>
-      productsIds.includes(product)
-    );
+      productsIds.includes(product),
+    )
 
     if (consolidation.length !== originalProductsIds.length) {
       /**
        * change in products detected
        */
-      return true;
+      return true
     }
-    return false;
-  };
+    return false
+  }
   // const scheduledReturn = hasModifications
   //   ? orderInMemory
   //   : scheduledReturns.find(({ id }) => id === scheduledReturnId);
@@ -146,34 +144,34 @@ function ViewOrderPage() {
   // });
 
   useEffect(() => {
-    scrollToTop();
-  }, []);
+    scrollToTop()
+  }, [])
 
   useEffect(() => {
     function handleResize() {
-      setIsMobile(window.innerWidth <= 991);
+      setIsMobile(window.innerWidth <= 991)
     }
-    handleResize();
-    window.addEventListener('resize', handleResize);
+    handleResize()
+    window.addEventListener('resize', handleResize)
     return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
+      window.removeEventListener('resize', handleResize)
+    }
+  })
 
   const removeProduct = (product) => {
     if (products.length !== 1) {
-      const { _id: productId } = product;
+      const { _id: productId } = product
       /**
        * @function remove from current state items
        */
-      return setProducts([...products.filter(({ _id }) => productId !== _id)]);
+      return setProducts([...products.filter(({ _id }) => productId !== _id)])
     }
 
-    return setShowCancelOrderModal(true);
-  };
+    return setShowCancelOrderModal(true)
+  }
 
   return (
-    <div id='ViewOrderPage'>
+    <div id="ViewOrderPage">
       {isMobile && (
         <MobileModifyCheckoutCard
         // inReturn={inReturn}
@@ -186,20 +184,20 @@ function ViewOrderPage() {
         />
       )}
       <div className={`container ${isMobile ? 'mt-4' : 'mt-6'}`}>
-        <div className='row mobile-row'>
+        <div className="row mobile-row">
           <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed || cancelled ? (
               <div>
-                <h3 className='sofia-pro text-18 section-title'>
+                <h3 className="sofia-pro text-18 section-title">
                   Pick-up {cancelled ? 'cancelled' : 'confirmed'}
                 </h3>
-                <div className='confirmed-container'>
+                <div className="confirmed-container">
                   {cancelled ? <PickUpCancelled /> : <PickUpConfirmed />}
                 </div>
               </div>
             ) : (
-              <div className='mobile-checkout-col'>
+              <div className="mobile-checkout-col">
                 <PickUpDetails
                   // address={address}
                   // payment={payment}
@@ -208,32 +206,33 @@ function ViewOrderPage() {
               </div>
             )}
 
-            <div className='col desktop-col'>
-              <h3 className='sofia-pro products-return text-18 section-title'>
+            <div className="col desktop-col">
+              <h3 className="sofia-pro products-return text-18 section-title">
                 {cancelled
                   ? 'Your cancelled products'
                   : 'Your products to return'}
               </h3>
 
               {orderLoading && (
-                <ProgressBar animated striped now={80} className='mt-5 mb-5' />
+                <ProgressBar animated striped now={80} className="mt-5 mb-5" />
               )}
 
-              {products.map((product) => {
+              {products.map((product, index) => {
                 return (
                   <ProductCard
                     // orderId={orderId}
                     scannedItem={product}
-                    key={product.id}
+                    // key={product.id}
+                    key={index}
                     item={product}
                     selectable={false}
                     clickable={false}
                     removable={!confirmed}
                     onRemove={() => {
-                      removeProduct(product);
+                      removeProduct(product)
                     }}
                   />
-                );
+                )
               })}
             </div>
 
@@ -241,7 +240,7 @@ function ViewOrderPage() {
             {(!orderLoading && !!cancelled) ||
               (!orderLoading && !confirmed && (
                 <div
-                  className='card add-border scanned-item-card max-w-840 mb-3 p-0 btn mobile-view-add-col'
+                  className="card add-border scanned-item-card max-w-840 mb-3 p-0 btn mobile-view-add-col"
                   // onClick={() => {
                   //   /**
                   //    * @FUNCTION Show products like the one from dashboard
@@ -249,16 +248,16 @@ function ViewOrderPage() {
                   //   history.push('/edit-order', { scheduledReturnId });
                   // }}
                 >
-                  <div className='card-body pt-3 pb-3 p-0 m-0'>
-                    <Row className='add-row'>
-                      <div className='col-sm-1 product-img-container add-product-container'>
+                  <div className="card-body pt-3 pb-3 p-0 m-0">
+                    <Row className="add-row">
+                      <div className="col-sm-1 product-img-container add-product-container">
                         <Plus />
                       </div>
-                      <div className='col-sm-4 p-0 p-details m-add-product'>
+                      <div className="col-sm-4 p-0 p-details m-add-product">
                         <Row>
-                          <h3 className='add-title'>Add Products</h3>
+                          <h3 className="add-title">Add Products</h3>
                         </Row>
-                        <h3 className='add-product-info'>
+                        <h3 className="add-product-info">
                           (No extra cost if they fit in one box)
                         </h3>
                       </div>
@@ -268,12 +267,12 @@ function ViewOrderPage() {
               ))}
             {confirmed && (
               <>
-                <h3 className='sofia-pro miss-out section-title'>
+                <h3 className="sofia-pro miss-out section-title">
                   Don&apos;t miss out on other returns
                 </h3>
-                <div className='row align-items-center p-4 all-checkbox'>
-                  <input type='checkbox' />
-                  <h4 className='sofia-pro noted-purple ml-4 mb-0 p-0'>
+                <div className="row align-items-center p-4 all-checkbox">
+                  <input type="checkbox" />
+                  <h4 className="sofia-pro noted-purple ml-4 mb-0 p-0">
                     Add all
                   </h4>
                 </div>
@@ -284,7 +283,7 @@ function ViewOrderPage() {
           {/* RIGHT CARD */}
           {!isMobile && (
             <>
-              <div className='col-1'>
+              <div className="col-1">
                 <ModifyCheckoutCard
                   ConfirmCancellation={ConfirmCancellation}
                   showCancelOrderModal={showCancelOrderModal}
@@ -315,50 +314,50 @@ function ViewOrderPage() {
       {/* MOBILE BILLING CARD */}
       {isMobile && (
         <>
-          <div className='mobile-billing-order container'>
-            <div className='m-billing-container mt-5'>
+          <div className="mobile-billing-order container">
+            <div className="m-billing-container mt-5">
               <h4>Billing</h4>
             </div>
-            <div className='card m-billing-card shadow-sm mt-4'>
-              <div className='card-body'>
-                <h4 className='m-size-description'>
+            <div className="card m-billing-card shadow-sm mt-4">
+              <div className="card-body">
+                <h4 className="m-size-description">
                   All products need to fit in a 50” x 30” x 20” box
                 </h4>
                 <button
-                  className='btn m-btn-info'
+                  className="btn m-btn-info"
                   onClick={() => setModalSizeGuideShow(true)}
                 >
                   More info
                 </button>
                 <hr style={{ marginBottom: '18px', marginTop: '8px' }} />
-                <div className='row'>
-                  <div className='col m-label'>Return total cost</div>
-                  <div className='col m-value'>$9.99</div>
+                <div className="row">
+                  <div className="col m-label">Return total cost</div>
+                  <div className="col m-value">$9.99</div>
                 </div>
-                <div className='row'>
-                  <div className='col m-label'>Taxes</div>
-                  <div className='col m-value'>$0.00</div>
+                <div className="row">
+                  <div className="col m-label">Taxes</div>
+                  <div className="col m-value">$0.00</div>
                 </div>
                 <hr style={{ marginBottom: '21px', marginTop: '8px' }} />
-                <div className='row'>
-                  <div className='col m-total-label'>Total paid</div>
-                  <div className='col m-total-value'>$9.99</div>
+                <div className="row">
+                  <div className="col m-total-label">Total paid</div>
+                  <div className="col m-total-value">$9.99</div>
                 </div>
                 {!cancelled && (
                   <>
                     <hr style={{ marginBottom: '21px', marginTop: '21px' }} />
-                    <div className='m-cancel-container'>
+                    <div className="m-cancel-container">
                       <button
-                        className='btn m-btn-cancel-order'
+                        className="btn m-btn-cancel-order"
                         onClick={initiateCancelOrder}
                       >
                         Cancel order
                       </button>
-                      <h4 className='m-cancel-sub'>
+                      <h4 className="m-cancel-sub">
                         Canceling pick-ups less than 24h before schedule will
                         result in a $5 penalty
                       </h4>
-                      <a className='m-info-link'>More info</a>
+                      <a className="m-info-link">More info</a>
                     </div>
                   </>
                 )}
@@ -382,7 +381,7 @@ function ViewOrderPage() {
         </>
       )}
     </div>
-  );
+  )
 }
 
-export default ViewOrderPage;
+export default ViewOrderPage
