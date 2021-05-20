@@ -55,7 +55,11 @@ export default function ConfirmDonate(props) {
 
   const RenderLoadingSpinner = () => {
     return (
-      <Spinner animation='border' size='sm' className='spinner btn-spinner' />
+      <Spinner
+        animation='border'
+        size='sm'
+        className='spinner btn-spinner mr-2'
+      />
     );
   };
 

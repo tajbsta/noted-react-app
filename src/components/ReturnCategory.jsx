@@ -88,6 +88,10 @@ export default function ReturnCategory({
     }
   };
 
+  useEffect(() => {
+    fetchItems();
+  }, [newDonations]);
+
   const getNextPageToken = () => {
     const copyItems = [...items];
     const lastItem = copyItems.pop();
@@ -138,11 +142,6 @@ export default function ReturnCategory({
       items: items,
     });
   };
-
-  useEffect(() => {
-    fetchItems();
-    console.log(category);
-  }, [newDonations]);
 
   useEffect(() => {
     updateSelectedItems({
