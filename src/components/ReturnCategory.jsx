@@ -21,9 +21,13 @@ export default function ReturnCategory({
   width,
   percent,
 }) {
-  const { cartItems } = useSelector(({ cart: { items: cartItems } }) => ({
-    cartItems,
-  }));
+  const { cartItems, newDonations } = useSelector(
+    ({ cart: { items: cartItems }, products: { newDonations } }) => ({
+      cartItems,
+      newDonations,
+    })
+  );
+
   const { push } = useHistory();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -84,6 +88,10 @@ export default function ReturnCategory({
     }
   };
 
+  useEffect(() => {
+    fetchItems();
+  }, [newDonations]);
+
   const getNextPageToken = () => {
     const copyItems = [...items];
     const lastItem = copyItems.pop();
@@ -134,10 +142,6 @@ export default function ReturnCategory({
       items: items,
     });
   };
-
-  useEffect(() => {
-    fetchItems();
-  }, []);
 
   useEffect(() => {
     updateSelectedItems({
