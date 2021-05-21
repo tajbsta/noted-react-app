@@ -64,7 +64,7 @@ export const ScheduledReturnItem = ({ order }) => {
     const formattedPrice = price.toFixed(2);
 
     return (
-      <div id='ScheduledReturnProduct'>
+      <div id='ScheduledReturnProduct' key={item._id}>
         <Row className='mt-4'>
           <Col className='sched-product-col col-9'>
             <div className='sched-img-col'>

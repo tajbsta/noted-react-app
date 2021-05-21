@@ -478,6 +478,15 @@
         transform: scale(1);
       }
     }
+
+    .btn-show-more {
+      margin-top: 15px;
+      box-shadow: none;
+
+      &:hover {
+        color: #b079da;
+      }
+    }
   }
 
   // ACCORDION

@@ -26,10 +26,10 @@ export const createOrder = async (userId, order) => {
 };
 
 // Get Orders
-export const getOrders = async (userId, type, size = 5, nextToken = null) => {
+export const getOrders = async (userId, type, nextToken = null) => {
   const axios = await api();
 
-  let url = `/${userId}/orders?type=${type}&size=${size}`;
+  let url = `/${userId}/orders?type=${type}`;
 
   if (nextToken) {
     url += `&lastEvaluatedKey=${nextToken}`;

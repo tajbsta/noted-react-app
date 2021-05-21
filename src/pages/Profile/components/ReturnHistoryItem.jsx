@@ -70,7 +70,7 @@ export const ReturnHistoryItem = ({ order }) => {
     const formattedPrice = price.toFixed(2);
 
     return (
-      <div id='ReturnHistoryItem'>
+      <div id='ReturnHistoryItem' key={item._id}>
         <Row className='mt-4'>
           <Col className='sched-product-col col-9'>
             <div className='sched-img-col'>
