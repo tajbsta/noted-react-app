@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Spinner } from 'react-bootstrap';
+import { CheckCircle } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCartItems } from '../actions/cart.action';
 import { addToNewDonations } from '../actions/products.action';
 import { DONATE } from '../constants/actions/runtime';
 import { setCategory } from '../utils/productsApi';
+import { showError, showSuccess } from '../library/notifications.library';
 
 export default function ConfirmDonate(props) {
   const dispatch = useDispatch();
@@ -43,11 +45,20 @@ export default function ConfirmDonate(props) {
         dispatch(setCartItems([...cartItems, item]));
         dispatch(addToNewDonations(item));
       }
+      setLoading(false);
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Success! Product is now under Donate!
+            </h4>
+          </div>
+        ),
+      });
     } catch (error) {
-      /**
-       * We need a show error here,
-       * @question should hide or throw error with modal on
-       */
+      console.log(error);
+      showError({ message: 'An error occurred. Please try again later.' });
     } finally {
       setLoading(false);
     }
