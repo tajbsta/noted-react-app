@@ -10,6 +10,14 @@ export const getPickupSlots = async (userId, date) => {
   return res.data.data;
 };
 
+// Get Pricing
+export const getOrderPricing = async (productIds, orderId) => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+  const res = await axios.post(`/${userId}/orders/payment/pricing`, { productIds, orderId });
+  return res.data.data;
+};
+
 // Create Order
 export const createOrder = async (userId, order) => {
   const axios = await api();

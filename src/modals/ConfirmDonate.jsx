@@ -45,7 +45,6 @@ export default function ConfirmDonate(props) {
         dispatch(setCartItems([...cartItems, item]));
         dispatch(addToNewDonations(item));
       }
-      setLoading(false);
       showSuccess({
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
