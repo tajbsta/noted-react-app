@@ -57,7 +57,12 @@ export default function ProductCardHover({ show, item, editproductform }) {
 
   const renderRating = () => {
     return (
-      <Row className='container-3 text-left-3'>
+      <Row
+        className='container-3 text-left-3'
+        style={{
+          paddingLeft: 20,
+        }}
+      >
         <Col
           xs={2}
           style={{
