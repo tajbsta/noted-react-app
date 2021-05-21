@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCartItems } from '../actions/cart.action';
+import { addToNewDonations } from '../actions/products.action';
 import { DONATE } from '../constants/actions/runtime';
 import { setCategory } from '../utils/productsApi';
 
@@ -39,7 +40,8 @@ export default function ConfirmDonate(props) {
         /**
          * set cart items
          */
-        dispatch(setCartItems([...cartItems, { transferred: true, ...item }]));
+        dispatch(setCartItems([...cartItems, item]));
+        dispatch(addToNewDonations(item));
       }
     } catch (error) {
       /**
@@ -49,6 +51,16 @@ export default function ConfirmDonate(props) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const RenderLoadingSpinner = () => {
+    return (
+      <Spinner
+        animation='border'
+        size='sm'
+        className='spinner btn-spinner mr-2'
+      />
+    );
   };
 
   return (
@@ -87,7 +99,7 @@ export default function ConfirmDonate(props) {
 
         <div className='button-group'>
           <Button className='btn-donate' onClick={onConfirm} disabled={loading}>
-            Yes, Donate it!
+            {loading && RenderLoadingSpinner()} Yes, Donate it!
           </Button>
           <Button className='btn-dont' onClick={props.onHide}>
             Cancel

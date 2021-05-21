@@ -243,7 +243,7 @@ export default function DashboardPage() {
                         typeTitle='Last Call!'
                         userId={userId}
                         size={5}
-                        category={LAST_CALL && NOT_ELIGIBLE}
+                        category={`${LAST_CALL},${NOT_ELIGIBLE}`}
                         updateSelectedItems={updateSelectedItems}
                         selectedProducts={selectedProducts.LAST_CALL}
                       />

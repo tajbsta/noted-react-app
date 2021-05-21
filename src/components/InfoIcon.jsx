@@ -39,7 +39,7 @@ const InfoIcon = (props) => {
       ) : (
         <div className='info-icon'>
           <OverlayTrigger
-            trigger='hover'
+            trigger={['hover', 'hover']}
             className='info-icon'
             placement={pos}
             delay={{ show: 250, hide: 400 }}

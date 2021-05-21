@@ -138,6 +138,7 @@ function ProductCard({
 
   const isDonate = get(item, 'category', '') === 'DONATE';
   const isNotEligible = get(item, 'category', '') === 'NOT_ELIGIBLE';
+  const isLastCall = get(item, 'category', '') === 'LAST_CALL';
 
   const { handleChange, values, setFieldValue, errors } = useFormik({
     initialValues: {
@@ -290,7 +291,10 @@ function ProductCard({
                             <div
                               className='sofia-pro mobile-limit'
                               style={{
-                                color: isNotEligible ? 'red' : '#8B888C',
+                                color:
+                                  isNotEligible || isLastCall
+                                    ? 'red'
+                                    : '#8B888C',
                               }}
                             >
                               {daysLeft} {daysLeft == 1 ? 'day' : 'days'} left
@@ -482,7 +486,7 @@ function ProductCard({
                   <div
                     className='col-sm-6 sofia-pro return-time-left'
                     style={{
-                      color: isNotEligible ? 'red' : '#8B888C',
+                      color: isNotEligible || isLastCall ? 'red' : '#8B888C',
                     }}
                   >
                     {daysLeft} {daysLeft == 1 ? 'day' : 'days'} left
