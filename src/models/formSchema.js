@@ -133,10 +133,10 @@ export const paymentAddressSchema = Yup.object({
     .min(3, 'Invalid card security number')
     .required('Line 2 is required'),
   name: Yup.string().required('Full Name is required'),
-  phoneNumber: Yup.string().matches(
-    /^(\d{3})(\d{3})(\d{4})$/,
-    'Not a valid phone number',
-  ),
+  phoneNumber: Yup.string()
+    .required('Phone is required')
+    .matches(/^(\d{3})(\d{3})(\d{4})$/, 'Not a valid phone number')
+    .max(10, 'Invalid Phone'),
   line1: Yup.string().required('Address line 1 is required'),
   city: Yup.string().required('City is required'),
   state: Yup.string().required('State is required'),
