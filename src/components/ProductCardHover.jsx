@@ -61,8 +61,6 @@ export default function ProductCardHover({ show, item, editproductform }) {
         <Col
           xs={2}
           style={{
-            display: 'flex',
-            alignItems: 'center',
             paddingLeft: 0,
           }}
         >
