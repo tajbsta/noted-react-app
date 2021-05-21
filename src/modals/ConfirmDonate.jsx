@@ -53,16 +53,6 @@ export default function ConfirmDonate(props) {
     }
   };
 
-  const RenderLoadingSpinner = () => {
-    return (
-      <Spinner
-        animation='border'
-        size='sm'
-        className='spinner btn-spinner mr-2'
-      />
-    );
-  };
-
   return (
     <Modal
       {...props}
@@ -99,7 +89,14 @@ export default function ConfirmDonate(props) {
 
         <div className='button-group'>
           <Button className='btn-donate' onClick={onConfirm} disabled={loading}>
-            {loading && RenderLoadingSpinner()} Yes, Donate it!
+            {loading && (
+              <Spinner
+                animation='border'
+                size='sm'
+                className='spinner btn-spinner mr-2'
+              />
+            )}{' '}
+            Yes, Donate it!
           </Button>
           <Button className='btn-dont' onClick={props.onHide}>
             Cancel
