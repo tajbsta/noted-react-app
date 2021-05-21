@@ -142,7 +142,6 @@ export default function AddressForm({
                       name='state'
                       onChange={handleChange}
                       placeholder='Select State'
-                      defaultValue='null'
                       onFocus={onFocus}
                     >
                       {[
@@ -338,7 +337,6 @@ export default function AddressForm({
                       name='state'
                       onChange={handleChange}
                       placeholder='Select State'
-                      defaultValue='null'
                       onFocus={onFocus}
                     >
                       {[

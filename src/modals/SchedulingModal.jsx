@@ -7,8 +7,7 @@ import { getUserId } from '../utils/auth';
 import { isEmpty } from 'lodash-es';
 import { showError } from '../library/notifications.library';
 
-export default function SchedulingModal(props) {
-  const { form, onConfirm } = props;
+export default function SchedulingModal({ form, onConfirm, ...props }) {
   const [loading, setLoading] = useState(false);
   const [slots, setSlots] = useState({ AM: 0, PM: 2 });
 

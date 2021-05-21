@@ -192,7 +192,7 @@ export default function PaymentForm({
                               className='form-control'
                               type='name'
                               name='fullName'
-                              value={fullName || ''}
+                              value={fullName}
                               onChange={handleChange}
                               onFocus={onFocus}
                             />
@@ -207,7 +207,7 @@ export default function PaymentForm({
                             <Form.Control
                               className='form-control'
                               name='cardNumber'
-                              value={formatCardNumber(cardNumber) || ''}
+                              value={formatCardNumber(cardNumber)}
                               onChange={handleChange}
                               maxLength={20}
                               onFocus={onFocus}
@@ -228,7 +228,7 @@ export default function PaymentForm({
                                 className='form-control'
                                 name='expirationMonth'
                                 maxLength={2}
-                                value={expirationMonth || ''}
+                                value={expirationMonth}
                                 onChange={(e) => {
                                   const re = /^[0-9\b]+$/;
                                   if (
@@ -250,7 +250,7 @@ export default function PaymentForm({
                                 className='form-control'
                                 name='expirationYear'
                                 maxLength={2}
-                                value={expirationYear || ''}
+                                value={expirationYear}
                                 onChange={(e) => {
                                   const re = /^[0-9\b]+$/;
                                   if (
@@ -274,7 +274,7 @@ export default function PaymentForm({
                             <Form.Control
                               className='form-control'
                               name='cvc'
-                              value={cvc || ''}
+                              value={cvc}
                               onChange={(e) => {
                                 const re = /^[0-9\b]+$/;
                                 if (
@@ -357,7 +357,7 @@ export default function PaymentForm({
                               className='form-control'
                               type='name'
                               name='name'
-                              // value={name || ''}
+                              value={name}
                               onChange={handleChange}
                               onFocus={onFocus}
                             />
@@ -371,11 +371,10 @@ export default function PaymentForm({
                                 <Form.Control
                                   className='form-control'
                                   as='select'
-                                  // value={state || ''}
+                                  value={state}
                                   name='state'
                                   onChange={handleChange}
                                   placeholder='Select State'
-                                  defaultValue='null'
                                   onFocus={onFocus}
                                 >
                                   {[
@@ -409,7 +408,7 @@ export default function PaymentForm({
                                   }}
                                   name='zipCode'
                                   type='zip code'
-                                  // value={zipCode || ''}
+                                  value={zipCode}
                                   maxLength={6}
                                 />
                                 {zipCode &&
@@ -427,7 +426,7 @@ export default function PaymentForm({
                                   type='name'
                                   name='line1'
                                   onChange={handleChange}
-                                  // value={line1 || ''}
+                                  // value={line1}
                                   onFocus={onFocus}
                                 />
                                 {renderInlineValidationError('line1')}
@@ -441,7 +440,7 @@ export default function PaymentForm({
                                 <Form.Control
                                   className='form-control'
                                   type='name'
-                                  // value={line2 || ''}
+                                  value={line2}
                                   name='line2'
                                   onChange={handleChange}
                                   onFocus={onFocus}
@@ -458,7 +457,7 @@ export default function PaymentForm({
                                   className='form-control'
                                   type='city'
                                   name='city'
-                                  // value={city || ''}
+                                  value={city}
                                   onChange={handleChange}
                                   onFocus={onFocus}
                                 />
@@ -480,10 +479,9 @@ export default function PaymentForm({
                                       handleChange(e);
                                     }
                                   }}
-                                  onBlur={(e) => formatPhone(e)}
-                                  // value={formatPhoneNumber(phoneNumber) || ''}
+                                  value={formatPhoneNumber(phoneNumber)}
                                   name='phoneNumber'
-                                  maxLength={10}
+                                  maxLength={13}
                                   onFocus={onFocus}
                                   // isInvalid={
                                   //   touched.phoneNumber && !!errors.phoneNumber
@@ -526,7 +524,7 @@ export default function PaymentForm({
                               className='form-control-lg'
                               type='name'
                               name='fullName'
-                              value={fullName || ''}
+                              value={fullName}
                               onChange={handleChange}
                               onFocus={onFocus}
                             />
@@ -541,7 +539,7 @@ export default function PaymentForm({
                                 className='form-control-sm'
                                 name='expirationMonth'
                                 maxLength={2}
-                                value={expirationMonth || ''}
+                                value={expirationMonth}
                                 onChange={(e) => {
                                   const re = /^[0-9\b]+$/;
                                   if (
@@ -560,7 +558,7 @@ export default function PaymentForm({
                                 className='form-control-sm'
                                 name='expirationYear'
                                 maxLength={2}
-                                value={expirationYear || ''}
+                                value={expirationYear}
                                 onChange={(e) => {
                                   const re = /^[0-9\b]+$/;
                                   if (
@@ -585,7 +583,7 @@ export default function PaymentForm({
                             <Form.Control
                               className='form-control-lg'
                               name='cardNumber'
-                              value={formatCardNumber(cardNumber) || ''}
+                              value={formatCardNumber(cardNumber)}
                               onChange={handleChange}
                               maxLength={20}
                               onFocus={onFocus}
@@ -599,7 +597,7 @@ export default function PaymentForm({
                             <Form.Control
                               className='form-control-sm'
                               name='cvc'
-                              value={cvc || ''}
+                              value={cvc}
                               onChange={(e) => {
                                 const re = /^[0-9\b]+$/;
                                 if (
@@ -665,8 +663,7 @@ export default function PaymentForm({
                                     className='form-control-lg'
                                     type='name'
                                     name='name'
-                                    // value={name || ''}
-                                    // value={name || ''}
+                                    // value={name}
                                     onChange={handleChange}
                                     onFocus={onFocus}
                                   />
@@ -679,11 +676,10 @@ export default function PaymentForm({
                                   <Form.Control
                                     className='form-control-md'
                                     as='select'
-                                    // value={state || ''}
+                                    value={state}
                                     name='state'
                                     onChange={handleChange}
                                     placeholder='Select State'
-                                    defaultValue='null'
                                     onFocus={onFocus}
                                   >
                                     {[
@@ -719,7 +715,7 @@ export default function PaymentForm({
                                       }
                                     }}
                                     type='zip code'
-                                    // value={zipCode || ''}
+                                    value={zipCode}
                                     name='zipCode'
                                     maxLength={6}
                                   />
@@ -738,7 +734,7 @@ export default function PaymentForm({
                                     className='form-control-lg'
                                     onChange={handleChange}
                                     type='name'
-                                    // value={line1 || ''}
+                                    value={line1}
                                     name='line1'
                                     onFocus={onFocus}
                                   />
@@ -752,7 +748,7 @@ export default function PaymentForm({
                                     className='form-control-md'
                                     type='city'
                                     name='city'
-                                    // value={city || ''}
+                                    value={city}
                                     onChange={handleChange}
                                     onFocus={onFocus}
                                   />
@@ -773,10 +769,9 @@ export default function PaymentForm({
                                         handleChange(e);
                                       }
                                     }}
-                                    onBlur={(e) => formatPhone(e)}
-                                    // value={formatPhoneNumber(phoneNumber) || ''}
+                                    value={formatPhoneNumber(phoneNumber)}
                                     name='phoneNumber'
-                                    maxLength={10}
+                                    maxLength={13}
                                     onFocus={onFocus}
                                     // isInvalid={
                                     //   touched.phoneNumber &&
@@ -794,7 +789,7 @@ export default function PaymentForm({
                                   <Form.Control
                                     className='form-control-lg'
                                     type='name'
-                                    // value={line2 || ''}
+                                    value={line2}
                                     name='line2'
                                     onChange={handleChange}
                                     onFocus={onFocus}
