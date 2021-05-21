@@ -22,7 +22,7 @@ const morningTimeSlots = [
 ];
 
 export default function SchedulingModal(props) {
-  const { form, onConfirm } = props;
+  const { form, onConfirm = () => {} } = props;
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {

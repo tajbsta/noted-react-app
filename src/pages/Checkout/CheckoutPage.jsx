@@ -198,7 +198,7 @@ export default function CheckoutPage() {
                 <ProductCard
                   removable={!confirmed}
                   scannedItem={item}
-                  key={item.id}
+                  key={item._id}
                   item={item}
                   selectable={false}
                   clickable={false}
