@@ -296,6 +296,13 @@
   }
 
   // Your Products to return section
+  #productCard {
+    @media (max-width: 540px) {
+      margin-left: -12px;
+      margin-right: -12px;
+    }
+  }
+
   .products-return {
     margin-top: 39px;
   }

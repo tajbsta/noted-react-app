@@ -8,19 +8,36 @@ import { ReturnHistoryItem } from './ReturnHistoryItem';
 export default function ReturnHistory({ user }) {
   const [orders, setOrders] = useState([]);
   const [fetchingOrders, setFetchingOrders] = useState(false);
+  const [lastEvaluatedKey, setLastEvaluatedKey] = useState(null);
 
-  const getOrderHistory = async () => {
+  const getOrderHistory = async (nextPageKey = null) => {
     try {
       setFetchingOrders(true);
+      const currentOrders = orders;
       const userId = await getUserId();
-      const res = await getOrders(userId, 'history');
+      const res = await getOrders(userId, 'history', nextPageKey);
+      // console.log(res);
+      const newOrders = currentOrders.concat(res.orders);
 
       setFetchingOrders(false);
-      setOrders(res.orders);
-      // console.log(res.orders);
+      setOrders(newOrders);
+
+      if (res.lastEvaluatedKey) {
+        setLastEvaluatedKey(res.lastEvaluatedKey);
+      } else {
+        setLastEvaluatedKey(null);
+      }
     } catch (error) {
       // TODO: ERROR HANDLING
       console.log(error);
+    }
+  };
+
+  const showMore = () => {
+    if (lastEvaluatedKey) {
+      getOrderHistory(lastEvaluatedKey);
+    } else {
+      setLastEvaluatedKey(null);
     }
   };
 
@@ -60,11 +77,21 @@ export default function ReturnHistory({ user }) {
       {fetchingOrders && (
         <ProgressBar animated striped now={80} className='mt-4 m-3' />
       )}
-      {!fetchingOrders &&
-        orders.map((order) => (
-          <ReturnHistoryItem order={order} key={order._id} />
-        ))}
       {!fetchingOrders && isEmpty(orders) && renderEmptiness()}
+      {orders &&
+        orders.map((order) => (
+          <ReturnHistoryItem order={order} key={order.id} />
+        ))}
+      {lastEvaluatedKey && (
+        <div className='d-flex justify-content-center'>
+          <button
+            className='sofia-pro btn btn-show-more noted-purple'
+            onClick={showMore}
+          >
+            Show more
+          </button>
+        </div>
+      )}
     </div>
   );
 }

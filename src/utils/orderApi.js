@@ -26,10 +26,10 @@ export const createOrder = async (userId, order) => {
 };
 
 // Get Orders
-export const getOrders = async (userId, type, size = 5, nextToken = null) => {
+export const getOrders = async (userId, type, nextToken = null) => {
   const axios = await api();
 
-  let url = `/${userId}/orders?type=${type}&size=${size}`;
+  let url = `/${userId}/orders?type=${type}&size=5`;
 
   if (nextToken) {
     url += `&lastEvaluatedKey=${nextToken}`;
@@ -74,4 +74,33 @@ export const getActiveOrderCounts = async () => {
 export const cancelOrder = async (userId, orderId) => {
   const axios = await api();
   await axios.post(`/${userId}/orders/${orderId}/cancel`);
+};
+
+// Get Stripe publishable key
+export const getPublicKey = async () => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+
+  const res = await axios.get(`/${userId}/payment/config`);
+
+  return res.data.data;
+};
+
+// Save user payment method
+export const savePaymentMethod = async (paymentMethodId) => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+
+  await axios.post(`/${userId}/payment/save-payment-method`, { paymentMethodId });
+
+};
+
+// Get Stripe publishable key
+export const getUserPaymentMethods = async () => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+
+  const res = await axios.get(`/${userId}/payment/payment-methods`);
+
+  return res.data.data;
 };

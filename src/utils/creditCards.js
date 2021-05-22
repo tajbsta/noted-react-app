@@ -1,27 +1,52 @@
-import MastercardSvg from '../assets/img/mastercard.svg';
-import VisaCardSvg from '../assets/img/visa.svg';
+import VisaLogo from '../assets/cc/visa.svg';
+import MastercardLogo from '../assets/cc/mastercard.svg';
+import AmexLogo from '../assets/cc/amex.svg';
+import DiscoverLogo from '../assets/cc/discover.svg';
+import DinersLogo from '../assets/cc/diners-club.svg';
+import JCBLogo from '../assets/cc/jcb.svg';
+import UnionPayLogo from '../assets/cc/unionpay.svg';
+import UnknownLogo from '../assets/cc/unknowncard.png';
 
 const creditCardTypes = [
   {
-    filter: new RegExp('^5[1-5][0-9]{14}$'),
-    image: MastercardSvg,
-    text: 'Mastercard',
-  },
-  {
-    filter: new RegExp('^4'),
-    image: VisaCardSvg,
+    brand: 'visa',
+    image: VisaLogo,
     text: 'Visa',
   },
   {
-    filter: new RegExp('^2[2-7][0-9]{14}$'),
-    image: MastercardSvg,
+    brand: 'mastercard',
+    image: MastercardLogo,
     text: 'Mastercard',
   },
+  {
+    brand: 'amex',
+    image: AmexLogo,
+    text: 'American Express',
+  },
+  {
+    brand: 'discover',
+    image: DiscoverLogo,
+    text: 'Discover',
+  },
+  {
+    brand: 'diners',
+    image: DinersLogo,
+    text: 'Diner\'s Club',
+  },
+  {
+    brand: 'jcb',
+    image: JCBLogo,
+    text: 'JCB',
+  },
+  {
+    brand: 'unionpay',
+    image: UnionPayLogo,
+    text: 'UnionPay',
+  }
 ];
-
-export const getCreditCardType = (cardNumber) => {
-  const type = creditCardTypes.find(({ filter }) => {
-    return filter.test(cardNumber);
+export const getCreditCardType = (brand) => {
+  const type = creditCardTypes.find(card => {
+    return card.brand === brand
   });
   if (type) {
     return type;
@@ -30,7 +55,7 @@ export const getCreditCardType = (cardNumber) => {
    * return unknown if invalid
    */
   return {
-    image: '',
+    image: UnknownLogo,
     text: 'Unknown',
   };
 };

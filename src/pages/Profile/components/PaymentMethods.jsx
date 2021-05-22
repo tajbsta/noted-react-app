@@ -1,16 +1,13 @@
 import React from 'react';
-import { get, isEmpty } from 'lodash';
-import { useSelector } from 'react-redux';
+import { isEmpty } from 'lodash';
 import PaymentMethodItem from './PaymentMethodItem';
-import { nanoid } from 'nanoid';
 
-export default function PaymentMethods({ setIsEditing, setFieldValue }) {
-  const { paymentMethods = [] } = useSelector(
-    ({ auth: { paymentMethods } }) => ({
-      paymentMethods,
-    })
-  );
-
+export default function PaymentMethods({
+  addPaymentMethod,
+  paymentMethods,
+  defaultPaymentMethod,
+  setDefault,
+}) {
   return (
     <div id='PaymentMethods'>
       <div className='card-header'>
@@ -18,7 +15,7 @@ export default function PaymentMethods({ setIsEditing, setFieldValue }) {
           <h4 className='card-header-title'>Your saved cards</h4>
           <a
             className='btn btn-sm btn-primary btn-add-method'
-            onClick={() => setIsEditing(true)}
+            onClick={addPaymentMethod}
           >
             Add method
           </a>
@@ -37,24 +34,12 @@ export default function PaymentMethods({ setIsEditing, setFieldValue }) {
          * @ELEMENT payment methods here
          */}
         {[...paymentMethods].map((method) => {
-          const cardNumber = get(method, 'cardNumber', '');
-          const expirationMonth = get(method, 'expirationMonth', '');
-          const expirationYear = get(method, 'expirationYear', '');
-          const fullName = get(method, 'fullName', '');
-          const cvc = get(method, 'cvc', '');
-          const id = get(method, 'id', '');
           return (
             <PaymentMethodItem
-              id={id}
-              key={nanoid()}
-              fullName={fullName}
-              cardNumber={cardNumber}
-              expirationMonth={expirationMonth}
-              expirationYear={expirationYear}
-              type='Visa'
-              setFieldValue={setFieldValue}
-              setIsEditing={setIsEditing}
-              cvc={cvc}
+              key={method.id}
+              method={method}
+              isDefault={method.id === defaultPaymentMethod}
+              setAsDefault={setDefault}
             />
           );
         })}

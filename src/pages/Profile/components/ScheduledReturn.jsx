@@ -65,7 +65,7 @@ export default function ScheduledReturn({ user }) {
           )}
           {!fetchingOrders &&
             orders.map((order) => (
-              <ScheduledReturnItem order={order} key={order._id} />
+              <ScheduledReturnItem order={order} key={order.id} />
             ))}
           {!fetchingOrders && isEmpty(orders) && renderEmptiness()}
         </Collapsible>

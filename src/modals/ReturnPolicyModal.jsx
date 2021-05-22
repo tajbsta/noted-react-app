@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { get } from 'lodash-es';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import { RETURN_SCORES } from '../constants/returns/scores';
-import ReturnScore from '../components/ReturnsScore';
+import ReturnScore from '../components/Product/ReturnsScore';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 
 export default function ReturnPolicyModal(props) {

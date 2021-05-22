@@ -17,6 +17,7 @@ export default function UserInfo({ user: userData = {} }) {
   const {
     location: { pathname },
   } = useHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
   const [file, setFile] = useState('');
@@ -41,6 +42,14 @@ export default function UserInfo({ user: userData = {} }) {
       // TODO: ERROR HANDLING
       console.log(error);
     }
+  };
+
+  const redirectToSettings = () => {
+    history.push('/settings');
+  };
+
+  const redirectToProfile = () => {
+    history.push('/profile');
   };
 
   useEffect(() => {
@@ -310,14 +319,15 @@ export default function UserInfo({ user: userData = {} }) {
           </div>
         </div>
         <div className='mt-4 button-container d-flex justify-content-center'>
-          <button className='btn btn-lg btn-account'>
-            <a
-              style={{ color: '#570097' }}
-              className='btn-text'
-              href={pathname === '/profile' ? '/settings' : '/profile'}
-            >
+          <button
+            className='btn btn-lg btn-account'
+            onClick={
+              pathname === '/profile' ? redirectToSettings : redirectToProfile
+            }
+          >
+            <span style={{ color: '#570097' }} className='btn-text'>
               {pathname === '/profile' ? 'Account Settings' : 'Profile'}
-            </a>
+            </span>
           </button>
         </div>
       </Card>

@@ -19,7 +19,7 @@ export default function ScheduledCard({ orders }) {
 
       setFetchingOrderCount(false);
       setOrderCount(orderCount);
-      console.log(orderCount);
+      // console.log(orderCount);
     } catch (error) {
       // TODO: ERROR HANDLING
       console.log(error);

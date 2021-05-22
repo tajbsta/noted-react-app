@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Accordion, Card, Col, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
-import ReturnScore from '../../../components/ReturnsScore';
+import ReturnScore from '../../../components/Product/ReturnsScore';
 
 export const ReturnHistoryItem = ({ order }) => {
   const [eventKey, setEventKey] = useState('0');
@@ -33,6 +33,7 @@ export const ReturnHistoryItem = ({ order }) => {
   };
 
   const formattedOrderStatus = toTitleCase(order.status);
+  const formattedReturnValue = order.returnValue.toFixed(2);
 
   const renderAllScheduledItems = items.slice(0, 5).map((product) => {
     return (
@@ -70,8 +71,8 @@ export const ReturnHistoryItem = ({ order }) => {
     const formattedPrice = price.toFixed(2);
 
     return (
-      <div id='ReturnHistoryItem'>
-        <Row className='mt-4'>
+      <div id='ReturnHistoryItem' key={item._id}>
+        <Row className='mb-3'>
           <Col className='sched-product-col col-9'>
             <div className='sched-img-col'>
               <img
@@ -137,7 +138,7 @@ export const ReturnHistoryItem = ({ order }) => {
         defaultActiveKey='1'
         activeKey={activeKey}
       >
-        <Card className={`mt-4 shadow-sm ${isMobile ? 'ml-0' : 'ml-4 m-3'}`}>
+        <Card className={`mt-1 shadow-sm ${isMobile ? 'ml-0' : 'ml-4 m-3'}`}>
           <div className='card-body initial-card-body'>
             {isMobile && (
               <>
@@ -222,6 +223,11 @@ export const ReturnHistoryItem = ({ order }) => {
                         {formattedOrderStatus}
                       </div>
                     )}
+                    {formattedOrderStatus == 'Completed' && (
+                      <div className='title' style={{ color: 'green' }}>
+                        {formattedOrderStatus}
+                      </div>
+                    )}
                   </div>
                   <div className='product-img-col col-6'>
                     {eventKey === '0' && renderAllScheduledItems}
@@ -267,7 +273,7 @@ export const ReturnHistoryItem = ({ order }) => {
 
           <Accordion.Collapse eventKey={eventKey}>
             <div>
-              <div style={{ padding: '24px', paddingBottom: '39px' }}>
+              <div style={{ padding: '0px 24px 24px 24px' }}>
                 {items.map((item) => renderReturnHistoryItem(item))}
                 <hr className='hr-line' />
 
@@ -289,7 +295,7 @@ export const ReturnHistoryItem = ({ order }) => {
                     }}
                   >
                     <div className='total-items-container'>
-                      <h4>Total&nbsp;</h4>
+                      <h4>Total:&nbsp;</h4>
                       <h4 className='sched-value'>
                         {' '}
                         {get(items, 'length', 0)}{' '}
@@ -297,6 +303,20 @@ export const ReturnHistoryItem = ({ order }) => {
                       </h4>
                     </div>
                   </Row>
+
+                  {formattedReturnValue > 0 && (
+                    <Row
+                      style={{
+                        justifyContent: 'flex-end',
+                        marginRight: '0px',
+                      }}
+                    >
+                      <div className='total-items-container'>
+                        <h4>Potential Return Value:&nbsp;</h4>
+                        <h4 className='sched-value'>${formattedReturnValue}</h4>
+                      </div>
+                    </Row>
+                  )}
                 </div>
               </div>
             </div>

@@ -201,7 +201,6 @@ export default function Address({ user }) {
                         name='state'
                         onChange={handleChange}
                         placeholder='Select State'
-                        defaultValue='null'
                         {...noBorder}
                         onFocus={onFocus}
                       >
@@ -412,7 +411,6 @@ export default function Address({ user }) {
                         name='state'
                         onChange={handleChange}
                         placeholder='Select State'
-                        defaultValue='null'
                         {...noBorder}
                         onFocus={onFocus}
                       >
