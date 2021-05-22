@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import {
   updatePaymentInfo,
   updatePickUpDetails,
-  updateReturnAdddress,
+  updateReturnAddress,
 } from '../../../actions/runtime.action';
 import SchedulingModal from '../../../modals/SchedulingModal';
 import { get } from 'lodash-es';
@@ -170,7 +170,7 @@ export default function PickUpDetails({
 
   const saveAddress = async () => {
     dispatch(
-      updateReturnAdddress({
+      updateReturnAddress({
         formData: { ...addressFormValues, errors: addressFormErrors },
       })
     );
