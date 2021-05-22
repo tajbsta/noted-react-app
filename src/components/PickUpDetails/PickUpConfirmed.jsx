@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Row from './Row';
+import Row from '../Row';
 import $ from 'jquery';
 import { useHistory } from 'react-router';
 import { useSelector } from 'react-redux';
 import { get } from 'lodash-es';
 import moment from 'moment';
-import { scrollToTop } from '../utils/window';
-import { getOrder } from '../utils/orderApi';
+import { scrollToTop } from '../../utils/window';
+import { getOrder } from '../../utils/orderApi';
 import { isEmpty } from 'lodash';
 import { Spinner } from 'react-bootstrap';
 

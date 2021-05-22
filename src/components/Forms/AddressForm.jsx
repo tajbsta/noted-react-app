@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import USA_STATES from '../assets/usa_states.json';
-import { isFormEmpty, formatPhoneNumber } from '../utils/form';
+import USA_STATES from '../../assets/usa_states.json';
+import { isFormEmpty, formatPhoneNumber } from '../../utils/form';
 import $ from 'jquery';
-import AddPickupModal from '../modals/AddPickupModal';
+import AddPickupModal from '../../modals/AddPickupModal';
 
 export default function AddressForm({
   fullName = '',

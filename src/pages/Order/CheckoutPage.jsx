@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CheckoutCard from './checkout-components/CheckoutCard';
 import MobileCheckoutCard from './checkout-components/MobileCheckoutCard';
 import ProductCard from '../../components/ProductCard';
-import PickUpConfirmed from '../../components/PickUpConfirmed';
+import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
 import PickUpDetails from './checkout-components/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, isEmpty } from 'lodash';

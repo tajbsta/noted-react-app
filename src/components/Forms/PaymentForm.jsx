@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { formatPhoneNumber, isFormEmpty } from '../utils/form';
-import USA_STATES from '../assets/usa_states.json';
+import { formatPhoneNumber, isFormEmpty } from '../../utils/form';
+import USA_STATES from '../../assets/usa_states.json';
 import $ from 'jquery';
 import { useSelector } from 'react-redux';
 

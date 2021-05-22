@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import EmptyAddress from '../../../components/EmptyAddress';
-import EmptyPayment from '../../../components/EmptyPayment';
-import AddressForm from '../../../components/AddressForm';
-import PaymentForm from '../../../components/PaymentForm';
+import EmptyAddress from '../../../components/PickUpDetails/EmptyAddress';
+import EmptyPayment from '../../../components/PickUpDetails/EmptyPayment';
+import AddressForm from '../../../components/Forms/AddressForm';
+import PaymentForm from '../../../components/Forms/PaymentForm';
 import AddPickupModal from '../../../modals/AddPickupModal';
 import { useFormik } from 'formik';
 import { formatPhoneNumber, isFormEmpty } from '../../../utils/form';
