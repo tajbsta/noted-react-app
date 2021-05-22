@@ -11,11 +11,11 @@ import { unsetScan } from '../../actions/scans.action';
 import { searchScans } from '../../actions/runtime.action';
 import BrandLogoSvg from './BrandLogoSvg';
 import MobileNav from './MobileNav';
+import { showError } from '../../library/notifications.library';
 
-const Topnav = () => {
+export default function Topnav() {
   const history = useHistory();
   const dispatch = useDispatch();
-
   const pageLocation = history.location.pathname;
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -71,7 +71,8 @@ const Topnav = () => {
         }, 400);
       })
       .catch((error) => {
-        console.log('Error Signing Out: ', error);
+        // console.log('Error Signing Out: ', error);
+        showError({ message: 'Error Signing Out' });
       });
   };
 
@@ -217,6 +218,4 @@ const Topnav = () => {
       )}
     </Navbar>
   );
-};
-
-export default Topnav;
+}
