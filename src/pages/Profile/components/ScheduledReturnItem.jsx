@@ -53,6 +53,8 @@ export const ScheduledReturnItem = ({ order }) => {
     push('/order/' + order.id);
   };
 
+  const formattedReturnValue = order.returnValue.toFixed(2);
+
   const renderScheduledReturnItem = (item) => {
     const vendorName = get(item, 'vendor_name', '');
     const name = get(item, 'name', '');
@@ -287,6 +289,20 @@ export const ScheduledReturnItem = ({ order }) => {
                       </h4>
                     </div>
                   </Row>
+
+                  {formattedReturnValue > 0 && (
+                    <Row
+                      style={{
+                        justifyContent: 'flex-end',
+                        marginRight: '0px',
+                      }}
+                    >
+                      <div className='total-items-container'>
+                        <h4>Potential Return Value:&nbsp;</h4>
+                        <h4 className='sched-value'>${formattedReturnValue}</h4>
+                      </div>
+                    </Row>
+                  )}
 
                   <Row
                     className='cancel-action-container'

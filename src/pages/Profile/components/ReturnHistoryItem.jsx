@@ -33,6 +33,7 @@ export const ReturnHistoryItem = ({ order }) => {
   };
 
   const formattedOrderStatus = toTitleCase(order.status);
+  const formattedReturnValue = order.returnValue.toFixed(2);
 
   const renderAllScheduledItems = items.slice(0, 5).map((product) => {
     return (
@@ -302,6 +303,20 @@ export const ReturnHistoryItem = ({ order }) => {
                       </h4>
                     </div>
                   </Row>
+
+                  {formattedReturnValue > 0 && (
+                    <Row
+                      style={{
+                        justifyContent: 'flex-end',
+                        marginRight: '0px',
+                      }}
+                    >
+                      <div className='total-items-container'>
+                        <h4>Potential Return Value:&nbsp;</h4>
+                        <h4 className='sched-value'>${formattedReturnValue}</h4>
+                      </div>
+                    </Row>
+                  )}
                 </div>
               </div>
             </div>
