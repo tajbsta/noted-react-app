@@ -16,7 +16,6 @@ import moment from 'moment';
 import SchedulingModal from '../../../modals/SchedulingModal';
 import { updatePickUpDetails } from '../../../actions/runtime.action';
 import { useDispatch } from 'react-redux';
-import { Row } from 'react-bootstrap';
 
 export default function PickUpDetails({ address, payment, details }) {
   const dispatch = useDispatch();
