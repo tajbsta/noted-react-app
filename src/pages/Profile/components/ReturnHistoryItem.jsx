@@ -71,7 +71,7 @@ export const ReturnHistoryItem = ({ order }) => {
 
     return (
       <div id='ReturnHistoryItem' key={item._id}>
-        <Row className='mt-4'>
+        <Row>
           <Col className='sched-product-col col-9'>
             <div className='sched-img-col'>
               <img
@@ -137,7 +137,7 @@ export const ReturnHistoryItem = ({ order }) => {
         defaultActiveKey='1'
         activeKey={activeKey}
       >
-        <Card className={`mt-4 shadow-sm ${isMobile ? 'ml-0' : 'ml-4 m-3'}`}>
+        <Card className={`mt-1 shadow-sm ${isMobile ? 'ml-0' : 'ml-4 m-3'}`}>
           <div className='card-body initial-card-body'>
             {isMobile && (
               <>
@@ -222,6 +222,11 @@ export const ReturnHistoryItem = ({ order }) => {
                         {formattedOrderStatus}
                       </div>
                     )}
+                    {formattedOrderStatus == 'Completed' && (
+                      <div className='title' style={{ color: 'green' }}>
+                        {formattedOrderStatus}
+                      </div>
+                    )}
                   </div>
                   <div className='product-img-col col-6'>
                     {eventKey === '0' && renderAllScheduledItems}
@@ -267,7 +272,7 @@ export const ReturnHistoryItem = ({ order }) => {
 
           <Accordion.Collapse eventKey={eventKey}>
             <div>
-              <div style={{ padding: '24px', paddingBottom: '39px' }}>
+              <div style={{ padding: '0px 24px 24px 24px' }}>
                 {items.map((item) => renderReturnHistoryItem(item))}
                 <hr className='hr-line' />
 
@@ -289,7 +294,7 @@ export const ReturnHistoryItem = ({ order }) => {
                     }}
                   >
                     <div className='total-items-container'>
-                      <h4>Total&nbsp;</h4>
+                      <h4>Total:&nbsp;</h4>
                       <h4 className='sched-value'>
                         {' '}
                         {get(items, 'length', 0)}{' '}

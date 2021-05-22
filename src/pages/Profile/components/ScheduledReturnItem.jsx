@@ -65,7 +65,7 @@ export const ScheduledReturnItem = ({ order }) => {
 
     return (
       <div id='ScheduledReturnProduct' key={item._id}>
-        <Row className='mt-4'>
+        <Row>
           <Col className='sched-product-col col-9'>
             <div className='sched-img-col'>
               <img
@@ -131,7 +131,7 @@ export const ScheduledReturnItem = ({ order }) => {
         defaultActiveKey='1'
         activeKey={activeKey}
       >
-        <Card className={`mt-4 m-3 shadow-sm ${isMobile ? 'ml-0' : 'ml-4'}`}>
+        <Card className={`mt-1 m-3 shadow-sm ${isMobile ? 'ml-0' : 'ml-4'}`}>
           <div className='card-body initial-card-body'>
             {isMobile && (
               <>
@@ -245,7 +245,7 @@ export const ScheduledReturnItem = ({ order }) => {
 
           <Accordion.Collapse eventKey={eventKey}>
             <div>
-              <div style={{ padding: '24px', paddingBottom: '39px' }}>
+              <div style={{ padding: '0px 24px 24px 24px' }}>
                 {items.map((item) => renderScheduledReturnItem(item))}
                 <hr className='hr-line' />
 
@@ -279,7 +279,7 @@ export const ScheduledReturnItem = ({ order }) => {
                     }}
                   >
                     <div className='total-items-container'>
-                      <h4>Total&nbsp;</h4>
+                      <h4>Total:&nbsp;</h4>
                       <h4 className='sched-value'>
                         {' '}
                         {get(items, 'length', 0)}{' '}

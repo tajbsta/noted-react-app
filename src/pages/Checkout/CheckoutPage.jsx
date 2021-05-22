@@ -98,15 +98,15 @@ export default function CheckoutPage() {
       setLoading(false);
 
       console.log(error);
-      // showError({
-      //   message: get(
-      //     orderErrors.find(
-      //       ({ details }) => details === error.response.data.details
-      //     ),
-      //     'message',
-      //     'Cannot place order at this time'
-      //   ),
-      // });
+      showError({
+        message: get(
+          orderErrors.find(
+            ({ details }) => details === error.response.data.details
+          ),
+          'message',
+          'Cannot place order at this time'
+        ),
+      });
     }
   };
 
