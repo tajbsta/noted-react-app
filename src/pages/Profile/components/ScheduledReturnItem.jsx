@@ -65,7 +65,7 @@ export const ScheduledReturnItem = ({ order }) => {
 
     return (
       <div id='ScheduledReturnProduct' key={item._id}>
-        <Row>
+        <Row className='mb-3'>
           <Col className='sched-product-col col-9'>
             <div className='sched-img-col'>
               <img
