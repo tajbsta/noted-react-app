@@ -1,7 +1,7 @@
 import React from 'react';
-import Off from '../assets/icons/Off.svg';
-import OnContainer from '../assets/icons/Rectangle.svg';
-import OnCheckPath from '../assets/icons/Check.svg';
+import Off from '../../assets/icons/Off.svg';
+import OnContainer from '../../assets/icons/Rectangle.svg';
+import OnCheckPath from '../../assets/icons/Check.svg';
 
 export default function NotedCheckbox({
   checked = false,

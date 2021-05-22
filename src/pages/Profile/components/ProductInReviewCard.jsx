@@ -2,7 +2,7 @@ import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { get } from 'lodash-es';
-import ReturnScore from '../../../components/ReturnsScore';
+import ReturnScore from '../../../components/Product/ReturnsScore';
 
 export default function ProductInReviewCard({ item }) {
   const [isMobile, setIsMobile] = useState(false);

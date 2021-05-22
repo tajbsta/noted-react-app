@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import Row from './Row';
+import Row from '../Row';
 import ProductCard from './ProductCard';
 import { ProgressBar } from 'react-bootstrap';
-import QuestionMarkSvg from '../assets/icons/QuestionMark.svg';
+import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';
-import { getProducts } from '../utils/productsApi';
+import { getProducts } from '../../utils/productsApi';
 import NotedCheckbox from './NotedCheckbox';
 import { useSelector } from 'react-redux';
-import { DONATE } from '../constants/actions/runtime';
-import { timeout } from '../utils/time';
+import { DONATE } from '../../constants/actions/runtime';
+import { timeout } from '../../utils/time';
 
 export default function ReturnCategory({
   userId,

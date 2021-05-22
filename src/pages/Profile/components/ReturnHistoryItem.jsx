@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Accordion, Card, Col, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
-import ReturnScore from '../../../components/ReturnsScore';
+import ReturnScore from '../../../components/Product/ReturnsScore';
 
 export const ReturnHistoryItem = ({ order }) => {
   const [eventKey, setEventKey] = useState('0');

@@ -4,11 +4,11 @@ import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import axios from 'axios';
-import HorizontalLine from '../../../components/HorizontalLine';
+import HorizontalLine from './HorizontalLine';
 import Row from '../../../components/Row';
 import PickUpButton from './PickUpButton';
 import { calculateMetrics } from '../../../utils/productsApi';
-import NotedCheckbox from '../../../components/NotedCheckbox';
+import NotedCheckbox from '../../../components/Product/NotedCheckbox';
 import { setCartItems } from '../../../actions/cart.action';
 import {
   DONATE,
@@ -16,7 +16,7 @@ import {
   NOT_ELIGIBLE,
   RETURNABLE,
 } from '../../../constants/actions/runtime';
-import InfoIcon from '../../../components/InfoIcon';
+import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
 function RightCard({ userId, setSelectedProducts }) {
   const dispatch = useDispatch();
@@ -167,7 +167,7 @@ function RightCard({ userId, setSelectedProducts }) {
                           <span className='my-auto mr-2'>
                             Potential Return Value
                           </span>
-                          <InfoIcon />
+                          <ReturnValueInfoIcon />
                         </div>
                       </div>
                     </Row>
@@ -225,7 +225,7 @@ function RightCard({ userId, setSelectedProducts }) {
                         <Row>
                           <div className='m-label d-flex'>
                             <h4 className='mr-2'>Potential Return Value</h4>
-                            <InfoIcon
+                            <ReturnValueInfoIcon
                               className='info-icon'
                               isMobile={isMobile}
                             />

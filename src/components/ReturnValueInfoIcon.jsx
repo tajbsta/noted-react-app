@@ -1,34 +1,34 @@
-import React, { useState, useRef } from 'react'
-import { Overlay, OverlayTrigger, Tooltip } from 'react-bootstrap'
-import * as Icon from 'react-feather'
+import React, { useState, useRef } from 'react';
+import { Overlay, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import * as Icon from 'react-feather';
 
-const InfoIcon = (props) => {
-  const pos = props.isMobile || window.innerWidth <= 1023 ? 'top' : 'bottom'
-  const [show, setShow] = useState(false)
-  const target = useRef(null)
+const ReturnValueInfoIcon = (props) => {
+  const pos = props.isMobile || window.innerWidth <= 1023 ? 'top' : 'bottom';
+  const [show, setShow] = useState(false);
+  const target = useRef(null);
 
   const renderTooltip = (props) => (
-    <Tooltip id="button-tooltip" className="tooltip-inner" {...props}>
+    <Tooltip id='button-tooltip' className='tooltip-inner' {...props}>
       <span style={{ fontFamily: 'Sofia Pro !important' }}>
         noted determines potential return value by the original purchase
         price.The actual returns will be based on the product&apos;s return
         condition and return policies.
       </span>
     </Tooltip>
-  )
+  );
   return (
-    <div id="InfoIcon">
+    <div id='ReturnValueInfoIcon'>
       {props.isMobile ? (
         <>
           <div
-            className="info-icon"
+            className='info-icon'
             ref={target}
             onClick={() => setShow(!show)}
           >
             <Icon.Info />
           </div>
           <Overlay
-            className="info-icon"
+            className='info-icon'
             target={target.current}
             show={show}
             placement={pos}
@@ -38,10 +38,10 @@ const InfoIcon = (props) => {
           </Overlay>
         </>
       ) : (
-        <div className="info-icon">
+        <div className='info-icon'>
           <OverlayTrigger
             trigger={['hover', 'hover']}
-            className="info-icon"
+            className='info-icon'
             placement={pos}
             delay={{ show: 250, hide: 400 }}
             overlay={renderTooltip}
@@ -52,7 +52,7 @@ const InfoIcon = (props) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default InfoIcon
+export default ReturnValueInfoIcon;
