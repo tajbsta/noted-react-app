@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Navbar } from 'react-bootstrap';
 import _ from 'lodash';
-import ProfileIcon from '../assets/icons/Profile.svg';
-import Search from '../assets/icons/Search.svg';
+import ProfileIcon from '../../assets/icons/Profile.svg';
+import Search from '../../assets/icons/Search.svg';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
-import { unsetUser } from '../actions/auth.action';
-import { unsetScan } from '../actions/scans.action';
-import { searchScans } from '../actions/runtime.action';
+import { unsetUser } from '../../actions/auth.action';
+import { unsetScan } from '../../actions/scans.action';
+import { searchScans } from '../../actions/runtime.action';
 import BrandLogoSvg from './BrandLogoSvg';
 import MobileNav from './MobileNav';
 

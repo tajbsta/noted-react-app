@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Nav, Navbar, Form, Button } from 'react-bootstrap';
 import BrandLogoSvg from './BrandLogoSvg';
-import { searchScans } from '../actions/runtime.action';
+import { searchScans } from '../../actions/runtime.action';
 import { useDispatch } from 'react-redux';
 
 export default function MobileNav({
