@@ -228,14 +228,13 @@ function ProductCard({
             <div
               id='mobile-product-info'
               style={{
-                // marginTop: '0px',
                 width:
                   (isMobile && !selectable) || (isMobile && confirmed)
                     ? '83%'
                     : '',
                 maxWidth:
                   (isMobileSmaller && removable && !selectable) ||
-                  removable ||
+                  (isMobileSmaller && removable) ||
                   (isMobileSmaller && confirmed)
                     ? '75%'
                     : '',
