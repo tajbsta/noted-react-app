@@ -66,7 +66,7 @@ export default function Payment() {
     return (
       <div className='triggerContainer'>
         <h3 className='sofia-pro text-18 mb-3-profile mb-0 ml-3 triggerText'>
-          Payment Method
+          Billing
         </h3>
         <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
       </div>
