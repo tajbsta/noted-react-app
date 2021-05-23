@@ -7,6 +7,7 @@ export default function PaymentMethods({
   paymentMethods,
   defaultPaymentMethod,
   setDefault,
+  deletePaymentMethod,
 }) {
   return (
     <div id='PaymentMethods'>
@@ -28,16 +29,14 @@ export default function PaymentMethods({
         </div>
       )}
       <div className='list-group list-group-flush my-n3'>
-        {/**
-         * @ELEMENT payment methods here
-         */}
-        {[...paymentMethods].map((method) => {
+        {paymentMethods.map((method) => {
           return (
             <PaymentMethodItem
               key={method.id}
               method={method}
               isDefault={method.id === defaultPaymentMethod}
               setAsDefault={setDefault}
+              deleted={deletePaymentMethod}
             />
           );
         })}

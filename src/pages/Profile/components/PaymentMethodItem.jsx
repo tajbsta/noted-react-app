@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { getCreditCardType } from '../../../utils/creditCards';
 import { updateUserAttributes } from '../../../utils/auth';
+import { deletePaymentMethod } from '../../../utils/orderApi';
 
 export default function PaymentMethodItem({
   method,
   isDefault = false,
   setAsDefault,
+  deleted,
 }) {
   const brand = method.card.brand;
   const lastFourNumbers = method.card.last4;
@@ -19,6 +21,7 @@ export default function PaymentMethodItem({
   const cardImage = cardType.image;
 
   const [showDropdown, setShowDropdown] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleContextClick = (e) => {
     if (e.target && e.target.class !== 'item-dropdown-menu') {
@@ -38,16 +41,23 @@ export default function PaymentMethodItem({
   }, [showDropdown]);
 
   const setPaymentMethodAsDefault = async () => {
+    setLoading(true);
     await updateUserAttributes({
       'custom:default_payment': id,
     });
 
     setAsDefault(id);
+    setLoading(false);
   };
-  const onDelete = () => {};
+  const onDelete = async () => {
+    setLoading(true);
+    await deletePaymentMethod(id);
+    await deleted(id);
+    setLoading(false);
+  };
 
   return (
-    <div className='list-group-item'>
+    <div className='list-group-item' style={{ opacity: loading ? 0.5 : 1 }}>
       <div className='row align-items-center'>
         <div className='col-auto'>
           <img
@@ -81,6 +91,9 @@ export default function PaymentMethodItem({
               aria-haspopup='true'
               aria-expanded='false'
               onClick={() => {
+                if (loading) {
+                  return;
+                }
                 setShowDropdown(true);
               }}
             >
@@ -102,7 +115,9 @@ export default function PaymentMethodItem({
                 Set as default
               </a>
             )}
-            <a className='dropdown-item btn'>Delete</a>
+            <a className='dropdown-item btn' onClick={onDelete}>
+              Delete
+            </a>
           </div>
         </div>
       </div>

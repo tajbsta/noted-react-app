@@ -5,7 +5,7 @@ import PaymentMethods from './PaymentMethods';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import { getPublicKey, getUserPaymentMethods } from '../../../utils/orderApi';
-import { getUser } from '../../../utils/auth';
+import { getUser, updateUserAttributes } from '../../../utils/auth';
 import AddPaymentForm from '../../../components/Forms/AddPaymentForm';
 
 export default function Payment() {
@@ -55,6 +55,23 @@ export default function Payment() {
     setDefaultPaymentMethod(paymentMethod);
   };
 
+  const deletePaymentMethod = async (id) => {
+    const list = [...paymentMethods];
+
+    const index = list.findIndex((x) => x.id === id);
+    list.splice(index, 1);
+
+    if (list.length === 0 || defaultPaymentMethod === id) {
+      let newDefault = list[0] ? list[0].id : '';
+      await updateUserAttributes({
+        'custom:default_payment': newDefault,
+      });
+      setDefaultPaymentMethod(newDefault);
+    }
+
+    setPaymentMethods(list);
+  };
+
   // Fetch stripe publishable api key
   useEffect(() => {
     load();
@@ -102,6 +119,7 @@ export default function Payment() {
                   setDefault={(id) => {
                     setDefaultPaymentMethod(id);
                   }}
+                  deletePaymentMethod={deletePaymentMethod}
                 />
               )}
               {isEditing && (
@@ -113,6 +131,8 @@ export default function Payment() {
                     setIsEditing(false);
                     fetchPaymentMethods();
                   }}
+                  isCheckoutFlow={false}
+                  hasDefaultPaymentMethod={!!defaultPaymentMethod}
                 />
               )}
             </Elements>

@@ -31,7 +31,7 @@ const creditCardTypes = [
   {
     brand: 'diners',
     image: DinersLogo,
-    text: 'Diner\'s Club',
+    text: 'Diners Club',
   },
   {
     brand: 'jcb',
@@ -44,6 +44,7 @@ const creditCardTypes = [
     text: 'UnionPay',
   }
 ];
+
 export const getCreditCardType = (brand) => {
   const type = creditCardTypes.find(card => {
     return card.brand === brand

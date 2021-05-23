@@ -8,11 +8,22 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { savePaymentMethod } from '../../utils/orderApi';
+import { updateUserAttributes } from '../../utils/auth';
 
-export default function AddPaymentForm({ close, refreshPaymentMethods }) {
+export default function AddPaymentForm({
+  close,
+  refreshPaymentMethods,
+  isCheckoutFlow,
+  hasDefaultPaymentMethod,
+  savePayment,
+}) {
   const stripe = useStripe();
   const elements = useElements();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState({
+    card: null,
+    expiry: null,
+    cvc: null,
+  });
   const [isMobile, setIsMobile] = useState(false);
   const [cardComplete, setCardComplete] = useState({
     card: false,
@@ -29,8 +40,7 @@ export default function AddPaymentForm({ close, refreshPaymentMethods }) {
       return;
     }
 
-    if (error) {
-      elements.getElement('cardNumber').focus();
+    if (error.card || error.expiry || error.cvc) {
       return;
     }
 
@@ -52,8 +62,22 @@ export default function AddPaymentForm({ close, refreshPaymentMethods }) {
     } else {
       const paymentMethod = payload.paymentMethod;
       await savePaymentMethod(paymentMethod.id);
+
+      // Set payment method as default if 1st payment method added or if created in the checkout flow
+      if (!hasDefaultPaymentMethod || isCheckoutFlow) {
+        await updateUserAttributes({
+          'custom:default_payment': paymentMethod.id,
+        });
+      }
+
       reset();
-      refreshPaymentMethods();
+
+      if (!isCheckoutFlow) {
+        refreshPaymentMethods();
+      } else {
+        savePayment(paymentMethod);
+        close();
+      }
     }
 
     setProcessing(false);
@@ -159,8 +183,11 @@ export default function AddPaymentForm({ close, refreshPaymentMethods }) {
                   }}
                   className='form-control'
                   onChange={(event) => {
-                    console.log('CardNumberElement [change]', event);
-                    setError(event.error);
+                    setError({
+                      ...error,
+                      card: event.error,
+                    });
+
                     setCardComplete({
                       ...cardComplete,
                       card: event.complete,
@@ -177,8 +204,10 @@ export default function AddPaymentForm({ close, refreshPaymentMethods }) {
                 <CardExpiryElement
                   className='form-control'
                   onChange={(event) => {
-                    console.log('CardNumberElement [change]', event);
-                    setError(event.error);
+                    setError({
+                      ...error,
+                      expiry: event.error,
+                    });
                     setCardComplete({
                       ...cardComplete,
                       expiry: event.complete,
@@ -194,8 +223,10 @@ export default function AddPaymentForm({ close, refreshPaymentMethods }) {
                 <CardCvcElement
                   className='form-control'
                   onChange={(event) => {
-                    console.log('CardNumberElement [change]', event);
-                    setError(event.error);
+                    setError({
+                      ...error,
+                      cvc: event.error,
+                    });
                     setCardComplete({
                       ...cardComplete,
                       cvc: event.complete,
@@ -206,7 +237,15 @@ export default function AddPaymentForm({ close, refreshPaymentMethods }) {
             </Col>
           </Row>
           <Row className='justify-content-center noted-red'>
-            {error && <ErrorMessage>{error.message}</ErrorMessage>}
+            {error && error.card && (
+              <ErrorMessage>{error.card.message}</ErrorMessage>
+            )}
+            {error && error.expiry && (
+              <ErrorMessage>{error.expiry.message}</ErrorMessage>
+            )}
+            {error && error.cvc && (
+              <ErrorMessage>{error.cvc.message}</ErrorMessage>
+            )}
           </Row>
           <Row>
             <Col className='d-flex' style={{ justifyContent: 'flex-end' }}>
