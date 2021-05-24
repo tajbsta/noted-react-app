@@ -14,6 +14,7 @@ import AppRouteSwitcher from './routes/AppRouteSwitcher';
 import configureStore from './store';
 
 const { persistor, store } = configureStore();
+
 function App() {
   return (
     <Provider store={store}>
