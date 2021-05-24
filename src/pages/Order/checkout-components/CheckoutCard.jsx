@@ -1,33 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
 import { Spinner } from 'react-bootstrap';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
+import { get } from 'lodash';
+import OverlayLoader from '../../../components/OverlayLoader';
+import { useStripe } from '@stripe/react-stripe-js';
 
 export default function CheckoutCard({
   confirmed,
-  onReturnConfirm,
+  confirmOrder,
   loading,
   validOrder = false,
+  pricingDetails = {},
+  isFetchingPrice,
 }) {
+  const stripe = useStripe();
   const [modalShow, setModalShow] = useState(false);
 
   // TODO: hookup pricing
-  const potentialReturnValue = 123;
-  const inReturn = [];
-  const inDonation = [];
+  const potentialReturnValue = get(pricingDetails, 'potentialReturnValue', 0);
+  const inReturn = get(pricingDetails, 'totalReturns', 0);
+  const inDonation = get(pricingDetails, 'totalDonations', 0);
+  const inTaxes = get(pricingDetails, 'tax', 0);
+  const inTotalPrice = get(pricingDetails, 'totalPrice', 0);
+  const inPrice = get(pricingDetails, 'price', 0);
 
   return (
     <div id='CheckoutCard'>
       <div>
         <div
+          className='position-relative'
           style={{
-            maxWidth: '248px',
+            width: '248px',
           }}
         >
+          <OverlayLoader loading={isFetchingPrice} />
           <div className='card shadow-sm p-3 pick-up-card'>
             <h3 className='sofia-pro products-to-return mb-1'>
-              {inReturn.length} {inReturn.length > 1 ? 'products' : 'product'}{' '}
-              to return
+              {inReturn} {inReturn > 1 ? 'products' : 'product'} to return
             </h3>
             <h3 className='box-size-description'>
               All products need to fit in a 12”W x 12”H x 20”L box
@@ -53,9 +63,7 @@ export default function CheckoutCard({
                 <h3 className='return-type sofia-pro value-label mb-3'>
                   Potential Return Value
                 </h3>
-                <h3 className='sofia-pro pick-up-price mb-0'>
-                  {inDonation.length}
-                </h3>
+                <h3 className='sofia-pro pick-up-price mb-0'>{inDonation}</h3>
                 <h3 className='return-type sofia-pro value-label'>Donations</h3>
                 <hr className='line-break-1' />
                 <p className='pick-up-reminder sofia-pro'>
@@ -76,9 +84,7 @@ export default function CheckoutCard({
                   <ReturnValueInfoIcon />
                 </h3>
 
-                <h3 className='sofia-pro pick-up-price mb-0'>
-                  {inDonation.length}
-                </h3>
+                <h3 className='sofia-pro pick-up-price mb-0'>{inDonation}</h3>
                 <h3 className='return-type sofia-pro value-label'>Donations</h3>
 
                 <hr className='line-break-2' />
@@ -89,7 +95,7 @@ export default function CheckoutCard({
                     </h5>
                   </div>
                   <div className='col'>
-                    <h5 className='sofia-pro text-right'>$9.99</h5>
+                    <h5 className='sofia-pro text-right'>${inPrice}</h5>
                   </div>
                 </div>
                 <div className='row'>
@@ -97,7 +103,7 @@ export default function CheckoutCard({
                     <h5 className='sofia-pro text-muted value-label'>Taxes</h5>
                   </div>
                   <div className='col'>
-                    <h5 className='sofia-pro text-right'>$0.70</h5>
+                    <h5 className='sofia-pro text-right'>${inTaxes}</h5>
                   </div>
                 </div>
                 <hr className='line-break-3' />
@@ -106,11 +112,13 @@ export default function CheckoutCard({
                     <h5 className='sofia-pro text-muted'>Total to pay now</h5>
                   </div>
                   <div className='col'>
-                    <h5 className='sofia-pro text-right total-now'>$10.69</h5>
+                    <h5 className='sofia-pro text-right total-now'>
+                      ${inTotalPrice}
+                    </h5>
                   </div>
                 </div>
                 <button
-                  disabled={loading}
+                  disabled={!validOrder || loading || !stripe}
                   className='btn btn-confirm text-16'
                   style={{
                     background: validOrder ? '#570097' : 'grey',
@@ -119,8 +127,8 @@ export default function CheckoutCard({
                     opacity: loading ? '0.6' : '1',
                   }}
                   onClick={() => {
-                    if (validOrder) {
-                      onReturnConfirm();
+                    if (validOrder && stripe) {
+                      confirmOrder();
                     }
                   }}
                 >

@@ -8,6 +8,7 @@ export default function PaymentMethods({
   defaultPaymentMethod,
   setDefault,
   deletePaymentMethod,
+  loading,
 }) {
   return (
     <div id='PaymentMethods'>
@@ -21,7 +22,7 @@ export default function PaymentMethods({
         </button>
       </div>
       <hr />
-      {isEmpty(paymentMethods) && (
+      {!loading && isEmpty(paymentMethods) && (
         <div className='empty-payment-methods'>
           <h5 className='empty-payment-methods-text text-center'>
             No saved payment method here yet. Please add a new one.

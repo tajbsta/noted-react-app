@@ -113,3 +113,16 @@ export const deletePaymentMethod = async (paymentMethodId) => {
   await axios.delete(`/${userId}/payment/payment-methods/${paymentMethodId}`);
 
 };
+
+/**
+ * Create payment intent to process payment
+ * @price - refer to constant price.js
+ */
+export const createPaymentIntent = async (price) => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+
+  const res = await axios.post(`/${userId}/orders/payment/intent`, { price });
+
+  return res.data.data;
+};

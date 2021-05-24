@@ -5,8 +5,6 @@ import AddressForm from '../../../components/Forms/AddressForm';
 import AddPaymentForm from '../../../components/Forms/AddPaymentForm';
 import { getCreditCardType } from '../../../utils/creditCards';
 import { getPublicKey, getUserPaymentMethods } from '../../../utils/orderApi';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
 import { getUser, updateUserAttributes } from '../../../utils/auth';
 import AddPickupModal from '../../../modals/AddPickupModal';
 import { useFormik } from 'formik';
@@ -31,10 +29,10 @@ import { truncateString } from '../../../utils/data';
 
 export default function PickUpDetails({
   setValidAddress,
+  setValidPayment,
   setValidPickUpDetails,
 }) {
   const dispatch = useDispatch();
-  const [stripePromise, setStripePromise] = useState(null);
   const [showEditAddress, setShowEditAddress] = useState(false);
   const [showEditPayment, setShowEditPayment] = useState(false);
   const [isDatePickerOpen, setisDatePickerOpen] = useState(false);
@@ -91,6 +89,7 @@ export default function PickUpDetails({
     setPaymentFormValues(paymentMethod);
     setIsPaymentFormEmpty(false);
     setShowEditPayment(false);
+    setValidPayment(true);
   };
 
   const saveAddress = async () => {
@@ -136,12 +135,6 @@ export default function PickUpDetails({
       .replace(new RegExp(/\./g), '')}`;
   };
 
-  const load = async () => {
-    const key = await getPublicKey();
-    const stripePromise = loadStripe(key);
-    setStripePromise(stripePromise);
-  };
-
   const setDefaults = async () => {
     const [user, paymentMethods] = await Promise.all([
       getUser(),
@@ -157,6 +150,7 @@ export default function PickUpDetails({
     addressFormValues.phoneNumber = user['custom:phone'] || '';
     addressFormValues.instructions = user['custom:pickup_instructions'] || '';
 
+    saveAddress();
     setIsAddressFormEmpty(isFormEmpty(addressFormValues));
 
     // Set payment method default
@@ -170,6 +164,7 @@ export default function PickUpDetails({
     if (defaultPaymentMethod) {
       setPaymentFormValues(defaultPaymentMethod);
       setIsPaymentFormEmpty(false);
+      setValidPayment(true);
     }
   };
 
@@ -192,9 +187,7 @@ export default function PickUpDetails({
   const expirationMonth = paymentFormValues && paymentFormValues.card.exp_month;
   const expirationYear = paymentFormValues && paymentFormValues.card.exp_year;
 
-  // Fetch stripe publishable api key
   useEffect(() => {
-    load();
     setDefaults();
   }, []);
 
@@ -233,15 +226,13 @@ export default function PickUpDetails({
                     </h4>
                   </div>
                   <div className='card shadow-sm p-4 max-w-840 mt-3'>
-                    <Elements stripe={stripePromise} showIcon={true}>
-                      <AddPaymentForm
-                        close={() => {
-                          setShowEditPayment(false);
-                        }}
-                        isCheckoutFlow={true}
-                        savePayment={savePayment}
-                      />
-                    </Elements>
+                    <AddPaymentForm
+                      close={() => {
+                        setShowEditPayment(false);
+                      }}
+                      isCheckoutFlow={true}
+                      savePayment={savePayment}
+                    />
                   </div>
                 </div>
               </div>

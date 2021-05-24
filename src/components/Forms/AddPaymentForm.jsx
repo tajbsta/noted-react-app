@@ -73,7 +73,10 @@ export default function AddPaymentForm({
       reset();
 
       if (!isCheckoutFlow) {
-        refreshPaymentMethods();
+        // Pass payment method id if no default payment method
+        refreshPaymentMethods(
+          !hasDefaultPaymentMethod ? paymentMethod.id : null
+        );
       } else {
         savePayment(paymentMethod);
         close();
