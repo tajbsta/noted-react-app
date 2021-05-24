@@ -356,11 +356,14 @@ export default function PickUpDetails({
                                   </p>
                                 )}
                               </Col>
-                              <div className='arrow-container'>
+                              <div
+                                className='arrow-container d-flex'
+                                style={{ alignItems: 'center' }}
+                              >
                                 {IsAddressOpen ? (
-                                  <img src={LeftArrow} />
-                                ) : (
                                   <img src={DownArrow} />
+                                ) : (
+                                  <img src={LeftArrow} />
                                 )}
                               </div>
                             </Row>
@@ -539,11 +542,14 @@ export default function PickUpDetails({
                                   </small>
                                 </div>
                               </Col>
-                              <div className='arrow-container'>
+                              <div
+                                className='arrow-container d-flex'
+                                style={{ alignItems: 'center' }}
+                              >
                                 {IsPaymentOpen ? (
-                                  <img src={LeftArrow} />
-                                ) : (
                                   <img src={DownArrow} />
+                                ) : (
+                                  <img src={LeftArrow} />
                                 )}
                               </div>
                             </Row>
