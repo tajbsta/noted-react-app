@@ -42,10 +42,16 @@ export default function Payment() {
     setStripePromise(stripePromise);
   };
 
-  const fetchPaymentMethods = async () => {
+  const fetchPaymentMethods = async (id) => {
     setLoading(true);
     const list = await getUserPaymentMethods();
     setPaymentMethods(list);
+
+    // Set as defaultPaymentMethod if id is passed
+    if (id) {
+      setDefaultPaymentMethod(id);
+    }
+
     setLoading(false);
   };
 
@@ -105,12 +111,10 @@ export default function Payment() {
               !isMobile ? 'ml-3' : ''
             }`}
           >
-            {loading && (
-              <ProgressBar animated striped now={80} className='mt-4 m-3' />
-            )}
             <Elements stripe={stripePromise} showIcon={true}>
               {!isEditing && (
                 <PaymentMethods
+                  loading={loading}
                   paymentMethods={paymentMethods}
                   addPaymentMethod={() => {
                     setIsEditing(true);
@@ -127,15 +131,19 @@ export default function Payment() {
                   close={() => {
                     setIsEditing(false);
                   }}
-                  refreshPaymentMethods={() => {
+                  refreshPaymentMethods={(id) => {
                     setIsEditing(false);
-                    fetchPaymentMethods();
+
+                    fetchPaymentMethods(id);
                   }}
                   isCheckoutFlow={false}
                   hasDefaultPaymentMethod={!!defaultPaymentMethod}
                 />
               )}
             </Elements>
+            {loading && (
+              <ProgressBar animated striped now={80} className='mt-4 m-3' />
+            )}
           </div>
         </Collapsible>
       </div>
