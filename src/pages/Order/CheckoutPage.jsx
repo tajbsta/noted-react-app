@@ -17,14 +17,18 @@ import { Box } from 'react-feather';
 import { createOrder, getOrderPricing } from '../../utils/orderApi';
 import { getUserId } from '../../utils/auth';
 import { orderErrors } from '../../library/errors.library';
+import { getProducts } from '../../utils/productsApi';
+import { DONATE, LAST_CALL, RETURNABLE } from '../../constants/actions/runtime';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
 import {
   getPublicKey,
   getUserPaymentMethods,
   createPaymentIntent,
+  prevalidateOrder,
 } from '../../utils/orderApi';
 import PRICING from '../../constants/pricing';
+import { SERVER_ERROR } from '../../constants/errors/errorCodes';
 
 const Checkout = () => {
   const stripe = useStripe();
@@ -34,6 +38,7 @@ const Checkout = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [otherReturns, setOtherReturns] = useState([]);
   const [isFetchingPrice, setIsFetchingPrice] = useState(false);
   const { address, payment, details, items } = useSelector(
     ({
@@ -71,7 +76,28 @@ const Checkout = () => {
     setPricingDetails(response);
   };
 
-  const placeOrder = async (billingDetails) => {
+  const placeOrder = async (newOrder) => {
+    setLoading(true);
+    const order = await createOrder(newOrder);
+
+    setOrder(order);
+    setConfirmed(true);
+
+    dispatch(clearForm());
+
+    scrollToTop();
+    setLoading(false);
+    showSuccess({
+      message: (
+        <div>
+          <Box />
+          &nbsp;&nbsp;Successfully placed order!
+        </div>
+      ),
+    });
+  };
+
+  const confirmOrder = async () => {
     try {
       setLoading(true);
 
@@ -87,54 +113,21 @@ const Checkout = () => {
         pickupInstruction: address.instructions,
         pickupDate: details.date,
         pickupTime: details.time,
-        paymentIntentId: billingDetails.paymentIntentId,
-        productId: billingDetails.productId,
-        taxId: billingDetails.taxId,
-        priceId: billingDetails.priceId,
-        pricing: billingDetails.pricing,
       };
 
-      const userId = await getUserId();
+      // Validate here
+      await prevalidateOrder(newOrder);
 
-      const order = await createOrder(userId, newOrder);
-
-      setOrder(order);
-      setConfirmed(true);
-
-      dispatch(clearForm());
-
-      scrollToTop();
-      setLoading(false);
-      showSuccess({
-        message: (
-          <div>
-            <Box />
-            &nbsp;&nbsp;Successfully placed order!
-          </div>
-        ),
-      });
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-      showError({
-        message: get(
-          orderErrors.find(
-            ({ details }) => details === error.response.data.details
-          ),
-          'message',
-          'Cannot place order at this time'
-        ),
-      });
-    }
-  };
-
-  const confirmOrder = async () => {
-    try {
-      setLoading(true);
       // Get payment intent from BE, used for getting payment from the user/payment method
       const paymentIntent = await createPaymentIntent(PRICING.STANDARD);
 
       console.log(paymentIntent);
+
+      newOrder.paymentIntentId = paymentIntent.paymentIntentId;
+      newOrder.productId = paymentIntent.productId;
+      newOrder.taxId = paymentIntent.taxId;
+      newOrder.priceId = paymentIntent.priceId;
+      newOrder.pricing = paymentIntent.pricing;
 
       // Confirm payment intent using stripe here
       const result = await stripe.confirmCardPayment(
@@ -143,6 +136,7 @@ const Checkout = () => {
       console.log({
         result,
       });
+
       if (result.error) {
         // Show error to customer
         console.log(result.error.message);
@@ -150,14 +144,24 @@ const Checkout = () => {
       } else {
         if (result.paymentIntent.status === 'succeeded') {
           // Place order - call create order endpoint
-          await placeOrder(paymentIntent);
+          await placeOrder(newOrder);
           return;
-        }
+        } // TODO: handle stripe payment errors
       }
     } catch (error) {
       console.log(error);
       setLoading(false);
-      // Handle stripe error e.g. extra user authentication
+      const errorCode =
+        error.response && error.response.data
+          ? error.response.data.details
+          : SERVER_ERROR;
+      showError({
+        message: get(
+          orderErrors.find(({ details }) => details === errorCode),
+          'message',
+          'Cannot place order at this time'
+        ),
+      });
     }
   };
 
@@ -197,6 +201,41 @@ const Checkout = () => {
 
   const validOrder =
     validAddress && validPayment && validPickUpDetails && items.length > 0;
+
+  async function getMissedOutProducts() {
+    try {
+      const lastCall = await getProducts({ category: LAST_CALL, size: 2 });
+      setOtherReturns(lastCall);
+      if (isEmpty(lastCall)) {
+        const returnable = await getProducts({ category: RETURNABLE, size: 2 });
+        setOtherReturns(returnable);
+        if (isEmpty(returnable)) {
+          const donate = await getProducts({ category: DONATE, size: 2 });
+          setOtherReturns(donate);
+        }
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    getMissedOutProducts();
+  }, []);
+
+  const RenderOtherReturnables = () => {
+    return otherReturns.map((item) => (
+      <ProductCard
+        removable={false}
+        scannedItem={item}
+        key={item._id}
+        item={item}
+        selectable={false}
+        clickable={false}
+      />
+    ));
+  };
 
   return (
     <div id='CheckoutPage'>
@@ -313,17 +352,18 @@ const Checkout = () => {
               </>
             )}
 
-            {/* <h3 className='sofia-pro miss-out section-title'>
+            <h3 className='sofia-pro miss-out section-title'>
               Don&apos;t miss out on other returns
             </h3>
-            <div className='row align-items-center p-4 all-checkbox mobile-row'>
+            {/* <div className='row align-items-center p-4 all-checkbox mobile-row'>
               <input
-                type='checkbox'
-                onChange={handleSelectAll}
-                checked={newSelected.length === forgottenReturns.length}
+              // type='checkbox'
+              // onChange={handleSelectAll}
+              // checked={newSelected.length === forgottenReturns.length}
               />
               <h4 className='sofia-pro noted-purple ml-4 mb-0 p-0'>Add all</h4>
             </div> */}
+            {RenderOtherReturnables()}
           </div>
 
           {/* RIGHT CARDS */}

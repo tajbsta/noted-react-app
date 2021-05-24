@@ -18,9 +18,18 @@ export const getOrderPricing = async (productIds, orderId) => {
   return res.data.data;
 };
 
-// Create Order
-export const createOrder = async (userId, order) => {
+// Pre-Validate Order
+export const prevalidateOrder = async (order) => {
   const axios = await api();
+  const { userId } = await getUserSession();
+  await axios.post(`/${userId}/orders/validate`, order);
+};
+
+// Create Order
+export const createOrder = async (order) => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+
   const res = await axios.post(`/${userId}/orders`, order);
   return res.data.data;
 };

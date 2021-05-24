@@ -433,9 +433,9 @@ function ProductCard({
                 <Container className='m-edit-container'>
                   <Row>
                     <div className='m-edit-col'>
-                      <h4>Wrong info? &nbsp;</h4>
+                      <h4 className='mb-0'>Wrong info? &nbsp;</h4>
                       <button
-                        className='sofia-pro btn btn-m-edit'
+                        className='sofia-pro btn btn-m-edit mr-1'
                         onClick={() => setModalEditShow(true)}
                       >
                         Edit

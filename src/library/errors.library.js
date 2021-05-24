@@ -129,4 +129,8 @@ export const orderErrors = [
     details: ORDER_CANCEL_NOT_AVAILABLE,
     message: "Cannot cancel order at this time"
   },
+  {
+    details: SERVER_ERROR,
+    message: "Cannot cancel order at this time"
+  },
 ];
