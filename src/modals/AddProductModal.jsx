@@ -345,7 +345,12 @@ export default function AddProductModal(props) {
                 <Button className='btn-cancel' onClick={props.onHide}>
                   Cancel
                 </Button>
-                <Button className='btn-save' type='submit' onClick={onSave}>
+                <Button
+                  disabled
+                  className='btn-save'
+                  type='submit'
+                  onClick={onSave}
+                >
                   Save Changes
                 </Button>
               </Col>
