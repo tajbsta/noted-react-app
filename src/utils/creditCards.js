@@ -5,7 +5,7 @@ import DiscoverLogo from '../assets/cc/discover.svg';
 import DinersLogo from '../assets/cc/diners-club.svg';
 import JCBLogo from '../assets/cc/jcb.svg';
 import UnionPayLogo from '../assets/cc/unionpay.svg';
-import UnknownLogo from '../assets/cc/unknowncard.png';
+import { CreditCard } from 'react-feather';
 
 const creditCardTypes = [
   {
@@ -56,7 +56,7 @@ export const getCreditCardType = (brand) => {
    * return unknown if invalid
    */
   return {
-    image: UnknownLogo,
+    image: CreditCard,
     text: 'Unknown',
   };
 };
