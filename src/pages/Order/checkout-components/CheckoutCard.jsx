@@ -83,7 +83,7 @@ export default function CheckoutCard({
                 </h3>
 
                 <h3 className='sofia-pro pick-up-price mb-0'>
-                ${inDonation}
+                {inDonation}
                 </h3>
                 <h3 className='return-type sofia-pro value-label'>Donations</h3>
 
