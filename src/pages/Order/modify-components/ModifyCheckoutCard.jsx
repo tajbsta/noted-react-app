@@ -4,6 +4,7 @@ import SizeGuideModal from '../../../modals/SizeGuideModal';
 import CancelOrderModal from '../../../modals/CancelOrderModal';
 import { get, isEmpty } from 'lodash';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
+import OverlayLoader from '../../../components/OverlayLoader';
 
 export default function ModifyCheckoutCard({
   showCancelOrderModal,
@@ -13,7 +14,8 @@ export default function ModifyCheckoutCard({
   loading,
   cancelled,
   hasModifications,
-  pricingDetails = {}
+  pricingDetails = {},
+  isFetchingPrice
 }) {
   // {
   //   potentialReturnValue,
@@ -46,15 +48,19 @@ export default function ModifyCheckoutCard({
     <div id='ModifyCheckoutCard'>
       <div>
         <div
+          className='position-relative'
           style={{
-            maxWidth: '248px',
+            width: '248px',
           }}
+          
         >
+          <OverlayLoader loading={isFetchingPrice} />
           <div
             className={`card shadow-sm p-3 pick-up-card ${
               confirmed == true ? 'h-292' : 'h-400'
             }`}
           >
+            
             <h3 className='sofia-pro products-to-return mb-1'>
               {inReturn} {inReturn > 1 ? 'products' : 'product'} to
               return

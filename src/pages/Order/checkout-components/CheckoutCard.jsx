@@ -24,12 +24,12 @@ export default function CheckoutCard({
   const inPrice = get(pricingDetails, 'price', 0)
 
   return (
-    <div id='CheckoutCard' className='relative'>
+    <div id='CheckoutCard'>
       <div>
         <div
           className='position-relative'
           style={{
-            maxWidth: '248px',
+            width: '248px',
           }}
         >
           <OverlayLoader loading={isFetchingPrice} />

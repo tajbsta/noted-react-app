@@ -7,8 +7,7 @@ const OverlayLoader = ({ loading = true }) => {
     <Fragment>
       {loading && (
         <div
-          className="position-absolute w-100 h-100 border"
-          id="overlay"
+          className="position-absolute"
           style={{
             zIndex: 10,
             display: "flex",

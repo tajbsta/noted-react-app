@@ -32,6 +32,7 @@ export default function ViewOrderPage() {
   const { id: orderId } = useParams();
   const [products, setProducts] = useState([]);
   const [originalProducts, setOriginalProducts] = useState([]);
+  const [isFetchingPrice, setIsFetchingPrice] = useState(false);
   const [pricingDetails, setPricingDetails] = useState({
     potentialReturnValue: 0,
     price: 0,
@@ -45,7 +46,9 @@ export default function ViewOrderPage() {
   const getPricingDetails = async () => {
     const initialData = get(order, 'orderItems', [])
     const productIds = initialData.map((item) => item._id)
+    setIsFetchingPrice(true)
     const response = await getOrderPricing(productIds, '')
+    setIsFetchingPrice(false)
     setPricingDetails(response)
   }
 
@@ -316,6 +319,8 @@ export default function ViewOrderPage() {
                   loading={loading}
                   cancelled={cancelled}
                   pricingDetails={pricingDetails}
+                  isFetchingPrice={isFetchingPrice}
+                  
                   // potentialReturnValue={potentialReturnValue}
                   // inDonation={inDonation}
                   // taxes={taxes}
