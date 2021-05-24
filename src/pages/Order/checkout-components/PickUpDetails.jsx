@@ -2,18 +2,21 @@ import React, { useState, useEffect } from 'react';
 import EmptyAddress from '../../../components/PickUpDetails/EmptyAddress';
 import EmptyPayment from '../../../components/PickUpDetails/EmptyPayment';
 import AddressForm from '../../../components/Forms/AddressForm';
-import PaymentForm from '../../../components/Forms/PaymentForm';
+import AddPaymentForm from '../../../components/Forms/AddPaymentForm';
+import { getCreditCardType } from '../../../utils/creditCards';
+import { getPublicKey, getUserPaymentMethods } from '../../../utils/orderApi';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import { getUser, updateUserAttributes } from '../../../utils/auth';
 import AddPickupModal from '../../../modals/AddPickupModal';
 import { useFormik } from 'formik';
 import { formatPhoneNumber, isFormEmpty } from '../../../utils/form';
 import {
-  paymentAddressSchema,
   pickUpAddressSchema,
   pickUpDateSchema,
 } from '../../../models/formSchema';
 import { useDispatch } from 'react-redux';
 import {
-  updatePaymentInfo,
   updatePickUpDetails,
   updateReturnAddress,
 } from '../../../actions/runtime.action';
@@ -28,10 +31,10 @@ import { truncateString } from '../../../utils/data';
 
 export default function PickUpDetails({
   setValidAddress,
-  // setValidPayment,
   setValidPickUpDetails,
 }) {
   const dispatch = useDispatch();
+  const [stripePromise, setStripePromise] = useState(null);
   const [showEditAddress, setShowEditAddress] = useState(false);
   const [showEditPayment, setShowEditPayment] = useState(false);
   const [isDatePickerOpen, setisDatePickerOpen] = useState(false);
@@ -39,6 +42,9 @@ export default function PickUpDetails({
   const [isMobile, setIsMobile] = useState(false);
   const [IsAddressOpen, setIsAddressOpen] = useState(false);
   const [IsPaymentOpen, setIsPaymentOpen] = useState(false);
+  const [paymentFormValues, setPaymentFormValues] = useState(null);
+  const [isAddressFormEmpty, setIsAddressFormEmpty] = useState(true);
+  const [isPaymentFormEmpty, setIsPaymentFormEmpty] = useState(true);
 
   const {
     errors: addressFormErrors,
@@ -63,83 +69,8 @@ export default function PickUpDetails({
       Object.values(addressFormValues).map((addressField) => {
         return addressField.length;
       })
-      // .filter((addressField, index) => {
-      //   return (
-      //     addressField === 0 &&
-      //     index !== Object.keys(addressFormValues).length - 1
-      //   );
-      // }).length < 1
     );
   }, [addressFormValues]);
-
-  const {
-    errors: paymentFormErrors,
-    handleChange: handlePaymentChange,
-    values: paymentFormValues,
-  } = useFormik({
-    initialValues: {
-      fullName: '',
-      cardNumber: '',
-      expirationMonth: '',
-      expirationYear: '',
-      cvc: '',
-      name: '',
-      state: '',
-      zipCode: '',
-      line1: '',
-      line2: '',
-      city: '',
-      phoneNumber: '',
-      instructions: '',
-    },
-    validationSchema: paymentAddressSchema,
-    // paymentAddressSchemaBilling,
-  });
-
-  // const onBtnCheck = () => {
-  //   setBillingAddress((prevState) => !prevState)
-  //   if (!billingAddress) {
-  //     console.log(payment)
-  //     paymentFormValues.name = payment && payment.fullName
-  //     paymentFormValues.state = payment && payment.state
-  //     paymentFormValues.zipCode = payment && payment.zipCode
-  //     paymentFormValues.line1 = payment && payment.line1
-  //     paymentFormValues.line2 = payment && payment.line2
-  //     paymentFormValues.city = payment && payment.city
-  //     paymentFormValues.phoneNumber =
-  //       payment && formatPhoneNumber(payment.phoneNumber)
-
-  //     console.log({ ...paymentFormErrors })
-
-  //     paymentFormErrors.name = null
-  //     paymentFormErrors.state = null
-  //     paymentFormErrors.zipCode = null
-  //     paymentFormErrors.line1 = null
-  //     paymentFormErrors.line2 = null
-  //     paymentFormErrors.city = null
-  //     paymentFormErrors.phoneNumber = null
-  //   } else {
-  //     paymentFormValues.name = ''
-  //     paymentFormValues.state = ''
-  //     paymentFormValues.zipCode = ''
-  //     paymentFormValues.line1 = ''
-  //     paymentFormValues.line2 = ''
-  //     paymentFormValues.city = ''
-  //     paymentFormValues.phoneNumber = ''
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   setValidPayment(
-  //     Object.values(paymentFormValues)
-  //       .map((paymentField) => {
-  //         return paymentField.length
-  //       })
-  //       .filter((paymentField) => {
-  //         return paymentField === 0
-  //       }).length < 1,
-  //   )
-  // }, [paymentFormValues])
 
   const pickUpDateForm = useFormik({
     initialValues: {
@@ -156,15 +87,9 @@ export default function PickUpDetails({
     );
   }, [pickUpDateForm.values]);
 
-  const isAddressFormEmpty = isFormEmpty(addressFormValues);
-  const isPaymentFormEmpty = isFormEmpty(paymentFormValues);
-
-  const savePayment = async () => {
-    await dispatch(
-      updatePaymentInfo({
-        formData: { ...paymentFormValues, errors: paymentFormErrors },
-      })
-    );
+  const savePayment = (paymentMethod) => {
+    setPaymentFormValues(paymentMethod);
+    setIsPaymentFormEmpty(false);
     setShowEditPayment(false);
   };
 
@@ -211,24 +136,117 @@ export default function PickUpDetails({
       .replace(new RegExp(/\./g), '')}`;
   };
 
+  const load = async () => {
+    const key = await getPublicKey();
+    const stripePromise = loadStripe(key);
+    setStripePromise(stripePromise);
+  };
+
+  const setDefaults = async () => {
+    const [user, paymentMethods] = await Promise.all([
+      getUser(),
+      getUserPaymentMethods(),
+    ]);
+
+    // Set default address
+    addressFormValues.fullName = user.name || '';
+    addressFormValues.state = user['custom:state'] || '';
+    addressFormValues.zipCode = user['custom:zipcode'] || '';
+    addressFormValues.line1 = user.address || '';
+    addressFormValues.city = user['custom:city'] || '';
+    addressFormValues.phoneNumber = user['custom:phone'] || '';
+    addressFormValues.instructions = user['custom:pickup_instructions'] || '';
+
+    setIsAddressFormEmpty(isFormEmpty(addressFormValues));
+
+    // Set payment method default
+    const defaultPaymentId = user['custom:default_payment'] || null;
+    const defaultPaymentMethod = paymentMethods.find(
+      (method) => defaultPaymentId && defaultPaymentId === method.id
+    );
+    console.log({
+      defaultPaymentMethod,
+    });
+    if (defaultPaymentMethod) {
+      setPaymentFormValues(defaultPaymentMethod);
+      setIsPaymentFormEmpty(false);
+    }
+  };
+
+  const getCardImage = (payment) => {
+    const brand = payment ? payment.card.brand : null;
+    const cardType = getCreditCardType(brand);
+
+    const cardImage = cardType.image;
+    return cardImage;
+  };
+
+  const getCardBrand = (payment) => {
+    const brand = payment ? payment.card.brand : null;
+    const cardType = getCreditCardType(brand);
+
+    const cardBrand = cardType.text;
+    return cardBrand;
+  };
+
+  const expirationMonth = paymentFormValues && paymentFormValues.card.exp_month;
+  const expirationYear = paymentFormValues && paymentFormValues.card.exp_year;
+
+  // Fetch stripe publishable api key
+  useEffect(() => {
+    load();
+    setDefaults();
+  }, []);
+
   return (
     <>
       {!showEditAddress && !showEditPayment && (
-        <h3 className='sofia-pro text-18'>Pick-up details</h3>
+        <h3 className='sofia-pro text-18 ml-3'>Pick-up Details</h3>
       )}
 
       <div style={{ display: isMobile ? 'block' : 'flex' }}>
         {showEditPayment && (
-          <PaymentForm
-            {...paymentFormValues}
-            // address={payment}
-            errors={paymentFormErrors}
-            handleChange={handlePaymentChange}
-            onDoneClick={savePayment}
-            // billingAddress={billingAddress}
-            setShowEditPayment={setShowEditPayment}
-            // onBtnCheck={onBtnCheck}
-          />
+          <>
+            <div style={{ width: '-webkit-fill-available' }}>
+              <div className='container mt-0'>
+                <div
+                  style={{
+                    marginLeft: isMobile ? '16px' : '',
+                    marginRight: isMobile ? '16px' : '',
+                  }}
+                >
+                  {isMobile && (
+                    <h3
+                      className='sofia-pro text-18'
+                      style={{ marginBottom: '18px' }}
+                    >
+                      Pick-up Details
+                    </h3>
+                  )}
+                  <div className='mt-2'>
+                    <h4
+                      className={`sofia-pro mb-0 ${
+                        isMobile ? 'text-14' : 'text-16'
+                      }`}
+                    >
+                      Payment Method
+                    </h4>
+                  </div>
+                  <div className='card shadow-sm p-4 max-w-840 mt-3'>
+                    <Elements stripe={stripePromise} showIcon={true}>
+                      <AddPaymentForm
+                        close={() => {
+                          setShowEditPayment(false);
+                        }}
+                        isCheckoutFlow={true}
+                        savePayment={savePayment}
+                      />
+                    </Elements>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
         )}
         {showEditAddress && (
           <AddressForm
@@ -325,7 +343,7 @@ export default function PickUpDetails({
                                             addressFormValues.line1,
                                             12
                                           )}`
-                                        : `,${addressFormValues.line1}`}
+                                        : `, ${addressFormValues.line1}`}
                                     </>
                                   )}
                                 </h4>
@@ -378,7 +396,7 @@ export default function PickUpDetails({
                               </p>
                             </div>
                           )}
-                          <div className='address-actions'>
+                          <div className='address-actions mt-2'>
                             <h4
                               className='text-instructions'
                               onClick={() => setModalShow(true)}
@@ -439,23 +457,27 @@ export default function PickUpDetails({
                           <img
                             className='img-fluid'
                             style={{ width: '38px' }}
-                            src='https://www.svgrepo.com/show/46490/credit-card.svg'
+                            src={getCardImage(paymentFormValues)}
                             alt='...'
                           />
                         </div>
-                        <div className='mb-4 text-14 text'>
-                          Ending in{' '}
-                          {paymentFormValues.cardNumber.substr(
-                            paymentFormValues.cardNumber.length - 4
-                          )}
+                        <div>
+                          <h4 className='mb-3 text-14 text'>
+                            {getCardBrand(paymentFormValues)} ending in{' '}
+                            {paymentFormValues.card.last4}
+                          </h4>
+                          <small className='text-muted'>
+                            Expires {`${expirationMonth}/${expirationYear}`}
+                          </small>
                         </div>
                       </div>
-                      <h3 className='sofia-pro mb-0 mt-2 mb-2 text-14 ine-height-16 c-add'>
+
+                      {/* <h3 className='sofia-pro mb-0 mt-2 mb-2 text-14 ine-height-16 c-add'>
                         Card Address
                       </h3>
                       <div>
                         <h4 className='p-0 m-0 sofia-pro postal-name'>
-                          {paymentFormValues.fullName}
+                          {paymentFormValues.billing_details.name}
                         </h4>
                         <h4 className='p-0 m-0 sofia-pro line1'>
                           {addressFormValues.line1}
@@ -471,7 +493,7 @@ export default function PickUpDetails({
                         <h4 className='p-0 m-0 sofia-pro line1'>
                           United States
                         </h4>
-                      </div>
+                      </div> */}
                     </div>
                     {/**
                      * PAYMENT DETAILS MOBILE
@@ -499,15 +521,22 @@ export default function PickUpDetails({
                                 <div className='img-container payment-card-logo'>
                                   <img
                                     style={{ width: '38px' }}
-                                    src='https://www.svgrepo.com/show/46490/credit-card.svg'
+                                    src={getCardImage(paymentFormValues)}
                                     alt='...'
                                   />
                                 </div>
-                                <div className='text-14 text ml-3 ending-text'>
-                                  Ending in{' '}
-                                  {paymentFormValues.cardNumber.substr(
-                                    paymentFormValues.cardNumber.length - 4
-                                  )}
+                                <div
+                                  className='ml-3'
+                                  style={{ marginTop: '5px' }}
+                                >
+                                  <h4 className='text-14 text ending-text mb-0'>
+                                    {getCardBrand(paymentFormValues)} ending in{' '}
+                                    {paymentFormValues.card.last4}
+                                  </h4>
+                                  <small className='text-muted'>
+                                    Expires{' '}
+                                    {`${expirationMonth}/${expirationYear}`}
+                                  </small>
                                 </div>
                               </Col>
                               <div className='arrow-container'>
@@ -522,12 +551,12 @@ export default function PickUpDetails({
                         }
                       >
                         <div className='card-body payment-details-card-body m-0 p-0'>
-                          <div className='text-14 text ending-text'>
+                          {/* <div className='text-14 text ending-text'>
                             Card Address
                           </div>
                           <div>
                             <h4 className='p-0 m-0 sofia-pro postal-name'>
-                              {paymentFormValues.fullName}
+                              {paymentFormValues.billing_details.name}
                             </h4>
                             <h4 className='p-0 m-0 sofia-pro line1'>
                               {addressFormValues.line1}
@@ -544,13 +573,13 @@ export default function PickUpDetails({
                             <h4 className='p-0 m-0 sofia-pro line1'>
                               United States
                             </h4>
-                          </div>
-                          <div className='address-actions mt-4'>
+                          </div> */}
+                          <div className='address-actions mt-2'>
                             <h4
                               className='text-instructions'
                               onClick={() => setShowEditPayment(true)}
                             >
-                              Edit payment method
+                              Use different payment method
                             </h4>
                           </div>
                         </div>

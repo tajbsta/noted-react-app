@@ -16,6 +16,7 @@ import { useFormik } from 'formik';
 import { addProductSchema } from '../../models/formSchema';
 import { useHistory } from 'react-router';
 import { formatCurrency } from '../../library/number';
+import ReturnValueInfoIcon from '../ReturnValueInfoIcon';
 
 function ProductCard({
   selectable = true,
@@ -154,7 +155,7 @@ function ProductCard({
   const isViewScan = useHistory().location.pathname !== '/checkout';
 
   return (
-    <div id='productCard'>
+    <div id='ProductCard'>
       <div
         className={`card scanned-item-card max-w-840 mb-3 p-0 ${
           clickable && 'btn'
@@ -194,6 +195,7 @@ function ProductCard({
                 display: 'flex',
                 alignItems: isMobile && selected ? '' : 'center',
                 marginTop: isMobile && selected ? '7px' : '',
+                marginLeft: !selectable && '15px',
               }}
             >
               {removable && !selectable && !confirmed && (
@@ -432,6 +434,7 @@ function ProductCard({
                       >
                         Edit
                       </button>
+                      <ReturnValueInfoIcon content="We're still working on this" />
                     </div>
                   </Row>
                 </Container>

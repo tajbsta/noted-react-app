@@ -35,15 +35,18 @@ export default function ConfirmDonate(props) {
     try {
       const { data } = await setCategory(productId, DONATE);
       if (data.status === 'success') {
+        const forceUpdate = async () => {
+          /**
+           * set cart items
+           */
+          dispatch(setCartItems([...cartItems, item]));
+          dispatch(addToNewDonations(item));
+        };
+        await forceUpdate();
         /**
          * pop modal first
          */
         props.onHide();
-        /**
-         * set cart items
-         */
-        dispatch(setCartItems([...cartItems, item]));
-        dispatch(addToNewDonations(item));
       }
       showSuccess({
         message: (

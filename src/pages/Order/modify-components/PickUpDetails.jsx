@@ -106,7 +106,7 @@ export default function PickUpDetails({ address, payment, details }) {
   return (
     <>
       {!showEditAddress && !showEditPayment && (
-        <h3 className='sofia-pro text-18'>Pick-up details</h3>
+        <h3 className='sofia-pro text-18'>Pick-up Details</h3>
       )}
 
       <div style={{ display: isMobile ? 'block' : 'flex' }}>

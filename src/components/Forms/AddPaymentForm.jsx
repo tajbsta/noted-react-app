@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
 import {
   CardNumberElement,
@@ -8,27 +8,23 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { savePaymentMethod } from '../../utils/orderApi';
+import { updateUserAttributes } from '../../utils/auth';
 
-const ErrorMessage = ({ children }) => (
-  <div className='ErrorMessage' role='alert'>
-    <svg width='16' height='16' viewBox='0 0 17 17'>
-      <path
-        fill='#FFF'
-        d='M8.5,17 C3.80557963,17 0,13.1944204 0,8.5 C0,3.80557963 3.80557963,0 8.5,0 C13.1944204,0 17,3.80557963 17,8.5 C17,13.1944204 13.1944204,17 8.5,17 Z'
-      />
-      <path
-        fill='#2e1d3a'
-        d='M8.5,7.29791847 L6.12604076,4.92395924 C5.79409512,4.59201359 5.25590488,4.59201359 4.92395924,4.92395924 C4.59201359,5.25590488 4.59201359,5.79409512 4.92395924,6.12604076 L7.29791847,8.5 L4.92395924,10.8739592 C4.59201359,11.2059049 4.59201359,11.7440951 4.92395924,12.0760408 C5.25590488,12.4079864 5.79409512,12.4079864 6.12604076,12.0760408 L8.5,9.70208153 L10.8739592,12.0760408 C11.2059049,12.4079864 11.7440951,12.4079864 12.0760408,12.0760408 C12.4079864,11.7440951 12.4079864,11.2059049 12.0760408,10.8739592 L9.70208153,8.5 L12.0760408,6.12604076 C12.4079864,5.79409512 12.4079864,5.25590488 12.0760408,4.92395924 C11.7440951,4.59201359 11.2059049,4.59201359 10.8739592,4.92395924 L8.5,7.29791847 L8.5,7.29791847 Z'
-      />
-    </svg>
-    {children}
-  </div>
-);
-
-export default function AddPaymentForm({ close, refreshPaymentMethods }) {
+export default function AddPaymentForm({
+  close,
+  refreshPaymentMethods,
+  isCheckoutFlow,
+  hasDefaultPaymentMethod,
+  savePayment,
+}) {
   const stripe = useStripe();
   const elements = useElements();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState({
+    card: null,
+    expiry: null,
+    cvc: null,
+  });
+  const [isMobile, setIsMobile] = useState(false);
   const [cardComplete, setCardComplete] = useState({
     card: false,
     expiry: false,
@@ -44,8 +40,7 @@ export default function AddPaymentForm({ close, refreshPaymentMethods }) {
       return;
     }
 
-    if (error) {
-      elements.getElement('cardNumber').focus();
+    if (error.card || error.expiry || error.cvc) {
       return;
     }
 
@@ -67,8 +62,22 @@ export default function AddPaymentForm({ close, refreshPaymentMethods }) {
     } else {
       const paymentMethod = payload.paymentMethod;
       await savePaymentMethod(paymentMethod.id);
+
+      // Set payment method as default if 1st payment method added or if created in the checkout flow
+      if (!hasDefaultPaymentMethod || isCheckoutFlow) {
+        await updateUserAttributes({
+          'custom:default_payment': paymentMethod.id,
+        });
+      }
+
       reset();
-      refreshPaymentMethods();
+
+      if (!isCheckoutFlow) {
+        refreshPaymentMethods();
+      } else {
+        savePayment(paymentMethod);
+        close();
+      }
     }
 
     setProcessing(false);
@@ -86,6 +95,33 @@ export default function AddPaymentForm({ close, refreshPaymentMethods }) {
       name: '',
     });
   };
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 540);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
+  const ErrorMessage = ({ children }) => (
+    <div className={`ErrorMessage ${isMobile ? 'mb-4' : ''}`} role='alert'>
+      <svg width='16' height='16' viewBox='0 0 17 17'>
+        <path
+          fill='#FFF'
+          d='M8.5,17 C3.80557963,17 0,13.1944204 0,8.5 C0,3.80557963 3.80557963,0 8.5,0 C13.1944204,0 17,3.80557963 17,8.5 C17,13.1944204 13.1944204,17 8.5,17 Z'
+        />
+        <path
+          fill='#2e1d3a'
+          d='M8.5,7.29791847 L6.12604076,4.92395924 C5.79409512,4.59201359 5.25590488,4.59201359 4.92395924,4.92395924 C4.59201359,5.25590488 4.59201359,5.79409512 4.92395924,6.12604076 L7.29791847,8.5 L4.92395924,10.8739592 C4.59201359,11.2059049 4.59201359,11.7440951 4.92395924,12.0760408 C5.25590488,12.4079864 5.79409512,12.4079864 6.12604076,12.0760408 L8.5,9.70208153 L10.8739592,12.0760408 C11.2059049,12.4079864 11.7440951,12.4079864 12.0760408,12.0760408 C12.4079864,11.7440951 12.4079864,11.2059049 12.0760408,10.8739592 L9.70208153,8.5 L12.0760408,6.12604076 C12.4079864,5.79409512 12.4079864,5.25590488 12.0760408,4.92395924 C11.7440951,4.59201359 11.2059049,4.59201359 10.8739592,4.92395924 L8.5,7.29791847 L8.5,7.29791847 Z'
+        />
+      </svg>
+      {children}
+    </div>
+  );
 
   return (
     <div
@@ -147,8 +183,11 @@ export default function AddPaymentForm({ close, refreshPaymentMethods }) {
                   }}
                   className='form-control'
                   onChange={(event) => {
-                    console.log('CardNumberElement [change]', event);
-                    setError(event.error);
+                    setError({
+                      ...error,
+                      card: event.error,
+                    });
+
                     setCardComplete({
                       ...cardComplete,
                       card: event.complete,
@@ -165,8 +204,10 @@ export default function AddPaymentForm({ close, refreshPaymentMethods }) {
                 <CardExpiryElement
                   className='form-control'
                   onChange={(event) => {
-                    console.log('CardNumberElement [change]', event);
-                    setError(event.error);
+                    setError({
+                      ...error,
+                      expiry: event.error,
+                    });
                     setCardComplete({
                       ...cardComplete,
                       expiry: event.complete,
@@ -182,8 +223,10 @@ export default function AddPaymentForm({ close, refreshPaymentMethods }) {
                 <CardCvcElement
                   className='form-control'
                   onChange={(event) => {
-                    console.log('CardNumberElement [change]', event);
-                    setError(event.error);
+                    setError({
+                      ...error,
+                      cvc: event.error,
+                    });
                     setCardComplete({
                       ...cardComplete,
                       cvc: event.complete,
@@ -194,7 +237,15 @@ export default function AddPaymentForm({ close, refreshPaymentMethods }) {
             </Col>
           </Row>
           <Row className='justify-content-center noted-red'>
-            {error && <ErrorMessage>{error.message}</ErrorMessage>}
+            {error && error.card && (
+              <ErrorMessage>{error.card.message}</ErrorMessage>
+            )}
+            {error && error.expiry && (
+              <ErrorMessage>{error.expiry.message}</ErrorMessage>
+            )}
+            {error && error.cvc && (
+              <ErrorMessage>{error.cvc.message}</ErrorMessage>
+            )}
           </Row>
           <Row>
             <Col className='d-flex' style={{ justifyContent: 'flex-end' }}>

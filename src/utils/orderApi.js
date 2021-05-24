@@ -104,3 +104,12 @@ export const getUserPaymentMethods = async () => {
 
   return res.data.data;
 };
+
+// Delete payment method
+export const deletePaymentMethod = async (paymentMethodId) => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+
+  await axios.delete(`/${userId}/payment/payment-methods/${paymentMethodId}`);
+
+};
