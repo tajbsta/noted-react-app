@@ -1,9 +1,10 @@
+import { get } from 'lodash';
 import React, { useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
-export default function MobileModifyCheckoutCard() {
+export default function MobileModifyCheckoutCard({pricingDetails}) {
   //   {
   //   potentialReturnValue,
   //   inDonation,
@@ -20,6 +21,10 @@ export default function MobileModifyCheckoutCard() {
   //   returnFee,
   //   inReturn,
   // }
+  const potentialReturnValue = get(pricingDetails, 'potentialReturnValue', 0);
+  const inReturn = get(pricingDetails, 'totalReturns', 0);
+  const inDonation = get(pricingDetails, 'totalDonations', 0);
+
   const [confirmed, setConfirmed] = useState(false);
   const history = useHistory();
 
@@ -31,8 +36,8 @@ export default function MobileModifyCheckoutCard() {
             <Row>
               <Col>
                 <h3 className='m-product-to-return'>
-                  {/* {inReturn.length}{' '}
-                  {inReturn.length > 1 ? 'products' : 'product'} to return */}
+                  {inReturn}{' '}
+                  {inReturn > 1 ? 'products' : 'product'} to return
                 </h3>
               </Col>
             </Row>
@@ -43,7 +48,7 @@ export default function MobileModifyCheckoutCard() {
                     <Row>
                       <Col>
                         <h3 className='m-value'>
-                          {/* ${potentialReturnValue.toFixed(2) || 0.0} */}
+                          ${potentialReturnValue.toFixed(2) || 0.0}
                         </h3>
                       </Col>
                     </Row>
@@ -60,7 +65,7 @@ export default function MobileModifyCheckoutCard() {
                   </Col>
                   <Col>
                     <Row>
-                      <h3 className='m-value'>{/* {inDonation.length} */}</h3>
+                      <h3 className='m-value'>{inDonation}</h3>
                     </Row>
                     <Row>
                       <h3 className='m-value-label'>Donations</h3>
@@ -76,7 +81,7 @@ export default function MobileModifyCheckoutCard() {
                   <Col>
                     <Row>
                       <Col>
-                        <h3 className='m-value'>$100</h3>
+                        <h3 className='m-value'>${potentialReturnValue.toFixed(2) || 0.0}</h3>
                       </Col>
                     </Row>
                     <Row>
@@ -92,7 +97,7 @@ export default function MobileModifyCheckoutCard() {
                   </Col>
                   <Col>
                     <Row>
-                      <h3 className='m-value'>1</h3>
+                      <h3 className='m-value'>{inDonation}</h3>
                     </Row>
                     <Row>
                       <h3 className='m-value-label'>Donations</h3>

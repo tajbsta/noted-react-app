@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
 import CancelOrderModal from '../../../modals/CancelOrderModal';
-import { isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
+import OverlayLoader from '../../../components/OverlayLoader';
 
 export default function ModifyCheckoutCard({
   showCancelOrderModal,
@@ -13,6 +14,8 @@ export default function ModifyCheckoutCard({
   loading,
   cancelled,
   hasModifications,
+  pricingDetails = {},
+  isFetchingPrice
 }) {
   // {
   //   potentialReturnValue,
@@ -29,6 +32,14 @@ export default function ModifyCheckoutCard({
   //   updateOrders,
   //   returnFee,
   // }
+  // TODO: hookup pricing
+  const potentialReturnValue = get(pricingDetails, 'potentialReturnValue', 0);
+  const inReturn = get(pricingDetails, 'totalReturns', 0);
+  const inDonation = get(pricingDetails, 'totalDonations', 0);
+  const inTaxes = get(pricingDetails, 'tax', 0)
+  const inTotalPrice = get(pricingDetails, 'totalPrice', 0)
+  const inPrice = get(pricingDetails, 'price', 0)
+
   const [confirmed, setConfirmed] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const history = useHistory();
@@ -37,18 +48,22 @@ export default function ModifyCheckoutCard({
     <div id='ModifyCheckoutCard'>
       <div>
         <div
+          className='position-relative'
           style={{
-            maxWidth: '248px',
+            width: '248px',
           }}
+          
         >
+          <OverlayLoader loading={isFetchingPrice} />
           <div
             className={`card shadow-sm p-3 pick-up-card ${
               confirmed == true ? 'h-292' : 'h-400'
             }`}
           >
+            
             <h3 className='sofia-pro products-to-return mb-1'>
-              {/* {items.length} {items.length > 1 ? 'products' : 'product'} to
-              return */}
+              {inReturn} {inReturn > 1 ? 'products' : 'product'} to
+              return
             </h3>
             <h3 className='box-size-description'>
               All products need to fit in a 12”W x 12”H x 20”L box
@@ -66,7 +81,7 @@ export default function ModifyCheckoutCard({
 
             <div>
               <h3 className='sofia-pro pick-up-price mb-0'>
-                {/* ${potentialReturnValue.toFixed(2) || 0.0} */}$100
+                ${potentialReturnValue.toFixed(2) || 0.0}
               </h3>
               <h3 className='return-type sofia-pro value-label mb-3 d-flex'>
                 <span className=' my-auto mr-2'>Potential Return Value</span>
@@ -84,7 +99,7 @@ export default function ModifyCheckoutCard({
               <>
                 <div>
                   <h3 className='sofia-pro pick-up-price mb-0'>
-                    {/* {inDonation.length} */} 1
+                    {inDonation}
                   </h3>
                   <h3 className='return-type sofia-pro value-label'>
                     Donations
@@ -98,7 +113,7 @@ export default function ModifyCheckoutCard({
                     </h5>
                   </div>
                   <div className='col'>
-                    <h5 className='sofia-pro text-right'>$9.99</h5>
+                    <h5 className='sofia-pro text-right'>${inPrice}</h5>
                   </div>
                 </div>
                 <div className='row'>
@@ -107,8 +122,7 @@ export default function ModifyCheckoutCard({
                   </div>
                   <div className='col'>
                     <h5 className='sofia-pro text-right'>
-                      {/* ${taxes.toFixed(2)} */}
-                      $0.70
+                      ${inTaxes.toFixed(2)}
                     </h5>
                   </div>
                 </div>
@@ -119,8 +133,7 @@ export default function ModifyCheckoutCard({
                   </div>
                   <div className='col'>
                     <h5 className='sofia-pro text-right total-now'>
-                      {/* ${totalPayment} */}
-                      $10.69
+                      ${inTotalPrice}
                     </h5>
                   </div>
                 </div>
