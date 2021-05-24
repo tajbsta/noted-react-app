@@ -39,6 +39,7 @@ export default function DashboardPage() {
   const [user, setUser] = useState('');
   const [userId, setUserId] = useState('');
   const [showScanOlderButton, setShowScanOlderButton] = useState(false);
+  const [olderScanDone, setIsOlderScanDone] = useState(false);
   const [modalProductShow, setModalProductShow] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState({
     [LAST_CALL]: [],
@@ -131,6 +132,7 @@ export default function DashboardPage() {
         ),
       });
       setLoading(false);
+      setIsOlderScanDone(true);
     } catch (error) {
       // TODO: show error alert here
       setLoading(false);
@@ -191,12 +193,15 @@ export default function DashboardPage() {
 
   useEffect(() => {
     (async () => {
-      // await updateUserAttributes({ 'custom:scan_older_done': '0' });
+      // await updateUserAttributes({ 'custom:scan_older_done': '0' }); // don't delete: helps to bring back 'Scan for older items' button if not-commented
       const user = await getUser();
       setUser(user);
       setShowScanOlderButton(user['custom:scan_older_done'] !== '1');
     })();
   }, []);
+
+  const beyond90days =
+    olderScanDone || (user && user['custom:scan_older_done'] == '1');
 
   return (
     <div id='DashboardPage'>
@@ -230,6 +235,7 @@ export default function DashboardPage() {
                 {isEmpty(search) && (
                   <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
                     Your online purchases - Last 90 Days
+                    {beyond90days ? ' & beyond' : ''}
                   </h3>
                 )}
                 {!isEmpty(search) && (
@@ -373,6 +379,7 @@ export default function DashboardPage() {
                 <RightCard
                   userId={userId}
                   setSelectedProducts={setSelectedProducts}
+                  beyond90days={beyond90days}
                 />
               </div>
             </>
@@ -382,7 +389,7 @@ export default function DashboardPage() {
       {isTablet && (
         <>
           <div className='col checkout-card'>
-            <RightCard userId={userId} />
+            <RightCard userId={userId} beyond90days={beyond90days} />
           </div>
         </>
       )}
