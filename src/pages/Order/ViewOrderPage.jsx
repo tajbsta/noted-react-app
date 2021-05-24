@@ -14,7 +14,7 @@ import ModifyCheckoutCard from './modify-components/ModifyCheckoutCard';
 import MobileModifyCheckoutCard from './modify-components/MobileModifyCheckoutCard';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import CancelOrderModal from '../../modals/CancelOrderModal';
-import { cancelOrder, getOrder } from '../../utils/orderApi';
+import { cancelOrder, getOrder, getOrderPricing } from '../../utils/orderApi';
 import { getUserId } from '../../utils/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { orderErrors } from '../../library/errors.library';
@@ -32,6 +32,22 @@ export default function ViewOrderPage() {
   const { id: orderId } = useParams();
   const [products, setProducts] = useState([]);
   const [originalProducts, setOriginalProducts] = useState([]);
+  const [pricingDetails, setPricingDetails] = useState({
+    potentialReturnValue: 0,
+    price: 0,
+    tax: 0,
+    totalDonations: 0,
+    totalPrice: 0,
+    totalReturns: 0,
+  })
+
+  /**GET PRICING DETAILS */
+  const getPricingDetails = async () => {
+    const initialData = get(order, 'orderItems', [])
+    const productIds = initialData.map((item) => item._id)
+    const response = await getOrderPricing(productIds, '')
+    setPricingDetails(response)
+  }
 
   const loadOrder = async () => {
     setOrderLoading(true);
@@ -53,6 +69,10 @@ export default function ViewOrderPage() {
   useEffect(() => {
     loadOrder();
   }, []);
+
+  useEffect(() => {
+    getPricingDetails()
+  }, [order])
 
   const ConfirmCancellation = async () => {
     setLoading(true);
@@ -173,6 +193,7 @@ export default function ViewOrderPage() {
     <div id='ViewOrderPage'>
       {isMobile && (
         <MobileModifyCheckoutCard
+        pricingDetails={pricingDetails}
         // inReturn={inReturn}
         // confirmed={confirmed}
         // potentialReturnValue={potentialReturnValue}
@@ -294,6 +315,7 @@ export default function ViewOrderPage() {
                   removeCancelOrderModal={removeCancelOrderModal}
                   loading={loading}
                   cancelled={cancelled}
+                  pricingDetails={pricingDetails}
                   // potentialReturnValue={potentialReturnValue}
                   // inDonation={inDonation}
                   // taxes={taxes}
@@ -334,16 +356,16 @@ export default function ViewOrderPage() {
                 <hr style={{ marginBottom: '18px', marginTop: '8px' }} />
                 <div className='row'>
                   <div className='col m-label'>Return total cost</div>
-                  <div className='col m-value'>$9.99</div>
+                  <div className='col m-value'>${pricingDetails.price}</div>
                 </div>
                 <div className='row'>
                   <div className='col m-label'>Taxes</div>
-                  <div className='col m-value'>$0.00</div>
+                  <div className='col m-value'>${pricingDetails.tax}</div>
                 </div>
                 <hr style={{ marginBottom: '21px', marginTop: '8px' }} />
                 <div className='row'>
                   <div className='col m-total-label'>Total paid</div>
-                  <div className='col m-total-value'>$9.99</div>
+                  <div className='col m-total-value'>${pricingDetails.totalPrice}</div>
                 </div>
                 {!cancelled && (
                   <>

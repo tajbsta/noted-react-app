@@ -59,7 +59,7 @@ export default function DashboardPage() {
 
       setFetchingOrders(false);
       setOrders(res.orders);
-      // console.log(res.orders);
+      console.log(res.orders);
     } catch (error) {
       // TODO: ERROR HANDLING
       console.log(error);
