@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
 import { Spinner } from 'react-bootstrap';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 import { get } from 'lodash';
+import OverlayLoader from '../../../components/OverlayLoader';
 
 export default function CheckoutCard({
   confirmed,
   onReturnConfirm,
   loading,
   validOrder = false,
-  pricingDetails = {}
+  pricingDetails = {},
+  isFetchingPrice
 }) {
   const [modalShow, setModalShow] = useState(false);
 
@@ -21,15 +23,16 @@ export default function CheckoutCard({
   const inTotalPrice = get(pricingDetails, 'totalPrice', 0)
   const inPrice = get(pricingDetails, 'price', 0)
 
-
   return (
-    <div id='CheckoutCard'>
+    <div id='CheckoutCard' className='relative'>
       <div>
         <div
+          className='position-relative'
           style={{
             maxWidth: '248px',
           }}
         >
+          <OverlayLoader loading={isFetchingPrice} />
           <div className='card shadow-sm p-3 pick-up-card'>
             <h3 className='sofia-pro products-to-return mb-1'>
               {inReturn} {inReturn > 1 ? 'products' : 'product'}{' '}

@@ -17,6 +17,7 @@ import { Box } from 'react-feather';
 import { createOrder, getOrderPricing } from '../../utils/orderApi';
 import { getUserId } from '../../utils/auth';
 import { orderErrors } from '../../library/errors.library';
+import OverlayLoader from '../../components/OverlayLoader';
 
 export default function CheckoutPage() {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ export default function CheckoutPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isFetchingPrice, setIsFetchingPrice] = useState(false);
   const { address, payment, details, items } = useSelector(
     ({
       cart: { items },
@@ -56,8 +58,9 @@ export default function CheckoutPage() {
   /**GET PRICING DETAILS */
   const getPricingDetails = async () => {
     const productIds = items.map((item) => item._id)
+    setIsFetchingPrice(true)
     const response = await getOrderPricing(productIds, '')
-    console.log(response);
+    setIsFetchingPrice(false);
     setPricingDetails(response)
   }
 
@@ -290,13 +293,15 @@ export default function CheckoutPage() {
           {!isMobile && (
             <>
               <div className='col-sm-3'>
-                <CheckoutCard
-                  confirmed={confirmed}
-                  onReturnConfirm={onReturnConfirm}
-                  validOrder={validOrder}
-                  loading={loading}
-                  pricingDetails={pricingDetails}
-                />
+                  
+                  <CheckoutCard
+                    confirmed={confirmed}
+                    onReturnConfirm={onReturnConfirm}
+                    validOrder={validOrder}
+                    loading={loading}
+                    pricingDetails={pricingDetails}
+                    isFetchingPrice={isFetchingPrice}
+                  />
               </div>
             </>
           )}
