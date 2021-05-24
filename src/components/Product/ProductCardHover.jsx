@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import ReturnPolicyModal from '../modals/ReturnPolicyModal';
-import EditProductModal from '../modals/EditProductModal';
+import ReturnPolicyModal from '../../modals/ReturnPolicyModal';
+import EditProductModal from '../../modals/EditProductModal';
 import moment from 'moment';
 import { get } from 'lodash';
 import {
   mountProductInEdit,
   unmountProductedit,
-} from '../actions/runtime.action';
+} from '../../actions/runtime.action';
 import { useDispatch } from 'react-redux';
-import { RETURN_SCORES } from '../constants/returns/scores';
+import { RETURN_SCORES } from '../../constants/returns/scores';
 import ReturnScore from './ReturnsScore';
 import { useHistory } from 'react-router';
 import { Col, Row } from 'react-bootstrap';

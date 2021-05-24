@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Accordion, Card, Col, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
-import ReturnScore from '../../../components/ReturnsScore';
+import ReturnScore from '../../../components/Product/ReturnsScore';
 
 export const ScheduledReturnItem = ({ order }) => {
   const [eventKey, setEventKey] = useState('0');
@@ -53,6 +53,8 @@ export const ScheduledReturnItem = ({ order }) => {
     push('/order/' + order.id);
   };
 
+  const formattedReturnValue = order.returnValue.toFixed(2);
+
   const renderScheduledReturnItem = (item) => {
     const vendorName = get(item, 'vendor_name', '');
     const name = get(item, 'name', '');
@@ -65,7 +67,7 @@ export const ScheduledReturnItem = ({ order }) => {
 
     return (
       <div id='ScheduledReturnProduct' key={item._id}>
-        <Row>
+        <Row className='mb-3'>
           <Col className='sched-product-col col-9'>
             <div className='sched-img-col'>
               <img
@@ -287,6 +289,20 @@ export const ScheduledReturnItem = ({ order }) => {
                       </h4>
                     </div>
                   </Row>
+
+                  {formattedReturnValue > 0 && (
+                    <Row
+                      style={{
+                        justifyContent: 'flex-end',
+                        marginRight: '0px',
+                      }}
+                    >
+                      <div className='total-items-container'>
+                        <h4>Potential Return Value:&nbsp;</h4>
+                        <h4 className='sched-value'>${formattedReturnValue}</h4>
+                      </div>
+                    </Row>
+                  )}
 
                   <Row
                     className='cancel-action-container'

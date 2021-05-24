@@ -1,11 +1,15 @@
 .tooltip-inner {
   text-align: left !important;
-  max-width: 150px;
+  padding: 12px;
   background-color: #eee4f6;
   color: #570097;
 }
 
-#InfoIcon {
+#ReturnValueInfoIcon {
+  color: #0e0018;
+  mix-blend-mode: normal;
+  opacity: 0.6;
+
   .info-icon svg {
     width: 18px;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-function BrandLogoSvg() {
+export default function BrandLogoSvg() {
   const history = useHistory();
 
   const pageLocation = history.location.pathname;
@@ -48,5 +48,3 @@ function BrandLogoSvg() {
     </div>
   );
 }
-
-export default BrandLogoSvg;

@@ -300,7 +300,7 @@ export default function AddressForm({
   const renderAddressFormDesktop = () => {
     return (
       <>
-        <h3 className='sofia-pro text-18 mb-4'>Pick-up Address</h3>
+        <h3 className='sofia-pro text-18 mb-3'>Pick-up Address</h3>
         <div className='card shadow-sm mb-2 p-3 max-w-840'>
           <div className='card-body'>
             <Form

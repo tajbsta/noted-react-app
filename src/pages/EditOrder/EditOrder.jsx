@@ -4,14 +4,14 @@ import { Col, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import $ from 'jquery';
-import ReturnCategory from '../../components/ReturnCategory';
+import ReturnCategory from '../../components/Product/ReturnCategory';
 import Scanning from '../Dashboard/components/Scanning';
 import { FOR_RETURN, LAST_CALL } from '../../constants/actions/runtime';
 import InReturnBox from './components/InReturnBox';
 import { updateCurrentOrder } from '../../actions/runtime.action';
 import { dedupeByKey } from '../../utils/data';
 import { scrollToTop } from '../../utils/window';
-import NotedCheckbox from '../../components/NotedCheckbox';
+import NotedCheckbox from '../../components/Product/NotedCheckbox';
 
 export default function EditOrder({
   location: {

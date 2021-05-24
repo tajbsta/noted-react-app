@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ProgressBar } from 'react-bootstrap';
 import { Frown, Plus } from 'react-feather';
-import ProductCard from '../../components/ProductCard';
+import ProductCard from '../../components/Product/ProductCard';
 import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
 import PickUpCancelled from '../../components/PickUpDetails/PickUpCancelled';
 import PickUpDetails from './modify-components/PickUpDetails';

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Accordion, Card, Col, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
-import ReturnScore from '../../../components/ReturnsScore';
+import ReturnScore from '../../../components/Product/ReturnsScore';
 
 export const ReturnHistoryItem = ({ order }) => {
   const [eventKey, setEventKey] = useState('0');
@@ -33,6 +33,7 @@ export const ReturnHistoryItem = ({ order }) => {
   };
 
   const formattedOrderStatus = toTitleCase(order.status);
+  const formattedReturnValue = order.returnValue.toFixed(2);
 
   const renderAllScheduledItems = items.slice(0, 5).map((product) => {
     return (
@@ -71,7 +72,7 @@ export const ReturnHistoryItem = ({ order }) => {
 
     return (
       <div id='ReturnHistoryItem' key={item._id}>
-        <Row>
+        <Row className='mb-3'>
           <Col className='sched-product-col col-9'>
             <div className='sched-img-col'>
               <img
@@ -302,6 +303,20 @@ export const ReturnHistoryItem = ({ order }) => {
                       </h4>
                     </div>
                   </Row>
+
+                  {formattedReturnValue > 0 && (
+                    <Row
+                      style={{
+                        justifyContent: 'flex-end',
+                        marginRight: '0px',
+                      }}
+                    >
+                      <div className='total-items-container'>
+                        <h4>Potential Return Value:&nbsp;</h4>
+                        <h4 className='sched-value'>${formattedReturnValue}</h4>
+                      </div>
+                    </Row>
+                  )}
                 </div>
               </div>
             </div>

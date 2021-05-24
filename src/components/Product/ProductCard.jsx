@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import ReturnScore from './ReturnsScore';
-import Row from './Row';
+import Row from '../Row';
 import { Container, Col } from 'react-bootstrap';
 import ProductDetails from './ProductDetails';
 import ProductCardHover from './ProductCardHover';
 import $ from 'jquery';
-import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
+import ProductPlaceholder from '../../assets/img/ProductPlaceholder.svg';
 import moment from 'moment';
-import ReturnPolicyModal from '../modals/ReturnPolicyModal';
-import ConfirmDonate from '../modals/ConfirmDonate';
+import ReturnPolicyModal from '../../modals/ReturnPolicyModal';
+import ConfirmDonate from '../../modals/ConfirmDonate';
 import NotedCheckbox from './NotedCheckbox';
 import { get } from 'lodash-es';
-import EditProductModal from '../modals/EditProductModal';
+import EditProductModal from '../../modals/EditProductModal';
 import { useFormik } from 'formik';
-import { addProductSchema } from '../models/formSchema';
+import { addProductSchema } from '../../models/formSchema';
 import { useHistory } from 'react-router';
-import { formatCurrency } from '../library/number';
+import { formatCurrency } from '../../library/number';
 
 function ProductCard({
   selectable = true,
@@ -36,14 +36,12 @@ function ProductCard({
   const [modalEditShow, setModalEditShow] = useState(false);
   const [modalDonateShow, setModalDonateShow] = useState(false);
 
-  // Check if device is mobile
   useEffect(() => {
     function handleResize() {
       setIsMobile(window.innerWidth <= 991);
     }
-    handleResize(); // Run on load to set the default value
+    handleResize();
     window.addEventListener('resize', handleResize);
-    // Clean up event listener
     return () => {
       window.removeEventListener('resize', handleResize);
     };

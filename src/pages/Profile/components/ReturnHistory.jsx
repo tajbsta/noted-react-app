@@ -16,7 +16,7 @@ export default function ReturnHistory({ user }) {
       const currentOrders = orders;
       const userId = await getUserId();
       const res = await getOrders(userId, 'history', nextPageKey);
-      console.log(res);
+      // console.log(res);
       const newOrders = currentOrders.concat(res.orders);
 
       setFetchingOrders(false);

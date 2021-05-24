@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { RETURN_SCORES } from '../constants/returns/scores';
+import { RETURN_SCORES } from '../../constants/returns/scores';
 
-function ReturnScore({ score }) {
+export default function ReturnScore({ score }) {
   const [validScore, setValidScore] = useState({});
 
   useEffect(() => {
@@ -19,5 +19,3 @@ function ReturnScore({ score }) {
     />
   );
 }
-
-export default ReturnScore;

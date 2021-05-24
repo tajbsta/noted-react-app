@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import ReturnCategory from '../../components/ReturnCategory';
+import ReturnCategory from '../../components/Product/ReturnCategory';
 import RightCard from './components/RightCard';
 import { getUserId, getUser, updateUserAttributes } from '../../utils/auth';
 import { getAccounts } from '../../utils/accountsApi';

@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Overlay, Tooltip, Row } from 'react-bootstrap';
 import { get } from 'lodash-es';
-import { DONATE, NOT_ELIGIBLE } from '../constants/actions/runtime';
-import ConfirmDonate from '../modals/ConfirmDonate';
+import { DONATE, NOT_ELIGIBLE } from '../../constants/actions/runtime';
+import ConfirmDonate from '../../modals/ConfirmDonate';
 
 function ProductDetails({ item, isHovering = false, toggleSelected }) {
   const history = useHistory();

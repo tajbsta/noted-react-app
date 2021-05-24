@@ -75,3 +75,41 @@ export const cancelOrder = async (userId, orderId) => {
   const axios = await api();
   await axios.post(`/${userId}/orders/${orderId}/cancel`);
 };
+
+// Get Stripe publishable key
+export const getPublicKey = async () => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+
+  const res = await axios.get(`/${userId}/payment/config`);
+
+  return res.data.data;
+};
+
+// Save user payment method
+export const savePaymentMethod = async (paymentMethodId) => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+
+  await axios.post(`/${userId}/payment/save-payment-method`, { paymentMethodId });
+
+};
+
+// Get Stripe publishable key
+export const getUserPaymentMethods = async () => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+
+  const res = await axios.get(`/${userId}/payment/payment-methods`);
+
+  return res.data.data;
+};
+
+// Delete payment method
+export const deletePaymentMethod = async (paymentMethodId) => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+
+  await axios.delete(`/${userId}/payment/payment-methods/${paymentMethodId}`);
+
+};

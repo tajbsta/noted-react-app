@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
 import { Spinner } from 'react-bootstrap';
-import InfoIcon from '../../../components/InfoIcon';
+import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
 export default function CheckoutCard({
   confirmed,
@@ -73,7 +73,7 @@ export default function CheckoutCard({
                 </h3>
                 <h3 className='return-type sofia-pro value-label mb-3 d-flex'>
                   <span className='my-auto mr-2'>Potential Return Value</span>
-                  <InfoIcon />
+                  <ReturnValueInfoIcon />
                 </h3>
 
                 <h3 className='sofia-pro pick-up-price mb-0'>

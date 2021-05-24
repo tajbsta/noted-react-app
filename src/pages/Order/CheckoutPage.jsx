@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CheckoutCard from './checkout-components/CheckoutCard';
 import MobileCheckoutCard from './checkout-components/MobileCheckoutCard';
-import ProductCard from '../../components/ProductCard';
+import ProductCard from '../../components/Product/ProductCard';
 import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
 import PickUpDetails from './checkout-components/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
