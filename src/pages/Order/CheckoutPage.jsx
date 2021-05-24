@@ -17,6 +17,8 @@ import { Box } from 'react-feather';
 import { createOrder } from '../../utils/orderApi';
 import { getUserId } from '../../utils/auth';
 import { orderErrors } from '../../library/errors.library';
+import { getProducts } from '../../utils/productsApi';
+import { DONATE, LAST_CALL, RETURNABLE } from '../../constants/actions/runtime';
 
 export default function CheckoutPage() {
   const dispatch = useDispatch();
@@ -26,6 +28,7 @@ export default function CheckoutPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [otherReturns, setOtherReturns] = useState([]);
   const { address, payment, details, items } = useSelector(
     ({
       cart: { items },
@@ -141,6 +144,41 @@ export default function CheckoutPage() {
   const validOrder =
     validAddress && validPayment && validPickUpDetails && items.length > 0;
 
+  async function getMissedOutProducts() {
+    try {
+      const lastCall = await getProducts({ category: LAST_CALL, size: 2 });
+      setOtherReturns(lastCall);
+      if (isEmpty(lastCall)) {
+        const returnable = await getProducts({ category: RETURNABLE, size: 2 });
+        setOtherReturns(returnable);
+        if (isEmpty(returnable)) {
+          const donate = await getProducts({ category: DONATE, size: 2 });
+          setOtherReturns(donate);
+        }
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    getMissedOutProducts();
+  }, []);
+
+  const RenderOtherReturnables = () => {
+    return otherReturns.map((item) => (
+      <ProductCard
+        removable={false}
+        scannedItem={item}
+        key={item._id}
+        item={item}
+        selectable={false}
+        clickable={false}
+      />
+    ));
+  };
+
   return (
     <div id='CheckoutPage'>
       {isMobile && (
@@ -250,17 +288,18 @@ export default function CheckoutPage() {
               </>
             )}
 
-            {/* <h3 className='sofia-pro miss-out section-title'>
+            <h3 className='sofia-pro miss-out section-title'>
               Don&apos;t miss out on other returns
             </h3>
-            <div className='row align-items-center p-4 all-checkbox mobile-row'>
+            {/* <div className='row align-items-center p-4 all-checkbox mobile-row'>
               <input
-                type='checkbox'
-                onChange={handleSelectAll}
-                checked={newSelected.length === forgottenReturns.length}
+              // type='checkbox'
+              // onChange={handleSelectAll}
+              // checked={newSelected.length === forgottenReturns.length}
               />
               <h4 className='sofia-pro noted-purple ml-4 mb-0 p-0'>Add all</h4>
             </div> */}
+            {RenderOtherReturnables()}
           </div>
 
           {/* RIGHT CARDS */}

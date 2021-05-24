@@ -6,7 +6,6 @@ import { getUserSession } from './auth';
 
 // Get user products
 export const getProducts = async ({
-  userId,
   size,
   category,
   sortBy,
@@ -41,7 +40,7 @@ export const getProducts = async ({
   }
 
   const query = queries.join('&');
-
+  const { userId } = await getUserSession();
   const res = await axios.get(`/${userId}/products?${query}`);
   return res.data.data;
 };
