@@ -9,9 +9,20 @@
   color: #0e0018;
   mix-blend-mode: normal;
   opacity: 0.6;
+  max-width: 20px;
 
   .info-icon svg {
     width: 18px;
+
+    &:hover {
+      color: #570097;
+      opacity: 1;
+      cursor: pointer;
+    }
+  }
+
+  .info-icon-small svg {
+    width: 15px;
 
     &:hover {
       color: #570097;

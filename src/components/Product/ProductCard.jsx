@@ -16,6 +16,7 @@ import { useFormik } from 'formik';
 import { addProductSchema } from '../../models/formSchema';
 import { useHistory } from 'react-router';
 import { formatCurrency } from '../../library/number';
+import ReturnValueInfoIcon from '../ReturnValueInfoIcon';
 
 function ProductCard({
   selectable = true,
@@ -432,6 +433,7 @@ function ProductCard({
                       >
                         Edit
                       </button>
+                      <ReturnValueInfoIcon content="We're still working on this" />
                     </div>
                   </Row>
                 </Container>

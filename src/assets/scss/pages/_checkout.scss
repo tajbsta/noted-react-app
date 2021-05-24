@@ -7,6 +7,7 @@
     @media (max-width: 991px) {
       padding: 0px;
     }
+
     // @media (min-width: 541px) and (max-width: 991px) {
     //   max-width: 68%;
     // }
@@ -17,6 +18,7 @@
       padding-left: 0px;
       padding-right: 0px;
     }
+
     @media (min-width: 992px) {
       padding-left: 0px;
       padding-right: 0px;
@@ -425,6 +427,8 @@
   }
 
   .add-title {
+    display: flex;
+    align-items: center;
     font-size: 14px;
     line-height: 16px;
     color: #b1adb3;

@@ -23,6 +23,7 @@ import { scrapeOlderEmails } from '../../utils/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
 import { getOrders } from '../../utils/orderApi';
+import InfoIcon from '../../components/InfoIcon';
 
 export default function DashboardPage() {
   const history = useHistory();
@@ -308,7 +309,7 @@ export default function DashboardPage() {
                         <div className='text-muted text-center text-cant-find sofia-pro'>
                           Can’t find one?
                           <button
-                            className='btn btn-add-product'
+                            className='btn btn-add-product mr-1'
                             onClick={() => setModalProductShow(true)}
                             style={{ padding: '0px' }}
                           >
@@ -316,6 +317,10 @@ export default function DashboardPage() {
                               &nbsp; Add it manually
                             </h4>
                           </button>
+                          <InfoIcon
+                            content="We're still working on this"
+                            iconClassname='info-icon-small'
+                          />
                         </div>
                       </div>
                     </div>

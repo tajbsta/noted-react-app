@@ -6,14 +6,16 @@ const ReturnValueInfoIcon = (props) => {
   const pos = props.isMobile || window.innerWidth <= 1023 ? 'top' : 'bottom';
   const [show, setShow] = useState(false);
   const target = useRef(null);
+  const content = props.content
+    ? props.content
+    : ` noted determines potential return value by the original purchase
+  price.The actual returns will be based on the product's return
+  condition and return policies.`;
+  const iconClassname = props.iconClassname ? props.iconClassname : 'info-icon';
 
   const renderTooltip = (props) => (
     <Tooltip id='button-tooltip' className='tooltip-inner' {...props}>
-      <span style={{ fontFamily: 'Sofia Pro !important' }}>
-        noted determines potential return value by the original purchase
-        price.The actual returns will be based on the product&apos;s return
-        condition and return policies.
-      </span>
+      <span style={{ fontFamily: 'Sofia Pro !important' }}>{content}</span>
     </Tooltip>
   );
   return (
@@ -21,7 +23,7 @@ const ReturnValueInfoIcon = (props) => {
       {props.isMobile ? (
         <>
           <div
-            className='info-icon'
+            className={iconClassname}
             ref={target}
             onClick={() => setShow(!show)}
           >
@@ -38,7 +40,7 @@ const ReturnValueInfoIcon = (props) => {
           </Overlay>
         </>
       ) : (
-        <div className='info-icon'>
+        <div className={iconClassname}>
           <OverlayTrigger
             trigger={['hover', 'hover']}
             className='info-icon'

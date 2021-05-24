@@ -12,6 +12,7 @@ import { RETURN_SCORES } from '../../constants/returns/scores';
 import ReturnScore from './ReturnsScore';
 import { useHistory } from 'react-router';
 import { Col, Row } from 'react-bootstrap';
+import InfoIcon from './InfoIcon';
 
 export default function ProductCardHover({ show, item, editproductform }) {
   const dispatch = useDispatch();
@@ -109,11 +110,15 @@ export default function ProductCardHover({ show, item, editproductform }) {
               <div className='info-container'>
                 <p className='text-wrong-info sofia-pro'>Wrong info?&nbsp;</p>
                 <button
-                  className='btn-hover-edit sofia-pro btn'
+                  className='btn-hover-edit sofia-pro btn mr-1'
                   onClick={onEdit}
                 >
                   Edit
                 </button>
+                <InfoIcon
+                  content="We're still working on this"
+                  iconClassname='info-icon-small'
+                />
               </div>
             </div>
           )}
