@@ -95,8 +95,14 @@ export const ReturnHistoryItem = ({ order }) => {
             <div style={{ marginLeft: '16px' }}>
               <h4 className='sofia-pro sched-distributor-name'>{vendorName}</h4>
               <h4 className='sofia-pro sched-product-name'>{name}</h4>
-              <h4 className='sofia-pro sched-product-price'>
-                {category == 'DONATE' ? 'Donate' : `$${formattedPrice}`}
+              <h4
+                className={`sofia-pro sched-product-price ${
+                  category == 'DONATE' ? 'donate-price' : ''
+                }`}
+              >
+                {category == 'DONATE'
+                  ? `$${formattedPrice} - Donate`
+                  : `$${formattedPrice}`}
               </h4>
             </div>
           </Col>

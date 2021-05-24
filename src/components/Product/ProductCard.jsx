@@ -338,7 +338,13 @@ function ProductCard({
                         This item is not eligible for pick up
                       </h4>
                     ) : (
-                      <h4 className='sofia-pro mobile-price'>${formatPrice}</h4>
+                      <h4
+                        className={`sofia-pro mobile-price ${
+                          isDonate ? 'donate-price' : ''
+                        }`}
+                      >
+                        ${formatPrice}
+                      </h4>
                     )}
                   </Row>
                 </Container>

@@ -84,6 +84,12 @@
     line-height: 15px;
   }
 
+  .donate-price {
+    color: #2e1d3a;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
   .not-eligible-text {
     font-size: 12px;
     line-height: 14px;
@@ -422,6 +428,7 @@
 
     .mobile-price {
       margin-bottom: 3px;
+      font-weight: 700;
     }
   }
 

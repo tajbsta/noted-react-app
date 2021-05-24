@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Col, OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
+import { Col, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
@@ -18,7 +18,7 @@ import {
 } from '../../../constants/actions/runtime';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
-function RightCard({ userId, setSelectedProducts }) {
+function RightCard({ userId, setSelectedProducts, beyond90days }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
@@ -111,7 +111,9 @@ function RightCard({ userId, setSelectedProducts }) {
           {!isMobile && (
             <div className='p-0 ml-1 d-inline-flex align-center'>
               <h5 className='card-title mb-0 p-3 sofia-pro'>
-                {isEmpty(items) && <div>Total past 90 days</div>}
+                {isEmpty(items) && (
+                  <div>Total past 90 days{beyond90days ? ' & beyond' : ''}</div>
+                )}
 
                 {!isEmpty(items) && (
                   <div className='row'>
@@ -193,7 +195,12 @@ function RightCard({ userId, setSelectedProducts }) {
                   <>
                     <div className='p-0 ml-1 d-inline-flex align-center'>
                       <h5 className='card-title sofia-pro m-card-title'>
-                        {isEmpty(items) && <div>Total past 90 days</div>}
+                        {isEmpty(items) && (
+                          <div>
+                            Total past 90 days
+                            {beyond90days ? ' & beyond' : ''}
+                          </div>
+                        )}
 
                         {!isEmpty(items) && (
                           <div className='row'>
