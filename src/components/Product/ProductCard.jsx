@@ -195,6 +195,7 @@ function ProductCard({
                 display: 'flex',
                 alignItems: isMobile && selected ? '' : 'center',
                 marginTop: isMobile && selected ? '7px' : '',
+                marginLeft: !selectable && '15px',
               }}
             >
               {removable && !selectable && !confirmed && (
