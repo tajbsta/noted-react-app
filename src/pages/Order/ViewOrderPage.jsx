@@ -18,7 +18,7 @@ import { cancelOrder, getOrder } from '../../utils/orderApi';
 import { getUserId } from '../../utils/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { orderErrors } from '../../library/errors.library';
-import InfoIcon from '../../components/InfoIcon';
+import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 
 export default function ViewOrderPage() {
   const [confirmed, setConfirmed] = useState(false);
@@ -224,7 +224,7 @@ export default function ViewOrderPage() {
                     item={product}
                     selectable={false}
                     clickable={false}
-                    removable={!confirmed}
+                    removable={false}
                     onRemove={() => {
                       removeProduct(product);
                     }}
@@ -253,7 +253,7 @@ export default function ViewOrderPage() {
                       <div className='col-sm-4 p-0 p-details m-add-product mb-3'>
                         <Row>
                           <h3 className='add-title mr-2'>Add Products</h3>{' '}
-                          <InfoIcon
+                          <ReturnValueInfoIcon
                             content="We're still working on this"
                             iconClassname='info-icon-small mb-2'
                           />

@@ -23,7 +23,7 @@ import { scrapeOlderEmails } from '../../utils/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
 import { getOrders } from '../../utils/orderApi';
-import InfoIcon from '../../components/InfoIcon';
+import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 
 export default function DashboardPage() {
   const history = useHistory();
@@ -317,7 +317,7 @@ export default function DashboardPage() {
                               &nbsp; Add it manually
                             </h4>
                           </button>
-                          <InfoIcon
+                          <ReturnValueInfoIcon
                             content="We're still working on this"
                             iconClassname='info-icon-small'
                           />

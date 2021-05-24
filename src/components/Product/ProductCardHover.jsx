@@ -12,7 +12,7 @@ import { RETURN_SCORES } from '../../constants/returns/scores';
 import ReturnScore from './ReturnsScore';
 import { useHistory } from 'react-router';
 import { Col, Row } from 'react-bootstrap';
-import InfoIcon from './InfoIcon';
+import ReturnValueInfoIcon from '../ReturnValueInfoIcon';
 
 export default function ProductCardHover({ show, item, editproductform }) {
   const dispatch = useDispatch();
@@ -115,7 +115,7 @@ export default function ProductCardHover({ show, item, editproductform }) {
                 >
                   Edit
                 </button>
-                <InfoIcon
+                <ReturnValueInfoIcon
                   content="We're still working on this"
                   iconClassname='info-icon-small'
                 />
