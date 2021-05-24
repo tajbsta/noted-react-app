@@ -25,8 +25,10 @@ import {
   getPublicKey,
   getUserPaymentMethods,
   createPaymentIntent,
+  prevalidateOrder,
 } from '../../utils/orderApi';
 import PRICING from '../../constants/pricing';
+import { SERVER_ERROR } from '../../constants/errors/errorCodes';
 
 const Checkout = () => {
   const stripe = useStripe();
@@ -74,7 +76,28 @@ const Checkout = () => {
     setPricingDetails(response);
   };
 
-  const placeOrder = async (billingDetails) => {
+  const placeOrder = async (newOrder) => {
+    setLoading(true);
+    const order = await createOrder(newOrder);
+
+    setOrder(order);
+    setConfirmed(true);
+
+    dispatch(clearForm());
+
+    scrollToTop();
+    setLoading(false);
+    showSuccess({
+      message: (
+        <div>
+          <Box />
+          &nbsp;&nbsp;Successfully placed order!
+        </div>
+      ),
+    });
+  };
+
+  const confirmOrder = async () => {
     try {
       setLoading(true);
 
@@ -90,54 +113,21 @@ const Checkout = () => {
         pickupInstruction: address.instructions,
         pickupDate: details.date,
         pickupTime: details.time,
-        paymentIntentId: billingDetails.paymentIntentId,
-        productId: billingDetails.productId,
-        taxId: billingDetails.taxId,
-        priceId: billingDetails.priceId,
-        pricing: billingDetails.pricing,
       };
 
-      const userId = await getUserId();
+      // Validate here
+      await prevalidateOrder(newOrder);
 
-      const order = await createOrder(userId, newOrder);
-
-      setOrder(order);
-      setConfirmed(true);
-
-      dispatch(clearForm());
-
-      scrollToTop();
-      setLoading(false);
-      showSuccess({
-        message: (
-          <div>
-            <Box />
-            &nbsp;&nbsp;Successfully placed order!
-          </div>
-        ),
-      });
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-      showError({
-        message: get(
-          orderErrors.find(
-            ({ details }) => details === error.response.data.details
-          ),
-          'message',
-          'Cannot place order at this time'
-        ),
-      });
-    }
-  };
-
-  const confirmOrder = async () => {
-    try {
-      setLoading(true);
       // Get payment intent from BE, used for getting payment from the user/payment method
       const paymentIntent = await createPaymentIntent(PRICING.STANDARD);
 
       console.log(paymentIntent);
+
+      newOrder.paymentIntentId = paymentIntent.paymentIntentId;
+      newOrder.productId = paymentIntent.productId;
+      newOrder.taxId = paymentIntent.taxId;
+      newOrder.priceId = paymentIntent.priceId;
+      newOrder.pricing = paymentIntent.pricing;
 
       // Confirm payment intent using stripe here
       const result = await stripe.confirmCardPayment(
@@ -146,6 +136,7 @@ const Checkout = () => {
       console.log({
         result,
       });
+
       if (result.error) {
         // Show error to customer
         console.log(result.error.message);
@@ -153,14 +144,24 @@ const Checkout = () => {
       } else {
         if (result.paymentIntent.status === 'succeeded') {
           // Place order - call create order endpoint
-          await placeOrder(paymentIntent);
+          await placeOrder(newOrder);
           return;
-        }
+        } // TODO: handle stripe payment errors
       }
     } catch (error) {
       console.log(error);
       setLoading(false);
-      // Handle stripe error e.g. extra user authentication
+      const errorCode =
+        error.response && error.response.data
+          ? error.response.data.details
+          : SERVER_ERROR;
+      showError({
+        message: get(
+          orderErrors.find(({ details }) => details === errorCode),
+          'message',
+          'Cannot place order at this time'
+        ),
+      });
     }
   };
 
