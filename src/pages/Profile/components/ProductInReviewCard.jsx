@@ -65,7 +65,7 @@ export default function ProductInReviewCard({ item }) {
   };
 
   return (
-    <div id='productCard'>
+    <div id='ProductCard'>
       <div className={`card scanned-item-card max-w-840 mb-3 p-0`}>
         <div
           className='card-body pt-3 pb-3 p-0 m-0'

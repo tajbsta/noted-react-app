@@ -155,7 +155,7 @@ function ProductCard({
   const isViewScan = useHistory().location.pathname !== '/checkout';
 
   return (
-    <div id='productCard'>
+    <div id='ProductCard'>
       <div
         className={`card scanned-item-card max-w-840 mb-3 p-0 ${
           clickable && 'btn'
