@@ -2,7 +2,7 @@ import AuthorizePage from '../pages/AuthorizePage';
 import ProfilePage from '../pages/Profile/ProfilePage';
 import SettingsPage from '../pages/Settings/SettingsPage';
 import DashboardPage from '../pages/Dashboard/DashboardPage';
-import CheckoutPage from '../pages/Order/CheckoutPage';
+import { CheckoutPage } from '../pages/Order/CheckoutPage';
 import ViewOrderPage from '../pages/Order/ViewOrderPage';
 // import EditOrderPage from '../pages/EditOrder/EditOrder';
 

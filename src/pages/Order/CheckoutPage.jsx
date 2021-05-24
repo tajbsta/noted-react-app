@@ -17,11 +17,18 @@ import { Box } from 'react-feather';
 import { createOrder, getOrderPricing } from '../../utils/orderApi';
 import { getUserId } from '../../utils/auth';
 import { orderErrors } from '../../library/errors.library';
-import OverlayLoader from '../../components/OverlayLoader';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, useStripe } from '@stripe/react-stripe-js';
+import {
+  getPublicKey,
+  getUserPaymentMethods,
+  createPaymentIntent,
+} from '../../utils/orderApi';
+import PRICING from '../../constants/pricing';
 
-export default function CheckoutPage() {
+const Checkout = () => {
+  const stripe = useStripe();
   const dispatch = useDispatch();
-  const [placingOrder, setPlacingOrder] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [order, setOrder] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -64,16 +71,8 @@ export default function CheckoutPage() {
     setPricingDetails(response);
   };
 
-  const onReturnConfirm = async () => {
-    console.log({
-      payment,
-      address,
-      details,
-      items,
-    });
-
+  const placeOrder = async (billingDetails) => {
     try {
-      setPlacingOrder(true);
       setLoading(true);
 
       const newOrder = {
@@ -88,17 +87,19 @@ export default function CheckoutPage() {
         pickupInstruction: address.instructions,
         pickupDate: details.date,
         pickupTime: details.time,
+        paymentIntentId: billingDetails.paymentIntentId,
+        productId: billingDetails.productId,
+        taxId: billingDetails.taxId,
+        priceId: billingDetails.priceId,
+        pricing: billingDetails.pricing,
       };
 
       const userId = await getUserId();
 
       const order = await createOrder(userId, newOrder);
 
-      // console.log(order);
-
       setOrder(order);
       setConfirmed(true);
-      setPlacingOrder(false);
 
       dispatch(clearForm());
 
@@ -113,9 +114,7 @@ export default function CheckoutPage() {
         ),
       });
     } catch (error) {
-      setPlacingOrder(false);
       setLoading(false);
-
       console.log(error);
       showError({
         message: get(
@@ -126,6 +125,39 @@ export default function CheckoutPage() {
           'Cannot place order at this time'
         ),
       });
+    }
+  };
+
+  const confirmOrder = async () => {
+    try {
+      setLoading(true);
+      // Get payment intent from BE, used for getting payment from the user/payment method
+      const paymentIntent = await createPaymentIntent(PRICING.STANDARD);
+
+      console.log(paymentIntent);
+
+      // Confirm payment intent using stripe here
+      const result = await stripe.confirmCardPayment(
+        paymentIntent.clientSecret
+      );
+      console.log({
+        result,
+      });
+      if (result.error) {
+        // Show error to customer
+        console.log(result.error.message);
+        showError({ message: result.error.message });
+      } else {
+        if (result.paymentIntent.status === 'succeeded') {
+          // Place order - call create order endpoint
+          await placeOrder(paymentIntent);
+          return;
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      // Handle stripe error e.g. extra user authentication
     }
   };
 
@@ -171,7 +203,7 @@ export default function CheckoutPage() {
       {isMobile && (
         <MobileCheckoutCard
           confirmed={confirmed}
-          onReturnConfirm={onReturnConfirm}
+          confirmOrder={confirmOrder}
           validOrder={validOrder}
           loading={loading}
           pricingDetails={pricingDetails}
@@ -244,7 +276,8 @@ export default function CheckoutPage() {
                   <div className='card m-billing-card shadow-sm mt-4'>
                     <div className='card-body'>
                       <h4 className='m-size-description'>
-                        All products need to fit in a 50” x 30” x 20” box
+                        All products need to fit in a 50&quot; x 30&quot; x
+                        20&quot; box
                       </h4>
                       <button
                         className='btn m-btn-info'
@@ -299,7 +332,7 @@ export default function CheckoutPage() {
               <div className='col-sm-3'>
                 <CheckoutCard
                   confirmed={confirmed}
-                  onReturnConfirm={onReturnConfirm}
+                  confirmOrder={confirmOrder}
                   validOrder={validOrder}
                   loading={loading}
                   pricingDetails={pricingDetails}
@@ -312,4 +345,25 @@ export default function CheckoutPage() {
       </div>
     </div>
   );
-}
+};
+
+export const CheckoutPage = () => {
+  const [stripePromise, setStripePromise] = useState(null);
+
+  const loadStripeComponent = async () => {
+    const key = await getPublicKey();
+    const stripePromise = loadStripe(key);
+    setStripePromise(stripePromise);
+  };
+
+  // Fetch stripe publishable api key
+  useEffect(() => {
+    loadStripeComponent();
+  }, []);
+
+  return (
+    <Elements stripe={stripePromise} showIcon={true}>
+      <Checkout />
+    </Elements>
+  );
+};

@@ -7,15 +7,15 @@ import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 export default function MobileCheckoutCard({
   confirmed,
   loading,
-  onReturnConfirm,
+  confirmOrder,
   validOrder = false,
-  pricingDetails = {}
+  pricingDetails = {},
 }) {
   // TODO: hookup pricing
   const potentialReturnValue = get(pricingDetails, 'potentialReturnValue', 0);
   const inReturn = get(pricingDetails, 'totalReturns', 0);
   const inDonation = get(pricingDetails, 'totalDonations', 0);
-  const inTotalPrice = get(pricingDetails, 'totalPrice', 0)
+  const inTotalPrice = get(pricingDetails, 'totalPrice', 0);
   // const inTaxes = get(pricingDetails, 'tax', 0)
   // const inPrice = get(pricingDetails, 'price', 0)
 
@@ -26,8 +26,7 @@ export default function MobileCheckoutCard({
           <Row>
             <Col>
               <h3 className='m-product-to-return'>
-                {inReturn} {inReturn > 1 ? 'products' : 'product'}{' '}
-                to return
+                {inReturn} {inReturn > 1 ? 'products' : 'product'} to return
               </h3>
             </Col>
           </Row>
@@ -67,7 +66,7 @@ export default function MobileCheckoutCard({
                 <Col>
                   <button
                     className={`btn ${loading ? 'm-loader' : 'm-btn-confirm'}`}
-                    onClick={onReturnConfirm}
+                    onClick={confirmOrder}
                     disabled={!validOrder || loading}
                   >
                     {loading ? (

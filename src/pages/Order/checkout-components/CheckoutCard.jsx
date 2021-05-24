@@ -4,16 +4,17 @@ import { Spinner } from 'react-bootstrap';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 import { get } from 'lodash';
 import OverlayLoader from '../../../components/OverlayLoader';
-import { loadStripe } from '@stripe/stripe-js';
+import { useStripe } from '@stripe/react-stripe-js';
 
 export default function CheckoutCard({
   confirmed,
-  onReturnConfirm,
+  confirmOrder,
   loading,
   validOrder = false,
   pricingDetails = {},
   isFetchingPrice,
 }) {
+  const stripe = useStripe();
   const [modalShow, setModalShow] = useState(false);
 
   // TODO: hookup pricing
@@ -117,7 +118,7 @@ export default function CheckoutCard({
                   </div>
                 </div>
                 <button
-                  disabled={loading}
+                  disabled={!validOrder || loading || !stripe}
                   className='btn btn-confirm text-16'
                   style={{
                     background: validOrder ? '#570097' : 'grey',
@@ -126,8 +127,8 @@ export default function CheckoutCard({
                     opacity: loading ? '0.6' : '1',
                   }}
                   onClick={() => {
-                    if (validOrder) {
-                      onReturnConfirm();
+                    if (validOrder && stripe) {
+                      confirmOrder();
                     }
                   }}
                 >
