@@ -1,3 +1,4 @@
+import { get } from 'lodash';
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { Spinner } from 'react-bootstrap';
@@ -8,14 +9,15 @@ export default function MobileCheckoutCard({
   loading,
   onReturnConfirm,
   validOrder = false,
+  pricingDetails = {}
 }) {
   // TODO: hookup pricing
-  const inReturn = [];
-  const potentialReturnValue = 123;
-  const inDonation = [];
-  const returnFee = 123;
-  const taxes = 123;
-  const totalPayment = 123;
+  const potentialReturnValue = get(pricingDetails, 'potentialReturnValue', 0);
+  const inReturn = get(pricingDetails, 'totalReturns', 0);
+  const inDonation = get(pricingDetails, 'totalDonations', 0);
+  const inTotalPrice = get(pricingDetails, 'totalPrice', 0)
+  // const inTaxes = get(pricingDetails, 'tax', 0)
+  // const inPrice = get(pricingDetails, 'price', 0)
 
   return (
     <div id='MobileCheckoutCard'>
@@ -24,7 +26,7 @@ export default function MobileCheckoutCard({
           <Row>
             <Col>
               <h3 className='m-product-to-return'>
-                {inReturn.length} {inReturn.length > 1 ? 'products' : 'product'}{' '}
+                {inReturn} {inReturn > 1 ? 'products' : 'product'}{' '}
                 to return
               </h3>
             </Col>
@@ -53,7 +55,7 @@ export default function MobileCheckoutCard({
               </Col>
               <Col>
                 <Row>
-                  <h3 className='m-value'>{inDonation.length}</h3>
+                  <h3 className='m-value'>{inDonation}</h3>
                 </Row>
                 <Row>
                   <h3 className='m-value-label'>Donations</h3>
@@ -77,7 +79,7 @@ export default function MobileCheckoutCard({
                     ) : (
                       <>
                         <span>Confirm Order</span>
-                        <span>$9.99</span>
+                        <span>${inTotalPrice}</span>
                       </>
                     )}
                   </button>

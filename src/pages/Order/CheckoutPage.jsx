@@ -14,9 +14,10 @@ import { scrollToTop } from '../../utils/window';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { Box } from 'react-feather';
-import { createOrder } from '../../utils/orderApi';
+import { createOrder, getOrderPricing } from '../../utils/orderApi';
 import { getUserId } from '../../utils/auth';
 import { orderErrors } from '../../library/errors.library';
+import OverlayLoader from '../../components/OverlayLoader';
 
 export default function CheckoutPage() {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ export default function CheckoutPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isFetchingPrice, setIsFetchingPrice] = useState(false);
   const { address, payment, details, items } = useSelector(
     ({
       cart: { items },
@@ -44,6 +46,23 @@ export default function CheckoutPage() {
   const [validPayment, setValidPayment] = useState(true); // Default to true for now
   const [validPickUpDetails, setValidPickUpDetails] = useState(false);
   const checkoutTitle = items.length > 0 ? 'return' : 'donate';
+  const [pricingDetails, setPricingDetails] = useState({
+    potentialReturnValue: 0,
+    price: 0,
+    tax: 0,
+    totalDonations: 0,
+    totalPrice: 0,
+    totalReturns: 0,
+  })
+
+  /**GET PRICING DETAILS */
+  const getPricingDetails = async () => {
+    const productIds = items.map((item) => item._id)
+    setIsFetchingPrice(true)
+    const response = await getOrderPricing(productIds, '')
+    setIsFetchingPrice(false);
+    setPricingDetails(response)
+  }
 
   const onReturnConfirm = async () => {
     console.log({
@@ -138,6 +157,12 @@ export default function CheckoutPage() {
     }
   }, []);
 
+  /**ON MOUNT GET PRICING DETAILS */
+  /**GET PRICING WHEN ITEMS CHANGE */
+  useEffect(() => {
+    getPricingDetails()
+  }, [items])
+
   const validOrder =
     validAddress && validPayment && validPickUpDetails && items.length > 0;
 
@@ -149,6 +174,7 @@ export default function CheckoutPage() {
           onReturnConfirm={onReturnConfirm}
           validOrder={validOrder}
           loading={loading}
+          pricingDetails={pricingDetails}
         />
       )}
       <div className={`container  ${isMobile ? 'mt-4' : 'mt-6'}`}>
@@ -229,16 +255,16 @@ export default function CheckoutPage() {
                       <hr style={{ marginTop: '8px' }} />
                       <div className='row mt-3'>
                         <div className='col m-label'>Return total cost</div>
-                        <div className='col m-value'>$9.99</div>
+                        <div className='col m-value'>${pricingDetails.price}</div>
                       </div>
                       <div className='row'>
                         <div className='col m-label'>Taxes</div>
-                        <div className='col m-value'>$0.70</div>
+                        <div className='col m-value'>${pricingDetails.tax}</div>
                       </div>
                       <hr style={{ marginBottom: '21px', marginTop: '8px' }} />
                       <div className='row'>
                         <div className='col m-total-label'>Total paid</div>
-                        <div className='col m-total-value'>$10.69</div>
+                        <div className='col m-total-value'>${pricingDetails.totalPrice}</div>
                       </div>
                     </div>
                   </div>
@@ -267,12 +293,15 @@ export default function CheckoutPage() {
           {!isMobile && (
             <>
               <div className='col-sm-3'>
-                <CheckoutCard
-                  confirmed={confirmed}
-                  onReturnConfirm={onReturnConfirm}
-                  validOrder={validOrder}
-                  loading={loading}
-                />
+                  
+                  <CheckoutCard
+                    confirmed={confirmed}
+                    onReturnConfirm={onReturnConfirm}
+                    validOrder={validOrder}
+                    loading={loading}
+                    pricingDetails={pricingDetails}
+                    isFetchingPrice={isFetchingPrice}
+                  />
               </div>
             </>
           )}
