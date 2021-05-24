@@ -39,7 +39,7 @@ export default function CheckoutPage() {
       details,
     })
   );
-  console.log(items)
+  // console.log(items)
   const [validAddress, setValidAddress] = useState(false);
   const [validPayment, setValidPayment] = useState(true); // Default to true for now
   const [validPickUpDetails, setValidPickUpDetails] = useState(false);
