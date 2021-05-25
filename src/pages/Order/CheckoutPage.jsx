@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import CheckoutCard from './checkout-components/CheckoutCard';
-import MobileCheckoutCard from './checkout-components/MobileCheckoutCard';
+import CheckoutCard from './components/CheckoutCard';
+import MobileCheckoutCard from './components/MobileCheckoutCard';
 import ProductCard from '../../components/Product/ProductCard';
 import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
-import PickUpDetails from './checkout-components/PickUpDetails';
+import PickUpDetails from './components/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, isEmpty } from 'lodash';
 import $ from 'jquery';

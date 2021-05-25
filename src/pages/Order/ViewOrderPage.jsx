@@ -4,14 +4,14 @@ import { Frown, Plus } from 'react-feather';
 import ProductCard from '../../components/Product/ProductCard';
 import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
 import PickUpCancelled from '../../components/PickUpDetails/PickUpCancelled';
-import PickUpDetails from './checkout-components/PickUpDetails';
+import PickUpDetails from './components/PickUpDetails';
 import { get } from 'lodash';
 import $ from 'jquery';
 import { useParams } from 'react-router';
 import Row from '../../components/Row';
 import { scrollToTop } from '../../utils/window';
-import ModifyCheckoutCard from './modify-components/ModifyCheckoutCard';
-import MobileModifyCheckoutCard from './modify-components/MobileModifyCheckoutCard';
+import ModifyCheckoutCard from './components/ModifyCheckoutCard';
+import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import CancelOrderModal from '../../modals/CancelOrderModal';
 import { cancelOrder, getOrder, getOrderPricing } from '../../utils/orderApi';
@@ -207,18 +207,7 @@ const ViewOrder = () => {
 
   return (
     <div id='ViewOrderPage'>
-      {isMobile && (
-        <MobileModifyCheckoutCard
-          pricingDetails={pricingDetails}
-          // inReturn={inReturn}
-          // confirmed={confirmed}
-          // potentialReturnValue={potentialReturnValue}
-          // inDonation={inDonation}
-          // returnFee={returnFee}
-          // taxes={taxes}
-          // totalPayment={totalPayment}
-        />
-      )}
+      {isMobile && <MobileModifyCheckoutCard pricingDetails={pricingDetails} />}
       <div className={`container ${isMobile ? 'mt-4' : 'mt-6'}`}>
         <div className='row mobile-row'>
           <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
@@ -334,18 +323,7 @@ const ViewOrder = () => {
                   cancelled={cancelled}
                   pricingDetails={pricingDetails}
                   isFetchingPrice={isFetchingPrice}
-                  // potentialReturnValue={potentialReturnValue}
-                  // inDonation={inDonation}
-                  // taxes={taxes}
-                  // totalPayment={totalPayment}
-                  // isEmpty={isEmpty}
-                  // orderInMemory={orderInMemory}
                   hasModifications={hasModification()}
-                  // scheduledReturnId={scheduledReturnId}
-                  // scheduledReturn={scheduledReturn}
-                  // scheduledReturns={scheduledReturns}
-                  // updateOrders={updateOrders}
-                  // returnFee={returnFee}
                 />
               </div>
             </>

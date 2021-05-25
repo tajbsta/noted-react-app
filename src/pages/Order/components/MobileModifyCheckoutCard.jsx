@@ -1,43 +1,25 @@
-import { get } from 'lodash';
 import React, { useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useHistory } from 'react-router';
+import { get } from 'lodash';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
-export default function MobileModifyCheckoutCard({pricingDetails}) {
-  //   {
-  //   potentialReturnValue,
-  //   inDonation,
-  //   taxes,
-  //   totalPayment,
-  //   items,
-  //   isEmpty,
-  //   orderInMemory,
-  //   hasModifications,
-  //   scheduledReturn,
-  //   scheduledReturns,
-  //   scheduledReturnId,
-  //   updateOrders,
-  //   returnFee,
-  //   inReturn,
-  // }
+export default function MobileModifyCheckoutCard({ pricingDetails }) {
   const potentialReturnValue = get(pricingDetails, 'potentialReturnValue', 0);
   const inReturn = get(pricingDetails, 'totalReturns', 0);
   const inDonation = get(pricingDetails, 'totalDonations', 0);
-
   const [confirmed, setConfirmed] = useState(false);
   const history = useHistory();
 
   return (
-    <div id='MobileCheckoutCard'>
+    <div id='MobileInitialCheckoutCard'>
       <div className='col m-col'>
         <div className='card shadow-sm' style={{ borderRadius: '0' }}>
           <div className='card-body'>
             <Row>
               <Col>
                 <h3 className='m-product-to-return'>
-                  {inReturn}{' '}
-                  {inReturn > 1 ? 'products' : 'product'} to return
+                  {inReturn} {inReturn > 1 ? 'products' : 'product'} to return
                 </h3>
               </Col>
             </Row>
@@ -81,7 +63,9 @@ export default function MobileModifyCheckoutCard({pricingDetails}) {
                   <Col>
                     <Row>
                       <Col>
-                        <h3 className='m-value'>${potentialReturnValue.toFixed(2) || 0.0}</h3>
+                        <h3 className='m-value'>
+                          ${potentialReturnValue.toFixed(2) || 0.0}
+                        </h3>
                       </Col>
                     </Row>
                     <Row>

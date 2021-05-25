@@ -1,7 +1,7 @@
-import { get } from 'lodash';
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { Spinner } from 'react-bootstrap';
+import { get } from 'lodash';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
 export default function MobileCheckoutCard({
@@ -16,8 +16,6 @@ export default function MobileCheckoutCard({
   const inReturn = get(pricingDetails, 'totalReturns', 0);
   const inDonation = get(pricingDetails, 'totalDonations', 0);
   const inTotalPrice = get(pricingDetails, 'totalPrice', 0);
-  // const inTaxes = get(pricingDetails, 'tax', 0)
-  // const inPrice = get(pricingDetails, 'price', 0)
 
   return (
     <div id='MobileCheckoutCard'>
