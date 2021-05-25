@@ -121,7 +121,7 @@ const Checkout = () => {
       // Get payment intent from BE, used for getting payment from the user/payment method
       const paymentIntent = await createPaymentIntent(PRICING.STANDARD);
 
-      console.log(paymentIntent);
+      // console.log(paymentIntent);
 
       newOrder.paymentIntentId = paymentIntent.paymentIntentId;
       newOrder.productId = paymentIntent.productId;
@@ -133,9 +133,9 @@ const Checkout = () => {
       const result = await stripe.confirmCardPayment(
         paymentIntent.clientSecret
       );
-      console.log({
-        result,
-      });
+      // console.log({
+      //   result,
+      // });
 
       if (result.error) {
         // Show error to customer

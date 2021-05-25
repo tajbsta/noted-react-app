@@ -4,7 +4,7 @@ import { Frown, Plus } from 'react-feather';
 import ProductCard from '../../components/Product/ProductCard';
 import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
 import PickUpCancelled from '../../components/PickUpDetails/PickUpCancelled';
-import PickUpDetails from './modify-components/PickUpDetails';
+import PickUpDetails from './checkout-components/PickUpDetails';
 import { get } from 'lodash';
 import $ from 'jquery';
 import { useParams } from 'react-router';
@@ -19,9 +19,22 @@ import { getUserId } from '../../utils/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { orderErrors } from '../../library/errors.library';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, useStripe } from '@stripe/react-stripe-js';
+import {
+  getPublicKey,
+  getUserPaymentMethods,
+  createPaymentIntent,
+  prevalidateOrder,
+} from '../../utils/orderApi';
+import PRICING from '../../constants/pricing';
+import { SERVER_ERROR } from '../../constants/errors/errorCodes';
 
-export default function ViewOrderPage() {
+const ViewOrder = () => {
   const [confirmed, setConfirmed] = useState(false);
+  const [validAddress, setValidAddress] = useState(false);
+  const [validPayment, setValidPayment] = useState(false);
+  const [validPickUpDetails, setValidPickUpDetails] = useState(false);
   const [cancelled, setCancelled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
@@ -40,17 +53,17 @@ export default function ViewOrderPage() {
     totalDonations: 0,
     totalPrice: 0,
     totalReturns: 0,
-  })
+  });
 
   /**GET PRICING DETAILS */
   const getPricingDetails = async () => {
-    const initialData = get(order, 'orderItems', [])
-    const productIds = initialData.map((item) => item._id)
-    setIsFetchingPrice(true)
-    const response = await getOrderPricing(productIds, order.id)
-    setIsFetchingPrice(false)
-    setPricingDetails(response)
-  }
+    const initialData = get(order, 'orderItems', []);
+    const productIds = initialData.map((item) => item._id);
+    setIsFetchingPrice(true);
+    const response = await getOrderPricing(productIds, order.id);
+    setIsFetchingPrice(false);
+    setPricingDetails(response);
+  };
 
   const loadOrder = async () => {
     setOrderLoading(true);
@@ -74,8 +87,8 @@ export default function ViewOrderPage() {
   }, []);
 
   useEffect(() => {
-    getPricingDetails()
-  }, [order])
+    getPricingDetails();
+  }, [order]);
 
   const ConfirmCancellation = async () => {
     setLoading(true);
@@ -196,14 +209,14 @@ export default function ViewOrderPage() {
     <div id='ViewOrderPage'>
       {isMobile && (
         <MobileModifyCheckoutCard
-        pricingDetails={pricingDetails}
-        // inReturn={inReturn}
-        // confirmed={confirmed}
-        // potentialReturnValue={potentialReturnValue}
-        // inDonation={inDonation}
-        // returnFee={returnFee}
-        // taxes={taxes}
-        // totalPayment={totalPayment}
+          pricingDetails={pricingDetails}
+          // inReturn={inReturn}
+          // confirmed={confirmed}
+          // potentialReturnValue={potentialReturnValue}
+          // inDonation={inDonation}
+          // returnFee={returnFee}
+          // taxes={taxes}
+          // totalPayment={totalPayment}
         />
       )}
       <div className={`container ${isMobile ? 'mt-4' : 'mt-6'}`}>
@@ -222,8 +235,9 @@ export default function ViewOrderPage() {
             ) : (
               <div className='mobile-checkout-col'>
                 <PickUpDetails
-                  // address={address}
-                  // payment={payment}
+                  setValidAddress={setValidAddress}
+                  setValidPayment={setValidPayment}
+                  setValidPickUpDetails={setValidPickUpDetails}
                   details={{ date: orderDate, time: orderTime }}
                 />
               </div>
@@ -320,7 +334,6 @@ export default function ViewOrderPage() {
                   cancelled={cancelled}
                   pricingDetails={pricingDetails}
                   isFetchingPrice={isFetchingPrice}
-                  
                   // potentialReturnValue={potentialReturnValue}
                   // inDonation={inDonation}
                   // taxes={taxes}
@@ -370,7 +383,9 @@ export default function ViewOrderPage() {
                 <hr style={{ marginBottom: '21px', marginTop: '8px' }} />
                 <div className='row'>
                   <div className='col m-total-label'>Total paid</div>
-                  <div className='col m-total-value'>${pricingDetails.totalPrice}</div>
+                  <div className='col m-total-value'>
+                    ${pricingDetails.totalPrice}
+                  </div>
                 </div>
                 {!cancelled && (
                   <>
@@ -411,4 +426,25 @@ export default function ViewOrderPage() {
       )}
     </div>
   );
-}
+};
+
+export const ViewOrderPage = () => {
+  const [stripePromise, setStripePromise] = useState(null);
+
+  const loadStripeComponent = async () => {
+    const key = await getPublicKey();
+    const stripePromise = loadStripe(key);
+    setStripePromise(stripePromise);
+  };
+
+  // Fetch stripe publishable api key
+  useEffect(() => {
+    loadStripeComponent();
+  }, []);
+
+  return (
+    <Elements stripe={stripePromise} showIcon={true}>
+      <ViewOrder />
+    </Elements>
+  );
+};
