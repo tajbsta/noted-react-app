@@ -32,6 +32,7 @@ export default function PickUpDetails({
   setValidAddress,
   setValidPayment,
   setValidPickUpDetails,
+  details,
 }) {
   const dispatch = useDispatch();
   const [showEditAddress, setShowEditAddress] = useState(false);
@@ -74,10 +75,11 @@ export default function PickUpDetails({
 
   const pickUpDateForm = useFormik({
     initialValues: {
-      date: null,
-      time: null,
+      date: details ? details.date : null,
+      time: details ? details.time : null,
     },
     validationSchema: pickUpDateSchema,
+    enableReinitialize: true,
   });
 
   useEffect(() => {

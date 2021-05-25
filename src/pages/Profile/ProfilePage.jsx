@@ -12,7 +12,6 @@ import { getOrders } from '../../utils/orderApi';
 export default function ProfilePage() {
   const [showEditPayment] = useState(true);
   const [user, setUser] = useState(null);
-  const [orders, setOrders] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
 
