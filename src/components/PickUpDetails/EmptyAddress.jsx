@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
-import { timeout } from '../../utils/time';
 import $ from 'jquery';
 
 export default function EmptyAddress(props) {
   const [isMobile, setIsMobile] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const platform = window.navigator.platform;
@@ -28,19 +26,11 @@ export default function EmptyAddress(props) {
     };
   });
 
-  async function renderSpinner() {
-    setLoading(true);
-    await timeout(300);
-  }
-
-  const renderStopSpinner = () => {
-    setLoading(false);
-  };
-
+  // To hide delay
   useEffect(() => {
-    renderSpinner();
+    props.renderSpinner();
     setTimeout(() => {
-      renderStopSpinner();
+      props.renderStopSpinner();
     }, 1000);
   }, []);
 
@@ -50,7 +40,7 @@ export default function EmptyAddress(props) {
         id='EmptyState'
         className='card-body payment-details-card-body pb-3 pl-4 m-0'
       >
-        {loading && (
+        {props.loading && (
           <div
             className={`d-flex justify-content-center ${
               !isMobile ? 'mt-5' : ''
@@ -67,7 +57,7 @@ export default function EmptyAddress(props) {
             />
           </div>
         )}
-        {!loading && (
+        {!props.loading && (
           <>
             <div
               className='justify-content-center'
