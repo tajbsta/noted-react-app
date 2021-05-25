@@ -28,7 +28,7 @@ export default function ViewOrderPage() {
   const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [orderLoading, setOrderLoading] = useState(false);
-  const [order, setOrder] = useState(false);
+  const [order, setOrder] = useState({});
   const { id: orderId } = useParams();
   const [products, setProducts] = useState([]);
   const [originalProducts, setOriginalProducts] = useState([]);
@@ -45,11 +45,13 @@ export default function ViewOrderPage() {
   /**GET PRICING DETAILS */
   const getPricingDetails = async () => {
     const initialData = get(order, 'orderItems', [])
-    const productIds = initialData.map((item) => item._id)
-    setIsFetchingPrice(true)
-    const response = await getOrderPricing(productIds, order.id)
-    setIsFetchingPrice(false)
-    setPricingDetails(response)
+    if(initialData.length > 0){
+      const productIds = initialData.map((item) => item._id)
+      setIsFetchingPrice(true)
+      const response = await getOrderPricing(productIds, order.id)
+      setIsFetchingPrice(false)
+      setPricingDetails(response)
+    }
   }
 
   const loadOrder = async () => {
