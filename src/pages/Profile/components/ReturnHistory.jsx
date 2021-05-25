@@ -4,23 +4,44 @@ import { ProgressBar } from 'react-bootstrap';
 import { getOrders } from '../../../utils/orderApi';
 import { getUserId } from '../../../utils/auth';
 import { ReturnHistoryItem } from './ReturnHistoryItem';
+import { timeout } from '../../../utils/time';
 
 export default function ReturnHistory({ user }) {
   const [orders, setOrders] = useState([]);
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const [lastEvaluatedKey, setLastEvaluatedKey] = useState(null);
+  const [loadProgress, setLoadProgress] = useState(0);
+
 
   const getOrderHistory = async (nextPageKey = null) => {
     try {
       setFetchingOrders(true);
+
+      setLoadProgress(20);
+      await timeout(200);
+      setLoadProgress(35);
+      await timeout(200);
+      setLoadProgress(65);
+
       const currentOrders = orders;
       const userId = await getUserId();
       const res = await getOrders(userId, 'history', nextPageKey);
       // console.log(res);
       const newOrders = currentOrders.concat(res.orders);
 
-      setFetchingOrders(false);
+
       setOrders(newOrders);
+
+      setLoadProgress(80);
+      await timeout(200)
+      setLoadProgress(100);
+      await timeout(1000);
+      /**
+       * Give animation some time
+       */
+      setTimeout(() => {
+        setFetchingOrders(false);
+      }, 600);
 
       if (res.lastEvaluatedKey) {
         setLastEvaluatedKey(res.lastEvaluatedKey);
@@ -30,6 +51,7 @@ export default function ReturnHistory({ user }) {
     } catch (error) {
       // TODO: ERROR HANDLING
       console.log(error);
+      setFetchingOrders(false);
     }
   };
 
@@ -75,7 +97,7 @@ export default function ReturnHistory({ user }) {
         </div>
       </div>
       {fetchingOrders && (
-        <ProgressBar animated striped now={80} className='mt-4 m-3' />
+        <ProgressBar animated striped now={loadProgress} className='mt-4 m-3' />
       )}
       {!fetchingOrders && isEmpty(orders) && renderEmptiness()}
       {orders &&
