@@ -5,24 +5,47 @@ import Collapsible from 'react-collapsible';
 import { getOrders } from '../../../utils/orderApi';
 import { getUserId } from '../../../utils/auth';
 import { ScheduledReturnItem } from './ScheduledReturnItem';
+import { timeout } from '../../../utils/time';
 
 export default function ScheduledReturn({ user }) {
   const [isOpen, setIsOpen] = useState(false);
   const [orders, setOrders] = useState([]);
   const [fetchingOrders, setFetchingOrders] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
+
 
   const getScheduledOrders = async () => {
     try {
       setFetchingOrders(true);
+
+      setLoadProgress(20);
+      await timeout(200);
+      setLoadProgress(35);
+      await timeout(200);
+      setLoadProgress(65);
+
       const userId = await getUserId();
       const res = await getOrders(userId, 'active');
 
-      setFetchingOrders(false);
+      
       setOrders(res.orders);
+
+      setLoadProgress(80);
+      await timeout(200)
+      setLoadProgress(100);
+      await timeout(1000);
+      /**
+       * Give animation some time
+       */
+      setTimeout(() => {
+        setFetchingOrders(false);
+      }, 600);
+
       // console.log(res.orders);
     } catch (error) {
       // TODO: ERROR HANDLING
       console.log(error);
+      setFetchingOrders(false)
     }
   };
 
@@ -61,7 +84,7 @@ export default function ScheduledReturn({ user }) {
           }
         >
           {fetchingOrders && (
-            <ProgressBar animated striped now={80} className='mt-4 m-3' />
+            <ProgressBar animated striped now={loadProgress} className='mt-4 m-3' />
           )}
           {!fetchingOrders &&
             orders.map((order) => (

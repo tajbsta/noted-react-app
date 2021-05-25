@@ -53,12 +53,11 @@ export default function ReturnCategory({
       /**
        * SET TO YOUR LIKING
        */
-      setLoadProgress(25);
+      setLoadProgress(20);
       await timeout(200);
-      setLoadProgress(50);
-      // await timeout(100);
-      setLoadProgress(95);
-      // await timeout(100);
+      setLoadProgress(35);
+      await timeout(200);
+      setLoadProgress(65);
 
       if (search) {
         params.search = encodeURIComponent(search);
@@ -77,12 +76,16 @@ export default function ReturnCategory({
 
       setItems(newItems);
 
+      setLoadProgress(80);
+      await timeout(200)
       setLoadProgress(100);
-      await timeout(500);
+      await timeout(1000);
       /**
        * Give animation some time
        */
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 600);
     } catch (error) {
       setLoading(false);
     }
