@@ -65,6 +65,10 @@ export default function ReturnCategory({
       if (nextPageToken) {
         params.nextPageToken = nextPageToken;
       }
+      if(params.category === 'ALL'){
+        params.category = ''
+      }
+
       const products = await getProducts(params);
       let newItems = [...products];
       if (nextPageToken) {
@@ -108,6 +112,7 @@ export default function ReturnCategory({
   };
 
   const toggleSelected = async (item) => {
+    console.log(selectedProducts);
     const list = [...selectedProducts];
 
     const index = list.findIndex((x) => x._id === item._id);
@@ -144,10 +149,11 @@ export default function ReturnCategory({
   };
 
   useEffect(() => {
-    updateSelectedItems({
-      key: category,
-      items: selectedProducts,
-    });
+    console.log(selectedProducts);
+    // updateSelectedItems({
+    //   key: category,
+    //   items: selectedProducts,
+    // });
   }, [selectedProducts]);
 
   return (

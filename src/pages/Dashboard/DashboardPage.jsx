@@ -14,6 +14,7 @@ import {
   NOT_ELIGIBLE,
   RETURNABLE,
   DONATE,
+  ALL
 } from '../../constants/actions/runtime';
 import AddProductModal from '../../modals/AddProductModal';
 import ScheduledCard from './components/ScheduledCard';
@@ -46,6 +47,7 @@ export default function DashboardPage() {
     [NOT_ELIGIBLE]: [],
     [RETURNABLE]: [],
     [DONATE]: [],
+    [ALL]: []
   });
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -295,7 +297,9 @@ export default function DashboardPage() {
                       userId={userId}
                       size={5}
                       search={search}
+                      category={ALL}
                       updateSelectedItems={updateSelectedItems}
+                      selectedProducts={selectedProducts.ALL}
                     />
                   </div>
                 )}
