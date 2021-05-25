@@ -3,6 +3,7 @@ import { Spinner } from 'react-bootstrap';
 import $ from 'jquery';
 
 export default function EmptyAddress(props) {
+  const { renderSpinner = () => {}, renderStopSpinner = () => {} } = props;
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -28,9 +29,9 @@ export default function EmptyAddress(props) {
 
   // To hide delay
   useEffect(() => {
-    props.renderSpinner();
+    renderSpinner();
     setTimeout(() => {
-      props.renderStopSpinner();
+      renderStopSpinner();
     }, 1000);
   }, []);
 
