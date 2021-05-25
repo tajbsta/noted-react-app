@@ -8,6 +8,7 @@
   .card {
     z-index: 999;
     width: -webkit-fill-available;
+    width: -moz-available;
     box-shadow: 0 -5px 15px -5px #0e0018 !important;
     border-radius: 15px 15px 15px 15px;
     padding-left: 0px;

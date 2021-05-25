@@ -56,9 +56,7 @@ export default function ReturnCategory({
       setLoadProgress(25);
       await timeout(200);
       setLoadProgress(50);
-      // await timeout(100);
       setLoadProgress(95);
-      // await timeout(100);
 
       if (search) {
         params.search = encodeURIComponent(search);
@@ -82,7 +80,9 @@ export default function ReturnCategory({
       /**
        * Give animation some time
        */
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 600);
     } catch (error) {
       setLoading(false);
     }

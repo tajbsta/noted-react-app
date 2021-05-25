@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { timeout } from '../../../utils/time';
 import EmptyAddress from '../../../components/PickUpDetails/EmptyAddress';
 import EmptyPayment from '../../../components/PickUpDetails/EmptyPayment';
 import AddressForm from '../../../components/Forms/AddressForm';
@@ -31,6 +32,7 @@ export default function PickUpDetails({
   setValidAddress,
   setValidPayment,
   setValidPickUpDetails,
+  details,
 }) {
   const dispatch = useDispatch();
   const [showEditAddress, setShowEditAddress] = useState(false);
@@ -43,6 +45,7 @@ export default function PickUpDetails({
   const [paymentFormValues, setPaymentFormValues] = useState(null);
   const [isAddressFormEmpty, setIsAddressFormEmpty] = useState(true);
   const [isPaymentFormEmpty, setIsPaymentFormEmpty] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const {
     errors: addressFormErrors,
@@ -72,10 +75,11 @@ export default function PickUpDetails({
 
   const pickUpDateForm = useFormik({
     initialValues: {
-      date: null,
-      time: null,
+      date: details ? details.date : null,
+      time: details ? details.time : null,
     },
     validationSchema: pickUpDateSchema,
+    enableReinitialize: true,
   });
 
   useEffect(() => {
@@ -190,6 +194,16 @@ export default function PickUpDetails({
   useEffect(() => {
     setDefaults();
   }, []);
+
+  // Loader to hide delay
+  async function renderSpinner() {
+    setLoading(true);
+    await timeout(300);
+  }
+
+  const renderStopSpinner = () => {
+    setLoading(false);
+  };
 
   return (
     <>
@@ -418,7 +432,12 @@ export default function PickUpDetails({
                 />
 
                 {isAddressFormEmpty && (
-                  <EmptyAddress onClick={() => setShowEditAddress(true)} />
+                  <EmptyAddress
+                    loading={loading}
+                    renderSpinner={renderSpinner}
+                    renderStopSpinner={renderStopSpinner}
+                    onClick={() => setShowEditAddress(true)}
+                  />
                 )}
               </div>
             </div>
@@ -586,7 +605,12 @@ export default function PickUpDetails({
                 )}
 
                 {isPaymentFormEmpty && (
-                  <EmptyPayment onClick={() => setShowEditPayment(true)} />
+                  <EmptyPayment
+                    loading={loading}
+                    renderSpinner={renderSpinner}
+                    renderStopSpinner={renderStopSpinner}
+                    onClick={() => setShowEditPayment(true)}
+                  />
                 )}
               </div>
             </div>

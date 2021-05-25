@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { timeout } from '../../../utils/time';
 import EmptyAddress from '../../../components/PickUpDetails/EmptyAddress';
 import EmptyPayment from '../../../components/PickUpDetails/EmptyPayment';
 import AddressForm from '../../../components/Forms/AddressForm';
@@ -24,6 +25,7 @@ export default function PickUpDetails({ address, payment, details }) {
   const [modalShow, setModalShow] = useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     errors: addressFormErrors,
@@ -101,6 +103,16 @@ export default function PickUpDetails({ address, payment, details }) {
     return `Between ${timeText
       .replace('-', 'and')
       .replace(new RegExp(/\./g), '')}`;
+  };
+
+  // Loader to hide delay
+  async function renderSpinner() {
+    setLoading(true);
+    await timeout(300);
+  }
+
+  const renderStopSpinner = () => {
+    setLoading(false);
   };
 
   return (
@@ -191,7 +203,12 @@ export default function PickUpDetails({ address, payment, details }) {
                 />
 
                 {isAddressFormEmpty && (
-                  <EmptyAddress onClick={() => setShowEditAddress(true)} />
+                  <EmptyAddress
+                    loading={loading}
+                    renderSpinner={renderSpinner}
+                    renderStopSpinner={renderStopSpinner}
+                    onClick={() => setShowEditAddress(true)}
+                  />
                 )}
               </div>
             </div>
@@ -254,7 +271,12 @@ export default function PickUpDetails({ address, payment, details }) {
                 )}
 
                 {isPaymentFormEmpty && (
-                  <EmptyPayment onClick={() => setShowEditPayment(true)} />
+                  <EmptyPayment
+                    loading={loading}
+                    renderSpinner={renderSpinner}
+                    renderStopSpinner={renderStopSpinner}
+                    onClick={() => setShowEditPayment(true)}
+                  />
                 )}
               </div>
             </div>
