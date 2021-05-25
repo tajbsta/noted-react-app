@@ -47,7 +47,7 @@ export default function ViewOrderPage() {
     const initialData = get(order, 'orderItems', [])
     const productIds = initialData.map((item) => item._id)
     setIsFetchingPrice(true)
-    const response = await getOrderPricing(productIds, '')
+    const response = await getOrderPricing(productIds, order.id)
     setIsFetchingPrice(false)
     setPricingDetails(response)
   }
