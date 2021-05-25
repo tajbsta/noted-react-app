@@ -152,8 +152,8 @@ function ProductCard({
     validationSchema: addProductSchema,
   });
 
-  const isViewScan = useHistory().location.pathname !== '/checkout';
-
+  const inDashboard = useHistory().location.pathname === '/dashboard';
+  const inCheckout = useHistory().location.pathname === '/checkout';
   return (
     <div id='ProductCard'>
       <div
@@ -475,19 +475,22 @@ function ProductCard({
                 justifyItems: 'center',
               }}
             >
-              <ProductCardHover
-                orderDate={item.order_date}
-                show={showHoverContent}
-                item={item}
-                editproductform={{
-                  handleChange,
-                  values,
-                  setFieldValue,
-                  errors,
-                }}
-              />
+              {isHover && (
+                <ProductCardHover
+                  orderDate={item.order_date}
+                  show={showHoverContent}
+                  item={item}
+                  editproductform={{
+                    handleChange,
+                    values,
+                    setFieldValue,
+                    errors,
+                  }}
+                />
+              )}
 
-              {!isHover && !selected && !isDonate && isViewScan && (
+              {((!isHover && !selected && !isDonate && !inCheckout) ||
+                (!isHover && inCheckout)) && (
                 <>
                   <div
                     className='col-sm-6 sofia-pro return-time-left'
@@ -503,7 +506,7 @@ function ProductCard({
                 </>
               )}
 
-              {!isHover && !selected && isDonate && isViewScan && (
+              {!isHover && !selected && isDonate && !inCheckout && (
                 <>
                   <div
                     className='col-sm-6 sofia-pro return-time-left'

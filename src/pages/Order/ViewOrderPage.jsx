@@ -5,7 +5,7 @@ import ProductCard from '../../components/Product/ProductCard';
 import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
 import PickUpCancelled from '../../components/PickUpDetails/PickUpCancelled';
 import PickUpDetails from './modify-components/PickUpDetails';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import $ from 'jquery';
 import { useParams } from 'react-router';
 import Row from '../../components/Row';
@@ -19,6 +19,8 @@ import { getUserId } from '../../utils/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { orderErrors } from '../../library/errors.library';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
+import { getProducts } from '../../utils/productsApi';
+import { DONATE, LAST_CALL, RETURNABLE } from '../../constants/actions/runtime';
 
 export default function ViewOrderPage() {
   const [confirmed, setConfirmed] = useState(false);
@@ -40,17 +42,18 @@ export default function ViewOrderPage() {
     totalDonations: 0,
     totalPrice: 0,
     totalReturns: 0,
-  })
+  });
+  const [otherReturns, setOtherReturns] = useState([]);
 
   /**GET PRICING DETAILS */
   const getPricingDetails = async () => {
-    const initialData = get(order, 'orderItems', [])
-    const productIds = initialData.map((item) => item._id)
-    setIsFetchingPrice(true)
-    const response = await getOrderPricing(productIds, '')
-    setIsFetchingPrice(false)
-    setPricingDetails(response)
-  }
+    const initialData = get(order, 'orderItems', []);
+    const productIds = initialData.map((item) => item._id);
+    setIsFetchingPrice(true);
+    const response = await getOrderPricing(productIds, '');
+    setIsFetchingPrice(false);
+    setPricingDetails(response);
+  };
 
   const loadOrder = async () => {
     setOrderLoading(true);
@@ -69,13 +72,55 @@ export default function ViewOrderPage() {
   const orderDate = get(order, 'pickupDate', '');
   const orderTime = get(order, 'pickupTime', '');
 
+  async function getMissedOutProducts() {
+    /**
+     * A BIG MESS
+     * I WILL LIKELY GET THIS OUT OF HERE
+     */
+    try {
+      const lastCall = await getProducts({ category: LAST_CALL });
+
+      const filteredLastCall = [...lastCall].filter((item) => {
+        return ![...originalProducts].map(({ _id }) => _id).includes(item._id);
+      });
+      setOtherReturns(filteredLastCall.slice(0, 2));
+
+      if (isEmpty(lastCall)) {
+        const returnable = await getProducts({ category: RETURNABLE });
+        const filteredReturnable = [...returnable].filter((item) => {
+          return ![...originalProducts]
+            .map(({ _id }) => _id)
+            .includes(item._id);
+        });
+        setOtherReturns(filteredReturnable.slice(0, 2));
+
+        if (isEmpty(returnable)) {
+          const donate = await getProducts({ category: DONATE });
+          const filteredDonate = [...donate].filter((item) => {
+            return ![...originalProducts]
+              .map(({ _id }) => _id)
+              .includes(item._id);
+          });
+          setOtherReturns(filteredDonate.slice(0, 2));
+        }
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    getMissedOutProducts();
+  }, []);
+
   useEffect(() => {
     loadOrder();
   }, []);
 
   useEffect(() => {
-    getPricingDetails()
-  }, [order])
+    getPricingDetails();
+  }, [order]);
 
   const ConfirmCancellation = async () => {
     setLoading(true);
@@ -192,18 +237,32 @@ export default function ViewOrderPage() {
     return setShowCancelOrderModal(true);
   };
 
+  const RenderOtherReturnables = () => {
+    return otherReturns.map((item) => (
+      <ProductCard
+        removable={false}
+        scannedItem={item}
+        key={item._id}
+        item={item}
+        selectable={false}
+        clickable={true}
+        selected={false}
+      />
+    ));
+  };
+
   return (
     <div id='ViewOrderPage'>
       {isMobile && (
         <MobileModifyCheckoutCard
-        pricingDetails={pricingDetails}
-        // inReturn={inReturn}
-        // confirmed={confirmed}
-        // potentialReturnValue={potentialReturnValue}
-        // inDonation={inDonation}
-        // returnFee={returnFee}
-        // taxes={taxes}
-        // totalPayment={totalPayment}
+          pricingDetails={pricingDetails}
+          // inReturn={inReturn}
+          // confirmed={confirmed}
+          // potentialReturnValue={potentialReturnValue}
+          // inDonation={inDonation}
+          // returnFee={returnFee}
+          // taxes={taxes}
+          // totalPayment={totalPayment}
         />
       )}
       <div className={`container ${isMobile ? 'mt-4' : 'mt-6'}`}>
@@ -291,6 +350,20 @@ export default function ViewOrderPage() {
                   </div>
                 </div>
               ))}
+
+            <h3 className='sofia-pro miss-out section-title'>
+              Don&apos;t miss out on other returns
+            </h3>
+            {/* <div className='row align-items-center p-4 all-checkbox mobile-row'>
+              <input
+              // type='checkbox'
+              // onChange={handleSelectAll}
+              // checked={newSelected.length === forgottenReturns.length}
+              />
+              <h4 className='sofia-pro noted-purple ml-4 mb-0 p-0'>Add all</h4>
+            </div> */}
+            {RenderOtherReturnables()}
+
             {confirmed && (
               <>
                 <h3 className='sofia-pro miss-out section-title'>
@@ -320,7 +393,6 @@ export default function ViewOrderPage() {
                   cancelled={cancelled}
                   pricingDetails={pricingDetails}
                   isFetchingPrice={isFetchingPrice}
-                  
                   // potentialReturnValue={potentialReturnValue}
                   // inDonation={inDonation}
                   // taxes={taxes}
@@ -370,7 +442,9 @@ export default function ViewOrderPage() {
                 <hr style={{ marginBottom: '21px', marginTop: '8px' }} />
                 <div className='row'>
                   <div className='col m-total-label'>Total paid</div>
-                  <div className='col m-total-value'>${pricingDetails.totalPrice}</div>
+                  <div className='col m-total-value'>
+                    ${pricingDetails.totalPrice}
+                  </div>
                 </div>
                 {!cancelled && (
                   <>
