@@ -53,11 +53,10 @@ export default function ReturnCategory({
       /**
        * SET TO YOUR LIKING
        */
-      setLoadProgress(20);
+      setLoadProgress(25);
       await timeout(200);
-      setLoadProgress(35);
-      await timeout(200);
-      setLoadProgress(65);
+      setLoadProgress(50);
+      setLoadProgress(95);
 
       if (search) {
         params.search = encodeURIComponent(search);
@@ -76,10 +75,8 @@ export default function ReturnCategory({
 
       setItems(newItems);
 
-      setLoadProgress(80);
-      await timeout(200)
       setLoadProgress(100);
-      await timeout(1000);
+      await timeout(500);
       /**
        * Give animation some time
        */

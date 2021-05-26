@@ -4,14 +4,14 @@ import { Frown, Plus } from 'react-feather';
 import ProductCard from '../../components/Product/ProductCard';
 import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
 import PickUpCancelled from '../../components/PickUpDetails/PickUpCancelled';
-import PickUpDetails from './modify-components/PickUpDetails';
+import PickUpDetails from './components/PickUpDetails';
 import { get, isEmpty } from 'lodash';
 import $ from 'jquery';
 import { useParams } from 'react-router';
 import Row from '../../components/Row';
 import { scrollToTop } from '../../utils/window';
-import ModifyCheckoutCard from './modify-components/ModifyCheckoutCard';
-import MobileModifyCheckoutCard from './modify-components/MobileModifyCheckoutCard';
+import ModifyCheckoutCard from './components/ModifyCheckoutCard';
+import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import CancelOrderModal from '../../modals/CancelOrderModal';
 import { cancelOrder, getOrder, getOrderPricing } from '../../utils/orderApi';
@@ -19,11 +19,24 @@ import { getUserId } from '../../utils/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { orderErrors } from '../../library/errors.library';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, useStripe } from '@stripe/react-stripe-js';
+import {
+  getPublicKey,
+  getUserPaymentMethods,
+  createPaymentIntent,
+  prevalidateOrder,
+} from '../../utils/orderApi';
+import PRICING from '../../constants/pricing';
+import { SERVER_ERROR } from '../../constants/errors/errorCodes';
 import { getProducts } from '../../utils/productsApi';
 import { DONATE, LAST_CALL, RETURNABLE } from '../../constants/actions/runtime';
 
-export default function ViewOrderPage() {
+const ViewOrder = () => {
   const [confirmed, setConfirmed] = useState(false);
+  const [validAddress, setValidAddress] = useState(false);
+  const [validPayment, setValidPayment] = useState(false);
+  const [validPickUpDetails, setValidPickUpDetails] = useState(false);
   const [cancelled, setCancelled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
@@ -253,18 +266,7 @@ export default function ViewOrderPage() {
 
   return (
     <div id='ViewOrderPage'>
-      {isMobile && (
-        <MobileModifyCheckoutCard
-          pricingDetails={pricingDetails}
-          // inReturn={inReturn}
-          // confirmed={confirmed}
-          // potentialReturnValue={potentialReturnValue}
-          // inDonation={inDonation}
-          // returnFee={returnFee}
-          // taxes={taxes}
-          // totalPayment={totalPayment}
-        />
-      )}
+      {isMobile && <MobileModifyCheckoutCard pricingDetails={pricingDetails} />}
       <div className={`container ${isMobile ? 'mt-4' : 'mt-6'}`}>
         <div className='row mobile-row'>
           <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
@@ -281,8 +283,9 @@ export default function ViewOrderPage() {
             ) : (
               <div className='mobile-checkout-col'>
                 <PickUpDetails
-                  // address={address}
-                  // payment={payment}
+                  setValidAddress={setValidAddress}
+                  setValidPayment={setValidPayment}
+                  setValidPickUpDetails={setValidPickUpDetails}
                   details={{ date: orderDate, time: orderTime }}
                 />
               </div>
@@ -393,18 +396,7 @@ export default function ViewOrderPage() {
                   cancelled={cancelled}
                   pricingDetails={pricingDetails}
                   isFetchingPrice={isFetchingPrice}
-                  // potentialReturnValue={potentialReturnValue}
-                  // inDonation={inDonation}
-                  // taxes={taxes}
-                  // totalPayment={totalPayment}
-                  // isEmpty={isEmpty}
-                  // orderInMemory={orderInMemory}
                   hasModifications={hasModification()}
-                  // scheduledReturnId={scheduledReturnId}
-                  // scheduledReturn={scheduledReturn}
-                  // scheduledReturns={scheduledReturns}
-                  // updateOrders={updateOrders}
-                  // returnFee={returnFee}
                 />
               </div>
             </>
@@ -485,4 +477,25 @@ export default function ViewOrderPage() {
       )}
     </div>
   );
-}
+};
+
+export const ViewOrderPage = () => {
+  const [stripePromise, setStripePromise] = useState(null);
+
+  const loadStripeComponent = async () => {
+    const key = await getPublicKey();
+    const stripePromise = loadStripe(key);
+    setStripePromise(stripePromise);
+  };
+
+  // Fetch stripe publishable api key
+  useEffect(() => {
+    loadStripeComponent();
+  }, []);
+
+  return (
+    <Elements stripe={stripePromise} showIcon={true}>
+      <ViewOrder />
+    </Elements>
+  );
+};

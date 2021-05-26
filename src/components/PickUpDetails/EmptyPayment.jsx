@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 
 export default function EmptyPayment(props) {
+  const { renderSpinner = () => {}, renderStopSpinner = () => {} } = props;
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -17,9 +18,9 @@ export default function EmptyPayment(props) {
 
   // To hide delay
   useEffect(() => {
-    props.renderSpinner();
+    renderSpinner();
     setTimeout(() => {
-      props.renderStopSpinner();
+      renderStopSpinner();
     }, 1000);
   }, []);
 
