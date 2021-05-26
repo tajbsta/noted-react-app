@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
 import { Spinner } from 'react-bootstrap';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';

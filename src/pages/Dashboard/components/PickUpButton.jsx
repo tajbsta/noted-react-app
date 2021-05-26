@@ -14,8 +14,8 @@ function PickUpButton({
   const [isMobile, setIsMobile] = useState(false);
 
   const btnTextStyle = {
-    marginLeft: '24px',
-    marginRight: '24px',
+    marginLeft: '10px',
+    marginRight: '10px',
     color: '#F8EFFF',
   };
 
@@ -45,7 +45,7 @@ function PickUpButton({
         onClick={onClick}
       >
         <span style={btnTextStyle} className='text-16 sofia-pro'>
-          Pickup
+          Schedule Pickup
         </span>
         <span style={btnTextStyle} className='text-16 sofia-pro'>
           ${price || ''}

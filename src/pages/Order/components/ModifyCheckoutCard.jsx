@@ -15,30 +15,14 @@ export default function ModifyCheckoutCard({
   cancelled,
   hasModifications,
   pricingDetails = {},
-  isFetchingPrice
+  isFetchingPrice,
 }) {
-  // {
-  //   potentialReturnValue,
-  //   inDonation,
-  //   taxes,
-  //   totalPayment,
-  //   items,
-  //   isEmpty,
-  //   orderInMemory,
-  //   hasModifications,
-  //   scheduledReturn,
-  //   scheduledReturns,
-  //   scheduledReturnId,
-  //   updateOrders,
-  //   returnFee,
-  // }
-  // TODO: hookup pricing
   const potentialReturnValue = get(pricingDetails, 'potentialReturnValue', 0);
   const inReturn = get(pricingDetails, 'totalReturns', 0);
   const inDonation = get(pricingDetails, 'totalDonations', 0);
-  const inTaxes = get(pricingDetails, 'tax', 0)
-  const inTotalPrice = get(pricingDetails, 'totalPrice', 0)
-  const inPrice = get(pricingDetails, 'price', 0)
+  const inTaxes = get(pricingDetails, 'tax', 0);
+  const inTotalPrice = get(pricingDetails, 'totalPrice', 0);
+  const inPrice = get(pricingDetails, 'price', 0);
 
   const [confirmed, setConfirmed] = useState(false);
   const [modalShow, setModalShow] = useState(false);
@@ -52,7 +36,6 @@ export default function ModifyCheckoutCard({
           style={{
             width: '248px',
           }}
-          
         >
           <OverlayLoader loading={isFetchingPrice} />
           <div
@@ -60,10 +43,8 @@ export default function ModifyCheckoutCard({
               confirmed == true ? 'h-292' : 'h-400'
             }`}
           >
-            
             <h3 className='sofia-pro products-to-return mb-1'>
-              {inReturn} {inReturn > 1 ? 'products' : 'product'} to
-              return
+              {inReturn} {inReturn > 1 ? 'products' : 'product'} to return
             </h3>
             <h3 className='box-size-description'>
               All products need to fit in a 12”W x 12”H x 20”L box
@@ -98,9 +79,7 @@ export default function ModifyCheckoutCard({
             {!confirmed && (
               <>
                 <div>
-                  <h3 className='sofia-pro pick-up-price mb-0'>
-                    {inDonation}
-                  </h3>
+                  <h3 className='sofia-pro pick-up-price mb-0'>{inDonation}</h3>
                   <h3 className='return-type sofia-pro value-label'>
                     Donations
                   </h3>

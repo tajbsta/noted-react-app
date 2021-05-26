@@ -4,14 +4,14 @@ import { Frown, Plus } from 'react-feather';
 import ProductCard from '../../components/Product/ProductCard';
 import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
 import PickUpCancelled from '../../components/PickUpDetails/PickUpCancelled';
-import PickUpDetails from './checkout-components/PickUpDetails';
+import PickUpDetails from './components/PickUpDetails';
 import { get } from 'lodash';
 import $ from 'jquery';
 import { useParams } from 'react-router';
 import Row from '../../components/Row';
 import { scrollToTop } from '../../utils/window';
-import ModifyCheckoutCard from './modify-components/ModifyCheckoutCard';
-import MobileModifyCheckoutCard from './modify-components/MobileModifyCheckoutCard';
+import ModifyCheckoutCard from './components/ModifyCheckoutCard';
+import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import CancelOrderModal from '../../modals/CancelOrderModal';
 import { cancelOrder, getOrder, getOrderPricing } from '../../utils/orderApi';
@@ -42,7 +42,7 @@ const ViewOrder = () => {
   const [loading, setLoading] = useState(false);
   const [orderLoading, setOrderLoading] = useState(false);
   const [order, setOrder] = useState(false);
-  const { id: orderId } = useParams();
+  const { id: orderIdParams } = useParams();
   const [products, setProducts] = useState([]);
   const [originalProducts, setOriginalProducts] = useState([]);
   const [isFetchingPrice, setIsFetchingPrice] = useState(false);
@@ -68,7 +68,7 @@ const ViewOrder = () => {
   const loadOrder = async () => {
     setOrderLoading(true);
     try {
-      const data = await getOrder(orderId);
+      const data = await getOrder(orderIdParams);
       setProducts(get(data, 'orderItems', []));
       setOriginalProducts(get(data, 'orderItems', []));
       setOrder(data);
@@ -78,9 +78,6 @@ const ViewOrder = () => {
       showError({ message: 'Error loading order' });
     }
   };
-
-  const orderDate = get(order, 'pickupDate', '');
-  const orderTime = get(order, 'pickupTime', '');
 
   useEffect(() => {
     loadOrder();
@@ -94,7 +91,7 @@ const ViewOrder = () => {
     setLoading(true);
     try {
       const userId = await getUserId();
-      await cancelOrder(userId, orderId);
+      await cancelOrder(userId, order.id);
       setShowCancelOrderModal(false);
       setLoading(false);
       showSuccess({
@@ -207,18 +204,7 @@ const ViewOrder = () => {
 
   return (
     <div id='ViewOrderPage'>
-      {isMobile && (
-        <MobileModifyCheckoutCard
-          pricingDetails={pricingDetails}
-          // inReturn={inReturn}
-          // confirmed={confirmed}
-          // potentialReturnValue={potentialReturnValue}
-          // inDonation={inDonation}
-          // returnFee={returnFee}
-          // taxes={taxes}
-          // totalPayment={totalPayment}
-        />
-      )}
+      {isMobile && <MobileModifyCheckoutCard pricingDetails={pricingDetails} />}
       <div className={`container ${isMobile ? 'mt-4' : 'mt-6'}`}>
         <div className='row mobile-row'>
           <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
@@ -234,12 +220,14 @@ const ViewOrder = () => {
               </div>
             ) : (
               <div className='mobile-checkout-col'>
-                <PickUpDetails
-                  setValidAddress={setValidAddress}
-                  setValidPayment={setValidPayment}
-                  setValidPickUpDetails={setValidPickUpDetails}
-                  details={{ date: orderDate, time: orderTime }}
-                />
+                {order && (
+                  <PickUpDetails
+                    setValidAddress={setValidAddress}
+                    setValidPayment={setValidPayment}
+                    setValidPickUpDetails={setValidPickUpDetails}
+                    order={order}
+                  />
+                )}
               </div>
             )}
 
@@ -334,18 +322,7 @@ const ViewOrder = () => {
                   cancelled={cancelled}
                   pricingDetails={pricingDetails}
                   isFetchingPrice={isFetchingPrice}
-                  // potentialReturnValue={potentialReturnValue}
-                  // inDonation={inDonation}
-                  // taxes={taxes}
-                  // totalPayment={totalPayment}
-                  // isEmpty={isEmpty}
-                  // orderInMemory={orderInMemory}
                   hasModifications={hasModification()}
-                  // scheduledReturnId={scheduledReturnId}
-                  // scheduledReturn={scheduledReturn}
-                  // scheduledReturns={scheduledReturns}
-                  // updateOrders={updateOrders}
-                  // returnFee={returnFee}
                 />
               </div>
             </>
