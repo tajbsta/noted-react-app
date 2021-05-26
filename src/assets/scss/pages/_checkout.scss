@@ -624,6 +624,39 @@
       opacity: 0.6;
     }
   }
+
+  #MobileInitialCheckoutCard {
+    background-color: #ffffff !important;
+    position: fixed;
+    z-index: 99999;
+    bottom: 0;
+    width: 100vw;
+    padding: 0;
+
+    .card-body {
+      box-shadow: none;
+    }
+
+    .m-value-label {
+      font-size: 12px;
+      line-height: 14px;
+      color: #0e0018;
+      mix-blend-mode: normal;
+      opacity: 0.6;
+      margin-bottom: 0px !important;
+    }
+
+    .card-body {
+      padding: 20px !important;
+    }
+
+    .m-value {
+      margin-bottom: 0px;
+      font-size: 22px;
+      line-height: 26px;
+      color: #21003a;
+    }
+  }
 }
 
 .mobile-row {
