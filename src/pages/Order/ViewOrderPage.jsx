@@ -33,6 +33,7 @@ import { getProducts } from '../../utils/productsApi';
 import { DONATE, LAST_CALL, RETURNABLE } from '../../constants/actions/runtime';
 
 const ViewOrder = () => {
+  const stripe = useStripe();
   const [confirmed, setConfirmed] = useState(false);
   const [validAddress, setValidAddress] = useState(false);
   const [validPayment, setValidPayment] = useState(false);
@@ -81,9 +82,6 @@ const ViewOrder = () => {
       showError({ message: 'Error loading order' });
     }
   };
-
-  const orderDate = get(order, 'pickupDate', '');
-  const orderTime = get(order, 'pickupTime', '');
 
   async function getMissedOutProducts() {
     /**
@@ -135,11 +133,11 @@ const ViewOrder = () => {
     getPricingDetails();
   }, [order]);
 
-  const ConfirmCancellation = async () => {
+  const ConfirmCancellation = async (billing = null) => {
     setLoading(true);
     try {
       const userId = await getUserId();
-      await cancelOrder(userId, order.id);
+      await cancelOrder(userId, order.id, billing);
       setShowCancelOrderModal(false);
       setLoading(false);
       showSuccess({
@@ -152,6 +150,48 @@ const ViewOrder = () => {
       });
       setCancelled(true);
     } catch (error) {
+      console.log(error.response.data);
+
+      let errCode;
+
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.details === 'ORDER_CANCEL_PAYMENT_REQUIRED'
+      ) {
+        const paymentIntent = await createPaymentIntent(
+          PRICING.LATE_CANCEL,
+          order.id
+        );
+
+        const result = await stripe.confirmCardPayment(
+          paymentIntent.clientSecret
+        );
+
+        console.log({
+          result,
+        });
+
+        if (result.error) {
+          // Show error to customer
+          console.log(result.error.message);
+          errCode = result.error.message;
+        } else {
+          if (result.paymentIntent.status === 'succeeded') {
+            const cancelBilling = {
+              paymentIntentId: paymentIntent.paymentIntentId,
+              paymentMethodId: paymentIntent.paymentMethodId,
+              productId: paymentIntent.productId,
+              taxId: paymentIntent.taxId,
+              priceId: paymentIntent.priceId,
+              pricing: paymentIntent.pricing,
+            };
+            ConfirmCancellation(cancelBilling);
+            return;
+          } // TODO: handle stripe payment errors
+        }
+      }
+
       setShowCancelOrderModal(false);
       setLoading(false);
       showError({

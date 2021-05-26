@@ -12,7 +12,7 @@ export default function MobileModifyCheckoutCard({ pricingDetails }) {
   const history = useHistory();
 
   return (
-    <div id='MobileInitialCheckoutCard'>
+    <div id='MobileCheckoutCard '>
       <div className='card shadow-sm' style={{ borderRadius: '0' }}>
         <div className='card-body'>
           <Row>

@@ -61,7 +61,7 @@ export const ReturnHistoryItem = ({ order }) => {
   const moreItemsCount = get(items, 'length', 0) - 5;
 
   const renderReturnHistoryItem = (item) => {
-    const vendorName = get(item, 'vendor_name', '');
+    const vendorName = get(item, 'vendor_data.name', '');
     const name = get(item, 'name', '');
     const price = get(item, 'price', '');
     const rating = get(item, 'vendor_data.rating', 1);
