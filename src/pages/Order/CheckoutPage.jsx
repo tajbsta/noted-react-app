@@ -115,11 +115,16 @@ const Checkout = () => {
         pickupTime: details.time,
       };
 
-      // Validate here
-      await prevalidateOrder(newOrder);
+      // Pre validate order and get the assigned order id
+      const orderId = await prevalidateOrder(newOrder);
+
+      newOrder.id = orderId;
 
       // Get payment intent from BE, used for getting payment from the user/payment method
-      const paymentIntent = await createPaymentIntent(PRICING.STANDARD);
+      const paymentIntent = await createPaymentIntent(
+        PRICING.STANDARD,
+        orderId
+      );
 
       // console.log(paymentIntent);
 
