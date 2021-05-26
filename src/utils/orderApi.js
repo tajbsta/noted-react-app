@@ -1,5 +1,6 @@
 import { api } from './api';
 import { getUserSession } from './auth';
+import PRICING from '../constants/pricing';
 
 //  Get available time slots for pickup date
 export const getPickupSlots = async (userId, date) => {
@@ -22,7 +23,8 @@ export const getOrderPricing = async (productIds, orderId) => {
 export const prevalidateOrder = async (order) => {
   const axios = await api();
   const { userId } = await getUserSession();
-  await axios.post(`/${userId}/orders/validate`, order);
+  const res = await axios.post(`/${userId}/orders/validate`, order);
+  return res.data.data
 };
 
 // Create Order
@@ -127,11 +129,14 @@ export const deletePaymentMethod = async (paymentMethodId) => {
  * Create payment intent to process payment
  * @price - refer to constant price.js
  */
-export const createPaymentIntent = async (price) => {
+export const createPaymentIntent = async (pricing, orderId) => {
   const axios = await api();
   const { userId } = await getUserSession();
 
-  const res = await axios.post(`/${userId}/orders/payment/intent`, { price });
+  const url = `/${userId}/orders/payment/intent/${pricing}`
+
+
+  const res = await axios.post(url, { orderId });
 
   return res.data.data;
 };
