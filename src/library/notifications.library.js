@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import ToastContent from '../components/ToastContent';
 
-export const showSuccess = ({ title = '', message = '' }) => {
+export const showSuccess = async ({ title = '', message = '' }) => {
   return toast(<ToastContent title={title} message={message} />, {
     hideProgressBar: true,
     className: 'toast-success',

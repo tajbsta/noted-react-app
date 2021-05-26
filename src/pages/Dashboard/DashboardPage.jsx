@@ -28,12 +28,13 @@ import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 export default function DashboardPage() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { search, scheduledReturns } = useSelector(
+  const { search } = useSelector(
     ({ runtime: { search }, auth: { scheduledReturns } }) => ({
       search,
       scheduledReturns,
     })
   );
+
   const [loading, setLoading] = useState(true);
   const [showScanning, setShowScanning] = useState(false);
   const [user, setUser] = useState('');

@@ -79,6 +79,8 @@ function RightCard({ userId, setSelectedProducts, beyond90days }) {
          * A toast error should be added here
          */
       }
+    } finally {
+      setLoading(false);
     }
   };
 
