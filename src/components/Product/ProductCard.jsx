@@ -475,7 +475,7 @@ function ProductCard({
                 justifyItems: 'center',
               }}
             >
-              {isHover && (
+              {(isHover || selected) && (
                 <ProductCardHover
                   orderDate={item.order_date}
                   show={showHoverContent}
@@ -498,7 +498,9 @@ function ProductCard({
                       color: isNotEligible || isLastCall ? 'red' : '#8B888C',
                     }}
                   >
-                    {daysLeft} {daysLeft == 1 ? 'day' : 'days'} left
+                    {daysLeft !== 'Donate' &&
+                      `${daysLeft} ${daysLeft == 1 ? 'day' : 'days'} left`}
+                    {daysLeft === 'Donate' && daysLeft}
                   </div>
                   <div className='col-sm-3 return-score'>
                     <ReturnScore score={item.vendor_data.rating} />
