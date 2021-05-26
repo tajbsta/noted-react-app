@@ -52,7 +52,7 @@ function RightCard({ userId, setSelectedProducts, beyond90days }) {
     //   calculateCurrentCartPricing(items);
     // }
     calculateCurrentCartPricing(items);
-  }, [items]);
+  }, [items, userId]);
 
   const calculateCurrentCartPricing = async (currentItems) => {
     try {
@@ -62,6 +62,7 @@ function RightCard({ userId, setSelectedProducts, beyond90days }) {
       const cartItems = [...currentItems];
       const productIds = cartItems.map((x) => x._id);
 
+      console.log('YES');
       const data = await calculateMetrics(userId, productIds);
 
       setPricing({
@@ -73,6 +74,7 @@ function RightCard({ userId, setSelectedProducts, beyond90days }) {
       setLoading(false);
       // }
     } catch (error) {
+      console.log(error.response)
       if (!axios.isCancel(error)) {
         setLoading(false);
         /**
