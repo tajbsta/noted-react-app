@@ -68,7 +68,7 @@ export const ReturnHistoryItem = ({ order }) => {
     const thumbnail = get(item, 'thumbnail', ''); // product img
     const category = get(item, 'category', '');
     const orderDate = get(item, 'order_date', '');
-    const formattedPrice = price.toFixed(2);
+    const formattedPrice = price && price.toFixed(2);
 
     return (
       <div id='ReturnHistoryItem' key={item._id}>
@@ -122,7 +122,10 @@ export const ReturnHistoryItem = ({ order }) => {
               </Col>
               <div className='m-brand-logo-cont'>
                 <img
-                  src={item.vendor_data.thumbnail || ProductPlaceholder}
+                  src={
+                    (item.vendor_data && item.vendor_data.thumbnail) ||
+                    ProductPlaceholder
+                  }
                   onError={(e) => {
                     e.currentTarget.src = ProductPlaceholder;
                   }}
