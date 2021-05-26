@@ -62,11 +62,13 @@ const ViewOrder = () => {
   /**GET PRICING DETAILS */
   const getPricingDetails = async () => {
     const initialData = get(order, 'orderItems', []);
-    const productIds = initialData.map((item) => item._id);
-    setIsFetchingPrice(true);
-    const response = await getOrderPricing(productIds, order.id);
-    setIsFetchingPrice(false);
-    setPricingDetails(response);
+    if (initialData.length > 0) {
+      const productIds = initialData.map((item) => item._id);
+      setIsFetchingPrice(true);
+      const response = await getOrderPricing(productIds, order.id);
+      setIsFetchingPrice(false);
+      setPricingDetails(response);
+    }
   };
 
   const loadOrder = async () => {
