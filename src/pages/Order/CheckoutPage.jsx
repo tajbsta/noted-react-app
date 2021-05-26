@@ -53,6 +53,7 @@ const Checkout = () => {
       details,
     })
   );
+  // console.log(details);
   // console.log(items)
   const [validAddress, setValidAddress] = useState(false);
   const [validPayment, setValidPayment] = useState(false);
@@ -129,6 +130,7 @@ const Checkout = () => {
       // console.log(paymentIntent);
 
       newOrder.paymentIntentId = paymentIntent.paymentIntentId;
+      newOrder.paymentMethodId = paymentIntent.paymentMethodId;
       newOrder.productId = paymentIntent.productId;
       newOrder.taxId = paymentIntent.taxId;
       newOrder.priceId = paymentIntent.priceId;
@@ -138,9 +140,9 @@ const Checkout = () => {
       const result = await stripe.confirmCardPayment(
         paymentIntent.clientSecret
       );
-      // console.log({
-      //   result,
-      // });
+      console.log({
+        result,
+      });
 
       if (result.error) {
         // Show error to customer

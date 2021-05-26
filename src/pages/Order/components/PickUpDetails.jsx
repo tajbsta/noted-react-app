@@ -27,12 +27,13 @@ import LeftArrow from '../../../assets/icons/RightArrow.svg';
 import DownArrow from '../../../assets/icons/DownArrow.svg';
 import { Col, Row } from 'react-bootstrap';
 import { truncateString } from '../../../utils/data';
+import PRICING from '../../../constants/pricing';
 
 export default function PickUpDetails({
   setValidAddress,
   setValidPayment,
   setValidPickUpDetails,
-  details,
+  order,
 }) {
   const dispatch = useDispatch();
   const [showEditAddress, setShowEditAddress] = useState(false);
@@ -75,8 +76,8 @@ export default function PickUpDetails({
 
   const pickUpDateForm = useFormik({
     initialValues: {
-      date: details ? details.date : null,
-      time: details ? details.time : null,
+      date: order ? order.pickupDate : null,
+      time: order ? order.pickupTime : null,
     },
     validationSchema: pickUpDateSchema,
     enableReinitialize: true,
@@ -146,19 +147,33 @@ export default function PickUpDetails({
     ]);
 
     // Set default address
-    addressFormValues.fullName = user.name || '';
-    addressFormValues.state = user['custom:state'] || '';
-    addressFormValues.zipCode = user['custom:zipcode'] || '';
-    addressFormValues.line1 = user.address || '';
-    addressFormValues.city = user['custom:city'] || '';
-    addressFormValues.phoneNumber = user['custom:phone'] || '';
-    addressFormValues.instructions = user['custom:pickup_instructions'] || '';
+    addressFormValues.fullName = (order ? order.fullName : user.name) || '';
+    addressFormValues.state =
+      (order ? order.state : user['custom:state']) || '';
+    addressFormValues.zipCode =
+      (order ? order.zipcode : user['custom:zipcode']) || '';
+    addressFormValues.line1 = (order ? order.addressLine1 : user.address) || '';
+    addressFormValues.line2 =
+      (order ? order.addressLine2 : user.address_2) || '';
+    addressFormValues.city = (order ? order.city : user['custom:city']) || '';
+    addressFormValues.phoneNumber =
+      (order ? order.phone : user['custom:phone']) || '';
+    addressFormValues.instructions =
+      (order ? order.pickupInstruction : user['custom:pickup_instructions']) ||
+      '';
 
     saveAddress();
     setIsAddressFormEmpty(isFormEmpty(addressFormValues));
-
+    console.log(order);
     // Set payment method default
-    const defaultPaymentId = user['custom:default_payment'] || null;
+    const orderPayment = order
+      ? order.billing.find((billing) => billing.pricing === PRICING.STANDARD)
+      : {};
+    const orderPaymentId = orderPayment ? orderPayment.paymentMethodId : null;
+    const defaultPaymentId =
+      orderPaymentId || user['custom:default_payment'] || null;
+    console.log({ orderPaymentId, defaultPaymentId, paymentMethods });
+
     const defaultPaymentMethod = paymentMethods.find(
       (method) => defaultPaymentId && defaultPaymentId === method.id
     );
@@ -316,7 +331,7 @@ export default function PickUpDetails({
                         onClick={() => setModalShow(true)}
                       >
                         <h4 className='text-instructions'>
-                          Add pick-up instructions
+                          {order ? 'Edit' : 'Add'} pick-up instructions
                         </h4>
                       </button>
                     </div>
@@ -409,7 +424,7 @@ export default function PickUpDetails({
                               className='text-instructions'
                               onClick={() => setModalShow(true)}
                             >
-                              Add pick-up instructions
+                              {order ? 'Edit' : 'Add'} pick-up instructions
                             </h4>
                             <a
                               className='btn-edit sofia-pro text-14 line-height-16'
@@ -629,7 +644,6 @@ export default function PickUpDetails({
                       </p>
                     </div>
                   </div>
-
                   {get(pickUpDateForm, 'values.date', null) === null &&
                   get(pickUpDateForm, 'values.time', null) === null ? (
                     <>
