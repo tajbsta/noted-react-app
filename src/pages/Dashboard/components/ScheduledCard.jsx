@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import NoteeIcon from '../../../assets/icons/NoteeIcon.svg';
-import { get } from 'lodash-es';
 import { getUserId } from '../../../utils/auth';
 import { getActiveOrderCounts } from '../../../utils/orderApi';
 
