@@ -81,9 +81,9 @@ export const getActiveOrderCounts = async () => {
 };
 
 // Cancel Order
-export const cancelOrder = async (userId, orderId) => {
+export const cancelOrder = async (userId, orderId, billing = null) => {
   const axios = await api();
-  await axios.post(`/${userId}/orders/${orderId}/cancel`);
+  await axios.post(`/${userId}/orders/${orderId}/cancel`, { billing });
 };
 
 // Get Stripe publishable key

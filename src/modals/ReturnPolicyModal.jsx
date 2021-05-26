@@ -16,7 +16,7 @@ export default function ReturnPolicyModal(props) {
     ({ rating: returnRating }) => rating === returnRating
   );
   const scoreTitle = get(score, 'title', '');
-  const vendor = get(item, 'vendor_name', '');
+  const vendor = get(item, 'vendor_data.name', '');
 
   useEffect(() => {
     function handleResize() {

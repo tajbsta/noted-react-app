@@ -56,7 +56,7 @@ export const ScheduledReturnItem = ({ order }) => {
   const formattedReturnValue = order.returnValue.toFixed(2);
 
   const renderScheduledReturnItem = (item) => {
-    const vendorName = get(item, 'vendor_name', '');
+    const vendorName = get(item, 'vendor_data.name', '');
     const name = get(item, 'name', '');
     const price = get(item, 'price', '');
     const rating = get(item, 'vendor_data.rating', 1);
