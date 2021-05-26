@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { getProducts } from '../../utils/productsApi';
 import NotedCheckbox from './NotedCheckbox';
 import { useSelector } from 'react-redux';
-import { DONATE } from '../../constants/actions/runtime';
+import { ALL, DONATE, LAST_CALL, NOT_ELIGIBLE } from '../../constants/actions/runtime';
 import { timeout } from '../../utils/time';
 
 export default function ReturnCategory({
@@ -65,11 +65,15 @@ export default function ReturnCategory({
       if (nextPageToken) {
         params.nextPageToken = nextPageToken;
       }
-      if(params.category === 'ALL'){
+      if(params.category === ALL){
         params.category = ''
+      }
+      if(params.category === LAST_CALL){
+        params.category = `${LAST_CALL},${NOT_ELIGIBLE}`
       }
 
       const products = await getProducts(params);
+      console.log(products);
       let newItems = [...products];
       if (nextPageToken) {
         newItems = items.concat(products);

@@ -25,14 +25,16 @@ import { showError, showSuccess } from '../../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
 import { getOrders } from '../../utils/orderApi';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
+import { a } from '@aws-amplify/ui';
 
 export default function DashboardPage() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { search, scheduledReturns } = useSelector(
-    ({ runtime: { search }, auth: { scheduledReturns } }) => ({
+  const { search, scheduledReturns, items } = useSelector(
+    ({ runtime: { search }, auth: { scheduledReturns }, cart:{items} }) => ({
       search,
       scheduledReturns,
+      items
     })
   );
   const [loading, setLoading] = useState(true);
@@ -47,7 +49,6 @@ export default function DashboardPage() {
     [NOT_ELIGIBLE]: [],
     [RETURNABLE]: [],
     [DONATE]: [],
-    [ALL]: []
   });
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -152,9 +153,25 @@ export default function DashboardPage() {
   };
 
   const updateSelectedItems = (data) => {
-    const updatedSelectedProducts = selectedProducts;
+    let updatedSelectedProducts = {}
+    if(data.key === ALL){
+      console.log(data.items);
+      const allLastCall = data.items.filter((item) => item.category === LAST_CALL && selectedProducts.LAST_CALL.findIndex((val) => val._id === item._id) === -1)
+      const allReturnable = data.items.filter((item) => item.category === RETURNABLE && selectedProducts.RETURNABLE.findIndex((val) => val._id === item._id) === -1)
+      const allDonate = data.items.filter((item) => item.category === DONATE && selectedProducts.DONATE.findIndex((val) => val._id === item._id) === -1)
+      const allNotEligible = data.items.filter((item) => item.category === NOT_ELIGIBLE && selectedProducts.NOT_ELIGIBLE.findIndex((val) => val._id === item._id) === -1)
+      
+      updatedSelectedProducts = {
+        [LAST_CALL] : [...selectedProducts.LAST_CALL, ...allLastCall], 
+        [RETURNABLE] : [...selectedProducts.RETURNABLE, ...allReturnable],
+        [DONATE] : [...selectedProducts.DONATE, ...allDonate],
+        [NOT_ELIGIBLE] : [...selectedProducts.NOT_ELIGIBLE, ...allNotEligible]
+      }
 
-    updatedSelectedProducts[data.key] = data.items;
+    } else {
+      updatedSelectedProducts = selectedProducts;
+      updatedSelectedProducts[data.key] = data.items;
+    }
 
     setSelectedProducts(updatedSelectedProducts);
 
@@ -205,6 +222,23 @@ export default function DashboardPage() {
   const beyond90days =
     olderScanDone || (user && user['custom:scan_older_done'] == '1');
 
+  /**GET INITIAL SELECTED ITEMS FROM CART */
+  useEffect(() => {
+    if(items.length > 0){
+      const allLastCall = items.filter((item) => item.category === LAST_CALL && selectedProducts.LAST_CALL.findIndex((val) => val._id === item._id) === -1)
+      const allReturnable = items.filter((item) => item.category === RETURNABLE && selectedProducts.RETURNABLE.findIndex((val) => val._id === item._id) === -1)
+      const allDonate = items.filter((item) => item.category === DONATE && selectedProducts.DONATE.findIndex((val) => val._id === item._id) === -1)
+      const allNotEligible = items.filter((item) => item.category === NOT_ELIGIBLE && selectedProducts.NOT_ELIGIBLE.findIndex((val) => val._id === item._id) === -1)
+      
+      setSelectedProducts({
+        [LAST_CALL] : [...selectedProducts.LAST_CALL, ...allLastCall], 
+        [RETURNABLE] : [...selectedProducts.RETURNABLE, ...allReturnable],
+        [DONATE] : [...selectedProducts.DONATE, ...allDonate],
+        [NOT_ELIGIBLE] : [...selectedProducts.NOT_ELIGIBLE, ...allNotEligible]
+      })
+    }
+  }, []);
+
   return (
     <div id='DashboardPage'>
       <div className='container mt-6 main-mobile-dashboard'>
@@ -252,7 +286,7 @@ export default function DashboardPage() {
                         typeTitle='Last Call!'
                         userId={userId}
                         size={5}
-                        category={`${LAST_CALL},${NOT_ELIGIBLE}`}
+                        category={`${LAST_CALL}`}
                         updateSelectedItems={updateSelectedItems}
                         selectedProducts={selectedProducts.LAST_CALL}
                       />
@@ -299,7 +333,7 @@ export default function DashboardPage() {
                       search={search}
                       category={ALL}
                       updateSelectedItems={updateSelectedItems}
-                      selectedProducts={selectedProducts.ALL}
+                      // selectedProducts={items}
                     />
                   </div>
                 )}
