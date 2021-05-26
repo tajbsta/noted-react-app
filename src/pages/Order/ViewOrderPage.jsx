@@ -5,7 +5,7 @@ import ProductCard from '../../components/Product/ProductCard';
 import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
 import PickUpCancelled from '../../components/PickUpDetails/PickUpCancelled';
 import PickUpDetails from './components/PickUpDetails';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import $ from 'jquery';
 import { useParams } from 'react-router';
 import Row from '../../components/Row';
@@ -29,6 +29,8 @@ import {
 } from '../../utils/orderApi';
 import PRICING from '../../constants/pricing';
 import { SERVER_ERROR } from '../../constants/errors/errorCodes';
+import { getProducts } from '../../utils/productsApi';
+import { DONATE, LAST_CALL, RETURNABLE } from '../../constants/actions/runtime';
 
 const ViewOrder = () => {
   const [confirmed, setConfirmed] = useState(false);
@@ -54,6 +56,7 @@ const ViewOrder = () => {
     totalPrice: 0,
     totalReturns: 0,
   });
+  const [otherReturns, setOtherReturns] = useState([]);
 
   /**GET PRICING DETAILS */
   const getPricingDetails = async () => {
@@ -78,6 +81,48 @@ const ViewOrder = () => {
       showError({ message: 'Error loading order' });
     }
   };
+
+  async function getMissedOutProducts() {
+    /**
+     * A BIG MESS
+     * I WILL LIKELY GET THIS OUT OF HERE
+     */
+    try {
+      const lastCall = await getProducts({ category: LAST_CALL });
+
+      const filteredLastCall = [...lastCall].filter((item) => {
+        return ![...originalProducts].map(({ _id }) => _id).includes(item._id);
+      });
+      setOtherReturns(filteredLastCall.slice(0, 2));
+
+      if (isEmpty(lastCall)) {
+        const returnable = await getProducts({ category: RETURNABLE });
+        const filteredReturnable = [...returnable].filter((item) => {
+          return ![...originalProducts]
+            .map(({ _id }) => _id)
+            .includes(item._id);
+        });
+        setOtherReturns(filteredReturnable.slice(0, 2));
+
+        if (isEmpty(returnable)) {
+          const donate = await getProducts({ category: DONATE });
+          const filteredDonate = [...donate].filter((item) => {
+            return ![...originalProducts]
+              .map(({ _id }) => _id)
+              .includes(item._id);
+          });
+          setOtherReturns(filteredDonate.slice(0, 2));
+        }
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    getMissedOutProducts();
+  }, []);
 
   useEffect(() => {
     loadOrder();
@@ -202,6 +247,20 @@ const ViewOrder = () => {
     return setShowCancelOrderModal(true);
   };
 
+  const RenderOtherReturnables = () => {
+    return otherReturns.map((item) => (
+      <ProductCard
+        removable={false}
+        scannedItem={item}
+        key={item._id}
+        item={item}
+        selectable={false}
+        clickable={true}
+        selected={false}
+      />
+    ));
+  };
+
   return (
     <div id='ViewOrderPage'>
       {isMobile && <MobileModifyCheckoutCard pricingDetails={pricingDetails} />}
@@ -293,6 +352,20 @@ const ViewOrder = () => {
                   </div>
                 </div>
               ))}
+
+            <h3 className='sofia-pro miss-out section-title'>
+              Don&apos;t miss out on other returns
+            </h3>
+            {/* <div className='row align-items-center p-4 all-checkbox mobile-row'>
+              <input
+              // type='checkbox'
+              // onChange={handleSelectAll}
+              // checked={newSelected.length === forgottenReturns.length}
+              />
+              <h4 className='sofia-pro noted-purple ml-4 mb-0 p-0'>Add all</h4>
+            </div> */}
+            {RenderOtherReturnables()}
+
             {confirmed && (
               <>
                 <h3 className='sofia-pro miss-out section-title'>
