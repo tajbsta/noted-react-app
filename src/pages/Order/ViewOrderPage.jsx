@@ -42,7 +42,7 @@ const ViewOrder = () => {
   const [loading, setLoading] = useState(false);
   const [orderLoading, setOrderLoading] = useState(false);
   const [order, setOrder] = useState(false);
-  const { id: orderId } = useParams();
+  const { id: orderIdParams } = useParams();
   const [products, setProducts] = useState([]);
   const [originalProducts, setOriginalProducts] = useState([]);
   const [isFetchingPrice, setIsFetchingPrice] = useState(false);
@@ -68,7 +68,7 @@ const ViewOrder = () => {
   const loadOrder = async () => {
     setOrderLoading(true);
     try {
-      const data = await getOrder(orderId);
+      const data = await getOrder(orderIdParams);
       setProducts(get(data, 'orderItems', []));
       setOriginalProducts(get(data, 'orderItems', []));
       setOrder(data);
@@ -78,9 +78,6 @@ const ViewOrder = () => {
       showError({ message: 'Error loading order' });
     }
   };
-
-  const orderDate = get(order, 'pickupDate', '');
-  const orderTime = get(order, 'pickupTime', '');
 
   useEffect(() => {
     loadOrder();
@@ -94,7 +91,7 @@ const ViewOrder = () => {
     setLoading(true);
     try {
       const userId = await getUserId();
-      await cancelOrder(userId, orderId);
+      await cancelOrder(userId, order.id);
       setShowCancelOrderModal(false);
       setLoading(false);
       showSuccess({
@@ -223,12 +220,14 @@ const ViewOrder = () => {
               </div>
             ) : (
               <div className='mobile-checkout-col'>
-                <PickUpDetails
-                  setValidAddress={setValidAddress}
-                  setValidPayment={setValidPayment}
-                  setValidPickUpDetails={setValidPickUpDetails}
-                  details={{ date: orderDate, time: orderTime }}
-                />
+                {order && (
+                  <PickUpDetails
+                    setValidAddress={setValidAddress}
+                    setValidPayment={setValidPayment}
+                    setValidPickUpDetails={setValidPickUpDetails}
+                    order={order}
+                  />
+                )}
               </div>
             )}
 

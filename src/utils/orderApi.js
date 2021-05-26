@@ -1,6 +1,5 @@
 import { api } from './api';
 import { getUserSession } from './auth';
-import PRICING from '../constants/pricing';
 
 //  Get available time slots for pickup date
 export const getPickupSlots = async (userId, date) => {
