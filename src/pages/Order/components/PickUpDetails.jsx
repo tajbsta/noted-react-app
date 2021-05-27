@@ -172,14 +172,14 @@ export default function PickUpDetails({
     const orderPaymentId = orderPayment ? orderPayment.paymentMethodId : null;
     const defaultPaymentId =
       orderPaymentId || user['custom:default_payment'] || null;
-    console.log({ orderPaymentId, defaultPaymentId, paymentMethods });
+    // console.log({ orderPaymentId, defaultPaymentId, paymentMethods });
 
     const defaultPaymentMethod = paymentMethods.find(
       (method) => defaultPaymentId && defaultPaymentId === method.id
     );
-    console.log({
-      defaultPaymentMethod,
-    });
+    // console.log({
+    //   defaultPaymentMethod,
+    // });
     if (defaultPaymentMethod) {
       setPaymentFormValues(defaultPaymentMethod);
       setIsPaymentFormEmpty(false);
