@@ -182,7 +182,7 @@ const ViewOrder = () => {
               paymentIntentId: paymentIntent.paymentIntentId,
               paymentMethodId: paymentIntent.paymentMethodId,
               productId: paymentIntent.productId,
-              taxId: paymentIntent.taxId,
+              // taxId: paymentIntent.taxId,
               priceId: paymentIntent.priceId,
               pricing: paymentIntent.pricing,
             };
