@@ -14,8 +14,8 @@ function PickUpButton({
   const [isMobile, setIsMobile] = useState(false);
 
   const btnTextStyle = {
-    // marginLeft: '5px',
-    // marginRight: '5px',
+    // marginLeft: '10px',
+    // marginRight: '10px',
     color: '#F8EFFF',
   };
 

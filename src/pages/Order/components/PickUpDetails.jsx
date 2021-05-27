@@ -164,7 +164,7 @@ export default function PickUpDetails({
 
     saveAddress();
     setIsAddressFormEmpty(isFormEmpty(addressFormValues));
-    console.log(order);
+    // console.log(order);
     // Set payment method default
     const orderPayment = order
       ? order.billing.find((billing) => billing.pricing === PRICING.STANDARD)
