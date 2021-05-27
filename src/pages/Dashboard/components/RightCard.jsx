@@ -52,14 +52,16 @@ function RightCard({ userId, setSelectedProducts, beyond90days }) {
     //   calculateCurrentCartPricing(items);
     // }
     calculateCurrentCartPricing(items);
-  }, [items, userId]);
+  }, [items]);
 
   const calculateCurrentCartPricing = async (currentItems) => {
     try {
+      // if (userId) {
       setLoading(true);
 
       const cartItems = [...currentItems];
       const productIds = cartItems.map((x) => x._id);
+
       const data = await calculateMetrics(userId, productIds);
 
       setPricing({
@@ -69,8 +71,8 @@ function RightCard({ userId, setSelectedProducts, beyond90days }) {
         pickupPrice: data.pickupPrice,
       });
       setLoading(false);
+      // }
     } catch (error) {
-      // console.log(error.response);
       if (!axios.isCancel(error)) {
         setLoading(false);
         /**

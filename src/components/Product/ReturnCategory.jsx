@@ -7,12 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { getProducts } from '../../utils/productsApi';
 import NotedCheckbox from './NotedCheckbox';
 import { useSelector } from 'react-redux';
-import {
-  ALL,
-  DONATE,
-  LAST_CALL,
-  NOT_ELIGIBLE,
-} from '../../constants/actions/runtime';
+import { DONATE } from '../../constants/actions/runtime';
 import { timeout } from '../../utils/time';
 
 export default function ReturnCategory({
@@ -70,15 +65,7 @@ export default function ReturnCategory({
       if (nextPageToken) {
         params.nextPageToken = nextPageToken;
       }
-      if (params.category === ALL) {
-        params.category = '';
-      }
-      if (params.category === LAST_CALL) {
-        params.category = `${LAST_CALL},${NOT_ELIGIBLE}`;
-      }
-
       const products = await getProducts(params);
-      // console.log(products);
       let newItems = [...products];
       if (nextPageToken) {
         newItems = items.concat(products);
@@ -103,7 +90,7 @@ export default function ReturnCategory({
 
   useEffect(() => {
     fetchItems();
-    // console.log(category);
+    console.log(category);
   }, [newDonations]);
 
   const getNextPageToken = () => {
@@ -122,7 +109,6 @@ export default function ReturnCategory({
   };
 
   const toggleSelected = async (item) => {
-    // console.log(selectedProducts);
     const list = [...selectedProducts];
 
     const index = list.findIndex((x) => x._id === item._id);
@@ -159,11 +145,10 @@ export default function ReturnCategory({
   };
 
   useEffect(() => {
-    // console.log(selectedProducts);
-    // updateSelectedItems({
-    //   key: category,
-    //   items: selectedProducts,
-    // });
+    updateSelectedItems({
+      key: category,
+      items: selectedProducts,
+    });
   }, [selectedProducts]);
 
   return (

@@ -53,7 +53,7 @@ export default function RegisterPage() {
       await Auth.signIn(email, password).then((data) => console.log(data));
       history.push('/request-permission');
     } catch (error) {
-      // console.log(Object.values(error));
+      console.log(Object.values(error));
       setError(
         get(
           signUpErrors.find(({ code }) => code === error.code),
