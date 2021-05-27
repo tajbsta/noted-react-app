@@ -262,7 +262,7 @@
 
   // START OF PRODUCT IS SELECTED
   .selected-mobile {
-    height: 212.42px;
+    // height: 212.42px;
     background: #eee4f6;
     border: none !important;
   }
@@ -298,20 +298,6 @@
     color: #570097;
     box-shadow: none;
     margin-left: 34px;
-  }
-
-  .tablet-brand-info-container {
-    //<540px && >767px
-    margin: 0px;
-
-    .m-brand-img {
-      border: 1px solid #f0f0f0;
-      border-radius: 50%;
-      height: 31px;
-      width: 31px;
-      object-fit: contain;
-      background-color: #fff;
-    }
   }
 
   .m-brand-info-container {
@@ -375,63 +361,6 @@
 
   // END OF PRODUCT IS SELECTED
 
-  #mobile-product-info {
-    padding-left: 12px;
-    padding-right: 12px;
-
-    @media (min-width: 992px) {
-      display: none;
-    }
-
-    width: 75%;
-
-    @media (min-width: 360px) and (max-width: 384px) {
-      width: 73%;
-    }
-
-    @media (max-width: 358px) {
-      width: 65%;
-    }
-
-    @media (max-width: 279px) {
-      width: 60%;
-    }
-
-    .title-container {
-      display: flex;
-      justify-content: flex-start;
-      width: 100%;
-    }
-
-    .s-container {
-      padding-right: 0px;
-      padding-left: 0px;
-    }
-
-    .col-days-left {
-      display: flex;
-      justify-content: flex-start;
-      padding: 0px;
-    }
-
-    .m-col-d {
-      width: auto !important;
-      flex-basis: initial;
-      flex-grow: initial;
-    }
-
-    .col-score {
-      display: flex;
-      justify-content: flex-end;
-      padding-right: 0px;
-    }
-
-    .mobile-price {
-      margin-bottom: 3px;
-      font-weight: 700;
-    }
-  }
-
   .removeProduct {
     background: #ffffff;
     border: 1px solid #eae8eb;
@@ -447,6 +376,36 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+
+    .x {
+      font-family: 'Sofia Pro';
+      border-radius: 100%;
+      display: flex;
+      align-content: center;
+      color: black;
+      font-size: 20px;
+      margin-bottom: 4px;
+      position: relative;
+      top: 13.5%;
+      left: 1.5%;
+    }
+  }
+
+  .mobile-removeProduct {
+    background: #ffffff;
+    border: 1px solid #eae8eb;
+    box-shadow: 0px 2px 4px rgba(78, 72, 103, 0.08);
+    opacity: 1;
+    width: 30px;
+    height: 20px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    bottom: 25px;
+    left: 10px;
 
     .x {
       font-family: 'Sofia Pro';

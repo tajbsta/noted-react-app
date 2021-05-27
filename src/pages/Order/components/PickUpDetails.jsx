@@ -666,11 +666,25 @@ export default function PickUpDetails({
                         Between {get(pickUpDateForm, 'values.time', '')}
                       </h4> */}
                       {renderTime()}
-                      <h4
-                        className='p-0 m-0 sofia-pro mt-2 btn-edit'
+                      <button
+                        className='btn p-0 sofia-pro btn-edit'
+                        style={{ display: 'block' }}
                         onClick={openDatePickerModal}
                       >
                         Edit
+                      </button>
+                      <hr style={{ borderTop: '1px solid #E8E7E9' }} />
+                      <h4
+                        className='p-0 m-0 sofia-pro mt-2'
+                        style={{ color: '#570097' }}
+                      >
+                        Schedule another date
+                      </h4>
+                      <h4
+                        className='p-0 m-0 sofia-pro'
+                        style={{ color: '#2E1D3A', opacity: '0.6' }}
+                      >
+                        (-$5.00)
                       </h4>
                     </>
                   )}

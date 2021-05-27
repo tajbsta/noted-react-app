@@ -325,6 +325,11 @@ const Checkout = () => {
               ))}
             </div>
 
+            <h3 className='sofia-pro miss-out section-title'>
+              Don&apos;t miss out on other returns
+            </h3>
+            {RenderOtherReturnables()}
+
             {/* BILLING */}
             {isMobile && (
               <>
@@ -371,19 +376,6 @@ const Checkout = () => {
                 </div>
               </>
             )}
-
-            <h3 className='sofia-pro miss-out section-title'>
-              Don&apos;t miss out on other returns
-            </h3>
-            {/* <div className='row align-items-center p-4 all-checkbox mobile-row'>
-              <input
-              // type='checkbox'
-              // onChange={handleSelectAll}
-              // checked={newSelected.length === forgottenReturns.length}
-              />
-              <h4 className='sofia-pro noted-purple ml-4 mb-0 p-0'>Add all</h4>
-            </div> */}
-            {RenderOtherReturnables()}
           </div>
 
           {/* RIGHT CARDS */}

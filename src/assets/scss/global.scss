@@ -52,6 +52,11 @@
   line-height: 16px;
 }
 
+.full-width {
+  width: -webkit-fill-available;
+  width: -moz-available;
+}
+
 // PROFILE IMAGE
 .profile-alert-icon {
   border-radius: 50%;
