@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReturnScore from './ReturnsScore';
+import { RETURN_SCORES } from '../../constants/returns/scores';
 import Row from '../Row';
 import { Container, Col } from 'react-bootstrap';
 import ProductDetails from './ProductDetails';
@@ -18,7 +19,7 @@ import { useHistory } from 'react-router';
 import { formatCurrency } from '../../library/number';
 import ReturnValueInfoIcon from '../ReturnValueInfoIcon';
 
-function ProductCard({
+export default function ProductCard({
   selectable = true,
   removable = true,
   clickable = true,
@@ -84,6 +85,12 @@ function ProductCard({
   const formattedProductName = toTitleCase(item.name);
   const formatPrice = item.price.toFixed(2);
 
+  const rating = get(item, 'vendor_data.rating', 1);
+  const score = RETURN_SCORES.find(
+    ({ rating: returnRating }) => rating === returnRating
+  );
+  const scoreTitle = get(score, 'title', '');
+
   // Truncate name if longer than 34 characters
   const truncateProductNameForTablet = (str, num = 34) => {
     if (str && str.length > num) {
@@ -102,18 +109,18 @@ function ProductCard({
     }
   };
 
-  // Truncate name if longer than 12 characters
-  const truncateProductNameForSmallerScreens = (str, num = 12) => {
-    if (str && str.length > num) {
-      return str.slice(0, num) + '...';
-    } else {
-      return str;
-    }
-  };
+  // // Truncate name if longer than 12 characters
+  // const truncateProductNameForSmallerScreens = (str, num = 12) => {
+  //   if (str && str.length > num) {
+  //     return str.slice(0, num) + '...';
+  //   } else {
+  //     return str;
+  //   }
+  // };
 
-  const mobileFormatProductName = isTablet
-    ? truncateProductNameForTablet(formattedProductName)
-    : truncateProductNameForMobile(formattedProductName);
+  // const mobileFormatProductName = isTablet
+  //   ? truncateProductNameForTablet(formattedProductName)
+  //   : truncateProductNameForMobile(formattedProductName);
 
   const showHoverContent = isHover || selected;
 
@@ -154,6 +161,394 @@ function ProductCard({
 
   const inDashboard = useHistory().location.pathname === '/dashboard';
   const inCheckout = useHistory().location.pathname === '/checkout';
+
+  const renderMobileView = () => {
+    return (
+      <div id='MobileProductCard'>
+        <div
+          className={`d-flex mr-2 ${
+            confirmed || (!selected && !removable) ? 'ml-3' : 'ml-2'
+          }`}
+          style={{ alignItems: 'center' }}
+        >
+          {selectable && (
+            <div
+              className='row ml-2 mr-3'
+              style={{
+                alignItems: selected ? 'initial' : 'center',
+              }}
+            >
+              <NotedCheckbox
+                disabled={disabled || daysLeft <= 2}
+                checked={selected}
+                onChangeState={handleSelection}
+              />
+            </div>
+          )}
+          {removable && !selectable && !confirmed && (
+            <div
+              className='mobile-removeProduct'
+              style={{
+                alignItems: selected ? 'initial' : 'center',
+              }}
+              onClick={() => {
+                onRemove(get(item, '_id', ''));
+              }}
+            >
+              <span className='x' style={{ color: 'black' }}>
+                &times;
+              </span>
+            </div>
+          )}
+
+          <div>
+            <img
+              className='product-img'
+              src={item.thumbnail || ProductPlaceholder}
+              onError={(e) => {
+                e.currentTarget.src = ProductPlaceholder;
+              }}
+              alt=''
+              style={{
+                maxWidth: 50,
+                maxHeight: 50,
+                objectFit: 'contain',
+                border: '1px solid #f0f0f0',
+                borderRadius: '8px',
+                justifyContent: 'center',
+                width: '48px',
+                height: '48px',
+                background: '#fff',
+              }}
+            />
+          </div>
+          <div
+            className='ml-3'
+            style={{ textAlign: 'left', width: '-webkit-fill-available' }}
+          >
+            <div
+            // style={{ display: !selected ? 'flex' : '' }}
+            >
+              <h4
+                className='sofia-pro mb-1 mr-2'
+                style={{ fontWeight: '700', lineHeight: 'initial' }}
+              >
+                {item.vendor_data.name}
+              </h4>
+              <h4 className='sofia-pro mb-1' style={{ lineHeight: 'initial' }}>
+                {/* {!selected ? mobileFormatProductName : formattedProductName} */}
+                {formattedProductName}
+              </h4>
+            </div>
+            <h4
+              className='sofia-pro mb-1'
+              style={{
+                color: isNotEligible || isLastCall ? 'red' : '#8B888C',
+                fontWeight: '700',
+              }}
+            >
+              {daysLeft !== 'Donate' &&
+                `${daysLeft} ${daysLeft == 1 ? 'day' : 'days'} left`}
+              {daysLeft === 'Donate' && daysLeft}
+            </h4>
+
+            {daysLeft === 2 || daysLeft === 1 ? (
+              <>
+                <h4 className='sofia-pro mb-0 not-eligible-text'>
+                  This item is not eligible for pick up
+                </h4>
+                <button
+                  className='sofia-pro btn btn-m-donate'
+                  type='submit'
+                  onClick={() => setModalDonateShow(true)}
+                  style={{ zIndex: '1' }}
+                >
+                  Donate instead
+                </button>
+              </>
+            ) : (
+              <h4 className='sofia-pro mb-0' style={{ fontWeight: '700' }}>
+                ${formatPrice}
+              </h4>
+            )}
+            {selected && (
+              <>
+                <Container>
+                  <Row>
+                    {!isDonate && (
+                      <button
+                        className='sofia-pro btn btn-m-donate mt-1'
+                        type='submit'
+                        onClick={() => setModalDonateShow(true)}
+                        style={{ zIndex: '1' }}
+                      >
+                        Donate instead
+                      </button>
+                    )}
+                  </Row>
+                </Container>
+              </>
+            )}
+          </div>
+          {!selected && (
+            <div>
+              <div className='d-flex'>
+                <Col
+                  className='ml-0'
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <ReturnScore score={item.vendor_data.rating} />
+                </Col>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {selected && (
+          <>
+            <Container
+              className='m-brand-info-container'
+              style={{ width: 'auto' }}
+            >
+              <Row>
+                <div className='m-brand-logo-cont'>
+                  <img
+                    src={item.vendor_data.thumbnail || ProductPlaceholder}
+                    onError={(e) => {
+                      e.currentTarget.src = ProductPlaceholder;
+                    }}
+                    alt=''
+                    className='m-brand-img'
+                  />
+                </div>
+                <Col style={{ paddingRight: '7px', paddingLeft: '7px' }}>
+                  <Row>
+                    <span className='m-score-container'>
+                      <ReturnScore score={item.vendor_data.rating} />
+                    </span>
+                    <h4 className='m-score-text sofia-pro'>{scoreTitle}</h4>
+                  </Row>
+                  <Row>
+                    <button
+                      className='sofia-pro btn btn-m-policy'
+                      onClick={() => setModalPolicyShow(true)}
+                    >
+                      Return policy
+                    </button>
+                  </Row>
+                </Col>
+              </Row>
+            </Container>
+
+            <Container className='m-edit-container'>
+              <Row>
+                <div className='m-edit-col'>
+                  <h4 className='mb-0'>Wrong info? &nbsp;</h4>
+                  <button
+                    className='sofia-pro btn btn-m-edit mr-1'
+                    onClick={() => setModalEditShow(true)}
+                  >
+                    Edit
+                  </button>
+                  <ReturnValueInfoIcon content="We're still working on this" />
+                </div>
+              </Row>
+            </Container>
+          </>
+        )}
+
+        <ReturnPolicyModal
+          item={item}
+          show={modalPolicyShow}
+          onHide={() => {
+            setModalPolicyShow(false);
+          }}
+        />
+        <EditProductModal
+          show={modalEditShow}
+          onHide={() => {
+            setModalEditShow(false);
+          }}
+          editproductform={{
+            handleChange,
+            values,
+            setFieldValue,
+            errors,
+          }}
+        />
+
+        <ConfirmDonate
+          show={modalDonateShow}
+          onHide={() => {
+            setModalDonateShow(false);
+          }}
+          item={item}
+          toggleSelected={toggleSelected}
+        />
+      </div>
+    );
+  };
+
+  const renderDesktopView = () => {
+    return (
+      <>
+        <Row>
+          {selectable && (
+            <div
+              className='row p-4 product-checkbox'
+              style={{
+                alignItems: selected ? 'initial' : 'center',
+              }}
+            >
+              <NotedCheckbox
+                disabled={disabled || daysLeft <= 2}
+                checked={selected}
+                onChangeState={handleSelection}
+              />
+            </div>
+          )}
+
+          <div
+            className='product-img-container'
+            style={{
+              display: 'flex',
+              alignItems: selected ? '' : 'center',
+              marginTop: selected ? '7px' : '',
+              marginLeft: !selectable && '15px',
+            }}
+          >
+            {removable && !selectable && !confirmed && (
+              <div
+                className='removeProduct'
+                onClick={() => {
+                  onRemove(get(item, '_id', ''));
+                }}
+              >
+                <span className='x' style={{ color: 'black' }}>
+                  &times;
+                </span>
+              </div>
+            )}
+            <img
+              className='product-img'
+              src={item.thumbnail || ProductPlaceholder}
+              onError={(e) => {
+                e.currentTarget.src = ProductPlaceholder;
+              }}
+              alt=''
+              style={{
+                maxWidth: 50,
+                maxHeight: 50,
+                objectFit: 'contain',
+              }}
+            />
+          </div>
+
+          <ReturnPolicyModal
+            item={item}
+            show={modalPolicyShow}
+            onHide={() => {
+              setModalPolicyShow(false);
+            }}
+          />
+          <EditProductModal
+            show={modalEditShow}
+            onHide={() => {
+              setModalEditShow(false);
+            }}
+            editproductform={{
+              handleChange,
+              values,
+              setFieldValue,
+              errors,
+            }}
+          />
+          <ProductDetails
+            item={item}
+            daysLeft={daysLeft}
+            isHovering={showHoverContent}
+            toggleSelected={toggleSelected}
+          />
+
+          <div
+            className='col-sm-12 return-details-container'
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyItems: 'center',
+            }}
+          >
+            {(isHover || selected) && (
+              <ProductCardHover
+                orderDate={item.order_date}
+                show={showHoverContent}
+                item={item}
+                editproductform={{
+                  handleChange,
+                  values,
+                  setFieldValue,
+                  errors,
+                }}
+              />
+            )}
+
+            {((!isHover && !selected && !isDonate && !inCheckout) ||
+              (!isHover && inCheckout)) && (
+              <>
+                <div
+                  className='col-sm-6 sofia-pro return-time-left'
+                  style={{
+                    color: isNotEligible || isLastCall ? 'red' : '#8B888C',
+                  }}
+                >
+                  {daysLeft !== 'Donate' &&
+                    `${daysLeft} ${daysLeft == 1 ? 'day' : 'days'} left`}
+                  {daysLeft === 'Donate' && daysLeft}
+                </div>
+                <div className='col-sm-3 return-score'>
+                  <ReturnScore score={item.vendor_data.rating} />
+                </div>
+              </>
+            )}
+
+            {!isHover && !selected && isDonate && !inCheckout && (
+              <>
+                <div
+                  className='col-sm-6 sofia-pro return-time-left'
+                  style={{
+                    color: '#8B888C',
+                  }}
+                >
+                  Donate
+                </div>
+                <div className='col-sm-3 return-score'>
+                  <ReturnScore score={item.vendor_data.rating} />
+                </div>
+              </>
+            )}
+
+            <div className='col-sm-3 return-item-brand'>
+              <img
+                src={item.vendor_data.thumbnail || ProductPlaceholder}
+                onError={(e) => {
+                  e.currentTarget.src = ProductPlaceholder;
+                }}
+                alt=''
+                className='avatar-img ml-2 rounded-circle noted-border brand-img'
+                style={{
+                  width: 35,
+                  height: 35,
+                  objectFit: 'contain',
+                  background: '#fff',
+                }}
+              />
+            </div>
+          </div>
+        </Row>
+      </>
+    );
+  };
+
   return (
     <div id='ProductCard'>
       <div
@@ -169,385 +564,11 @@ function ProductCard({
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        <div
-          className='card-body pt-3 pb-3 p-0 m-0'
-          style={{ marginTop: isMobile ? '1px' : '' }}
-        >
-          <Row>
-            {selectable && (
-              <div
-                className='row p-4 product-checkbox'
-                style={{
-                  alignItems: isMobile && selected ? 'initial' : 'center',
-                }}
-              >
-                <NotedCheckbox
-                  disabled={disabled || daysLeft <= 2}
-                  checked={selected}
-                  onChangeState={handleSelection}
-                />
-              </div>
-            )}
-
-            <div
-              className='product-img-container'
-              style={{
-                display: 'flex',
-                alignItems: isMobile && selected ? '' : 'center',
-                marginTop: isMobile && selected ? '7px' : '',
-                marginLeft: !selectable && '15px',
-              }}
-            >
-              {removable && !selectable && !confirmed && (
-                <div
-                  className='removeProduct'
-                  onClick={() => {
-                    onRemove(get(item, '_id', ''));
-                  }}
-                >
-                  <span className='x' style={{ color: 'black' }}>
-                    &times;
-                  </span>
-                </div>
-              )}
-              <img
-                className='product-img'
-                src={item.thumbnail || ProductPlaceholder}
-                onError={(e) => {
-                  e.currentTarget.src = ProductPlaceholder;
-                }}
-                alt=''
-                style={{
-                  maxWidth: 50,
-                  maxHeight: 50,
-                  objectFit: 'contain',
-                }}
-              />
-            </div>
-            {/* MOBILE VIEWS FOR PRODUCT DETAILS */}
-            <div
-              id='mobile-product-info'
-              style={{
-                width:
-                  (isMobile && !selectable) || (isMobile && confirmed)
-                    ? '83%'
-                    : '',
-                maxWidth:
-                  (isMobileSmaller && removable && !selectable) ||
-                  (isMobileSmaller && removable) ||
-                  (isMobileSmaller && confirmed)
-                    ? '75%'
-                    : '',
-              }}
-            >
-              <div className='details'>
-                <Container>
-                  <div className='title-container'>
-                    <h4
-                      className='mb-0 sofia-pro distributor-name'
-                      style={{ marginBottom: '0px', lineHeight: 'inherit' }}
-                    >
-                      {item.vendor_data.name}
-                    </h4>
-                    &nbsp;
-                    {isMobileSmaller && (
-                      <h4
-                        className='sofia-pro mb-2 product-name'
-                        style={{ lineHeight: 'inherit' }}
-                      >
-                        {truncateProductNameForSmallerScreens(
-                          formattedProductName
-                        )}
-                      </h4>
-                    )}
-                    {!isMobileSmaller && (
-                      <h4
-                        className='sofia-pro mb-2 product-name'
-                        style={{ lineHeight: 'inherit' }}
-                      >
-                        {mobileFormatProductName}
-                      </h4>
-                    )}
-                  </div>
-                </Container>
-                <Container className='s-container'>
-                  <Row>
-                    <div
-                      style={{
-                        display: selected ? 'flex' : '',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <Col
-                        className='col-days-left m-col-d'
-                        style={{
-                          // paddingRight: '4px',
-                          width: 'fit-content !important',
-                        }}
-                      >
-                        {!isDonate && (
-                          <>
-                            <div
-                              className='sofia-pro mobile-limit'
-                              style={{
-                                color:
-                                  isNotEligible || isLastCall
-                                    ? 'red'
-                                    : '#8B888C',
-                              }}
-                            >
-                              {daysLeft} {daysLeft == 1 ? 'day' : 'days'} left
-                            </div>
-                          </>
-                        )}
-                        {isDonate && (
-                          <>
-                            <div
-                              className='sofia-pro mobile-limit'
-                              style={{
-                                color: '#8B888C',
-                              }}
-                            >
-                              Donate
-                            </div>
-                          </>
-                        )}
-                      </Col>
-                      <Col className='m-date-col'>
-                        {selected && (
-                          <div className='m-date sofia-pro'>
-                            {moment(item.order_date).format('MMM DD, YYYY')}
-                          </div>
-                        )}
-                      </Col>
-                    </div>
-                    <Col
-                      className='col-score'
-                      style={{ display: selected ? 'none' : '' }}
-                    >
-                      <div className='mobile-return-score'>
-                        <ReturnScore score={item.vendor_data.rating} />
-                      </div>
-                    </Col>
-                  </Row>
-                </Container>
-                <Container>
-                  <Row>
-                    {daysLeft === 2 || daysLeft === 1 ? (
-                      <h4 className='sofia-pro mb-0 not-eligible-text'>
-                        This item is not eligible for pick up
-                      </h4>
-                    ) : (
-                      <h4
-                        className={`sofia-pro mobile-price ${
-                          isDonate ? 'donate-price' : ''
-                        }`}
-                      >
-                        ${formatPrice}
-                      </h4>
-                    )}
-                  </Row>
-                </Container>
-                {selected && (
-                  <>
-                    <Container>
-                      <Row>
-                        {!isDonate && (
-                          <button
-                            className='sofia-pro btn btn-m-donate'
-                            type='submit'
-                            onClick={() => setModalDonateShow(true)}
-                            style={{ zIndex: '1' }}
-                          >
-                            Donate instead
-                          </button>
-                        )}
-                      </Row>
-                    </Container>
-                    <ConfirmDonate
-                      show={modalDonateShow}
-                      onHide={() => {
-                        setModalDonateShow(false);
-                      }}
-                      item={item}
-                      toggleSelected={toggleSelected}
-                    />
-                  </>
-                )}
-              </div>
-            </div>
-
-            {!selected && isTablet && (
-              <>
-                <div
-                  className='tablet-brand-info-container'
-                  style={{ display: 'flex', alignItems: 'center' }}
-                >
-                  <div className='m-brand-logo-cont'>
-                    <img
-                      src={item.vendor_data.thumbnail || ProductPlaceholder}
-                      onError={(e) => {
-                        e.currentTarget.src = ProductPlaceholder;
-                      }}
-                      alt=''
-                      className='m-brand-img'
-                    />
-                  </div>
-                </div>
-              </>
-            )}
-
-            {isMobile && selected && (
-              <>
-                <Container className='m-brand-info-container'>
-                  <Row>
-                    <div className='m-brand-logo-cont'>
-                      <img
-                        src={item.vendor_data.thumbnail || ProductPlaceholder}
-                        onError={(e) => {
-                          e.currentTarget.src = ProductPlaceholder;
-                        }}
-                        alt=''
-                        className='m-brand-img'
-                      />
-                    </div>
-                    <Col style={{ paddingRight: '7px', paddingLeft: '7px' }}>
-                      <Row>
-                        <span className='m-score-container'>
-                          <ReturnScore score={item.vendor_data.rating} />
-                        </span>
-                        <h4 className='m-score-text sofia-pro'>
-                          Excellent returns
-                        </h4>
-                      </Row>
-                      <Row>
-                        <button
-                          className='sofia-pro btn btn-m-policy'
-                          onClick={() => setModalPolicyShow(true)}
-                        >
-                          Return policy
-                        </button>
-                      </Row>
-                    </Col>
-                  </Row>
-                </Container>
-
-                <Container className='m-edit-container'>
-                  <Row>
-                    <div className='m-edit-col'>
-                      <h4 className='mb-0'>Wrong info? &nbsp;</h4>
-                      <button
-                        className='sofia-pro btn btn-m-edit mr-1'
-                        onClick={() => setModalEditShow(true)}
-                      >
-                        Edit
-                      </button>
-                      <ReturnValueInfoIcon content="We're still working on this" />
-                    </div>
-                  </Row>
-                </Container>
-              </>
-            )}
-            <ReturnPolicyModal
-              item={item}
-              show={modalPolicyShow}
-              onHide={() => {
-                setModalPolicyShow(false);
-              }}
-            />
-            <EditProductModal
-              show={modalEditShow}
-              onHide={() => {
-                setModalEditShow(false);
-              }}
-              editproductform={{ handleChange, values, setFieldValue, errors }}
-            />
-            <ProductDetails
-              item={item}
-              daysLeft={daysLeft}
-              isHovering={showHoverContent}
-              toggleSelected={toggleSelected}
-            />
-
-            <div
-              className='col-sm-12 return-details-container'
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyItems: 'center',
-              }}
-            >
-              {(isHover || selected) && (
-                <ProductCardHover
-                  orderDate={item.order_date}
-                  show={showHoverContent}
-                  item={item}
-                  editproductform={{
-                    handleChange,
-                    values,
-                    setFieldValue,
-                    errors,
-                  }}
-                />
-              )}
-
-              {((!isHover && !selected && !isDonate && !inCheckout) ||
-                (!isHover && inCheckout)) && (
-                <>
-                  <div
-                    className='col-sm-6 sofia-pro return-time-left'
-                    style={{
-                      color: isNotEligible || isLastCall ? 'red' : '#8B888C',
-                    }}
-                  >
-                    {daysLeft !== 'Donate' &&
-                      `${daysLeft} ${daysLeft == 1 ? 'day' : 'days'} left`}
-                    {daysLeft === 'Donate' && daysLeft}
-                  </div>
-                  <div className='col-sm-3 return-score'>
-                    <ReturnScore score={item.vendor_data.rating} />
-                  </div>
-                </>
-              )}
-
-              {!isHover && !selected && isDonate && !inCheckout && (
-                <>
-                  <div
-                    className='col-sm-6 sofia-pro return-time-left'
-                    style={{
-                      color: '#8B888C',
-                    }}
-                  >
-                    Donate
-                  </div>
-                  <div className='col-sm-3 return-score'>
-                    <ReturnScore score={item.vendor_data.rating} />
-                  </div>
-                </>
-              )}
-
-              <div className='col-sm-3 return-item-brand'>
-                <img
-                  src={item.vendor_data.thumbnail || ProductPlaceholder}
-                  onError={(e) => {
-                    e.currentTarget.src = ProductPlaceholder;
-                  }}
-                  alt=''
-                  className='avatar-img ml-2 rounded-circle noted-border brand-img'
-                  style={{
-                    width: 35,
-                    height: 35,
-                    objectFit: 'contain',
-                    background: '#fff',
-                  }}
-                />
-              </div>
-            </div>
-          </Row>
+        <div className='card-body pt-3 pb-3 p-0 m-0'>
+          {!isMobile && renderDesktopView()}
+          {isMobile && renderMobileView()}
         </div>
       </div>
     </div>
   );
 }
-
-export default ProductCard;
