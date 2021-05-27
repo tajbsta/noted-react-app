@@ -5,7 +5,12 @@ import { get } from 'lodash-es';
 import { DONATE, NOT_ELIGIBLE } from '../../constants/actions/runtime';
 import ConfirmDonate from '../../modals/ConfirmDonate';
 
-function ProductDetails({ item, isHovering = false, toggleSelected }) {
+function ProductDetails({
+  item,
+  isHovering = false,
+  toggleSelected,
+  daysLeft,
+}) {
   const history = useHistory();
   const pageLocation = history.location.pathname;
   const notOrderViews = ['/dashboard', '/profile'];
@@ -81,7 +86,7 @@ function ProductDetails({ item, isHovering = false, toggleSelected }) {
         </h5>
       </Row>
       <Row>
-        {category == NOT_ELIGIBLE ? (
+        {daysLeft === 2 || daysLeft === 1 ? (
           <>
             <h4 className='sofia-pro mb-0 not-eligible-text'>
               This item is not eligible for pick up
@@ -107,7 +112,8 @@ function ProductDetails({ item, isHovering = false, toggleSelected }) {
         {isHovering &&
           inDashboard &&
           category !== DONATE &&
-          category !== NOT_ELIGIBLE && (
+          category !== NOT_ELIGIBLE &&
+          daysLeft > 2 && (
             <>
               <button
                 type='button'

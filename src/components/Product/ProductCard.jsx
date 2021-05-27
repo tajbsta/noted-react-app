@@ -352,14 +352,16 @@ function ProductCard({
                   <>
                     <Container>
                       <Row>
-                        <button
-                          className='sofia-pro btn btn-m-donate'
-                          type='submit'
-                          onClick={() => setModalDonateShow(true)}
-                          style={{ zIndex: '1' }}
-                        >
-                          Donate instead
-                        </button>
+                        {!isDonate && (
+                          <button
+                            className='sofia-pro btn btn-m-donate'
+                            type='submit'
+                            onClick={() => setModalDonateShow(true)}
+                            style={{ zIndex: '1' }}
+                          >
+                            Donate instead
+                          </button>
+                        )}
                       </Row>
                     </Container>
                     <ConfirmDonate
