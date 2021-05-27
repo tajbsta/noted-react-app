@@ -222,17 +222,11 @@ export default function ProductCard({
               }}
             />
           </div>
-          <div
-            className='ml-3'
-            style={{ textAlign: 'left', width: '-webkit-fill-available' }}
-          >
+          <div className='ml-3 full-width' style={{ textAlign: 'left' }}>
             <div
             // style={{ display: !selected ? 'flex' : '' }}
             >
-              <h4
-                className='sofia-pro mb-1 mr-2'
-                style={{ fontWeight: '700', lineHeight: 'initial' }}
-              >
+              <h4 className='sofia-pro mb-1 mr-2' style={{ fontWeight: '700' }}>
                 {item.vendor_data.name}
               </h4>
               <h4 className='sofia-pro mb-1' style={{ lineHeight: 'initial' }}>

@@ -1,4 +1,5 @@
-#MobileCheckoutCard {
+#MobileCheckoutCard,
+#MobileModifyCheckoutCard {
   font-family: 'Sofia Pro';
 
   .m-col {
@@ -136,4 +137,12 @@
     mix-blend-mode: normal;
     opacity: 0.6;
   }
+}
+
+#MobileModifyCheckoutCard {
+  position: fixed;
+  z-index: 1;
+  bottom: 0;
+  width: -webkit-fill-available;
+  width: -moz-available;
 }
