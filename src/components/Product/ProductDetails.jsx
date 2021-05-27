@@ -76,7 +76,7 @@ function ProductDetails({
       </Row>
       <Row>
         <h5
-          className='sofia-pro mb-2 product-name'
+          className='sofia-pro mb-1 product-name'
           id='name'
           ref={target}
           onMouseOver={onMouseOver}
