@@ -129,12 +129,14 @@ const Checkout = () => {
 
       // console.log(paymentIntent);
 
-      newOrder.paymentIntentId = paymentIntent.paymentIntentId;
-      newOrder.paymentMethodId = paymentIntent.paymentMethodId;
-      newOrder.productId = paymentIntent.productId;
-      newOrder.taxId = paymentIntent.taxId;
-      newOrder.priceId = paymentIntent.priceId;
-      newOrder.pricing = paymentIntent.pricing;
+      newOrder.billing = {
+        paymentIntentId: paymentIntent.paymentIntentId,
+        paymentMethodId: paymentIntent.paymentMethodId,
+        productId: paymentIntent.productId,
+        taxId: paymentIntent.taxId,
+        priceId: paymentIntent.priceId,
+        pricing: paymentIntent.pricing
+      }
 
       // Confirm payment intent using stripe here
       const result = await stripe.confirmCardPayment(
