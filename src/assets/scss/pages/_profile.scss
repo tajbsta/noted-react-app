@@ -325,9 +325,22 @@
       }
     }
 
+    .section-title {
+      @media (min-width: 992px) {
+        margin-left: 0.75rem;
+      }
+    }
+
     .m-history-title {
       @media (max-width: 315px) {
         width: min-content;
+      }
+    }
+
+    .m-bar {
+      @media (max-width: 540px) {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
       }
     }
 
@@ -540,14 +553,6 @@
     .start-returning {
       color: #6aaf6a;
       text-decoration: underline;
-    }
-  }
-
-  #ReturnHistory {
-    .section-title {
-      @media (min-width: 992px) {
-        margin-left: 0.75rem;
-      }
     }
   }
 

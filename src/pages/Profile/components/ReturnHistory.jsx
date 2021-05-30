@@ -12,7 +12,6 @@ export default function ReturnHistory({ user }) {
   const [lastEvaluatedKey, setLastEvaluatedKey] = useState(null);
   const [loadProgress, setLoadProgress] = useState(0);
 
-
   const getOrderHistory = async (nextPageKey = null) => {
     try {
       setFetchingOrders(true);
@@ -29,11 +28,10 @@ export default function ReturnHistory({ user }) {
       // console.log(res);
       const newOrders = currentOrders.concat(res.orders);
 
-
       setOrders(newOrders);
 
       setLoadProgress(80);
-      await timeout(200)
+      await timeout(200);
       setLoadProgress(100);
       await timeout(1000);
       /**
@@ -97,7 +95,12 @@ export default function ReturnHistory({ user }) {
         </div>
       </div>
       {fetchingOrders && (
-        <ProgressBar animated striped now={loadProgress} className='mt-4 m-3' />
+        <ProgressBar
+          animated
+          striped
+          now={loadProgress}
+          className='m-bar mt-4 m-3'
+        />
       )}
       {!fetchingOrders && isEmpty(orders) && renderEmptiness()}
       {orders &&
