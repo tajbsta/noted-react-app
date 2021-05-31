@@ -4,7 +4,10 @@ import { useHistory } from 'react-router';
 import { get } from 'lodash';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
-export default function MobileModifyCheckoutCard({ pricingDetails }) {
+export default function MobileModifyCheckoutCard({
+  pricingDetails,
+  hasModifications,
+}) {
   const potentialReturnValue = get(pricingDetails, 'potentialReturnValue', 0);
   const inReturn = get(pricingDetails, 'totalReturns', 0);
   const inDonation = get(pricingDetails, 'totalDonations', 0);
@@ -87,25 +90,31 @@ export default function MobileModifyCheckoutCard({ pricingDetails }) {
                   </Row>
                 </Col>
               </Row>
-              {/* <Row>
+              {hasModifications && (
+                <Row>
                   <Col>
-                    <button className='btn m-btn-confirm'>Confirm Order</button>
+                    <button className='btn m-btn-confirm'>
+                      Update Changes
+                    </button>
                   </Col>
-                </Row> */}
-              <div
-                className='btn btn-no-changes noted-purple mt-3'
-                style={{
-                  background: '#EEE4F6',
-                  border: 'none',
-                  color: '#570097',
-                  display: 'flex',
-                  alignContent: 'center',
-                  justifyContent: 'flex-start',
-                }}
-                onClick={() => history.push('/dashboard')}
-              >
-                No changes
-              </div>
+                </Row>
+              )}
+              {!hasModifications && (
+                <div
+                  className='btn btn-no-changes noted-purple mt-3'
+                  style={{
+                    background: '#EEE4F6',
+                    border: 'none',
+                    color: '#570097',
+                    display: 'flex',
+                    alignContent: 'center',
+                    justifyContent: 'flex-start',
+                  }}
+                  onClick={() => history.push('/dashboard')}
+                >
+                  No changes
+                </div>
+              )}
             </>
           )}
         </div>

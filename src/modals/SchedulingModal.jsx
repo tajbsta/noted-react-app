@@ -7,18 +7,31 @@ import { getUserId } from '../utils/auth';
 import { isEmpty } from 'lodash-es';
 import { showError } from '../library/notifications.library';
 
-export default function SchedulingModal({ form, onConfirm, ...props }) {
+export default function SchedulingModal({
+  pickUpDateFormValues,
+  onConfirm,
+  ...props
+}) {
   const [loading, setLoading] = useState(false);
-  const [slots, setSlots] = useState({ AM: 0, PM: 2 });
+  const [slots, setSlots] = useState({ AM: 0, PM: 0 });
+  const [pickupDate, setPickupDate] = useState(null);
+  const [pickupTime, setPickupTime] = useState(null);
+
+  const setFieldValue = (field, value) => {
+    if (field === 'date') {
+      setPickupDate(value);
+    }
+
+    if (field === 'time') {
+      setPickupTime(value);
+    }
+  };
 
   const fetchPickupSlots = async () => {
-    if (!isEmpty(form.values.date)) {
+    if (!isEmpty(pickupDate)) {
       try {
         setLoading(true);
-        const pickupSlots = await getPickupSlots(
-          await getUserId(),
-          form.values.date
-        );
+        const pickupSlots = await getPickupSlots(await getUserId(), pickupDate);
         setSlots(pickupSlots);
         setLoading(false);
       } catch (err) {
@@ -30,20 +43,20 @@ export default function SchedulingModal({ form, onConfirm, ...props }) {
 
   useEffect(() => {
     fetchPickupSlots();
-  }, [form.values.date]);
+  }, [pickupDate]);
 
-  const {
-    errors: pickUpDateErrors,
-    setFieldValue,
-    values: pickUpDateValues,
-  } = form;
+  useEffect(() => {
+    console.log('hello', pickUpDateFormValues);
+    setPickupDate(pickUpDateFormValues.date);
+    setPickupTime(pickUpDateFormValues.time);
+  }, [pickUpDateFormValues]);
 
   const renderLoading = () => {
     return loading && <Spinner className='spinner' animation='border' />;
   };
 
   const renderMorningTimeSlot = () => {
-    const isSelected = pickUpDateValues.time === 'AM' ? `isSelected` : '';
+    const isSelected = pickupTime === 'AM' ? `isSelected` : '';
     const buttonClassname = `btn timeSlotContainer ${isSelected}`;
     const rangeTextClassname = `row sofia-pro timeSlotText ${
       isSelected ? 'selected' : ''
@@ -86,7 +99,7 @@ export default function SchedulingModal({ form, onConfirm, ...props }) {
   };
 
   const renderEveningTimeSlot = () => {
-    const isSelected = pickUpDateValues.time === 'PM' ? `isSelected` : '';
+    const isSelected = pickupTime === 'PM' ? `isSelected` : '';
     const buttonClassname = `btn timeSlotContainer ${isSelected}`;
     const rangeTextClassname = `row sofia-pro timeSlotText ${
       isSelected ? 'selected' : ''
@@ -159,8 +172,7 @@ export default function SchedulingModal({ form, onConfirm, ...props }) {
           ? 'Tomorrow'
           : day.format('dddd');
       const isSelected =
-        day instanceof moment &&
-        day.format('MM/DD/YYYY') === pickUpDateValues.date;
+        day instanceof moment && day.format('MM/DD/YYYY') === pickupDate;
 
       const dayContainerClassname = `col ${
         isSelected ? 'day-container-selected' : 'day-container'
@@ -236,20 +248,20 @@ export default function SchedulingModal({ form, onConfirm, ...props }) {
             justifyContent: 'center',
           }}
         >
-          {pickUpDateValues.date !== null && !loading
+          {pickupDate !== null && !loading
             ? renderNewTimeSlot()
             : renderEmptiness()}
         </div>
       </Modal.Body>
       <Modal.Footer>
-        {pickUpDateValues.date !== null && pickUpDateValues.time !== null && (
+        {pickupDate !== null && pickupTime !== null && (
           <>
             <Button
               className='btn cancelPickUpButton'
               onClick={() => {
                 props.onHide();
-                setFieldValue('date', null);
-                setFieldValue('time', null);
+                setFieldValue('date', pickUpDateFormValues.date);
+                setFieldValue('time', pickUpDateFormValues.time);
               }}
             >
               <span className='cancelPickUpText'>Cancel</span>
@@ -258,7 +270,7 @@ export default function SchedulingModal({ form, onConfirm, ...props }) {
               className='btn-ok'
               onClick={() => {
                 props.onHide();
-                onConfirm();
+                onConfirm(pickupDate, pickupTime);
               }}
             >
               <span className='confirmPickUpText'>Confirm Schedule</span>

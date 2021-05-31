@@ -47,7 +47,7 @@ export default function AddPickupModal(props) {
               />
             </Form.Group>
             <div className='button-group'>
-              <Button className='btn-save' onClick={props.onHide}>
+              <Button className='btn-save' onClick={props.onDoneClick}>
                 Save
               </Button>
               <Button className='btn btn-cancel' onClick={props.onHide}>

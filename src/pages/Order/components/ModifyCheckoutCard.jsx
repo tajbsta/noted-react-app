@@ -153,7 +153,7 @@ export default function ModifyCheckoutCard({
                         }}
                         onClick={() => history.push('/dashboard')}
                       >
-                        Confirm
+                        Update Changes
                       </div>
                     )}
 
