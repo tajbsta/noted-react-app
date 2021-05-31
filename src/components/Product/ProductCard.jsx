@@ -238,15 +238,16 @@ export default function ProductCard({
               className='sofia-pro mb-1'
               style={{
                 color: isNotEligible || isLastCall ? 'red' : '#8B888C',
-                fontWeight: '700',
               }}
             >
               {daysLeft !== 'Donate' &&
+                daysLeft != 0 &&
                 `${daysLeft} ${daysLeft == 1 ? 'day' : 'days'} left`}
               {daysLeft === 'Donate' && daysLeft}
+              {daysLeft == 0 && 'Expires today'}
             </h4>
 
-            {daysLeft === 2 || daysLeft === 1 ? (
+            {daysLeft <= 2 ? (
               <>
                 <h4 className='sofia-pro mb-0 not-eligible-text'>
                   This item is not eligible for pick up
@@ -261,7 +262,13 @@ export default function ProductCard({
                 </button>
               </>
             ) : (
-              <h4 className='sofia-pro mb-0' style={{ fontWeight: '700' }}>
+              <h4
+                className='sofia-pro mb-0'
+                style={{
+                  fontWeight: isDonate ? 'normal' : '700',
+                  opacity: isDonate ? '0.6' : '1',
+                }}
+              >
                 ${formatPrice}
               </h4>
             )}
@@ -459,6 +466,7 @@ export default function ProductCard({
           />
           <ProductDetails
             item={item}
+            isDonate={isDonate}
             daysLeft={daysLeft}
             isHovering={showHoverContent}
             toggleSelected={toggleSelected}
@@ -496,8 +504,10 @@ export default function ProductCard({
                   }}
                 >
                   {daysLeft !== 'Donate' &&
+                    daysLeft != 0 &&
                     `${daysLeft} ${daysLeft == 1 ? 'day' : 'days'} left`}
                   {daysLeft === 'Donate' && daysLeft}
+                  {daysLeft == 0 && 'Expires today'}
                 </div>
                 <div className='col-sm-3 return-score'>
                   <ReturnScore score={item.vendor_data.rating} />

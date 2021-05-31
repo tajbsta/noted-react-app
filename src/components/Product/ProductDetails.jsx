@@ -10,6 +10,7 @@ function ProductDetails({
   isHovering = false,
   toggleSelected,
   daysLeft,
+  isDonate,
 }) {
   const history = useHistory();
   const pageLocation = history.location.pathname;
@@ -86,7 +87,7 @@ function ProductDetails({
         </h5>
       </Row>
       <Row>
-        {daysLeft === 2 || daysLeft === 1 ? (
+        {daysLeft <= 2 ? (
           <>
             <h4 className='sofia-pro mb-0 not-eligible-text'>
               This item is not eligible for pick up
@@ -105,6 +106,10 @@ function ProductDetails({
             className={`sofia-pro mb-0 product-price ${
               category == DONATE ? 'donate-price' : ''
             }`}
+            style={{
+              fontWeight: isDonate ? 'normal' : '700',
+              opacity: isDonate ? '0.6' : '1',
+            }}
           >
             ${formatPrice}
           </h4>
