@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { timeout } from '../../../utils/time';
 import EmptyAddress from '../../../components/PickUpDetails/EmptyAddress';
 import EmptyPayment from '../../../components/PickUpDetails/EmptyPayment';
@@ -16,9 +17,10 @@ import {
 } from '../../../models/formSchema';
 import { useDispatch } from 'react-redux';
 import {
-  updatePickUpDetails,
-  updateReturnAddress,
-} from '../../../actions/runtime.action';
+  setPickupAddress,
+  setPayment,
+  setPickupDetails,
+} from '../../../actions/cart.action';
 import SchedulingModal from '../../../modals/SchedulingModal';
 import { get } from 'lodash-es';
 import moment from 'moment';
@@ -35,6 +37,10 @@ export default function PickUpDetails({
   setValidPickUpDetails,
   order,
 }) {
+  const history = useHistory();
+  const {
+    location: { pathname },
+  } = useHistory();
   const dispatch = useDispatch();
   const [showEditAddress, setShowEditAddress] = useState(false);
   const [showEditPayment, setShowEditPayment] = useState(false);
@@ -48,6 +54,7 @@ export default function PickUpDetails({
   const [isPaymentFormEmpty, setIsPaymentFormEmpty] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  const initialCheckoutView = ['/checkout'];
   const {
     errors: addressFormErrors,
     handleChange: handleAddressChange,
@@ -74,23 +81,29 @@ export default function PickUpDetails({
     );
   }, [addressFormValues]);
 
-  const pickUpDateForm = useFormik({
+  const {
+    errors: pickupDateFormErrors,
+    handleChange: handlePickupDateChange,
+    values: pickUpDateFormValues,
+    setFieldValue: pickupDateSetFieldValue,
+  } = useFormik({
     initialValues: {
-      date: order ? order.pickupDate : null,
-      time: order ? order.pickupTime : null,
+      date: null,
+      time: null,
     },
     validationSchema: pickUpDateSchema,
-    enableReinitialize: true,
+    // enableReinitialize: true,
   });
 
   useEffect(() => {
     setValidPickUpDetails(
-      Object.values(pickUpDateForm.values).filter((field) => field === null)
+      Object.values(pickUpDateFormValues).filter((field) => field === null)
         .length < 1
     );
-  }, [pickUpDateForm.values]);
+  }, [pickUpDateFormValues]);
 
   const savePayment = (paymentMethod) => {
+    dispatch(setPayment(paymentMethod));
     setPaymentFormValues(paymentMethod);
     setIsPaymentFormEmpty(false);
     setShowEditPayment(false);
@@ -99,19 +112,17 @@ export default function PickUpDetails({
 
   const saveAddress = async () => {
     dispatch(
-      updateReturnAddress({
-        formData: { ...addressFormValues, errors: addressFormErrors },
-      })
+      setPickupAddress({ ...addressFormValues, errors: addressFormErrors })
     );
     setShowEditAddress(false);
+    setModalShow(false);
+    setIsAddressFormEmpty(isFormEmpty(addressFormValues));
   };
 
-  const savePickUpDetails = async () => {
-    dispatch(
-      updatePickUpDetails({
-        formData: { ...get(pickUpDateForm, 'values', {}) },
-      })
-    );
+  const savePickUpDetails = async ({ date, time }) => {
+    //
+    // console.log('⊂(・ヮ・⊂)', { date, time });
+    dispatch(setPickupDetails({ date, time }));
   };
 
   const openDatePickerModal = () => {
@@ -131,7 +142,7 @@ export default function PickUpDetails({
 
   const renderTime = () => {
     const timeText =
-      pickUpDateForm.values.time === 'AM'
+      pickUpDateFormValues.time === 'AM'
         ? '9 A.M. - 12 P.M.'
         : '12 P.M. - 3 P.M.';
 
@@ -163,7 +174,17 @@ export default function PickUpDetails({
       '';
 
     saveAddress();
-    setIsAddressFormEmpty(isFormEmpty(addressFormValues));
+
+    // Set default pickup details
+    const defaultPickup = {
+      date: order ? order.pickupDate : null,
+      time: order ? order.pickupTime : null,
+    };
+    pickupDateSetFieldValue('date', defaultPickup.date);
+    pickupDateSetFieldValue('time', defaultPickup.time);
+
+    savePickUpDetails(defaultPickup);
+
     // console.log(order);
     // Set payment method default
     const orderPayment = order
@@ -181,9 +202,7 @@ export default function PickUpDetails({
     //   defaultPaymentMethod,
     // });
     if (defaultPaymentMethod) {
-      setPaymentFormValues(defaultPaymentMethod);
-      setIsPaymentFormEmpty(false);
-      setValidPayment(true);
+      savePayment(defaultPaymentMethod);
     }
   };
 
@@ -442,6 +461,7 @@ export default function PickUpDetails({
                 <AddPickupModal
                   instructions={addressFormValues.instructions}
                   setFieldValue={setFieldValue}
+                  onDoneClick={saveAddress}
                   show={modalShow}
                   onHide={() => setModalShow(false)}
                 />
@@ -644,8 +664,8 @@ export default function PickUpDetails({
                       </p>
                     </div>
                   </div>
-                  {get(pickUpDateForm, 'values.date', null) === null &&
-                  get(pickUpDateForm, 'values.time', null) === null ? (
+                  {get(pickUpDateFormValues, 'date', null) === null &&
+                  get(pickUpDateFormValues, 'time', null) === null ? (
                     <>
                       <h4 className='p-0 m-0 sofia-pro'>No date selected</h4>
                       <h4
@@ -658,13 +678,10 @@ export default function PickUpDetails({
                   ) : (
                     <>
                       <h4 className='sofia-pro mb-4'>
-                        {moment(get(pickUpDateForm, 'values.date', '')).format(
+                        {moment(get(pickUpDateFormValues, 'date', '')).format(
                           'MMMM DD, YYYY'
                         )}
                       </h4>
-                      {/* <h4 className='p-0 m-0 sofia-pro'>
-                        Between {get(pickUpDateForm, 'values.time', '')}
-                      </h4> */}
                       {renderTime()}
                       <button
                         className='btn p-0 sofia-pro btn-edit'
@@ -673,19 +690,28 @@ export default function PickUpDetails({
                       >
                         Edit
                       </button>
-                      <hr style={{ borderTop: '1px solid #E8E7E9' }} />
-                      <h4
-                        className='p-0 m-0 sofia-pro mt-2'
-                        style={{ color: '#570097' }}
-                      >
-                        Schedule another date
-                      </h4>
-                      <h4
-                        className='p-0 m-0 sofia-pro'
-                        style={{ color: '#2E1D3A', opacity: '0.6' }}
-                      >
-                        (-$5.00)
-                      </h4>
+                      {!initialCheckoutView.includes(pathname) && (
+                        <>
+                          <hr
+                            style={{
+                              borderTop: '1px solid #E8E7E9',
+                              marginTop: '0px',
+                            }}
+                          />
+                          <h4
+                            className='p-0 m-0 sofia-pro mt-2'
+                            style={{ color: '#570097' }}
+                          >
+                            Schedule another date
+                          </h4>
+                          <h4
+                            className='p-0 m-0 sofia-pro'
+                            style={{ color: '#2E1D3A', opacity: '0.6' }}
+                          >
+                            (-$5.00)
+                          </h4>
+                        </>
+                      )}
                     </>
                   )}
                 </div>
@@ -696,8 +722,15 @@ export default function PickUpDetails({
         <SchedulingModal
           show={isDatePickerOpen}
           onHide={() => setisDatePickerOpen(false)}
-          form={pickUpDateForm}
-          onConfirm={savePickUpDetails}
+          pickUpDateFormValues={pickUpDateFormValues}
+          onConfirm={(pickupDate, pickupTime) => {
+            pickupDateSetFieldValue('date', pickupDate);
+            pickupDateSetFieldValue('time', pickupTime);
+            savePickUpDetails({
+              date: pickupDate,
+              time: pickupTime,
+            });
+          }}
         />
       </div>
     </>

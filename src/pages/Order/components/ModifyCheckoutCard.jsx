@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
 import CancelOrderModal from '../../../modals/CancelOrderModal';
@@ -9,6 +10,7 @@ import OverlayLoader from '../../../components/OverlayLoader';
 export default function ModifyCheckoutCard({
   showCancelOrderModal,
   ConfirmCancellation,
+  ConfirmUpdate,
   initiateCancelOrder,
   removeCancelOrderModal,
   loading,
@@ -16,6 +18,7 @@ export default function ModifyCheckoutCard({
   hasModifications,
   pricingDetails = {},
   isFetchingPrice,
+  confirmed,
 }) {
   const potentialReturnValue = get(pricingDetails, 'potentialReturnValue', 0);
   const inReturn = get(pricingDetails, 'totalReturns', 0);
@@ -23,8 +26,6 @@ export default function ModifyCheckoutCard({
   const inTaxes = get(pricingDetails, 'tax', 0);
   const inTotalPrice = get(pricingDetails, 'totalPrice', 0);
   const inPrice = get(pricingDetails, 'price', 0);
-
-  const [confirmed, setConfirmed] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const history = useHistory();
 
@@ -40,7 +41,7 @@ export default function ModifyCheckoutCard({
           <OverlayLoader loading={isFetchingPrice} />
           <div
             className={`card shadow-sm p-3 pick-up-card ${
-              confirmed == true ? 'h-292' : 'h-400'
+              confirmed == true ? 'auto' : 'h-400'
             }`}
           >
             <h3 className='sofia-pro products-to-return mb-1'>
@@ -68,22 +69,21 @@ export default function ModifyCheckoutCard({
                 <span className=' my-auto mr-2'>Potential Return Value</span>
                 <ReturnValueInfoIcon />
               </h3>
+              <h3 className='sofia-pro pick-up-price mb-0'>{inDonation}</h3>
+              <h3 className='return-type sofia-pro value-label'>Donations</h3>
               {confirmed && (
-                <p className='pick-up-reminder sofia-pro'>
-                  Once the pick-up has been confirmed we’ll take care of
-                  contacting your merchants. They will then be in charge of the
-                  payment.
-                </p>
+                <>
+                  <hr className='line-break-2' />
+                  <p className='pick-up-reminder sofia-pro'>
+                    Once the pick-up has been confirmed we’ll take care of
+                    contacting your merchants. They will then be in charge of
+                    the payment.
+                  </p>
+                </>
               )}
             </div>
             {!confirmed && (
               <>
-                <div>
-                  <h3 className='sofia-pro pick-up-price mb-0'>{inDonation}</h3>
-                  <h3 className='return-type sofia-pro value-label'>
-                    Donations
-                  </h3>
-                </div>
                 <hr className='line-break-2' />
                 <div className='row'>
                   <div className='col'>
@@ -142,40 +142,49 @@ export default function ModifyCheckoutCard({
                         </a>
                       </div>
                     </div>
-
-                    {hasModifications && (
-                      <div
-                        className='btn mt-2'
-                        style={{
-                          background: '#570097',
-                          border: 'none',
-                          color: '#FFFFFF',
-                        }}
-                        onClick={() => history.push('/dashboard')}
-                      >
-                        Confirm
-                      </div>
-                    )}
-
-                    {!hasModifications && (
-                      <div
-                        className='btn btn-no-changes noted-purple mt-2'
-                        style={{
-                          background: '#EEE4F6',
-                          border: 'none',
-                          color: '#570097',
-                          display: 'flex',
-                          alignContent: 'center',
-                          justifyContent: 'center',
-                        }}
-                        onClick={() => history.push('/dashboard')}
-                      >
-                        No changes
-                      </div>
-                    )}
                   </>
                 )}
               </>
+            )}
+
+            {hasModifications && !confirmed && (
+              <div
+                className='btn mt-2'
+                style={{
+                  background: '#570097',
+                  border: 'none',
+                  color: '#FFFFFF',
+                  opacity: loading ? '0.6' : '1',
+                }}
+                onClick={ConfirmUpdate}
+              >
+                {loading && (
+                  <Spinner
+                    animation='border'
+                    size='sm'
+                    className='mr-3 spinner btn-spinner'
+                    style={{ alignContent: 'center' }}
+                  />
+                )}
+                {loading ? 'Updating' : 'Update Changes'}
+              </div>
+            )}
+
+            {!hasModifications && !confirmed && (
+              <div
+                className='btn btn-no-changes noted-purple mt-2'
+                style={{
+                  background: '#EEE4F6',
+                  border: 'none',
+                  color: '#570097',
+                  display: 'flex',
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                }}
+                onClick={() => history.push('/dashboard')}
+              >
+                No changes
+              </div>
             )}
           </div>
         </div>

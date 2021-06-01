@@ -139,3 +139,11 @@ export const createPaymentIntent = async (pricing, orderId) => {
 
   return res.data.data;
 };
+
+// Update Order
+export const updateOrder = async (userId, orderId, order) => {
+  const axios = await api();
+
+  const res = await axios.patch(`/${userId}/orders/${orderId}`, order);
+  return res.data.data;
+};

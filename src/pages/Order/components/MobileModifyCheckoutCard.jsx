@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import React from 'react';
+import { Row, Col, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import { get } from 'lodash';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
-export default function MobileModifyCheckoutCard({ pricingDetails }) {
+export default function MobileModifyCheckoutCard({
+  pricingDetails,
+  hasModifications,
+  ConfirmUpdate,
+  confirmed,
+  loading,
+}) {
   const potentialReturnValue = get(pricingDetails, 'potentialReturnValue', 0);
   const inReturn = get(pricingDetails, 'totalReturns', 0);
   const inDonation = get(pricingDetails, 'totalDonations', 0);
-  const [confirmed, setConfirmed] = useState(false);
   const history = useHistory();
 
   return (
@@ -87,25 +92,46 @@ export default function MobileModifyCheckoutCard({ pricingDetails }) {
                   </Row>
                 </Col>
               </Row>
-              {/* <Row>
+              {hasModifications && !confirmed && (
+                <Row>
                   <Col>
-                    <button className='btn m-btn-confirm'>Confirm Order</button>
+                    <button
+                      className='btn m-btn-confirm'
+                      onClick={ConfirmUpdate}
+                      style={{
+                        opacity: loading ? '0.6' : '1',
+                        justifyContent: loading ? 'center' : 'space-between',
+                      }}
+                    >
+                      {loading ? (
+                        <Spinner
+                          animation='border'
+                          size='sm'
+                          className='spinner btn-spinner'
+                        />
+                      ) : (
+                        'Update Changes'
+                      )}
+                    </button>
                   </Col>
-                </Row> */}
-              <div
-                className='btn btn-no-changes noted-purple mt-3'
-                style={{
-                  background: '#EEE4F6',
-                  border: 'none',
-                  color: '#570097',
-                  display: 'flex',
-                  alignContent: 'center',
-                  justifyContent: 'flex-start',
-                }}
-                onClick={() => history.push('/dashboard')}
-              >
-                No changes
-              </div>
+                </Row>
+              )}
+              {!hasModifications && !confirmed && (
+                <div
+                  className='btn btn-no-changes noted-purple mt-3'
+                  style={{
+                    background: '#EEE4F6',
+                    border: 'none',
+                    color: '#570097',
+                    display: 'flex',
+                    alignContent: 'center',
+                    justifyContent: 'flex-start',
+                  }}
+                  onClick={() => history.push('/dashboard')}
+                >
+                  No changes
+                </div>
+              )}
             </>
           )}
         </div>

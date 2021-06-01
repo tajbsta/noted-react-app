@@ -71,16 +71,18 @@ export default function ReturnPolicyModal(props) {
             {policy == '' ? 'This is empty.' : policy}
           </p>
         </Row>
-        <Row className='ml-1'>
-          <a
-            className='sofia-pro view-link'
-            href={website}
-            target='_blank'
-            rel='noreferrer'
-          >
-            View website
-          </a>
-        </Row>
+        {!!website && (
+          <Row className='ml-1'>
+            <a
+              className='sofia-pro view-link'
+              href={website}
+              target='_blank'
+              rel='noreferrer'
+            >
+              View website
+            </a>
+          </Row>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button className='btn-ok' onClick={props.onHide}>
