@@ -8,9 +8,8 @@ import { scrollToTop } from '../../utils/window';
 import { getOrder } from '../../utils/orderApi';
 import { isEmpty } from 'lodash';
 
-function PickUpConfirmed({ orderId = '' }) {
+function PickUpConfirmed({ order, isUpdate = false }) {
   const history = useHistory();
-  const [currentOrder, setCurrentOrder] = useState({});
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -24,7 +23,7 @@ function PickUpConfirmed({ orderId = '' }) {
   }, []);
 
   const onEdit = () => {
-    history.push(`/order/${orderId}`);
+    history.push(`/order/${order.id}`);
   };
 
   useEffect(() => {
@@ -42,17 +41,8 @@ function PickUpConfirmed({ orderId = '' }) {
     };
   });
 
-  async function loadOrder() {
-    const order = await getOrder(orderId);
-    setCurrentOrder(order);
-  }
-
-  useEffect(() => {
-    loadOrder();
-  }, []);
-
-  const orderDate = get(currentOrder, 'pickupDate', '');
-  const orderTime = get(currentOrder, 'pickupTime', '');
+  const orderDate = get(order, 'pickupDate', '');
+  const orderTime = get(order, 'pickupTime', '');
 
   const renderDate = () => {
     return (
@@ -112,22 +102,27 @@ function PickUpConfirmed({ orderId = '' }) {
         {renderDay()}
         {renderTime()}
         <Row>
-          <div className='col-sm-9 p-0'>
+          <div
+            className={`col-sm-9 p-0 ${isUpdate ? 'd-flex' : ''}`}
+            style={{ alignItems: isUpdate ? 'center' : '' }}
+          >
             <p className='sofia-pro mb-0 text-14'>
-              We have sent you a confirmation by email.
+              We have sent you a confirmation by email for order #{order.id}
             </p>
-            <p
-              className='sofia-pro text-14'
-              style={{ marginBottom: isMobile ? '32px' : '' }}
-            >
-              If you wish to cancel or modify this order:
-              <span
-                className='ml-1 noted-purple sofia-pro pick-up-edit-or-btn text-14'
-                onClick={onEdit}
+            {!isUpdate && (
+              <p
+                className='sofia-pro text-14'
+                style={{ marginBottom: isMobile ? '32px' : '' }}
               >
-                Edit order
-              </span>
-            </p>
+                If you wish to cancel or modify this order:
+                <span
+                  className='ml-1 noted-purple sofia-pro pick-up-edit-or-btn text-14'
+                  onClick={onEdit}
+                >
+                  Edit order
+                </span>
+              </p>
+            )}
           </div>
           {!isMobile && (
             <>
@@ -148,10 +143,10 @@ function PickUpConfirmed({ orderId = '' }) {
           <>
             <Row>
               <button
-                className='btn btn-green'
+                className={`btn btn-green ${isUpdate ? 'mt-3' : ''}`}
                 onClick={() => history.push('/dashboard')}
               >
-                <span className='sofia-pro mb-0 back-to-products-text '>
+                <span className='sofia-pro mb-0 back-to-products-text'>
                   Back to My Products
                 </span>
               </button>

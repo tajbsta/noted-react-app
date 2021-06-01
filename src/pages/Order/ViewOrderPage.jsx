@@ -277,6 +277,11 @@ const ViewOrder = () => {
       }
 
       await updateOrder(userId, order.id, updatedOrder);
+      setOrder({
+        id: order.id,
+        orderItems: items.map((item) => item._id),
+        ...updatedOrder,
+      });
       setLoading(false);
       setConfirmed(true);
       showSuccess({
@@ -287,7 +292,6 @@ const ViewOrder = () => {
           </div>
         ),
       });
-      loadOrder();
     } catch (error) {
       console.log(billing);
       let errCode;
@@ -425,10 +429,14 @@ const ViewOrder = () => {
             {confirmed || cancelled ? (
               <div>
                 <h3 className='sofia-pro text-18 section-title'>
-                  Pick-up {cancelled ? 'cancelled' : 'confirmed'}
+                  Pick-up {cancelled ? 'cancelled' : 'has been updated'}{' '}
                 </h3>
                 <div className='confirmed-container'>
-                  {cancelled ? <PickUpCancelled /> : <PickUpConfirmed />}
+                  {cancelled ? (
+                    <PickUpCancelled />
+                  ) : (
+                    <PickUpConfirmed order={order} isUpdate={true} />
+                  )}
                 </div>
               </div>
             ) : (

@@ -257,7 +257,7 @@ const Checkout = () => {
                   Pick-up confirmed
                 </h3>
                 <div className='confirmed-container'>
-                  <PickUpConfirmed orderId={order.id} />
+                  <PickUpConfirmed order={order} />
                 </div>
               </div>
             ) : (
