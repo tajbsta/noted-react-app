@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { timeout } from '../../../utils/time';
 import EmptyAddress from '../../../components/PickUpDetails/EmptyAddress';
 import EmptyPayment from '../../../components/PickUpDetails/EmptyPayment';
@@ -36,6 +37,10 @@ export default function PickUpDetails({
   setValidPickUpDetails,
   order,
 }) {
+  const history = useHistory();
+  const {
+    location: { pathname },
+  } = useHistory();
   const dispatch = useDispatch();
   const [showEditAddress, setShowEditAddress] = useState(false);
   const [showEditPayment, setShowEditPayment] = useState(false);
@@ -49,6 +54,7 @@ export default function PickUpDetails({
   const [isPaymentFormEmpty, setIsPaymentFormEmpty] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  const initialCheckoutView = ['/checkout'];
   const {
     errors: addressFormErrors,
     handleChange: handleAddressChange,
@@ -676,9 +682,6 @@ export default function PickUpDetails({
                           'MMMM DD, YYYY'
                         )}
                       </h4>
-                      {/* <h4 className='p-0 m-0 sofia-pro'>
-                        Between {get(pickUpDateForm, 'values.time', '')}
-                      </h4> */}
                       {renderTime()}
                       <button
                         className='btn p-0 sofia-pro btn-edit'
@@ -687,19 +690,28 @@ export default function PickUpDetails({
                       >
                         Edit
                       </button>
-                      <hr style={{ borderTop: '1px solid #E8E7E9' }} />
-                      <h4
-                        className='p-0 m-0 sofia-pro mt-2'
-                        style={{ color: '#570097' }}
-                      >
-                        Schedule another date
-                      </h4>
-                      <h4
-                        className='p-0 m-0 sofia-pro'
-                        style={{ color: '#2E1D3A', opacity: '0.6' }}
-                      >
-                        (-$5.00)
-                      </h4>
+                      {!initialCheckoutView.includes(pathname) && (
+                        <>
+                          <hr
+                            style={{
+                              borderTop: '1px solid #E8E7E9',
+                              marginTop: '0px',
+                            }}
+                          />
+                          <h4
+                            className='p-0 m-0 sofia-pro mt-2'
+                            style={{ color: '#570097' }}
+                          >
+                            Schedule another date
+                          </h4>
+                          <h4
+                            className='p-0 m-0 sofia-pro'
+                            style={{ color: '#2E1D3A', opacity: '0.6' }}
+                          >
+                            (-$5.00)
+                          </h4>
+                        </>
+                      )}
                     </>
                   )}
                 </div>
