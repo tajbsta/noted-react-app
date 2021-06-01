@@ -83,8 +83,6 @@ const Checkout = () => {
     setOrder(order);
     setConfirmed(true);
 
-    dispatch(clearCart());
-
     scrollToTop();
     setLoading(false);
     showSuccess({
@@ -206,6 +204,9 @@ const Checkout = () => {
   useEffect(() => {
     getPricingDetails();
   }, [items]);
+
+  // Clear cart on destroy
+  useEffect(() => () => dispatch(clearCart()), []);
 
   const validOrder =
     validAddress && validPayment && validPickUpDetails && items.length > 0;

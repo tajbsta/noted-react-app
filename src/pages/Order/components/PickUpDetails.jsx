@@ -113,8 +113,10 @@ export default function PickUpDetails({
     setIsAddressFormEmpty(isFormEmpty(addressFormValues));
   };
 
-  const savePickUpDetails = async () => {
-    dispatch(setPickupDetails({ ...pickUpDateFormValues }));
+  const savePickUpDetails = async ({ date, time }) => {
+    //
+    // console.log('⊂(・ヮ・⊂)', { date, time });
+    dispatch(setPickupDetails({ date, time }));
   };
 
   const openDatePickerModal = () => {
@@ -168,10 +170,14 @@ export default function PickUpDetails({
     saveAddress();
 
     // Set default pickup details
-    pickUpDateFormValues.date = order ? order.pickupDate : null;
-    pickUpDateFormValues.time = order ? order.pickupTime : null;
+    const defaultPickup = {
+      date: order ? order.pickupDate : null,
+      time: order ? order.pickupTime : null,
+    };
+    pickupDateSetFieldValue('date', defaultPickup.date);
+    pickupDateSetFieldValue('time', defaultPickup.time);
 
-    savePickUpDetails();
+    savePickUpDetails(defaultPickup);
 
     // console.log(order);
     // Set payment method default
@@ -706,9 +712,12 @@ export default function PickUpDetails({
           onHide={() => setisDatePickerOpen(false)}
           pickUpDateFormValues={pickUpDateFormValues}
           onConfirm={(pickupDate, pickupTime) => {
-            pickUpDateFormValues.date = pickupDate;
-            pickUpDateFormValues.time = pickupTime;
-            savePickUpDetails();
+            pickupDateSetFieldValue('date', pickupDate);
+            pickupDateSetFieldValue('time', pickupTime);
+            savePickUpDetails({
+              date: pickupDate,
+              time: pickupTime,
+            });
           }}
         />
       </div>

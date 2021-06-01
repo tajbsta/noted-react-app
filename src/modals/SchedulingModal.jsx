@@ -33,6 +33,11 @@ export default function SchedulingModal({
         setLoading(true);
         const pickupSlots = await getPickupSlots(await getUserId(), pickupDate);
         setSlots(pickupSlots);
+
+        if (pickupDate === pickUpDateFormValues.date) {
+          setPickupTime(pickUpDateFormValues.time);
+        }
+
         setLoading(false);
       } catch (err) {
         setLoading(false);
@@ -46,17 +51,28 @@ export default function SchedulingModal({
   }, [pickupDate]);
 
   useEffect(() => {
-    console.log('hello', pickUpDateFormValues);
-    setPickupDate(pickUpDateFormValues.date);
-    setPickupTime(pickUpDateFormValues.time);
-  }, [pickUpDateFormValues]);
-
+    if (props.show) {
+      setPickupDate(pickUpDateFormValues.date);
+      setPickupTime(pickUpDateFormValues.time);
+      console.log({
+        pickupDate,
+        pickupTime,
+      });
+    }
+  }, [props.show]);
   const renderLoading = () => {
-    return loading && <Spinner className='spinner' animation='border' />;
+    return loading && <Spinner className='spinner mt-6' animation='border' />;
   };
 
   const renderMorningTimeSlot = () => {
-    const isSelected = pickupTime === 'AM' ? `isSelected` : '';
+    const isSelected =
+      pickupTime === 'AM' ||
+      (!pickupTime &&
+        pickUpDateFormValues.date === pickupDate &&
+        pickUpDateFormValues.time === 'AM' &&
+        pickupTime === 'AM')
+        ? `isSelected`
+        : '';
     const buttonClassname = `btn timeSlotContainer ${isSelected}`;
     const rangeTextClassname = `row sofia-pro timeSlotText ${
       isSelected ? 'selected' : ''
@@ -99,7 +115,13 @@ export default function SchedulingModal({
   };
 
   const renderEveningTimeSlot = () => {
-    const isSelected = pickupTime === 'PM' ? `isSelected` : '';
+    const isSelected =
+      pickupTime === 'PM' ||
+      (pickUpDateFormValues.date === pickupDate &&
+        pickUpDateFormValues.time === 'PM' &&
+        pickupTime === 'PM')
+        ? `isSelected`
+        : '';
     const buttonClassname = `btn timeSlotContainer ${isSelected}`;
     const rangeTextClassname = `row sofia-pro timeSlotText ${
       isSelected ? 'selected' : ''
@@ -196,17 +218,6 @@ export default function SchedulingModal({
     });
   };
 
-  const renderEmptiness = () => {
-    return (
-      <div className='row mt-7'>
-        <h3 className='sofia-pro'>{`${
-          loading ? 'Selecting a day' : 'Select a day first'
-        }`}</h3>
-        <Spinner />
-      </div>
-    );
-  };
-
   return (
     <Modal
       {...props}
@@ -225,8 +236,8 @@ export default function SchedulingModal({
           data-dismiss='modal'
           aria-label='Close'
           onClick={() => {
-            setFieldValue('date', null);
-            setFieldValue('time', null);
+            setFieldValue('date', pickUpDateFormValues.date);
+            setFieldValue('time', pickUpDateFormValues.time);
             props.onHide();
           }}
         >
@@ -248,26 +259,27 @@ export default function SchedulingModal({
             justifyContent: 'center',
           }}
         >
-          {pickupDate !== null && !loading
-            ? renderNewTimeSlot()
-            : renderEmptiness()}
+          {pickupDate && !loading && renderNewTimeSlot()}
+          {renderLoading()}
         </div>
       </Modal.Body>
       <Modal.Footer>
-        {pickupDate !== null && pickupTime !== null && (
+        {((pickUpDateFormValues.date && pickUpDateFormValues.time) ||
+          (pickupDate && pickupTime)) && (
           <>
             <Button
               className='btn cancelPickUpButton'
               onClick={() => {
-                props.onHide();
                 setFieldValue('date', pickUpDateFormValues.date);
                 setFieldValue('time', pickUpDateFormValues.time);
+                props.onHide(); // hahahaha gags, wets check ko hmm
               }}
             >
               <span className='cancelPickUpText'>Cancel</span>
             </Button>
             <Button
               className='btn-ok'
+              disabled={!pickupDate || !pickupTime}
               onClick={() => {
                 props.onHide();
                 onConfirm(pickupDate, pickupTime);
