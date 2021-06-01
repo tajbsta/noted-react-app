@@ -80,3 +80,13 @@ export const setCategory = async (productId, category) => {
     );
   }
 };
+
+export const getOtherReturnProducts = async (
+  size = 5
+) => {
+  const axios = await api();
+  const { userId } = await getUserSession();
+
+  const res = await axios.get(`/${userId}/products/other/returns?size=${size}`);
+  return res.data.data;
+};

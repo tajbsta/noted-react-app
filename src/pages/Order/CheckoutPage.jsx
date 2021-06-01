@@ -5,7 +5,7 @@ import ProductCard from '../../components/Product/ProductCard';
 import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
 import PickUpDetails from './components/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
-import { get, isEmpty, last } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import $ from 'jquery';
 import { clearCart } from '../../actions/cart.action';
 import { setCartItems } from '../../actions/cart.action';
@@ -15,15 +15,12 @@ import SizeGuideModal from '../../modals/SizeGuideModal';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { Box } from 'react-feather';
 import { createOrder, getOrderPricing } from '../../utils/orderApi';
-import { getUserId } from '../../utils/auth';
 import { orderErrors } from '../../library/errors.library';
-import { getProducts } from '../../utils/productsApi';
-import { DONATE, LAST_CALL, RETURNABLE } from '../../constants/actions/runtime';
+import { getOtherReturnProducts } from '../../utils/productsApi';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
 import {
   getPublicKey,
-  getUserPaymentMethods,
   createPaymentIntent,
   prevalidateOrder,
 } from '../../utils/orderApi';
@@ -213,28 +210,8 @@ const Checkout = () => {
 
   async function getMissedOutProducts() {
     try {
-      const lastCall = await getProducts({ category: LAST_CALL });
-
-      const filteredLastCall = [...lastCall].filter((item) => {
-        return ![...items].map(({ _id }) => _id).includes(item._id);
-      });
-      setOtherReturns(filteredLastCall.slice(0, 2));
-
-      if (isEmpty(lastCall)) {
-        const returnable = await getProducts({ category: RETURNABLE });
-        const filteredReturnable = [...returnable].filter((item) => {
-          return ![...items].map(({ _id }) => _id).includes(item._id);
-        });
-        setOtherReturns(filteredReturnable.slice(0, 2));
-
-        if (isEmpty(returnable)) {
-          const donate = await getProducts({ category: DONATE });
-          const filteredDonate = [...donate].filter((item) => {
-            return ![...items].map(({ _id }) => _id).includes(item._id);
-          });
-          setOtherReturns(filteredDonate.slice(0, 2));
-        }
-      }
+      const otherProducts = await getOtherReturnProducts(2);
+      setOtherReturns(otherProducts);
       setLoading(false);
     } catch (error) {
       setLoading(false);

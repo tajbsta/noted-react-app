@@ -6,7 +6,7 @@ import ProductCard from '../../components/Product/ProductCard';
 import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
 import PickUpCancelled from '../../components/PickUpDetails/PickUpCancelled';
 import PickUpDetails from './components/PickUpDetails';
-import { get, isEmpty, isEqual } from 'lodash';
+import { get, isEqual } from 'lodash';
 import $ from 'jquery';
 import { useParams } from 'react-router';
 import Row from '../../components/Row';
@@ -23,9 +23,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
 import {
   getPublicKey,
-  getUserPaymentMethods,
   createPaymentIntent,
-  prevalidateOrder,
   updateOrder,
   cancelOrder,
   getOrder,
@@ -38,9 +36,7 @@ import {
   setPickupDetails,
 } from '../../actions/cart.action';
 import PRICING from '../../constants/pricing';
-import { SERVER_ERROR } from '../../constants/errors/errorCodes';
-import { getProducts } from '../../utils/productsApi';
-import { DONATE, LAST_CALL, RETURNABLE } from '../../constants/actions/runtime';
+import { getOtherReturnProducts } from '../../utils/productsApi';
 
 const ViewOrder = () => {
   const dispatch = useDispatch();
@@ -174,38 +170,13 @@ const ViewOrder = () => {
   };
 
   async function getMissedOutProducts() {
-    /**
-     * A BIG MESS
-     * I WILL LIKELY GET THIS OUT OF HERE
-     */
-    // try {
-    //   const lastCall = await getProducts({ category: LAST_CALL });
-    //   const filteredLastCall = [...lastCall].filter((item) => {
-    //     return ![...originalProducts].map(({ _id }) => _id).includes(item._id);
-    //   });
-    //   setOtherReturns(filteredLastCall.slice(0, 2));
-    //   if (isEmpty(lastCall)) {
-    //     const returnable = await getProducts({ category: RETURNABLE });
-    //     const filteredReturnable = [...returnable].filter((item) => {
-    //       return ![...originalProducts]
-    //         .map(({ _id }) => _id)
-    //         .includes(item._id);
-    //     });
-    //     setOtherReturns(filteredReturnable.slice(0, 2));
-    //     if (isEmpty(returnable)) {
-    //       const donate = await getProducts({ category: DONATE });
-    //       const filteredDonate = [...donate].filter((item) => {
-    //         return ![...originalProducts]
-    //           .map(({ _id }) => _id)
-    //           .includes(item._id);
-    //       });
-    //       setOtherReturns(filteredDonate.slice(0, 2));
-    //     }
-    //   }
-    //   setLoading(false);
-    // } catch (error) {
-    //   setLoading(false);
-    // }
+    try {
+      const otherProducts = await getOtherReturnProducts(2);
+      setOtherReturns(otherProducts);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
