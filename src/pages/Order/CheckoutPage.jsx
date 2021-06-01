@@ -7,7 +7,7 @@ import PickUpDetails from './components/PickUpDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, isEmpty, last } from 'lodash';
 import $ from 'jquery';
-import { clearForm } from '../../actions/runtime.action';
+import { clearCart } from '../../actions/cart.action';
 import { setCartItems } from '../../actions/cart.action';
 import { Link } from 'react-router-dom';
 import { scrollToTop } from '../../utils/window';
@@ -40,17 +40,17 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const [otherReturns, setOtherReturns] = useState([]);
   const [isFetchingPrice, setIsFetchingPrice] = useState(false);
-  const { address, payment, details, items } = useSelector(
-    ({
-      cart: { items },
-      runtime: {
-        form: { address, payment, details },
-      },
-    }) => ({
+  const {
+    pickupAddress: address,
+    payment,
+    pickupDetails: details,
+    items,
+  } = useSelector(
+    ({ cart: { items, pickupAddress, payment, pickupDetails } }) => ({
       items,
-      address,
+      pickupAddress,
       payment,
-      details,
+      pickupDetails,
     })
   );
   // console.log(details);
@@ -58,7 +58,6 @@ const Checkout = () => {
   const [validAddress, setValidAddress] = useState(false);
   const [validPayment, setValidPayment] = useState(false);
   const [validPickUpDetails, setValidPickUpDetails] = useState(false);
-  const checkoutTitle = items.length > 0 ? 'return' : 'donate';
   const [pricingDetails, setPricingDetails] = useState({
     potentialReturnValue: 0,
     price: 0,
@@ -83,8 +82,6 @@ const Checkout = () => {
 
     setOrder(order);
     setConfirmed(true);
-
-    dispatch(clearForm());
 
     scrollToTop();
     setLoading(false);
@@ -135,8 +132,8 @@ const Checkout = () => {
         productId: paymentIntent.productId,
         taxId: paymentIntent.taxId,
         priceId: paymentIntent.priceId,
-        pricing: paymentIntent.pricing
-      }
+        pricing: paymentIntent.pricing,
+      };
 
       // Confirm payment intent using stripe here
       const result = await stripe.confirmCardPayment(
@@ -207,6 +204,9 @@ const Checkout = () => {
   useEffect(() => {
     getPricingDetails();
   }, [items]);
+
+  // Clear cart on destroy
+  useEffect(() => () => dispatch(clearCart()), []);
 
   const validOrder =
     validAddress && validPayment && validPickUpDetails && items.length > 0;
@@ -295,7 +295,7 @@ const Checkout = () => {
 
             <div className='col desktop-col'>
               <h3 className='sofia-pro products-return text-18 section-title'>
-                Your products to {checkoutTitle}
+                Your products for pickup
               </h3>
               {isEmpty(items) && (
                 <h4 className='p-0 mb-0 mt-5 d-flex justify-content-center sofia-pro empty-message'>

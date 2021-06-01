@@ -298,8 +298,8 @@ export default function EmailAddresses({ user }) {
                                   <>
                                     <small className='form-text p-0 m-0 noted-red'>
                                       {account.metadata &&
-                                        account.metadata.errMsg}{' '}
-                                      Please{' '}
+                                        account.metadata.errMsg}
+                                      . Please{' '}
                                       <a
                                         className='noted-red'
                                         style={{

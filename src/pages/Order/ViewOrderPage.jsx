@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ProgressBar } from 'react-bootstrap';
 import { Frown, Plus } from 'react-feather';
+import { useSelector, useDispatch } from 'react-redux';
 import ProductCard from '../../components/Product/ProductCard';
 import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
 import PickUpCancelled from '../../components/PickUpDetails/PickUpCancelled';
 import PickUpDetails from './components/PickUpDetails';
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, isEqual } from 'lodash';
 import $ from 'jquery';
 import { useParams } from 'react-router';
 import Row from '../../components/Row';
@@ -14,7 +15,6 @@ import ModifyCheckoutCard from './components/ModifyCheckoutCard';
 import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import CancelOrderModal from '../../modals/CancelOrderModal';
-import { cancelOrder, getOrder, getOrderPricing } from '../../utils/orderApi';
 import { getUserId } from '../../utils/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { orderErrors } from '../../library/errors.library';
@@ -26,13 +26,24 @@ import {
   getUserPaymentMethods,
   createPaymentIntent,
   prevalidateOrder,
+  updateOrder,
+  cancelOrder,
+  getOrder,
+  getOrderPricing,
 } from '../../utils/orderApi';
+import {
+  setCartItems,
+  setPickupAddress,
+  setPayment,
+  setPickupDetails,
+} from '../../actions/cart.action';
 import PRICING from '../../constants/pricing';
 import { SERVER_ERROR } from '../../constants/errors/errorCodes';
 import { getProducts } from '../../utils/productsApi';
 import { DONATE, LAST_CALL, RETURNABLE } from '../../constants/actions/runtime';
 
 const ViewOrder = () => {
+  const dispatch = useDispatch();
   const stripe = useStripe();
   const [confirmed, setConfirmed] = useState(false);
   const [validAddress, setValidAddress] = useState(false);
@@ -46,8 +57,6 @@ const ViewOrder = () => {
   const [orderLoading, setOrderLoading] = useState(false);
   const [order, setOrder] = useState(false);
   const { id: orderIdParams } = useParams();
-  const [products, setProducts] = useState([]);
-  const [originalProducts, setOriginalProducts] = useState([]);
   const [isFetchingPrice, setIsFetchingPrice] = useState(false);
   const [pricingDetails, setPricingDetails] = useState({
     potentialReturnValue: 0,
@@ -58,10 +67,92 @@ const ViewOrder = () => {
     totalReturns: 0,
   });
   const [otherReturns, setOtherReturns] = useState([]);
+  const [hasModifications, setHasModifications] = useState(false);
+  const {
+    pickupAddress: address,
+    payment,
+    pickupDetails: details,
+    items,
+  } = useSelector(
+    ({ cart: { items, pickupAddress, payment, pickupDetails } }) => ({
+      items,
+      pickupAddress,
+      payment,
+      pickupDetails,
+    })
+  );
+  useEffect(() => {
+    if (order) {
+      console.log('hello', { order, address, payment, details, items });
+
+      let hasChanges = true;
+      const addressFields = [
+        'city',
+        'fullName',
+        'instructions',
+        'line1',
+        'line2',
+        'phoneNumber',
+        'state',
+        'zipCode',
+      ];
+
+      const hasOrderItemsChanges = !isEqual(
+        order.orderItems.map((x) => x._id),
+        items.map((x) => x._id)
+      );
+
+      const hasOrderAddressChanges = !addressFields.every((field) => {
+        // fullName: address.fullName,
+        // state: address.state,
+        // zipcode: address.zipCode,
+        // addressLine1: address.line1,
+        // addressLine2: address.line2,
+        // city: address.city,
+        // phone: address.phoneNumber,
+        // pickupInstruction: address.instructions,
+
+        if (field === 'fullName') {
+          return isEqual(order.fullName, address.fullName);
+        } else if (field === 'phoneNumber') {
+          return isEqual(order.phone, address.phoneNumber);
+        } else if (field === 'line1') {
+          return isEqual(order.addressLine1, address.line1);
+        } else if (field === 'line2') {
+          return isEqual(order.addressLine2, address.line2);
+        } else if (field === 'city') {
+          return isEqual(order.city, address.city);
+        } else if (field === 'state') {
+          return isEqual(order.state, address.state);
+        } else if (field === 'zipcode') {
+          return isEqual(order.zipcode, address.zipCode);
+        } else if (field === 'instructions') {
+          return isEqual(order.pickupInstruction, address.instructions);
+        }
+        return true;
+      });
+      console.log({
+        hasOrderAddressChanges,
+      });
+      const hadOrderPickupDetailsChanges = false;
+
+      hasChanges =
+        hasOrderItemsChanges ||
+        hasOrderAddressChanges ||
+        hadOrderPickupDetailsChanges;
+
+      setHasModifications(hasChanges);
+    }
+  }, [address, payment, details, items]);
 
   /**GET PRICING DETAILS */
   const getPricingDetails = async () => {
     const initialData = get(order, 'orderItems', []);
+
+    if (initialData.length === 0) {
+      return;
+    }
+
     const productIds = initialData.map((item) => item._id);
     setIsFetchingPrice(true);
     const response = await getOrderPricing(productIds, order.id);
@@ -73,9 +164,8 @@ const ViewOrder = () => {
     setOrderLoading(true);
     try {
       const data = await getOrder(orderIdParams);
-      setProducts(get(data, 'orderItems', []));
-      setOriginalProducts(get(data, 'orderItems', []));
       setOrder(data);
+      dispatch(setCartItems(data.orderItems || []));
       setOrderLoading(false);
     } catch (error) {
       setOrderLoading(false);
@@ -88,37 +178,34 @@ const ViewOrder = () => {
      * A BIG MESS
      * I WILL LIKELY GET THIS OUT OF HERE
      */
-    try {
-      const lastCall = await getProducts({ category: LAST_CALL });
-
-      const filteredLastCall = [...lastCall].filter((item) => {
-        return ![...originalProducts].map(({ _id }) => _id).includes(item._id);
-      });
-      setOtherReturns(filteredLastCall.slice(0, 2));
-
-      if (isEmpty(lastCall)) {
-        const returnable = await getProducts({ category: RETURNABLE });
-        const filteredReturnable = [...returnable].filter((item) => {
-          return ![...originalProducts]
-            .map(({ _id }) => _id)
-            .includes(item._id);
-        });
-        setOtherReturns(filteredReturnable.slice(0, 2));
-
-        if (isEmpty(returnable)) {
-          const donate = await getProducts({ category: DONATE });
-          const filteredDonate = [...donate].filter((item) => {
-            return ![...originalProducts]
-              .map(({ _id }) => _id)
-              .includes(item._id);
-          });
-          setOtherReturns(filteredDonate.slice(0, 2));
-        }
-      }
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
+    // try {
+    //   const lastCall = await getProducts({ category: LAST_CALL });
+    //   const filteredLastCall = [...lastCall].filter((item) => {
+    //     return ![...originalProducts].map(({ _id }) => _id).includes(item._id);
+    //   });
+    //   setOtherReturns(filteredLastCall.slice(0, 2));
+    //   if (isEmpty(lastCall)) {
+    //     const returnable = await getProducts({ category: RETURNABLE });
+    //     const filteredReturnable = [...returnable].filter((item) => {
+    //       return ![...originalProducts]
+    //         .map(({ _id }) => _id)
+    //         .includes(item._id);
+    //     });
+    //     setOtherReturns(filteredReturnable.slice(0, 2));
+    //     if (isEmpty(returnable)) {
+    //       const donate = await getProducts({ category: DONATE });
+    //       const filteredDonate = [...donate].filter((item) => {
+    //         return ![...originalProducts]
+    //           .map(({ _id }) => _id)
+    //           .includes(item._id);
+    //       });
+    //       setOtherReturns(filteredDonate.slice(0, 2));
+    //     }
+    //   }
+    //   setLoading(false);
+    // } catch (error) {
+    //   setLoading(false);
+    // }
   }
 
   useEffect(() => {
@@ -131,7 +218,7 @@ const ViewOrder = () => {
 
   useEffect(() => {
     getPricingDetails();
-  }, [order]);
+  }, [items]);
 
   const ConfirmCancellation = async (billing = null) => {
     setLoading(true);
@@ -224,44 +311,26 @@ const ViewOrder = () => {
     }
   }, []);
 
-  const hasModification = () => {
-    /**
-     * check for changes here
-     */
-    const productsIds = products.map((product) => get(product, '_id', ''));
-    const originalProductsIds = originalProducts.map((product) =>
-      get(product, '_id', '')
-    );
-    const consolidation = originalProductsIds.filter((product) =>
-      productsIds.includes(product)
-    );
+  // const hasModification = () => {
+  //   /**
+  //    * check for changes here
+  //    */
+  //   const productsIds = products.map((product) => get(product, '_id', ''));
+  //   const originalProductsIds = originalProducts.map((product) =>
+  //     get(product, '_id', '')
+  //   );
+  //   const consolidation = originalProductsIds.filter((product) =>
+  //     productsIds.includes(product)
+  //   );
 
-    if (consolidation.length !== originalProductsIds.length) {
-      /**
-       * change in products detected
-       */
-      return true;
-    }
-    return false;
-  };
-  // const scheduledReturn = hasModifications
-  //   ? orderInMemory
-  //   : scheduledReturns.find(({ id }) => id === scheduledReturnId);
-
-  // const { returnFee, taxes, address, payment, details } = scheduledReturn;
-  // const items = get(scheduledReturn, 'items', []);
-  // const orderId = get(scheduledReturn, 'id', '');
-  // const inReturn = get(cart, 'items', []).filter(
-  //   ({ category }) => category === RETURNABLE
-  // );
-
-  // const potentialReturnValue = [...inReturn]
-  //   .map(({ price }) => parseFloat(price))
-  //   .reduce((acc, curr) => (acc += curr), 0);
-  // const totalPayment = (returnFee + taxes).toFixed(2);
-  // const forgottenReturns = [...scans].filter(({ id }) => {
-  //   return ![...items].map(({ id }) => id).includes(id);
-  // });
+  //   if (consolidation.length !== originalProductsIds.length) {
+  //     /**
+  //      * change in products detected
+  //      */
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
   useEffect(() => {
     scrollToTop();
@@ -279,12 +348,13 @@ const ViewOrder = () => {
   });
 
   const removeProduct = (product) => {
-    if (products.length !== 1) {
+    if (items.length !== 1) {
       const { _id: productId } = product;
       /**
        * @function remove from current state items
        */
-      return setProducts([...products.filter(({ _id }) => productId !== _id)]);
+      dispatch(setCartItems([...items.filter(({ _id }) => productId !== _id)]));
+      return;
     }
 
     return setShowCancelOrderModal(true);
@@ -337,14 +407,14 @@ const ViewOrder = () => {
               <h3 className='sofia-pro products-return text-18 section-title'>
                 {cancelled
                   ? 'Your cancelled products'
-                  : 'Your products to return'}
+                  : 'Your products for pickup'}
               </h3>
 
               {orderLoading && (
                 <ProgressBar animated striped now={80} className='mt-5 mb-5' />
               )}
 
-              {products.map((product, index) => {
+              {items.map((product, index) => {
                 return (
                   <ProductCard
                     scannedItem={product}
@@ -430,7 +500,7 @@ const ViewOrder = () => {
                   cancelled={cancelled}
                   pricingDetails={pricingDetails}
                   isFetchingPrice={isFetchingPrice}
-                  hasModifications={hasModification()}
+                  hasModifications={hasModifications}
                 />
               </div>
             </>
