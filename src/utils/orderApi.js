@@ -141,9 +141,8 @@ export const createPaymentIntent = async (pricing, orderId) => {
 };
 
 // Update Order
-export const updateOrder = async (orderId, order) => {
+export const updateOrder = async (userId, orderId, order) => {
   const axios = await api();
-  const { userId } = await getUserSession();
 
   const res = await axios.patch(`/${userId}/orders/${orderId}`, order);
   return res.data.data;

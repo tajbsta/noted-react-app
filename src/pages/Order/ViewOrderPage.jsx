@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ProgressBar } from 'react-bootstrap';
-import { Frown, Plus } from 'react-feather';
+import { CheckCircle, Plus } from 'react-feather';
 import { useSelector, useDispatch } from 'react-redux';
 import ProductCard from '../../components/Product/ProductCard';
 import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
@@ -79,8 +79,6 @@ const ViewOrder = () => {
   );
   useEffect(() => {
     if (order) {
-      console.log('hello', { order, address, payment, details, items });
-
       let hasChanges = true;
       const addressFields = [
         'city',
@@ -99,15 +97,6 @@ const ViewOrder = () => {
       );
 
       const hasOrderAddressChanges = !addressFields.every((field) => {
-        // fullName: address.fullName,
-        // state: address.state,
-        // zipcode: address.zipCode,
-        // addressLine1: address.line1,
-        // addressLine2: address.line2,
-        // city: address.city,
-        // phone: address.phoneNumber,
-        // pickupInstruction: address.instructions,
-
         if (field === 'fullName') {
           return isEqual(order.fullName, address.fullName);
         } else if (field === 'phoneNumber') {
@@ -127,10 +116,9 @@ const ViewOrder = () => {
         }
         return true;
       });
-      console.log({
-        hasOrderAddressChanges,
-      });
-      const hadOrderPickupDetailsChanges = false;
+
+      const hadOrderPickupDetailsChanges =
+        order.pickupDate !== details.date || order.pickupTime !== details.time;
 
       hasChanges =
         hasOrderItemsChanges ||
@@ -201,18 +189,20 @@ const ViewOrder = () => {
       showSuccess({
         message: (
           <div>
-            <Frown />
+            <CheckCircle />
             &nbsp;&nbsp;Order cancelled successfully!
           </div>
         ),
       });
       setCancelled(true);
+      setConfirmed(true);
     } catch (error) {
       console.log(error.response.data);
 
       let errCode;
 
       if (
+        !billing &&
         error.response &&
         error.response.data &&
         error.response.data.details === 'ORDER_CANCEL_PAYMENT_REQUIRED'
@@ -264,6 +254,97 @@ const ViewOrder = () => {
     }
   };
 
+  const ConfirmUpdate = async (billing = null) => {
+    setLoading(true);
+    try {
+      const userId = await getUserId();
+      const updatedOrder = {
+        // orderItems: items.map((item) => item._id),
+        fullName: address.fullName,
+        state: address.state,
+        zipcode: address.zipCode,
+        addressLine1: address.line1,
+        addressLine2: address.line2,
+        city: address.city,
+        phone: address.phoneNumber,
+        pickupInstruction: address.instructions,
+        pickupDate: details.date,
+        pickupTime: details.time,
+      };
+
+      if (billing) {
+        updatedOrder.billing = billing;
+      }
+
+      await updateOrder(userId, order.id, updatedOrder);
+      setLoading(false);
+      setConfirmed(true);
+      showSuccess({
+        message: (
+          <div>
+            <CheckCircle />
+            &nbsp;&nbsp;Order updated successfully!
+          </div>
+        ),
+      });
+      loadOrder();
+    } catch (error) {
+      console.log(billing);
+      let errCode;
+
+      if (
+        !billing &&
+        error.response &&
+        error.response.data &&
+        error.response.data.details ===
+          'ORDER_RESCHEDULE_PICKUP_PAYMENT_REQUIRED'
+      ) {
+        const paymentIntent = await createPaymentIntent(
+          PRICING.LATE_RESCHEDULE,
+          order.id
+        );
+
+        const result = await stripe.confirmCardPayment(
+          paymentIntent.clientSecret
+        );
+
+        console.log({
+          result,
+        });
+
+        if (result.error) {
+          // Show error to customer
+          console.log(result.error.message);
+          errCode = result.error.message;
+        } else {
+          if (result.paymentIntent.status === 'succeeded') {
+            const updateBilling = {
+              paymentIntentId: paymentIntent.paymentIntentId,
+              paymentMethodId: paymentIntent.paymentMethodId,
+              productId: paymentIntent.productId,
+              // taxId: paymentIntent.taxId,
+              priceId: paymentIntent.priceId,
+              pricing: paymentIntent.pricing,
+            };
+            ConfirmUpdate(updateBilling);
+            return;
+          } // TODO: handle stripe payment errors
+        }
+      }
+
+      setLoading(false);
+      showError({
+        message: get(
+          orderErrors.find(
+            ({ details }) => details === error.response.data.details
+          ),
+          'message',
+          'Cannot update order at this time'
+        ),
+      });
+    }
+  };
+
   const initiateCancelOrder = () => {
     setShowCancelOrderModal(true);
   };
@@ -281,27 +362,6 @@ const ViewOrder = () => {
       $('.btn-confirm').css('padding-top', '10px');
     }
   }, []);
-
-  // const hasModification = () => {
-  //   /**
-  //    * check for changes here
-  //    */
-  //   const productsIds = products.map((product) => get(product, '_id', ''));
-  //   const originalProductsIds = originalProducts.map((product) =>
-  //     get(product, '_id', '')
-  //   );
-  //   const consolidation = originalProductsIds.filter((product) =>
-  //     productsIds.includes(product)
-  //   );
-
-  //   if (consolidation.length !== originalProductsIds.length) {
-  //     /**
-  //      * change in products detected
-  //      */
-  //     return true;
-  //   }
-  //   return false;
-  // };
 
   useEffect(() => {
     scrollToTop();
@@ -347,7 +407,17 @@ const ViewOrder = () => {
 
   return (
     <div id='ViewOrderPage'>
-      {isMobile && <MobileModifyCheckoutCard pricingDetails={pricingDetails} />}
+      {isMobile && (
+        <MobileModifyCheckoutCard
+          pricingDetails={pricingDetails}
+          confirmed={confirmed}
+          loading={loading}
+          hasModifications={hasModifications}
+          ConfirmUpdate={() => {
+            ConfirmUpdate();
+          }}
+        />
+      )}
       <div className={`container ${isMobile ? 'mt-4' : 'mt-6'}`}>
         <div className='row mobile-row'>
           <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
@@ -441,20 +511,6 @@ const ViewOrder = () => {
               Don&apos;t miss out on other returns
             </h3>
             {RenderOtherReturnables()}
-
-            {confirmed && (
-              <>
-                <h3 className='sofia-pro miss-out section-title'>
-                  Don&apos;t miss out on other returns
-                </h3>
-                <div className='row align-items-center p-4 all-checkbox'>
-                  <input type='checkbox' />
-                  <h4 className='sofia-pro noted-purple ml-4 mb-0 p-0'>
-                    Add all
-                  </h4>
-                </div>
-              </>
-            )}
           </div>
 
           {/* RIGHT CARD */}
@@ -463,6 +519,9 @@ const ViewOrder = () => {
               <div className='col-1'>
                 <ModifyCheckoutCard
                   ConfirmCancellation={ConfirmCancellation}
+                  ConfirmUpdate={() => {
+                    ConfirmUpdate();
+                  }}
                   showCancelOrderModal={showCancelOrderModal}
                   setShowCancelOrderModal={setShowCancelOrderModal}
                   initiateCancelOrder={initiateCancelOrder}
@@ -472,6 +531,7 @@ const ViewOrder = () => {
                   pricingDetails={pricingDetails}
                   isFetchingPrice={isFetchingPrice}
                   hasModifications={hasModifications}
+                  confirmed={confirmed}
                 />
               </div>
             </>
