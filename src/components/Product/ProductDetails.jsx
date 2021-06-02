@@ -4,6 +4,7 @@ import { Overlay, Tooltip, Row } from 'react-bootstrap';
 import { get } from 'lodash-es';
 import { DONATE, NOT_ELIGIBLE } from '../../constants/actions/runtime';
 import ConfirmDonate from '../../modals/ConfirmDonate';
+import { toTitleCase } from '../../utils/data';
 
 function ProductDetails({
   item,
@@ -19,13 +20,6 @@ function ProductDetails({
   const [show, setShow] = useState(false);
   const [modalDonateShow, setModalDonateShow] = useState(false);
   const target = useRef(null);
-
-  const toTitleCase = (str) => {
-    const replacedDash = str && str.replace('-', ' ');
-    return replacedDash.replace(/\w\S*/g, function (txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-  };
 
   const formattedProductName = toTitleCase(item.name);
   const formatPrice = item.price.toFixed(2);

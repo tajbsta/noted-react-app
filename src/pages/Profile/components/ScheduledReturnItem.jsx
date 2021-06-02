@@ -5,6 +5,7 @@ import { Accordion, Card, Col, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import ReturnScore from '../../../components/Product/ReturnsScore';
+import { toTitleCase } from '../../../utils/data';
 
 export const ScheduledReturnItem = ({ order }) => {
   const [eventKey, setEventKey] = useState('0');
@@ -89,7 +90,9 @@ export const ScheduledReturnItem = ({ order }) => {
             </div>
             <div style={{ marginLeft: '16px' }}>
               <h4 className='sofia-pro sched-distributor-name'>{vendorName}</h4>
-              <h4 className='sofia-pro sched-product-name'>{name}</h4>
+              <h4 className='sofia-pro sched-product-name'>
+                {toTitleCase(name)}
+              </h4>
               <h4
                 className={`sofia-pro sched-product-price ${
                   category == 'DONATE' ? 'donate-price' : ''

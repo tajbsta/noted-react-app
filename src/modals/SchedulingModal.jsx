@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Button, Spinner, Col, Row } from 'react-bootstrap';
 import moment from 'moment';
 import { generateSchedules } from '../utils/schedule';
-import { getPickupSlots } from '../utils/orderApi';
-import { getUserId } from '../utils/auth';
+import { getPickupSlots } from '../api/orderApi';
+import { getUserId } from '../api/auth';
 import { isEmpty } from 'lodash-es';
 import { showError } from '../library/notifications.library';
 

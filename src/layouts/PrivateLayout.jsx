@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Route, useHistory } from 'react-router-dom';
 import AppLayout from './AppLayout';
-import { isAuthenticated } from '../utils/auth';
+import { isAuthenticated } from '../api/auth';
 
 function PrivateLayout({ component: Component, ...allProps }) {
   const history = useHistory();

@@ -21,7 +21,7 @@ export default function EmptyPayment(props) {
     renderSpinner();
     setTimeout(() => {
       renderStopSpinner();
-    }, 1000);
+    }, 1500);
   }, []);
 
   return (

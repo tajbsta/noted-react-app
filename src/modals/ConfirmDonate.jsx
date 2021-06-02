@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCartItems } from '../actions/cart.action';
 import { addToNewDonations } from '../actions/products.action';
 import { DONATE } from '../constants/actions/runtime';
-import { setCategory } from '../utils/productsApi';
+import { setCategory } from '../api/productsApi';
 import { showError, showSuccess } from '../library/notifications.library';
 
 export default function ConfirmDonate(props) {

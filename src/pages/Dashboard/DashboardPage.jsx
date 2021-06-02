@@ -5,8 +5,14 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ReturnCategory from '../../components/Product/ReturnCategory';
 import RightCard from './components/RightCard';
-import { getUserId, getUser, updateUserAttributes } from '../../utils/auth';
-import { getAccounts } from '../../utils/accountsApi';
+import {
+  getUserId,
+  getUser,
+  updateUserAttributes,
+  scrapeOlderEmails,
+} from '../../api/auth';
+import { getOrders } from '../../api/orderApi';
+import { getAccounts } from '../../api/accountsApi';
 import { clearSearchQuery } from '../../actions/runtime.action';
 import { setCartItems } from '../../actions/cart.action';
 import {
@@ -19,10 +25,8 @@ import AddProductModal from '../../modals/AddProductModal';
 import ScheduledCard from './components/ScheduledCard';
 import Scanning from './components/Scanning';
 import { scrollToTop } from '../../utils/window';
-import { scrapeOlderEmails } from '../../utils/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
-import { getOrders } from '../../utils/orderApi';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 
 export default function DashboardPage() {

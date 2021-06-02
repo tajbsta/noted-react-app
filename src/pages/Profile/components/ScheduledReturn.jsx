@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash-es';
 import { ProgressBar } from 'react-bootstrap';
 import Collapsible from 'react-collapsible';
-import { getOrders } from '../../../utils/orderApi';
-import { getUserId } from '../../../utils/auth';
+import { getOrders } from '../../../api/orderApi';
+import { getUserId } from '../../../api/auth';
 import { ScheduledReturnItem } from './ScheduledReturnItem';
 import { timeout } from '../../../utils/time';
 
@@ -12,7 +12,6 @@ export default function ScheduledReturn({ user }) {
   const [orders, setOrders] = useState([]);
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
-
 
   const getScheduledOrders = async () => {
     try {
@@ -27,11 +26,10 @@ export default function ScheduledReturn({ user }) {
       const userId = await getUserId();
       const res = await getOrders(userId, 'active');
 
-      
       setOrders(res.orders);
 
       setLoadProgress(80);
-      await timeout(200)
+      await timeout(200);
       setLoadProgress(100);
       await timeout(1000);
       /**
@@ -45,7 +43,7 @@ export default function ScheduledReturn({ user }) {
     } catch (error) {
       // TODO: ERROR HANDLING
       console.log(error);
-      setFetchingOrders(false)
+      setFetchingOrders(false);
     }
   };
 
@@ -84,7 +82,12 @@ export default function ScheduledReturn({ user }) {
           }
         >
           {fetchingOrders && (
-            <ProgressBar animated striped now={loadProgress} className='mt-4 m-3' />
+            <ProgressBar
+              animated
+              striped
+              now={loadProgress}
+              className='mt-4 m-3'
+            />
           )}
           {!fetchingOrders &&
             orders.map((order) => (

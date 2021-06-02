@@ -7,7 +7,7 @@ import AddPickupModal from '../../../modals/AddPickupModal';
 import Collapsible from 'react-collapsible';
 import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../../models/formSchema';
-import { updateUserAttributes } from '../../../utils/auth';
+import { updateUserAttributes } from '../../../api/auth';
 import { CheckCircle } from 'react-feather';
 import { showError, showSuccess } from '../../../library/notifications.library';
 

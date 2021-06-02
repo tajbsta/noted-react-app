@@ -4,8 +4,8 @@ import Collapsible from 'react-collapsible';
 import PaymentMethods from './PaymentMethods';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
-import { getPublicKey, getUserPaymentMethods } from '../../../utils/orderApi';
-import { getUser, updateUserAttributes } from '../../../utils/auth';
+import { getPublicKey, getUserPaymentMethods } from '../../../api/orderApi';
+import { getUser, updateUserAttributes } from '../../../api/auth';
 import AddPaymentForm from '../../../components/Forms/AddPaymentForm';
 
 export default function Payment() {
