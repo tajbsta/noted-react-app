@@ -4,10 +4,10 @@ import Address from './components/Address';
 import Payment from './components/Payment';
 import ReturnHistory from './components/ReturnHistory';
 import ScheduledReturn from './components/ScheduledReturn';
-import { getUser, getUserId } from '../../utils/auth';
+import { getUser, getUserId } from '../../api/auth';
 import { scrollToTop } from '../../utils/window';
 import ProductsInReview from './components/ProductsInReview';
-import { getOrders } from '../../utils/orderApi';
+import { getOrders } from '../../api/orderApi';
 
 export default function ProfilePage() {
   const [showEditPayment] = useState(true);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CheckCircle } from 'react-feather';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
-import { getAccounts } from '../../../utils/accountsApi';
+import { getAccounts } from '../../../api/accountsApi';
 import { Spinner } from 'react-bootstrap';
 import DeleteEmailModal from '../../../modals/DeleteEmailModal';
 import Collapsible from 'react-collapsible';
@@ -298,8 +298,8 @@ export default function EmailAddresses({ user }) {
                                   <>
                                     <small className='form-text p-0 m-0 noted-red'>
                                       {account.metadata &&
-                                        account.metadata.errMsg}
-                                      . Please{' '}
+                                        account.metadata.errMsg}{' '}
+                                      Please{' '}
                                       <a
                                         className='noted-red'
                                         style={{

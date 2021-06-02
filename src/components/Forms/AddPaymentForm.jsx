@@ -7,8 +7,8 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
-import { savePaymentMethod } from '../../utils/orderApi';
-import { updateUserAttributes } from '../../utils/auth';
+import { savePaymentMethod } from '../../api/orderApi';
+import { updateUserAttributes } from '../../api/auth';
 
 export default function AddPaymentForm({
   close,

@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 import qs from 'qs';
 import { useHistory } from 'react-router-dom';
-import { saveGoogleAuthCode } from '../utils/authApi';
-import { getUserId } from '../utils/auth';
+import { saveGoogleAuthCode } from '../api/authApi';
+import { getUserId } from '../api/auth';
 import {
   ACCOUNT_ALREADY_EXIST,
   INVALID_REQUEST,

@@ -6,7 +6,7 @@ import ChangePass from './components/ChangePass';
 import DeleteAccount from './components/DeleteAccount';
 import UserInfo from './../Profile/components/UserInfo';
 import { Link } from 'react-scroll';
-import { getUser } from '../../utils/auth';
+import { getUser } from '../../api/auth';
 import { scrollToTop } from '../../utils/window';
 
 export default function SettingsPage() {

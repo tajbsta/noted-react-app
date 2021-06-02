@@ -15,7 +15,7 @@ import ModifyCheckoutCard from './components/ModifyCheckoutCard';
 import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import CancelOrderModal from '../../modals/CancelOrderModal';
-import { getUserId } from '../../utils/auth';
+import { getUserId } from '../../api/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { orderErrors } from '../../library/errors.library';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
@@ -28,7 +28,7 @@ import {
   cancelOrder,
   getOrder,
   getOrderPricing,
-} from '../../utils/orderApi';
+} from '../../api/orderApi';
 import {
   setCartItems,
   setPickupAddress,
@@ -36,7 +36,7 @@ import {
   setPickupDetails,
 } from '../../actions/cart.action';
 import PRICING from '../../constants/pricing';
-import { getOtherReturnProducts } from '../../utils/productsApi';
+import { getOtherReturnProducts } from '../../api/productsApi';
 
 const ViewOrder = () => {
   const dispatch = useDispatch();

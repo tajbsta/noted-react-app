@@ -5,7 +5,7 @@ import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
 import $ from 'jquery';
 import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../../models/formSchema';
-import { updateUserAttributes } from '../../../utils/auth';
+import { updateUserAttributes } from '../../../api/auth';
 import { CheckCircle } from 'react-feather';
 import { isEmpty } from 'lodash-es';
 import Collapsible from 'react-collapsible';

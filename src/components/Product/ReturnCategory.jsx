@@ -4,7 +4,7 @@ import ProductCard from './ProductCard';
 import { ProgressBar } from 'react-bootstrap';
 import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';
-import { getProducts } from '../../utils/productsApi';
+import { getProducts } from '../../api/productsApi';
 import NotedCheckbox from './NotedCheckbox';
 import { useSelector } from 'react-redux';
 import { DONATE } from '../../constants/actions/runtime';

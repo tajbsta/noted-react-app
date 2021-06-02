@@ -7,7 +7,7 @@ import axios from 'axios';
 import HorizontalLine from './HorizontalLine';
 import Row from '../../../components/Row';
 import PickUpButton from './PickUpButton';
-import { calculateMetrics } from '../../../utils/productsApi';
+import { calculateMetrics } from '../../../api/productsApi';
 import NotedCheckbox from '../../../components/Product/NotedCheckbox';
 import { setCartItems } from '../../../actions/cart.action';
 import {

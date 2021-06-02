@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash-es';
 import { ProgressBar } from 'react-bootstrap';
-import { getOrders } from '../../../utils/orderApi';
-import { getUserId } from '../../../utils/auth';
+import { getOrders } from '../../../api/orderApi';
+import { getUserId } from '../../../api/auth';
 import { ReturnHistoryItem } from './ReturnHistoryItem';
 import { timeout } from '../../../utils/time';
 

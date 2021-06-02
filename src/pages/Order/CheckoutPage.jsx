@@ -14,16 +14,16 @@ import { scrollToTop } from '../../utils/window';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { Box } from 'react-feather';
-import { createOrder, getOrderPricing } from '../../utils/orderApi';
+import { createOrder, getOrderPricing } from '../../api/orderApi';
 import { orderErrors } from '../../library/errors.library';
-import { getOtherReturnProducts } from '../../utils/productsApi';
+import { getOtherReturnProducts } from '../../api/productsApi';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
 import {
   getPublicKey,
   createPaymentIntent,
   prevalidateOrder,
-} from '../../utils/orderApi';
+} from '../../api/orderApi';
 import PRICING from '../../constants/pricing';
 import { SERVER_ERROR } from '../../constants/errors/errorCodes';
 

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash-es';
 import { ProgressBar } from 'react-bootstrap';
 import Collapsible from 'react-collapsible';
-import { getOrders } from '../../../utils/orderApi';
-import { getUserId } from '../../../utils/auth';
+import { getOrders } from '../../../api/orderApi';
+import { getUserId } from '../../../api/auth';
 import { ScheduledReturnItem } from './ScheduledReturnItem';
 import { timeout } from '../../../utils/time';
 
