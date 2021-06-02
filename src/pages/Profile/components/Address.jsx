@@ -10,8 +10,10 @@ import { pickUpAddressSchema } from '../../../models/formSchema';
 import { updateUserAttributes } from '../../../utils/auth';
 import { CheckCircle } from 'react-feather';
 import { showError, showSuccess } from '../../../library/notifications.library';
+import { get } from 'lodash';
 
 export default function Address({ user }) {
+  console.log(user);
   const [isEditing, setIsEditing] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -38,15 +40,16 @@ export default function Address({ user }) {
     values: addressFormValues,
   } = useFormik({
     initialValues: {
-      fullName: '',
-      phoneNumber: '',
-      line1: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      instructions: '',
+      fullName: get(user, 'name', ''),
+      phoneNumber: get(user, `['custom:phone']`, ''),
+      line1: get(user, 'address', ''),
+      city: get(user, `['custom:city']`, ''),
+      state: get(user, `['custom:state']`, ''),
+      zipCode: get(user, `['custom:zipcode']`, ''),
+      instructions: get(user, `['custom:pickup_instructions']`, ''),
     },
     validationSchema: pickUpAddressSchema,
+    enableReinitialize: true,
   });
 
   /**
@@ -56,19 +59,6 @@ export default function Address({ user }) {
   const [focused, setFocused] = useState({
     ...Object.keys((key) => ({ [key]: false })),
   });
-
-  useEffect(() => {
-    if (user) {
-      setFieldValue('fullName', user.name);
-      setFieldValue('phoneNumber', user['custom:phone']);
-      setFieldValue('line1', user.address);
-      setFieldValue('line2', user['custom:address_2']);
-      setFieldValue('city', user['custom:city']);
-      setFieldValue('state', user['custom:state']);
-      setFieldValue('zipCode', user['custom:zipcode']);
-      setFieldValue('instructions', user['custom:pickup_instructions']);
-    }
-  }, [user]);
 
   const {
     fullName = '',
