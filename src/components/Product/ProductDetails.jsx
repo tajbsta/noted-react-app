@@ -11,6 +11,7 @@ function ProductDetails({
   toggleSelected,
   daysLeft,
   isDonate,
+  isNotEligible,
 }) {
   const history = useHistory();
   const pageLocation = history.location.pathname;
@@ -87,7 +88,7 @@ function ProductDetails({
         </h5>
       </Row>
       <Row>
-        {daysLeft <= 2 ? (
+        {isNotEligible ? (
           <>
             <h4 className='sofia-pro mb-0 not-eligible-text'>
               This item is not eligible for pick up
