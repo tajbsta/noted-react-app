@@ -140,7 +140,7 @@ export default function ProductCard({
       : moment
           .utc(get(item, 'return_not_eligible_date', ''))
           .local()
-          .diff(moment().subtract(2, 'd').startOf('day'), 'days');
+          .diff(moment().startOf('day'), 'days');
 
   const isDonate = get(item, 'category', '') === 'DONATE';
   const isNotEligible = get(item, 'category', '') === 'NOT_ELIGIBLE';
@@ -247,7 +247,7 @@ export default function ProductCard({
               {daysLeft == 0 && 'Expires today'}
             </h4>
 
-            {daysLeft <= 2 ? (
+            {isNotEligible ? (
               <>
                 <h4 className='sofia-pro mb-0 not-eligible-text'>
                   This item is not eligible for pick up
@@ -467,6 +467,7 @@ export default function ProductCard({
           <ProductDetails
             item={item}
             isDonate={isDonate}
+            isNotEligible={isNotEligible}
             daysLeft={daysLeft}
             isHovering={showHoverContent}
             toggleSelected={toggleSelected}
