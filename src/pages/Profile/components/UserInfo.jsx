@@ -306,13 +306,17 @@ export default function UserInfo({ user: userData = {} }) {
           <div className='row align-items-center justify-content-between m-info-row'>
             <div className='m-col-auto'>
               <div>
-                <h4 className='text-left total'>{orderCount.totalReturns}</h4>
+                <h4 className='text-left total'>
+                  {orderCount.totalReturns || 0}
+                </h4>
                 <h5 className='total-label'>Total Returns</h5>
               </div>
             </div>
             <div className='m-col-auto'>
               <div>
-                <h4 className='text-left total'>{orderCount.totalDonations}</h4>
+                <h4 className='text-left total'>
+                  {orderCount.totalDonations || 0}
+                </h4>
                 <h5 className='total-label'>Total Donations</h5>
               </div>
             </div>
