@@ -13,7 +13,6 @@ export default function ScheduledReturn({ user }) {
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
 
-
   const getScheduledOrders = async () => {
     try {
       setFetchingOrders(true);
@@ -27,11 +26,10 @@ export default function ScheduledReturn({ user }) {
       const userId = await getUserId();
       const res = await getOrders(userId, 'active');
 
-      
       setOrders(res.orders);
 
       setLoadProgress(80);
-      await timeout(200)
+      await timeout(200);
       setLoadProgress(100);
       await timeout(1000);
       /**
@@ -45,7 +43,7 @@ export default function ScheduledReturn({ user }) {
     } catch (error) {
       // TODO: ERROR HANDLING
       console.log(error);
-      setFetchingOrders(false)
+      setFetchingOrders(false);
     }
   };
 
@@ -84,7 +82,12 @@ export default function ScheduledReturn({ user }) {
           }
         >
           {fetchingOrders && (
-            <ProgressBar animated striped now={loadProgress} className='mt-4 m-3' />
+            <ProgressBar
+              animated
+              striped
+              now={loadProgress}
+              className='mt-4 m-3'
+            />
           )}
           {!fetchingOrders &&
             orders.map((order) => (

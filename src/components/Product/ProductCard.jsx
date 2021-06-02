@@ -18,6 +18,7 @@ import { addProductSchema } from '../../models/formSchema';
 import { useHistory } from 'react-router';
 import { formatCurrency } from '../../library/number';
 import ReturnValueInfoIcon from '../ReturnValueInfoIcon';
+import { toTitleCase } from '../../utils/data';
 
 export default function ProductCard({
   selectable = true,
@@ -73,13 +74,6 @@ export default function ProductCard({
 
   const handleSelection = () => {
     toggleSelected(item);
-  };
-
-  const toTitleCase = (str) => {
-    const replacedDash = str && str.replace('-', ' ');
-    return replacedDash.replace(/\w\S*/g, function (txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
   };
 
   const formattedProductName = toTitleCase(item.name);
