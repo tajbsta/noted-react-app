@@ -37,6 +37,10 @@ import {
 } from '../../actions/cart.action';
 import PRICING from '../../constants/pricing';
 import { getOtherReturnProducts } from '../../api/productsApi';
+import {
+  SERVER_ERROR,
+  STRIPE_PAYMENT_INSUFFICIENT_FUNDS,
+} from '../../constants/errors/errorCodes';
 
 const ViewOrder = () => {
   const dispatch = useDispatch();
@@ -199,7 +203,10 @@ const ViewOrder = () => {
     } catch (error) {
       console.log(error.response.data);
 
-      let errCode;
+      let errorCode =
+        error.response && error.response.data
+          ? error.response.data.details
+          : SERVER_ERROR;
 
       if (
         !billing &&
@@ -222,21 +229,30 @@ const ViewOrder = () => {
 
         if (result.error) {
           // Show error to customer
-          console.log(result.error.message);
-          errCode = result.error.message;
+          if (
+            result.error.code === 'card_declined' &&
+            result.error.decline_code === 'insufficient_funds'
+          ) {
+            errorCode = STRIPE_PAYMENT_INSUFFICIENT_FUNDS;
+          } else {
+            setShowCancelOrderModal(false);
+            setLoading(false);
+            showError({ message: result.error.message });
+            return;
+          }
         } else {
           if (result.paymentIntent.status === 'succeeded') {
             const cancelBilling = {
               paymentIntentId: paymentIntent.paymentIntentId,
               paymentMethodId: paymentIntent.paymentMethodId,
               productId: paymentIntent.productId,
-              // taxId: paymentIntent.taxId,
               priceId: paymentIntent.priceId,
               pricing: paymentIntent.pricing,
             };
-            ConfirmCancellation(cancelBilling);
-            return;
-          } // TODO: handle stripe payment errors
+            return ConfirmCancellation(cancelBilling);
+          } else {
+            throw new Error('Unknown Error');
+          }
         }
       }
 
@@ -244,9 +260,7 @@ const ViewOrder = () => {
       setLoading(false);
       showError({
         message: get(
-          orderErrors.find(
-            ({ details }) => details === error.response.data.details
-          ),
+          orderErrors.find(({ details }) => details === errorCode),
           'message',
           'Cannot cancel order at this time'
         ),
@@ -294,7 +308,10 @@ const ViewOrder = () => {
       });
     } catch (error) {
       console.log(billing);
-      let errCode;
+      let errorCode =
+        error.response && error.response.data
+          ? error.response.data.details
+          : SERVER_ERROR;
 
       if (
         !billing &&
@@ -318,8 +335,16 @@ const ViewOrder = () => {
 
         if (result.error) {
           // Show error to customer
-          console.log(result.error.message);
-          errCode = result.error.message;
+          if (
+            result.error.code === 'card_declined' &&
+            result.error.decline_code === 'insufficient_funds'
+          ) {
+            errorCode = STRIPE_PAYMENT_INSUFFICIENT_FUNDS;
+          } else {
+            setLoading(false);
+            showError({ message: result.error.message });
+            return;
+          }
         } else {
           if (result.paymentIntent.status === 'succeeded') {
             const updateBilling = {
@@ -330,18 +355,17 @@ const ViewOrder = () => {
               priceId: paymentIntent.priceId,
               pricing: paymentIntent.pricing,
             };
-            ConfirmUpdate(updateBilling);
-            return;
-          } // TODO: handle stripe payment errors
+            return ConfirmUpdate(updateBilling);
+          } else {
+            throw new Error('Unknown Error');
+          }
         }
       }
 
       setLoading(false);
       showError({
         message: get(
-          orderErrors.find(
-            ({ details }) => details === error.response.data.details
-          ),
+          orderErrors.find(({ details }) => details === errorCode),
           'message',
           'Cannot update order at this time'
         ),

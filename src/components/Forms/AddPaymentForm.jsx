@@ -7,8 +7,12 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
+import { get } from 'lodash';
 import { savePaymentMethod } from '../../api/orderApi';
 import { updateUserAttributes } from '../../api/auth';
+import { showError } from '../../library/notifications.library';
+import { orderErrors } from '../../library/errors.library';
+import { SERVER_ERROR } from '../../constants/errors/errorCodes';
 
 export default function AddPaymentForm({
   close,
@@ -36,54 +40,68 @@ export default function AddPaymentForm({
   });
 
   const handleSubmit = async () => {
-    if (!stripe || !elements) {
-      return;
-    }
-
-    if (error.card || error.expiry || error.cvc) {
-      return;
-    }
-
-    if (!cardComplete.card || !cardComplete.expiry || !cardComplete.cvc) {
-      return;
-    }
-
-    setProcessing(true);
-
-    const payload = await stripe.createPaymentMethod({
-      type: 'card',
-
-      card: elements.getElement(CardNumberElement),
-      billing_details: billingDetails,
-    });
-
-    if (payload.error) {
-      setError(payload.error);
-    } else {
-      const paymentMethod = payload.paymentMethod;
-      await savePaymentMethod(paymentMethod.id);
-
-      // Set payment method as default if 1st payment method added or if created in the checkout flow
-      if (!hasDefaultPaymentMethod || isCheckoutFlow) {
-        await updateUserAttributes({
-          'custom:default_payment': paymentMethod.id,
-        });
+    try {
+      if (!stripe || !elements) {
+        return;
       }
 
-      reset();
+      if (error.card || error.expiry || error.cvc) {
+        return;
+      }
 
-      if (!isCheckoutFlow) {
-        // Pass payment method id if no default payment method
-        refreshPaymentMethods(
-          !hasDefaultPaymentMethod ? paymentMethod.id : null
-        );
+      if (!cardComplete.card || !cardComplete.expiry || !cardComplete.cvc) {
+        return;
+      }
+
+      setProcessing(true);
+
+      const payload = await stripe.createPaymentMethod({
+        type: 'card',
+        card: elements.getElement(CardNumberElement),
+        billing_details: billingDetails,
+      });
+
+      if (payload.error) {
+        setError(payload.error);
       } else {
-        savePayment(paymentMethod);
-        close();
-      }
-    }
+        const paymentMethod = payload.paymentMethod;
+        await savePaymentMethod(paymentMethod.id);
 
-    setProcessing(false);
+        // Set payment method as default if 1st payment method added or if created in the checkout flow
+        if (!hasDefaultPaymentMethod || isCheckoutFlow) {
+          await updateUserAttributes({
+            'custom:default_payment': paymentMethod.id,
+          });
+        }
+
+        reset();
+
+        if (!isCheckoutFlow) {
+          // Pass payment method id if no default payment method
+          refreshPaymentMethods(
+            !hasDefaultPaymentMethod ? paymentMethod.id : null
+          );
+        } else {
+          savePayment(paymentMethod);
+          close();
+        }
+      }
+
+      setProcessing(false);
+    } catch (error) {
+      setProcessing(false);
+      const errorCode =
+        error.response && error.response.data
+          ? error.response.data.details
+          : SERVER_ERROR;
+      showError({
+        message: get(
+          orderErrors.find(({ details }) => details === errorCode),
+          'message',
+          'Cannot place order at this time'
+        ),
+      });
+    }
   };
 
   const reset = () => {
