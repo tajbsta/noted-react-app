@@ -457,7 +457,7 @@ const ViewOrder = () => {
                 </h3>
                 <div className='confirmed-container'>
                   {cancelled ? (
-                    <PickUpCancelled />
+                    <PickUpCancelled order={order} />
                   ) : (
                     <PickUpConfirmed order={order} isUpdate={true} />
                   )}

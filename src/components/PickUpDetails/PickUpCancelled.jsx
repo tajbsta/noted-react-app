@@ -7,7 +7,7 @@ import { get } from 'lodash-es';
 import moment from 'moment';
 import { scrollToTop } from '../../utils/window';
 
-function PickUpCancelled({ orderId = '' }) {
+function PickUpCancelled({ order, orderId = '' }) {
   const history = useHistory();
   const [currentOrder, setCurrentOrder] = useState({});
   const [isMobile, setIsMobile] = useState(false);
@@ -68,15 +68,19 @@ function PickUpCancelled({ orderId = '' }) {
       <div className='card-body pt-4 pb-3 pl-4 m-0'>
         <Row>
           <div className='col-sm-12 p-0'>
+            <p className='request-msg text-16 sofia-pro mb-0'>
+              Your pickup has been successfully cancelled!
+            </p>
             <p className='request-msg text-16 sofia-pro'>
-              Your pickup has been successfully cancelled. We&apos;re sorry this
-              pickup didn&apos;t work out for you. But we hope we&apos;ll see
-              you again...right?
+              We&apos;re sorry pickup of order #<strong>{order.id}</strong>{' '}
+              didn&apos;t work out for you. But we hope we&apos;ll see you
+              again...right?
+            </p>
+            <p className='request-msg text-16 sofia-pro'>
+              A cancellation confirmation has been sent to your email.
             </p>
           </div>
         </Row>
-        {/* <h4 className='p-0 m-0 pick-up-day sofia-pro'>{date}</h4> */}
-
         <Row>
           {!isMobile && (
             <>
