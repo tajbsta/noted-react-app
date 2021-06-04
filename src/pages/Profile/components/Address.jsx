@@ -13,7 +13,7 @@ import { showError, showSuccess } from '../../../library/notifications.library';
 import { get } from 'lodash';
 
 export default function Address({ user }) {
-  console.log(user);
+  // console.log(user);
   const [isEditing, setIsEditing] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);

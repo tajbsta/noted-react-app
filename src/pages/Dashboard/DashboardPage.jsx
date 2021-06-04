@@ -68,7 +68,8 @@ export default function DashboardPage() {
       // console.log(res.orders);
     } catch (error) {
       // TODO: ERROR HANDLING
-      console.log(error);
+      // console.log(error);
+      showError('An error occurred. Unable to retrieve orders');
     }
   };
 

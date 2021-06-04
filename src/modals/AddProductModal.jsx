@@ -64,7 +64,7 @@ export default function AddProductModal(props) {
       reader.onload = () => {
         // Do whatever with the file contents
         const binaryStr = reader.result;
-        console.log(binaryStr);
+        // console.log(binaryStr);
       };
       reader.readAsArrayBuffer(file);
     });

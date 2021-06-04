@@ -201,7 +201,7 @@ const ViewOrder = () => {
       setCancelled(true);
       setConfirmed(true);
     } catch (error) {
-      console.log(error.response.data);
+      // console.log(error.response.data);
 
       let errorCode =
         error.response && error.response.data
@@ -223,9 +223,9 @@ const ViewOrder = () => {
           paymentIntent.clientSecret
         );
 
-        console.log({
-          result,
-        });
+        // console.log({
+        //   result,
+        // });
 
         if (result.error) {
           // Show error to customer
@@ -307,7 +307,7 @@ const ViewOrder = () => {
         ),
       });
     } catch (error) {
-      console.log(billing);
+      // console.log(billing);
       let errorCode =
         error.response && error.response.data
           ? error.response.data.details
@@ -329,9 +329,9 @@ const ViewOrder = () => {
           paymentIntent.clientSecret
         );
 
-        console.log({
-          result,
-        });
+        // console.log({
+        //   result,
+        // });
 
         if (result.error) {
           // Show error to customer

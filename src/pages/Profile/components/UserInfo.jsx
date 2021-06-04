@@ -40,7 +40,7 @@ export default function UserInfo({ user: userData = {} }) {
       // console.log(orderCount);
     } catch (error) {
       // TODO: ERROR HANDLING
-      console.log(error);
+      // console.log(error);
     }
   };
 

@@ -90,7 +90,7 @@ export default function ReturnCategory({
 
   useEffect(() => {
     fetchItems();
-    console.log(category);
+    // console.log(category);
   }, [newDonations]);
 
   const getNextPageToken = () => {

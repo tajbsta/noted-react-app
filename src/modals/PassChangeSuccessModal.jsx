@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { unsetUser } from '../actions/auth.action';
 import { unsetScan } from '../actions/scans.action';
+import { showError } from '../library/notifications.library';
 
 export default function PassChangeSuccessModal(props) {
   const history = useHistory();
@@ -22,7 +23,8 @@ export default function PassChangeSuccessModal(props) {
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
-        console.log('Error Signing Out: ', error);
+        // console.log('Error Signing Out: ', error);
+        showError('An error occurred');
       });
   };
 

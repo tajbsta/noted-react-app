@@ -54,10 +54,10 @@ export default function SchedulingModal({
     if (props.show) {
       setPickupDate(pickUpDateFormValues.date);
       setPickupTime(pickUpDateFormValues.time);
-      console.log({
-        pickupDate,
-        pickupTime,
-      });
+      // console.log({
+      //   pickupDate,
+      //   pickupTime,
+      // });
     }
   }, [props.show]);
   const renderLoading = () => {

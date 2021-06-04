@@ -21,7 +21,7 @@ export default function ScheduledCard({ orders }) {
       // console.log(orderCount);
     } catch (error) {
       // TODO: ERROR HANDLING
-      console.log(error);
+      // console.log(error);
     }
   };
 
