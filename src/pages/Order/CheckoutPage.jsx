@@ -151,7 +151,7 @@ const Checkout = () => {
           showError({
             message: get(
               orderErrors.find(
-                ({ details }) => details === STRIPE_PAYMENT_INSUFFICIENT_FUNDS
+                ({ code }) => code === STRIPE_PAYMENT_INSUFFICIENT_FUNDS
               ),
               'message',
               'Cannot place order at this time'
@@ -170,15 +170,11 @@ const Checkout = () => {
         }
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setLoading(false);
-      const errorCode =
-        error.response && error.response.data
-          ? error.response.data.details
-          : SERVER_ERROR;
       showError({
         message: get(
-          orderErrors.find(({ details }) => details === errorCode),
+          orderErrors.find(({ code }) => code === error.response.data.details),
           'message',
           'Cannot place order at this time'
         ),
