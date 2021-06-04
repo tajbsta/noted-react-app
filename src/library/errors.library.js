@@ -16,7 +16,8 @@ import {
   ORDER_CONTAINS_INVALID_PRODUCTS,
   ORDER_INVALID_PICKUP_DATE,
   ORDER_NOT_FOUND,
-  ORDER_CANCEL_NOT_AVAILABLE
+  ORDER_CANCEL_NOT_AVAILABLE,
+  STRIPE_PAYMENT_INSUFFICIENT_FUNDS
 } from "../constants/errors/errorCodes";
 
 export const signUpErrors = [
@@ -133,4 +134,8 @@ export const orderErrors = [
     details: SERVER_ERROR,
     message: "Cannot cancel order at this time"
   },
+  {
+    details: STRIPE_PAYMENT_INSUFFICIENT_FUNDS,
+    message: "Insufficient funds"
+  }
 ];
