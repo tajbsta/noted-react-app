@@ -90,13 +90,9 @@ export default function AddPaymentForm({
       setProcessing(false);
     } catch (error) {
       setProcessing(false);
-      const errorCode =
-        error.response && error.response.data
-          ? error.response.data.details
-          : SERVER_ERROR;
       showError({
         message: get(
-          orderErrors.find(({ details }) => details === errorCode),
+          orderErrors.find(({ code }) => code === error.response.data.details),
           'message',
           'Cannot place order at this time'
         ),

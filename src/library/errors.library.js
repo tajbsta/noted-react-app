@@ -106,36 +106,36 @@ export const scraperGmailErrors = [
 
 export const orderErrors = [
   {
-    details: ORDER_ZIPCODE_INVALID,
+    code: ORDER_ZIPCODE_INVALID,
     message: "noted service is not yet available in your area",
   },
   {
-    details: ORDER_CONTAINS_INVALID_PRODUCTS,
+    code: ORDER_CONTAINS_INVALID_PRODUCTS,
     message:
       "Order contains invalid products",
   },
   {
-    details: ORDER_PICKUP_SLOT_NOT_AVAILABLE,
+    code: ORDER_PICKUP_SLOT_NOT_AVAILABLE,
     message: "Selected pickup slot is not available",
   },
   {
-    details: ORDER_INVALID_PICKUP_DATE,
+    code: ORDER_INVALID_PICKUP_DATE,
     message: "Invalid pickup date",
   },
   {
-    details: ORDER_NOT_FOUND,
+    code: ORDER_NOT_FOUND,
     message: "Order not found"
   },
   {
-    details: ORDER_CANCEL_NOT_AVAILABLE,
+    code: ORDER_CANCEL_NOT_AVAILABLE,
     message: "Cannot cancel order at this time"
   },
   {
-    details: SERVER_ERROR,
+    code: SERVER_ERROR,
     message: "Cannot cancel order at this time"
   },
   {
-    details: STRIPE_PAYMENT_INSUFFICIENT_FUNDS,
-    message: "Insufficient funds"
+    code: STRIPE_PAYMENT_INSUFFICIENT_FUNDS,
+    message: "Your payment method does not have enough funds"
   }
 ];

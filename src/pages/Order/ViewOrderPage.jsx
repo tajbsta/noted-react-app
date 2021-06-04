@@ -260,7 +260,7 @@ const ViewOrder = () => {
       setLoading(false);
       showError({
         message: get(
-          orderErrors.find(({ details }) => details === errorCode),
+          orderErrors.find(({ code }) => code === errorCode),
           'message',
           'Cannot cancel order at this time'
         ),
@@ -365,7 +365,7 @@ const ViewOrder = () => {
       setLoading(false);
       showError({
         message: get(
-          orderErrors.find(({ details }) => details === errorCode),
+          orderErrors.find(({ code }) => code === errorCode),
           'message',
           'Cannot update order at this time'
         ),
@@ -457,7 +457,7 @@ const ViewOrder = () => {
                 </h3>
                 <div className='confirmed-container'>
                   {cancelled ? (
-                    <PickUpCancelled />
+                    <PickUpCancelled order={order} />
                   ) : (
                     <PickUpConfirmed order={order} isUpdate={true} />
                   )}

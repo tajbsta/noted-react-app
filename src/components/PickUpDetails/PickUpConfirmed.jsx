@@ -107,7 +107,8 @@ function PickUpConfirmed({ order, isUpdate = false }) {
             style={{ alignItems: isUpdate ? 'center' : '' }}
           >
             <p className='sofia-pro mb-0 text-14'>
-              We have sent you a confirmation by email for order #{order.id}
+              We have sent you a confirmation by email for order #
+              <strong>{order.id}</strong>
             </p>
             {!isUpdate && (
               <p
