@@ -41,7 +41,7 @@ export default function EmailAddresses({ user }) {
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      console.log(err);
+      // console.log(err);
       showError({ message: 'An error occurred deleting your email' });
     }
   };

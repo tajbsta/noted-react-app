@@ -18,7 +18,7 @@ import {
 } from '../../../constants/actions/runtime';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
-function RightCard({ userId, setSelectedProducts, beyond90days }) {
+function RightCard({ setSelectedProducts, beyond90days }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
@@ -56,13 +56,12 @@ function RightCard({ userId, setSelectedProducts, beyond90days }) {
 
   const calculateCurrentCartPricing = async (currentItems) => {
     try {
-      // if (userId) {
       setLoading(true);
 
       const cartItems = [...currentItems];
       const productIds = cartItems.map((x) => x._id);
 
-      const data = await calculateMetrics(userId, productIds);
+      const data = await calculateMetrics(productIds);
 
       setPricing({
         totalReturns: data.totalReturns,
@@ -71,7 +70,6 @@ function RightCard({ userId, setSelectedProducts, beyond90days }) {
         pickupPrice: data.pickupPrice,
       });
       setLoading(false);
-      // }
     } catch (error) {
       if (!axios.isCancel(error)) {
         setLoading(false);

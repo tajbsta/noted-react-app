@@ -46,10 +46,10 @@ export default function Code() {
               ? error.response.data.details
               : SERVER_ERROR;
 
-          console.log({
-            error: error.response,
-            errorCode,
-          });
+          // console.log({
+          //   error: error.response,
+          //   errorCode,
+          // });
 
           history.push(`/request-permission?error=${errorCode}`);
           return;
@@ -58,7 +58,8 @@ export default function Code() {
 
       history.push('/dashboard');
     } catch (error) {
-      console.log(error);
+      // TODO: ERROR HANDLING
+      // console.log(error);
 
       // if (isAuthRedirect) {
       //   history.push('/request-permission?auth=error');

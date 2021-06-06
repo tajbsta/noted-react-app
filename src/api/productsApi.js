@@ -47,8 +47,9 @@ export const getProducts = async ({
 
 let cancelTokenSource;
 
-export const calculateMetrics = async (userId, productIds) => {
+export const calculateMetrics = async (productIds) => {
   const axios = await api();
+  const { userId } = await getUserSession();
 
   if (cancelTokenSource) {
     cancelTokenSource.cancel();
@@ -82,11 +83,12 @@ export const setCategory = async (productId, category) => {
 };
 
 export const getOtherReturnProducts = async (
-  size = 5
+  size = 5,
+  productIds = []
 ) => {
   const axios = await api();
   const { userId } = await getUserSession();
 
-  const res = await axios.get(`/${userId}/products/other/returns?size=${size}`);
+  const res = await axios.post(`/${userId}/products/other/returns?size=${size}`, { productIds });
   return res.data.data;
 };

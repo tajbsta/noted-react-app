@@ -42,7 +42,7 @@ export default function ScheduledReturn({ user }) {
       // console.log(res.orders);
     } catch (error) {
       // TODO: ERROR HANDLING
-      console.log(error);
+      // console.log(error);
       setFetchingOrders(false);
     }
   };

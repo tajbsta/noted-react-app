@@ -7,7 +7,7 @@ export const isAuthenticated = async () => {
     const session = await Auth.currentSession();
     return session.isValid();
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return false;
   }
 };

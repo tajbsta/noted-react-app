@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Spinner, Col, Row } from 'react-bootstrap';
 import moment from 'moment';
@@ -40,8 +41,10 @@ export default function SchedulingModal({
 
         setLoading(false);
       } catch (err) {
-        setLoading(false);
-        showError('No pickup slots available at this time');
+        if (!axios.isCancel(err)) {
+          setLoading(false);
+          showError('No pickup slots available at this time');
+        }
       }
     }
   };
@@ -54,10 +57,10 @@ export default function SchedulingModal({
     if (props.show) {
       setPickupDate(pickUpDateFormValues.date);
       setPickupTime(pickUpDateFormValues.time);
-      console.log({
-        pickupDate,
-        pickupTime,
-      });
+      // console.log({
+      //   pickupDate,
+      //   pickupTime,
+      // });
     }
   }, [props.show]);
   const renderLoading = () => {

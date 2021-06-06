@@ -48,7 +48,7 @@ export default function ReturnHistory({ user }) {
       }
     } catch (error) {
       // TODO: ERROR HANDLING
-      console.log(error);
+      // console.log(error);
       setFetchingOrders(false);
     }
   };

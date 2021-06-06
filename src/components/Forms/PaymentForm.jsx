@@ -127,7 +127,7 @@ export default function PaymentForm({
       errors.line2 = null;
       errors.city = null;
       errors.phoneNumber = null;
-      console.log(errors);
+      // console.log(errors);
     }
   };
 
