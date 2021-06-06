@@ -32,7 +32,9 @@ import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 export default function DashboardPage() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { search } = useSelector(
+  const [search, setSearch] = useState('');
+
+  const { search: searchSession } = useSelector(
     ({ runtime: { search }, auth: { scheduledReturns } }) => ({
       search,
       scheduledReturns,
@@ -74,6 +76,13 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
+    // console.log({
+    //   searchSession,
+    // });
+    setSearch(searchSession.trim());
+  }, [searchSession]);
+
+  useEffect(() => {
     // empty orders
     if (orders.length === 0) {
       getScheduledOrders();
@@ -81,7 +90,7 @@ export default function DashboardPage() {
   }, []);
 
   async function loadScans() {
-    dispatch(clearSearchQuery());
+    // dispatch(clearSearchQuery());
     try {
       setLoading(true);
       const userId = await getUserId();
@@ -302,6 +311,7 @@ export default function DashboardPage() {
                       size={5}
                       search={search}
                       updateSelectedItems={updateSelectedItems}
+                      selectedProducts={flatMap(values(selectedProducts))}
                     />
                   </div>
                 )}
@@ -383,7 +393,6 @@ export default function DashboardPage() {
             <>
               <div className='col-sm-3 checkout-card'>
                 <RightCard
-                  userId={userId}
                   setSelectedProducts={setSelectedProducts}
                   beyond90days={beyond90days}
                 />
@@ -395,7 +404,7 @@ export default function DashboardPage() {
       {isTablet && (
         <>
           <div className='col checkout-card'>
-            <RightCard userId={userId} beyond90days={beyond90days} />
+            <RightCard beyond90days={beyond90days} />
           </div>
         </>
       )}

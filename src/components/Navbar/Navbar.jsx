@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Navbar } from 'react-bootstrap';
+import { Container, Form, Navbar } from 'react-bootstrap';
 import _ from 'lodash';
+import qs from 'qs';
 import ProfileIcon from '../../assets/icons/Profile.svg';
 import Search from '../../assets/icons/Search.svg';
 import { useDispatch } from 'react-redux';
@@ -18,6 +19,7 @@ export default function Topnav() {
   const dispatch = useDispatch();
   const pageLocation = history.location.pathname;
   const [showDropdown, setShowDropdown] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleWindowClick = (e) => {
     if (e.target && e.target.id !== 'navbarDropdownMenuLink') {
@@ -35,6 +37,17 @@ export default function Topnav() {
       window.removeEventListener('click', handleWindowClick);
     };
   }, [showDropdown]);
+
+  useEffect(() => {
+    const query = qs.parse(history.location.search, {
+      ignoreQueryPrefix: true,
+    });
+
+    if (query.search) {
+      setSearchQuery(query.search);
+      dispatch(searchScans(query.search));
+    }
+  }, []);
 
   const guestViews = [
     '/',
@@ -86,7 +99,14 @@ export default function Topnav() {
 
   const submitsearch = (e) => {
     if (e.key === 'Enter') {
-      dispatch(searchScans(e.target.value));
+      const search = searchQuery.trim();
+      if (search) {
+        history.push('/dashboard?search=' + search);
+      } else {
+        history.push('/dashboard');
+      }
+
+      dispatch(searchScans(search));
     }
   };
 
@@ -146,22 +166,25 @@ export default function Topnav() {
         <>
           <div id='DashboardNav'>
             <Container className='ml-3'>
-              <div className='input-group input-group-lg input-group-merge background-color search-bar-input'>
-                <input
-                  type='text'
-                  className='form-control form-control-prepended list-search background-color sofia-pro text-16 color'
-                  placeholder='Search purchases'
-                  onChange={checkclearsearch}
-                  onKeyPress={submitsearch}
-                />
-                <div className='input-group-prepend'>
-                  <div className='input-group-text background-color'>
-                    <span className='fe fe-search'>
-                      <img src={Search} />
-                    </span>
+              <Form onSubmit={(e) => e.preventDefault()}>
+                <div className='input-group input-group-lg input-group-merge background-color search-bar-input'>
+                  <Form.Control
+                    type='text'
+                    className='form-control form-control-prepended list-search background-color sofia-pro text-16 color'
+                    placeholder='Search purchases'
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyPress={submitsearch}
+                  />
+                  <div className='input-group-prepend'>
+                    <div className='input-group-text background-color'>
+                      <span className='fe fe-search'>
+                        <img src={Search} />
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Form>
             </Container>
             <div className='mr-4' id='nav-toggle'>
               <ul className='navbar-nav'>

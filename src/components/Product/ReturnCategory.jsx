@@ -21,12 +21,9 @@ export default function ReturnCategory({
   width,
   percent,
 }) {
-  const { cartItems, newDonations } = useSelector(
-    ({ cart: { items: cartItems }, products: { newDonations } }) => ({
-      cartItems,
-      newDonations,
-    })
-  );
+  const { cartItems } = useSelector(({ cart: { items: cartItems } }) => ({
+    cartItems,
+  }));
 
   const { push } = useHistory();
   const [items, setItems] = useState([]);
@@ -90,8 +87,11 @@ export default function ReturnCategory({
 
   useEffect(() => {
     fetchItems();
-    // console.log(category);
-  }, [newDonations]);
+  }, []);
+
+  useEffect(() => {
+    fetchItems();
+  }, [search]);
 
   const getNextPageToken = () => {
     const copyItems = [...items];
@@ -144,12 +144,13 @@ export default function ReturnCategory({
     });
   };
 
-  useEffect(() => {
-    updateSelectedItems({
-      key: category,
-      items: selectedProducts,
-    });
-  }, [selectedProducts]);
+  // useEffect(() => {
+  //   updateSelectedItems({
+  //     key: category,
+  //     items: selectedProducts,
+  //   });
+
+  // }, [selectedProducts]);
 
   return (
     <div id='ReturnCategory'>

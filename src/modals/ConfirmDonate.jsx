@@ -3,7 +3,6 @@ import { Modal, Button, Spinner } from 'react-bootstrap';
 import { CheckCircle } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCartItems } from '../actions/cart.action';
-import { addToNewDonations } from '../actions/products.action';
 import { DONATE } from '../constants/actions/runtime';
 import { setCategory } from '../api/productsApi';
 import { showError, showSuccess } from '../library/notifications.library';
@@ -37,7 +36,6 @@ export default function ConfirmDonate(props) {
       const { data } = await setCategory(productId, DONATE);
       if (data.status === 'success') {
         dispatch(setCartItems([...cartItems, item]));
-        dispatch(addToNewDonations(item));
         /**
          * pop modal first
          */

@@ -224,7 +224,10 @@ const Checkout = () => {
 
   async function getMissedOutProducts() {
     try {
-      const otherProducts = await getOtherReturnProducts(2);
+      const otherProducts = await getOtherReturnProducts(
+        2,
+        items.map((item) => item._id)
+      );
       setOtherReturns(otherProducts);
       setLoading(false);
     } catch (error) {
