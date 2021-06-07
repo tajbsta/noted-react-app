@@ -127,6 +127,7 @@ export default function AddressForm({
                       value={fullName || ''}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('fullName')}
                   </Form.Group>
@@ -144,6 +145,7 @@ export default function AddressForm({
                       onChange={handleChange}
                       placeholder='Select State'
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     >
                       {[
                         { abbreviation: '', name: 'Select State' },
@@ -173,6 +175,7 @@ export default function AddressForm({
                       value={zipCode || ''}
                       maxLength={6}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {zipCode.length > 0 && renderInlineError(errors.zipCode)}
                   </Form.Group>
@@ -189,6 +192,7 @@ export default function AddressForm({
                       onChange={handleChange}
                       value={line1 || ''}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('line1')}
                   </Form.Group>
@@ -205,6 +209,7 @@ export default function AddressForm({
                       name='line2'
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('line2')}
                   </Form.Group>
@@ -221,6 +226,7 @@ export default function AddressForm({
                       value={city || ''}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('city')}
                   </Form.Group>
@@ -241,6 +247,7 @@ export default function AddressForm({
                       name='phoneNumber'
                       maxLength={13}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('phoneNumber')}
                   </Form.Group>
@@ -326,6 +333,7 @@ export default function AddressForm({
                       name='fullName'
                       value={fullName || ''}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('fullName')}
                   </Form.Group>
@@ -341,6 +349,7 @@ export default function AddressForm({
                       onChange={handleChange}
                       placeholder='Select State'
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     >
                       {[
                         { abbreviation: '', name: 'Select State' },
@@ -370,6 +379,7 @@ export default function AddressForm({
                       name='zipCode'
                       maxLength={6}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {zipCode.length > 0 && renderInlineError(errors.zipCode)}
                   </Form.Group>
@@ -387,6 +397,7 @@ export default function AddressForm({
                       value={line1 || ''}
                       name='line1'
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('line1')}
                   </Form.Group>
@@ -401,6 +412,7 @@ export default function AddressForm({
                       value={city || ''}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('city')}
                   </Form.Group>
@@ -420,6 +432,7 @@ export default function AddressForm({
                       name='phoneNumber'
                       maxLength={13}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('phoneNumber')}
                   </Form.Group>
@@ -437,6 +450,7 @@ export default function AddressForm({
                       name='line2'
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('line2')}
                   </Form.Group>
