@@ -98,6 +98,10 @@ export default function Address({ user }) {
   //   f();
   // }, []);
 
+  const onFocus = (e) => {
+    setFocused({ ...focused, [e.target.name]: true });
+  };
+
   const updateAddress = async () => {
     setIsSubmitting(true);
 
@@ -189,6 +193,7 @@ export default function Address({ user }) {
                       {...noBorder}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('fullName')}
                   </Form.Group>
@@ -207,6 +212,7 @@ export default function Address({ user }) {
                         onChange={handleChange}
                         placeholder='Select State'
                         {...noBorder}
+                        onFocus={onFocus}
                         onBlur={handleBlur}
                       >
                         {[
@@ -246,6 +252,7 @@ export default function Address({ user }) {
                       type='zip code'
                       value={zipCode || ''}
                       {...noBorder}
+                      onFocus={onFocus}
                       onBlur={handleBlur}
                     />
                     {renderInlineValidationError('zipCode')}
@@ -264,6 +271,7 @@ export default function Address({ user }) {
                       value={line1 || ''}
                       {...noBorder}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('line1')}
                   </Form.Group>
@@ -281,6 +289,7 @@ export default function Address({ user }) {
                       onChange={handleChange}
                       {...noBorder}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                   </Form.Group>
                 </Col>
@@ -297,6 +306,7 @@ export default function Address({ user }) {
                       onChange={handleChange}
                       {...noBorder}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('city')}
                   </Form.Group>
@@ -318,6 +328,7 @@ export default function Address({ user }) {
                       maxLength={13}
                       {...noBorder}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('phoneNumber')}
                   </Form.Group>
@@ -400,6 +411,7 @@ export default function Address({ user }) {
                       {...noBorder}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
 
                     {renderInlineValidationError('fullName')}
@@ -418,6 +430,7 @@ export default function Address({ user }) {
                         placeholder='Select State'
                         {...noBorder}
                         onBlur={handleBlur}
+                        onFocus={onFocus}
                       >
                         {[
                           { abbreviation: '', name: 'Select State' },
@@ -457,6 +470,7 @@ export default function Address({ user }) {
                       value={zipCode || ''}
                       {...noBorder}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('zipCode')}
                   </Form.Group>
@@ -475,6 +489,7 @@ export default function Address({ user }) {
                       value={line1 || ''}
                       {...noBorder}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('line1')}
                   </Form.Group>
@@ -490,6 +505,7 @@ export default function Address({ user }) {
                       onChange={handleChange}
                       {...noBorder}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('city')}
                   </Form.Group>
@@ -511,6 +527,7 @@ export default function Address({ user }) {
                       maxLength={13}
                       {...noBorder}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                     {renderInlineValidationError('phoneNumber')}
                   </Form.Group>
@@ -529,6 +546,7 @@ export default function Address({ user }) {
                       onChange={handleChange}
                       {...noBorder}
                       onBlur={handleBlur}
+                      onFocus={onFocus}
                     />
                   </Form.Group>
                 </Col>
