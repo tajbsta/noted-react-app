@@ -14,18 +14,21 @@ import { scrollToTop } from '../../utils/window';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { Box } from 'react-feather';
-import { createOrder, getOrderPricing } from '../../utils/orderApi';
+import { createOrder, getOrderPricing } from '../../api/orderApi';
 import { orderErrors } from '../../library/errors.library';
-import { getOtherReturnProducts } from '../../utils/productsApi';
+import { getOtherReturnProducts } from '../../api/productsApi';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
 import {
   getPublicKey,
   createPaymentIntent,
   prevalidateOrder,
-} from '../../utils/orderApi';
+} from '../../api/orderApi';
 import PRICING from '../../constants/pricing';
-import { SERVER_ERROR } from '../../constants/errors/errorCodes';
+import {
+  SERVER_ERROR,
+  STRIPE_PAYMENT_INSUFFICIENT_FUNDS,
+} from '../../constants/errors/errorCodes';
 
 const Checkout = () => {
   const stripe = useStripe();
@@ -136,31 +139,42 @@ const Checkout = () => {
       const result = await stripe.confirmCardPayment(
         paymentIntent.clientSecret
       );
-      console.log({
-        result,
-      });
 
       if (result.error) {
+        setLoading(false);
+
         // Show error to customer
-        console.log(result.error.message);
-        showError({ message: result.error.message });
+        if (
+          result.error.code === 'card_declined' &&
+          result.error.decline_code === 'insufficient_funds'
+        ) {
+          showError({
+            message: get(
+              orderErrors.find(
+                ({ code }) => code === STRIPE_PAYMENT_INSUFFICIENT_FUNDS
+              ),
+              'message',
+              'Cannot place order at this time'
+            ),
+          });
+        } else {
+          showError({ message: result.error.message });
+        }
       } else {
         if (result.paymentIntent.status === 'succeeded') {
           // Place order - call create order endpoint
           await placeOrder(newOrder);
           return;
-        } // TODO: handle stripe payment errors
+        } else {
+          throw new Error('Unknown Error');
+        }
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setLoading(false);
-      const errorCode =
-        error.response && error.response.data
-          ? error.response.data.details
-          : SERVER_ERROR;
       showError({
         message: get(
-          orderErrors.find(({ details }) => details === errorCode),
+          orderErrors.find(({ code }) => code === error.response.data.details),
           'message',
           'Cannot place order at this time'
         ),
@@ -210,7 +224,10 @@ const Checkout = () => {
 
   async function getMissedOutProducts() {
     try {
-      const otherProducts = await getOtherReturnProducts(2);
+      const otherProducts = await getOtherReturnProducts(
+        2,
+        items.map((item) => item._id)
+      );
       setOtherReturns(otherProducts);
       setLoading(false);
     } catch (error) {

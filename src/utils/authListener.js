@@ -3,14 +3,14 @@
 export default ({ payload: { event, data } }) => {
     switch (event) {
         case 'signIn':
-            console.log('Sign In', data)
+            // console.log('Sign In', data)
             break;
         case 'signUp':
-            console.info('Sign Up', data);
+            // console.info('Sign Up', data);
             break;
 
         case 'signOut':
-            console.log('Sign Out')
+            // console.log('Sign Out')
             break;
     }
 

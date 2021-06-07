@@ -5,7 +5,7 @@ import { useHistory } from 'react-router';
 import { get } from 'lodash-es';
 import moment from 'moment';
 import { scrollToTop } from '../../utils/window';
-import { getOrder } from '../../utils/orderApi';
+import { getOrder } from '../../api/orderApi';
 import { isEmpty } from 'lodash';
 
 function PickUpConfirmed({ order, isUpdate = false }) {
@@ -107,7 +107,8 @@ function PickUpConfirmed({ order, isUpdate = false }) {
             style={{ alignItems: isUpdate ? 'center' : '' }}
           >
             <p className='sofia-pro mb-0 text-14'>
-              We have sent you a confirmation by email for order #{order.id}
+              We have sent you a confirmation by email for order #
+              <strong>{order.id}</strong>
             </p>
             {!isUpdate && (
               <p

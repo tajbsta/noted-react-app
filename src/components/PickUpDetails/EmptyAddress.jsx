@@ -32,7 +32,7 @@ export default function EmptyAddress(props) {
     renderSpinner();
     setTimeout(() => {
       renderStopSpinner();
-    }, 1000);
+    }, 1500);
   }, []);
 
   return (

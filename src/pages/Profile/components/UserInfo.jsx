@@ -8,10 +8,10 @@ import { updateProfilePicture } from '../../../actions/runtime.action';
 import { get, isEmpty } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
 import { toBase64 } from '../../../utils/file';
-import { getUser, getUserId, uploadProfilePic } from '../../../utils/auth';
+import { getUser, getUserId, uploadProfilePic } from '../../../api/auth';
 import { showError, showSuccess } from '../../../library/notifications.library';
 import { CheckCircle } from 'react-feather';
-import { getOrderHistoryCounts } from '../../../utils/orderApi';
+import { getOrderHistoryCounts } from '../../../api/orderApi';
 
 export default function UserInfo({ user: userData = {} }) {
   const {
@@ -40,7 +40,7 @@ export default function UserInfo({ user: userData = {} }) {
       // console.log(orderCount);
     } catch (error) {
       // TODO: ERROR HANDLING
-      console.log(error);
+      // console.log(error);
     }
   };
 

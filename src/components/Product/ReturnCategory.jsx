@@ -4,11 +4,12 @@ import ProductCard from './ProductCard';
 import { ProgressBar } from 'react-bootstrap';
 import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';
-import { getProducts } from '../../utils/productsApi';
+import { getProducts } from '../../api/productsApi';
 import NotedCheckbox from './NotedCheckbox';
-import { useSelector } from 'react-redux';
-import { DONATE } from '../../constants/actions/runtime';
+import { useSelector, useDispatch } from 'react-redux';
+import { DONATE, NOT_ELIGIBLE } from '../../constants/actions/runtime';
 import { timeout } from '../../utils/time';
+import { setCartItems } from '../../actions/cart.action';
 
 export default function ReturnCategory({
   userId,
@@ -16,18 +17,18 @@ export default function ReturnCategory({
   size,
   category,
   search,
-  updateSelectedItems = () => {},
-  selectedProducts = [],
+  // updateSelectedItems = () => {},
+  // selectedProducts = [],
   width,
   percent,
+  refreshCategory = {},
+  handleRefreshCategory = () => {},
 }) {
-  const { cartItems, newDonations } = useSelector(
-    ({ cart: { items: cartItems }, products: { newDonations } }) => ({
-      cartItems,
-      newDonations,
-    })
-  );
+  const { cartItems } = useSelector(({ cart: { items: cartItems } }) => ({
+    cartItems,
+  }));
 
+  const dispatch = useDispatch();
   const { push } = useHistory();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -36,8 +37,6 @@ export default function ReturnCategory({
     category === DONATE ? 'updated_at,_id' : 'return_not_eligible_date,_id';
   const sort = category === DONATE ? 'desc' : 'asc,asc';
   const [loadProgress, setLoadProgress] = useState(0);
-
-  const [selectedItems, setSelectedItems] = useState([]);
 
   const fetchItems = async (nextPageToken) => {
     try {
@@ -90,8 +89,12 @@ export default function ReturnCategory({
 
   useEffect(() => {
     fetchItems();
-    console.log(category);
-  }, [newDonations]);
+    handleRefreshCategory(fetchItems, category);
+  }, []);
+
+  useEffect(() => {
+    fetchItems();
+  }, [search]);
 
   const getNextPageToken = () => {
     const copyItems = [...items];
@@ -109,47 +112,37 @@ export default function ReturnCategory({
   };
 
   const toggleSelected = async (item) => {
-    const list = [...selectedProducts];
+    const list = [...cartItems];
 
     const index = list.findIndex((x) => x._id === item._id);
-    /**
-     * should we query database for
-     */
     if (index !== -1) {
       list.splice(index, 1);
     } else {
       list.push(item);
     }
 
-    updateSelectedItems({
-      key: category,
-      items: list,
-    });
-
-    if (item.transferred) {
-      fetchItems();
-    }
+    dispatch(setCartItems(list));
   };
 
-  const handleSelectAll = () => {
-    if (selectedProducts.length === items.length) {
-      return updateSelectedItems({
-        key: category,
-        items: [],
-      });
-    }
-    return updateSelectedItems({
-      key: category,
-      items: items,
-    });
-  };
+  const handleSelectAll = (checked) => {
+    const list = [...cartItems];
 
-  useEffect(() => {
-    updateSelectedItems({
-      key: category,
-      items: selectedProducts,
+    items.forEach((item) => {
+      const itemIndex = list.findIndex((x) => x._id === item._id);
+
+      // Add to cart
+      if (checked && itemIndex === -1 && item.category !== NOT_ELIGIBLE) {
+        list.push(item);
+      }
+
+      // Remove in cart
+      if (!checked && itemIndex !== -1) {
+        list.splice(itemIndex, 1);
+      }
     });
-  }, [selectedProducts]);
+
+    dispatch(setCartItems(list));
+  };
 
   return (
     <div id='ReturnCategory'>
@@ -159,8 +152,12 @@ export default function ReturnCategory({
             <NotedCheckbox
               onChangeState={handleSelectAll}
               checked={
-                selectedProducts.length > 0 &&
-                items.length === selectedProducts.length
+                cartItems.length > 0 &&
+                items
+                  .filter((x) => x.category !== NOT_ELIGIBLE)
+                  .every((item) =>
+                    cartItems.map((x) => x._id).includes(item._id)
+                  )
               }
               disabled={items.length < 1}
             />
@@ -188,9 +185,7 @@ export default function ReturnCategory({
             item={item}
             selected={!!cartItems.find((x) => x._id === item._id)}
             toggleSelected={toggleSelected}
-            // onClick={() => {
-            //   push(`/checkout?scanId=${item._id}`);
-            // }}
+            refreshCategory={refreshCategory}
           />
         );
       })}

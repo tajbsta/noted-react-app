@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { get } from 'lodash-es';
 import ReturnScore from '../../../components/Product/ReturnsScore';
+import { toTitleCase } from '../../../utils/data';
 
 export default function ProductInReviewCard({ item }) {
   const [isMobile, setIsMobile] = useState(false);
@@ -31,13 +32,6 @@ export default function ProductInReviewCard({ item }) {
       window.removeEventListener('resize', handleResize);
     };
   });
-
-  const toTitleCase = (str) => {
-    const replacedDash = (str && str.replace('-', ' ')) || '';
-    return replacedDash.replace(/\w\S*/g, function (txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-  };
 
   // Truncate name if longer than 15 characters
   const truncateProductNameForSmallerScreens = (str, num = 12) => {

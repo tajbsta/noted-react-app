@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getCreditCardType } from '../../../utils/creditCards';
-import { updateUserAttributes } from '../../../utils/auth';
-import { deletePaymentMethod } from '../../../utils/orderApi';
+import { updateUserAttributes } from '../../../api/auth';
+import { deletePaymentMethod } from '../../../api/orderApi';
 
 export default function PaymentMethodItem({
   method,

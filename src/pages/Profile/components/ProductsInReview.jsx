@@ -34,7 +34,7 @@ export default function ProductsInReview() {
         trigger={
           <div className='triggerContainer'>
             <h3 className='sofia-pro text-18 mb-3-profile mb-0 ml-3 triggerText'>
-              Products in Review
+              Products Under Review
             </h3>
             <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
           </div>

@@ -1,12 +1,22 @@
+import axiosLib from 'axios';
 import { api } from './api';
 import { getUserSession } from './auth';
+
+var getPickupSlotsCancelTokenSource;
 
 //  Get available time slots for pickup date
 export const getPickupSlots = async (userId, date) => {
   const axios = await api();
+
+  if (getPickupSlotsCancelTokenSource) {
+    getPickupSlotsCancelTokenSource.cancel();
+  }
+
+  getPickupSlotsCancelTokenSource = axiosLib.CancelToken.source();
+
   const res = await axios.post(`/${userId}/orders/pickup-slots`, {
     pickupDate: date,
-  });
+  }, { cancelToken: getPickupSlotsCancelTokenSource.token });
   return res.data.data;
 };
 

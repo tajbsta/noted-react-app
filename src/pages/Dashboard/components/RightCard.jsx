@@ -7,7 +7,7 @@ import axios from 'axios';
 import HorizontalLine from './HorizontalLine';
 import Row from '../../../components/Row';
 import PickUpButton from './PickUpButton';
-import { calculateMetrics } from '../../../utils/productsApi';
+import { calculateMetrics } from '../../../api/productsApi';
 import NotedCheckbox from '../../../components/Product/NotedCheckbox';
 import { setCartItems } from '../../../actions/cart.action';
 import {
@@ -18,7 +18,7 @@ import {
 } from '../../../constants/actions/runtime';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
-function RightCard({ userId, setSelectedProducts, beyond90days }) {
+function RightCard({ beyond90days }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
@@ -48,21 +48,17 @@ function RightCard({ userId, setSelectedProducts, beyond90days }) {
   });
 
   useEffect(() => {
-    // if (!isEmpty(xorWith(items, previousCartItems, isEqual))) {
-    //   calculateCurrentCartPricing(items);
-    // }
     calculateCurrentCartPricing(items);
   }, [items]);
 
   const calculateCurrentCartPricing = async (currentItems) => {
     try {
-      // if (userId) {
       setLoading(true);
 
       const cartItems = [...currentItems];
       const productIds = cartItems.map((x) => x._id);
 
-      const data = await calculateMetrics(userId, productIds);
+      const data = await calculateMetrics(productIds);
 
       setPricing({
         totalReturns: data.totalReturns,
@@ -71,7 +67,6 @@ function RightCard({ userId, setSelectedProducts, beyond90days }) {
         pickupPrice: data.pickupPrice,
       });
       setLoading(false);
-      // }
     } catch (error) {
       if (!axios.isCancel(error)) {
         setLoading(false);
@@ -85,12 +80,6 @@ function RightCard({ userId, setSelectedProducts, beyond90days }) {
   };
 
   const handleCheckboxChange = () => {
-    setSelectedProducts({
-      [LAST_CALL]: [],
-      [NOT_ELIGIBLE]: [],
-      [RETURNABLE]: [],
-      [DONATE]: [],
-    });
     dispatch(setCartItems([]));
   };
 

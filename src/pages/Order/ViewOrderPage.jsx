@@ -15,7 +15,7 @@ import ModifyCheckoutCard from './components/ModifyCheckoutCard';
 import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import CancelOrderModal from '../../modals/CancelOrderModal';
-import { getUserId } from '../../utils/auth';
+import { getUserId } from '../../api/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { orderErrors } from '../../library/errors.library';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
@@ -28,15 +28,20 @@ import {
   cancelOrder,
   getOrder,
   getOrderPricing,
-} from '../../utils/orderApi';
+} from '../../api/orderApi';
 import {
   setCartItems,
   setPickupAddress,
   setPayment,
   setPickupDetails,
+  clearCart,
 } from '../../actions/cart.action';
 import PRICING from '../../constants/pricing';
-import { getOtherReturnProducts } from '../../utils/productsApi';
+import { getOtherReturnProducts } from '../../api/productsApi';
+import {
+  SERVER_ERROR,
+  STRIPE_PAYMENT_INSUFFICIENT_FUNDS,
+} from '../../constants/errors/errorCodes';
 
 const ViewOrder = () => {
   const dispatch = useDispatch();
@@ -197,9 +202,12 @@ const ViewOrder = () => {
       setCancelled(true);
       setConfirmed(true);
     } catch (error) {
-      console.log(error.response.data);
+      // console.log(error.response.data);
 
-      let errCode;
+      let errorCode =
+        error.response && error.response.data
+          ? error.response.data.details
+          : SERVER_ERROR;
 
       if (
         !billing &&
@@ -216,27 +224,36 @@ const ViewOrder = () => {
           paymentIntent.clientSecret
         );
 
-        console.log({
-          result,
-        });
+        // console.log({
+        //   result,
+        // });
 
         if (result.error) {
           // Show error to customer
-          console.log(result.error.message);
-          errCode = result.error.message;
+          if (
+            result.error.code === 'card_declined' &&
+            result.error.decline_code === 'insufficient_funds'
+          ) {
+            errorCode = STRIPE_PAYMENT_INSUFFICIENT_FUNDS;
+          } else {
+            setShowCancelOrderModal(false);
+            setLoading(false);
+            showError({ message: result.error.message });
+            return;
+          }
         } else {
           if (result.paymentIntent.status === 'succeeded') {
             const cancelBilling = {
               paymentIntentId: paymentIntent.paymentIntentId,
               paymentMethodId: paymentIntent.paymentMethodId,
               productId: paymentIntent.productId,
-              // taxId: paymentIntent.taxId,
               priceId: paymentIntent.priceId,
               pricing: paymentIntent.pricing,
             };
-            ConfirmCancellation(cancelBilling);
-            return;
-          } // TODO: handle stripe payment errors
+            return ConfirmCancellation(cancelBilling);
+          } else {
+            throw new Error('Unknown Error');
+          }
         }
       }
 
@@ -244,9 +261,7 @@ const ViewOrder = () => {
       setLoading(false);
       showError({
         message: get(
-          orderErrors.find(
-            ({ details }) => details === error.response.data.details
-          ),
+          orderErrors.find(({ code }) => code === errorCode),
           'message',
           'Cannot cancel order at this time'
         ),
@@ -255,6 +270,12 @@ const ViewOrder = () => {
   };
 
   const ConfirmUpdate = async (billing = null) => {
+    // if there is no airtable record
+    if (!order.airtableId) {
+      showError({ message: 'Cannot update order at this time' });
+      return;
+    }
+
     setLoading(true);
     try {
       const userId = await getUserId();
@@ -293,8 +314,11 @@ const ViewOrder = () => {
         ),
       });
     } catch (error) {
-      console.log(billing);
-      let errCode;
+      // console.log(billing);
+      let errorCode =
+        error.response && error.response.data
+          ? error.response.data.details
+          : SERVER_ERROR;
 
       if (
         !billing &&
@@ -312,14 +336,22 @@ const ViewOrder = () => {
           paymentIntent.clientSecret
         );
 
-        console.log({
-          result,
-        });
+        // console.log({
+        //   result,
+        // });
 
         if (result.error) {
           // Show error to customer
-          console.log(result.error.message);
-          errCode = result.error.message;
+          if (
+            result.error.code === 'card_declined' &&
+            result.error.decline_code === 'insufficient_funds'
+          ) {
+            errorCode = STRIPE_PAYMENT_INSUFFICIENT_FUNDS;
+          } else {
+            setLoading(false);
+            showError({ message: result.error.message });
+            return;
+          }
         } else {
           if (result.paymentIntent.status === 'succeeded') {
             const updateBilling = {
@@ -330,18 +362,17 @@ const ViewOrder = () => {
               priceId: paymentIntent.priceId,
               pricing: paymentIntent.pricing,
             };
-            ConfirmUpdate(updateBilling);
-            return;
-          } // TODO: handle stripe payment errors
+            return ConfirmUpdate(updateBilling);
+          } else {
+            throw new Error('Unknown Error');
+          }
         }
       }
 
       setLoading(false);
       showError({
         message: get(
-          orderErrors.find(
-            ({ details }) => details === error.response.data.details
-          ),
+          orderErrors.find(({ code }) => code === errorCode),
           'message',
           'Cannot update order at this time'
         ),
@@ -350,6 +381,12 @@ const ViewOrder = () => {
   };
 
   const initiateCancelOrder = () => {
+    // if no airtable record
+    if (!order.airtableId) {
+      showError({ message: 'Cannot cancel order at this time' });
+      return;
+    }
+
     setShowCancelOrderModal(true);
   };
 
@@ -381,6 +418,9 @@ const ViewOrder = () => {
       window.removeEventListener('resize', handleResize);
     };
   });
+
+  // Clear cart on destroy
+  useEffect(() => () => dispatch(clearCart()), []);
 
   const removeProduct = (product) => {
     if (items.length !== 1) {
@@ -433,7 +473,7 @@ const ViewOrder = () => {
                 </h3>
                 <div className='confirmed-container'>
                   {cancelled ? (
-                    <PickUpCancelled />
+                    <PickUpCancelled order={order} />
                   ) : (
                     <PickUpConfirmed order={order} isUpdate={true} />
                   )}
