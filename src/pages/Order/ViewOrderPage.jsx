@@ -34,6 +34,7 @@ import {
   setPickupAddress,
   setPayment,
   setPickupDetails,
+  clearCart,
 } from '../../actions/cart.action';
 import PRICING from '../../constants/pricing';
 import { getOtherReturnProducts } from '../../api/productsApi';
@@ -269,6 +270,12 @@ const ViewOrder = () => {
   };
 
   const ConfirmUpdate = async (billing = null) => {
+    // if there is no airtable record
+    if (!order.airtableId) {
+      showError({ message: 'Cannot update order at this time' });
+      return;
+    }
+
     setLoading(true);
     try {
       const userId = await getUserId();
@@ -374,6 +381,12 @@ const ViewOrder = () => {
   };
 
   const initiateCancelOrder = () => {
+    // if no airtable record
+    if (!order.airtableId) {
+      showError({ message: 'Cannot cancel order at this time' });
+      return;
+    }
+
     setShowCancelOrderModal(true);
   };
 
@@ -405,6 +418,9 @@ const ViewOrder = () => {
       window.removeEventListener('resize', handleResize);
     };
   });
+
+  // Clear cart on destroy
+  useEffect(() => () => dispatch(clearCart()), []);
 
   const removeProduct = (product) => {
     if (items.length !== 1) {
