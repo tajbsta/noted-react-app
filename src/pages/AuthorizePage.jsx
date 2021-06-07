@@ -101,7 +101,12 @@ export default function AuthorizePage() {
               any of your personal info to anyone.
             </h4>
             <h4 className='text-underline'>
-              <a href='#' className='sofia-pro'>
+              <a
+                href='https://notedreturns.com/privacy-policy'
+                target='_blank'
+                rel='noreferrer'
+                className='sofia-pro'
+              >
                 Learn more about security
               </a>
             </h4>
