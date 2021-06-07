@@ -10,6 +10,7 @@ export default function MobileNav({
   profile,
   settings,
   logout,
+  backToHome,
 }) {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -49,11 +50,7 @@ export default function MobileNav({
         }}
         expand='lg'
       >
-        <Navbar.Brand
-          href={`${
-            guestViews.indexOf(pageLocation) != -1 ? '/' : '/dashboard'
-          }`}
-        >
+        <Navbar.Brand onClick={backToHome} style={{ cursor: 'pointer' }}>
           <BrandLogoSvg />
         </Navbar.Brand>
 

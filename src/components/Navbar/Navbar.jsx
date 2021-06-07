@@ -97,6 +97,14 @@ export default function Topnav() {
     history.push('/settings');
   };
 
+  const backToHome = () => {
+    if (guestViews.indexOf(pageLocation) != -1) {
+      history.push('/');
+    } else {
+      history.push('/dashboard');
+    }
+  };
+
   const submitsearch = (e) => {
     if (e.key === 'Enter') {
       const search = searchQuery.trim();
@@ -142,9 +150,8 @@ export default function Topnav() {
       {!isMobile && (
         <>
           <Navbar.Brand
-            href={`${
-              guestViews.indexOf(pageLocation) != -1 ? '/' : '/dashboard'
-            }`}
+            onClick={backToHome}
+            style={{ cursor: 'pointer' }}
             className='ml-4 mr-1'
           >
             <BrandLogoSvg />
@@ -159,6 +166,7 @@ export default function Topnav() {
           settings={settings}
           checkclearsearch={checkclearsearch}
           submitsearch={submitsearch}
+          backToHome={backToHome}
         />
       )}
 

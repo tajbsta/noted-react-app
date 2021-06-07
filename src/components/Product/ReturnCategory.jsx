@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
-import Row from "../Row";
-import ProductCard from "./ProductCard";
-import { ProgressBar } from "react-bootstrap";
-import QuestionMarkSvg from "../../assets/icons/QuestionMark.svg";
-import { useHistory } from "react-router-dom";
-import { getProducts } from "../../api/productsApi";
-import NotedCheckbox from "./NotedCheckbox";
-import { useSelector } from "react-redux";
-import { DONATE } from "../../constants/actions/runtime";
-import { timeout } from "../../utils/time";
+import React, { useEffect, useState } from 'react';
+import Row from '../Row';
+import ProductCard from './ProductCard';
+import { ProgressBar } from 'react-bootstrap';
+import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
+import { useHistory } from 'react-router-dom';
+import { getProducts } from '../../api/productsApi';
+import NotedCheckbox from './NotedCheckbox';
+import { useSelector, useDispatch } from 'react-redux';
+import { DONATE, NOT_ELIGIBLE } from '../../constants/actions/runtime';
+import { timeout } from '../../utils/time';
+import { setCartItems } from '../../actions/cart.action';
 
 export default function ReturnCategory({
   userId,
@@ -16,8 +17,8 @@ export default function ReturnCategory({
   size,
   category,
   search,
-  updateSelectedItems = () => {},
-  selectedProducts = [],
+  // updateSelectedItems = () => {},
+  // selectedProducts = [],
   width,
   percent,
   refreshCategory = {},
@@ -27,16 +28,15 @@ export default function ReturnCategory({
     cartItems,
   }));
 
+  const dispatch = useDispatch();
   const { push } = useHistory();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showNextPageButton, setShowNextPageButton] = useState(true);
   const sortBy =
-    category === DONATE ? "updated_at,_id" : "return_not_eligible_date,_id";
-  const sort = category === DONATE ? "desc" : "asc,asc";
+    category === DONATE ? 'updated_at,_id' : 'return_not_eligible_date,_id';
+  const sort = category === DONATE ? 'desc' : 'asc,asc';
   const [loadProgress, setLoadProgress] = useState(0);
-
-  const [selectedItems, setSelectedItems] = useState([]);
 
   const fetchItems = async (nextPageToken) => {
     try {
@@ -101,9 +101,9 @@ export default function ReturnCategory({
     const lastItem = copyItems.pop();
 
     return sortBy
-      .split(",")
+      .split(',')
       .map((key) => encodeURIComponent(lastItem[key]))
-      .join(",");
+      .join(',');
   };
 
   const showMore = () => {
@@ -112,75 +112,68 @@ export default function ReturnCategory({
   };
 
   const toggleSelected = async (item) => {
-    const list = [...selectedProducts];
+    const list = [...cartItems];
 
     const index = list.findIndex((x) => x._id === item._id);
-    /**
-     * should we query database for
-     */
     if (index !== -1) {
       list.splice(index, 1);
     } else {
       list.push(item);
     }
 
-    updateSelectedItems({
-      key: category,
-      items: list,
-    });
-
-    if (item.transferred) {
-      fetchItems();
-    }
+    dispatch(setCartItems(list));
   };
 
-  const handleSelectAll = () => {
-    if (selectedProducts.length === items.length) {
-      return updateSelectedItems({
-        key: category,
-        items: [],
-      });
-    }
-    return updateSelectedItems({
-      key: category,
-      items: items,
+  const handleSelectAll = (checked) => {
+    const list = [...cartItems];
+
+    items.forEach((item) => {
+      const itemIndex = list.findIndex((x) => x._id === item._id);
+
+      // Add to cart
+      if (checked && itemIndex === -1 && item.category !== NOT_ELIGIBLE) {
+        list.push(item);
+      }
+
+      // Remove in cart
+      if (!checked && itemIndex !== -1) {
+        list.splice(itemIndex, 1);
+      }
     });
+
+    dispatch(setCartItems(list));
   };
-
-  // useEffect(() => {
-  //   updateSelectedItems({
-  //     key: category,
-  //     items: selectedProducts,
-  //   });
-
-  // }, [selectedProducts]);
 
   return (
-    <div id="ReturnCategory">
+    <div id='ReturnCategory'>
       <Row>
-        <div className="category-title">
-          <div className="ml-3 p-0 purchase-type-checkbox-container">
+        <div className='category-title'>
+          <div className='ml-3 p-0 purchase-type-checkbox-container'>
             <NotedCheckbox
               onChangeState={handleSelectAll}
               checked={
-                selectedProducts.length > 0 &&
-                items.length === selectedProducts.length
+                cartItems.length > 0 &&
+                items
+                  .filter((x) => x.category !== NOT_ELIGIBLE)
+                  .every((item) =>
+                    cartItems.map((x) => x._id).includes(item._id)
+                  )
               }
               disabled={items.length < 1}
             />
           </div>
-          <h4 className="sofia-pro purchase-types purchase-type-title">
+          <h4 className='sofia-pro purchase-types purchase-type-title'>
             {typeTitle}
           </h4>
           <img
-            className="question-mark"
+            className='question-mark'
             src={QuestionMarkSvg}
-            alt=""
+            alt=''
             style={{
               opacity: 0.6,
             }}
-            data-toggle="tooltip"
-            data-placement="top"
+            data-toggle='tooltip'
+            data-placement='top'
           />
         </div>
       </Row>
@@ -193,17 +186,14 @@ export default function ReturnCategory({
             selected={!!cartItems.find((x) => x._id === item._id)}
             toggleSelected={toggleSelected}
             refreshCategory={refreshCategory}
-            // onClick={() => {
-            //   push(`/checkout?scanId=${item._id}`);
-            // }}
           />
         );
       })}
 
       {!loading && items.length === 0 && (
-        <div className="row justify-center m-row">
-          <div className="col-sm-7 text-center">
-            <div className="text-center sofia-pro empty-category">
+        <div className='row justify-center m-row'>
+          <div className='col-sm-7 text-center'>
+            <div className='text-center sofia-pro empty-category'>
               No products found.
             </div>
           </div>
@@ -212,9 +202,9 @@ export default function ReturnCategory({
 
       {loading && <ProgressBar animated now={loadProgress} />}
       {showNextPageButton && !loading && (
-        <div className="d-flex justify-content-center">
+        <div className='d-flex justify-content-center'>
           <button
-            className="sofia-pro btn btn-show-more noted-purple"
+            className='sofia-pro btn btn-show-more noted-purple'
             onClick={showMore}
           >
             Show more
