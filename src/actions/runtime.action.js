@@ -41,7 +41,7 @@ export const updateLastCall = ({ scans }) => ({
   data: scans,
 });
 
-export const updateReturnAdddress = ({ formData }) => ({
+export const updateReturnAddress = ({ formData }) => ({
   type: UPDATE_RETURN_ADDRESS,
   data: formData,
 });

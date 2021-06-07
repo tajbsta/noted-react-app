@@ -78,7 +78,7 @@ export default function EditProductModal(props) {
       reader.onload = () => {
         // Do whatever with the file contents
         const binaryStr = reader.result;
-        console.log(binaryStr);
+        // console.log(binaryStr);
       };
       reader.readAsArrayBuffer(file);
     });
@@ -329,7 +329,12 @@ export default function EditProductModal(props) {
                 <Button className='btn-cancel' onClick={props.onHide}>
                   Cancel
                 </Button>
-                <Button className='btn-save' type='submit' onClick={onSave}>
+                <Button
+                  disabled
+                  className='btn-save'
+                  type='submit'
+                  onClick={onSave}
+                >
                   Save Changes
                 </Button>
               </Col>

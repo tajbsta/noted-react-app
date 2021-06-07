@@ -54,9 +54,9 @@ export default function ResetPasswordPage(props) {
     setIsSubmitting(true);
 
     try {
-      console.log({
-        username: props.location.state.username,
-      });
+      // console.log({
+      //   username: props.location.state.username,
+      // });
 
       await Auth.forgotPasswordSubmit(
         props.location.state.username,

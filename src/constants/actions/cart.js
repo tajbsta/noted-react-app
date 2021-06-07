@@ -1,1 +1,5 @@
 export const SET_ITEMS = 'SET_ITEMS';
+export const CLEAR_CART = 'CLEAR_CART';
+export const SET_PICKUP_ADDRESS = 'SET_PICKUP_ADDRESS';
+export const SET_PAYMENT = 'SET_PAYMENT';
+export const SET_PICKUP_DETAILS = 'SET_PICKUP_DETAILS';

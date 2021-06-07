@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { AlertCircle } from 'react-feather';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import AuthorizeImg from '../assets/img/Authorize.svg';
 import $ from 'jquery';
-import { getGoogleOauthUrl } from '../utils/authApi';
+import { getGoogleOauthUrl } from '../api/authApi';
 import qs from 'qs';
 import { scraperGmailErrors } from '../library/errors.library';
 import { get, isEmpty } from 'lodash';
@@ -24,7 +23,8 @@ export default function AuthorizePage() {
 
       setAuthUrl(url);
     } catch (error) {
-      console.log({ error });
+      // TODO: Error HANDLING
+      // console.log({ error });
     }
   };
 

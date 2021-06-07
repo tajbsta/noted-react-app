@@ -8,14 +8,16 @@ import { updateProfilePicture } from '../../../actions/runtime.action';
 import { get, isEmpty } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
 import { toBase64 } from '../../../utils/file';
-import { getUser, uploadProfilePic } from '../../../utils/auth';
+import { getUser, getUserId, uploadProfilePic } from '../../../api/auth';
 import { showError, showSuccess } from '../../../library/notifications.library';
 import { CheckCircle } from 'react-feather';
+import { getOrderHistoryCounts } from '../../../api/orderApi';
 
 export default function UserInfo({ user: userData = {} }) {
   const {
     location: { pathname },
   } = useHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
   const [file, setFile] = useState('');
@@ -23,8 +25,36 @@ export default function UserInfo({ user: userData = {} }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-
+  const [orderCount, setOrderCount] = useState(false);
+  const [fetchingOrderCount, setFetchingOrderCount] = useState(false);
   const hiddenFileInput = useRef(null);
+
+  const getOrderItemHistoryCount = async () => {
+    try {
+      setFetchingOrderCount(true);
+      const userId = await getUserId();
+      const orderCount = await getOrderHistoryCounts(userId);
+
+      setFetchingOrderCount(false);
+      setOrderCount(orderCount);
+      // console.log(orderCount);
+    } catch (error) {
+      // TODO: ERROR HANDLING
+      // console.log(error);
+    }
+  };
+
+  const redirectToSettings = () => {
+    history.push('/settings');
+  };
+
+  const redirectToProfile = () => {
+    history.push('/profile');
+  };
+
+  useEffect(() => {
+    getOrderItemHistoryCount();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -276,27 +306,32 @@ export default function UserInfo({ user: userData = {} }) {
           <div className='row align-items-center justify-content-between m-info-row'>
             <div className='m-col-auto'>
               <div>
-                <h4 className='text-left total'>0</h4>
+                <h4 className='text-left total'>
+                  {orderCount.totalReturns || 0}
+                </h4>
                 <h5 className='total-label'>Total Returns</h5>
               </div>
             </div>
             <div className='m-col-auto'>
               <div>
-                <h4 className='text-left total'>0</h4>
+                <h4 className='text-left total'>
+                  {orderCount.totalDonations || 0}
+                </h4>
                 <h5 className='total-label'>Total Donations</h5>
               </div>
             </div>
           </div>
         </div>
         <div className='mt-4 button-container d-flex justify-content-center'>
-          <button className='btn btn-lg btn-account'>
-            <a
-              style={{ color: '#570097' }}
-              className='btn-text'
-              href={pathname === '/profile' ? '/settings' : '/profile'}
-            >
+          <button
+            className='btn btn-lg btn-account'
+            onClick={
+              pathname === '/profile' ? redirectToSettings : redirectToProfile
+            }
+          >
+            <span style={{ color: '#570097' }} className='btn-text'>
               {pathname === '/profile' ? 'Account Settings' : 'Profile'}
-            </a>
+            </span>
           </button>
         </div>
       </Card>

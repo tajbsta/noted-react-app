@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from '../../../components/Row';
 import ProductCard from '../../../components/ProductCard';
-import NotedCheckbox from '../../../components/NotedCheckbox';
+import NotedCheckbox from '../../../components/Product/NotedCheckbox';
 import QuestionMarkSvg from '../../../assets/icons/QuestionMark.svg';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';

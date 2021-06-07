@@ -3,10 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import ReturnCategory from '../../components/ReturnCategory';
+import ReturnCategory from '../../components/Product/ReturnCategory';
 import RightCard from './components/RightCard';
-import { getUserId, getUser, updateUserAttributes } from '../../utils/auth';
-import { getAccounts } from '../../utils/accountsApi';
+import {
+  getUserId,
+  getUser,
+  updateUserAttributes,
+  scrapeOlderEmails,
+} from '../../api/auth';
+import { getOrders } from '../../api/orderApi';
+import { getAccounts } from '../../api/accountsApi';
 import { clearSearchQuery } from '../../actions/runtime.action';
 import { setCartItems } from '../../actions/cart.action';
 import {
@@ -19,38 +25,87 @@ import AddProductModal from '../../modals/AddProductModal';
 import ScheduledCard from './components/ScheduledCard';
 import Scanning from './components/Scanning';
 import { scrollToTop } from '../../utils/window';
-import { scrapeOlderEmails } from '../../utils/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
-
-const inDevMode = ['local', 'development'].includes(process.env.NODE_ENV);
+import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 
 export default function DashboardPage() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { search, scheduledReturns } = useSelector(
+  const [search, setSearch] = useState('');
+  const [refreshCategory, setRefreshCategory] = useState({
+    LAST_CALL: () => {},
+    NOT_ELIGIBLE: () => {},
+    RETURNABLE: () => {},
+    DONATE: () => {},
+  });
+
+  const { search: searchSession } = useSelector(
     ({ runtime: { search }, auth: { scheduledReturns } }) => ({
       search,
       scheduledReturns,
     })
   );
+
   const [loading, setLoading] = useState(true);
   const [showScanning, setShowScanning] = useState(false);
   const [user, setUser] = useState('');
   const [userId, setUserId] = useState('');
   const [showScanOlderButton, setShowScanOlderButton] = useState(false);
+  const [olderScanDone, setIsOlderScanDone] = useState(false);
   const [modalProductShow, setModalProductShow] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState({
-    [LAST_CALL]: [],
-    [NOT_ELIGIBLE]: [],
-    [RETURNABLE]: [],
-    [DONATE]: [],
-  });
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [orders, setOrders] = useState([]);
+  const [fetchingOrders, setFetchingOrders] = useState(false);
+
+  /**HANDLE CATEGORY REFRESH */
+  const handleRefreshCategory = (method, category) => {
+    if (category === 'LAST_CALL,NOT_ELIGIBLE') {
+      setRefreshCategory((refreshCategory) => ({
+        ...refreshCategory,
+        LAST_CALL: method,
+      }));
+    } else {
+      setRefreshCategory((refreshCategory) => ({
+        ...refreshCategory,
+        [`${category}`]: method,
+      }));
+    }
+  };
+
+  const getScheduledOrders = async () => {
+    try {
+      setFetchingOrders(true);
+      const userId = await getUserId();
+      const res = await getOrders(userId, 'active');
+
+      setFetchingOrders(false);
+      setOrders(res.orders);
+      // console.log(res.orders);
+    } catch (error) {
+      // TODO: ERROR HANDLING
+      // console.log(error);
+      showError('An error occurred. Unable to retrieve orders');
+    }
+  };
+
+  useEffect(() => {
+    // console.log({
+    //   searchSession,
+    // });
+    setSearch(searchSession.trim());
+  }, [searchSession]);
+
+  useEffect(() => {
+    // empty orders
+    if (orders.length === 0) {
+      getScheduledOrders();
+    }
+  }, []);
 
   async function loadScans() {
-    dispatch(clearSearchQuery());
+    // dispatch(clearSearchQuery());
     try {
       setLoading(true);
       const userId = await getUserId();
@@ -107,6 +162,7 @@ export default function DashboardPage() {
         ),
       });
       setLoading(false);
+      setIsOlderScanDone(true);
     } catch (error) {
       // TODO: show error alert here
       setLoading(false);
@@ -121,17 +177,6 @@ export default function DashboardPage() {
         ),
       });
     }
-  };
-
-  const updateSelectedItems = (data) => {
-    const updatedSelectedProducts = selectedProducts;
-
-    updatedSelectedProducts[data.key] = data.items;
-
-    setSelectedProducts(updatedSelectedProducts);
-
-    const cartItems = flatMap(values(updatedSelectedProducts));
-    dispatch(setCartItems(cartItems));
   };
 
   useEffect(() => {
@@ -167,22 +212,22 @@ export default function DashboardPage() {
 
   useEffect(() => {
     (async () => {
-      // await updateUserAttributes({ 'custom:scan_older_done': '0' });
+      // await updateUserAttributes({ 'custom:scan_older_done': '0' }); // don't delete: helps to bring back 'Scan for older items' button if not-commented
       const user = await getUser();
       setUser(user);
       setShowScanOlderButton(user['custom:scan_older_done'] !== '1');
     })();
   }, []);
 
+  const beyond90days =
+    olderScanDone || (user && user['custom:scan_older_done'] == '1');
+
   return (
     <div id='DashboardPage'>
       <div className='container mt-6 main-mobile-dashboard'>
         <div className='row sched-row'>
-          {/**
-           * should only appear if there are scheduled returns
-           */}
-
-          {!isEmpty(scheduledReturns) && <ScheduledCard />}
+          {/* If there are in progress orders */}
+          {!isEmpty(orders) && <ScheduledCard orders={orders} />}
         </div>
         <div className='row ipad-row'>
           <div className={`mt-4 w-840 bottom ${isTablet ? 'col' : 'col-sm-9'}`}>
@@ -209,6 +254,7 @@ export default function DashboardPage() {
                 {isEmpty(search) && (
                   <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
                     Your online purchases - Last 90 Days
+                    {beyond90days ? ' & beyond' : ''}
                   </h3>
                 )}
                 {!isEmpty(search) && (
@@ -223,9 +269,9 @@ export default function DashboardPage() {
                         typeTitle='Last Call!'
                         userId={userId}
                         size={5}
-                        category={LAST_CALL && NOT_ELIGIBLE}
-                        updateSelectedItems={updateSelectedItems}
-                        selectedProducts={selectedProducts.LAST_CALL}
+                        category={`${LAST_CALL},${NOT_ELIGIBLE}`}
+                        refreshCategory={refreshCategory}
+                        handleRefreshCategory={handleRefreshCategory}
                       />
                     </div>
                     <div className='mt-4 returnable-items'>
@@ -234,8 +280,8 @@ export default function DashboardPage() {
                         userId={userId}
                         size={5}
                         category={RETURNABLE}
-                        updateSelectedItems={updateSelectedItems}
-                        selectedProducts={selectedProducts.RETURNABLE}
+                        refreshCategory={refreshCategory}
+                        handleRefreshCategory={handleRefreshCategory}
                       />
                     </div>
                     <div>
@@ -249,8 +295,8 @@ export default function DashboardPage() {
                         userId={userId}
                         size={5}
                         category={DONATE}
-                        updateSelectedItems={updateSelectedItems}
-                        selectedProducts={selectedProducts.DONATE}
+                        refreshCategory={refreshCategory}
+                        handleRefreshCategory={handleRefreshCategory}
                       />
                     </div>
                     <div>
@@ -268,7 +314,6 @@ export default function DashboardPage() {
                       userId={userId}
                       size={5}
                       search={search}
-                      updateSelectedItems={updateSelectedItems}
                     />
                   </div>
                 )}
@@ -288,7 +333,7 @@ export default function DashboardPage() {
                         <div className='text-muted text-center text-cant-find sofia-pro'>
                           Can’t find one?
                           <button
-                            className='btn btn-add-product'
+                            className='btn btn-add-product mr-1'
                             onClick={() => setModalProductShow(true)}
                             style={{ padding: '0px' }}
                           >
@@ -296,6 +341,10 @@ export default function DashboardPage() {
                               &nbsp; Add it manually
                             </h4>
                           </button>
+                          <ReturnValueInfoIcon
+                            content="We're still working on this"
+                            iconClassname='info-icon-small'
+                          />
                         </div>
                       </div>
                     </div>
@@ -345,10 +394,7 @@ export default function DashboardPage() {
           {!isTablet && (
             <>
               <div className='col-sm-3 checkout-card'>
-                <RightCard
-                  userId={userId}
-                  setSelectedProducts={setSelectedProducts}
-                />
+                <RightCard beyond90days={beyond90days} />
               </div>
             </>
           )}
@@ -357,7 +403,7 @@ export default function DashboardPage() {
       {isTablet && (
         <>
           <div className='col checkout-card'>
-            <RightCard userId={userId} />
+            <RightCard beyond90days={beyond90days} />
           </div>
         </>
       )}

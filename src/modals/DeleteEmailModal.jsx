@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { deleteAccount } from '../utils/accountsApi';
+import { deleteAccount } from '../api/accountsApi';
 
 export default function DeleteEmailModal(props) {
   const [isMobile, setIsMobile] = useState(false);

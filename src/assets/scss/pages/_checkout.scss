@@ -7,6 +7,7 @@
     @media (max-width: 991px) {
       padding: 0px;
     }
+
     // @media (min-width: 541px) and (max-width: 991px) {
     //   max-width: 68%;
     // }
@@ -17,6 +18,7 @@
       padding-left: 0px;
       padding-right: 0px;
     }
+
     @media (min-width: 992px) {
       padding-left: 0px;
       padding-right: 0px;
@@ -40,17 +42,16 @@
       padding-left: 16px;
       padding-right: 16px;
     }
+
+    @media (max-width: 766px) {
+      margin: 0px;
+      padding: 0px;
+    }
   }
 
   .mobile-view-add-col {
     @media (max-width: 991px) {
       margin: 12px;
-    }
-  }
-
-  .mobile-view-no-m-row {
-    @media (max-width: 991px) {
-      margin: auto;
     }
   }
 
@@ -164,10 +165,6 @@
     }
   }
 
-  .arrow-container {
-    margin-bottom: 2%;
-  }
-
   .payment-card-logo {
     width: 38px;
   }
@@ -189,14 +186,8 @@
     }
   }
 
-  .payment-method-title-mobile {
-    @media (min-width: 1024px) {
-      display: none;
-    }
-  }
-
   .pick-up-address {
-    @media (max-width: 1025px) {
+    @media (max-width: 1023px) {
       display: none;
     }
   }
@@ -208,7 +199,7 @@
   }
 
   .payment-method {
-    @media (max-width: 1025px) {
+    @media (max-width: 1023px) {
       display: none;
     }
   }
@@ -303,6 +294,13 @@
   }
 
   // Your Products to return section
+  #ProductCard {
+    @media (max-width: 540px) {
+      margin-left: -12px;
+      margin-right: -12px;
+    }
+  }
+
   .products-return {
     margin-top: 39px;
   }
@@ -311,7 +309,7 @@
 
   // Don't miss out section
   .miss-out {
-    margin-top: 55px;
+    margin-top: 40px;
     margin-bottom: 17px;
   }
 
@@ -376,9 +374,6 @@
   }
 
   .back-to-products-btn {
-    position: absolute;
-    right: 0;
-    bottom: 0;
     background: #6aaf6a;
     border: none;
     border-radius: 8px;
@@ -428,6 +423,8 @@
   }
 
   .add-title {
+    display: flex;
+    align-items: center;
     font-size: 14px;
     line-height: 16px;
     color: #b1adb3;
@@ -486,16 +483,6 @@
     padding-right: 12px;
     padding-left: 12px;
     margin-right: auto;
-  }
-
-  #mobile-product-info {
-    padding-left: 12px;
-    padding-right: 12px;
-
-    .col-days-left {
-      padding: 0px;
-      // padding-left: 12px;
-    }
   }
 
   .mobile-form-title {

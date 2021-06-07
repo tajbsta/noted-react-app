@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { timeout } from '../utils/time';
-import { showWarning } from '../library/notifications.library';
+import { Spinner } from 'react-bootstrap';
 
 export default function CancelOrderModal(props) {
   const [isMobile, setIsMobile] = useState(false);
@@ -36,7 +35,7 @@ export default function CancelOrderModal(props) {
           className='close'
           data-dismiss='modal'
           aria-label='Close'
-          onClick={props.onHide}
+          onClick={props.removeCancelOrderModal}
         >
           <span aria-hidden='true'>&times;</span>
         </Button>
@@ -60,14 +59,20 @@ export default function CancelOrderModal(props) {
           <Button
             className='btn-cancel'
             onClick={() => {
-              showWarning({ message: 'Order cancelled' });
-              timeout({ duration: 1000 });
-              props.onCancel();
+              props.ConfirmCancellation();
             }}
+            disabled={props.loading}
           >
-            Cancel order
+            {props.loading && (
+              <Spinner
+                animation='border'
+                size='sm'
+                className='mr-3 spinner btn-spinner'
+              />
+            )}
+            {props.loading ? 'Canceling' : 'Cancel order'}
           </Button>
-          <Button className='btn-dont' onClick={props.onHide}>
+          <Button className='btn-dont' onClick={props.removeCancelOrderModal}>
             Do not cancel order
           </Button>
         </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { get } from 'lodash-es';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import { RETURN_SCORES } from '../constants/returns/scores';
-import ReturnScore from '../components/ReturnsScore';
+import ReturnScore from '../components/Product/ReturnsScore';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 
 export default function ReturnPolicyModal(props) {
@@ -16,7 +16,7 @@ export default function ReturnPolicyModal(props) {
     ({ rating: returnRating }) => rating === returnRating
   );
   const scoreTitle = get(score, 'title', '');
-  const vendor = get(item, 'vendor_name', '');
+  const vendor = get(item, 'vendor_data.name', '');
 
   useEffect(() => {
     function handleResize() {
@@ -71,16 +71,18 @@ export default function ReturnPolicyModal(props) {
             {policy == '' ? 'This is empty.' : policy}
           </p>
         </Row>
-        <Row className='ml-1'>
-          <a
-            className='sofia-pro view-link'
-            href={website}
-            target='_blank'
-            rel='noreferrer'
-          >
-            View website
-          </a>
-        </Row>
+        {!!website && (
+          <Row className='ml-1'>
+            <a
+              className='sofia-pro view-link'
+              href={website}
+              target='_blank'
+              rel='noreferrer'
+            >
+              View website
+            </a>
+          </Row>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button className='btn-ok' onClick={props.onHide}>

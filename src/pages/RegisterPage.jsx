@@ -9,6 +9,7 @@ import { get } from 'lodash';
 import { useFormik } from 'formik';
 import { registerSchema } from '../models/formSchema';
 import { scrollToTop } from '../utils/window';
+import GoogleLogo from '../assets/icons/Google.svg';
 
 export default function RegisterPage() {
   const history = useHistory();
@@ -36,7 +37,8 @@ export default function RegisterPage() {
 
   const { email, password } = values;
 
-  const register = async () => {
+  const register = async (e) => {
+    e.preventDefault();
     try {
       setError(null);
       setIsSubmitting(true);
@@ -50,10 +52,10 @@ export default function RegisterPage() {
         },
       });
 
-      await Auth.signIn(email, password).then((data) => console.log(data));
+      await Auth.signIn(email, password);
       history.push('/request-permission');
     } catch (error) {
-      console.log(Object.values(error));
+      // console.log(Object.values(error));
       setError(
         get(
           signUpErrors.find(({ code }) => code === error.code),
@@ -93,22 +95,15 @@ export default function RegisterPage() {
               <button
                 onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
                 className='btn btn-md btn-block btn-google'
-                style={{
-                  background: 'white',
-                  boxShadow: '0px 0px 4px 0.5px rgba(0,0,0,0.1)',
-                  color: '#690098',
-                  fontWeight: 'normal',
-                  fontSize: '16px',
-                  paddingTop: '10px',
-                }}
               >
-                <div className='avatar avatar-xs mr-2'>
+                <div className='avatar avatar-xs mr-3'>
                   <img
                     className='avatar-img'
-                    src='https://i.pinimg.com/originals/39/21/6d/39216d73519bca962bd4a01f3e8f4a4b.png'
+                    style={{ height: '24px', width: '24px', marginTop: '2px' }}
+                    src={GoogleLogo}
                   />
                 </div>
-                Join with Google
+                <h4 className='mb-0 sofia-pro text-google'>Join with Google</h4>
               </button>
             </div>
             <div className='line-container'>

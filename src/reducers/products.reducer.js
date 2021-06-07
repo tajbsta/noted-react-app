@@ -5,6 +5,7 @@ import {
 
 const initialState = {
   items: [],
+  newDonations: [],
 };
 
 function products(state = initialState, { type, data }) {

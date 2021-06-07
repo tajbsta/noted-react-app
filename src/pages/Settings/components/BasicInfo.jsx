@@ -5,7 +5,7 @@ import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
 import $ from 'jquery';
 import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../../models/formSchema';
-import { updateUserAttributes } from '../../../utils/auth';
+import { updateUserAttributes } from '../../../api/auth';
 import { CheckCircle } from 'react-feather';
 import { isEmpty } from 'lodash-es';
 import Collapsible from 'react-collapsible';
@@ -70,7 +70,7 @@ export default function BasicInfo({ user }) {
   useEffect(() => {
     // console.log({ user });
 
-    if (user) {
+    if (!isEmpty(user)) {
       setFieldValue('fullName', user.name);
       setFieldValue('phoneNumber', user['custom:phone']);
       setFieldValue('line1', user.address);
@@ -181,7 +181,7 @@ export default function BasicInfo({ user }) {
                         type='name'
                         name='fullName'
                         onFocus={onFocus}
-                        value={fullName || ''}
+                        value={fullName}
                         {...noBorder}
                         onChange={handleChange}
                       />
@@ -197,12 +197,11 @@ export default function BasicInfo({ user }) {
                         <Form.Control
                           className='form-control'
                           as='select'
-                          value={state || ''}
+                          value={state}
                           name='state'
                           onChange={handleChange}
                           placeholder='Select State'
                           onFocus={onFocus}
-                          defaultValue='null'
                           {...noBorder}
                         >
                           {[
@@ -224,7 +223,6 @@ export default function BasicInfo({ user }) {
                         <Form.Control
                           onFocus={onFocus}
                           className='form-control'
-                          type='zip code'
                           value={state}
                           {...noBorder}
                         />
@@ -247,8 +245,7 @@ export default function BasicInfo({ user }) {
                           }
                         }}
                         name='zipCode'
-                        type='zip code'
-                        value={zipCode || ''}
+                        value={zipCode}
                         {...noBorder}
                       />
                       {renderInlineValidationError('zipCode')}
@@ -262,10 +259,9 @@ export default function BasicInfo({ user }) {
                       <Form.Control
                         onFocus={onFocus}
                         className='form-control'
-                        type='name'
                         name='line1'
                         onChange={handleChange}
-                        value={line1 || ''}
+                        value={line1}
                         {...noBorder}
                       />
                       {renderInlineValidationError('line1')}
@@ -279,8 +275,7 @@ export default function BasicInfo({ user }) {
                       <Form.Control
                         onFocus={onFocus}
                         className='form-control'
-                        type='name'
-                        value={line2 || ''}
+                        value={line2}
                         name='line2'
                         onChange={handleChange}
                         {...noBorder}
@@ -295,9 +290,8 @@ export default function BasicInfo({ user }) {
                       <Form.Control
                         onFocus={onFocus}
                         className='form-control'
-                        type='city'
                         name='city'
-                        value={city || ''}
+                        value={city}
                         onChange={handleChange}
                         {...noBorder}
                       />
@@ -310,7 +304,6 @@ export default function BasicInfo({ user }) {
                       <Form.Control
                         onFocus={onFocus}
                         className='form-control'
-                        type='phone number'
                         onChange={(e) => {
                           const re = /^[0-9\b]+$/;
                           if (
@@ -320,7 +313,7 @@ export default function BasicInfo({ user }) {
                             handleChange(e);
                           }
                         }}
-                        value={formatPhoneNumber(phoneNumber) || ''}
+                        value={formatPhoneNumber(phoneNumber)}
                         name='phoneNumber'
                         maxLength={13}
                         {...noBorder}
@@ -388,9 +381,8 @@ export default function BasicInfo({ user }) {
                     <Form.Control
                       onFocus={onFocus}
                       className='form-control-lg'
-                      type='name'
                       name='fullName'
-                      value={fullName || ''}
+                      value={fullName}
                       {...noBorder}
                       onChange={handleChange}
                     />
@@ -405,11 +397,10 @@ export default function BasicInfo({ user }) {
                         onFocus={onFocus}
                         className='form-control-md'
                         as='select'
-                        value={state || ''}
+                        value={state}
                         name='state'
                         onChange={handleChange}
                         placeholder='Select State'
-                        defaultValue='null'
                         {...noBorder}
                       >
                         {[
@@ -428,7 +419,6 @@ export default function BasicInfo({ user }) {
                       <Form.Control
                         onFocus={onFocus}
                         className='form-control-sm'
-                        type='zip code'
                         value={state}
                         {...noBorder}
                       />
@@ -448,8 +438,7 @@ export default function BasicInfo({ user }) {
                         }
                       }}
                       name='zipCode'
-                      type='zip code'
-                      value={zipCode || ''}
+                      value={zipCode}
                       {...noBorder}
                     />
                     {renderInlineValidationError('zipCode')}
@@ -464,10 +453,9 @@ export default function BasicInfo({ user }) {
                     <Form.Control
                       onFocus={onFocus}
                       className='form-control-lg'
-                      type='name'
                       name='line1'
                       onChange={handleChange}
-                      value={line1 || ''}
+                      value={line1}
                       {...noBorder}
                     />
                     {renderInlineValidationError('line1')}
@@ -479,9 +467,8 @@ export default function BasicInfo({ user }) {
                     <Form.Control
                       onFocus={onFocus}
                       className='form-control-md'
-                      type='city'
                       name='city'
-                      value={city || ''}
+                      value={city}
                       onChange={handleChange}
                       {...noBorder}
                     />
@@ -494,7 +481,6 @@ export default function BasicInfo({ user }) {
                     <Form.Control
                       onFocus={onFocus}
                       className='form-control-md'
-                      type='phone number'
                       onChange={(e) => {
                         const re = /^[0-9\b]+$/;
                         if (e.target.value === '' || re.test(e.target.value)) {
@@ -518,8 +504,7 @@ export default function BasicInfo({ user }) {
                     <Form.Control
                       onFocus={onFocus}
                       className='form-control-lg'
-                      type='name'
-                      value={line2 || ''}
+                      value={line2}
                       name='line2'
                       onChange={handleChange}
                       {...noBorder}

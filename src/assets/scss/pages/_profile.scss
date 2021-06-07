@@ -154,6 +154,7 @@
       color: #2e1d3a;
       margin-top: 16px;
       width: -webkit-fill-available;
+      width: -moz-available;
     }
 
     .date {
@@ -164,6 +165,7 @@
       mix-blend-mode: normal;
       opacity: 0.6;
       width: -webkit-fill-available;
+      width: -moz-available;
     }
 
     .line-break-user {
@@ -204,6 +206,7 @@
 
     .button-container {
       width: -webkit-fill-available !important;
+      width: -moz-available !important;
     }
 
     .btn {
@@ -312,11 +315,32 @@
   }
 
   // SCHEDULED RETURN SECTION
-  #ScheduledReturn {
-    .Collapsible__contentOuter {
+  #ScheduledReturn,
+  #ReturnHistory {
+    .Collapsible__contentOuter,
+    .history-row {
       @media (max-width: 540px) {
         margin-right: -16px;
         margin-left: -16px;
+      }
+    }
+
+    .section-title {
+      @media (min-width: 992px) {
+        margin-left: 0.75rem;
+      }
+    }
+
+    .m-history-title {
+      @media (max-width: 315px) {
+        width: min-content;
+      }
+    }
+
+    .m-bar {
+      @media (max-width: 540px) {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
       }
     }
 
@@ -448,11 +472,43 @@
       align-items: center;
       padding: 0px;
     }
+
+    .scheduled-return-item-image {
+      transition: display 1s;
+      animation: fadeInFromNone 0.2s ease-out;
+    }
+
+    @keyframes fadeInFromNone {
+      0% {
+        display: none;
+        transform: scale(0);
+      }
+
+      1% {
+        display: block;
+        transform: scale(0.5);
+      }
+
+      100% {
+        display: block;
+        transform: scale(1);
+      }
+    }
+
+    .btn-show-more {
+      margin-top: 15px;
+      box-shadow: none;
+
+      &:hover {
+        color: #b079da;
+      }
+    }
   }
 
   // ACCORDION
   .Collapsible {
     width: -webkit-fill-available;
+    width: -moz-available;
   }
 
   .triggerContainer {
@@ -501,7 +557,7 @@
   }
 
   #ProductsInReview {
-    #productCard {
+    #ProductCard {
       margin-top: 20px;
 
       .product-img-container {
@@ -525,10 +581,16 @@
       }
 
       .product-price {
-
         font-weight: 700;
         font-size: 14px;
         line-height: 15px;
+      }
+
+      .donate-price {
+        color: #2e1d3a;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+        font-weight: normal !important;
       }
 
       .pending-status {
@@ -536,7 +598,7 @@
         align-items: center;
         font-size: 12px;
         line-height: 14px;
-        color: #0E0018;
+        color: #0e0018;
         mix-blend-mode: normal;
         opacity: 0.6;
       }
@@ -547,7 +609,7 @@
         font-size: 12px;
         line-height: 14px;
         text-align: right;
-        color: #EB5757;
+        color: #eb5757;
         mix-blend-mode: normal;
       }
 
@@ -557,7 +619,7 @@
         font-size: 12px;
         line-height: 14px;
         text-align: right;
-        color: #2E1D3A;
+        color: #2e1d3a;
         mix-blend-mode: normal;
       }
 

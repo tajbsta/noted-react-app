@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router';
-import HorizontalLine from '../../../components/HorizontalLine';
-import Row from '../../../components/Row';
-import PickUpButton from './PickUpButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import axios from 'axios';
-
-import { calculateMetrics } from '../../../utils/productsApi';
-import NotedCheckbox from '../../../components/NotedCheckbox';
+import HorizontalLine from './HorizontalLine';
+import Row from '../../../components/Row';
+import PickUpButton from './PickUpButton';
+import { calculateMetrics } from '../../../api/productsApi';
+import NotedCheckbox from '../../../components/Product/NotedCheckbox';
 import { setCartItems } from '../../../actions/cart.action';
 import {
   DONATE,
@@ -17,8 +16,9 @@ import {
   NOT_ELIGIBLE,
   RETURNABLE,
 } from '../../../constants/actions/runtime';
+import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
-function RightCard({ userId, setSelectedProducts }) {
+function RightCard({ beyond90days }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
@@ -48,21 +48,17 @@ function RightCard({ userId, setSelectedProducts }) {
   });
 
   useEffect(() => {
-    // if (!isEmpty(xorWith(items, previousCartItems, isEqual))) {
-    //   calculateCurrentCartPricing(items);
-    // }
     calculateCurrentCartPricing(items);
   }, [items]);
 
   const calculateCurrentCartPricing = async (currentItems) => {
     try {
-      // if (userId) {
       setLoading(true);
 
       const cartItems = [...currentItems];
       const productIds = cartItems.map((x) => x._id);
 
-      const data = await calculateMetrics(userId, productIds);
+      const data = await calculateMetrics(productIds);
 
       setPricing({
         totalReturns: data.totalReturns,
@@ -71,7 +67,6 @@ function RightCard({ userId, setSelectedProducts }) {
         pickupPrice: data.pickupPrice,
       });
       setLoading(false);
-      // }
     } catch (error) {
       if (!axios.isCancel(error)) {
         setLoading(false);
@@ -79,16 +74,12 @@ function RightCard({ userId, setSelectedProducts }) {
          * A toast error should be added here
          */
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleCheckboxChange = () => {
-    setSelectedProducts({
-      [LAST_CALL]: [],
-      [NOT_ELIGIBLE]: [],
-      [RETURNABLE]: [],
-      [DONATE]: [],
-    });
     dispatch(setCartItems([]));
   };
 
@@ -111,7 +102,9 @@ function RightCard({ userId, setSelectedProducts }) {
           {!isMobile && (
             <div className='p-0 ml-1 d-inline-flex align-center'>
               <h5 className='card-title mb-0 p-3 sofia-pro'>
-                {isEmpty(items) && <div>Total past 90 days</div>}
+                {isEmpty(items) && (
+                  <div>Total past 90 days{beyond90days ? ' & beyond' : ''}</div>
+                )}
 
                 {!isEmpty(items) && (
                   <div className='row'>
@@ -163,8 +156,11 @@ function RightCard({ userId, setSelectedProducts }) {
                         <div className='row card-text mb-0 sofia-pro card-value'>
                           ${Number(pricing.potentialReturnValue).toFixed(2)}
                         </div>
-                        <div className='row small sofia-pro card-label text-potential-value'>
-                          Potential Return Value
+                        <div className='row small sofia-pro card-label text-potential-value d-flex '>
+                          <span className='my-auto mr-2'>
+                            Potential Return Value
+                          </span>
+                          <ReturnValueInfoIcon />
                         </div>
                       </div>
                     </Row>
@@ -190,7 +186,12 @@ function RightCard({ userId, setSelectedProducts }) {
                   <>
                     <div className='p-0 ml-1 d-inline-flex align-center'>
                       <h5 className='card-title sofia-pro m-card-title'>
-                        {isEmpty(items) && <div>Total past 90 days</div>}
+                        {isEmpty(items) && (
+                          <div>
+                            Total past 90 days
+                            {beyond90days ? ' & beyond' : ''}
+                          </div>
+                        )}
 
                         {!isEmpty(items) && (
                           <div className='row'>
@@ -220,8 +221,12 @@ function RightCard({ userId, setSelectedProducts }) {
                           </div>
                         </Row>
                         <Row>
-                          <div className='m-label'>
-                            <h4>Potential Return Value</h4>
+                          <div className='m-label d-flex'>
+                            <h4 className='mr-2'>Potential Return Value</h4>
+                            <ReturnValueInfoIcon
+                              className='info-icon'
+                              isMobile={isMobile}
+                            />
                           </div>
                         </Row>
                       </Col>
@@ -252,9 +257,9 @@ function RightCard({ userId, setSelectedProducts }) {
                 }}
               >
                 <PickUpButton
-                  leadingText='Pickup'
+                  leadingText='Schedule Pickup'
                   disabled={!items.length || loading}
-                  price='9.99'
+                  price={pricing.pickupPrice}
                   backgroundColor='#570097'
                   textColor='white'
                   onClick={() => {

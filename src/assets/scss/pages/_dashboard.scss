@@ -57,6 +57,7 @@
     @media (max-width: 1199px) {
       margin-right: -30px;
     }
+
     @media (max-width: 768px) {
       margin-left: -24px;
     }
@@ -122,6 +123,9 @@
   }
 
   .text-cant-find {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 14px;
     line-height: 16px;
     text-align: center;
@@ -130,6 +134,8 @@
   }
 
   .btn-add-product {
+    display: flex;
+    align-items: center;
     padding: 0px;
 
     &:focus {
@@ -157,6 +163,7 @@
     padding: 0px;
     margin-bottom: 11px;
     box-shadow: none;
+
     &:hover {
       color: #b079da;
     }
@@ -168,6 +175,7 @@
     @media (max-width: 540px) {
       padding-bottom: 0px;
     }
+
     @media (max-width: 991px) {
       padding-left: 0px;
       padding-right: 0px;
@@ -220,7 +228,7 @@
   }
 
   .m-card-top-shadow {
-    box-shadow: 0 -5px 15px -5px #0e0018 !important;
+    box-shadow: 0 -5px 15px -5px #0e001846 !important;
   }
 
   #overlay {
@@ -257,7 +265,7 @@
   }
 
   .text-potential-value {
-    width: 124px;
+    width: 165px;
   }
 
   .card-title {
@@ -278,13 +286,7 @@
 
   .pick-up-btn {
     height: 52px;
-    padding: 6px;
-
-    .pick-up-btn-lead {
-      font-family: 'Sofia Pro';
-      font-size: 16px;
-      line-height: 19px;
-    }
+    padding: 10px;
   }
 
   // MOBILE FOR RIGHT CARD
@@ -328,11 +330,13 @@
           color: #0e0018;
           mix-blend-mode: normal;
           opacity: 0.6;
+          margin: auto 0;
         }
       }
     }
   }
 }
+
 // END OF RIGHT CARD
 
 .return-time-left {

@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import {
-  clearPaymentForm,
-  updatePaymentForm,
-} from '../../../actions/auth.action';
-import { useDispatch, useSelector } from 'react-redux';
 import { getCreditCardType } from '../../../utils/creditCards';
+import { updateUserAttributes } from '../../../api/auth';
+import { deletePaymentMethod } from '../../../api/orderApi';
 
 export default function PaymentMethodItem({
-  id = '',
-  cvc = '',
-  fullName = '',
-  cardNumber = 'xxxx',
-  expirationMonth = '00',
-  expirationYear = '00',
+  method,
   isDefault = false,
-  setFieldValue,
-  setIsEditing,
+  setAsDefault,
+  deleted,
 }) {
-  const { paymentMethods } = useSelector(({ auth: { paymentMethods } }) => ({
-    paymentMethods,
-  }));
-  const dispatch = useDispatch();
+  const brand = method.card.brand;
+  const lastFourNumbers = method.card.last4;
+  const expirationMonth = method.card.exp_month;
+  const expirationYear = method.card.exp_year;
+  const fullName = method.billing_details.name;
+  const id = method.id;
+
+  const cardType = getCreditCardType(brand);
+  const type = cardType.text;
+  const cardImage = cardType.image;
 
   const [showDropdown, setShowDropdown] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleContextClick = (e) => {
     if (e.target && e.target.class !== 'item-dropdown-menu') {
@@ -41,39 +40,24 @@ export default function PaymentMethodItem({
     };
   }, [showDropdown]);
 
-  const edit = () => {
-    /**
-     * Set's Form Value before setting to editing state
-     */
-    setFieldValue('cardNumber', cardNumber);
-    setFieldValue('expirationMonth', expirationMonth);
-    setFieldValue('expirationYear', expirationYear);
-    setFieldValue('fullName', fullName);
-    setFieldValue('cvc', cvc);
-    setFieldValue('id', id);
-    /**
-     * Hides payment methods and shows payment form
-     */
-    setIsEditing(true);
+  const setPaymentMethodAsDefault = async () => {
+    setLoading(true);
+    await updateUserAttributes({
+      'custom:default_payment': id,
+    });
+
+    setAsDefault(id);
+    setLoading(false);
+  };
+  const onDelete = async () => {
+    setLoading(true);
+    await deletePaymentMethod(id);
+    await deleted(id);
+    setLoading(false);
   };
 
-  const onDelete = () => {
-    const newPaymentMethods = [...paymentMethods].filter(
-      ({ id: paymentMethodId }) => paymentMethodId !== id
-    );
-    dispatch(updatePaymentForm(newPaymentMethods));
-  };
-
-  const lastFourNumbers = cardNumber.substr(
-    cardNumber.length - 4,
-    cardNumber.length + 1
-  );
-
-  const cardType = getCreditCardType(cardNumber);
-  const type = cardType.text;
-  const cardImage = cardType.image;
   return (
-    <div className='list-group-item'>
+    <div className='list-group-item' style={{ opacity: loading ? 0.5 : 1 }}>
       <div className='row align-items-center'>
         <div className='col-auto'>
           <img
@@ -94,10 +78,7 @@ export default function PaymentMethodItem({
           </small>
         </div>
         {isDefault && (
-          <div
-            className='col-auto mr-n3'
-            onClick={() => dispatch(clearPaymentForm())}
-          >
+          <div className='col-auto mr-n3'>
             <span className='badge badge-light'>Default</span>
           </div>
         )}
@@ -110,6 +91,9 @@ export default function PaymentMethodItem({
               aria-haspopup='true'
               aria-expanded='false'
               onClick={() => {
+                if (loading) {
+                  return;
+                }
                 setShowDropdown(true);
               }}
             >
@@ -123,9 +107,14 @@ export default function PaymentMethodItem({
               display: showDropdown ? 'block' : 'none',
             }}
           >
-            <a className='dropdown-item btn' onClick={edit}>
-              Edit
-            </a>
+            {!isDefault && (
+              <a
+                className='dropdown-item btn'
+                onClick={setPaymentMethodAsDefault}
+              >
+                Set as default
+              </a>
+            )}
             <a className='dropdown-item btn' onClick={onDelete}>
               Delete
             </a>

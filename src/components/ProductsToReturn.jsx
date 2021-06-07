@@ -33,7 +33,7 @@ export default function ProductsToReturn() {
               className='back-to-products-btn'
               onClick={() => history.push('/dashboard')}
             >
-              <span className='sofia-pro mb-0 back-to-products-text '>
+              <span className='sofia-pro mb-0 back-to-products-text'>
                 Back to My Products
               </span>
             </button>
