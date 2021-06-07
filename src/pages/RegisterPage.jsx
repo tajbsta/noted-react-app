@@ -36,7 +36,8 @@ export default function RegisterPage() {
 
   const { email, password } = values;
 
-  const register = async () => {
+  const register = async (e) => {
+    e.preventDefault();
     try {
       setError(null);
       setIsSubmitting(true);
