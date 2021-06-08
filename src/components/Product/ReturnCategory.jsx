@@ -153,6 +153,7 @@ export default function ReturnCategory({
               onChangeState={handleSelectAll}
               checked={
                 cartItems.length > 0 &&
+                items.length > 0 &&
                 items
                   .filter((x) => x.category !== NOT_ELIGIBLE)
                   .every((item) =>
