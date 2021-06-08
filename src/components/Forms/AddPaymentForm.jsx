@@ -94,7 +94,7 @@ export default function AddPaymentForm({
         message: get(
           orderErrors.find(({ code }) => code === error.response.data.details),
           'message',
-          'Cannot place order at this time'
+          'Your request could not be completed because of an error. Please try again later.'
         ),
       });
     }

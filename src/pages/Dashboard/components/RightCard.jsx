@@ -18,7 +18,7 @@ import {
 } from '../../../constants/actions/runtime';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
-function RightCard({ setSelectedProducts, beyond90days }) {
+function RightCard({ beyond90days }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
@@ -48,9 +48,6 @@ function RightCard({ setSelectedProducts, beyond90days }) {
   });
 
   useEffect(() => {
-    // if (!isEmpty(xorWith(items, previousCartItems, isEqual))) {
-    //   calculateCurrentCartPricing(items);
-    // }
     calculateCurrentCartPricing(items);
   }, [items]);
 
@@ -83,12 +80,6 @@ function RightCard({ setSelectedProducts, beyond90days }) {
   };
 
   const handleCheckboxChange = () => {
-    setSelectedProducts({
-      [LAST_CALL]: [],
-      [NOT_ELIGIBLE]: [],
-      [RETURNABLE]: [],
-      [DONATE]: [],
-    });
     dispatch(setCartItems([]));
   };
 

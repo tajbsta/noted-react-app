@@ -1,8 +1,8 @@
-import axiosLib from 'axios';
-import { DONATE } from '../constants/actions/runtime';
+import axiosLib from "axios";
+import { DONATE } from "../constants/actions/runtime";
 
-import { api } from './api';
-import { getUserSession } from './auth';
+import { api } from "./api";
+import { getUserSession } from "./auth";
 
 // Get user products
 export const getProducts = async ({
@@ -39,7 +39,7 @@ export const getProducts = async ({
     queries.push(`search=${search}`);
   }
 
-  const query = queries.join('&');
+  const query = queries.join("&");
   const { userId } = await getUserSession();
   const res = await axios.get(`/${userId}/products?${query}`);
   return res.data.data;
@@ -66,29 +66,27 @@ export const calculateMetrics = async (productIds) => {
   return res.data.data;
 };
 
-export const setCategory = async (productId, category) => {
-  if (category === DONATE) {
-    const { idToken, userId } = await getUserSession();
-    const axios = await api();
-    return axios.post(
-      `${userId}/products/${productId}/donate`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-      }
-    );
-  }
+export const donateItem = async (productId) => {
+  const { idToken, userId } = await getUserSession();
+  const axios = await api();
+  return axios.post(
+    `${userId}/products/${productId}/donate`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    }
+  );
 };
 
-export const getOtherReturnProducts = async (
-  size = 5,
-  productIds = []
-) => {
+export const getOtherReturnProducts = async (size = 5, productIds = []) => {
   const axios = await api();
   const { userId } = await getUserSession();
 
-  const res = await axios.post(`/${userId}/products/other/returns?size=${size}`, { productIds });
+  const res = await axios.post(
+    `/${userId}/products/other/returns?size=${size}`,
+    { productIds }
+  );
   return res.data.data;
 };

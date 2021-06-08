@@ -21,7 +21,7 @@ export default function NotedCheckbox({
       }}
       onClick={() => {
         if (!disabled) {
-          onChangeState();
+          onChangeState(!checked);
         }
       }}
     >

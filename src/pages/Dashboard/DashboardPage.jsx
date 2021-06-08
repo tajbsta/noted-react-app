@@ -33,6 +33,12 @@ export default function DashboardPage() {
   const history = useHistory();
   const dispatch = useDispatch();
   const [search, setSearch] = useState('');
+  const [refreshCategory, setRefreshCategory] = useState({
+    LAST_CALL: () => {},
+    NOT_ELIGIBLE: () => {},
+    RETURNABLE: () => {},
+    DONATE: () => {},
+  });
 
   const { search: searchSession } = useSelector(
     ({ runtime: { search }, auth: { scheduledReturns } }) => ({
@@ -48,16 +54,25 @@ export default function DashboardPage() {
   const [showScanOlderButton, setShowScanOlderButton] = useState(false);
   const [olderScanDone, setIsOlderScanDone] = useState(false);
   const [modalProductShow, setModalProductShow] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState({
-    [LAST_CALL]: [],
-    [NOT_ELIGIBLE]: [],
-    [RETURNABLE]: [],
-    [DONATE]: [],
-  });
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [orders, setOrders] = useState([]);
   const [fetchingOrders, setFetchingOrders] = useState(false);
+
+  /**HANDLE CATEGORY REFRESH */
+  const handleRefreshCategory = (method, category) => {
+    if (category === 'LAST_CALL,NOT_ELIGIBLE') {
+      setRefreshCategory((refreshCategory) => ({
+        ...refreshCategory,
+        LAST_CALL: method,
+      }));
+    } else {
+      setRefreshCategory((refreshCategory) => ({
+        ...refreshCategory,
+        [`${category}`]: method,
+      }));
+    }
+  };
 
   const getScheduledOrders = async () => {
     try {
@@ -164,17 +179,6 @@ export default function DashboardPage() {
     }
   };
 
-  const updateSelectedItems = (data) => {
-    const updatedSelectedProducts = selectedProducts;
-
-    updatedSelectedProducts[data.key] = data.items;
-
-    setSelectedProducts(updatedSelectedProducts);
-
-    const cartItems = flatMap(values(updatedSelectedProducts));
-    dispatch(setCartItems(cartItems));
-  };
-
   useEffect(() => {
     scrollToTop();
     loadScans();
@@ -266,8 +270,8 @@ export default function DashboardPage() {
                         userId={userId}
                         size={5}
                         category={`${LAST_CALL},${NOT_ELIGIBLE}`}
-                        updateSelectedItems={updateSelectedItems}
-                        selectedProducts={selectedProducts.LAST_CALL}
+                        refreshCategory={refreshCategory}
+                        handleRefreshCategory={handleRefreshCategory}
                       />
                     </div>
                     <div className='mt-4 returnable-items'>
@@ -276,8 +280,8 @@ export default function DashboardPage() {
                         userId={userId}
                         size={5}
                         category={RETURNABLE}
-                        updateSelectedItems={updateSelectedItems}
-                        selectedProducts={selectedProducts.RETURNABLE}
+                        refreshCategory={refreshCategory}
+                        handleRefreshCategory={handleRefreshCategory}
                       />
                     </div>
                     <div>
@@ -291,8 +295,8 @@ export default function DashboardPage() {
                         userId={userId}
                         size={5}
                         category={DONATE}
-                        updateSelectedItems={updateSelectedItems}
-                        selectedProducts={selectedProducts.DONATE}
+                        refreshCategory={refreshCategory}
+                        handleRefreshCategory={handleRefreshCategory}
                       />
                     </div>
                     <div>
@@ -310,8 +314,6 @@ export default function DashboardPage() {
                       userId={userId}
                       size={5}
                       search={search}
-                      updateSelectedItems={updateSelectedItems}
-                      selectedProducts={flatMap(values(selectedProducts))}
                     />
                   </div>
                 )}
@@ -392,10 +394,7 @@ export default function DashboardPage() {
           {!isTablet && (
             <>
               <div className='col-sm-3 checkout-card'>
-                <RightCard
-                  setSelectedProducts={setSelectedProducts}
-                  beyond90days={beyond90days}
-                />
+                <RightCard beyond90days={beyond90days} />
               </div>
             </>
           )}
