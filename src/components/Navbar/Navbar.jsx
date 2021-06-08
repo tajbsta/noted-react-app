@@ -13,6 +13,7 @@ import { searchScans } from '../../actions/runtime.action';
 import BrandLogoSvg from './BrandLogoSvg';
 import MobileNav from './MobileNav';
 import { showError } from '../../library/notifications.library';
+import { clearCart } from '../../actions/cart.action';
 
 export default function Topnav() {
   const history = useHistory();
@@ -81,6 +82,9 @@ export default function Topnav() {
       .then(async () => {
         setTimeout(() => {
           history.push('/login');
+
+          // Clear cart on destroy
+          dispatch(clearCart());
         }, 400);
       })
       .catch((error) => {
