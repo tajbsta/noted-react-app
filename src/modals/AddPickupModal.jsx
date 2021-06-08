@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import { updateUserAttributes } from '../api/auth';
+import { showError, showSuccess } from '../library/notifications.library';
 
 export default function AddPickupModal(props) {
   const [loading, setLoading] = useState(false);
@@ -11,8 +12,14 @@ export default function AddPickupModal(props) {
         'custom:pickup_instructions': props.instructions,
       });
       await props.onHide();
+      showSuccess({
+        message: 'Successfully updated pick-up instructions',
+      });
     } catch (error) {
       setLoading(false);
+      showError({
+        message: 'Error updating pick-up instructions',
+      });
     } finally {
       setLoading(false);
     }
