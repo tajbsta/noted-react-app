@@ -16,7 +16,7 @@ export default function AddressForm({
   instructions = '',
   errors,
   handleChange = () => {},
-  onDoneClick,
+  onDoneClick = () => {},
   setFieldValue = () => {},
   setShowEditAddress = () => {},
 }) {
@@ -277,8 +277,8 @@ export default function AddressForm({
                   instructions={instructions}
                   setFieldValue={setFieldValue}
                   show={modalShow}
-                  onHide={() => setModalShow(false)}
                   onDoneClick={onDoneClick}
+                  onHide={() => setModalShow(false)}
                 />
 
                 <Col className='d-flex justify-content-center'>
@@ -455,8 +455,8 @@ export default function AddressForm({
                   instructions={instructions}
                   setFieldValue={setFieldValue}
                   show={modalShow}
-                  onHide={() => setModalShow(false)}
                   onDoneClick={onDoneClick}
+                  onHide={() => setModalShow(false)}
                 />
 
                 <Col className='btn-container'>
