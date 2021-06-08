@@ -1,7 +1,23 @@
-import React from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Modal, Button, Form, Spinner } from 'react-bootstrap';
+import { updateUserAttributes } from '../api/auth';
 
 export default function AddPickupModal(props) {
+  const [loading, setLoading] = useState(false);
+  const updatePickUpInstructions = async () => {
+    try {
+      setLoading(true);
+      await updateUserAttributes({
+        'custom:pickup_instructions': props.instructions,
+      });
+      await props.onHide();
+    } catch (error) {
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <Modal
@@ -38,8 +54,20 @@ export default function AddPickupModal(props) {
               />
             </Form.Group>
             <div className='button-group'>
-              <Button className='btn-save' onClick={props.onDoneClick}>
-                Save
+              <Button
+                className='btn-save'
+                onClick={updatePickUpInstructions}
+                disabled={loading}
+              >
+                {loading ? (
+                  <Spinner
+                    animation='border'
+                    size='sm'
+                    className='spinner btn-spinner'
+                  />
+                ) : (
+                  'Save'
+                )}
               </Button>
               <Button className='btn btn-cancel' onClick={props.onHide}>
                 <h4 className='text-cancel'>Cancel</h4>
