@@ -4,6 +4,8 @@ import { Col, Row } from 'react-bootstrap';
 import NoteeIcon from '../../../assets/icons/NoteeIcon.svg';
 import { getUserId } from '../../../api/auth';
 import { getActiveOrderCounts } from '../../../api/orderApi';
+import { showError } from '../../../library/notifications.library';
+import { AlertCircle } from 'react-feather';
 
 export default function ScheduledCard({ orders }) {
   const [isMobile, setIsMobile] = useState(false);
@@ -20,8 +22,16 @@ export default function ScheduledCard({ orders }) {
       setOrderCount(orderCount);
       // console.log(orderCount);
     } catch (error) {
-      // TODO: ERROR HANDLING
-      // console.log(error);
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Error getting item count!
+            </h4>
+          </div>
+        ),
+      });
     }
   };
 

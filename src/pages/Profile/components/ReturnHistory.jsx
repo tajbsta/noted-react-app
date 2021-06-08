@@ -5,6 +5,8 @@ import { getOrders } from '../../../api/orderApi';
 import { getUserId } from '../../../api/auth';
 import { ReturnHistoryItem } from './ReturnHistoryItem';
 import { timeout } from '../../../utils/time';
+import { showError } from '../../../library/notifications.library';
+import { AlertCircle } from 'react-feather';
 
 export default function ReturnHistory({ user }) {
   const [orders, setOrders] = useState([]);
@@ -47,8 +49,16 @@ export default function ReturnHistory({ user }) {
         setLastEvaluatedKey(null);
       }
     } catch (error) {
-      // TODO: ERROR HANDLING
-      // console.log(error);
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Error getting order history!
+            </h4>
+          </div>
+        ),
+      });
       setFetchingOrders(false);
     }
   };

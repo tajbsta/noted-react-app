@@ -6,6 +6,8 @@ import { getOrders } from '../../../api/orderApi';
 import { getUserId } from '../../../api/auth';
 import { ScheduledReturnItem } from './ScheduledReturnItem';
 import { timeout } from '../../../utils/time';
+import { showError } from '../../../library/notifications.library';
+import { AlertCircle } from 'react-feather';
 
 export default function ScheduledReturn({ user }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,8 +43,16 @@ export default function ScheduledReturn({ user }) {
 
       // console.log(res.orders);
     } catch (error) {
-      // TODO: ERROR HANDLING
-      // console.log(error);
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Error getting scheduled orders!
+            </h4>
+          </div>
+        ),
+      });
       setFetchingOrders(false);
     }
   };

@@ -84,9 +84,16 @@ export default function DashboardPage() {
       setOrders(res.orders);
       // console.log(res.orders);
     } catch (error) {
-      // TODO: ERROR HANDLING
-      // console.log(error);
-      showError('An error occurred. Unable to retrieve orders');
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Error! Pick-up instruction is still the same
+            </h4>
+          </div>
+        ),
+      });
     }
   };
 
@@ -114,8 +121,17 @@ export default function DashboardPage() {
       await fetchAccounts(userId);
       setLoading(false);
     } catch (error) {
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Error! Failed to load products!
+            </h4>
+          </div>
+        ),
+      });
       setLoading(false);
-      // TODO: show error here
     }
   }
 
@@ -164,14 +180,13 @@ export default function DashboardPage() {
       setLoading(false);
       setIsOlderScanDone(true);
     } catch (error) {
-      // TODO: show error alert here
       setLoading(false);
       showError({
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AlertCircle />
             <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              File is too large! Maximum size for file upload is 5 MB.
+              Error getting older emails!
             </h4>
           </div>
         ),

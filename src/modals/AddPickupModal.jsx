@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
+import { AlertCircle } from 'react-feather';
 import { updateUserAttributes } from '../api/auth';
 import { showError, showSuccess } from '../library/notifications.library';
 
@@ -18,7 +19,14 @@ export default function AddPickupModal(props) {
     } catch (error) {
       setLoading(false);
       showError({
-        message: 'Error updating pick-up instructions',
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Error! Pick-up instruction is still the same
+            </h4>
+          </div>
+        ),
       });
     } finally {
       setLoading(false);

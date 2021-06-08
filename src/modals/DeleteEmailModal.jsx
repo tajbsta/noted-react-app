@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { deleteAccount } from '../api/accountsApi';
+import { showError } from '../library/notifications.library';
 
 export default function DeleteEmailModal(props) {
   const [isMobile, setIsMobile] = useState(false);
@@ -25,7 +26,9 @@ export default function DeleteEmailModal(props) {
       props.deletesuccess();
       setLoading(false);
     } catch (error) {
-      // TODO: show error alert here
+      showError({
+        message: 'Error deleting account',
+      });
       setLoading(false);
     }
   };
