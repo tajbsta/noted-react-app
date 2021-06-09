@@ -517,15 +517,7 @@ const ViewOrder = () => {
             {/* ADD PRODUCT BUTTON */}
             {(!orderLoading && !!cancelled) ||
               (!orderLoading && !confirmed && (
-                <div
-                  className='card add-border scanned-item-card max-w-840 mb-3 p-0 btn mobile-view-add-col'
-                  // onClick={() => {
-                  //   /**
-                  //    * @FUNCTION Show products like the one from dashboard
-                  //    */
-                  //   history.push('/edit-order', { scheduledReturnId });
-                  // }}
-                >
+                <div className='card add-border scanned-item-card max-w-840 mb-3 p-0 btn mobile-view-add-col'>
                   <div className='card-body pt-3 pb-3 p-0 m-0'>
                     <Row className='add-row'>
                       <div className='col-sm-1 product-img-container add-product-container'>
@@ -549,10 +541,14 @@ const ViewOrder = () => {
                 </div>
               ))}
 
-            <h3 className='sofia-pro miss-out section-title'>
-              Don&apos;t miss out on other returns
-            </h3>
-            {RenderOtherReturnables()}
+            {!loading && items.length > 0 && (
+              <>
+                <h3 className='sofia-pro miss-out section-title'>
+                  Don&apos;t miss out on other returns
+                </h3>
+                {RenderOtherReturnables()}
+              </>
+            )}
           </div>
 
           {/* RIGHT CARD */}
