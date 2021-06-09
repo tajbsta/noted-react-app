@@ -3,7 +3,7 @@ import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import SizeGuideModal from '../../../modals/SizeGuideModal';
 import CancelOrderModal from '../../../modals/CancelOrderModal';
-import { get, isEmpty } from 'lodash';
+import { get } from 'lodash';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 import OverlayLoader from '../../../components/OverlayLoader';
 

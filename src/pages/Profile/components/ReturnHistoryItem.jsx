@@ -2,14 +2,12 @@ import { get } from 'lodash';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Accordion, Card, Col, Row } from 'react-bootstrap';
-import { useHistory } from 'react-router';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import ReturnScore from '../../../components/Product/ReturnsScore';
 import { toTitleCase } from '../../../utils/data';
 
 export const ReturnHistoryItem = ({ order }) => {
   const [eventKey, setEventKey] = useState('0');
-  const { push } = useHistory();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -60,7 +58,6 @@ export const ReturnHistoryItem = ({ order }) => {
     const rating = get(item, 'vendor_data.rating', 1);
     const thumbnail = get(item, 'thumbnail', ''); // product img
     const category = get(item, 'category', '');
-    const orderDate = get(item, 'order_date', '');
     const formattedPrice = price && price.toFixed(2);
 
     return (

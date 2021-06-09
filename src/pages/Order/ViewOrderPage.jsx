@@ -29,13 +29,7 @@ import {
   getOrder,
   getOrderPricing,
 } from '../../api/orderApi';
-import {
-  setCartItems,
-  setPickupAddress,
-  setPayment,
-  setPickupDetails,
-  clearCart,
-} from '../../actions/cart.action';
+import { setCartItems, clearCart } from '../../actions/cart.action';
 import PRICING from '../../constants/pricing';
 import { getOtherReturnProducts } from '../../api/productsApi';
 import {

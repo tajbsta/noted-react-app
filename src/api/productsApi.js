@@ -1,6 +1,4 @@
 import axiosLib from "axios";
-import { DONATE } from "../constants/actions/runtime";
-
 import { api } from "./api";
 import { getUserSession } from "./auth";
 

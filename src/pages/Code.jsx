@@ -5,8 +5,6 @@ import { useHistory } from 'react-router-dom';
 import { saveGoogleAuthCode } from '../api/authApi';
 import { getUserId } from '../api/auth';
 import {
-  ACCOUNT_ALREADY_EXIST,
-  INVALID_REQUEST,
   SERVER_ERROR,
   GOOGLE_AUTH_ACCESS_DENIED,
 } from '../constants/errors/errorCodes';
@@ -59,14 +57,7 @@ export default function Code() {
       history.push('/dashboard');
     } catch (error) {
       // TODO: ERROR HANDLING
-      // console.log(error);
-
-      // if (isAuthRedirect) {
-      //   history.push('/request-permission?auth=error');
-      // } else {
-      // No current user
       history.push('/');
-      // }
     }
   };
   useEffect(() => {

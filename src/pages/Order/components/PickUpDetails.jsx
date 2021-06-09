@@ -6,8 +6,8 @@ import EmptyPayment from '../../../components/PickUpDetails/EmptyPayment';
 import AddressForm from '../../../components/Forms/AddressForm';
 import AddPaymentForm from '../../../components/Forms/AddPaymentForm';
 import { getCreditCardType } from '../../../utils/creditCards';
-import { getPublicKey, getUserPaymentMethods } from '../../../api/orderApi';
-import { getUser, updateUserAttributes } from '../../../api/auth';
+import { getUserPaymentMethods } from '../../../api/orderApi';
+import { getUser } from '../../../api/auth';
 import AddPickupModal from '../../../modals/AddPickupModal';
 import { useFormik } from 'formik';
 import { formatPhoneNumber, isFormEmpty } from '../../../utils/form';
@@ -37,7 +37,6 @@ export default function PickUpDetails({
   setValidPickUpDetails,
   order,
 }) {
-  const history = useHistory();
   const {
     location: { pathname },
   } = useHistory();

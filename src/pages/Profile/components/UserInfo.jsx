@@ -3,7 +3,7 @@ import { Card, Col, Row, Spinner } from 'react-bootstrap';
 import ProfileIcon from '../../../assets/icons/Profile.svg';
 import moment from 'moment';
 import { Upload } from 'react-feather';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { updateProfilePicture } from '../../../actions/runtime.action';
 import { get, isEmpty } from 'lodash-es';
 import { useHistory } from 'react-router-dom';
@@ -64,7 +64,7 @@ export default function UserInfo({ user: userData = {} }) {
     })();
   }, []);
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     hiddenFileInput.current.click();
   };
 

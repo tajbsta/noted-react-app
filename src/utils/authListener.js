@@ -1,5 +1,3 @@
-
-
 export default ({ payload: { event, data } }) => {
     switch (event) {
         case 'signIn':

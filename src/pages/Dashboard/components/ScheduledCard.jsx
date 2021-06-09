@@ -5,7 +5,7 @@ import NoteeIcon from '../../../assets/icons/NoteeIcon.svg';
 import { getUserId } from '../../../api/auth';
 import { getActiveOrderCounts } from '../../../api/orderApi';
 
-export default function ScheduledCard({ orders }) {
+export default function ScheduledCard() {
   const [isMobile, setIsMobile] = useState(false);
   const [orderCount, setOrderCount] = useState(false);
   const [fetchingOrderCount, setFetchingOrderCount] = useState(false);

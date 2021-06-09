@@ -10,12 +10,6 @@ import PickUpButton from './PickUpButton';
 import { calculateMetrics } from '../../../api/productsApi';
 import NotedCheckbox from '../../../components/Product/NotedCheckbox';
 import { setCartItems } from '../../../actions/cart.action';
-import {
-  DONATE,
-  LAST_CALL,
-  NOT_ELIGIBLE,
-  RETURNABLE,
-} from '../../../constants/actions/runtime';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
 function RightCard({ beyond90days }) {
@@ -261,7 +255,6 @@ function RightCard({ beyond90days }) {
                   disabled={!items.length || loading}
                   price={pricing.pickupPrice}
                   backgroundColor='#570097'
-                  textColor='white'
                   onClick={() => {
                     history.push('/checkout');
                   }}

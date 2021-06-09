@@ -25,10 +25,7 @@ import {
   prevalidateOrder,
 } from '../../api/orderApi';
 import PRICING from '../../constants/pricing';
-import {
-  SERVER_ERROR,
-  STRIPE_PAYMENT_INSUFFICIENT_FUNDS,
-} from '../../constants/errors/errorCodes';
+import { STRIPE_PAYMENT_INSUFFICIENT_FUNDS } from '../../constants/errors/errorCodes';
 
 const Checkout = () => {
   const stripe = useStripe();
