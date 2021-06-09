@@ -16,14 +16,6 @@ export default function Payment() {
   const [loading, setLoading] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [defaultPaymentMethod, setDefaultPaymentMethod] = useState(null);
-  const noBorder = !isEditing
-    ? {
-        style: {
-          border: 'none',
-        },
-        disabled: true,
-      }
-    : {};
 
   useEffect(() => {
     function handleResize() {

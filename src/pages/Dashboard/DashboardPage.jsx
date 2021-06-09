@@ -1,8 +1,8 @@
-import { isEmpty, values, flatMap } from 'lodash';
+import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ReturnCategory from '../../components/Product/ReturnCategory';
 import RightCard from './components/RightCard';
 import {
@@ -13,8 +13,6 @@ import {
 } from '../../api/auth';
 import { getOrders } from '../../api/orderApi';
 import { getAccounts } from '../../api/accountsApi';
-import { clearSearchQuery } from '../../actions/runtime.action';
-import { setCartItems } from '../../actions/cart.action';
 import {
   LAST_CALL,
   NOT_ELIGIBLE,
@@ -31,7 +29,6 @@ import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 
 export default function DashboardPage() {
   const history = useHistory();
-  const dispatch = useDispatch();
   const [search, setSearch] = useState('');
   const [refreshCategory, setRefreshCategory] = useState({
     LAST_CALL: () => {},
@@ -231,7 +228,7 @@ export default function DashboardPage() {
       <div className='container mt-6 main-mobile-dashboard'>
         <div className='row sched-row'>
           {/* If there are in progress orders */}
-          {!isEmpty(orders) && <ScheduledCard orders={orders} />}
+          {!isEmpty(orders) && <ScheduledCard />}
         </div>
         <div className='row ipad-row'>
           <div className={`mt-4 w-840 bottom ${isTablet ? 'col' : 'col-sm-9'}`}>

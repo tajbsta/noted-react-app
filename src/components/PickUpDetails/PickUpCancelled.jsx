@@ -3,8 +3,6 @@ import Row from '../Row';
 import $ from 'jquery';
 import { useHistory } from 'react-router';
 import { useSelector } from 'react-redux';
-import { get } from 'lodash-es';
-import moment from 'moment';
 import { scrollToTop } from '../../utils/window';
 
 function PickUpCancelled({ order, orderId = '' }) {
@@ -28,8 +26,6 @@ function PickUpCancelled({ order, orderId = '' }) {
     })
   );
 
-  const scheduledReturn = scheduledReturns.find(({ id }) => orderId === id);
-
   useEffect(() => {
     /**
      * @FUNCTION load order here
@@ -37,16 +33,6 @@ function PickUpCancelled({ order, orderId = '' }) {
     const scheduledReturn = scheduledReturns.find(({ id }) => orderId === id);
     setCurrentOrder(scheduledReturn);
   }, []);
-
-  const date = moment(get(scheduledReturn, 'details.date', '')).format(
-    'MMMM DD, YYYY'
-  );
-
-  const time = get(scheduledReturn, 'details.time', '');
-
-  const onEdit = () => {
-    history.push('/order/:orderId', { scheduledReturnId: orderId });
-  };
 
   useEffect(() => {
     scrollToTop();
@@ -89,7 +75,7 @@ function PickUpCancelled({ order, orderId = '' }) {
                   className='btn btn-green back-to-products-btn'
                   onClick={() => history.push('/dashboard')}
                 >
-                  <span className='sofia-pro mb-0 back-to-products-text '>
+                  <span className='sofia-pro mb-0 back-to-products-text'>
                     Back to My Products
                   </span>
                 </button>

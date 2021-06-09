@@ -6,7 +6,7 @@ import { changePassErrors } from '../../../library/errors.library';
 import { PASSWORD_REGEX_FORMAT } from '../../../constants/errors/regexFormats';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { get, isEmpty } from 'lodash';
+import { get } from 'lodash';
 import PassChangeSuccessModal from '../../../modals/PassChangeSuccessModal';
 import Collapsible from 'react-collapsible';
 import { showError } from '../../../library/notifications.library';

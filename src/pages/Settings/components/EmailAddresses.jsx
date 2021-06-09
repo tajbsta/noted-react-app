@@ -52,24 +52,6 @@ export default function EmailAddresses({ user }) {
     }
   }, [user]);
 
-  const renderValidError = () => (
-    <small className='form-text p-0 m-0 noted-red'>
-      Email is not valid anymore. Please{' '}
-      <a
-        className='noted-red'
-        style={{
-          fontSize: '0.8125rem',
-          color: 'red',
-          textDecoration: 'underline',
-        }}
-        href='/request-permission'
-      >
-        authorize noted
-      </a>{' '}
-      again.
-    </small>
-  );
-
   const deleteSuccess = (id) => {
     const list = accounts;
 
