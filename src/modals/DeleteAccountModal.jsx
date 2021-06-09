@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Spinner } from 'react-bootstrap';
 
-export default function DeleteEmailModal(props) {
+export default function DeleteEmailModal({
+  show,
+  onHide,
+  deleteUser,
+  loading,
+  disableButton,
+}) {
   const [isMobile, setIsMobile] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     function handleResize() {
@@ -18,7 +23,7 @@ export default function DeleteEmailModal(props) {
 
   return (
     <Modal
-      {...props}
+      show={show}
       size='lg'
       aria-labelledby='contained-modal-title-vcenter'
       centered
@@ -33,7 +38,7 @@ export default function DeleteEmailModal(props) {
           className='close'
           data-dismiss='modal'
           aria-label='Close'
-          onClick={props.onHide}
+          onClick={onHide}
         >
           <span aria-hidden='true'>&times;</span>
         </Button>
@@ -51,8 +56,23 @@ export default function DeleteEmailModal(props) {
         </div>
 
         <div className='button-group'>
-          <Button className='btn-cancel'>Delete</Button>
-          <Button className='btn-dont' onClick={props.onHide}>
+          <Button
+            className='btn-cancel'
+            disabled={loading || disableButton}
+            style={{ opacity: loading ? '0.6' : '1' }}
+            onClick={deleteUser}
+          >
+            {loading ? (
+              <Spinner style={{ padding: '10px' }} animation='border' />
+            ) : (
+              'Delete'
+            )}
+          </Button>
+          <Button
+            className='btn-dont'
+            disabled={loading || disableButton}
+            onClick={onHide}
+          >
             Cancel
           </Button>
         </div>

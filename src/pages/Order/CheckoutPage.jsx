@@ -318,10 +318,14 @@ const Checkout = () => {
               ))}
             </div>
 
-            <h3 className='sofia-pro miss-out section-title'>
-              Don&apos;t miss out on other returns
-            </h3>
-            {RenderOtherReturnables()}
+            {items.length > 0 && (
+              <>
+                <h3 className='sofia-pro miss-out section-title'>
+                  Don&apos;t miss out on other returns
+                </h3>
+                {RenderOtherReturnables()}
+              </>
+            )}
 
             {/* BILLING */}
             {isMobile && (
