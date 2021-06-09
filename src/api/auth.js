@@ -109,3 +109,15 @@ export const scrapeOlderEmails = async (userId) => {
     // console.log(error);
   }
 };
+
+// delete noted account
+export const deleteUserAccount = async () => {
+  try {
+    const { userId } = await getUserSession();
+    const axios = await api();
+    await axios.delete(`/${userId}/user/delete`);
+  } catch (error) {
+    // TODO: Error
+    // console.log(error);
+  }
+};
