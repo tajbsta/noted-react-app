@@ -47,10 +47,6 @@ export default function BasicInfo({ user }) {
     validationSchema: pickUpAddressSchema,
   });
 
-  const renderInlineError = (errors) => (
-    <small className='form-text p-0 m-0 noted-red'>{errors}</small>
-  );
-
   const [focused, setFocused] = useState({
     ...Object.keys((key) => ({ [key]: false })),
   });

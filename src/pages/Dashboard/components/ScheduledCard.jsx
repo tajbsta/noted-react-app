@@ -7,7 +7,7 @@ import { getActiveOrderCounts } from '../../../api/orderApi';
 import { showError } from '../../../library/notifications.library';
 import { AlertCircle } from 'react-feather';
 
-export default function ScheduledCard({ orders }) {
+export default function ScheduledCard() {
   const [isMobile, setIsMobile] = useState(false);
   const [orderCount, setOrderCount] = useState(false);
   const [fetchingOrderCount, setFetchingOrderCount] = useState(false);

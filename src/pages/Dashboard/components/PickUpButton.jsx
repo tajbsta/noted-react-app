@@ -3,19 +3,14 @@ import React, { useState, useEffect } from 'react';
 
 function PickUpButton({
   disabled,
-  leadingText = '',
   backgroundColor: background,
-  textColor: color,
   price,
-  timeWindow,
   opacity,
   onClick,
 }) {
   const [isMobile, setIsMobile] = useState(false);
 
   const btnTextStyle = {
-    // marginLeft: '10px',
-    // marginRight: '10px',
     color: '#F8EFFF',
   };
 

@@ -9,7 +9,7 @@ import { timeout } from '../../../utils/time';
 import { showError } from '../../../library/notifications.library';
 import { AlertCircle } from 'react-feather';
 
-export default function ScheduledReturn({ user }) {
+export default function ScheduledReturn() {
   const [isOpen, setIsOpen] = useState(false);
   const [orders, setOrders] = useState([]);
   const [fetchingOrders, setFetchingOrders] = useState(false);

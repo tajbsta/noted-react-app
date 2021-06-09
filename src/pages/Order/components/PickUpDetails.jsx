@@ -6,8 +6,8 @@ import EmptyPayment from '../../../components/PickUpDetails/EmptyPayment';
 import AddressForm from '../../../components/Forms/AddressForm';
 import AddPaymentForm from '../../../components/Forms/AddPaymentForm';
 import { getCreditCardType } from '../../../utils/creditCards';
-import { getPublicKey, getUserPaymentMethods } from '../../../api/orderApi';
-import { getUser, updateUserAttributes } from '../../../api/auth';
+import { getUserPaymentMethods } from '../../../api/orderApi';
+import { getUser } from '../../../api/auth';
 import AddPickupModal from '../../../modals/AddPickupModal';
 import { useFormik } from 'formik';
 import { formatPhoneNumber, isFormEmpty } from '../../../utils/form';
@@ -37,7 +37,6 @@ export default function PickUpDetails({
   setValidPickUpDetails,
   order,
 }) {
-  const history = useHistory();
   const {
     location: { pathname },
   } = useHistory();
@@ -309,7 +308,7 @@ export default function PickUpDetails({
                 <p className='mobile-form-title first-title'>Pick-up Address</p>
               )}
               <div className='card shadow-sm'>
-                {!isAddressFormEmpty && !showEditAddress && (
+                {!addressFormValues.line1 == '' && !showEditAddress && (
                   <>
                     <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 pick-up-address'>
                       <div className='title-container'>
@@ -469,7 +468,7 @@ export default function PickUpDetails({
                   onHide={() => setModalShow(false)}
                 />
 
-                {isAddressFormEmpty && (
+                {addressFormValues.line1 == '' && (
                   <EmptyAddress
                     loading={loading}
                     renderSpinner={renderSpinner}

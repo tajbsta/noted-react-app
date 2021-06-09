@@ -5,7 +5,6 @@ import { useHistory } from 'react-router';
 import { get } from 'lodash-es';
 import moment from 'moment';
 import { scrollToTop } from '../../utils/window';
-import { getOrder } from '../../api/orderApi';
 import { isEmpty } from 'lodash';
 
 function PickUpConfirmed({ order, isUpdate = false }) {

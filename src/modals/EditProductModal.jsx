@@ -1,13 +1,12 @@
-import React, { useState, useCallback, useEffect, forwardRef } from 'react';
+import React, { useState, useCallback, forwardRef } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
 import { useDropzone } from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
-import { get, isEmpty } from 'lodash';
+import { get } from 'lodash';
 import { updateScans } from '../actions/scans.action';
 import { unmountProductedit } from '../actions/runtime.action';
-import moment from 'moment';
 import { getFileTypeIcon } from '../utils/file';
 import { formatCurrency } from '../library/number';
 import DatePicker from 'react-datepicker';

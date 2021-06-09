@@ -5,8 +5,6 @@ import { useHistory } from 'react-router-dom';
 import { saveGoogleAuthCode } from '../api/authApi';
 import { getUserId } from '../api/auth';
 import {
-  ACCOUNT_ALREADY_EXIST,
-  INVALID_REQUEST,
   SERVER_ERROR,
   GOOGLE_AUTH_ACCESS_DENIED,
 } from '../constants/errors/errorCodes';

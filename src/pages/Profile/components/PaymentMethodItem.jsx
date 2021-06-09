@@ -13,7 +13,6 @@ export default function PaymentMethodItem({
   const lastFourNumbers = method.card.last4;
   const expirationMonth = method.card.exp_month;
   const expirationYear = method.card.exp_year;
-  const fullName = method.billing_details.name;
   const id = method.id;
 
   const cardType = getCreditCardType(brand);

@@ -3,7 +3,6 @@ import Row from '../Row';
 import ProductCard from './ProductCard';
 import { ProgressBar } from 'react-bootstrap';
 import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
-import { useHistory } from 'react-router-dom';
 import { getProducts } from '../../api/productsApi';
 import NotedCheckbox from './NotedCheckbox';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,10 +16,6 @@ export default function ReturnCategory({
   size,
   category,
   search,
-  // updateSelectedItems = () => {},
-  // selectedProducts = [],
-  width,
-  percent,
   refreshCategory = {},
   handleRefreshCategory = () => {},
 }) {
@@ -29,7 +24,6 @@ export default function ReturnCategory({
   }));
 
   const dispatch = useDispatch();
-  const { push } = useHistory();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showNextPageButton, setShowNextPageButton] = useState(true);
@@ -153,7 +147,7 @@ export default function ReturnCategory({
               onChangeState={handleSelectAll}
               checked={
                 cartItems.length > 0 &&
-                items.length > 0 &&
+                items.filter((x) => x.category !== NOT_ELIGIBLE).length > 0 &&
                 items
                   .filter((x) => x.category !== NOT_ELIGIBLE)
                   .every((item) =>

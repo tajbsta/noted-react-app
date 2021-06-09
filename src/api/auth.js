@@ -106,9 +106,6 @@ export const scrapeOlderEmails = async (userId) => {
     localStorage.setItem('scan_older_done', true);
   } catch (error) {
     // TODO: Error
-    console.log('Show error alert');
-    /**
-     * I guess the error handling must be inside the component function this is being used
-     */
+    // console.log(error);
   }
 };
