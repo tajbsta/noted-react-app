@@ -111,8 +111,6 @@ export default function ResetPasswordPage(props) {
               <div className='form-group'>
                 <input
                   className='form-control form-control-appended'
-                  isValid={!errors.code && code.length > 0}
-                  isInvalid={errors.code}
                   type='code'
                   pattern='[0-9]*'
                   name='code'
@@ -133,10 +131,6 @@ export default function ResetPasswordPage(props) {
                   <input
                     className='form-control form-control-appended form-pass'
                     placeholder='Enter your new password'
-                    isValid={
-                      !errors.confirmNewPassword && newPassword.length > 0
-                    }
-                    isInvalid={errors.newPassword}
                     type={newPasswordShown ? 'text' : 'password'}
                     name='newPassword'
                     onChange={handleChange}
@@ -164,7 +158,6 @@ export default function ResetPasswordPage(props) {
                       !errors.confirmNewPassword &&
                       confirmNewPassword.length > 0
                     }
-                    isInvalid={errors.confirmNewPassword}
                     type={confirmPasswordShown ? 'text' : 'password'}
                     name='confirmNewPassword'
                     placeholder='Confirm your new password'
