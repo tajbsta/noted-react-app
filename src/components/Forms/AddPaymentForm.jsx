@@ -12,7 +12,6 @@ import { savePaymentMethod } from '../../api/orderApi';
 import { updateUserAttributes } from '../../api/auth';
 import { showError } from '../../library/notifications.library';
 import { orderErrors } from '../../library/errors.library';
-import { SERVER_ERROR } from '../../constants/errors/errorCodes';
 
 export default function AddPaymentForm({
   close,

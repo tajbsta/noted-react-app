@@ -3,7 +3,6 @@ import { Modal, Button, Spinner } from 'react-bootstrap';
 import { CheckCircle } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCartItems } from '../actions/cart.action';
-import { DONATE } from '../constants/actions/runtime';
 import { donateItem } from '../api/productsApi';
 import { showError, showSuccess } from '../library/notifications.library';
 

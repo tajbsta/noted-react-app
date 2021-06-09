@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Collapsible from 'react-collapsible';
+import DeleteAccountModal from '../../../modals/DeleteAccountModal';
 
 export default function DeleteAccount() {
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [modalDeleteShow, setModalDeleteShow] = useState(false);
 
   useEffect(() => {
     function handleResize() {
@@ -42,7 +44,12 @@ export default function DeleteAccount() {
                   </h4>
                 </Col>
                 <Col className='d-flex justify-content-center'>
-                  <button className='btn btn-delete'>Delete Account</button>
+                  <button
+                    className='btn btn-delete'
+                    onClick={() => setModalDeleteShow(true)}
+                  >
+                    Delete Account
+                  </button>
                 </Col>
               </Row>
             </div>
@@ -71,7 +78,12 @@ export default function DeleteAccount() {
                   </h4>
                 </Col>
                 <Col className='d-flex justify-content-center'>
-                  <button className='btn btn-delete'>Delete Account</button>
+                  <button
+                    className='btn btn-delete'
+                    onClick={() => setModalDeleteShow(true)}
+                  >
+                    Delete Account
+                  </button>
                 </Col>
               </Row>
             </div>
@@ -85,6 +97,12 @@ export default function DeleteAccount() {
     <div id='DeleteAccount'>
       {!isMobile && renderDesktopView()}
       {isMobile && renderMobileView()}
+      <DeleteAccountModal
+        show={modalDeleteShow}
+        onHide={() => {
+          setModalDeleteShow(false);
+        }}
+      />
     </div>
   );
 }

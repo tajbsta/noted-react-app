@@ -106,6 +106,6 @@ export const scrapeOlderEmails = async (userId) => {
     localStorage.setItem('scan_older_done', true);
   } catch (error) {
     // TODO: Error
-    console.log('Show error alert');
+    // console.log(error);
   }
 };

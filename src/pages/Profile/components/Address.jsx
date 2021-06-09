@@ -18,7 +18,6 @@ export default function Address({ user }) {
   const [modalShow, setModalShow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 

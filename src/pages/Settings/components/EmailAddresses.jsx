@@ -52,24 +52,6 @@ export default function EmailAddresses({ user }) {
     }
   }, [user]);
 
-  const renderValidError = () => (
-    <small className='form-text p-0 m-0 noted-red'>
-      Email is not valid anymore. Please{' '}
-      <a
-        className='noted-red'
-        style={{
-          fontSize: '0.8125rem',
-          color: 'red',
-          textDecoration: 'underline',
-        }}
-        href='/request-permission'
-      >
-        authorize noted
-      </a>{' '}
-      again.
-    </small>
-  );
-
   const deleteSuccess = (id) => {
     const list = accounts;
 
@@ -243,19 +225,21 @@ export default function EmailAddresses({ user }) {
                 <Col className='email-column'>
                   <Row>
                     <Col>
-                      <Form.Group className={isMobile ? 'm-form-group' : ''}>
-                        <Form.Label>
-                          Account email{' '}
-                          {user &&
-                            !accounts.find(
-                              (account) => account.email === user.email
-                            ) &&
-                            '(not used for scraping)'}
-                        </Form.Label>
-                        <div className='main-email'>
-                          <h4>{user && user.email}</h4>
-                        </div>
-                      </Form.Group>
+                      {!loading && (
+                        <Form.Group className={isMobile ? 'm-form-group' : ''}>
+                          <Form.Label>
+                            Account email{' '}
+                            {user &&
+                              !accounts.find(
+                                (account) => account.email === user.email
+                              ) &&
+                              '(not used for scraping)'}
+                          </Form.Label>
+                          <div className='main-email'>
+                            <h4>{user && user.email}</h4>
+                          </div>
+                        </Form.Group>
+                      )}
                     </Col>
                   </Row>
                   {loading && (
@@ -332,13 +316,18 @@ export default function EmailAddresses({ user }) {
                       setToDeleteAccount(null);
                     }}
                   />
-                  <Row className={isMobile ? 'm-button-row' : 'button-row'}>
-                    <Col className='btn-add-container'>
-                      <Button className='add-new-email' onClick={goToAuthorize}>
-                        Add new email
-                      </Button>
-                    </Col>
-                  </Row>
+                  {!loading && (
+                    <Row className={isMobile ? 'm-button-row' : 'button-row'}>
+                      <Col className='btn-add-container'>
+                        <Button
+                          className='add-new-email'
+                          onClick={goToAuthorize}
+                        >
+                          Add new email
+                        </Button>
+                      </Col>
+                    </Row>
+                  )}
                 </Col>
               </Row>
             </Container>

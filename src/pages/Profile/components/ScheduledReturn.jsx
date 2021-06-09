@@ -7,7 +7,7 @@ import { getUserId } from '../../../api/auth';
 import { ScheduledReturnItem } from './ScheduledReturnItem';
 import { timeout } from '../../../utils/time';
 
-export default function ScheduledReturn({ user }) {
+export default function ScheduledReturn() {
   const [isOpen, setIsOpen] = useState(false);
   const [orders, setOrders] = useState([]);
   const [fetchingOrders, setFetchingOrders] = useState(false);
