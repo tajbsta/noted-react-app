@@ -243,7 +243,9 @@ export default function DashboardPage() {
       <div className='container mt-6 main-mobile-dashboard'>
         <div className='row sched-row'>
           {/* If there are in progress orders */}
-          {!isEmpty(orders) && <ScheduledCard />}
+          {!isEmpty(orders) && (
+            <ScheduledCard fetchingOrders={fetchingOrders} />
+          )}
         </div>
         <div className='row ipad-row'>
           <div className={`mt-4 w-840 bottom ${isTablet ? 'col' : 'col-sm-9'}`}>
