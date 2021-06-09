@@ -62,13 +62,7 @@ export default function Topnav() {
     '/code/',
     '/code/verify',
   ];
-  // const authenticatedViews = [
-  //   '/dashboard',
-  //   '/checkout',
-  //   '/profile',
-  //   '/settings',
-  //   '/order',
-  // ];
+
   const {
     location: { pathname },
   } = useHistory();
@@ -105,6 +99,9 @@ export default function Topnav() {
     if (guestViews.indexOf(pageLocation) != -1) {
       history.push('/');
     } else {
+      if (searchQuery) {
+        dispatch(searchScans(''));
+      }
       history.push('/dashboard');
     }
   };

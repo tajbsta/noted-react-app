@@ -149,8 +149,6 @@ export default function DashboardPage() {
     setShowScanOlderButton(false);
     try {
       setLoading(true);
-      await scrapeOlderEmails(userId);
-      await updateUserAttributes({ 'custom:scan_older_done': '1' });
       showSuccess({
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -161,7 +159,13 @@ export default function DashboardPage() {
           </div>
         ),
       });
-      setLoading(false);
+      await scrapeOlderEmails(userId);
+      await updateUserAttributes({ 'custom:scan_older_done': '1' });
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 5000);
+
       setIsOlderScanDone(true);
     } catch (error) {
       // TODO: show error alert here
