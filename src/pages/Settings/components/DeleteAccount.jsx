@@ -2,8 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Collapsible from 'react-collapsible';
 import DeleteAccountModal from '../../../modals/DeleteAccountModal';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { deleteUserAccount } from '../../../api/auth';
+import { unsetUser } from '../../../actions/auth.action';
+import { unsetScan } from '../../../actions/scans.action';
+import { clearCart } from '../../../actions/cart.action';
+import { Auth } from 'aws-amplify';
+import { showSuccess, showError } from '../../../library/notifications.library';
 
 export default function DeleteAccount() {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [disableButton, setDisableButton] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [modalDeleteShow, setModalDeleteShow] = useState(false);
@@ -18,6 +30,45 @@ export default function DeleteAccount() {
       window.removeEventListener('resize', handleResize);
     };
   });
+
+  const logout = async () => {
+    dispatch(await unsetUser());
+    dispatch(await unsetScan());
+    Auth.signOut()
+      .then(async () => {
+        setTimeout(() => {
+          history.push('/');
+
+          // Clear cart on destroy
+          dispatch(clearCart());
+        }, 4000);
+      })
+      .catch((error) => {
+        // console.log('Error Signing Out: ', error);
+        showError({ message: 'Error Signing Out' });
+        history.push('/');
+      });
+  };
+
+  const deleteUser = async () => {
+    setDisableButton(true);
+    setLoading(true);
+
+    await deleteUserAccount();
+
+    setTimeout(() => {
+      setModalDeleteShow(false);
+    }, 1000);
+
+    // Showing success even if there is an error so that we can see the error log and manually delete the user
+    setTimeout(() => {
+      showSuccess({
+        message: 'Your noted account has been deleted successfully!',
+      });
+    }, 1500);
+
+    await logout();
+  };
 
   const renderMobileView = () => {
     return (
@@ -99,6 +150,9 @@ export default function DeleteAccount() {
       {isMobile && renderMobileView()}
       <DeleteAccountModal
         show={modalDeleteShow}
+        deleteUser={deleteUser}
+        loading={loading}
+        disableButton={disableButton}
         onHide={() => {
           setModalDeleteShow(false);
         }}
