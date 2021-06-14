@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Card, Col, Row, Spinner } from 'react-bootstrap';
 import ProfileIcon from '../../../assets/icons/Profile.svg';
 import moment from 'moment';
-import { Upload } from 'react-feather';
+import { AlertCircle, Upload } from 'react-feather';
 import { useDispatch } from 'react-redux';
 import { updateProfilePicture } from '../../../actions/runtime.action';
 import { get, isEmpty } from 'lodash-es';
@@ -39,8 +39,7 @@ export default function UserInfo({ user: userData = {} }) {
       setOrderCount(orderCount);
       // console.log(orderCount);
     } catch (error) {
-      // TODO: ERROR HANDLING
-      // console.log(error);
+      setFetchingOrderCount(false);
     }
   };
 

@@ -23,8 +23,7 @@ export default function AuthorizePage() {
 
       setAuthUrl(url);
     } catch (error) {
-      // TODO: Error HANDLING
-      // console.log({ error });
+      showError('Requesting Authentication URL failed');
     }
   };
 

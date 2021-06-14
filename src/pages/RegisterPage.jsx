@@ -121,8 +121,6 @@ export default function RegisterPage() {
               <div className='form-group'>
                 <input
                   className='form-control form-control-appended'
-                  isValid={!errors.email && email.length > 0}
-                  isInvalid={errors.email && email.length > 0}
                   type='email'
                   name='email'
                   placeholder='Your email...'
@@ -135,8 +133,6 @@ export default function RegisterPage() {
                 <div className='input-group input-group-merge'>
                   <input
                     className='form-control form-control-appended form-pass'
-                    isValid={!errors.password && password.length > 0}
-                    isInvalid={errors.password && password.length > 0}
                     type={passwordShown ? 'text' : 'password'}
                     name='password'
                     placeholder='Your password...'

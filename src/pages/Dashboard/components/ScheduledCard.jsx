@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Spinner } from 'react-bootstrap';
 import NoteeIcon from '../../../assets/icons/NoteeIcon.svg';
 import { getUserId } from '../../../api/auth';
 import { getActiveOrderCounts } from '../../../api/orderApi';
+import { showError } from '../../../library/notifications.library';
+import { AlertCircle } from 'react-feather';
 
-export default function ScheduledCard() {
+export default function ScheduledCard({ fetchingOrders = false }) {
   const [isMobile, setIsMobile] = useState(false);
   const [orderCount, setOrderCount] = useState(false);
   const [fetchingOrderCount, setFetchingOrderCount] = useState(false);
@@ -20,8 +22,7 @@ export default function ScheduledCard() {
       setOrderCount(orderCount);
       // console.log(orderCount);
     } catch (error) {
-      // TODO: ERROR HANDLING
-      // console.log(error);
+      setFetchingOrderCount(false);
     }
   };
 
@@ -81,61 +82,65 @@ export default function ScheduledCard() {
     };
   });
 
+  const renderMobileView = isMobile && (
+    <>
+      <Col className='info-col ml-5'>
+        <Row>
+          <div className='title'>Your scheduled return</div>
+        </Row>
+        <Row>
+          <div className='items-info'>{totalActiveCounts()}</div>
+        </Row>
+        <Row>
+          <button className='btn btn-view-scheduled' onClick={profile}>
+            View scheduled returns
+          </button>
+        </Row>
+      </Col>
+    </>
+  );
+
+  const renderDesktopView = !isMobile && (
+    <>
+      <Col xs={6} className='info-col'>
+        <Row>
+          <div className='title'>Your scheduled return</div>
+        </Row>
+        <Row>
+          <div className='items-info'>{totalActiveCounts()}</div>
+        </Row>
+      </Col>
+      <Col className='button-col'>
+        <div>
+          <button className='btn btn-view-scheduled' onClick={profile}>
+            View scheduled returns
+          </button>
+        </div>
+      </Col>
+    </>
+  );
+
+  const renderSpinner = (
+    <Spinner animation='border' size='sm' className='spinner btn-spinner' />
+  );
+
   return (
     <div className='col sched-col' id='ScheduledCard'>
       <div className='card'>
         <div className='card-body'>
-          <Row style={{ alignItems: 'center' }}>
-            <Col xs={1} className='icon-col'>
-              <div className='notee-container'>
-                <img src={NoteeIcon} alt='NoteeIcon' />
-              </div>
-            </Col>
-            {!isMobile && (
-              <>
-                <Col xs={6} className='info-col'>
-                  <Row>
-                    <div className='title'>Your scheduled return</div>
-                  </Row>
-                  <Row>
-                    <div className='items-info'>{totalActiveCounts()}</div>
-                  </Row>
-                </Col>
-                <Col className='button-col'>
-                  <div>
-                    <button
-                      className='btn btn-view-scheduled'
-                      onClick={profile}
-                    >
-                      View scheduled returns
-                    </button>
-                  </div>
-                </Col>
-              </>
-            )}
-            {/* START OF MOBILE VIEWS */}
-            {isMobile && (
-              <>
-                <Col className='info-col ml-5'>
-                  <Row>
-                    <div className='title'>Your scheduled return</div>
-                  </Row>
-                  <Row>
-                    <div className='items-info'>{totalActiveCounts()}</div>
-                  </Row>
-                  <Row>
-                    <button
-                      className='btn btn-view-scheduled'
-                      onClick={profile}
-                    >
-                      View scheduled returns
-                    </button>
-                  </Row>
-                </Col>
-              </>
-            )}
-            {/* END OF MOBILE VIEWS*/}
-          </Row>
+          {fetchingOrders || fetchingOrderCount ? (
+            renderSpinner
+          ) : (
+            <Row style={{ alignItems: 'center' }}>
+              <Col xs={1} className='icon-col'>
+                <div className='notee-container'>
+                  <img src={NoteeIcon} alt='NoteeIcon' />
+                </div>
+              </Col>
+              {renderDesktopView}
+              {renderMobileView}
+            </Row>
+          )}
         </div>
       </div>
     </div>

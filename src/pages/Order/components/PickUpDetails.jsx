@@ -59,6 +59,7 @@ export default function PickUpDetails({
     handleChange: handleAddressChange,
     values: addressFormValues,
     setFieldValue,
+    handleBlur: handleAddressFormBlur,
   } = useFormik({
     initialValues: {
       fullName: '',
@@ -69,6 +70,7 @@ export default function PickUpDetails({
       phoneNumber: '',
       instructions: '',
     },
+    validateOnBlur: true,
     validationSchema: pickUpAddressSchema,
   });
 
@@ -294,6 +296,7 @@ export default function PickUpDetails({
             onDoneClick={saveAddress}
             setFieldValue={setFieldValue}
             setShowEditAddress={setShowEditAddress}
+            handleBlur={handleAddressFormBlur}
           />
         )}
 
