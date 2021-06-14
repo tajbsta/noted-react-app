@@ -56,42 +56,35 @@ export default function ProductCardHover({ show, item, editproductform }) {
   const inDashboard = ['/dashboard'].includes(pathname);
   const inCheckout = ['/checkout'].includes(pathname);
 
-  const renderRating = () => {
-    return (
-      <Row
-        className='container-3 text-left-3'
+  const RenderRating = (
+    <Row className='container-3 text-left-3'>
+      <Col
+        xs={2}
         style={{
-          paddingLeft: 20,
+          paddingLeft: 0,
         }}
       >
-        <Col
-          xs={2}
-          style={{
-            paddingLeft: 0,
-          }}
-        >
-          <span className='score-container mr-2 d-flex'>
-            <ReturnScore score={item.vendor_data.rating} />
-          </span>
-        </Col>
-        <Col xs={10}>
-          <Row xs={10}>
-            <p className='text-14 sofia-pro line-height-16 text-score'>
-              {get(currentScore, 'title', '')}
-            </p>
-          </Row>
-          <Row xs={8}>
-            <button
-              className='btn-policy sofia-pro btn p-0 pt-1'
-              onClick={() => setModalPolicyShow(true)}
-            >
-              Return policy
-            </button>
-          </Row>
-        </Col>
-      </Row>
-    );
-  };
+        <span className='score-container mr-2 d-flex'>
+          <ReturnScore score={item.vendor_data.rating} />
+        </span>
+      </Col>
+      <Col xs={10}>
+        <Row xs={10}>
+          <p className='text-14 sofia-pro line-height-16 text-score'>
+            {get(currentScore, 'title', '')}
+          </p>
+        </Row>
+        <Row xs={8}>
+          <button
+            className='btn-policy sofia-pro btn p-0 pt-1'
+            onClick={() => setModalPolicyShow(true)}
+          >
+            Return policy
+          </button>
+        </Row>
+      </Col>
+    </Row>
+  );
 
   return (
     <div>
@@ -122,7 +115,7 @@ export default function ProductCardHover({ show, item, editproductform }) {
               </div>
             </div>
           )}
-          {renderRating()}
+          {RenderRating}
         </div>
       )}
 
