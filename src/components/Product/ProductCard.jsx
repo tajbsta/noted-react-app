@@ -284,6 +284,7 @@ export default function ProductCard({
                 <div className='m-edit-col'>
                   <h4 className='mb-0'>Wrong info? &nbsp;</h4>
                   <button
+                    disabled
                     className='sofia-pro btn btn-m-edit mr-1'
                     onClick={() => setModalEditShow(true)}
                   >

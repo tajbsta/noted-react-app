@@ -103,6 +103,7 @@ export default function ProductCardHover({ show, item, editproductform }) {
               <div className='info-container'>
                 <p className='text-wrong-info sofia-pro'>Wrong info?&nbsp;</p>
                 <button
+                  disabled
                   className='btn-hover-edit sofia-pro btn mr-1'
                   onClick={onEdit}
                 >
