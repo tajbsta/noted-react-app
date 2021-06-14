@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { DONATE, NOT_ELIGIBLE } from '../../constants/actions/runtime';
 import { timeout } from '../../utils/time';
 import { setCartItems } from '../../actions/cart.action';
+import { fixedEncodeURIComponent } from '../../utils/data';
 
 export default function ReturnCategory({
   userId,
@@ -52,12 +53,14 @@ export default function ReturnCategory({
       setLoadProgress(95);
 
       if (search) {
-        params.search = encodeURIComponent(search);
+        params.search = fixedEncodeURIComponent(search)
       }
 
       if (nextPageToken) {
         params.nextPageToken = nextPageToken;
       }
+
+      console.log(params);
       const products = await getProducts(params);
       let newItems = [...products];
       if (nextPageToken) {
