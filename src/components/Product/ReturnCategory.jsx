@@ -59,8 +59,6 @@ export default function ReturnCategory({
       if (nextPageToken) {
         params.nextPageToken = nextPageToken;
       }
-
-      console.log(params);
       const products = await getProducts(params);
       let newItems = [...products];
       if (nextPageToken) {
