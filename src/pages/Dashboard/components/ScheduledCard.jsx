@@ -22,16 +22,7 @@ export default function ScheduledCard({ fetchingOrders = false }) {
       setOrderCount(orderCount);
       // console.log(orderCount);
     } catch (error) {
-      showError({
-        message: (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <AlertCircle />
-            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              Error getting item count!
-            </h4>
-          </div>
-        ),
-      });
+      setFetchingOrderCount(false);
     }
   };
 

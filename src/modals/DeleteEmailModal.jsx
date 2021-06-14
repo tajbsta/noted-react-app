@@ -27,7 +27,7 @@ export default function DeleteEmailModal(props) {
       setLoading(false);
     } catch (error) {
       showError({
-        message: 'Error deleting account',
+        message: 'Error encountered when deleting account',
       });
       setLoading(false);
     }

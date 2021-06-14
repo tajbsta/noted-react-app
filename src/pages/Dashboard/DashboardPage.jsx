@@ -81,16 +81,7 @@ export default function DashboardPage() {
       setOrders(res.orders);
       // console.log(res.orders);
     } catch (error) {
-      showError({
-        message: (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <AlertCircle />
-            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              Error! Pick-up instruction is still the same
-            </h4>
-          </div>
-        ),
-      });
+      setFetchingOrders(false);
     }
   };
 

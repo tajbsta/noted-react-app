@@ -23,7 +23,7 @@ export default function AddPickupModal(props) {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AlertCircle />
             <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              Error! Pick-up instruction is still the same
+              Error updating pick-up instructions
             </h4>
           </div>
         ),
