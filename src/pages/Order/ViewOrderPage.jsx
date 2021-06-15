@@ -8,7 +8,7 @@ import PickUpCancelled from '../../components/PickUpDetails/PickUpCancelled';
 import PickUpDetails from './components/PickUpDetails';
 import { get, isEqual } from 'lodash';
 import $ from 'jquery';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import Row from '../../components/Row';
 import { scrollToTop } from '../../utils/window';
 import ModifyCheckoutCard from './components/ModifyCheckoutCard';
@@ -38,6 +38,7 @@ import {
 } from '../../constants/errors/errorCodes';
 
 const ViewOrder = () => {
+  const { push } = useHistory();
   const dispatch = useDispatch();
   const stripe = useStripe();
   const [confirmed, setConfirmed] = useState(false);
@@ -195,6 +196,7 @@ const ViewOrder = () => {
       });
       setCancelled(true);
       setConfirmed(true);
+      push(`/profile`);
     } catch (error) {
       // console.log(error.response.data);
 
