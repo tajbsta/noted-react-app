@@ -148,6 +148,11 @@ const ViewOrder = () => {
     setOrderLoading(true);
     try {
       const data = await getOrder(orderIdParams);
+
+      if (get(data, 'status', '') === 'cancelled') {
+        return push('/profile');
+      }
+
       setOrder(data);
       dispatch(setCartItems(data.orderItems || []));
       setOrderLoading(false);
