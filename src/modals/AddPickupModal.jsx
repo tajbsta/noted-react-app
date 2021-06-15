@@ -1,7 +1,39 @@
-import React from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Modal, Button, Form, Spinner } from 'react-bootstrap';
+import { AlertCircle } from 'react-feather';
+import { updateUserAttributes } from '../api/auth';
+import { showError, showSuccess } from '../library/notifications.library';
 
 export default function AddPickupModal(props) {
+  const [loading, setLoading] = useState(false);
+  const updatePickUpInstructions = async () => {
+    setLoading(true);
+    try {
+      await updateUserAttributes({
+        'custom:pickup_instructions': props.instructions,
+      });
+      await props.onHide();
+      
+      showSuccess({
+        message: 'Successfully updated pick-up instructions',
+      });
+    setLoading(false);
+
+    } catch (error) {
+      setLoading(false);
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Error updating pick-up instructions
+            </h4>
+          </div>
+        ),
+      });
+    }
+  };
+
   return (
     <div>
       <Modal
@@ -38,8 +70,20 @@ export default function AddPickupModal(props) {
               />
             </Form.Group>
             <div className='button-group'>
-              <Button className='btn-save' onClick={props.onDoneClick}>
-                Save
+              <Button
+                className='btn-save'
+                onClick={updatePickUpInstructions}
+                disabled={loading}
+              >
+                {loading ? (
+                  <Spinner
+                    animation='border'
+                    size='sm'
+                    className='spinner btn-spinner'
+                  />
+                ) : (
+                  'Save'
+                )}
               </Button>
               <Button className='btn btn-cancel' onClick={props.onHide}>
                 <h4 className='text-cancel'>Cancel</h4>

@@ -81,9 +81,7 @@ export default function DashboardPage() {
       setOrders(res.orders);
       // console.log(res.orders);
     } catch (error) {
-      // TODO: ERROR HANDLING
-      // console.log(error);
-      showError('An error occurred. Unable to retrieve orders');
+      setFetchingOrders(false);
     }
   };
 
@@ -111,8 +109,17 @@ export default function DashboardPage() {
       await fetchAccounts(userId);
       setLoading(false);
     } catch (error) {
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Error! Failed to load products!
+            </h4>
+          </div>
+        ),
+      });
       setLoading(false);
-      // TODO: show error here
     }
   }
 
@@ -165,14 +172,13 @@ export default function DashboardPage() {
 
       setIsOlderScanDone(true);
     } catch (error) {
-      // TODO: show error alert here
       setLoading(false);
       showError({
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AlertCircle />
             <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              File is too large! Maximum size for file upload is 5 MB.
+              Error getting older emails!
             </h4>
           </div>
         ),
@@ -228,7 +234,9 @@ export default function DashboardPage() {
       <div className='container mt-6 main-mobile-dashboard'>
         <div className='row sched-row'>
           {/* If there are in progress orders */}
-          {!isEmpty(orders) && <ScheduledCard />}
+          {!isEmpty(orders) && (
+            <ScheduledCard fetchingOrders={fetchingOrders} />
+          )}
         </div>
         <div className='row ipad-row'>
           <div className={`mt-4 w-840 bottom ${isTablet ? 'col' : 'col-sm-9'}`}>
@@ -335,6 +343,7 @@ export default function DashboardPage() {
                           Can’t find one?
                           <button
                             className='btn btn-add-product mr-1'
+                            disabled
                             onClick={() => setModalProductShow(true)}
                             style={{ padding: '0px' }}
                           >

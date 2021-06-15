@@ -9,6 +9,8 @@ import {
   GOOGLE_AUTH_ACCESS_DENIED,
 } from '../constants/errors/errorCodes';
 import { scrollToTop } from '../utils/window';
+import { showError } from '../library/notifications.library';
+import { AlertCircle } from 'react-feather';
 
 export default function Code() {
   const history = useHistory();
@@ -56,7 +58,16 @@ export default function Code() {
 
       history.push('/dashboard');
     } catch (error) {
-      // TODO: ERROR HANDLING
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Error! Verification failed
+            </h4>
+          </div>
+        ),
+      });
       history.push('/');
     }
   };
