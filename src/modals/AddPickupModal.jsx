@@ -7,15 +7,18 @@ import { showError, showSuccess } from '../library/notifications.library';
 export default function AddPickupModal(props) {
   const [loading, setLoading] = useState(false);
   const updatePickUpInstructions = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       await updateUserAttributes({
         'custom:pickup_instructions': props.instructions,
       });
       await props.onHide();
+      
       showSuccess({
         message: 'Successfully updated pick-up instructions',
       });
+    setLoading(false);
+
     } catch (error) {
       setLoading(false);
       showError({
@@ -28,8 +31,6 @@ export default function AddPickupModal(props) {
           </div>
         ),
       });
-    } finally {
-      setLoading(false);
     }
   };
 
