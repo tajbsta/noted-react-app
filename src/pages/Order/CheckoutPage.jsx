@@ -210,7 +210,18 @@ const Checkout = () => {
   /**ON MOUNT GET PRICING DETAILS */
   /**GET PRICING WHEN ITEMS CHANGE */
   useEffect(() => {
-    getPricingDetails();
+    if(items.length > 0){
+      getPricingDetails();
+    } else {
+      setPricingDetails({
+        potentialReturnValue: 0,
+        price: 0,
+        tax: 0,
+        totalDonations: 0,
+        totalPrice: 0,
+        totalReturns: 0,
+      })
+    }
   }, [items]);
 
   // Clear cart on destroy
