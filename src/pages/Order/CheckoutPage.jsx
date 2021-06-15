@@ -50,8 +50,6 @@ const Checkout = () => {
       pickupDetails,
     })
   );
-  // console.log(details);
-  // console.log(items)
   const [validAddress, setValidAddress] = useState(false);
   const [validPayment, setValidPayment] = useState(false);
   const [validPickUpDetails, setValidPickUpDetails] = useState(false);
@@ -210,7 +208,18 @@ const Checkout = () => {
   /**ON MOUNT GET PRICING DETAILS */
   /**GET PRICING WHEN ITEMS CHANGE */
   useEffect(() => {
-    getPricingDetails();
+    if(items.length > 0){
+      getPricingDetails();
+    } else {
+      setPricingDetails({
+        potentialReturnValue: 0,
+        price: 0,
+        tax: 0,
+        totalDonations: 0,
+        totalPrice: 0,
+        totalReturns: 0,
+      })
+    }
   }, [items]);
 
   // Clear cart on destroy
@@ -318,7 +327,7 @@ const Checkout = () => {
               ))}
             </div>
 
-            {items.length > 0 && (
+            {items.length > 0 && otherReturns.length > 0 && (
               <>
                 <h3 className='sofia-pro miss-out section-title'>
                   Don&apos;t miss out on other returns
