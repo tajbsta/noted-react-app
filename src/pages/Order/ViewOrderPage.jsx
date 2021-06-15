@@ -148,8 +148,10 @@ const ViewOrder = () => {
     setOrderLoading(true);
     try {
       const data = await getOrder(orderIdParams);
-
-      if (get(data, 'status', '') === 'cancelled') {
+      if (
+        get(data, 'status', '') === 'cancelled' ||
+        get(data, 'statusType', '') !== 'active'
+      ) {
         return push('/profile');
       }
 
