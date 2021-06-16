@@ -8,8 +8,10 @@ import {
   SERVER_ERROR,
   GOOGLE_AUTH_ACCESS_DENIED,
 } from '../constants/errors/errorCodes';
+import { CheckCircle } from 'react-feather';
+
 import { scrollToTop } from '../utils/window';
-import { showError } from '../library/notifications.library';
+import { showError, showSuccess } from '../library/notifications.library';
 import { AlertCircle } from 'react-feather';
 
 export default function Code() {
@@ -55,6 +57,18 @@ export default function Code() {
           return;
         }
       }
+
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Successfully added an email! Please wait a few minutes to show
+              your returns on the dashboard
+            </h4>
+          </div>
+        ),
+      });
 
       history.push('/dashboard');
     } catch (error) {
