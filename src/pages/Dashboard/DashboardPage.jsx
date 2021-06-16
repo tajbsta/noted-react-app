@@ -186,9 +186,28 @@ export default function DashboardPage() {
     }
   };
 
+  const checkForJustAuthorizedMail = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isMailJustAuthorized = urlParams.get('authorized') === 'true';
+    if (isMailJustAuthorized) {
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Successfully added an email! Please wait a few minutes to show
+              your returns on the dashboard
+            </h4>
+          </div>
+        ),
+      });
+    }
+  };
+
   useEffect(() => {
     scrollToTop();
     loadScans();
+    checkForJustAuthorizedMail();
   }, []);
 
   const goToAuthorize = () => {
