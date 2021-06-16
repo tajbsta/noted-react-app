@@ -8,6 +8,7 @@ import {
   SERVER_ERROR,
   GOOGLE_AUTH_ACCESS_DENIED,
 } from '../constants/errors/errorCodes';
+
 import { scrollToTop } from '../utils/window';
 import { showError } from '../library/notifications.library';
 import { AlertCircle } from 'react-feather';
@@ -56,7 +57,7 @@ export default function Code() {
         }
       }
 
-      history.push('/dashboard');
+      history.push('/dashboard?authorized=true');
     } catch (error) {
       showError({
         message: (
