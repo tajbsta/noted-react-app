@@ -8,12 +8,14 @@ import UserInfo from './../Profile/components/UserInfo';
 import { Link } from 'react-scroll';
 import { getUser } from '../../api/auth';
 import { scrollToTop } from '../../utils/window';
+import { Auth } from 'aws-amplify';
 
 export default function SettingsPage() {
   const [user, setUser] = useState({});
   const [currentTab, setCurrenTab] = useState('');
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [isGoogleSignIn, setIsGoogleSignIn] = useState(false);
 
   useEffect(() => {
     scrollToTop();
@@ -50,6 +52,13 @@ export default function SettingsPage() {
       ? { color: '#570097', fontWeight: '700' }
       : {};
   };
+
+  useEffect(() => {
+    (async () => {
+      const currentUser = await Auth.currentUserPoolUser();
+      setIsGoogleSignIn(`${currentUser.username}`.includes('Google'));
+    })();
+  }, []);
 
   const renderSettingsNavigation = () => (
     <div className='col-sm-3 left'>
@@ -90,22 +99,24 @@ export default function SettingsPage() {
               Email Addresses
             </Link>
           </li>
-          <li className='nav-item'>
-            <Link
-              to='ChangePass'
-              spy={true}
-              smooth={true}
-              className='nav-link'
-              offset={-70}
-              duration={500}
-              onClick={() => {
-                setCurrenTab('ChangePass');
-              }}
-              style={isActive('ChangePass')}
-            >
-              Change Password
-            </Link>
-          </li>
+          {isGoogleSignIn === false && (
+            <li className='nav-item'>
+              <Link
+                to='ChangePass'
+                spy={true}
+                smooth={true}
+                className='nav-link'
+                offset={-70}
+                duration={500}
+                onClick={() => {
+                  setCurrenTab('ChangePass');
+                }}
+                style={isActive('ChangePass')}
+              >
+                Change Password
+              </Link>
+            </li>
+          )}
           <li className='nav-item'>
             <Link
               to='DeleteAccount'
@@ -147,7 +158,7 @@ export default function SettingsPage() {
           <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
             <BasicInfo user={user} />
             <EmailAddresses user={user} />
-            <ChangePass />
+            {isGoogleSignIn === false && <ChangePass />}
             <DeleteAccount />
           </div>
         </div>
