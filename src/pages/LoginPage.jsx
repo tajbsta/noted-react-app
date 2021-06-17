@@ -9,6 +9,7 @@ import { get } from 'lodash';
 import { Eye, EyeOff } from 'react-feather';
 import { scrollToTop } from '../utils/window';
 import GoogleLogo from '../assets/icons/Google.svg';
+import { resetAuthorizeNewEmail } from '../utils/data';
 
 export default function LoginPage() {
   const history = useHistory();
@@ -22,6 +23,7 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
+    resetAuthorizeNewEmail();
     scrollToTop();
   }, []);
 

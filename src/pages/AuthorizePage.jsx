@@ -28,6 +28,11 @@ export default function AuthorizePage() {
   };
 
   const openAuthUrl = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isMailJustAuthorized = urlParams.get('authorized') === 'true';
+    if (isMailJustAuthorized) {
+      localStorage.setItem('authorizeNewEmail', JSON.stringify(true));
+    }
     window.location.href = authUrl;
   };
 
