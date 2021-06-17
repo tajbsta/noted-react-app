@@ -10,6 +10,7 @@ import { useFormik } from 'formik';
 import { registerSchema } from '../models/formSchema';
 import { scrollToTop } from '../utils/window';
 import GoogleLogo from '../assets/icons/Google.svg';
+import { resetAuthorizeNewEmail } from '../utils/data';
 
 export default function RegisterPage() {
   const history = useHistory();
@@ -21,6 +22,7 @@ export default function RegisterPage() {
   };
 
   useEffect(() => {
+    resetAuthorizeNewEmail();
     scrollToTop();
   }, []);
 

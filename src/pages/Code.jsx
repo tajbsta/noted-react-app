@@ -57,7 +57,7 @@ export default function Code() {
         }
       }
 
-      history.push('/dashboard?authorized=true');
+      history.push('/dashboard');
     } catch (error) {
       showError({
         message: (
@@ -72,6 +72,7 @@ export default function Code() {
       history.push('/');
     }
   };
+
   useEffect(() => {
     scrollToTop();
     verifyUser();

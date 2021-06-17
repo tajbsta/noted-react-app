@@ -25,3 +25,8 @@ export const fixedEncodeURIComponent = (str) => {
     return '%' + c.charCodeAt(0).toString(16);
   });
 }
+
+//RESET AUTHORIZE NEW EMAIL
+export const resetAuthorizeNewEmail = () => {
+  localStorage.setItem('authorizeNewEmail', JSON.stringify(false));
+}

@@ -26,6 +26,7 @@ import { scrollToTop } from '../../utils/window';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
+import { resetAuthorizeNewEmail } from '../../utils/data';
 
 export default function DashboardPage() {
   const history = useHistory();
@@ -187,8 +188,8 @@ export default function DashboardPage() {
   };
 
   const checkForJustAuthorizedMail = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const isMailJustAuthorized = urlParams.get('authorized') === 'true';
+    const isMailJustAuthorized =
+      localStorage.getItem('authorizeNewEmail') === 'true' || false;
     if (isMailJustAuthorized) {
       showSuccess({
         message: (
@@ -201,6 +202,7 @@ export default function DashboardPage() {
           </div>
         ),
       });
+      resetAuthorizeNewEmail();
     }
   };
 
