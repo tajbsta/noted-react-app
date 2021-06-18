@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash-es';
 import { ProgressBar } from 'react-bootstrap';
 import Collapsible from 'react-collapsible';
-import { getOrders } from '../../../api/orderApi';
+import { getOrder, getOrders } from '../../../api/orderApi';
 import { getUserId } from '../../../api/auth';
 import { ScheduledReturnItem } from './ScheduledReturnItem';
 import { timeout } from '../../../utils/time';
@@ -15,6 +15,18 @@ export default function ScheduledReturn() {
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
 
+  const fetchOrdersWithAirtableId = async () => {
+    const userId = await getUserId();
+    const res = await getOrders(userId, 'active');
+    const data = await Promise.all(
+      res.orders.map(async (activeOrder) => {
+        const order = await getOrder(activeOrder.id);
+        return { ...activeOrder, airtableId: order.airtableId };
+      })
+    );
+    return data;
+  };
+
   const getScheduledOrders = async () => {
     try {
       setFetchingOrders(true);
@@ -25,10 +37,9 @@ export default function ScheduledReturn() {
       await timeout(200);
       setLoadProgress(65);
 
-      const userId = await getUserId();
-      const res = await getOrders(userId, 'active');
+      const orderResponse = await fetchOrdersWithAirtableId();
 
-      setOrders(res.orders);
+      setOrders(orderResponse);
 
       setLoadProgress(80);
       await timeout(200);
@@ -40,8 +51,6 @@ export default function ScheduledReturn() {
       setTimeout(() => {
         setFetchingOrders(false);
       }, 600);
-
-      // console.log(res.orders);
     } catch (error) {
       showError({
         message: (

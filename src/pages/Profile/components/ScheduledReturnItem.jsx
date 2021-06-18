@@ -138,6 +138,8 @@ export const ScheduledReturnItem = ({ order }) => {
     );
   };
 
+  const hasAirtableId = get(order, 'airtableId', '') !== '';
+
   return (
     <div className='row' key={order.id}>
       <Accordion
@@ -316,22 +318,24 @@ export const ScheduledReturnItem = ({ order }) => {
                     </Row>
                   )}
 
-                  <Row
-                    className='cancel-action-container'
-                    style={{
-                      marginRight: '0px',
-                      justifyContent: 'flex-end',
-                    }}
-                  >
-                    <button
-                      className='btn btn-show p-0 m-0'
-                      onClick={() => {
-                        viewOrder();
+                  {hasAirtableId && (
+                    <Row
+                      className='cancel-action-container'
+                      style={{
+                        marginRight: '0px',
+                        justifyContent: 'flex-end',
                       }}
                     >
-                      Modify or cancel return
-                    </button>
-                  </Row>
+                      <button
+                        className='btn btn-show p-0 m-0'
+                        onClick={() => {
+                          viewOrder();
+                        }}
+                      >
+                        Modify or cancel return
+                      </button>
+                    </Row>
+                  )}
                 </div>
               </div>
             </div>
