@@ -151,19 +151,17 @@ export const pickUpDateSchema = Yup.object({
 })
 
 export const addProductSchema = Yup.object({
-  productUrl: Yup.string()
-    .url('Enter valid url')
-    .required('Please enter website'),
   vendorTag: Yup.string().required('Merchant is required'),
   orderDate: Yup.string().required('Order date is required'),
-  orderRefNo: Yup.string().required('Order ref # is required'),
+  orderRef: Yup.string().required('Order ref # is required'),
   itemName: Yup.string().required('Product name is required'),
   amount: Yup.string().required("Product's amount is required"),
-  returnDocument: Yup.object()
-    .shape({
-      name: Yup.string().required(),
-    })
-    .label('File'),
+  // returnDocument: Yup.object()
+  //   .shape({
+  //     name: Yup.string().required(),
+  //   })
+  //   .label('File'),
+  returnDocument:Yup.string().required('Please upload a receipt for this product.')
 })
 
 export const editProductSchema = Yup.object({
