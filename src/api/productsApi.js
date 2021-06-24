@@ -88,3 +88,13 @@ export const getOtherReturnProducts = async (size = 5, productIds = []) => {
   );
   return res.data.data;
 };
+
+export const getVendors = async () => {
+  const axios = await api();
+
+  let queries = [];
+  const { userId } = await getUserSession();
+  const query = queries.join("&");
+  const res = await axios.get(`/${userId}/vendors?${query}`);
+  return res.data.data;
+}

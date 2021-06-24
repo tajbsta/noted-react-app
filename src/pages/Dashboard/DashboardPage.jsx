@@ -364,8 +364,8 @@ export default function DashboardPage() {
                           Can’t find one?
                           <button
                             className='btn btn-add-product mr-1'
-                            disabled
                             onClick={() => setModalProductShow(true)}
+                            disabled
                             style={{ padding: '0px' }}
                           >
                             <h4 className='mb-0 noted-purple sofia-pro line-height-16 text-add'>

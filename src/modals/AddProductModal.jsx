@@ -1,7 +1,13 @@
-import React, { useState, useCallback, useRef, forwardRef } from 'react';
-import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
+import React, {
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  Fragment,
+} from 'react';
+import { Modal, Button, Form, Row, Col, Dropdown } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
-import { UploadCloud } from 'react-feather';
+// import { UploadCloud } from 'react-feather';
 import { useDropzone } from 'react-dropzone';
 import { addProductSchema } from '../models/formSchema';
 import { useFormik } from 'formik';
@@ -11,20 +17,24 @@ import { addProductInReview } from '../actions/products.action';
 import { formatCurrency } from '../library/number';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/src/stylesheets/datepicker.scss';
+import { getVendors } from '../api/productsApi';
+import { get, isEmpty } from 'lodash';
 
 export default function AddProductModal(props) {
   const dispatch = useDispatch();
-  const [file, setFile] = useState('');
+  const [allFiles, setAllFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedMerchant, setSelectedMerchant] = useState({});
+  const [allMerchants, setAllMerchants] = useState([]);
 
   const {
     errors,
     handleChange: handleProductChange,
     values: productValues,
     setFieldValue,
+    validateForm: handleProductValidation,
   } = useFormik({
     initialValues: {
-      productUrl: '',
       vendorTag: '',
       orderDate: '',
       orderRef: '',
@@ -35,15 +45,46 @@ export default function AddProductModal(props) {
     validationSchema: addProductSchema,
   });
 
-  const {
-    productUrl,
-    vendorTag,
-    orderDate,
-    orderRef,
-    itemName,
-    amount,
-    returnDocument,
-  } = productValues;
+  const handleOnSelectMerchant = (eventKey, event) => {
+    event.preventDefault();
+    setSelectedMerchant(
+      allMerchants.find((merchant) => merchant.name === eventKey)
+    );
+    setFieldValue(
+      'vendorTag',
+      allMerchants.find((merchant) => merchant.name === eventKey).code
+    ); // SET MERCHANT VALUE
+  };
+
+  const handleChangeOrderRef = (e) => {
+    setFieldValue('orderRef', e.target.value, true);
+  };
+  const handleChangeProductName = (e) => {
+    setFieldValue('itemName', e.target.value, true);
+  };
+  const handleChangeProductPrice = (e) => {
+    setFieldValue('amount', e.target.value, true);
+  };
+
+  const handleSubmitProduct = async (e) => {
+    e.preventDefault();
+    const errors = await handleProductValidation();
+    console.log(errors);
+    if (!isEmpty(errors)) return;
+
+    console.log(productValues);
+  };
+
+  const handleCancelModal = () => {
+    setSelectedMerchant({});
+    setAllFiles([]);
+    setFieldValue('orderDate', '');
+    setFieldValue('orderRef', '');
+    setFieldValue('itemName', '');
+    setFieldValue('amount', '');
+    setFieldValue('vendorTag', '');
+    props.onHide();
+  };
 
   const renderInlineError = (errors) => (
     <small className='form-text p-0 m-0 noted-red'>{errors}</small>
@@ -56,24 +97,35 @@ export default function AddProductModal(props) {
   };
 
   const onDrop = useCallback((acceptedFiles) => {
+    setAllFiles(acceptedFiles);
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
-
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = () => {
         // Do whatever with the file contents
-        const binaryStr = reader.result;
-        // console.log(binaryStr);
+        const dataUrl = reader.result;
+        setFieldValue('returnDocument', dataUrl);
       };
-      reader.readAsArrayBuffer(file);
+      reader.readAsDataURL(file);
+      // reader.readAsArrayBuffer(file);
     });
   }, []);
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps, fileRejections } = useDropzone({
     onDrop,
+    maxFiles: 1,
   });
 
-  const acceptedFileItems = acceptedFiles.map((file) => {
+  const fileRejectionMessage =
+    fileRejections.length > 0 ? (
+      <p className='sofia-pro' style={{ color: 'red', fontSize: '12px' }}>
+        {'Kindly select one file.'}
+      </p>
+    ) : (
+      ''
+    );
+
+  const acceptedFileItems = allFiles.map((file) => {
     return (
       <li
         key={file.path}
@@ -82,89 +134,79 @@ export default function AddProductModal(props) {
       >
         {getFileTypeIcon(file.path)}
         <span className='ml-2'>{file.path}</span>
-        {/* <img
+        <img
           src={URL.createObjectURL(file)}
           alt=''
           style={{
-            width: 50,
-            height: 50,
+            width: 60,
+            height: 60,
           }}
-        /> */}
+        />
       </li>
     );
   });
 
   // Handles file upload event and updates state
-  const handleUpload = (event) => {
-    // const file = event.target.files[0];
-    setFile(event.target.files[0]);
+  // const handleUpload = (event) => {
+  //   // const file = event.target.files[0];
+  //   setFile(event.target.files[0]);
 
-    if (file && file.size > 5097152) {
-      alert('File is too large! The maximum size for file upload is 5 MB.');
-    }
+  //   if (file && file.size > 5097152) {
+  //     alert('File is too large! The maximum size for file upload is 5 MB.');
+  //   }
 
-    setLoading(true);
+  //   setLoading(true);
 
-    // Upload file to server (code goes under)
+  //   // Upload file to server (code goes under)
 
-    setLoading(false);
-  };
+  //   setLoading(false);
+  // };
 
-  // Display Image Component
-  const ImageThumb = ({ image }) => {
-    return (
-      <img
-        src={URL.createObjectURL(image)}
-        alt={image.name}
-        className='product-placeholder'
-      />
-    );
-  };
+  // const onSave = (e) => {
+  //   e.preventDefault();
+  //   const newProduct = {
+  //     vendorTag,
+  //     orderDate,
+  //     orderRef,
+  //     itemName,
+  //     amount,
+  //     returnDocument,
+  //     thumbnail: URL.createObjectURL(file),
+  //   };
 
-  const onSave = (e) => {
-    e.preventDefault();
-    const newProduct = {
-      productUrl,
-      vendorTag,
-      orderDate,
-      orderRef,
-      itemName,
-      amount,
-      returnDocument,
-      thumbnail: URL.createObjectURL(file),
-    };
-
-    dispatch(addProductInReview(newProduct));
-    props.onHide();
-  };
+  //   dispatch(addProductInReview(newProduct));
+  //   props.onHide();
+  // };
 
   const renderDatePicker = () => {
-    const [startDate, setStartDate] = useState(null);
-    // eslint-disable-next-line react/display-name
-    const CustomInput = forwardRef(({ value, onClick }, ref) => (
-      <button
-        className='btn'
-        onClick={(e) => {
-          e.preventDefault();
-          onClick();
-        }}
-        ref={ref}
-      >
-        {value}
-      </button>
-    ));
     return (
       <div className='form-control' style={{ alignItems: 'center' }}>
         <div id='DatePicker'>
           <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            customInput={<CustomInput />}
+            selected={productValues.orderDate}
+            onChange={(date) => setFieldValue('orderDate', date)}
+            className='date-picker'
           />
         </div>
+        <p style={{ marginTop: '8px' }}>
+          {renderInlineError(errors.orderDate)}
+        </p>
       </div>
     );
   };
+
+  const fetchVendors = async () => {
+    try {
+      const merchants = await getVendors();
+      setAllMerchants(merchants);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchVendors();
+  }, []);
 
   return (
     <div>
@@ -179,36 +221,19 @@ export default function AddProductModal(props) {
         id='AddProductModal'
       >
         <Modal.Body className='sofia-pro'>
-          <Form id='passForm'>
+          <Form id='passForm' onSubmit={handleSubmitProduct}>
             <Row className='m-row'>
               <Col xs={2}>
                 <Form.Group className='productImg-form-group'>
                   <div className='img-container'>
                     <img
-                      src={ProductPlaceholder}
-                      className={`${
-                        file ? 'no-placeholder' : 'default-placeholder'
-                      }`}
+                      src={get(
+                        selectedMerchant,
+                        'thumbnail',
+                        ProductPlaceholder
+                      )}
+                      className={'product-placeholder'}
                     />
-                    {file && <ImageThumb image={file} />}
-                    <div className='upload-button'>
-                      <i
-                        className='fa fa-upload-icon'
-                        aria-hidden='true'
-                        onClick={handleClick}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <UploadCloud />
-                        <input
-                          style={{ display: 'none' }}
-                          className='file-upload'
-                          type='file'
-                          accept='.jpg, .jpeg, .png'
-                          onChange={handleUpload}
-                          ref={hiddenFileInput}
-                        />
-                      </i>
-                    </div>
                   </div>
                 </Form.Group>
               </Col>
@@ -216,45 +241,37 @@ export default function AddProductModal(props) {
                 <Row>
                   <Col>
                     <Form.Group>
-                      <Form.Label>Product URL</Form.Label>
-                      <Form.Control
-                        type='name'
-                        isValid={!errors.productUrl && productUrl.length > 0}
-                        isInvalid={errors.productUrl}
-                        name='productUrl'
-                        value={productUrl || ''}
-                        onChange={handleProductChange}
-                      />
-                      {productUrl.length > 0 &&
-                        renderInlineError(errors.productUrl)}
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Form.Group>
                       <Form.Label>Merchant</Form.Label>
-                      <div className='merchant-container'>
-                        <div className='merchant-form-control'>
-                          <Form.Control
-                            type='name'
-                            isValid={!errors.vendorTag && vendorTag.length > 0}
-                            isInvalid={errors.vendorTag}
-                            name='vendorTag'
-                            value={vendorTag || ''}
-                            onChange={handleProductChange}
-                          />
-                        </div>
-                        <div className='brand-img-container'>
-                          <img
-                            src='https://pbs.twimg.com/profile_images/1159166317032685568/hAlvIeYD_400x400.png'
-                            alt=''
-                            className='brand-img'
-                          />
-                        </div>
-                      </div>
-                      {vendorTag.length > 0 &&
-                        renderInlineError(errors.vendorTag)}
+                      <Dropdown
+                        className='merchant-container'
+                        onSelect={handleOnSelectMerchant}
+                      >
+                        <Dropdown.Toggle
+                          className='merchant-dropdown-toggle'
+                          variant='success'
+                          id='dropdown-basic'
+                          drop='right'
+                        >
+                          {get(selectedMerchant, 'name', 'Select Merchant')}
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu className='merchant-dropdown-menu'>
+                          {allMerchants.length > 0 &&
+                            allMerchants.map((merchant) => {
+                              return (
+                                <Dropdown.Item
+                                  key={merchant.code}
+                                  eventKey={merchant.name}
+                                  className='merchant-dropdown-item'
+                                  as='button'
+                                >
+                                  {merchant.name}
+                                </Dropdown.Item>
+                              );
+                            })}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                      {renderInlineError(errors.vendorTag)}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -269,7 +286,13 @@ export default function AddProductModal(props) {
                     <Form.Group>
                       <Form.Label>Order Ref. #</Form.Label>
                       <div>
-                        <Form.Control name='order ref' />
+                        <Form.Control
+                          name='order ref'
+                          type='text'
+                          onChange={handleChangeOrderRef}
+                          value={productValues.orderRef}
+                          required
+                        />
                       </div>
                     </Form.Group>
                   </Col>
@@ -281,13 +304,17 @@ export default function AddProductModal(props) {
                       <div>
                         <Form.Control
                           type='name'
-                          isValid={!errors.itemName && itemName.length > 0}
+                          isValid={
+                            !errors.itemName &&
+                            productValues.itemName.length > 0
+                          }
                           isInvalid={errors.itemName}
                           name='itemName'
-                          value={itemName || ''}
-                          onChange={handleProductChange}
+                          value={productValues.itemName || ''}
+                          onChange={handleChangeProductName}
+                          required
                         />
-                        {itemName.length > 0 &&
+                        {productValues.itemName.length > 0 &&
                           renderInlineError(errors.itemName)}
                       </div>
                     </Form.Group>
@@ -300,19 +327,23 @@ export default function AddProductModal(props) {
                       <Form.Label>Price</Form.Label>
                       <div>
                         <Form.Control
-                          isValid={!errors.amount && amount.length > 0}
+                          isValid={
+                            !errors.amount && productValues.amount.length > 0
+                          }
                           isInvalid={errors.amount}
                           name='amount'
-                          value={amount}
-                          onChange={handleProductChange}
+                          value={productValues.amount}
+                          onChange={handleChangeProductPrice}
                           onBlur={(e) =>
                             setFieldValue(
                               'amount',
                               formatCurrency(e.target.value)
                             )
                           }
+                          required
                         />
-                        {amount.length > 0 && renderInlineError(errors.amount)}
+                        {productValues.amount.length > 0 &&
+                          renderInlineError(errors.amount)}
                       </div>
                     </Form.Group>
                   </Col>
@@ -321,9 +352,9 @@ export default function AddProductModal(props) {
                   <Col>
                     <Form.Group>
                       <Form.Label className='documents-title'>
-                        Return Documents{' '}
-                        <small style={{ fontSize: '12px' }}>
-                          (ie. Amazon QR code, receipts, and shipping labels)
+                        Return Document{' '}
+                        <small style={{ fontSize: '11px' }}>
+                          (i.e Shipping or order receipts)
                         </small>
                       </Form.Label>
                       <div className='dropzone-container' {...getRootProps()}>
@@ -332,7 +363,8 @@ export default function AddProductModal(props) {
                           Drag & drop or click to upload
                         </p>
                       </div>
-                      {/* {renderInlineError(errors.returnDocument)} */}
+                      {fileRejectionMessage}
+                      {renderInlineError(errors.returnDocument)}
                       {acceptedFileItems}
                     </Form.Group>
                   </Col>
@@ -342,16 +374,11 @@ export default function AddProductModal(props) {
 
             <Row>
               <Col className='btn btn-container'>
-                <Button className='btn-cancel' onClick={props.onHide}>
+                <Button className='btn-cancel' onClick={handleCancelModal}>
                   Cancel
                 </Button>
-                <Button
-                  disabled
-                  className='btn-save'
-                  type='submit'
-                  onClick={onSave}
-                >
-                  Save Changes
+                <Button className='btn-save' type='submit'>
+                  Submit Product
                 </Button>
               </Col>
             </Row>
