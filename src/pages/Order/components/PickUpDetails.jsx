@@ -1,35 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { timeout } from '../../../utils/time';
-import EmptyAddress from '../../../components/PickUpDetails/EmptyAddress';
-import EmptyPayment from '../../../components/PickUpDetails/EmptyPayment';
-import AddressForm from '../../../components/Forms/AddressForm';
-import AddPaymentForm from '../../../components/Forms/AddPaymentForm';
-import { getCreditCardType } from '../../../utils/creditCards';
-import { getUserPaymentMethods } from '../../../api/orderApi';
-import { getUser } from '../../../api/auth';
-import AddPickupModal from '../../../modals/AddPickupModal';
-import { useFormik } from 'formik';
-import { formatPhoneNumber, isFormEmpty } from '../../../utils/form';
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { timeout } from "../../../utils/time";
+import EmptyAddress from "../../../components/PickUpDetails/EmptyAddress";
+import EmptyPayment from "../../../components/PickUpDetails/EmptyPayment";
+import AddressForm from "../../../components/Forms/AddressForm";
+import AddPaymentForm from "../../../components/Forms/AddPaymentForm";
+import { getCreditCardType } from "../../../utils/creditCards";
+import { getUserPaymentMethods } from "../../../api/orderApi";
+import { getUser } from "../../../api/auth";
+import AddPickupModal from "../../../modals/AddPickupModal";
+import { useFormik } from "formik";
+import { formatPhoneNumber } from "../../../utils/form";
 import {
   pickUpAddressSchema,
   pickUpDateSchema,
-} from '../../../models/formSchema';
-import { useDispatch } from 'react-redux';
+} from "../../../models/formSchema";
+import { useDispatch } from "react-redux";
 import {
   setPickupAddress,
   setPayment,
   setPickupDetails,
-} from '../../../actions/cart.action';
-import SchedulingModal from '../../../modals/SchedulingModal';
-import { get } from 'lodash-es';
-import moment from 'moment';
-import Collapsible from 'react-collapsible';
-import LeftArrow from '../../../assets/icons/RightArrow.svg';
-import DownArrow from '../../../assets/icons/DownArrow.svg';
-import { Col, Row } from 'react-bootstrap';
-import { truncateString } from '../../../utils/data';
-import PRICING from '../../../constants/pricing';
+} from "../../../actions/cart.action";
+import SchedulingModal from "../../../modals/SchedulingModal";
+import { get } from "lodash-es";
+import moment from "moment";
+import Collapsible from "react-collapsible";
+import LeftArrow from "../../../assets/icons/RightArrow.svg";
+import DownArrow from "../../../assets/icons/DownArrow.svg";
+import { Col, Row } from "react-bootstrap";
+import { truncateString } from "../../../utils/data";
+import PRICING from "../../../constants/pricing";
 
 export default function PickUpDetails({
   setValidAddress,
@@ -49,11 +49,10 @@ export default function PickUpDetails({
   const [IsAddressOpen, setIsAddressOpen] = useState(false);
   const [IsPaymentOpen, setIsPaymentOpen] = useState(false);
   const [paymentFormValues, setPaymentFormValues] = useState(null);
-  const [isAddressFormEmpty, setIsAddressFormEmpty] = useState(true);
   const [isPaymentFormEmpty, setIsPaymentFormEmpty] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const initialCheckoutView = ['/checkout'];
+  const initialCheckoutView = ["/checkout"];
   const {
     errors: addressFormErrors,
     handleChange: handleAddressChange,
@@ -62,13 +61,13 @@ export default function PickUpDetails({
     handleBlur: handleAddressFormBlur,
   } = useFormik({
     initialValues: {
-      fullName: '',
-      state: '',
-      zipCode: '',
-      line1: '',
-      city: '',
-      phoneNumber: '',
-      instructions: '',
+      fullName: "",
+      state: "",
+      zipCode: "",
+      line1: "",
+      city: "",
+      phoneNumber: "",
+      instructions: "",
     },
     validateOnBlur: true,
     validationSchema: pickUpAddressSchema,
@@ -83,8 +82,6 @@ export default function PickUpDetails({
   }, [addressFormValues]);
 
   const {
-    errors: pickupDateFormErrors,
-    handleChange: handlePickupDateChange,
     values: pickUpDateFormValues,
     setFieldValue: pickupDateSetFieldValue,
   } = useFormik({
@@ -117,7 +114,6 @@ export default function PickUpDetails({
     );
     setShowEditAddress(false);
     setModalShow(false);
-    setIsAddressFormEmpty(isFormEmpty(addressFormValues));
   };
 
   const savePickUpDetails = async ({ date, time }) => {
@@ -135,21 +131,21 @@ export default function PickUpDetails({
       setIsMobile(window.innerWidth <= 1023);
     }
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   });
 
   const renderTime = () => {
     const timeText =
-      pickUpDateFormValues.time === 'AM'
-        ? '9 A.M. - 12 P.M.'
-        : '12 P.M. - 3 P.M.';
+      pickUpDateFormValues.time === "AM"
+        ? "9 A.M. - 12 P.M."
+        : "12 P.M. - 3 P.M.";
 
     return `Between ${timeText
-      .replace('-', 'and')
-      .replace(new RegExp(/\./g), '')}`;
+      .replace("-", "and")
+      .replace(new RegExp(/\./g), "")}`;
   };
 
   const setDefaults = async () => {
@@ -159,20 +155,20 @@ export default function PickUpDetails({
     ]);
 
     // Set default address
-    addressFormValues.fullName = (order ? order.fullName : user.name) || '';
+    addressFormValues.fullName = (order ? order.fullName : user.name) || "";
     addressFormValues.state =
-      (order ? order.state : user['custom:state']) || '';
+      (order ? order.state : user["custom:state"]) || "";
     addressFormValues.zipCode =
-      (order ? order.zipcode : user['custom:zipcode']) || '';
-    addressFormValues.line1 = (order ? order.addressLine1 : user.address) || '';
+      (order ? order.zipcode : user["custom:zipcode"]) || "";
+    addressFormValues.line1 = (order ? order.addressLine1 : user.address) || "";
     addressFormValues.line2 =
-      (order ? order.addressLine2 : user.address_2) || '';
-    addressFormValues.city = (order ? order.city : user['custom:city']) || '';
+      (order ? order.addressLine2 : user.address_2) || "";
+    addressFormValues.city = (order ? order.city : user["custom:city"]) || "";
     addressFormValues.phoneNumber =
-      (order ? order.phone : user['custom:phone']) || '';
+      (order ? order.phone : user["custom:phone"]) || "";
     addressFormValues.instructions =
-      (order ? order.pickupInstruction : user['custom:pickup_instructions']) ||
-      '';
+      (order ? order.pickupInstruction : user["custom:pickup_instructions"]) ||
+      "";
 
     saveAddress();
 
@@ -181,8 +177,8 @@ export default function PickUpDetails({
       date: order ? order.pickupDate : null,
       time: order ? order.pickupTime : null,
     };
-    pickupDateSetFieldValue('date', defaultPickup.date);
-    pickupDateSetFieldValue('time', defaultPickup.time);
+    pickupDateSetFieldValue("date", defaultPickup.date);
+    pickupDateSetFieldValue("time", defaultPickup.time);
 
     savePickUpDetails(defaultPickup);
 
@@ -193,7 +189,7 @@ export default function PickUpDetails({
       : {};
     const orderPaymentId = orderPayment ? orderPayment.paymentMethodId : null;
     const defaultPaymentId =
-      orderPaymentId || user['custom:default_payment'] || null;
+      orderPaymentId || user["custom:default_payment"] || null;
     // console.log({ orderPaymentId, defaultPaymentId, paymentMethods });
 
     const defaultPaymentMethod = paymentMethods.find(
@@ -243,38 +239,38 @@ export default function PickUpDetails({
   return (
     <>
       {!showEditAddress && !showEditPayment && (
-        <h3 className='sofia-pro text-18 ml-3'>Pick-up Details</h3>
+        <h3 className="sofia-pro text-18 ml-3">Pick-up Details</h3>
       )}
 
-      <div style={{ display: isMobile ? 'block' : 'flex' }}>
+      <div style={{ display: isMobile ? "block" : "flex" }}>
         {showEditPayment && (
           <>
-            <div style={{ width: '-webkit-fill-available' }}>
-              <div className='container mt-0'>
+            <div style={{ width: "-webkit-fill-available" }}>
+              <div className="container mt-0">
                 <div
                   style={{
-                    marginLeft: isMobile ? '16px' : '',
-                    marginRight: isMobile ? '16px' : '',
+                    marginLeft: isMobile ? "16px" : "",
+                    marginRight: isMobile ? "16px" : "",
                   }}
                 >
                   {isMobile && (
                     <h3
-                      className='sofia-pro text-18'
-                      style={{ marginBottom: '18px' }}
+                      className="sofia-pro text-18"
+                      style={{ marginBottom: "18px" }}
                     >
                       Pick-up Details
                     </h3>
                   )}
-                  <div className='mt-2'>
+                  <div className="mt-2">
                     <h4
                       className={`sofia-pro mb-0 ${
-                        isMobile ? 'text-14' : 'text-16'
+                        isMobile ? "text-14" : "text-16"
                       }`}
                     >
                       Payment Method
                     </h4>
                   </div>
-                  <div className='card shadow-sm p-4 max-w-840 mt-3'>
+                  <div className="card shadow-sm p-4 max-w-840 mt-3">
                     <AddPaymentForm
                       close={() => {
                         setShowEditPayment(false);
@@ -303,23 +299,23 @@ export default function PickUpDetails({
         {/* ADDRESS DETAILS */}
         {!showEditAddress && !showEditPayment && (
           <>
-            <div className={isMobile ? 'col-sm-12' : 'col-sm-4'}>
+            <div className={isMobile ? "col-sm-12" : "col-sm-4"}>
               {isMobile && (
-                <p className='mobile-form-title first-title'>Pick-up Address</p>
+                <p className="mobile-form-title first-title">Pick-up Address</p>
               )}
-              <div className='card shadow-sm'>
-                {!addressFormValues.line1 == '' && !showEditAddress && (
+              <div className="card shadow-sm">
+                {!addressFormValues.line1 == "" && !showEditAddress && (
                   <>
-                    <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 pick-up-address'>
-                      <div className='title-container'>
-                        <div className='p-0'>
-                          <p className='pick-up-message sofia-pro text-14 line-height-16'>
+                    <div className="card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 pick-up-address">
+                      <div className="title-container">
+                        <div className="p-0">
+                          <p className="pick-up-message sofia-pro text-14 line-height-16">
                             Pick-up Address
                           </p>
                         </div>
                         <div>
                           <a
-                            className='btn-edit sofia-pro text-14 line-height-16'
+                            className="btn-edit sofia-pro text-14 line-height-16"
                             onClick={() => setShowEditAddress(true)}
                           >
                             Edit
@@ -327,32 +323,32 @@ export default function PickUpDetails({
                         </div>
                       </div>
                       <div>
-                        <h4 className='p-0 m-0 sofia-pro postal-name'>
+                        <h4 className="p-0 m-0 sofia-pro postal-name">
                           {addressFormValues.fullName}
                         </h4>
-                        <h4 className='p-0 m-0 sofia-pro line1'>
+                        <h4 className="p-0 m-0 sofia-pro line1">
                           {addressFormValues.line1}
                         </h4>
-                        <h4 className='p-0 m-0 sofia-pro line1'>
+                        <h4 className="p-0 m-0 sofia-pro line1">
                           {addressFormValues.line2}
                         </h4>
-                        <h4 className='p-0 m-0 sofia-pro line1'>
-                          {addressFormValues.city}, {addressFormValues.state}{' '}
+                        <h4 className="p-0 m-0 sofia-pro line1">
+                          {addressFormValues.city}, {addressFormValues.state}{" "}
                           {addressFormValues.zipCode}
                         </h4>
-                        <h4 className='p-0 m-0 sofia-pro line1'>
+                        <h4 className="p-0 m-0 sofia-pro line1">
                           United States
                         </h4>
                       </div>
-                      <p className='sofia-pro mt-3 tel'>
+                      <p className="sofia-pro mt-3 tel">
                         Tel: {formatPhoneNumber(addressFormValues.phoneNumber)}
                       </p>
                       <button
-                        className='btn btn-instructions'
+                        className="btn btn-instructions"
                         onClick={() => setModalShow(true)}
                       >
-                        <h4 className='text-instructions'>
-                          {order ? 'Edit' : 'Add'} pick-up instructions
+                        <h4 className="text-instructions">
+                          {order ? "Edit" : "Add"} pick-up instructions
                         </h4>
                       </button>
                     </div>
@@ -360,7 +356,7 @@ export default function PickUpDetails({
                     {/***
                      * Mobile pickup address
                      */}
-                    <div className='pick-up-address-mobile pl-4 pr-4 pb-0 pt-1'>
+                    <div className="pick-up-address-mobile pl-4 pr-4 pb-0 pt-1">
                       <Collapsible
                         open={IsAddressOpen}
                         onTriggerOpening={() => setIsAddressOpen(true)}
@@ -368,14 +364,14 @@ export default function PickUpDetails({
                         trigger={
                           <div>
                             <Row
-                              className='p-3'
+                              className="p-3"
                               style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
+                                display: "flex",
+                                justifyContent: "space-between",
                               }}
                             >
-                              <Col className='p-0'>
-                                <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                              <Col className="p-0">
+                                <h4 className="p-0 m-0 sofia-pro postal-name pt-1 pb-1">
                                   {addressFormValues.fullName}
                                   {!IsAddressOpen && (
                                     <>
@@ -389,8 +385,8 @@ export default function PickUpDetails({
                                   )}
                                 </h4>
                                 {!IsAddressOpen && (
-                                  <p className='sofia-pro p-0 mb-0 tel mt-0 pb-1'>
-                                    Tel:{' '}
+                                  <p className="sofia-pro p-0 mb-0 tel mt-0 pb-1">
+                                    Tel:{" "}
                                     {formatPhoneNumber(
                                       addressFormValues.phoneNumber
                                     )}
@@ -398,8 +394,8 @@ export default function PickUpDetails({
                                 )}
                               </Col>
                               <div
-                                className='arrow-container d-flex'
-                                style={{ alignItems: 'center' }}
+                                className="arrow-container d-flex"
+                                style={{ alignItems: "center" }}
                               >
                                 {IsAddressOpen ? (
                                   <img src={DownArrow} />
@@ -411,44 +407,44 @@ export default function PickUpDetails({
                           </div>
                         }
                       >
-                        <div className='card-body payment-details-card-body mt-2 mb-2 p-0'>
+                        <div className="card-body payment-details-card-body mt-2 mb-2 p-0">
                           {IsAddressOpen && (
                             <div>
-                              <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                              <h4 className="p-0 m-0 sofia-pro postal-name pt-1 pb-1">
                                 {addressFormValues.line1}
                               </h4>
                               {addressFormValues.line2 ? (
-                                <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                <h4 className="p-0 m-0 sofia-pro postal-name pt-1 pb-1">
                                   {addressFormValues.line2}
                                 </h4>
                               ) : (
-                                ''
+                                ""
                               )}
-                              <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                {addressFormValues.city},{' '}
-                                {addressFormValues.state}{' '}
+                              <h4 className="p-0 m-0 sofia-pro postal-name pt-1 pb-1">
+                                {addressFormValues.city},{" "}
+                                {addressFormValues.state}{" "}
                                 {addressFormValues.zipCode}
                               </h4>
-                              <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                              <h4 className="p-0 m-0 sofia-pro postal-name pt-1 pb-1">
                                 United States
                               </h4>
-                              <p className='sofia-pro p-0 mb-0 tel mt-0 pb-1'>
-                                Tel:{' '}
+                              <p className="sofia-pro p-0 mb-0 tel mt-0 pb-1">
+                                Tel:{" "}
                                 {formatPhoneNumber(
                                   addressFormValues.phoneNumber
                                 )}
                               </p>
                             </div>
                           )}
-                          <div className='address-actions mt-2'>
+                          <div className="address-actions mt-2">
                             <h4
-                              className='text-instructions'
+                              className="text-instructions"
                               onClick={() => setModalShow(true)}
                             >
-                              {order ? 'Edit' : 'Add'} pick-up instructions
+                              {order ? "Edit" : "Add"} pick-up instructions
                             </h4>
                             <a
-                              className='btn-edit sofia-pro text-14 line-height-16'
+                              className="btn-edit sofia-pro text-14 line-height-16"
                               onClick={() => setShowEditAddress(true)}
                             >
                               Edit
@@ -468,7 +464,7 @@ export default function PickUpDetails({
                   onHide={() => setModalShow(false)}
                 />
 
-                {addressFormValues.line1 == '' && (
+                {addressFormValues.line1 == "" && (
                   <EmptyAddress
                     loading={loading}
                     renderSpinner={renderSpinner}
@@ -479,44 +475,44 @@ export default function PickUpDetails({
               </div>
             </div>
             {/* PAYMENT DETAILS */}
-            <div className={isMobile ? 'col-sm-12' : 'col-sm-4'}>
+            <div className={isMobile ? "col-sm-12" : "col-sm-4"}>
               {isMobile && (
-                <p className='mobile-form-title mt-4'>Payment method</p>
+                <p className="mobile-form-title mt-4">Payment method</p>
               )}
-              <div className='card shadow-sm'>
+              <div className="card shadow-sm">
                 {!isPaymentFormEmpty && !showEditPayment && (
                   <>
-                    <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 payment-method'>
-                      <div className='title-container'>
-                        <div className='p-0'>
-                          <p className='pick-up-message sofia-pro text-14 line-height-16'>
+                    <div className="card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 payment-method">
+                      <div className="title-container">
+                        <div className="p-0">
+                          <p className="pick-up-message sofia-pro text-14 line-height-16">
                             Payment method
                           </p>
                         </div>
                         <div>
                           <a
-                            className='btn-edit sofia-pro text-14 line-height-16'
+                            className="btn-edit sofia-pro text-14 line-height-16"
                             onClick={() => setShowEditPayment(true)}
                           >
                             Edit
                           </a>
                         </div>
                       </div>
-                      <div className='end'>
-                        <div className='img-container'>
+                      <div className="end">
+                        <div className="img-container">
                           <img
-                            className='img-fluid'
-                            style={{ width: '38px' }}
+                            className="img-fluid"
+                            style={{ width: "38px" }}
                             src={getCardImage(paymentFormValues)}
-                            alt='...'
+                            alt="..."
                           />
                         </div>
                         <div>
-                          <h4 className='mb-3 text-14 text'>
-                            {getCardBrand(paymentFormValues)} ending in{' '}
+                          <h4 className="mb-3 text-14 text">
+                            {getCardBrand(paymentFormValues)} ending in{" "}
                             {paymentFormValues.card.last4}
                           </h4>
-                          <small className='text-muted'>
+                          <small className="text-muted">
                             Expires {`${expirationMonth}/${expirationYear}`}
                           </small>
                         </div>
@@ -548,50 +544,50 @@ export default function PickUpDetails({
                     {/**
                      * PAYMENT DETAILS MOBILE
                      */}
-                    <div className='pl-4 pr-4 pb-0 pt-0 payment-details-mobile'>
+                    <div className="pl-4 pr-4 pb-0 pt-0 payment-details-mobile">
                       <Collapsible
                         open={IsPaymentOpen}
                         onTriggerOpening={() => setIsPaymentOpen(true)}
                         onTriggerClosing={() => setIsPaymentOpen(false)}
                         trigger={
-                          <div className='payment-trigger'>
+                          <div className="payment-trigger">
                             <Row
-                              className='p-3'
+                              className="p-3"
                               style={{
-                                display: 'flex',
-                                justifyContent: 'center',
+                                display: "flex",
+                                justifyContent: "center",
                               }}
                             >
                               <Col
-                                className='p-0'
+                                className="p-0"
                                 style={{
-                                  display: 'flex',
+                                  display: "flex",
                                 }}
                               >
-                                <div className='img-container payment-card-logo'>
+                                <div className="img-container payment-card-logo">
                                   <img
-                                    style={{ width: '38px' }}
+                                    style={{ width: "38px" }}
                                     src={getCardImage(paymentFormValues)}
-                                    alt='...'
+                                    alt="..."
                                   />
                                 </div>
                                 <div
-                                  className='ml-3'
-                                  style={{ marginTop: '5px' }}
+                                  className="ml-3"
+                                  style={{ marginTop: "5px" }}
                                 >
-                                  <h4 className='text-14 text ending-text mb-0'>
-                                    {getCardBrand(paymentFormValues)} ending in{' '}
+                                  <h4 className="text-14 text ending-text mb-0">
+                                    {getCardBrand(paymentFormValues)} ending in{" "}
                                     {paymentFormValues.card.last4}
                                   </h4>
-                                  <small className='text-muted'>
-                                    Expires{' '}
+                                  <small className="text-muted">
+                                    Expires{" "}
                                     {`${expirationMonth}/${expirationYear}`}
                                   </small>
                                 </div>
                               </Col>
                               <div
-                                className='arrow-container d-flex'
-                                style={{ alignItems: 'center' }}
+                                className="arrow-container d-flex"
+                                style={{ alignItems: "center" }}
                               >
                                 {IsPaymentOpen ? (
                                   <img src={DownArrow} />
@@ -603,7 +599,7 @@ export default function PickUpDetails({
                           </div>
                         }
                       >
-                        <div className='card-body payment-details-card-body m-0 p-0'>
+                        <div className="card-body payment-details-card-body m-0 p-0">
                           {/* <div className='text-14 text ending-text'>
                             Card Address
                           </div>
@@ -627,9 +623,9 @@ export default function PickUpDetails({
                               United States
                             </h4>
                           </div> */}
-                          <div className='address-actions mt-2'>
+                          <div className="address-actions mt-2">
                             <h4
-                              className='text-instructions'
+                              className="text-instructions"
                               onClick={() => setShowEditPayment(true)}
                             >
                               Use different payment method
@@ -652,26 +648,26 @@ export default function PickUpDetails({
               </div>
             </div>
             {/* RETURN SCHEDULE */}
-            <div className={isMobile ? 'col-sm-12' : 'col-sm-4'}>
-              {isMobile && <p className='mobile-form-title mt-4'>Pick up</p>}
-              <div className='card shadow-sm'>
-                <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 return-schedule'>
+            <div className={isMobile ? "col-sm-12" : "col-sm-4"}>
+              {isMobile && <p className="mobile-form-title mt-4">Pick up</p>}
+              <div className="card shadow-sm">
+                <div className="card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 return-schedule">
                   <div
-                    className='title-container'
-                    style={{ display: isMobile ? 'none' : '' }}
+                    className="title-container"
+                    style={{ display: isMobile ? "none" : "" }}
                   >
-                    <div className='p-0'>
-                      <p className='pick-up-message sofia-pro text-14 line-height-16'>
+                    <div className="p-0">
+                      <p className="pick-up-message sofia-pro text-14 line-height-16">
                         Pick up
                       </p>
                     </div>
                   </div>
-                  {get(pickUpDateFormValues, 'date', null) === null &&
-                  get(pickUpDateFormValues, 'time', null) === null ? (
+                  {get(pickUpDateFormValues, "date", null) === null &&
+                  get(pickUpDateFormValues, "time", null) === null ? (
                     <>
-                      <h4 className='p-0 m-0 sofia-pro'>No date selected</h4>
+                      <h4 className="p-0 m-0 sofia-pro">No date selected</h4>
                       <h4
-                        className='p-0 m-0 sofia-pro mt-2 btn-edit'
+                        className="p-0 m-0 sofia-pro mt-2 btn-edit"
                         onClick={openDatePickerModal}
                       >
                         Select date
@@ -679,15 +675,15 @@ export default function PickUpDetails({
                     </>
                   ) : (
                     <>
-                      <h4 className='sofia-pro mb-4'>
-                        {moment(get(pickUpDateFormValues, 'date', '')).format(
-                          'MMMM DD, YYYY'
+                      <h4 className="sofia-pro mb-4">
+                        {moment(get(pickUpDateFormValues, "date", "")).format(
+                          "MMMM DD, YYYY"
                         )}
                       </h4>
                       {renderTime()}
                       <button
-                        className='btn p-0 sofia-pro btn-edit'
-                        style={{ display: 'block' }}
+                        className="btn p-0 sofia-pro btn-edit"
+                        style={{ display: "block" }}
                         onClick={openDatePickerModal}
                       >
                         Edit
@@ -696,19 +692,19 @@ export default function PickUpDetails({
                         <>
                           <hr
                             style={{
-                              borderTop: '1px solid #E8E7E9',
-                              marginTop: '0px',
+                              borderTop: "1px solid #E8E7E9",
+                              marginTop: "0px",
                             }}
                           />
                           <h4
-                            className='p-0 m-0 sofia-pro mt-2'
-                            style={{ color: '#570097' }}
+                            className="p-0 m-0 sofia-pro mt-2"
+                            style={{ color: "#570097" }}
                           >
                             Schedule another date
                           </h4>
                           <h4
-                            className='p-0 m-0 sofia-pro'
-                            style={{ color: '#2E1D3A', opacity: '0.6' }}
+                            className="p-0 m-0 sofia-pro"
+                            style={{ color: "#2E1D3A", opacity: "0.6" }}
                           >
                             (-$5.00)
                           </h4>
@@ -726,8 +722,8 @@ export default function PickUpDetails({
           onHide={() => setisDatePickerOpen(false)}
           pickUpDateFormValues={pickUpDateFormValues}
           onConfirm={(pickupDate, pickupTime) => {
-            pickupDateSetFieldValue('date', pickupDate);
-            pickupDateSetFieldValue('time', pickupTime);
+            pickupDateSetFieldValue("date", pickupDate);
+            pickupDateSetFieldValue("time", pickupTime);
             savePickUpDetails({
               date: pickupDate,
               time: pickupTime,

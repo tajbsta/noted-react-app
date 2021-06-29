@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import CheckoutCard from './components/CheckoutCard';
-import MobileCheckoutCard from './components/MobileCheckoutCard';
-import ProductCard from '../../components/Product/ProductCard';
-import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
-import PickUpDetails from './components/PickUpDetails';
-import { useDispatch, useSelector } from 'react-redux';
-import { get, isEmpty } from 'lodash';
-import $ from 'jquery';
-import { clearCart } from '../../actions/cart.action';
-import { setCartItems } from '../../actions/cart.action';
-import { Link } from 'react-router-dom';
-import { scrollToTop } from '../../utils/window';
-import SizeGuideModal from '../../modals/SizeGuideModal';
-import { showError, showSuccess } from '../../library/notifications.library';
-import { Box } from 'react-feather';
-import { createOrder, getOrderPricing } from '../../api/orderApi';
-import { orderErrors } from '../../library/errors.library';
-import { getOtherReturnProducts } from '../../api/productsApi';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, useStripe } from '@stripe/react-stripe-js';
+import React, { useEffect, useState } from "react";
+import CheckoutCard from "./components/CheckoutCard";
+import MobileCheckoutCard from "./components/MobileCheckoutCard";
+import ProductCard from "../../components/Product/ProductCard";
+import PickUpConfirmed from "../../components/PickUpDetails/PickUpConfirmed";
+import PickUpDetails from "./components/PickUpDetails";
+import { useDispatch, useSelector } from "react-redux";
+import { get, isEmpty } from "lodash";
+import $ from "jquery";
+import { clearCart } from "../../actions/cart.action";
+import { setCartItems } from "../../actions/cart.action";
+import { Link } from "react-router-dom";
+import { scrollToTop } from "../../utils/window";
+import SizeGuideModal from "../../modals/SizeGuideModal";
+import { showError, showSuccess } from "../../library/notifications.library";
+import { Box } from "react-feather";
+import { createOrder, getOrderPricing } from "../../api/orderApi";
+import { orderErrors } from "../../library/errors.library";
+import { getOtherReturnProducts } from "../../api/productsApi";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, useStripe } from "@stripe/react-stripe-js";
 import {
   getPublicKey,
   createPaymentIntent,
   prevalidateOrder,
-} from '../../api/orderApi';
-import PRICING from '../../constants/pricing';
-import { STRIPE_PAYMENT_INSUFFICIENT_FUNDS } from '../../constants/errors/errorCodes';
+} from "../../api/orderApi";
+import PRICING from "../../constants/pricing";
+import { STRIPE_PAYMENT_INSUFFICIENT_FUNDS } from "../../constants/errors/errorCodes";
 
 const Checkout = () => {
   const stripe = useStripe();
@@ -37,12 +37,7 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const [otherReturns, setOtherReturns] = useState([]);
   const [isFetchingPrice, setIsFetchingPrice] = useState(false);
-  const {
-    pickupAddress: address,
-    payment,
-    pickupDetails: details,
-    items,
-  } = useSelector(
+  const { pickupAddress: address, pickupDetails: details, items } = useSelector(
     ({ cart: { items, pickupAddress, payment, pickupDetails } }) => ({
       items,
       pickupAddress,
@@ -66,7 +61,7 @@ const Checkout = () => {
   const getPricingDetails = async () => {
     const productIds = items.map((item) => item._id);
     setIsFetchingPrice(true);
-    const response = await getOrderPricing(productIds, '');
+    const response = await getOrderPricing(productIds, "");
     setIsFetchingPrice(false);
     setPricingDetails(response);
   };
@@ -140,28 +135,28 @@ const Checkout = () => {
 
         // Show error to customer
         if (
-          result.error.code === 'card_declined' &&
-          result.error.decline_code === 'insufficient_funds'
+          result.error.code === "card_declined" &&
+          result.error.decline_code === "insufficient_funds"
         ) {
           showError({
             message: get(
               orderErrors.find(
                 ({ code }) => code === STRIPE_PAYMENT_INSUFFICIENT_FUNDS
               ),
-              'message',
-              'Cannot place order at this time'
+              "message",
+              "Cannot place order at this time"
             ),
           });
         } else {
           showError({ message: result.error.message });
         }
       } else {
-        if (result.paymentIntent.status === 'succeeded') {
+        if (result.paymentIntent.status === "succeeded") {
           // Place order - call create order endpoint
           await placeOrder(newOrder);
           return;
         } else {
-          throw new Error('Unknown Error');
+          throw new Error("Unknown Error");
         }
       }
     } catch (error) {
@@ -170,8 +165,8 @@ const Checkout = () => {
       showError({
         message: get(
           orderErrors.find(({ code }) => code === error.response.data.details),
-          'message',
-          'Cannot place order at this time'
+          "message",
+          "Cannot place order at this time"
         ),
       });
     }
@@ -188,27 +183,27 @@ const Checkout = () => {
       setIsMobile(window.innerWidth <= 991);
     }
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   });
 
   useEffect(() => {
     scrollToTop();
     const platform = window.navigator.platform;
-    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+    const windowsPlatforms = ["Win32", "Win64", "Windows", "WinCE"];
 
     if (windowsPlatforms.indexOf(platform) !== -1) {
       // Windows 10 Chrome
-      $('.btn-confirm').css('padding-top', '10px');
+      $(".btn-confirm").css("padding-top", "10px");
     }
   }, []);
 
   /**ON MOUNT GET PRICING DETAILS */
   /**GET PRICING WHEN ITEMS CHANGE */
   useEffect(() => {
-    if(items.length > 0){
+    if (items.length > 0) {
       getPricingDetails();
     } else {
       setPricingDetails({
@@ -218,7 +213,7 @@ const Checkout = () => {
         totalDonations: 0,
         totalPrice: 0,
         totalReturns: 0,
-      })
+      });
     }
   }, [items]);
 
@@ -260,7 +255,7 @@ const Checkout = () => {
   };
 
   return (
-    <div id='CheckoutPage'>
+    <div id="CheckoutPage">
       {isMobile && (
         <MobileCheckoutCard
           confirmed={confirmed}
@@ -270,21 +265,21 @@ const Checkout = () => {
           pricingDetails={pricingDetails}
         />
       )}
-      <div className={`container  ${isMobile ? 'mt-4' : 'mt-6'}`}>
-        <div className='row mobile-row'>
-          <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
+      <div className={`container  ${isMobile ? "mt-4" : "mt-6"}`}>
+        <div className="row mobile-row">
+          <div className={isMobile ? "col-sm-12" : "col-sm-9"}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed && order ? (
               <div>
-                <h3 className='sofia-pro text-18 section-title'>
+                <h3 className="sofia-pro text-18 section-title">
                   Pick-up confirmed
                 </h3>
-                <div className='confirmed-container'>
+                <div className="confirmed-container">
                   <PickUpConfirmed order={order} />
                 </div>
               </div>
             ) : (
-              <div className='mobile-checkout-col'>
+              <div className="mobile-checkout-col">
                 <PickUpDetails
                   setValidAddress={setValidAddress}
                   setValidPayment={setValidPayment}
@@ -293,19 +288,19 @@ const Checkout = () => {
               </div>
             )}
 
-            <div className='col desktop-col'>
-              <h3 className='sofia-pro products-return text-18 section-title'>
+            <div className="col desktop-col">
+              <h3 className="sofia-pro products-return text-18 section-title">
                 Your products for pickup
               </h3>
               {isEmpty(items) && (
-                <h4 className='p-0 mb-0 mt-5 d-flex justify-content-center sofia-pro empty-message'>
+                <h4 className="p-0 mb-0 mt-5 d-flex justify-content-center sofia-pro empty-message">
                   No more products. Click here to go back to &nbsp;
                   <Link
                     style={{
-                      textDecoration: 'underline',
-                      color: '#570097',
+                      textDecoration: "underline",
+                      color: "#570097",
                     }}
-                    to='/dashboard'
+                    to="/dashboard"
                   >
                     dashboard
                   </Link>
@@ -329,7 +324,7 @@ const Checkout = () => {
 
             {items.length > 0 && otherReturns.length > 0 && (
               <>
-                <h3 className='sofia-pro miss-out section-title'>
+                <h3 className="sofia-pro miss-out section-title">
                   Don&apos;t miss out on other returns
                 </h3>
                 {RenderOtherReturnables()}
@@ -339,37 +334,37 @@ const Checkout = () => {
             {/* BILLING */}
             {isMobile && (
               <>
-                <div className='mobile-billing'>
-                  <div className='m-billing-container mt-5'>
+                <div className="mobile-billing">
+                  <div className="m-billing-container mt-5">
                     <h4>Billing</h4>
                   </div>
-                  <div className='card m-billing-card shadow-sm mt-4'>
-                    <div className='card-body'>
-                      <h4 className='m-size-description'>
+                  <div className="card m-billing-card shadow-sm mt-4">
+                    <div className="card-body">
+                      <h4 className="m-size-description">
                         All products need to fit in a 50&quot; x 30&quot; x
                         20&quot; box
                       </h4>
                       <button
-                        className='btn m-btn-info'
+                        className="btn m-btn-info"
                         onClick={() => setModalSizeGuideShow(true)}
                       >
                         More info
                       </button>
-                      <hr style={{ marginTop: '8px' }} />
-                      <div className='row mt-3'>
-                        <div className='col m-label'>Return total cost</div>
-                        <div className='col m-value'>
+                      <hr style={{ marginTop: "8px" }} />
+                      <div className="row mt-3">
+                        <div className="col m-label">Return total cost</div>
+                        <div className="col m-value">
                           ${pricingDetails.price}
                         </div>
                       </div>
-                      <div className='row'>
-                        <div className='col m-label'>Taxes</div>
-                        <div className='col m-value'>${pricingDetails.tax}</div>
+                      <div className="row">
+                        <div className="col m-label">Taxes</div>
+                        <div className="col m-value">${pricingDetails.tax}</div>
                       </div>
-                      <hr style={{ marginBottom: '21px', marginTop: '8px' }} />
-                      <div className='row'>
-                        <div className='col m-total-label'>Total paid</div>
-                        <div className='col m-total-value'>
+                      <hr style={{ marginBottom: "21px", marginTop: "8px" }} />
+                      <div className="row">
+                        <div className="col m-total-label">Total paid</div>
+                        <div className="col m-total-value">
                           ${pricingDetails.totalPrice}
                         </div>
                       </div>
@@ -387,7 +382,7 @@ const Checkout = () => {
           {/* RIGHT CARDS */}
           {!isMobile && (
             <>
-              <div className='col-sm-3'>
+              <div className="col-sm-3">
                 <CheckoutCard
                   confirmed={confirmed}
                   confirmOrder={confirmOrder}

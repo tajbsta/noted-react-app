@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { ProgressBar } from 'react-bootstrap';
-import { CheckCircle, Plus } from 'react-feather';
-import { useSelector, useDispatch } from 'react-redux';
-import ProductCard from '../../components/Product/ProductCard';
-import PickUpConfirmed from '../../components/PickUpDetails/PickUpConfirmed';
-import PickUpCancelled from '../../components/PickUpDetails/PickUpCancelled';
-import PickUpDetails from './components/PickUpDetails';
-import { get, isEqual } from 'lodash';
-import $ from 'jquery';
-import { useHistory, useParams } from 'react-router';
-import Row from '../../components/Row';
-import { scrollToTop } from '../../utils/window';
-import ModifyCheckoutCard from './components/ModifyCheckoutCard';
-import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
-import SizeGuideModal from '../../modals/SizeGuideModal';
-import CancelOrderModal from '../../modals/CancelOrderModal';
-import { getUserId } from '../../api/auth';
-import { showError, showSuccess } from '../../library/notifications.library';
-import { orderErrors } from '../../library/errors.library';
-import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, useStripe } from '@stripe/react-stripe-js';
+import React, { useEffect, useState } from "react";
+import { ProgressBar } from "react-bootstrap";
+import { CheckCircle, Plus } from "react-feather";
+import { useSelector, useDispatch } from "react-redux";
+import ProductCard from "../../components/Product/ProductCard";
+import PickUpConfirmed from "../../components/PickUpDetails/PickUpConfirmed";
+import PickUpCancelled from "../../components/PickUpDetails/PickUpCancelled";
+import PickUpDetails from "./components/PickUpDetails";
+import { get, isEqual } from "lodash";
+import $ from "jquery";
+import { useHistory, useParams } from "react-router";
+import Row from "../../components/Row";
+import { scrollToTop } from "../../utils/window";
+import ModifyCheckoutCard from "./components/ModifyCheckoutCard";
+import MobileModifyCheckoutCard from "./components/MobileModifyCheckoutCard";
+import SizeGuideModal from "../../modals/SizeGuideModal";
+import CancelOrderModal from "../../modals/CancelOrderModal";
+import { getUserId } from "../../api/auth";
+import { showError, showSuccess } from "../../library/notifications.library";
+import { orderErrors } from "../../library/errors.library";
+import ReturnValueInfoIcon from "../../components/ReturnValueInfoIcon";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, useStripe } from "@stripe/react-stripe-js";
 import {
   getPublicKey,
   createPaymentIntent,
@@ -28,23 +28,20 @@ import {
   cancelOrder,
   getOrder,
   getOrderPricing,
-} from '../../api/orderApi';
-import { setCartItems, clearCart } from '../../actions/cart.action';
-import PRICING from '../../constants/pricing';
-import { getOtherReturnProducts } from '../../api/productsApi';
+} from "../../api/orderApi";
+import { setCartItems, clearCart } from "../../actions/cart.action";
+import PRICING from "../../constants/pricing";
+import { getOtherReturnProducts } from "../../api/productsApi";
 import {
   SERVER_ERROR,
   STRIPE_PAYMENT_INSUFFICIENT_FUNDS,
-} from '../../constants/errors/errorCodes';
+} from "../../constants/errors/errorCodes";
 
 const ViewOrder = () => {
   const { push } = useHistory();
   const dispatch = useDispatch();
   const stripe = useStripe();
   const [confirmed, setConfirmed] = useState(false);
-  const [validAddress, setValidAddress] = useState(false);
-  const [validPayment, setValidPayment] = useState(false);
-  const [validPickUpDetails, setValidPickUpDetails] = useState(false);
   const [cancelled, setCancelled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [modalSizeGuideShow, setModalSizeGuideShow] = useState(false);
@@ -81,14 +78,14 @@ const ViewOrder = () => {
     if (order) {
       let hasChanges = true;
       const addressFields = [
-        'city',
-        'fullName',
-        'instructions',
-        'line1',
-        'line2',
-        'phoneNumber',
-        'state',
-        'zipCode',
+        "city",
+        "fullName",
+        "instructions",
+        "line1",
+        "line2",
+        "phoneNumber",
+        "state",
+        "zipCode",
       ];
 
       const hasOrderItemsChanges = !isEqual(
@@ -97,21 +94,21 @@ const ViewOrder = () => {
       );
 
       const hasOrderAddressChanges = !addressFields.every((field) => {
-        if (field === 'fullName') {
+        if (field === "fullName") {
           return isEqual(order.fullName, address.fullName);
-        } else if (field === 'phoneNumber') {
+        } else if (field === "phoneNumber") {
           return isEqual(order.phone, address.phoneNumber);
-        } else if (field === 'line1') {
+        } else if (field === "line1") {
           return isEqual(order.addressLine1, address.line1);
-        } else if (field === 'line2') {
+        } else if (field === "line2") {
           return isEqual(order.addressLine2, address.line2);
-        } else if (field === 'city') {
+        } else if (field === "city") {
           return isEqual(order.city, address.city);
-        } else if (field === 'state') {
+        } else if (field === "state") {
           return isEqual(order.state, address.state);
-        } else if (field === 'zipcode') {
+        } else if (field === "zipcode") {
           return isEqual(order.zipcode, address.zipCode);
-        } else if (field === 'instructions') {
+        } else if (field === "instructions") {
           return isEqual(order.pickupInstruction, address.instructions);
         }
         return true;
@@ -131,7 +128,7 @@ const ViewOrder = () => {
 
   /**GET PRICING DETAILS */
   const getPricingDetails = async () => {
-    const initialData = get(order, 'orderItems', []);
+    const initialData = get(order, "orderItems", []);
 
     if (initialData.length === 0) {
       return;
@@ -149,10 +146,10 @@ const ViewOrder = () => {
     try {
       const data = await getOrder(orderIdParams);
       if (
-        get(data, 'status', '') === 'cancelled' ||
-        get(data, 'statusType', '') !== 'active'
+        get(data, "status", "") === "cancelled" ||
+        get(data, "statusType", "") !== "active"
       ) {
-        return push('/profile');
+        return push("/profile");
       }
 
       setOrder(data);
@@ -160,7 +157,7 @@ const ViewOrder = () => {
       setOrderLoading(false);
     } catch (error) {
       setOrderLoading(false);
-      showError({ message: 'Error loading order' });
+      showError({ message: "Error loading order" });
     }
   };
 
@@ -216,7 +213,7 @@ const ViewOrder = () => {
         !billing &&
         error.response &&
         error.response.data &&
-        error.response.data.details === 'ORDER_CANCEL_PAYMENT_REQUIRED'
+        error.response.data.details === "ORDER_CANCEL_PAYMENT_REQUIRED"
       ) {
         const paymentIntent = await createPaymentIntent(
           PRICING.LATE_CANCEL,
@@ -234,8 +231,8 @@ const ViewOrder = () => {
         if (result.error) {
           // Show error to customer
           if (
-            result.error.code === 'card_declined' &&
-            result.error.decline_code === 'insufficient_funds'
+            result.error.code === "card_declined" &&
+            result.error.decline_code === "insufficient_funds"
           ) {
             errorCode = STRIPE_PAYMENT_INSUFFICIENT_FUNDS;
           } else {
@@ -245,7 +242,7 @@ const ViewOrder = () => {
             return;
           }
         } else {
-          if (result.paymentIntent.status === 'succeeded') {
+          if (result.paymentIntent.status === "succeeded") {
             const cancelBilling = {
               paymentIntentId: paymentIntent.paymentIntentId,
               paymentMethodId: paymentIntent.paymentMethodId,
@@ -255,7 +252,7 @@ const ViewOrder = () => {
             };
             return ConfirmCancellation(cancelBilling);
           } else {
-            throw new Error('Unknown Error');
+            throw new Error("Unknown Error");
           }
         }
       }
@@ -265,8 +262,8 @@ const ViewOrder = () => {
       showError({
         message: get(
           orderErrors.find(({ code }) => code === errorCode),
-          'message',
-          'Cannot cancel order at this time'
+          "message",
+          "Cannot cancel order at this time"
         ),
       });
     }
@@ -275,7 +272,7 @@ const ViewOrder = () => {
   const ConfirmUpdate = async (billing = null) => {
     // if there is no airtable record
     if (!order.airtableId) {
-      showError({ message: 'Cannot update order at this time' });
+      showError({ message: "Cannot update order at this time" });
       return;
     }
 
@@ -328,7 +325,7 @@ const ViewOrder = () => {
         error.response &&
         error.response.data &&
         error.response.data.details ===
-          'ORDER_RESCHEDULE_PICKUP_PAYMENT_REQUIRED'
+          "ORDER_RESCHEDULE_PICKUP_PAYMENT_REQUIRED"
       ) {
         const paymentIntent = await createPaymentIntent(
           PRICING.LATE_RESCHEDULE,
@@ -346,8 +343,8 @@ const ViewOrder = () => {
         if (result.error) {
           // Show error to customer
           if (
-            result.error.code === 'card_declined' &&
-            result.error.decline_code === 'insufficient_funds'
+            result.error.code === "card_declined" &&
+            result.error.decline_code === "insufficient_funds"
           ) {
             errorCode = STRIPE_PAYMENT_INSUFFICIENT_FUNDS;
           } else {
@@ -356,7 +353,7 @@ const ViewOrder = () => {
             return;
           }
         } else {
-          if (result.paymentIntent.status === 'succeeded') {
+          if (result.paymentIntent.status === "succeeded") {
             const updateBilling = {
               paymentIntentId: paymentIntent.paymentIntentId,
               paymentMethodId: paymentIntent.paymentMethodId,
@@ -367,7 +364,7 @@ const ViewOrder = () => {
             };
             return ConfirmUpdate(updateBilling);
           } else {
-            throw new Error('Unknown Error');
+            throw new Error("Unknown Error");
           }
         }
       }
@@ -376,8 +373,8 @@ const ViewOrder = () => {
       showError({
         message: get(
           orderErrors.find(({ code }) => code === errorCode),
-          'message',
-          'Cannot update order at this time'
+          "message",
+          "Cannot update order at this time"
         ),
       });
     }
@@ -386,7 +383,7 @@ const ViewOrder = () => {
   const initiateCancelOrder = () => {
     // if no airtable record
     if (!order.airtableId) {
-      showError({ message: 'Cannot cancel order at this time' });
+      showError({ message: "Cannot cancel order at this time" });
       return;
     }
 
@@ -399,11 +396,11 @@ const ViewOrder = () => {
 
   useEffect(() => {
     const platform = window.navigator.platform;
-    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+    const windowsPlatforms = ["Win32", "Win64", "Windows", "WinCE"];
 
     if (windowsPlatforms.indexOf(platform) !== -1) {
       // Windows 10 Chrome
-      $('.btn-confirm').css('padding-top', '10px');
+      $(".btn-confirm").css("padding-top", "10px");
     }
   }, []);
 
@@ -416,9 +413,9 @@ const ViewOrder = () => {
       setIsMobile(window.innerWidth <= 991);
     }
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   });
 
@@ -453,7 +450,7 @@ const ViewOrder = () => {
   };
 
   return (
-    <div id='ViewOrderPage'>
+    <div id="ViewOrderPage">
       {isMobile && (
         <MobileModifyCheckoutCard
           pricingDetails={pricingDetails}
@@ -465,16 +462,16 @@ const ViewOrder = () => {
           }}
         />
       )}
-      <div className={`container ${isMobile ? 'mt-4' : 'mt-6'}`}>
-        <div className='row mobile-row'>
-          <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
+      <div className={`container ${isMobile ? "mt-4" : "mt-6"}`}>
+        <div className="row mobile-row">
+          <div className={isMobile ? "col-sm-12" : "col-sm-9"}>
             {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
             {confirmed || cancelled ? (
               <div>
-                <h3 className='sofia-pro text-18 section-title'>
-                  Pick-up {cancelled ? 'cancelled' : 'has been updated'}{' '}
+                <h3 className="sofia-pro text-18 section-title">
+                  Pick-up {cancelled ? "cancelled" : "has been updated"}{" "}
                 </h3>
-                <div className='confirmed-container'>
+                <div className="confirmed-container">
                   {cancelled ? (
                     <PickUpCancelled order={order} />
                   ) : (
@@ -483,27 +480,20 @@ const ViewOrder = () => {
                 </div>
               </div>
             ) : (
-              <div className='mobile-checkout-col'>
-                {order && (
-                  <PickUpDetails
-                    setValidAddress={setValidAddress}
-                    setValidPayment={setValidPayment}
-                    setValidPickUpDetails={setValidPickUpDetails}
-                    order={order}
-                  />
-                )}
+              <div className="mobile-checkout-col">
+                {order && <PickUpDetails order={order} />}
               </div>
             )}
 
-            <div className='col desktop-col'>
-              <h3 className='sofia-pro products-return text-18 section-title'>
+            <div className="col desktop-col">
+              <h3 className="sofia-pro products-return text-18 section-title">
                 {cancelled
-                  ? 'Your cancelled products'
-                  : 'Your products for pickup'}
+                  ? "Your cancelled products"
+                  : "Your products for pickup"}
               </h3>
 
               {orderLoading && (
-                <ProgressBar animated striped now={80} className='mt-5 mb-5' />
+                <ProgressBar animated striped now={80} className="mt-5 mb-5" />
               )}
 
               {items.map((product, index) => {
@@ -526,22 +516,22 @@ const ViewOrder = () => {
             {/* ADD PRODUCT BUTTON */}
             {(!orderLoading && !!cancelled) ||
               (!orderLoading && !confirmed && (
-                <div className='card add-border scanned-item-card max-w-840 mb-3 p-0 btn mobile-view-add-col'>
-                  <div className='card-body pt-3 pb-3 p-0 m-0'>
-                    <Row className='add-row'>
-                      <div className='col-sm-1 product-img-container add-product-container'>
+                <div className="card add-border scanned-item-card max-w-840 mb-3 p-0 btn mobile-view-add-col">
+                  <div className="card-body pt-3 pb-3 p-0 m-0">
+                    <Row className="add-row">
+                      <div className="col-sm-1 product-img-container add-product-container">
                         <Plus />
                       </div>
-                      <div className='col-sm-4 p-0 p-details m-add-product mb-3'>
+                      <div className="col-sm-4 p-0 p-details m-add-product mb-3">
                         <Row>
-                          <h3 className='add-title mr-2'>Add Products</h3>{' '}
+                          <h3 className="add-title mr-2">Add Products</h3>{" "}
                           <ReturnValueInfoIcon
                             content="We're still working on this"
-                            iconClassname='info-icon-small mb-2'
+                            iconClassname="info-icon-small mb-2"
                           />
                         </Row>
 
-                        <h3 className='add-product-info'>
+                        <h3 className="add-product-info">
                           (No extra cost if they fit in one box)
                         </h3>
                       </div>
@@ -552,7 +542,7 @@ const ViewOrder = () => {
 
             {!loading && items.length > 0 && (
               <>
-                <h3 className='sofia-pro miss-out section-title'>
+                <h3 className="sofia-pro miss-out section-title">
                   Don&apos;t miss out on other returns
                 </h3>
                 {RenderOtherReturnables()}
@@ -563,7 +553,7 @@ const ViewOrder = () => {
           {/* RIGHT CARD */}
           {!isMobile && (
             <>
-              <div className='col-1'>
+              <div className="col-1">
                 <ModifyCheckoutCard
                   ConfirmCancellation={ConfirmCancellation}
                   ConfirmUpdate={() => {
@@ -589,52 +579,52 @@ const ViewOrder = () => {
       {/* MOBILE BILLING CARD */}
       {isMobile && (
         <>
-          <div className='mobile-billing-order container'>
-            <div className='m-billing-container mt-5'>
+          <div className="mobile-billing-order container">
+            <div className="m-billing-container mt-5">
               <h4>Billing</h4>
             </div>
-            <div className='card m-billing-card shadow-sm mt-4'>
-              <div className='card-body'>
-                <h4 className='m-size-description'>
+            <div className="card m-billing-card shadow-sm mt-4">
+              <div className="card-body">
+                <h4 className="m-size-description">
                   All products need to fit in a 50” x 30” x 20” box
                 </h4>
                 <button
-                  className='btn m-btn-info'
+                  className="btn m-btn-info"
                   onClick={() => setModalSizeGuideShow(true)}
                 >
                   More info
                 </button>
-                <hr style={{ marginBottom: '18px', marginTop: '8px' }} />
-                <div className='row'>
-                  <div className='col m-label'>Return total cost</div>
-                  <div className='col m-value'>${pricingDetails.price}</div>
+                <hr style={{ marginBottom: "18px", marginTop: "8px" }} />
+                <div className="row">
+                  <div className="col m-label">Return total cost</div>
+                  <div className="col m-value">${pricingDetails.price}</div>
                 </div>
-                <div className='row'>
-                  <div className='col m-label'>Taxes</div>
-                  <div className='col m-value'>${pricingDetails.tax}</div>
+                <div className="row">
+                  <div className="col m-label">Taxes</div>
+                  <div className="col m-value">${pricingDetails.tax}</div>
                 </div>
-                <hr style={{ marginBottom: '21px', marginTop: '8px' }} />
-                <div className='row'>
-                  <div className='col m-total-label'>Total paid</div>
-                  <div className='col m-total-value'>
+                <hr style={{ marginBottom: "21px", marginTop: "8px" }} />
+                <div className="row">
+                  <div className="col m-total-label">Total paid</div>
+                  <div className="col m-total-value">
                     ${pricingDetails.totalPrice}
                   </div>
                 </div>
                 {!cancelled && (
                   <>
-                    <hr style={{ marginBottom: '21px', marginTop: '21px' }} />
-                    <div className='m-cancel-container'>
+                    <hr style={{ marginBottom: "21px", marginTop: "21px" }} />
+                    <div className="m-cancel-container">
                       <button
-                        className='btn m-btn-cancel-order'
+                        className="btn m-btn-cancel-order"
                         onClick={initiateCancelOrder}
                       >
                         Cancel order
                       </button>
-                      <h4 className='m-cancel-sub'>
+                      <h4 className="m-cancel-sub">
                         Canceling pick-ups less than 24h before schedule will
                         result in a $5 penalty
                       </h4>
-                      <a className='m-info-link'>More info</a>
+                      <a className="m-info-link">More info</a>
                     </div>
                   </>
                 )}

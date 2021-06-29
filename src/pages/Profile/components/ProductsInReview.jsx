@@ -1,11 +1,11 @@
-import { isEmpty } from 'lodash-es';
-import React, { useState } from 'react';
-import Collapsible from 'react-collapsible';
-import { useSelector } from 'react-redux';
-import ProductInReviewCard from './ProductInReviewCard';
+import { isEmpty } from "lodash-es";
+import React, { useState } from "react";
+import Collapsible from "react-collapsible";
+import { useSelector } from "react-redux";
+import ProductInReviewCard from "./ProductInReviewCard";
 
 export default function ProductsInReview() {
-  const { items, products } = useSelector(({ products }) => ({
+  const { items } = useSelector(({ products }) => ({
     items: products.items,
     products,
   }));
@@ -14,7 +14,7 @@ export default function ProductsInReview() {
   const renderEmptiness = () => {
     return (
       <>
-        <h5 className='sofia pro empty-message mt-4'>No products found.</h5>
+        <h5 className="sofia pro empty-message mt-4">No products found.</h5>
       </>
     );
   };
@@ -26,17 +26,17 @@ export default function ProductsInReview() {
   };
 
   return (
-    <div id='ProductsInReview'>
+    <div id="ProductsInReview">
       <Collapsible
         open={isOpen}
         onTriggerOpening={() => setIsOpen(true)}
         onTriggerClosing={() => setIsOpen(false)}
         trigger={
-          <div className='triggerContainer'>
-            <h3 className='sofia-pro text-18 mb-3-profile mb-0 ml-3 triggerText'>
+          <div className="triggerContainer">
+            <h3 className="sofia-pro text-18 mb-3-profile mb-0 ml-3 triggerText">
               Products Under Review
             </h3>
-            <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
+            <span className="triggerArrow">{isOpen ? "▲" : "▼"} </span>
           </div>
         }
       >

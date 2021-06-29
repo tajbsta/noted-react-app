@@ -1,27 +1,26 @@
-import React, { useState, useCallback, forwardRef } from 'react';
-import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
-import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
-import { UploadCloud } from 'react-feather';
-import { useDropzone } from 'react-dropzone';
-import { useDispatch, useSelector } from 'react-redux';
-import { get } from 'lodash';
-import { updateScans } from '../actions/scans.action';
-import { unmountProductedit } from '../actions/runtime.action';
-import { getFileTypeIcon } from '../utils/file';
-import { formatCurrency } from '../library/number';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/src/stylesheets/datepicker.scss';
+import React, { useState, forwardRef } from "react";
+import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import ProductPlaceholder from "../assets/img/ProductPlaceholder.svg";
+import { UploadCloud } from "react-feather";
+import { useDropzone } from "react-dropzone";
+import { useDispatch, useSelector } from "react-redux";
+import { get } from "lodash";
+import { updateScans } from "../actions/scans.action";
+import { unmountProductedit } from "../actions/runtime.action";
+import { getFileTypeIcon } from "../utils/file";
+import { formatCurrency } from "../library/number";
+import DatePicker from "react-datepicker";
+import "react-datepicker/src/stylesheets/datepicker.scss";
 
 export default function EditProductModal(props) {
   const dispatch = useDispatch();
-  const [file, setFile] = useState('');
+  const [file, setFile] = useState("");
   const { inEdit, scans } = useSelector(({ runtime: { inEdit }, scans }) => ({
     inEdit,
     scans,
   }));
-  const [loading, setLoading] = useState(false);
 
-  const returnId = get(inEdit, 'id', '');
+  const returnId = get(inEdit, "id", "");
 
   const { handleChange, values, setFieldValue, errors } = props.editproductform;
 
@@ -64,24 +63,6 @@ export default function EditProductModal(props) {
     dispatch(unmountProductedit());
     props.onHide();
   };
-  /**
-   * Please advise, dropzone can function without
-   */
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach(async (file) => {
-      const reader = new FileReader();
-
-      reader.onabort = () => console.log('file reading was aborted');
-
-      reader.onerror = () => console.log('file reading has failed');
-      reader.onload = () => {
-        // Do whatever with the file contents
-        const binaryStr = reader.result;
-        // console.log(binaryStr);
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  }, []);
 
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone();
 
@@ -89,11 +70,11 @@ export default function EditProductModal(props) {
     return (
       <li
         key={file.path}
-        className='edit-list-item'
-        style={{ listStyle: 'none', display: 'flex', alignItems: 'center' }}
+        className="edit-list-item"
+        style={{ listStyle: "none", display: "flex", alignItems: "center" }}
       >
         {getFileTypeIcon(file.path)}
-        <span className='ml-2'>{file.path}</span>
+        <span className="ml-2">{file.path}</span>
       </li>
     );
   });
@@ -102,17 +83,11 @@ export default function EditProductModal(props) {
   const handleUpload = (event) => {
     // const file = event.target.files[0];
     setFile(event.target.files[0]);
-    setFieldValue('imageUrl', URL.createObjectURL(event.target.files[0]));
+    setFieldValue("imageUrl", URL.createObjectURL(event.target.files[0]));
 
     if (file && file.size > 5097152) {
-      alert('File is too large! The maximum size for file upload is 5 MB.');
+      alert("File is too large! The maximum size for file upload is 5 MB.");
     }
-
-    setLoading(true);
-
-    // Upload file to server (code goes under)
-
-    setLoading(false);
   };
 
   // Display Product Image Component
@@ -121,13 +96,13 @@ export default function EditProductModal(props) {
       <img
         src={URL.createObjectURL(image)}
         alt={image.name}
-        className='product-placeholder'
+        className="product-placeholder"
       />
     );
   };
 
   const renderInlineError = (error) => (
-    <small className='form-text p-0 m-0 noted-red'>{error}</small>
+    <small className="form-text p-0 m-0 noted-red">{error}</small>
   );
 
   const renderDatePicker = () => {
@@ -135,7 +110,7 @@ export default function EditProductModal(props) {
     // eslint-disable-next-line react/display-name
     const CustomInput = forwardRef(({ value, onClick }, ref) => (
       <button
-        className='btn'
+        className="btn"
         onClick={(e) => {
           e.preventDefault();
           onClick();
@@ -146,8 +121,8 @@ export default function EditProductModal(props) {
       </button>
     ));
     return (
-      <div className='form-control' style={{ alignItems: 'center' }}>
-        <div id='DatePicker'>
+      <div className="form-control" style={{ alignItems: "center" }}>
+        <div id="DatePicker">
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
@@ -162,20 +137,20 @@ export default function EditProductModal(props) {
     <div>
       <Modal
         {...props}
-        size='lg'
-        aria-labelledby='contained-modal-title-vcenter'
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
         centered
-        backdrop='static'
+        backdrop="static"
         keyboard={false}
         animation={false}
-        id='EditProductModal'
+        id="EditProductModal"
       >
-        <Modal.Body className='sofia-pro'>
-          <Form id='passForm'>
-            <Row className='m-row'>
+        <Modal.Body className="sofia-pro">
+          <Form id="passForm">
+            <Row className="m-row">
               <Col xs={2}>
                 <Form.Group>
-                  <div className='img-container'>
+                  <div className="img-container">
                     {!file && (
                       <img
                         src={imageUrl || ProductPlaceholder}
@@ -183,25 +158,25 @@ export default function EditProductModal(props) {
                           e.currentTarget.src = ProductPlaceholder;
                         }}
                         style={{
-                          width: '64px',
-                          height: '64px',
+                          width: "64px",
+                          height: "64px",
                         }}
                       />
                     )}
                     {file && <ImageThumb image={file} />}
-                    <div className='upload-button'>
+                    <div className="upload-button">
                       <i
-                        className='fa fa-upload-icon'
-                        aria-hidden='true'
+                        className="fa fa-upload-icon"
+                        aria-hidden="true"
                         onClick={handleClick}
-                        style={{ cursor: 'pointer' }}
+                        style={{ cursor: "pointer" }}
                       >
                         <UploadCloud />
                         <input
-                          style={{ display: 'none' }}
-                          className='file-upload'
-                          type='file'
-                          accept='.jpg, .jpeg, .png'
+                          style={{ display: "none" }}
+                          className="file-upload"
+                          type="file"
+                          accept=".jpg, .jpeg, .png"
                           onChange={handleUpload}
                           ref={hiddenFileInput}
                         />
@@ -223,22 +198,22 @@ export default function EditProductModal(props) {
                   <Col>
                     <Form.Group>
                       <Form.Label>Merchant</Form.Label>
-                      <div className='merchant-container'>
-                        <div className='merchant-form-control'>
+                      <div className="merchant-container">
+                        <div className="merchant-form-control">
                           <Form.Control
-                            name='vendorTag'
+                            name="vendorTag"
                             onChange={handleChange}
-                            value={vendorTag || ''}
+                            value={vendorTag || ""}
                           />
                         </div>
-                        <div className='brand-img-container'>
+                        <div className="brand-img-container">
                           <img
                             src={vendorLogo || ProductPlaceholder}
                             onError={(e) => {
                               e.currentTarget.src = ProductPlaceholder;
                             }}
-                            alt=''
-                            className='brand-img'
+                            alt=""
+                            className="brand-img"
                           />
                         </div>
                       </div>
@@ -258,7 +233,7 @@ export default function EditProductModal(props) {
                     <Form.Group>
                       <Form.Label>Order Ref. #</Form.Label>
                       <div>
-                        <Form.Control name='order ref' />
+                        <Form.Control name="order ref" />
                       </div>
                     </Form.Group>
                   </Col>
@@ -269,7 +244,7 @@ export default function EditProductModal(props) {
                       <Form.Label>Product Name</Form.Label>
                       <div>
                         <Form.Control
-                          name='itemName'
+                          name="itemName"
                           onChange={handleChange}
                           value={itemName}
                         />
@@ -286,12 +261,12 @@ export default function EditProductModal(props) {
                       <Form.Label>Price</Form.Label>
                       <div>
                         <Form.Control
-                          name='amount'
+                          name="amount"
                           onChange={handleChange}
                           value={amount}
                           onBlur={(e) =>
                             setFieldValue(
-                              'amount',
+                              "amount",
                               formatCurrency(e.target.value)
                             )
                           }
@@ -304,16 +279,16 @@ export default function EditProductModal(props) {
                 <Row>
                   <Col>
                     <Form.Group>
-                      <Form.Label className='documents-title'>
-                        Return Documents{' '}
-                        <small style={{ fontSize: '12px' }}>
+                      <Form.Label className="documents-title">
+                        Return Documents{" "}
+                        <small style={{ fontSize: "12px" }}>
                           (ie. Amazon QR code, receipts, and shipping labels)
                         </small>
                       </Form.Label>
-                      <div className='dropzone-container' {...getRootProps()}>
+                      <div className="dropzone-container" {...getRootProps()}>
                         <input {...getInputProps()} />
-                        <p className='sofia-pro text-drag'>
-                          Drag & drop or click to upload{' '}
+                        <p className="sofia-pro text-drag">
+                          Drag & drop or click to upload{" "}
                         </p>
                       </div>
                     </Form.Group>
@@ -324,14 +299,14 @@ export default function EditProductModal(props) {
             </Row>
 
             <Row>
-              <Col className='btn btn-container'>
-                <Button className='btn-cancel' onClick={props.onHide}>
+              <Col className="btn btn-container">
+                <Button className="btn-cancel" onClick={props.onHide}>
                   Cancel
                 </Button>
                 <Button
                   disabled
-                  className='btn-save'
-                  type='submit'
+                  className="btn-save"
+                  type="submit"
                   onClick={onSave}
                 >
                   Save Changes

@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import USA_STATES from '../../../assets/usa_states.json';
-import { formatPhoneNumber } from '../../../utils/form';
-import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
-import $ from 'jquery';
-import { useFormik } from 'formik';
-import { pickUpAddressSchema } from '../../../models/formSchema';
-import { updateUserAttributes } from '../../../api/auth';
-import { CheckCircle } from 'react-feather';
-import { isEmpty } from 'lodash-es';
-import Collapsible from 'react-collapsible';
-import { showError, showSuccess } from '../../../library/notifications.library';
+import React, { useEffect, useState } from "react";
+import USA_STATES from "../../../assets/usa_states.json";
+import { formatPhoneNumber } from "../../../utils/form";
+import { Form, Button, Row, Col, Spinner } from "react-bootstrap";
+import $ from "jquery";
+import { useFormik } from "formik";
+import { pickUpAddressSchema } from "../../../models/formSchema";
+import { updateUserAttributes } from "../../../api/auth";
+import { CheckCircle } from "react-feather";
+import { isEmpty } from "lodash-es";
+import Collapsible from "react-collapsible";
+import { showError, showSuccess } from "../../../library/notifications.library";
 
 export default function BasicInfo({ user }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -24,9 +23,9 @@ export default function BasicInfo({ user }) {
       setIsMobile(window.innerWidth <= 991);
     }
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   });
 
@@ -37,12 +36,12 @@ export default function BasicInfo({ user }) {
     values: addressFormValues,
   } = useFormik({
     initialValues: {
-      fullName: '',
-      phoneNumber: '',
-      line1: '',
-      city: '',
-      state: '',
-      zipCode: '',
+      fullName: "",
+      phoneNumber: "",
+      line1: "",
+      city: "",
+      state: "",
+      zipCode: "",
     },
     validationSchema: pickUpAddressSchema,
   });
@@ -59,7 +58,7 @@ export default function BasicInfo({ user }) {
     const error = errors[fieldName];
     return (
       focused[fieldName] &&
-      error && <small className='form-text p-0 m-0 noted-red'>{error}</small>
+      error && <small className="form-text p-0 m-0 noted-red">{error}</small>
     );
   };
 
@@ -67,13 +66,13 @@ export default function BasicInfo({ user }) {
     // console.log({ user });
 
     if (!isEmpty(user)) {
-      setFieldValue('fullName', user.name);
-      setFieldValue('phoneNumber', user['custom:phone']);
-      setFieldValue('line1', user.address);
-      setFieldValue('line2', user['custom:address_2']);
-      setFieldValue('city', user['custom:city']);
-      setFieldValue('state', user['custom:state']);
-      setFieldValue('zipCode', user['custom:zipcode']);
+      setFieldValue("fullName", user.name);
+      setFieldValue("phoneNumber", user["custom:phone"]);
+      setFieldValue("line1", user.address);
+      setFieldValue("line2", user["custom:address_2"]);
+      setFieldValue("city", user["custom:city"]);
+      setFieldValue("state", user["custom:state"]);
+      setFieldValue("zipCode", user["custom:zipcode"]);
     }
   }, [user]);
 
@@ -89,26 +88,24 @@ export default function BasicInfo({ user }) {
 
   const updateBasicInfo = async () => {
     setError(false);
-    setSuccess(false);
     setIsSubmitting(true);
 
     try {
       const attributes = {
-        name: fullName || '',
-        'custom:phone': phoneNumber || '',
-        address: line1 || '',
-        'custom:address_2': line2 || '',
-        'custom:city': city || '',
-        'custom:state': state || '',
-        'custom:zipcode': zipCode || '',
+        name: fullName || "",
+        "custom:phone": phoneNumber || "",
+        address: line1 || "",
+        "custom:address_2": line2 || "",
+        "custom:city": city || "",
+        "custom:state": state || "",
+        "custom:zipcode": zipCode || "",
       };
 
       await updateUserAttributes(attributes);
       setIsSubmitting(false);
 
       if (!fullName || !phoneNumber || !city || !line1 || !state || !zipCode) {
-        setSuccess(false);
-        showError({ message: 'Please complete the form.' });
+        showError({ message: "Please complete the form." });
       } else {
         showSuccess({
           message: (
@@ -119,11 +116,10 @@ export default function BasicInfo({ user }) {
           ),
         });
         setError(false);
-        setSuccess(true);
       }
     } catch (err) {
       showError({ message: error });
-      setSuccess(false);
+
       setError(true);
       setIsSubmitting(false);
     }
@@ -131,19 +127,19 @@ export default function BasicInfo({ user }) {
 
   useEffect(() => {
     const platform = window.navigator.platform;
-    const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+    const windowsPlatforms = ["Win32", "Win64", "Windows", "WinCE"];
 
     if (windowsPlatforms.indexOf(platform) !== -1) {
       // Windows 10 Chrome
-      $('.btn-done').css('padding-bottom', '10px');
+      $(".btn-done").css("padding-bottom", "10px");
     }
   }, []);
 
   const noBorder = !isEditing
     ? {
         style: {
-          border: 'none',
-          padding: '0px',
+          border: "none",
+          padding: "0px",
         },
         disabled: true,
       }
@@ -157,31 +153,31 @@ export default function BasicInfo({ user }) {
           onTriggerOpening={() => setIsOpen(true)}
           onTriggerClosing={() => setIsOpen(false)}
           trigger={
-            <div className='triggerContainer'>
-              <h3 className='sofia-pro text-18 mb-3-profile mb-0 ml-3 triggerText'>
+            <div className="triggerContainer">
+              <h3 className="sofia-pro text-18 mb-3-profile mb-0 ml-3 triggerText">
                 Basic Information
               </h3>
-              <span className='triggerArrow'>{isOpen ? '▲' : '▼'} </span>
+              <span className="triggerArrow">{isOpen ? "▲" : "▼"} </span>
             </div>
           }
         >
-          <div className='card shadow-sm mt-3 mb-2 p-3 mt-4 max-w-840'>
-            <div className='m-card-body'>
-              <Form id='Info'>
+          <div className="card shadow-sm mt-3 mb-2 p-3 mt-4 max-w-840">
+            <div className="m-card-body">
+              <Form id="Info">
                 <Row>
                   <Col>
                     <Form.Group>
                       <Form.Label>Full Name</Form.Label>
                       <Form.Control
-                        className='form-control'
-                        type='name'
-                        name='fullName'
+                        className="form-control"
+                        type="name"
+                        name="fullName"
                         onFocus={onFocus}
                         value={fullName}
                         {...noBorder}
                         onChange={handleChange}
                       />
-                      {renderInlineValidationError('fullName')}
+                      {renderInlineValidationError("fullName")}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -191,17 +187,17 @@ export default function BasicInfo({ user }) {
                       <Form.Label>State</Form.Label>
                       {isEditing && (
                         <Form.Control
-                          className='form-control'
-                          as='select'
+                          className="form-control"
+                          as="select"
                           value={state}
-                          name='state'
+                          name="state"
                           onChange={handleChange}
-                          placeholder='Select State'
+                          placeholder="Select State"
                           onFocus={onFocus}
                           {...noBorder}
                         >
                           {[
-                            { abbreviation: '', name: 'Select State' },
+                            { abbreviation: "", name: "Select State" },
                             ...USA_STATES,
                           ].map(({ name, abbreviation }) => (
                             <option
@@ -213,12 +209,12 @@ export default function BasicInfo({ user }) {
                           ))}
                         </Form.Control>
                       )}
-                      {renderInlineValidationError('state')}
+                      {renderInlineValidationError("state")}
 
                       {!isEditing && (
                         <Form.Control
                           onFocus={onFocus}
-                          className='form-control'
+                          className="form-control"
                           value={state}
                           {...noBorder}
                         />
@@ -230,21 +226,21 @@ export default function BasicInfo({ user }) {
                       <Form.Label>Zip Code</Form.Label>
                       <Form.Control
                         onFocus={onFocus}
-                        className='form-control'
+                        className="form-control"
                         onChange={(e) => {
                           const re = /^[0-9\b]+$/;
                           if (
-                            e.target.value === '' ||
+                            e.target.value === "" ||
                             re.test(e.target.value)
                           ) {
                             handleChange(e);
                           }
                         }}
-                        name='zipCode'
+                        name="zipCode"
                         value={zipCode}
                         {...noBorder}
                       />
-                      {renderInlineValidationError('zipCode')}
+                      {renderInlineValidationError("zipCode")}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -254,13 +250,13 @@ export default function BasicInfo({ user }) {
                       <Form.Label>Address Line 1</Form.Label>
                       <Form.Control
                         onFocus={onFocus}
-                        className='form-control'
-                        name='line1'
+                        className="form-control"
+                        name="line1"
                         onChange={handleChange}
                         value={line1}
                         {...noBorder}
                       />
-                      {renderInlineValidationError('line1')}
+                      {renderInlineValidationError("line1")}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -270,9 +266,9 @@ export default function BasicInfo({ user }) {
                       <Form.Label>Address Line 2</Form.Label>
                       <Form.Control
                         onFocus={onFocus}
-                        className='form-control'
+                        className="form-control"
                         value={line2}
-                        name='line2'
+                        name="line2"
                         onChange={handleChange}
                         {...noBorder}
                       />
@@ -285,13 +281,13 @@ export default function BasicInfo({ user }) {
                       <Form.Label>City</Form.Label>
                       <Form.Control
                         onFocus={onFocus}
-                        className='form-control'
-                        name='city'
+                        className="form-control"
+                        name="city"
                         value={city}
                         onChange={handleChange}
                         {...noBorder}
                       />
-                      {renderInlineValidationError('city')}
+                      {renderInlineValidationError("city")}
                     </Form.Group>
                   </Col>
                   <Col>
@@ -299,31 +295,31 @@ export default function BasicInfo({ user }) {
                       <Form.Label>Phone</Form.Label>
                       <Form.Control
                         onFocus={onFocus}
-                        className='form-control'
+                        className="form-control"
                         onChange={(e) => {
                           const re = /^[0-9\b]+$/;
                           if (
-                            e.target.value === '' ||
+                            e.target.value === "" ||
                             re.test(e.target.value)
                           ) {
                             handleChange(e);
                           }
                         }}
                         value={formatPhoneNumber(phoneNumber)}
-                        name='phoneNumber'
+                        name="phoneNumber"
                         maxLength={13}
                         {...noBorder}
                       />
-                      {renderInlineValidationError('phoneNumber')}
+                      {renderInlineValidationError("phoneNumber")}
                     </Form.Group>
                   </Col>
                 </Row>
                 <Row>
-                  <Col className='m-btn-col'>
+                  <Col className="m-btn-col">
                     {isEditing && (
                       <Button
-                        className='m-btn-done'
-                        type='submit'
+                        className="m-btn-done"
+                        type="submit"
                         onClick={(e) => {
                           e.preventDefault();
                           setIsEditing(false);
@@ -335,20 +331,20 @@ export default function BasicInfo({ user }) {
                     )}
                     {!isEditing && (
                       <Button
-                        className='m-btn-edit'
-                        type='submit'
+                        className="m-btn-edit"
+                        type="submit"
                         onClick={(e) => {
                           e.preventDefault();
                           setIsEditing(true);
                         }}
                       >
                         {!isSubmitting ? (
-                          'Edit'
+                          "Edit"
                         ) : (
                           <Spinner
-                            animation='border'
-                            size='sm'
-                            className='spinner'
+                            animation="border"
+                            size="sm"
+                            className="spinner"
                           />
                         )}
                       </Button>
@@ -367,22 +363,22 @@ export default function BasicInfo({ user }) {
   const renderDesktopView = () => {
     return (
       <>
-        <div className='card shadow-sm mb-2 p-3 max-w-840'>
-          <div className='card-body'>
-            <Form id='Info'>
+        <div className="card shadow-sm mb-2 p-3 max-w-840">
+          <div className="card-body">
+            <Form id="Info">
               <Row>
                 <Col>
                   <Form.Group>
                     <Form.Label>Full Name</Form.Label>
                     <Form.Control
                       onFocus={onFocus}
-                      className='form-control-lg'
-                      name='fullName'
+                      className="form-control-lg"
+                      name="fullName"
                       value={fullName}
                       {...noBorder}
                       onChange={handleChange}
                     />
-                    {renderInlineValidationError('fullName')}
+                    {renderInlineValidationError("fullName")}
                   </Form.Group>
                 </Col>
                 <Col>
@@ -391,16 +387,16 @@ export default function BasicInfo({ user }) {
                     {isEditing && (
                       <Form.Control
                         onFocus={onFocus}
-                        className='form-control-md'
-                        as='select'
+                        className="form-control-md"
+                        as="select"
                         value={state}
-                        name='state'
+                        name="state"
                         onChange={handleChange}
-                        placeholder='Select State'
+                        placeholder="Select State"
                         {...noBorder}
                       >
                         {[
-                          { abbreviation: '', name: 'Select State' },
+                          { abbreviation: "", name: "Select State" },
                           ...USA_STATES,
                         ].map(({ name, abbreviation }) => (
                           <option value={abbreviation} key={`${abbreviation}`}>
@@ -409,12 +405,12 @@ export default function BasicInfo({ user }) {
                         ))}
                       </Form.Control>
                     )}
-                    {renderInlineValidationError('state')}
+                    {renderInlineValidationError("state")}
 
                     {!isEditing && (
                       <Form.Control
                         onFocus={onFocus}
-                        className='form-control-sm'
+                        className="form-control-sm"
                         value={state}
                         {...noBorder}
                       />
@@ -426,18 +422,18 @@ export default function BasicInfo({ user }) {
                     <Form.Label>Zip Code</Form.Label>
                     <Form.Control
                       onFocus={onFocus}
-                      className='form-control-md'
+                      className="form-control-md"
                       onChange={(e) => {
                         const re = /^[0-9\b]+$/;
-                        if (e.target.value === '' || re.test(e.target.value)) {
+                        if (e.target.value === "" || re.test(e.target.value)) {
                           handleChange(e);
                         }
                       }}
-                      name='zipCode'
+                      name="zipCode"
                       value={zipCode}
                       {...noBorder}
                     />
-                    {renderInlineValidationError('zipCode')}
+                    {renderInlineValidationError("zipCode")}
                   </Form.Group>
                 </Col>
               </Row>
@@ -448,13 +444,13 @@ export default function BasicInfo({ user }) {
                     <Form.Label>Address Line 1</Form.Label>
                     <Form.Control
                       onFocus={onFocus}
-                      className='form-control-lg'
-                      name='line1'
+                      className="form-control-lg"
+                      name="line1"
                       onChange={handleChange}
                       value={line1}
                       {...noBorder}
                     />
-                    {renderInlineValidationError('line1')}
+                    {renderInlineValidationError("line1")}
                   </Form.Group>
                 </Col>
                 <Col>
@@ -462,13 +458,13 @@ export default function BasicInfo({ user }) {
                     <Form.Label>City</Form.Label>
                     <Form.Control
                       onFocus={onFocus}
-                      className='form-control-md'
-                      name='city'
+                      className="form-control-md"
+                      name="city"
                       value={city}
                       onChange={handleChange}
                       {...noBorder}
                     />
-                    {renderInlineValidationError('city')}
+                    {renderInlineValidationError("city")}
                   </Form.Group>
                 </Col>
                 <Col>
@@ -476,19 +472,19 @@ export default function BasicInfo({ user }) {
                     <Form.Label>Phone</Form.Label>
                     <Form.Control
                       onFocus={onFocus}
-                      className='form-control-md'
+                      className="form-control-md"
                       onChange={(e) => {
                         const re = /^[0-9\b]+$/;
-                        if (e.target.value === '' || re.test(e.target.value)) {
+                        if (e.target.value === "" || re.test(e.target.value)) {
                           handleChange(e);
                         }
                       }}
-                      value={formatPhoneNumber(phoneNumber) || ''}
-                      name='phoneNumber'
+                      value={formatPhoneNumber(phoneNumber) || ""}
+                      name="phoneNumber"
                       maxLength={13}
                       {...noBorder}
                     />
-                    {renderInlineValidationError('phoneNumber')}
+                    {renderInlineValidationError("phoneNumber")}
                   </Form.Group>
                 </Col>
               </Row>
@@ -499,20 +495,20 @@ export default function BasicInfo({ user }) {
                     <Form.Label>Address Line 2</Form.Label>
                     <Form.Control
                       onFocus={onFocus}
-                      className='form-control-lg'
+                      className="form-control-lg"
                       value={line2}
-                      name='line2'
+                      name="line2"
                       onChange={handleChange}
                       {...noBorder}
                     />
                   </Form.Group>
                 </Col>
 
-                <Col className='btn-container'>
+                <Col className="btn-container">
                   {isEditing && (
                     <Button
-                      className='btn-done'
-                      type='submit'
+                      className="btn-done"
+                      type="submit"
                       onClick={(e) => {
                         e.preventDefault();
                         setIsEditing(false);
@@ -524,20 +520,20 @@ export default function BasicInfo({ user }) {
                   )}
                   {!isEditing && (
                     <Button
-                      className='btn-done'
-                      type='submit'
+                      className="btn-done"
+                      type="submit"
                       onClick={(e) => {
                         e.preventDefault();
                         setIsEditing(true);
                       }}
                     >
                       {!isSubmitting ? (
-                        'Edit'
+                        "Edit"
                       ) : (
                         <Spinner
-                          animation='border'
-                          size='sm'
-                          className='spinner'
+                          animation="border"
+                          size="sm"
+                          className="spinner"
                         />
                       )}
                     </Button>
@@ -555,14 +551,14 @@ export default function BasicInfo({ user }) {
     {
       return (
         !isMobile && (
-          <h3 className='sofia-pro text-18 mb-4'>Basic Information</h3>
+          <h3 className="sofia-pro text-18 mb-4">Basic Information</h3>
         )
       );
     }
   };
 
   return (
-    <div id='BasicInfo'>
+    <div id="BasicInfo">
       {renderDesktopTitle()}
       {isMobile && renderMobileView()}
       {!isMobile && renderDesktopView()}
