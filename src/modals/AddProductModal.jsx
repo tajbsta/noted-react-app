@@ -6,6 +6,7 @@ import React, {
   Fragment,
 } from 'react';
 import { Modal, Button, Form, Row, Col, Dropdown } from 'react-bootstrap';
+import Select from 'react-select';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 // import { UploadCloud } from 'react-feather';
 import { useDropzone } from 'react-dropzone';
@@ -23,9 +24,12 @@ import { get, isEmpty } from 'lodash';
 export default function AddProductModal(props) {
   const dispatch = useDispatch();
   const [allFiles, setAllFiles] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isFetchingVendors, setIsFetchingVendors] = useState(false);
   const [selectedMerchant, setSelectedMerchant] = useState({});
   const [allMerchants, setAllMerchants] = useState([]);
+  const [selectOptions, setSelectOptions] = useState([
+    { label: 'Select or Type a vendor', value: '' },
+  ]);
 
   const {
     errors,
@@ -45,14 +49,18 @@ export default function AddProductModal(props) {
     validationSchema: addProductSchema,
   });
 
-  const handleOnSelectMerchant = (eventKey, event) => {
-    event.preventDefault();
+  const handleOnSelectMerchant = (data, action) => {
+    if (action.action === 'clear' || isEmpty(data.value)) {
+      setSelectedMerchant({});
+      setFieldValue('vendorTag', '');
+      return;
+    }
     setSelectedMerchant(
-      allMerchants.find((merchant) => merchant.name === eventKey)
+      allMerchants.find((merchant) => merchant.name === data.label)
     );
     setFieldValue(
       'vendorTag',
-      allMerchants.find((merchant) => merchant.name === eventKey).code
+      allMerchants.find((merchant) => merchant.name === data.label).code
     ); // SET MERCHANT VALUE
   };
 
@@ -197,9 +205,20 @@ export default function AddProductModal(props) {
 
   const fetchVendors = async () => {
     try {
+      setIsFetchingVendors(true);
       const merchants = await getVendors();
+      const newSelectOptions = merchants.map((merchant) => ({
+        value: merchant.thumbnail,
+        label: merchant.name,
+      }));
+      setIsFetchingVendors(false);
       setAllMerchants(merchants);
+      setSelectOptions([
+        { label: 'Select or Type a vendor', value: '' },
+        ...newSelectOptions,
+      ]);
     } catch (e) {
+      setIsFetchingVendors(false);
       console.log(e);
     }
   };
@@ -207,6 +226,20 @@ export default function AddProductModal(props) {
   useEffect(() => {
     fetchVendors();
   }, []);
+
+  const colourStyles = {
+    control: (styles, state) => ({
+      ...styles,
+      backgroundColor: 'white',
+      outline: 'none',
+      boxShadow: 'none',
+      border: state.isFocused ? '1px solid #ece4f2' : '1px solid #ece4f2',
+    }),
+    option: (styles, state) => ({
+      ...styles,
+      backgroundColor: state.isSelected ? '#57009799' : 'white',
+    }),
+  };
 
   return (
     <div>
@@ -242,7 +275,20 @@ export default function AddProductModal(props) {
                   <Col>
                     <Form.Group>
                       <Form.Label>Merchant</Form.Label>
-                      <Dropdown
+                      <div>
+                        <Select
+                          className='merchant-dropdown-menu'
+                          defaultValue={selectOptions[0]}
+                          isLoading={isFetchingVendors}
+                          isClearable={!isEmpty(selectedMerchant)}
+                          isSearchable={true}
+                          name='merchant'
+                          styles={colourStyles}
+                          options={selectOptions}
+                          onChange={handleOnSelectMerchant}
+                        ></Select>
+                      </div>
+                      {/* <Dropdown
                         className='merchant-container'
                         onSelect={handleOnSelectMerchant}
                       >
@@ -270,7 +316,7 @@ export default function AddProductModal(props) {
                               );
                             })}
                         </Dropdown.Menu>
-                      </Dropdown>
+                      </Dropdown> */}
                       {renderInlineError(errors.vendorTag)}
                     </Form.Group>
                   </Col>
