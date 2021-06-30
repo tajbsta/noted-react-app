@@ -1,4 +1,4 @@
-export default ({ payload: { event, data } }) => {
+export default ({ payload: { event } }) => {
     switch (event) {
         case 'signIn':
             // console.log('Sign In', data)
@@ -11,5 +11,4 @@ export default ({ payload: { event, data } }) => {
             // console.log('Sign Out')
             break;
     }
-
 };
