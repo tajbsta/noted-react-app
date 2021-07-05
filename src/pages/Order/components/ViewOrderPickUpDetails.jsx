@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import { timeout } from '../../../utils/time';
 import EmptyAddress from '../../../components/PickUpDetails/EmptyAddress';
 import EmptyPayment from '../../../components/PickUpDetails/EmptyPayment';
@@ -31,15 +30,7 @@ import { Col, Row } from 'react-bootstrap';
 import { truncateString } from '../../../utils/data';
 import PRICING from '../../../constants/pricing';
 
-export default function PickUpDetails({
-    setValidAddress,
-    setValidPayment,
-    setValidPickUpDetails,
-    order,
-}) {
-    const {
-        location: { pathname },
-    } = useHistory();
+export default function ViewOrderPickUpDetails({ order }) {
     const dispatch = useDispatch();
     const [showEditAddress, setShowEditAddress] = useState(false);
     const [showEditPayment, setShowEditPayment] = useState(false);
@@ -52,7 +43,6 @@ export default function PickUpDetails({
     const [isPaymentFormEmpty, setIsPaymentFormEmpty] = useState(true);
     const [loading, setLoading] = useState(false);
 
-    const initialCheckoutView = ['/checkout'];
     const {
         errors: addressFormErrors,
         handleChange: handleAddressChange,
@@ -73,14 +63,6 @@ export default function PickUpDetails({
         validationSchema: pickUpAddressSchema,
     });
 
-    useEffect(() => {
-        setValidAddress(
-            Object.values(addressFormValues).map((addressField) => {
-                return addressField.length;
-            })
-        );
-    }, [addressFormValues]);
-
     const {
         values: pickUpDateFormValues,
         setFieldValue: pickupDateSetFieldValue,
@@ -93,20 +75,11 @@ export default function PickUpDetails({
         // enableReinitialize: true,
     });
 
-    useEffect(() => {
-        setValidPickUpDetails(
-            Object.values(pickUpDateFormValues).filter(
-                (field) => field === null
-            ).length < 1
-        );
-    }, [pickUpDateFormValues]);
-
     const savePayment = (paymentMethod) => {
         dispatch(setPayment(paymentMethod));
         setPaymentFormValues(paymentMethod);
         setIsPaymentFormEmpty(false);
         setShowEditPayment(false);
-        setValidPayment(true);
     };
 
     const saveAddress = async () => {
@@ -619,29 +592,6 @@ export default function PickUpDetails({
                                                     </small>
                                                 </div>
                                             </div>
-
-                                            {/* <h3 className='sofia-pro mb-0 mt-2 mb-2 text-14 ine-height-16 c-add'>
-                        Card Address
-                      </h3>
-                      <div>
-                        <h4 className='p-0 m-0 sofia-pro postal-name'>
-                          {paymentFormValues.billing_details.name}
-                        </h4>
-                        <h4 className='p-0 m-0 sofia-pro line1'>
-                          {addressFormValues.line1}
-                        </h4>
-                        <h4 className='p-0 m-0 sofia-pro line1'>
-                          {addressFormValues.line2}
-                        </h4>
-
-                        <h4 className='p-0 m-0 sofia-pro postal-address'>
-                          {addressFormValues.city}, {addressFormValues.state}{' '}
-                          {addressFormValues.zipCode}
-                        </h4>
-                        <h4 className='p-0 m-0 sofia-pro line1'>
-                          United States
-                        </h4>
-                      </div> */}
                                         </div>
                                         {/**
                                          * PAYMENT DETAILS MOBILE
@@ -735,29 +685,6 @@ export default function PickUpDetails({
                                                 }
                                             >
                                                 <div className='card-body payment-details-card-body m-0 p-0'>
-                                                    {/* <div className='text-14 text ending-text'>
-                            Card Address
-                          </div>
-                          <div>
-                            <h4 className='p-0 m-0 sofia-pro postal-name'>
-                              {paymentFormValues.billing_details.name}
-                            </h4>
-                            <h4 className='p-0 m-0 sofia-pro line1'>
-                              {addressFormValues.line1}
-                            </h4>
-                            <h4 className='p-0 m-0 sofia-pro line2'>
-                              {addressFormValues.line2}
-                            </h4>
-
-                            <h4 className='p-0 m-0 sofia-pro postal-address'>
-                              {addressFormValues.city},{' '}
-                              {addressFormValues.state}{' '}
-                              {addressFormValues.zipCode}
-                            </h4>
-                            <h4 className='p-0 m-0 sofia-pro line1'>
-                              United States
-                            </h4>
-                          </div> */}
                                                     <div className='address-actions mt-2'>
                                                         <h4
                                                             className='text-instructions'
@@ -842,36 +769,32 @@ export default function PickUpDetails({
                                             >
                                                 Edit
                                             </button>
-                                            {!initialCheckoutView.includes(
-                                                pathname
-                                            ) && (
-                                                <>
-                                                    <hr
-                                                        style={{
-                                                            borderTop:
-                                                                '1px solid #E8E7E9',
-                                                            marginTop: '0px',
-                                                        }}
-                                                    />
-                                                    <h4
-                                                        className='p-0 m-0 sofia-pro mt-2'
-                                                        style={{
-                                                            color: '#570097',
-                                                        }}
-                                                    >
-                                                        Schedule another date
-                                                    </h4>
-                                                    <h4
-                                                        className='p-0 m-0 sofia-pro'
-                                                        style={{
-                                                            color: '#2E1D3A',
-                                                            opacity: '0.6',
-                                                        }}
-                                                    >
-                                                        (-$5.00)
-                                                    </h4>
-                                                </>
-                                            )}
+                                            <>
+                                                <hr
+                                                    style={{
+                                                        borderTop:
+                                                            '1px solid #E8E7E9',
+                                                        marginTop: '0px',
+                                                    }}
+                                                />
+                                                <h4
+                                                    className='p-0 m-0 sofia-pro mt-2'
+                                                    style={{
+                                                        color: '#570097',
+                                                    }}
+                                                >
+                                                    Schedule another date
+                                                </h4>
+                                                <h4
+                                                    className='p-0 m-0 sofia-pro'
+                                                    style={{
+                                                        color: '#2E1D3A',
+                                                        opacity: '0.6',
+                                                    }}
+                                                >
+                                                    (-$5.00)
+                                                </h4>
+                                            </>
                                         </>
                                     )}
                                 </div>
