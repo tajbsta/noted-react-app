@@ -1,21 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Spinner, Button } from 'react-bootstrap';
-import qs from 'qs';
-import { useHistory } from 'react-router-dom';
-import { saveGoogleAuthCode } from '../api/authApi';
-import { getUserId } from '../api/auth';
-import {
-  SERVER_ERROR,
-  GOOGLE_AUTH_ACCESS_DENIED,
-} from '../constants/errors/errorCodes';
-
-import { showError } from '../library/notifications.library';
-import { AlertCircle } from 'react-feather';
 import { loadGoogleScript } from '../library/loadGoogleScript';
 
 export default function Code() {
-  const history = useHistory();
-
   const onClickAuthorizeButton = () => {
     if (window.gapi.auth2.getAuthInstance().isSignedIn.get()) {
 
