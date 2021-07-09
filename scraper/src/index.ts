@@ -1,12 +1,4 @@
-interface Vendor {
-  name: string;
-}
+import scraper from './scraper';
 
-(() => {
-  const vendors: Vendor[] = []
-  const emails: string[] = ['sfasdf']
-  console.log({
-    vendors,
-    emails
-  })
-})()
+const customWindow: any = window;
+customWindow.notedScraper = scraper;

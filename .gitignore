@@ -116,7 +116,7 @@ yarn.lock
 
 build
 
-package-lock.json
+# package-lock.json
 
 #amplify
 amplify/\#current-cloud-backend
@@ -137,4 +137,3 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 .eslintcache
-.prettierrc

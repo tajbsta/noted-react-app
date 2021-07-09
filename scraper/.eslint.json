@@ -2,7 +2,8 @@
   "env": {
     "es6": true,
     "node": true,
-    "mocha": true
+    "mocha": true,
+    "browser": true
   },
   "extends": ["standard", "plugin:@typescript-eslint/recommended"],
   "globals": {},
@@ -16,7 +17,8 @@
     "semi": "off",
     "@typescript-eslint/semi": [2, "always"],
     "@typescript-eslint/no-explicit-any": 0,
-    "dot-notation": "off"
+    "dot-notation": "off",
+    "no-extra-boolean-cast": "off"
   },
   "overrides": [
     {
