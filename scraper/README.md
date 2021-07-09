@@ -15,7 +15,8 @@ Open [http://localhost:3030/scraper.js](http://localhost:3030/scraper.js) to vie
 
 ## Usage
 - FE can now use `window.notedScraper` function 
-Payload
+
+#### Payload
 ```
 vendors - required
 rawEmails - required
