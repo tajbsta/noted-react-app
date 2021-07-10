@@ -137,3 +137,5 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 .eslintcache
+
+public/scraper.js
