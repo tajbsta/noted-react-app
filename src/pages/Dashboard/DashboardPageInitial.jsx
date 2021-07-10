@@ -3,6 +3,7 @@ import { Button, Col, Container, Row, Spinner } from 'react-bootstrap';
 import AuthorizeImg from '../../assets/img/Authorize.svg';
 import ScanningIcon from '../../assets/icons/Scanning.svg';
 import CustomRow from '../../components/Row';
+import { loadGoogleScript } from '../../library/loadGoogleScript';
 
 const Authorize = ({ triggerScanNow }) => {
     return (
@@ -147,19 +148,125 @@ const Scanning = () => {
 /**STATUSES
  * 1. notAutorized - User has not initiated authorization
  * 2. isAuthorizing - Authorization in progress, Google Modal in the foreground
- * 3. isScanning - Authorization is complete and Scanning has been initiated
- * 4. scanComplete - Scanning is complete
+ * 3. isScraping - Authorization is complete and Scraping has been initiated
+ * 4. scrapeComplete - Scraping is complete
  *  */
 
 const DashboardPageInitial = () => {
     const [status, setStatus] = useState('');
+
+    /**TRIGGER SCAN NOW FOR USERS */
     const triggerScanNow = () => {
-        /**HANDLE SCAN NOW */
+        window.gapi.auth2.getAuthInstance().signIn();
         setStatus('isAuthorizing');
 
-        setTimeout(() => {
-            setStatus('isScanning');
-        }, 3000);
+        // setTimeout(() => {
+        //     setStatus('isScraping');
+        // }, 3000);
+    };
+
+    const fetchByVendor = async (from, initialToken) => {
+        let emails = [];
+        let nextPageToken = initialToken;
+
+        while (nextPageToken !== undefined) {
+            const response = await window.gapi.client.gmail.users.messages.list(
+                {
+                    userId: 'me',
+                    maxResults: 10,
+                    q: from,
+                    pageToken: nextPageToken,
+                }
+            );
+
+            emails =
+                response.result.resultSizeEstimate > 0
+                    ? [...emails, ...response.result.messages]
+                    : emails;
+            nextPageToken = response.result.nextPageToken || undefined;
+        }
+        return emails;
+    };
+
+    //FETCH EMAILS
+    const fetchEmails = async () => {
+        const vendorList = [
+            'from:gabriella@deel.support',
+            'from:support@udacity.com',
+            'no_reply@monday.com',
+        ];
+        const emailContainer = await Promise.all(
+            vendorList.map(async (vendorFrom) => {
+                const em = await fetchByVendor(vendorFrom, '');
+                return em;
+            })
+        );
+        const emails = emailContainer.reduce((prev, curr) => {
+            return [...prev, ...curr];
+        }, []);
+
+        const batch = window.gapi.client.newBatch();
+
+        emails.forEach((email) => {
+            const getEmail = window.gapi.client.gmail.users.messages.get({
+                userId: 'me',
+                id: email.id,
+                q: 'format: raw',
+            });
+            batch.add(getEmail);
+        });
+
+        const res = await batch;
+        const scrapedEmails = Object.values(res.result).map((item) => {
+            const internalDate = item.result.internalDate;
+            const value = item.result.payload.parts.filter(
+                (item) => item.mimeType === 'text/html'
+            )[0].body.data;
+            return {
+                raw: value,
+                internalDate,
+            };
+        });
+        return scrapedEmails;
+    };
+
+    /**HANDLE EMAIl SCRAPING */
+    const handleScraping = () => {
+        setStatus('isScraping');
+        const emails = fetchEmails();
+        /**CHECK CONSOLE */
+        console.log(emails);
+    };
+
+    /**INITIALIZE CLIENT TO USE GAPI */
+    const initClient = async () => {
+        try {
+            await window.gapi.client.init({
+                clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+                discoveryDocs: [
+                    'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest',
+                ],
+                scope: 'https://www.googleapis.com/auth/gmail.readonly',
+            });
+
+            const isSignedIn = window.gapi.auth2
+                .getAuthInstance()
+                .isSignedIn.get();
+
+            if (isSignedIn) {
+                window.gapi.auth2.getAuthInstance().signOut();
+            }
+
+            // Listen for sign-in state changes.
+            window.gapi.auth2.getAuthInstance().isSignedIn.listen((success) => {
+                if (success) {
+                    handleScraping();
+                    //HANDLE FECTH EMAILS
+                }
+            });
+        } catch (error) {
+            console.log(JSON.stringify(error, null, 2));
+        }
     };
 
     useEffect(() => {
@@ -167,12 +274,22 @@ const DashboardPageInitial = () => {
             setStatus('notAuthorized');
         }, 3000);
     }, []);
+
+    //INITIALIZE GOOGLE API
+    useEffect(() => {
+        window.onGoogleScriptLoad = () => {
+            window.gapi.load('client:auth2', initClient);
+        };
+
+        loadGoogleScript();
+    }, []);
+
     return (
         <div id="DashboardInitial">
             {status === 'notAuthorized' && (
                 <Authorize triggerScanNow={triggerScanNow} />
             )}
-            {status === 'isScanning' && <Scanning></Scanning>}
+            {status === 'isScraping' && <Scanning></Scanning>}
             {(status === 'isAuthorizing' || status === '') && (
                 <div>
                     <Spinner size="lg" color="#570097" animation="border" />
