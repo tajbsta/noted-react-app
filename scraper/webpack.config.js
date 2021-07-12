@@ -2,8 +2,7 @@ const webpack = require('webpack')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const path = require('path')
 const version = JSON.stringify(require('./package.json').version);
-const METADATA = `
-/*
+const METADATA = `/*
   Noted Scraper ${version}
 */
 `
@@ -14,7 +13,7 @@ module.exports = {
     index: path.join(__dirname, 'src', 'index.ts'),
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, '../public'),
     filename: 'scraper.js',
   },
   resolve: {

@@ -43,7 +43,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint --fix .",
     "lint-check": "eslint .",
-    "build-scraper": "cd scraper && npm run build && cp ./dist/scraper.js ../public"
+    "build-scraper": "npm run --prefix ./scraper build"
   },
   "eslintConfig": {
     "extends": [

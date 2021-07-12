@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - npm install npm@latest -g
+      # AWS CLI
+      - pip install --upgrade pip
+      - pip install --upgrade awscli
+  pre_build:
+    commands:
+      - npm install # Install root application
+      - npm i --prefix ./scraper # Install scraper application
+  build:
+    commands:
+      - npm run build
+  post_build:
+    commands:
+      - aws s3 sync ./build $S3_BUCKET --delete --cache-control max-age=0
