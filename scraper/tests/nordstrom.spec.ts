@@ -4,9 +4,11 @@ import * as chaiAsPromised from 'chai-as-promised';
 import { expect } from 'chai';
 import axios from 'axios';
 import * as moment from 'moment-timezone';
+import * as jsdom from 'jsdom';
 
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
+import * as helpers from '../src/lib/helpers';
 import Nordstrom from '../src/lib/vendors/nordstrom';
 
 chai.use(chaiAsPromised);
@@ -30,6 +32,10 @@ describe('Nordstrom', () => {
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
+    sandbox.stub(helpers, 'parseHtmlString').callsFake((body: string) => {
+      const dom = new jsdom.JSDOM(body);
+      return dom.window.document;
+    });
   });
 
   afterEach(() => {
@@ -44,23 +50,26 @@ describe('Nordstrom', () => {
         order_date: 1617753600000,
         products: [
           {
-            name: 'Jeffrey Campbell Hustler Platform Sandal (Women) - BLACK PATENT ',
+            name: 'Jeffrey Campbell Hustler Platform Sandal (Women) - BLACK PATENT',
             price: 134.95,
             thumbnail: 'https://n.nordstrommedia.com/id/sr3/4f3aacb8-9edc-4f5e-86c3-66dc7d08a93d.jpeg'
           },
           {
-            name: 'Jeffrey Campbell Hustler Platform Sandal (Women) - DUSTY NUDE PATENT ',
+            name: 'Jeffrey Campbell Hustler Platform Sandal (Women) - DUSTY NUDE PATENT',
             price: 134.95,
             thumbnail: 'https://n.nordstrommedia.com/id/sr3/f7d76b95-b9f6-4796-a4d5-dcb6b1a39bae.jpeg'
           }
-        ]
+        ],
+        vendor: VENDOR_CODES.NORDSTROM
       });
     });
 
     it('should return order data with quantity handled', async () => {
       const updatedPayload = Object.assign({}, payload);
       let updatedBody = updatedPayload.decodedBody;
-      updatedBody = updatedBody.replace('Qty: 1', 'Qty: 2');
+
+      const regexToSearchFor = new RegExp('Qty: 1', 'g');
+      updatedBody = updatedBody.replace(regexToSearchFor, 'Qty: 2');
 
       updatedPayload.decodedBody = updatedBody;
 
@@ -70,21 +79,27 @@ describe('Nordstrom', () => {
         order_date: 1617753600000,
         products: [
           {
-            name: 'Jeffrey Campbell Hustler Platform Sandal (Women) - BLACK PATENT  (1)',
-            price: 67.475,
+            name: 'Jeffrey Campbell Hustler Platform Sandal (Women) - BLACK PATENT (1)',
+            price: 134.95,
             thumbnail: 'https://n.nordstrommedia.com/id/sr3/4f3aacb8-9edc-4f5e-86c3-66dc7d08a93d.jpeg'
           },
           {
-            name: 'Jeffrey Campbell Hustler Platform Sandal (Women) - BLACK PATENT  (2)',
-            price: 67.475,
+            name: 'Jeffrey Campbell Hustler Platform Sandal (Women) - BLACK PATENT (2)',
+            price: 134.95,
             thumbnail: 'https://n.nordstrommedia.com/id/sr3/4f3aacb8-9edc-4f5e-86c3-66dc7d08a93d.jpeg'
           },
           {
-            name: 'Jeffrey Campbell Hustler Platform Sandal (Women) - DUSTY NUDE PATENT ',
+            name: 'Jeffrey Campbell Hustler Platform Sandal (Women) - DUSTY NUDE PATENT (1)',
+            price: 134.95,
+            thumbnail: 'https://n.nordstrommedia.com/id/sr3/f7d76b95-b9f6-4796-a4d5-dcb6b1a39bae.jpeg'
+          },
+          {
+            name: 'Jeffrey Campbell Hustler Platform Sandal (Women) - DUSTY NUDE PATENT (2)',
             price: 134.95,
             thumbnail: 'https://n.nordstrommedia.com/id/sr3/f7d76b95-b9f6-4796-a4d5-dcb6b1a39bae.jpeg'
           }
-        ]
+        ],
+        vendor: VENDOR_CODES.NORDSTROM
       });
     });
 

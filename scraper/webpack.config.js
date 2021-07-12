@@ -45,8 +45,5 @@ module.exports = {
       minimize: true,
       debug: false,
     }),
-  ],
-  devServer: {
-    port: 3030,
-  },
+  ]
 }
