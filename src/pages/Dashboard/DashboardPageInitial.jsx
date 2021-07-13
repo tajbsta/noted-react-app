@@ -4,7 +4,7 @@ import AuthorizeImg from '../../assets/img/Authorize.svg';
 import ScanningIcon from '../../assets/icons/Scanning.svg';
 import CustomRow from '../../components/Row';
 import { loadGoogleScript } from '../../library/loadGoogleScript';
-import { getVendors } from '../../api/productsApi';
+import { addProductFromScraper, getVendors } from '../../api/productsApi';
 import { showError } from '../../library/notifications.library';
 import {
   getVendorsFromEmail,
@@ -207,10 +207,10 @@ const DashboardPageInitial = () => {
       const emailQuery = buildEmailQuery(q);
       const emails = await getAccountMessages(emailQuery, gapi);
 
-      // if (emails.length <= 0) {
-      //   //HANDLE NO EMAIL AVAILABLE FOR SCRAPING
-      //   throw Error('No Email Available for Scraping');
-      // }
+      if (emails.length <= 0) {
+        //HANDLE NO EMAIL AVAILABLE FOR SCRAPING
+        throw Error('No Email Available for Scraping');
+      }
 
       //CURRENTLY USING DATA FROM S3 TO TEST
       //TODO- E2E testing with noted@notedreturns.com
@@ -222,8 +222,10 @@ const DashboardPageInitial = () => {
 
       const data = await window.notedScraper(vendors, [nord]);
 
-      //SEND TO BACKEND
-      console.log(data);
+      const orders = { orders: data };
+      const addProductResponse = await addProductFromScraper(orders);
+
+      console.log(addProductResponse);
     } catch (error) {
       console.log(error);
       switch (error.message) {

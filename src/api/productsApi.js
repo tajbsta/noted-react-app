@@ -1,6 +1,6 @@
-import axiosLib from "axios";
-import { api } from "./api";
-import { getUserSession } from "./auth";
+import axiosLib from 'axios';
+import { api } from './api';
+import { getUserSession } from './auth';
 
 // Get user products
 export const getProducts = async ({
@@ -37,7 +37,7 @@ export const getProducts = async ({
     queries.push(`search=${search}`);
   }
 
-  const query = queries.join("&");
+  const query = queries.join('&');
   const { userId } = await getUserSession();
   const res = await axios.get(`/${userId}/products?${query}`);
   return res.data.data;
@@ -94,7 +94,17 @@ export const getVendors = async () => {
 
   let queries = [];
   const { userId } = await getUserSession();
-  const query = queries.join("&");
+  const query = queries.join('&');
   const res = await axios.get(`/${userId}/vendors?${query}`);
   return res.data.data;
-}
+};
+
+export const addProductFromScraper = async (orders) => {
+  const { idToken, userId } = await getUserSession();
+  const axios = await api();
+  return axios.post(`${userId}/products`, orders, {
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+  });
+};
