@@ -8,6 +8,7 @@ To Start Development you need to:
 
 2. Start Development Mode
 
+### `cp .env.example .env` and update the values accordingly
 ### `npm start`
 
 Runs the app in the development mode.\
