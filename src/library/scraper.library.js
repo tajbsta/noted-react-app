@@ -1,5 +1,4 @@
 import * as _ from 'lodash/array';
-import base64url from 'base64url';
 /**
  *
  * @param {string} email
@@ -120,7 +119,7 @@ export const convertMessagesToEmails = async (messageIds, gapi) => {
   for (const batchRes of batchResponses) {
     Object.values(batchRes.result).forEach((res) => {
       const rawEmail = {
-        raw: base64url.toBase64(res.result.raw),
+        raw: res.result.raw,
         internalDate: res.result.internalDate,
         // id: res.result.id,
         // sizeEstimate: res.result.sizeEstimate,

@@ -15,7 +15,6 @@ import moment from 'moment';
 import { useRef } from 'react';
 import * as _ from 'lodash/array';
 import axios from 'axios';
-import base64url from 'base64url';
 import { AlertCircle } from 'react-feather';
 
 const Authorize = ({ triggerScanNow }) => {
@@ -188,11 +187,14 @@ const DashboardPageInitial = () => {
       setStatus('isScraping');
       const vendors = await getVendors();
 
-      const before = moment().format('YYYY/MM/DD');
+      const before =
+        type === NORMAL
+          ? moment().format('YYYY/MM/DD')
+          : moment().subtract(90, 'days').format('YYYY/MM/DD');
       const after =
         type === NORMAL
-          ? moment().subtract(1, 'days').format('YYYY/MM/DD')
-          : moment().subtract(90, 'days').format('YYYY/MM/DD');
+          ? moment().subtract(90, 'days').format('YYYY/MM/DD')
+          : moment().subtract(1, 'year').format('YYYY/MM/DD');
 
       const q = {
         // from: getVendorsFromEmail([{ from_emails: 'gabriella@deel.support' }]),
@@ -205,10 +207,10 @@ const DashboardPageInitial = () => {
       const emailQuery = buildEmailQuery(q);
       const emails = await getAccountMessages(emailQuery, gapi);
 
-      if (emails.length <= 0) {
-        //HANDLE NO EMAIL AVAILABLE FOR SCRAPING
-        throw Error('No Email Available for Scraping');
-      }
+      // if (emails.length <= 0) {
+      //   //HANDLE NO EMAIL AVAILABLE FOR SCRAPING
+      //   throw Error('No Email Available for Scraping');
+      // }
 
       //CURRENTLY USING DATA FROM S3 TO TEST
       //TODO- E2E testing with noted@notedreturns.com
@@ -217,13 +219,13 @@ const DashboardPageInitial = () => {
 
       const response = await axios.get(TEST_DATA_URL);
       const nord = await response.data;
-      nord.raw = base64url.toBase64(nord.raw);
 
       const data = await window.notedScraper(vendors, [nord]);
 
       //SEND TO BACKEND
       console.log(data);
     } catch (error) {
+      console.log(error);
       switch (error.message) {
         case 'No Email Available for Scraping':
           showError({
@@ -272,7 +274,7 @@ const DashboardPageInitial = () => {
       // Listen for sign-in state changes.
       gapi.current.auth2.getAuthInstance().isSignedIn.listen((success) => {
         if (success) {
-          handleScraping(SCRAPEOLDER);
+          handleScraping(NORMAL);
         }
       });
     } catch (error) {

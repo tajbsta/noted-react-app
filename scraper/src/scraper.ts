@@ -1,5 +1,5 @@
 import { IVendor, IEmailPayload } from './models';
-import { decodeRawBody } from './lib/helpers';
+import { cleanRawBody, decodeRawBody } from './lib/helpers';
 import emailParse from './lib/emailParse';
 
 export default async function main(vendors: IVendor[], rawEmails: IEmailPayload[]) {
@@ -8,7 +8,7 @@ export default async function main(vendors: IVendor[], rawEmails: IEmailPayload[
   for (let i = 0; i < rawEmails.length; i++) {
     const record: IEmailPayload = rawEmails[i];
 
-    const decodedEmailBody = decodeRawBody(record.raw);
+    const decodedEmailBody = decodeRawBody(cleanRawBody(record.raw));
 
     record.decodedBody = decodedEmailBody;
 

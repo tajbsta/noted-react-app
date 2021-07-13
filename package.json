@@ -7,7 +7,6 @@
     "@stripe/stripe-js": "^1.15.0",
     "aws-amplify": "^3.3.21",
     "axios": "^0.21.1",
-    "base64url": "^3.0.1",
     "bootstrap": "^4.6.0",
     "dotenv": "^8.2.0",
     "formik": "^2.2.6",
