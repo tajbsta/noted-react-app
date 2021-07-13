@@ -5,6 +5,7 @@ import ScanningIcon from '../../assets/icons/Scanning.svg';
 import CustomRow from '../../components/Row';
 import { loadGoogleScript } from '../../library/loadGoogleScript';
 import { getVendors } from '../../api/productsApi';
+import { showError } from '../../library/notifications.library';
 import {
   getVendorsFromEmail,
   buildEmailQuery,
@@ -15,6 +16,7 @@ import { useRef } from 'react';
 import * as _ from 'lodash/array';
 import axios from 'axios';
 import base64url from 'base64url';
+import { AlertCircle } from 'react-feather';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -153,29 +155,44 @@ const Scanning = () => {
 const DashboardPageInitial = () => {
   const [status, setStatus] = useState('');
   const gapi = useRef(null);
-  const allVendors = useRef(null);
 
   /**TRIGGER SCAN NOW FOR USERS */
-  const triggerScanNow = () => {
-    gapi.current.auth2.getAuthInstance().signIn();
-    setStatus('isAuthorizing');
+  const triggerScanNow = async () => {
+    try {
+      await gapi.current.auth2.getAuthInstance().signIn();
+      setStatus('isAuthorizing');
+    } catch (error) {
+      if (error.error === 'popup_closed_by_user') {
+        showError({
+          message: (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <AlertCircle />
+              <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
+                Error! Please reauthorise this scan
+              </h4>
+            </div>
+          ),
+        });
+      }
+    }
   };
 
-  //FETCH VENDORS
-  const fetchVendors = async () => {
-    const data = await getVendors();
-    allVendors.current = data;
-    setStatus('notAuthorized');
-  };
-
-  /**HANDLE EMAIl SCRAPING */
-  const handleScraping = async () => {
+  const NORMAL = 'normal';
+  const SCRAPEOLDER = 'scrapeOlder';
+  /**
+   * HANDLE EMAIl SCRAPING
+   * @param {string} type - Scraper Types - normal, scrapeOlder
+   * */
+  const handleScraping = async (type) => {
     try {
       setStatus('isScraping');
-      const vendors = allVendors.current;
+      const vendors = await getVendors();
 
       const before = moment().format('YYYY/MM/DD');
-      const after = moment().subtract(90, 'days').format('YYYY/MM/DD');
+      const after =
+        type === NORMAL
+          ? moment().subtract(1, 'days').format('YYYY/MM/DD')
+          : moment().subtract(90, 'days').format('YYYY/MM/DD');
 
       const q = {
         // from: getVendorsFromEmail([{ from_emails: 'gabriella@deel.support' }]),
@@ -195,7 +212,10 @@ const DashboardPageInitial = () => {
 
       //CURRENTLY USING DATA FROM S3 TO TEST
       //TODO- E2E testing with noted@notedreturns.com
-      const response = await axios.get('/data.json');
+      const TEST_DATA_URL =
+        'https://noted-scrape-test.s3-us-west-2.amazonaws.com/NORDSTROM.json';
+
+      const response = await axios.get(TEST_DATA_URL);
       const nord = await response.data;
       nord.raw = base64url.toBase64(nord.raw);
 
@@ -204,7 +224,31 @@ const DashboardPageInitial = () => {
       //SEND TO BACKEND
       console.log(data);
     } catch (error) {
-      console.log(error.message);
+      switch (error.message) {
+        case 'No Email Available for Scraping':
+          showError({
+            message: (
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <AlertCircle />
+                <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
+                  Error! No Email Available for Scraping
+                </h4>
+              </div>
+            ),
+          });
+          break;
+        default:
+          showError({
+            message: (
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <AlertCircle />
+                <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
+                  Error! An error occurred
+                </h4>
+              </div>
+            ),
+          });
+      }
     }
   };
 
@@ -228,16 +272,16 @@ const DashboardPageInitial = () => {
       // Listen for sign-in state changes.
       gapi.current.auth2.getAuthInstance().isSignedIn.listen((success) => {
         if (success) {
-          handleScraping();
+          handleScraping(SCRAPEOLDER);
         }
       });
     } catch (error) {
-      console.log(JSON.stringify(error, null, 2));
+      console.log('NEW ERROR', error);
     }
   };
 
   useEffect(() => {
-    fetchVendors();
+    setStatus('notAuthorized');
   }, []);
 
   //INITIALIZE GOOGLE API
