@@ -176,6 +176,16 @@ const DashboardPageInitial = () => {
     }
   };
 
+  const sendToBE = async (orders) => {
+    try {
+      const addProductResponse = await addProductFromScraper({ orders });
+
+      console.log(addProductResponse);
+    } catch (e) {
+      console.log(e.response);
+    }
+  };
+
   const NORMAL = 'normal';
   const SCRAPEOLDER = 'scrapeOlder';
   /**
@@ -207,10 +217,10 @@ const DashboardPageInitial = () => {
       const emailQuery = buildEmailQuery(q);
       const emails = await getAccountMessages(emailQuery, gapi);
 
-      if (emails.length <= 0) {
-        //HANDLE NO EMAIL AVAILABLE FOR SCRAPING
-        throw Error('No Email Available for Scraping');
-      }
+      // if (emails.length <= 0) {
+      //   //HANDLE NO EMAIL AVAILABLE FOR SCRAPING
+      //   throw Error('No Email Available for Scraping');
+      // }
 
       //CURRENTLY USING DATA FROM S3 TO TEST
       //TODO- E2E testing with noted@notedreturns.com
@@ -222,10 +232,7 @@ const DashboardPageInitial = () => {
 
       const data = await window.notedScraper(vendors, [nord]);
 
-      const orders = { orders: data };
-      const addProductResponse = await addProductFromScraper(orders);
-
-      console.log(addProductResponse);
+      await sendToBE(data);
     } catch (error) {
       console.log(error);
       switch (error.message) {
