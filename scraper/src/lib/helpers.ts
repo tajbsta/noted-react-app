@@ -4,6 +4,7 @@ export const cleanRawBody = (body: string): string => {
   return body.replace(/-/g, '+').replace(/_/g, '/');
 };
 
+/* istanbul ignore next */
 export const decodeRawBody = (body: string): string => {
   return window.atob(body);
 };
@@ -23,4 +24,11 @@ export const productQuantityHelper = (product: RawProduct): RawProduct[] => {
   }
 
   return products;
+};
+
+/* istanbul ignore next */
+export const parseHtmlString = (body: string): Document => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(body, 'text/html');
+  return doc;
 };
