@@ -80,7 +80,7 @@ export const getAccountMessages = async (q, gapi) => {
 
     messages =
       response.result.resultSizeEstimate > 0
-        ? [...messages, ...response.result.messages]
+        ? messages.concat(response.result.messages)
         : messages;
     nextPageToken = response.result.nextPageToken || undefined;
   }
