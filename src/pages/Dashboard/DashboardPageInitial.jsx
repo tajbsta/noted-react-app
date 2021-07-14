@@ -217,10 +217,10 @@ const DashboardPageInitial = () => {
       const emailQuery = buildEmailQuery(q);
       const emails = await getAccountMessages(emailQuery, gapi);
 
-      // if (emails.length <= 0) {
-      //   //HANDLE NO EMAIL AVAILABLE FOR SCRAPING
-      //   throw Error('No Email Available for Scraping');
-      // }
+      if (emails.length <= 0) {
+        //HANDLE NO EMAIL AVAILABLE FOR SCRAPING
+        throw Error('No Email Available for Scraping');
+      }
 
       //CURRENTLY USING DATA FROM S3 TO TEST
       //TODO- E2E testing with noted@notedreturns.com
@@ -229,12 +229,10 @@ const DashboardPageInitial = () => {
 
       const response = await axios.get(TEST_DATA_URL);
       const nord = await response.data;
-
       const data = await window.notedScraper(vendors, [nord]);
 
       await sendToBE(data);
     } catch (error) {
-      console.log(error);
       switch (error.message) {
         case 'No Email Available for Scraping':
           showError({
