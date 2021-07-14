@@ -16,6 +16,7 @@ import { useRef } from 'react';
 import * as _ from 'lodash/array';
 import axios from 'axios';
 import { AlertCircle } from 'react-feather';
+import { NORMAL, SCRAPEOLDER } from '../../constants/scraper';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -197,8 +198,6 @@ const DashboardPageInitial = () => {
     }
   };
 
-  const NORMAL = 'normal';
-  const SCRAPEOLDER = 'scrapeOlder';
   /**
    * HANDLE EMAIl SCRAPING
    * @param {string} type - Scraper Types - normal, scrapeOlder
@@ -208,20 +207,23 @@ const DashboardPageInitial = () => {
       setStatus('isScraping');
       const vendors = await getVendors();
 
-      const before =
-        type === NORMAL
-          ? moment().format('YYYY/MM/DD')
-          : moment().subtract(90, 'days').format('YYYY/MM/DD');
-      const after =
-        type === NORMAL
-          ? moment().subtract(90, 'days').format('YYYY/MM/DD')
-          : moment().subtract(1, 'year').format('YYYY/MM/DD');
+      let before;
+      let after;
+
+      if (type === NORMAL) {
+        after = moment().startOf('day').subtract(3, 'months');
+        before = moment().startOf('day').add(1, 'd');
+      } else {
+        const startDate = moment().startOf('day').subtract(3, 'months');
+        after = startDate.clone().subtract(1, 'years');
+        before = startDate;
+      }
 
       const q = {
         // from: getVendorsFromEmail([{ from_emails: 'gabriella@deel.support' }]),
         from: getVendorsFromEmail(vendors),
-        after,
-        before,
+        after: after.format('YYYY/MM/DD'),
+        before: before.format('YYYY/MM/DD'),
       };
 
       //BUILD EMAIL QUERY
