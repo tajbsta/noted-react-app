@@ -1,6 +1,6 @@
 import * as log from './logger';
 import { VENDOR_CODES } from '../constants';
-import { Nordstrom } from './vendors';
+import { Lululemon, Nordstrom } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
 const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | undefined> => {
@@ -10,6 +10,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
     switch (code) {
       case VENDOR_CODES.NORDSTROM:
         orderData = await Nordstrom.parse(code, payload);
+        break;
+      case VENDOR_CODES.LULULEMON:
+        orderData = await Lululemon.parse(code, payload);
         break;
       default:
         break;
