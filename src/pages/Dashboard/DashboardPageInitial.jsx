@@ -5,7 +5,7 @@ import ScanningIcon from '../../assets/icons/Scanning.svg';
 import CustomRow from '../../components/Row';
 import { loadGoogleScript } from '../../library/loadGoogleScript';
 import { addProductFromScraper, getVendors } from '../../api/productsApi';
-import { showError } from '../../library/notifications.library';
+import { showError, showSuccess } from '../../library/notifications.library';
 import {
   getVendorsFromEmail,
   buildEmailQuery,
@@ -16,7 +16,14 @@ import { useRef } from 'react';
 import * as _ from 'lodash/array';
 import axios from 'axios';
 import { AlertCircle } from 'react-feather';
-import { NORMAL, SCRAPEOLDER } from '../../constants/scraper';
+import {
+  ISAUTHORIZING,
+  ISSCRAPING,
+  NORMAL,
+  NOTAUTHORIZED,
+  SCRAPECOMPLETE,
+  SCRAPEOLDER,
+} from '../../constants/scraper';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -145,22 +152,15 @@ const Scanning = () => {
   );
 };
 
-/**STATUSES
- * 1. notAutorized - User has not initiated authorization
- * 2. isAuthorizing - Authorization in progress, Google Modal in the foreground
- * 3. isScraping - Authorization is complete and Scraping has been initiated
- * 4. scrapeComplete - Scraping is complete
- *  */
-
 const DashboardPageInitial = () => {
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState(NOTAUTHORIZED);
   const gapi = useRef(null);
 
   /**TRIGGER SCAN NOW FOR USERS */
   const triggerScanNow = async () => {
     try {
       await gapi.current.auth2.getAuthInstance().signIn();
-      setStatus('isAuthorizing');
+      setStatus(ISAUTHORIZING);
     } catch (error) {
       if (error.error === 'popup_closed_by_user') {
         showError({
@@ -191,8 +191,8 @@ const DashboardPageInitial = () => {
   const sendToBE = async (orders) => {
     try {
       const addProductResponse = await addProductFromScraper({ orders });
-
       console.log(addProductResponse);
+      setStatus(SCRAPECOMPLETE);
     } catch (e) {
       console.log(e.response);
     }
@@ -204,8 +204,8 @@ const DashboardPageInitial = () => {
    * */
   const handleScraping = async (type) => {
     try {
-      setStatus('isScraping');
-      const vendors = await getVendors();
+      setStatus(ISSCRAPING);
+      const vendors = await getVendors(['supported=true']);
 
       let before;
       let after;
@@ -231,8 +231,17 @@ const DashboardPageInitial = () => {
       const emails = await getAccountMessages(emailQuery, gapi);
 
       if (emails.length <= 0) {
-        //HANDLE NO EMAIL AVAILABLE FOR SCRAPING
-        throw Error('No Email Available for Scraping');
+        showSuccess({
+          message: (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <AlertCircle />
+              <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
+                There are no order emails in this account.
+              </h4>
+            </div>
+          ),
+        });
+        return;
       }
 
       //CURRENTLY USING DATA FROM S3 TO TEST
@@ -246,31 +255,16 @@ const DashboardPageInitial = () => {
 
       await sendToBE(data);
     } catch (error) {
-      switch (error.message) {
-        case 'No Email Available for Scraping':
-          showError({
-            message: (
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <AlertCircle />
-                <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
-                  Error! No Email Available for Scraping
-                </h4>
-              </div>
-            ),
-          });
-          break;
-        default:
-          showError({
-            message: (
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <AlertCircle />
-                <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
-                  Error! An error occurred
-                </h4>
-              </div>
-            ),
-          });
-      }
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
+              Error! An error occurred
+            </h4>
+          </div>
+        ),
+      });
     }
   };
 
@@ -302,10 +296,6 @@ const DashboardPageInitial = () => {
     }
   };
 
-  useEffect(() => {
-    setStatus('notAuthorized');
-  }, []);
-
   //INITIALIZE GOOGLE API
   useEffect(() => {
     window.onGoogleScriptLoad = () => {
@@ -318,11 +308,11 @@ const DashboardPageInitial = () => {
 
   return (
     <div id="DashboardInitial">
-      {status === 'notAuthorized' && (
+      {status === NOTAUTHORIZED && (
         <Authorize triggerScanNow={triggerScanNow} />
       )}
-      {status === 'isScraping' && <Scanning></Scanning>}
-      {(status === 'isAuthorizing' || status === '') && (
+      {status === ISSCRAPING && <Scanning></Scanning>}
+      {(status === ISAUTHORIZING || status === '') && (
         <div>
           <Spinner size="lg" color="#570097" animation="border" />
         </div>
