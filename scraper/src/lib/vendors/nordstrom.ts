@@ -21,8 +21,8 @@ export default class Nordstrom {
 
     return {
       vendor: code,
-      order_ref: orderRef,
-      order_date: orderDate,
+      orderRef,
+      orderDate,
       products: rawProducts
     };
   }

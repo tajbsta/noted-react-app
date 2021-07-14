@@ -100,11 +100,7 @@ export const getVendors = async () => {
 };
 
 export const addProductFromScraper = async (orders) => {
-  const { idToken, userId } = await getUserSession();
+  const { userId } = await getUserSession();
   const axios = await api();
-  return axios.post(`${userId}/products`, orders, {
-    headers: {
-      Authorization: `Bearer ${idToken}`,
-    },
-  });
+  return axios.post(`${userId}/products`, orders);
 };
