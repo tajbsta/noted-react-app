@@ -64,7 +64,7 @@ const Authorize = ({ triggerScanNow }) => {
               onClick={triggerScanNow}
               className="btn btn-green btn-authorize"
             >
-              Scan Now
+              Authorize Now
             </Button>
           </Col>
           <Col xs="6">
@@ -190,9 +190,20 @@ const DashboardPageInitial = () => {
 
   const sendToBE = async (orders) => {
     try {
+      console.log(orders);
       const addProductResponse = await addProductFromScraper({ orders });
       console.log(addProductResponse);
       setStatus(SCRAPECOMPLETE);
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
+              Scrape successful.
+            </h4>
+          </div>
+        ),
+      });
     } catch (e) {
       console.log(e.response);
     }
@@ -241,20 +252,34 @@ const DashboardPageInitial = () => {
             </div>
           ),
         });
+        gapi.current.auth2.getAuthInstance().signOut();
+        setStatus(NOTAUTHORIZED);
         return;
       }
 
-      //CURRENTLY USING DATA FROM S3 TO TEST
-      //TODO- E2E testing with noted@notedreturns.com
-      const TEST_DATA_URL =
-        'https://noted-scrape-test.s3-us-west-2.amazonaws.com/NORDSTROM.json';
+      let data = await window.notedScraper(vendors, emails);
+      //REMOVE UNDEFINED FOR VENDORS SCRAPER DOES NOT SUPPORT YET
+      data = data.filter((item) => item !== undefined);
 
-      const response = await axios.get(TEST_DATA_URL);
-      const nord = await response.data;
-      const data = await window.notedScraper(vendors, [nord]);
+      if (data.length <= 0) {
+        showError({
+          message: (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <AlertCircle />
+              <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
+                Error! An error occurred
+              </h4>
+            </div>
+          ),
+        });
+        gapi.current.auth2.getAuthInstance().signOut();
+        setStatus(NOTAUTHORIZED);
+        return;
+      }
 
       await sendToBE(data);
     } catch (error) {
+      console.log(error);
       showError({
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
