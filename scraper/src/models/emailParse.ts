@@ -7,7 +7,7 @@ export interface RawProduct {
 
 export interface OrderData {
   vendor: string;
-  order_ref: string;
-  order_date: number;
+  orderRef: string;
+  orderDate: number;
   products: RawProduct[];
 }

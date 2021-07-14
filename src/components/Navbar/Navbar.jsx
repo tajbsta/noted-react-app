@@ -63,6 +63,9 @@ export default function Topnav() {
         '/code/verify',
     ];
 
+    /**VIEW DOES NOT HAVE DATA BUT USER HAS ACCOUNT */
+    const preDataViews = ['/dashboard/initial'];
+
     const {
         location: { pathname },
     } = useHistory();
@@ -181,6 +184,9 @@ export default function Topnav() {
                                         className="form-control form-control-prepended list-search background-color sofia-pro text-16 color"
                                         placeholder="Search purchases"
                                         value={searchQuery}
+                                        disabled={preDataViews.includes(
+                                            pathname
+                                        )}
                                         onChange={(e) =>
                                             setSearchQuery(e.target.value)
                                         }
