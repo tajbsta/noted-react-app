@@ -1,5 +1,4 @@
 import * as _ from 'lodash/array';
-import * as parser from 'http-string-parser';
 /**
  *
  * @param {string} email
@@ -90,51 +89,6 @@ export const getAccountMessages = async (q, gapi) => {
 
   const emails = await convertMessagesToEmails(messageIds, gapi);
   return emails;
-};
-
-export const formatGetMessageBatchRequest = (messageIds, boundary) => {
-  let body = '';
-
-  messageIds.forEach((id) => {
-    body += `--${boundary}\n`;
-    body += 'Content-Type: application/http\n\n';
-    body += `GET /gmail/v1/users/me/messages/${id}?fields=id,payload,internalDate,sizeEstimate&format=full\n`;
-  });
-
-  body += `\n--${boundary}--`;
-
-  return body;
-};
-
-export const batchRequestRemoveGarbage = (initial, item) => {
-  if (item.match(/content-type/gi)) {
-    initial.push(item);
-  }
-  return initial;
-};
-
-export const parseBatchRequestData = (data) => {
-  const returnData = {};
-
-  const parsedData = parser.parseResponse(data);
-
-  if (parsedData.body.includes('HTTP/1.1 200')) {
-    const parsedBody = parser.parseResponse(parsedData.body);
-
-    try {
-      returnData.body = JSON.parse(parsedBody.body);
-      returnData.code = 200;
-    } catch (error) {
-      returnData.body = '';
-      returnData.code = 400; // Bad request
-    }
-  } else if (parsedData.body.includes('HTTP/1.1 401')) {
-    returnData.code = 401;
-  } else {
-    returnData.code = 500;
-  }
-
-  return returnData;
 };
 
 /**
