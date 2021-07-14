@@ -1,4 +1,5 @@
 import * as _ from 'lodash/array';
+import * as parser from 'http-string-parser';
 /**
  *
  * @param {string} email
@@ -91,6 +92,51 @@ export const getAccountMessages = async (q, gapi) => {
   return emails;
 };
 
+export const formatGetMessageBatchRequest = (messageIds, boundary) => {
+  let body = '';
+
+  messageIds.forEach((id) => {
+    body += `--${boundary}\n`;
+    body += 'Content-Type: application/http\n\n';
+    body += `GET /gmail/v1/users/me/messages/${id}?fields=id,payload,internalDate,sizeEstimate&format=full\n`;
+  });
+
+  body += `\n--${boundary}--`;
+
+  return body;
+};
+
+export const batchRequestRemoveGarbage = (initial, item) => {
+  if (item.match(/content-type/gi)) {
+    initial.push(item);
+  }
+  return initial;
+};
+
+export const parseBatchRequestData = (data) => {
+  const returnData = {};
+
+  const parsedData = parser.parseResponse(data);
+
+  if (parsedData.body.includes('HTTP/1.1 200')) {
+    const parsedBody = parser.parseResponse(parsedData.body);
+
+    try {
+      returnData.body = JSON.parse(parsedBody.body);
+      returnData.code = 200;
+    } catch (error) {
+      returnData.body = '';
+      returnData.code = 400; // Bad request
+    }
+  } else if (parsedData.body.includes('HTTP/1.1 401')) {
+    returnData.code = 401;
+  } else {
+    returnData.code = 500;
+  }
+
+  return returnData;
+};
+
 /**
  * CONVERT MESSAGES TO EMAILS
  * @param {Array<string>} messageIds
@@ -106,7 +152,7 @@ export const convertMessagesToEmails = async (messageIds, gapi) => {
         const getEmail = gapi.current.client.gmail.users.messages.get({
           userId: 'me',
           id,
-          format: 'raw',
+          format: 'full',
         });
         batch.add(getEmail);
       });
@@ -115,17 +161,60 @@ export const convertMessagesToEmails = async (messageIds, gapi) => {
     })
   );
 
-  const emails = [];
-  for (const batchRes of batchResponses) {
-    Object.values(batchRes.result).forEach((res) => {
-      const rawEmail = {
-        raw: res.result.raw,
-        internalDate: res.result.internalDate,
-        // id: res.result.id,
-        // sizeEstimate: res.result.sizeEstimate,
-      };
-      emails.push(rawEmail);
-    });
+  let emails = [];
+  for (const res of batchResponses) {
+    const batchRes = res;
+
+    const boundary = batchRes.headers['content-type'].split('boundary=').pop();
+
+    if (!boundary) {
+      throw new Error(
+        'Wrong content-type: ' + batchRes.headers['content-type']
+      );
+    }
+
+    const responses = Object.values(batchRes.result);
+
+    emails = emails.concat(
+      responses.map((x) => {
+        let htmlPart;
+
+        const mimeType = x.result.payload.mimeType;
+
+        // If not multipart use the first level part
+        if (!mimeType.includes('multipart/')) {
+          htmlPart = x.result.payload;
+        } else {
+          // Dig all through the message parts to get mimeType text/html part
+
+          let done = false;
+          let parts = x.result.payload.parts || [];
+          let part;
+
+          do {
+            part = parts.find((part) => part.mimeType === 'text/html');
+
+            if (part) {
+              htmlPart = part;
+              done = true;
+            } else {
+              const nextPart = parts.find((part) =>
+                part.mimeType.includes('multipart/')
+              );
+              parts = nextPart && nextPart.parts ? nextPart.parts : [];
+            }
+          } while (!done && parts.length > 0);
+        }
+
+        const raw = htmlPart ? htmlPart.body.data : '';
+        return {
+          id: x.result.id,
+          internalDate: x.result.internalDate,
+          sizeEstimate: x.result.sizeEstimate,
+          raw,
+        };
+      })
+    );
   }
 
   return emails;
