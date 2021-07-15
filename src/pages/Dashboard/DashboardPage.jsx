@@ -4,7 +4,7 @@ import { Spinner } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import ReturnCategory from '../../components/Product/ReturnCategory';
 import RightCard from './components/RightCard';
-import { getUserId, getUser, updateUserAttributes } from '../../api/auth';
+import { getUserId, getUser } from '../../api/auth';
 import { getOrders } from '../../api/orderApi';
 import {
   LAST_CALL,
@@ -20,7 +20,7 @@ import { showError, showSuccess } from '../../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 import { resetAuthorizeNewEmail } from '../../utils/data';
-import { NORMAL, SCRAPECOMPLETE, SCRAPEOLDER } from '../../constants/scraper';
+import { NORMAL, SCRAPEOLDER } from '../../constants/scraper';
 
 export default function DashboardPage({ triggerScanNow }) {
   const [search, setSearch] = useState('');
@@ -31,20 +31,10 @@ export default function DashboardPage({ triggerScanNow }) {
     DONATE: () => {},
   });
 
-  const {
-    search: searchSession,
-    type: scraperType,
-    status: scraperStatus,
-  } = useSelector(
-    ({
-      runtime: { search },
-      auth: { scheduledReturns },
-      scraper: { type, status },
-    }) => ({
+  const { search: searchSession } = useSelector(
+    ({ runtime: { search }, auth: { scheduledReturns } }) => ({
       search,
       scheduledReturns,
-      type,
-      status,
     })
   );
 
