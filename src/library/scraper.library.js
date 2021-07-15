@@ -107,6 +107,7 @@ export const convertMessagesToEmails = async (messageIds, gapi) => {
           userId: 'me',
           id,
           format: 'full',
+          fields: 'id,payload,internalDate,sizeEstimate',
         });
         batch.add(getEmail);
       });
