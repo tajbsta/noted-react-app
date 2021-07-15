@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import * as accounting from 'accounting';
-import { parseHtmlString } from '../helpers';
+import { parseHtmlString, productQuantityHelper } from '../helpers';
+import { decode as htmlDecode } from 'html-entities';
 import { OrderData, RawProduct, IEmailPayload } from '../../models';
 
 export default class Lululemon {
@@ -23,23 +24,6 @@ export default class Lululemon {
       products: rawProducts
     };
   }
-
-  static multipleItemCheck = (data) => {
-    const products = [];
-    data.forEach((product) => {
-      for (let y = 0; y < product.quantity; y++) {
-        const qnty = y + 1;
-        const qntyLabel = product.quantity > 1 ? ` (${qnty})` : /* istanbul ignore next */ '';
-
-        products.push({
-          name: `${product.name}${qntyLabel}` || /* istanbul ignore next */ '',
-          thumbnail: product.thumbnail,
-          price: product.price
-        });
-      }
-    });
-    return products;
-  };
 
   static async getOrderRef(root: Document): Promise<string | null> {
     try {
@@ -69,6 +53,7 @@ export default class Lululemon {
     }
   }
   static async getProducts(root: Document): Promise<RawProduct[]> {
+    let products = [];
     try {
       const initialContainer = root.querySelector('html > body > div > div:nth-child(5) > div');
 
@@ -81,7 +66,7 @@ export default class Lululemon {
         }
       });
 
-      const initialProductList = orderTableContainer.map((item: any) => {
+      orderTableContainer.forEach((item: any) => {
         const productRowElement = item;
         const productNameElement = productRowElement.querySelector('div:nth-child(2) > div > div:nth-child(1) > h2');
 
@@ -103,14 +88,16 @@ export default class Lululemon {
         const productPriceElement = productRowElement.querySelector('div:nth-child(2) > div > div:nth-child(2) > span');
         const price = productPriceElement.innerHTML.trim();
         const productPrice = productPriceElement ? accounting.unformat(price) : /* istanbul ignore next */ 0;
-        return {
-          name: productName,
-          price: productPrice,
-          thumbnail: productThumbnail,
-          quantity
-        };
+
+        products = products.concat(
+          productQuantityHelper({
+            name: htmlDecode(`${productName}`),
+            price: productPrice,
+            thumbnail: productThumbnail,
+            quantity
+          })
+        );
       });
-      const products = this.multipleItemCheck(initialProductList);
       return products;
     } catch (error) {
       /* istanbul ignore next */
