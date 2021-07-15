@@ -1,18 +1,11 @@
 import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ReturnCategory from '../../components/Product/ReturnCategory';
 import RightCard from './components/RightCard';
-import {
-  getUserId,
-  getUser,
-  updateUserAttributes,
-  scrapeOlderEmails,
-} from '../../api/auth';
+import { getUserId, getUser, updateUserAttributes } from '../../api/auth';
 import { getOrders } from '../../api/orderApi';
-import { getAccounts } from '../../api/accountsApi';
 import {
   LAST_CALL,
   NOT_ELIGIBLE,
@@ -27,9 +20,9 @@ import { showError, showSuccess } from '../../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 import { resetAuthorizeNewEmail } from '../../utils/data';
+import { NORMAL, SCRAPECOMPLETE, SCRAPEOLDER } from '../../constants/scraper';
 
-export default function DashboardPage() {
-  const history = useHistory();
+export default function DashboardPage({ triggerScanNow }) {
   const [search, setSearch] = useState('');
   const [refreshCategory, setRefreshCategory] = useState({
     LAST_CALL: () => {},
@@ -38,10 +31,20 @@ export default function DashboardPage() {
     DONATE: () => {},
   });
 
-  const { search: searchSession } = useSelector(
-    ({ runtime: { search }, auth: { scheduledReturns } }) => ({
+  const {
+    search: searchSession,
+    type: scraperType,
+    status: scraperStatus,
+  } = useSelector(
+    ({
+      runtime: { search },
+      auth: { scheduledReturns },
+      scraper: { type, status },
+    }) => ({
       search,
       scheduledReturns,
+      type,
+      status,
     })
   );
 
@@ -50,12 +53,13 @@ export default function DashboardPage() {
   const [user, setUser] = useState('');
   const [userId, setUserId] = useState('');
   const [showScanOlderButton, setShowScanOlderButton] = useState(false);
-  const [olderScanDone, setIsOlderScanDone] = useState(false);
   const [modalProductShow, setModalProductShow] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [orders, setOrders] = useState([]);
   const [fetchingOrders, setFetchingOrders] = useState(false);
+  const olderScanDone =
+    scraperStatus === SCRAPECOMPLETE && scraperType === SCRAPEOLDER;
 
   /**HANDLE CATEGORY REFRESH */
   const handleRefreshCategory = (method, category) => {
@@ -107,14 +111,14 @@ export default function DashboardPage() {
       const userId = await getUserId();
 
       setUserId(userId);
-      await fetchAccounts(userId);
+      // await fetchAccounts(userId);
       setLoading(false);
     } catch (error) {
       showError({
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AlertCircle />
-            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+            <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
               Error! Failed to load products!
             </h4>
           </div>
@@ -124,67 +128,35 @@ export default function DashboardPage() {
     }
   }
 
-  async function fetchAccounts(userId) {
-    try {
-      const accounts = await getAccounts(userId);
+  // async function fetchAccounts(userId) {
+  //   try {
+  //     const accounts = await getAccounts(userId);
 
-      // Redirect to request-permission if user has no accounts
-      if (accounts.length === 0) {
-        history.push('/request-permission');
-        return;
-      }
+  //     // Redirect to request-permission if user has no accounts
+  //     if (accounts.length === 0) {
+  //       history.push('/request-permission');
+  //       return;
+  //     }
 
-      const scrapeNotUpdated = accounts.every(
-        (acc) => acc.lastScrapeAttempt === 0
-      );
+  //     const scrapeNotUpdated = accounts.every(
+  //       (acc) => acc.lastScrapeAttempt === 0
+  //     );
 
-      setShowScanning(scrapeNotUpdated);
+  //     setShowScanning(scrapeNotUpdated);
 
-      if (scrapeNotUpdated) {
-        setTimeout(async () => {
-          await fetchAccounts(userId);
-        }, 1000 * 60); // 1 minute
-      }
-    } catch (error) {
-      setShowScanning(false);
-    }
-  }
+  //     if (scrapeNotUpdated) {
+  //       setTimeout(async () => {
+  //         await fetchAccounts(userId);
+  //       }, 1000 * 60); // 1 minute
+  //     }
+  //   } catch (error) {
+  //     setShowScanning(false);
+  //   }
+  // }
 
   const scanOlderRequest = async () => {
     setShowScanOlderButton(false);
-    try {
-      setLoading(true);
-      showSuccess({
-        message: (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <CheckCircle />
-            <h4 className='ml-3 mb-0' style={{ lineHeight: '19px' }}>
-              Success! Please wait a few seconds to scan
-            </h4>
-          </div>
-        ),
-      });
-      await scrapeOlderEmails(userId);
-      await updateUserAttributes({ 'custom:scan_older_done': '1' });
-
-      setTimeout(() => {
-        setLoading(false);
-      }, 5000);
-
-      setIsOlderScanDone(true);
-    } catch (error) {
-      setLoading(false);
-      showError({
-        message: (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <AlertCircle />
-            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              Error getting older emails!
-            </h4>
-          </div>
-        ),
-      });
-    }
+    triggerScanNow(SCRAPEOLDER);
   };
 
   const checkForJustAuthorizedMail = () => {
@@ -195,7 +167,7 @@ export default function DashboardPage() {
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <CheckCircle />
-            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+            <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
               Successfully added an email! Please wait a few minutes to show
               your returns on the dashboard
             </h4>
@@ -211,10 +183,6 @@ export default function DashboardPage() {
     loadScans();
     checkForJustAuthorizedMail();
   }, []);
-
-  const goToAuthorize = () => {
-    history.push('/request-permission');
-  };
 
   useEffect(() => {
     function handleResize() {
@@ -247,19 +215,27 @@ export default function DashboardPage() {
     })();
   }, []);
 
+  useEffect(() => {
+    if (scraperStatus === SCRAPECOMPLETE && scraperType === SCRAPEOLDER) {
+      (async () => {
+        await updateUserAttributes({ 'custom:scan_older_done': '1' });
+      })();
+    }
+  }, [scraperStatus, scraperType]);
+
   const beyond90days =
     olderScanDone || (user && user['custom:scan_older_done'] == '1');
 
   return (
-    <div id='DashboardPage'>
-      <div className='container mt-6 main-mobile-dashboard'>
-        <div className='row sched-row'>
+    <div id="DashboardPage">
+      <div className="container mt-6 main-mobile-dashboard">
+        <div className="row sched-row">
           {/* If there are in progress orders */}
           {!isEmpty(orders) && (
             <ScheduledCard fetchingOrders={fetchingOrders} />
           )}
         </div>
-        <div className='row ipad-row'>
+        <div className="row ipad-row">
           <div className={`mt-4 w-840 bottom ${isTablet ? 'col' : 'col-sm-9'}`}>
             {(loading || showScanning) && (
               <>
@@ -273,7 +249,7 @@ export default function DashboardPage() {
                 >
                   {showScanning && <Scanning />}
                   {loading && (
-                    <Spinner className='dashboard-spinner' animation='border' />
+                    <Spinner className="dashboard-spinner" animation="border" />
                   )}
                 </div>
               </>
@@ -282,13 +258,13 @@ export default function DashboardPage() {
             {!loading && !showScanning && (
               <>
                 {isEmpty(search) && (
-                  <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
+                  <h3 className="sofia-pro mt-0 ml-3 text-18 text-list">
                     Your online purchases - Last 90 Days
                     {beyond90days ? ' & beyond' : ''}
                   </h3>
                 )}
                 {!isEmpty(search) && (
-                  <h3 className='sofia-pro mt-0 ml-3 text-18 text-list'>
+                  <h3 className="sofia-pro mt-0 ml-3 text-18 text-list">
                     Search Results
                   </h3>
                 )}
@@ -296,7 +272,7 @@ export default function DashboardPage() {
                   <>
                     <div>
                       <ReturnCategory
-                        typeTitle='Last Call!'
+                        typeTitle="Last Call!"
                         userId={userId}
                         size={5}
                         category={`${LAST_CALL},${NOT_ELIGIBLE}`}
@@ -304,9 +280,9 @@ export default function DashboardPage() {
                         handleRefreshCategory={handleRefreshCategory}
                       />
                     </div>
-                    <div className='mt-4 returnable-items'>
+                    <div className="mt-4 returnable-items">
                       <ReturnCategory
-                        typeTitle='Returnable Items'
+                        typeTitle="Returnable Items"
                         userId={userId}
                         size={5}
                         category={RETURNABLE}
@@ -315,13 +291,13 @@ export default function DashboardPage() {
                       />
                     </div>
                     <div>
-                      <p className='line-break'>
+                      <p className="line-break">
                         <span></span>
                       </p>
                     </div>
-                    <div className='mt-4' unselectable='one'>
+                    <div className="mt-4" unselectable="one">
                       <ReturnCategory
-                        typeTitle='Donate'
+                        typeTitle="Donate"
                         userId={userId}
                         size={5}
                         category={DONATE}
@@ -330,7 +306,7 @@ export default function DashboardPage() {
                       />
                     </div>
                     <div>
-                      <p className='line-break'>
+                      <p className="line-break">
                         <span></span>
                       </p>
                     </div>
@@ -340,7 +316,7 @@ export default function DashboardPage() {
                 {!isEmpty(search) && (
                   <div>
                     <ReturnCategory
-                      typeTitle='Select all'
+                      typeTitle="Select all"
                       userId={userId}
                       size={5}
                       search={search}
@@ -358,34 +334,34 @@ export default function DashboardPage() {
                         </div>
                       </div>
                     </div> */}
-                    <div className='row justify-center mt-3 mobile-footer-row mt-5'>
-                      <div className='col-sm-6 text-center'>
-                        <div className='text-muted text-center text-cant-find sofia-pro'>
+                    <div className="row justify-center mt-3 mobile-footer-row mt-5">
+                      <div className="col-sm-6 text-center">
+                        <div className="text-muted text-center text-cant-find sofia-pro">
                           Can’t find one?
                           <button
-                            className='btn btn-add-product mr-1'
+                            className="btn btn-add-product mr-1"
                             onClick={() => setModalProductShow(true)}
                             disabled
                             style={{ padding: '0px' }}
                           >
-                            <h4 className='mb-0 noted-purple sofia-pro line-height-16 text-add'>
+                            <h4 className="mb-0 noted-purple sofia-pro line-height-16 text-add">
                               &nbsp; Add it manually
                             </h4>
                           </button>
                           <ReturnValueInfoIcon
                             content="We're still working on this"
-                            iconClassname='info-icon-small'
+                            iconClassname="info-icon-small"
                           />
                         </div>
                       </div>
                     </div>
-                    <div className='row justify-center mt-2 mobile-footer-row'>
-                      <div className='col-sm-6 text-center'>
+                    <div className="row justify-center mt-2 mobile-footer-row">
+                      <div className="col-sm-6 text-center">
                         <button
-                          className='btn text-center noted-purple sofia-pro line-height-16 text-new-email'
-                          onClick={goToAuthorize}
+                          className="btn text-center noted-purple sofia-pro line-height-16 text-new-email"
+                          onClick={() => triggerScanNow(NORMAL)}
                         >
-                          Add new email address
+                          Scan Now
                         </button>
                       </div>
                     </div>
@@ -395,21 +371,21 @@ export default function DashboardPage() {
                     />
                     {showScanOlderButton && (
                       <>
-                        <div className='row justify-center mt-2 mobile-footer-row'>
-                          <div className='col-sm-6 text-center'>
+                        <div className="row justify-center mt-2 mobile-footer-row">
+                          <div className="col-sm-6 text-center">
                             {loading && (
                               <Spinner
-                                className='mr-3 noted-purple'
-                                animation='border'
-                                size='md'
+                                className="mr-3 noted-purple"
+                                animation="border"
+                                size="md"
                                 style={{ height: '1.5rem', width: '1.5rem' }}
                               />
                             )}
                             <button
-                              className='btn btn-footer'
+                              className="btn btn-footer"
                               onClick={scanOlderRequest}
                             >
-                              <h4 className='text-center mb-0 noted-purple sofia-pro line-height-16 text-new-email'>
+                              <h4 className="text-center mb-0 noted-purple sofia-pro line-height-16 text-new-email">
                                 Scan for older items
                               </h4>
                             </button>
@@ -424,7 +400,7 @@ export default function DashboardPage() {
           </div>
           {!isTablet && (
             <>
-              <div className='col-sm-3 checkout-card'>
+              <div className="col-sm-3 checkout-card">
                 <RightCard beyond90days={beyond90days} />
               </div>
             </>
@@ -433,7 +409,7 @@ export default function DashboardPage() {
       </div>
       {isTablet && (
         <>
-          <div className='col checkout-card'>
+          <div className="col checkout-card">
             <RightCard beyond90days={beyond90days} />
           </div>
         </>

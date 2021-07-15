@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap';
 import AuthorizeImg from '../../assets/img/Authorize.svg';
 import ScanningIcon from '../../assets/icons/Scanning.svg';
 import CustomRow from '../../components/Row';
 import { loadGoogleScript } from '../../library/loadGoogleScript';
-import { addProductFromScraper, getVendors } from '../../api/productsApi';
+import {
+  addProductFromScraper,
+  getProducts,
+  getVendors,
+} from '../../api/productsApi';
 import { showError, showSuccess } from '../../library/notifications.library';
 import {
   getVendorsFromEmail,
@@ -13,8 +17,6 @@ import {
 } from '../../library/scraper.library';
 import moment from 'moment';
 import { useRef } from 'react';
-import * as _ from 'lodash/array';
-import axios from 'axios';
 import { AlertCircle } from 'react-feather';
 import {
   ISAUTHORIZING,
@@ -23,7 +25,17 @@ import {
   NOTAUTHORIZED,
   SCRAPECOMPLETE,
   SCRAPEOLDER,
+  SCRAPECANCEL,
 } from '../../constants/scraper';
+import AppLayout from '../../layouts/AppLayout';
+import DashboardPage from './DashboardPage';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  updateScraperStatus,
+  updateScraperType,
+} from '../../actions/scraper.action';
+import { ToastContainer } from 'react-toastify';
+import Topnav from '../../components/Navbar/Navbar';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -114,10 +126,10 @@ const Authorize = ({ triggerScanNow }) => {
               </a>
             </h4>
             <Button
-              onClick={triggerScanNow}
+              onClick={() => triggerScanNow(NORMAL)}
               className="btn btn-green btn-authorize"
             >
-              Scan Now
+              Authorize Now
             </Button>
           </Col>
         </Row>
@@ -153,15 +165,23 @@ const Scanning = () => {
 };
 
 const DashboardPageInitial = () => {
-  const [status, setStatus] = useState(NOTAUTHORIZED);
+  const { status, type } = useSelector((state) => state.scraper);
+  const dispatch = useDispatch();
   const gapi = useRef(null);
+  const typeRef = useRef(type);
 
   /**TRIGGER SCAN NOW FOR USERS */
-  const triggerScanNow = async () => {
+  const triggerScanNow = async (type) => {
+    dispatch(updateScraperType(type));
     try {
+      const isSignedIn = gapi.current.auth2.getAuthInstance().isSignedIn.get();
+      if (isSignedIn) {
+        gapi.current.auth2.getAuthInstance().signOut();
+      }
       await gapi.current.auth2.getAuthInstance().signIn();
-      setStatus(ISAUTHORIZING);
+      dispatch(updateScraperStatus(ISAUTHORIZING));
     } catch (error) {
+      console.log(error);
       if (error.error === 'popup_closed_by_user') {
         showError({
           message: (
@@ -180,7 +200,7 @@ const DashboardPageInitial = () => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AlertCircle />
             <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
-              Error! An error occurred.
+              Error! An error occurred. Try refreshing the page.
             </h4>
           </div>
         ),
@@ -190,10 +210,8 @@ const DashboardPageInitial = () => {
 
   const sendToBE = async (orders) => {
     try {
-      console.log(orders);
-      const addProductResponse = await addProductFromScraper({ orders });
-      console.log(addProductResponse);
-      setStatus(SCRAPECOMPLETE);
+      await addProductFromScraper({ orders });
+      dispatch(updateScraperStatus(SCRAPECOMPLETE));
       showSuccess({
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -215,7 +233,7 @@ const DashboardPageInitial = () => {
    * */
   const handleScraping = async (type) => {
     try {
-      setStatus(ISSCRAPING);
+      dispatch(updateScraperStatus(ISSCRAPING));
       const vendors = await getVendors(['supported=true']);
 
       let before;
@@ -231,7 +249,6 @@ const DashboardPageInitial = () => {
       }
 
       const q = {
-        // from: getVendorsFromEmail([{ from_emails: 'gabriella@deel.support' }]),
         from: getVendorsFromEmail(vendors),
         after: after.format('YYYY/MM/DD'),
         before: before.format('YYYY/MM/DD'),
@@ -253,7 +270,7 @@ const DashboardPageInitial = () => {
           ),
         });
         gapi.current.auth2.getAuthInstance().signOut();
-        setStatus(NOTAUTHORIZED);
+        checkIfProductsExist();
         return;
       }
 
@@ -273,7 +290,7 @@ const DashboardPageInitial = () => {
           ),
         });
         gapi.current.auth2.getAuthInstance().signOut();
-        setStatus(NOTAUTHORIZED);
+        checkIfProductsExist();
         return;
       }
 
@@ -313,12 +330,26 @@ const DashboardPageInitial = () => {
       // Listen for sign-in state changes.
       gapi.current.auth2.getAuthInstance().isSignedIn.listen((success) => {
         if (success) {
-          handleScraping(NORMAL);
+          if (typeRef.current === NORMAL) {
+            handleScraping(NORMAL);
+          } else {
+            handleScraping(SCRAPEOLDER);
+          }
         }
       });
     } catch (error) {
       console.log('NEW ERROR', error);
     }
+  };
+
+  /**CHECK IF USER HAS PRODUCTS ON DASHBOARD */
+  const checkIfProductsExist = async () => {
+    const products = await getProducts({});
+    if (products.length <= 0) {
+      dispatch(updateScraperStatus(NOTAUTHORIZED));
+      return;
+    }
+    dispatch(updateScraperStatus(SCRAPECANCEL));
   };
 
   //INITIALIZE GOOGLE API
@@ -329,20 +360,38 @@ const DashboardPageInitial = () => {
     };
 
     loadGoogleScript();
+    checkIfProductsExist();
   }, []);
 
+  useEffect(() => {
+    typeRef.current = type;
+  }, [type]);
+
   return (
-    <div id="DashboardInitial">
-      {status === NOTAUTHORIZED && (
-        <Authorize triggerScanNow={triggerScanNow} />
+    <Fragment>
+      <ToastContainer />
+      <Fragment>
+        {status !== SCRAPECOMPLETE && status !== SCRAPECANCEL && (
+          <div id="DashboardInitial">
+            {status === NOTAUTHORIZED && (
+              <Authorize triggerScanNow={() => triggerScanNow(NORMAL)} />
+            )}
+            {status === ISSCRAPING && <Scanning></Scanning>}
+            {(status === ISAUTHORIZING || status === '') && (
+              <div>
+                <Spinner size="lg" color="#570097" animation="border" />
+              </div>
+            )}
+          </div>
+        )}
+      </Fragment>
+      {(status === SCRAPECOMPLETE || status === SCRAPECANCEL) && (
+        <Fragment>
+          <Topnav />
+          <DashboardPage triggerScanNow={triggerScanNow} />
+        </Fragment>
       )}
-      {status === ISSCRAPING && <Scanning></Scanning>}
-      {(status === ISAUTHORIZING || status === '') && (
-        <div>
-          <Spinner size="lg" color="#570097" animation="border" />
-        </div>
-      )}
-    </div>
+    </Fragment>
   );
 };
 
