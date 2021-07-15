@@ -120,14 +120,6 @@ export const convertMessagesToEmails = async (messageIds, gapi) => {
   for (const res of batchResponses) {
     const batchRes = res;
 
-    const boundary = batchRes.headers['content-type'].split('boundary=').pop();
-
-    if (!boundary) {
-      throw new Error(
-        'Wrong content-type: ' + batchRes.headers['content-type']
-      );
-    }
-
     const responses = Object.values(batchRes.result);
 
     emails = emails.concat(
