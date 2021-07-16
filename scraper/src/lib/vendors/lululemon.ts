@@ -19,6 +19,7 @@ export default class Lululemon {
 
     return {
       vendor: code,
+      emailId: payload.id,
       orderRef,
       orderDate,
       products: rawProducts
