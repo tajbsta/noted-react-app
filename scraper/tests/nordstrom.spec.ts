@@ -20,6 +20,7 @@ describe('Nordstrom', () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
+    id: '',
     internalDate: '',
     decodedBody: ''
   };
@@ -28,6 +29,7 @@ describe('Nordstrom', () => {
     const res = await axios.get(TEST_DATA_URL);
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
+    payload.id = res.data.id;
   });
 
   beforeEach(() => {
@@ -60,7 +62,8 @@ describe('Nordstrom', () => {
             thumbnail: 'https://n.nordstrommedia.com/id/sr3/f7d76b95-b9f6-4796-a4d5-dcb6b1a39bae.jpeg'
           }
         ],
-        vendor: VENDOR_CODES.NORDSTROM
+        vendor: VENDOR_CODES.NORDSTROM,
+        emailId: '178ae5360db52b21'
       });
     });
 
@@ -99,7 +102,8 @@ describe('Nordstrom', () => {
             thumbnail: 'https://n.nordstrommedia.com/id/sr3/f7d76b95-b9f6-4796-a4d5-dcb6b1a39bae.jpeg'
           }
         ],
-        vendor: VENDOR_CODES.NORDSTROM
+        vendor: VENDOR_CODES.NORDSTROM,
+        emailId: '178ae5360db52b21'
       });
     });
 
