@@ -46,8 +46,8 @@ describe('Nordstrom', () => {
     it('should return order data', async () => {
       const orderData = await Nordstrom.parse(VENDOR_CODES.NORDSTROM, payload);
       expect(orderData).to.be.deep.equal({
-        order_ref: '688133745',
-        order_date: 1617753600000,
+        orderRef: '688133745',
+        orderDate: 1617753600000,
         products: [
           {
             name: 'Jeffrey Campbell Hustler Platform Sandal (Women) - BLACK PATENT',
@@ -75,8 +75,8 @@ describe('Nordstrom', () => {
 
       const orderData = await Nordstrom.parse(VENDOR_CODES.NORDSTROM, updatedPayload);
       expect(orderData).to.be.deep.equal({
-        order_ref: '688133745',
-        order_date: 1617753600000,
+        orderRef: '688133745',
+        orderDate: 1617753600000,
         products: [
           {
             name: 'Jeffrey Campbell Hustler Platform Sandal (Women) - BLACK PATENT (1)',

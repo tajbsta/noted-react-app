@@ -106,7 +106,8 @@ export const convertMessagesToEmails = async (messageIds, gapi) => {
         const getEmail = gapi.current.client.gmail.users.messages.get({
           userId: 'me',
           id,
-          format: 'raw',
+          format: 'full',
+          fields: 'id,payload,internalDate,sizeEstimate',
         });
         batch.add(getEmail);
       });
@@ -115,17 +116,52 @@ export const convertMessagesToEmails = async (messageIds, gapi) => {
     })
   );
 
-  const emails = [];
-  for (const batchRes of batchResponses) {
-    Object.values(batchRes.result).forEach((res) => {
-      const rawEmail = {
-        raw: res.result.raw,
-        internalDate: res.result.internalDate,
-        // id: res.result.id,
-        // sizeEstimate: res.result.sizeEstimate,
-      };
-      emails.push(rawEmail);
-    });
+  let emails = [];
+  for (const res of batchResponses) {
+    const batchRes = res;
+
+    const responses = Object.values(batchRes.result);
+
+    emails = emails.concat(
+      responses.map((x) => {
+        let htmlPart;
+
+        const mimeType = x.result.payload.mimeType;
+
+        // If not multipart use the first level part
+        if (!mimeType.includes('multipart/')) {
+          htmlPart = x.result.payload;
+        } else {
+          // Dig all through the message parts to get mimeType text/html part
+
+          let done = false;
+          let parts = x.result.payload.parts || [];
+          let part;
+
+          do {
+            part = parts.find((part) => part.mimeType === 'text/html');
+
+            if (part) {
+              htmlPart = part;
+              done = true;
+            } else {
+              const nextPart = parts.find((part) =>
+                part.mimeType.includes('multipart/')
+              );
+              parts = nextPart && nextPart.parts ? nextPart.parts : [];
+            }
+          } while (!done && parts.length > 0);
+        }
+
+        const raw = htmlPart ? htmlPart.body.data : '';
+        return {
+          id: x.result.id,
+          internalDate: x.result.internalDate,
+          sizeEstimate: x.result.sizeEstimate,
+          raw,
+        };
+      })
+    );
   }
 
   return emails;

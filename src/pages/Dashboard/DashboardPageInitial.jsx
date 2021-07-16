@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap';
 import AuthorizeImg from '../../assets/img/Authorize.svg';
 import ScanningIcon from '../../assets/icons/Scanning.svg';
 import CustomRow from '../../components/Row';
 import { loadGoogleScript } from '../../library/loadGoogleScript';
-import { addProductFromScraper, getVendors } from '../../api/productsApi';
+import {
+  addProductFromScraper,
+  getProducts,
+  getVendors,
+} from '../../api/productsApi';
 import { showError, showSuccess } from '../../library/notifications.library';
 import {
   getVendorsFromEmail,
@@ -13,8 +17,6 @@ import {
 } from '../../library/scraper.library';
 import moment from 'moment';
 import { useRef } from 'react';
-import * as _ from 'lodash/array';
-import axios from 'axios';
 import { AlertCircle } from 'react-feather';
 import {
   ISAUTHORIZING,
@@ -23,52 +25,63 @@ import {
   NOTAUTHORIZED,
   SCRAPECOMPLETE,
   SCRAPEOLDER,
+  SCRAPECANCEL,
 } from '../../constants/scraper';
+import AppLayout from '../../layouts/AppLayout';
+import DashboardPage from './DashboardPage';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  updateScraperStatus,
+  updateScraperType,
+} from '../../actions/scraper.action';
+import { ToastContainer } from 'react-toastify';
+import Topnav from '../../components/Navbar/Navbar';
+import { updateUserAttributes } from '../../api/auth';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
-    <div id="AuthorizeUpdate">
-      <Container className="main-body" fluid="lg">
-        <Row md="2" className="text-left align-items-end">
-          <Col xs="6" className="info">
-            <h1 className="bold text-title">Everything is automatic</h1>
-            <h4 className="text-noted">
+    <div id='AuthorizeUpdate'>
+      <Container className='main-body' fluid='lg'>
+        <Row md='2' className='text-left align-items-end'>
+          <Col xs='6' className='info'>
+            <h1 className='bold text-title'>Everything is automatic</h1>
+            <h4 className='text-noted'>
               noted will scan your email inbox and find all of your online
               purchases and their return limits.
             </h4>
-            <div className="text-subtitle">
-              <h4 className="bold">In time?</h4>
+            <div className='text-subtitle'>
+              <h4 className='bold'>In time?</h4>
               <h4>Get your cash back with one click</h4>
             </div>
-            <div className="text-subtitle">
-              <h4 className="bold">Too late?</h4>
+            <div className='text-subtitle'>
+              <h4 className='bold'>Too late?</h4>
               <h4>Declutter your home and donate to local charities</h4>
             </div>
 
-            <h4 className="text-first">
+            <h4 className='text-first'>
               You first need to authorized noted to read your emails. Only bots
               will see the relevant emails and we will never sell or transfer
               any of your personal info to anyone.
             </h4>
-            <h4 className="text-underline">
+            <h4 className='text-underline'>
               <a
-                href="https://notedreturns.com/privacy-policy"
-                target="_blank"
-                rel="noreferrer"
-                className="sofia-pro"
+                href='https://notedreturns.com/privacy-policy'
+                target='_blank'
+                rel='noreferrer'
+                className='sofia-pro'
               >
                 Learn more about security
               </a>
             </h4>
             <Button
               onClick={triggerScanNow}
-              className="btn btn-green btn-authorize"
+              className='btn btn-green btn-authorize'
             >
-              Scan Now
+              Authorize Now
             </Button>
           </Col>
-          <Col xs="6">
-            <div className="authorize-img">
+          <Col xs='6'>
+            <div className='authorize-img'>
               <img src={AuthorizeImg} />
             </div>
           </Col>
@@ -76,48 +89,48 @@ const Authorize = ({ triggerScanNow }) => {
       </Container>
       {/* MOBILE VIEW */}
       <Container
-        className="main-body-mobile"
-        fluid="lg"
+        className='main-body-mobile'
+        fluid='lg'
         style={{ marginTop: '2.5rem' }}
       >
-        <Row md="2" className="text-left align-items-end">
-          <Col xs="6">
-            <div className="authorize-img-mobile">
+        <Row md='2' className='text-left align-items-end'>
+          <Col xs='6'>
+            <div className='authorize-img-mobile'>
               <img src={AuthorizeImg} />
             </div>
           </Col>
-          <Col xs="6" className="info">
-            <h1 className="bold text-title">Everything is automatic</h1>
-            <h4 className="text-noted">
+          <Col xs='6' className='info'>
+            <h1 className='bold text-title'>Everything is automatic</h1>
+            <h4 className='text-noted'>
               noted will scan your email inbox and find all of your online
               purchases and their return limits.
             </h4>
-            <div className="text-subtitle">
-              <h4 className="bold">In time?</h4>
-              <h4 className="subtitle">Get your cash back with one click</h4>
+            <div className='text-subtitle'>
+              <h4 className='bold'>In time?</h4>
+              <h4 className='subtitle'>Get your cash back with one click</h4>
             </div>
-            <div className="text-subtitle">
-              <h4 className="bold">Too late?</h4>
-              <h4 className="subtitle">
+            <div className='text-subtitle'>
+              <h4 className='bold'>Too late?</h4>
+              <h4 className='subtitle'>
                 Declutter your home and donate to local charities
               </h4>
             </div>
 
-            <h4 className="text-first">
+            <h4 className='text-first'>
               You first need to authorized noted to read your emails. Only bots
               will see the relevant emails and we will never sell or transfer
               any of your personal info to anyone.
             </h4>
-            <h4 className="text-underline">
-              <a href="#" className="sofia-pro">
+            <h4 className='text-underline'>
+              <a href='#' className='sofia-pro'>
                 Learn more about security
               </a>
             </h4>
             <Button
-              onClick={triggerScanNow}
-              className="btn btn-green btn-authorize"
+              onClick={() => triggerScanNow(NORMAL)}
+              className='btn btn-green btn-authorize'
             >
-              Scan Now
+              Authorize Now
             </Button>
           </Col>
         </Row>
@@ -128,11 +141,11 @@ const Authorize = ({ triggerScanNow }) => {
 
 const Scanning = () => {
   return (
-    <div id="ScanningUpdate">
-      <div className="card-body">
+    <div id='ScanningUpdate'>
+      <div className='card-body'>
         <CustomRow marginBottom={2}>
           <div
-            className="col-12"
+            className='col-12'
             style={{
               display: 'flex',
               justifyContent: 'center',
@@ -141,10 +154,10 @@ const Scanning = () => {
             <img src={ScanningIcon} />
           </div>
         </CustomRow>
-        <p className="text-center sofia-pro noted-purple text-18 text-subtitle">
+        <p className='text-center sofia-pro noted-purple text-18 text-subtitle'>
           Scan running...
         </p>
-        <p className="small text-muted mb-1 text-center text-16 sofia-pro">
+        <p className='small text-muted mb-1 text-center text-16 sofia-pro'>
           Go have some coffee - we&apos;ll email ya when it&apos;s done!
         </p>
       </div>
@@ -153,21 +166,29 @@ const Scanning = () => {
 };
 
 const DashboardPageInitial = () => {
-  const [status, setStatus] = useState(NOTAUTHORIZED);
+  const { status, type } = useSelector((state) => state.scraper);
+  const dispatch = useDispatch();
   const gapi = useRef(null);
+  const typeRef = useRef(type);
 
   /**TRIGGER SCAN NOW FOR USERS */
-  const triggerScanNow = async () => {
+  const triggerScanNow = async (type) => {
+    dispatch(updateScraperType(type));
     try {
+      const isSignedIn = gapi.current.auth2.getAuthInstance().isSignedIn.get();
+      if (isSignedIn) {
+        gapi.current.auth2.getAuthInstance().signOut();
+      }
       await gapi.current.auth2.getAuthInstance().signIn();
-      setStatus(ISAUTHORIZING);
+      dispatch(updateScraperStatus(ISAUTHORIZING));
     } catch (error) {
+      console.log(error);
       if (error.error === 'popup_closed_by_user') {
         showError({
           message: (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <AlertCircle />
-              <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
+              <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
                 Error! Please reauthorise this scan
               </h4>
             </div>
@@ -179,8 +200,8 @@ const DashboardPageInitial = () => {
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AlertCircle />
-            <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
-              Error! An error occurred.
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Error! An error occurred. Try refreshing the page.
             </h4>
           </div>
         ),
@@ -190,9 +211,21 @@ const DashboardPageInitial = () => {
 
   const sendToBE = async (orders) => {
     try {
-      const addProductResponse = await addProductFromScraper({ orders });
-      console.log(addProductResponse);
-      setStatus(SCRAPECOMPLETE);
+      await addProductFromScraper({ orders });
+      dispatch(updateScraperStatus(SCRAPECOMPLETE));
+      if (typeRef.current === SCRAPEOLDER) {
+        await updateUserAttributes({ 'custom:scan_older_done': '1' });
+      }
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Scrape successful.
+            </h4>
+          </div>
+        ),
+      });
     } catch (e) {
       console.log(e.response);
     }
@@ -204,7 +237,7 @@ const DashboardPageInitial = () => {
    * */
   const handleScraping = async (type) => {
     try {
-      setStatus(ISSCRAPING);
+      dispatch(updateScraperStatus(ISSCRAPING));
       const vendors = await getVendors(['supported=true']);
 
       let before;
@@ -220,7 +253,6 @@ const DashboardPageInitial = () => {
       }
 
       const q = {
-        // from: getVendorsFromEmail([{ from_emails: 'gabriella@deel.support' }]),
         from: getVendorsFromEmail(vendors),
         after: after.format('YYYY/MM/DD'),
         before: before.format('YYYY/MM/DD'),
@@ -235,31 +267,48 @@ const DashboardPageInitial = () => {
           message: (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <AlertCircle />
-              <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
+              <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
                 There are no order emails in this account.
               </h4>
             </div>
           ),
         });
+        gapi.current.auth2.getAuthInstance().signOut();
+        if (typeRef.current === SCRAPEOLDER) {
+          await updateUserAttributes({ 'custom:scan_older_done': '1' });
+        }
+        checkIfProductsExist();
         return;
       }
 
-      //CURRENTLY USING DATA FROM S3 TO TEST
-      //TODO- E2E testing with noted@notedreturns.com
-      const TEST_DATA_URL =
-        'https://noted-scrape-test.s3-us-west-2.amazonaws.com/NORDSTROM.json';
+      let data = await window.notedScraper(vendors, emails);
+      //REMOVE UNDEFINED FOR VENDORS SCRAPER DOES NOT SUPPORT YET
+      data = data.filter((item) => item !== undefined);
 
-      const response = await axios.get(TEST_DATA_URL);
-      const nord = await response.data;
-      const data = await window.notedScraper(vendors, [nord]);
+      if (data.length <= 0) {
+        showError({
+          message: (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <AlertCircle />
+              <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+                Error! An error occurred
+              </h4>
+            </div>
+          ),
+        });
+        gapi.current.auth2.getAuthInstance().signOut();
+        checkIfProductsExist();
+        return;
+      }
 
       await sendToBE(data);
     } catch (error) {
+      console.log(error);
       showError({
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AlertCircle />
-            <h4 className="ml-3 mb-0" style={{ lineHeight: '16px' }}>
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
               Error! An error occurred
             </h4>
           </div>
@@ -288,12 +337,26 @@ const DashboardPageInitial = () => {
       // Listen for sign-in state changes.
       gapi.current.auth2.getAuthInstance().isSignedIn.listen((success) => {
         if (success) {
-          handleScraping(NORMAL);
+          if (typeRef.current === NORMAL) {
+            handleScraping(NORMAL);
+          } else {
+            handleScraping(SCRAPEOLDER);
+          }
         }
       });
     } catch (error) {
       console.log('NEW ERROR', error);
     }
+  };
+
+  /**CHECK IF USER HAS PRODUCTS ON DASHBOARD */
+  const checkIfProductsExist = async () => {
+    const products = await getProducts({});
+    if (products.length <= 0) {
+      dispatch(updateScraperStatus(NOTAUTHORIZED));
+      return;
+    }
+    dispatch(updateScraperStatus(SCRAPECANCEL));
   };
 
   //INITIALIZE GOOGLE API
@@ -304,20 +367,38 @@ const DashboardPageInitial = () => {
     };
 
     loadGoogleScript();
+    checkIfProductsExist();
   }, []);
 
+  useEffect(() => {
+    typeRef.current = type;
+  }, [type]);
+
   return (
-    <div id="DashboardInitial">
-      {status === NOTAUTHORIZED && (
-        <Authorize triggerScanNow={triggerScanNow} />
+    <Fragment>
+      <ToastContainer />
+      <Fragment>
+        {status !== SCRAPECOMPLETE && status !== SCRAPECANCEL && (
+          <div id='DashboardInitial'>
+            {status === NOTAUTHORIZED && (
+              <Authorize triggerScanNow={() => triggerScanNow(NORMAL)} />
+            )}
+            {status === ISSCRAPING && <Scanning></Scanning>}
+            {(status === ISAUTHORIZING || status === '') && (
+              <div>
+                <Spinner size='lg' color='#570097' animation='border' />
+              </div>
+            )}
+          </div>
+        )}
+      </Fragment>
+      {(status === SCRAPECOMPLETE || status === SCRAPECANCEL) && (
+        <Fragment>
+          <Topnav />
+          <DashboardPage triggerScanNow={triggerScanNow} />
+        </Fragment>
       )}
-      {status === ISSCRAPING && <Scanning></Scanning>}
-      {(status === ISAUTHORIZING || status === '') && (
-        <div>
-          <Spinner size="lg" color="#570097" animation="border" />
-        </div>
-      )}
-    </div>
+    </Fragment>
   );
 };
 

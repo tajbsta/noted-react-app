@@ -82,7 +82,7 @@ export default class Nordstrom {
             const productPriceElement: any = productElement.querySelector('td:nth-child(3) > div:nth-child(8)');
 
             const priceString = productPriceElement.textContent.split(':').pop().trim();
-            const price = priceString ? accounting.unformat(priceString) : 0;
+            const price = priceString ? accounting.unformat(priceString) : /* istanbul ignore next */ 0;
 
             const thumbnail = productElement.querySelector('td:first-child a img').getAttribute('src');
 
@@ -90,10 +90,11 @@ export default class Nordstrom {
 
             const quantityElement: any = productElement.querySelector('td:nth-child(3) > div:nth-child(9) span');
 
+            /* istanbul ignore next */
             if (quantityElement) {
               const quantityString: string = quantityElement.textContent.split(':').pop().trim();
 
-              quantity = !!quantityString ? parseInt(quantityString) : 1;
+              quantity = !!quantityString ? parseInt(quantityString) : /* istanbul ignore next */ 1;
             }
 
             products = products.concat(
@@ -105,12 +106,14 @@ export default class Nordstrom {
               })
             );
           } catch (error) {
+            /* istanbul ignore next */
             log.info(error.message);
           }
         }
       });
       return products;
     } catch (error) {
+      /* istanbul ignore next */
       return [];
     }
   }
