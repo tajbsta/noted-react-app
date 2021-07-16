@@ -36,7 +36,7 @@ import {
 } from '../../actions/scraper.action';
 import { ToastContainer } from 'react-toastify';
 import Topnav from '../../components/Navbar/Navbar';
-import { getUser, updateUserAttributes } from '../../api/auth';
+import { updateUserAttributes } from '../../api/auth';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -213,8 +213,11 @@ const DashboardPageInitial = () => {
     try {
       const isScrapeRegular = typeRef.current === NORMAL;
       const isScrapeOlder = typeRef.current === SCRAPEOLDER;
-      const user = await getUser();
-      const accountEmail = user.email;
+      const accountEmail = await gapi.current.auth2
+        .getAuthInstance()
+        .currentUser.get()
+        .getBasicProfile()
+        .getEmail();
       const provider = ACCOUNT_PROVIDERS.GMAIL;
       const addProductData = {
         orders,
