@@ -20,6 +20,7 @@ describe('Lululemon', () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
+    id: '',
     internalDate: '',
     decodedBody: ''
   };
@@ -28,6 +29,7 @@ describe('Lululemon', () => {
     const res = await axios.get(TEST_DATA_URL);
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
+    payload.id = res.data.id;
   });
 
   beforeEach(() => {
@@ -60,7 +62,8 @@ describe('Lululemon', () => {
             price: 14
           }
         ],
-        vendor: VENDOR_CODES.LULULEMON
+        vendor: VENDOR_CODES.LULULEMON,
+        emailId: '179d2aa2f90e5d52'
       });
     });
 
@@ -93,7 +96,8 @@ describe('Lululemon', () => {
             price: 14
           }
         ],
-        vendor: VENDOR_CODES.LULULEMON
+        vendor: VENDOR_CODES.LULULEMON,
+        emailId: '179d2aa2f90e5d52'
       });
     });
 

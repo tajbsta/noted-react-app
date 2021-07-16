@@ -9,6 +9,7 @@ import {
   getProducts,
   getVendors,
 } from '../../api/productsApi';
+import ACCOUNT_PROVIDERS from '../../constants/accountProviders';
 import { showError, showSuccess } from '../../library/notifications.library';
 import {
   getVendorsFromEmail,
@@ -27,7 +28,6 @@ import {
   SCRAPEOLDER,
   SCRAPECANCEL,
 } from '../../constants/scraper';
-import AppLayout from '../../layouts/AppLayout';
 import DashboardPage from './DashboardPage';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -36,7 +36,7 @@ import {
 } from '../../actions/scraper.action';
 import { ToastContainer } from 'react-toastify';
 import Topnav from '../../components/Navbar/Navbar';
-import { updateUserAttributes } from '../../api/auth';
+import { getUser, updateUserAttributes } from '../../api/auth';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -211,21 +211,35 @@ const DashboardPageInitial = () => {
 
   const sendToBE = async (orders) => {
     try {
-      await addProductFromScraper({ orders });
-      dispatch(updateScraperStatus(SCRAPECOMPLETE));
-      if (typeRef.current === SCRAPEOLDER) {
-        await updateUserAttributes({ 'custom:scan_older_done': '1' });
+      const isScrapeRegular = typeRef.current === NORMAL;
+      const isScrapeOlder = typeRef.current === SCRAPEOLDER;
+      const user = await getUser();
+      const accountEmail = user.email;
+      const provider = ACCOUNT_PROVIDERS.GMAIL;
+      const addProductData = {
+        orders,
+        isScrapeRegular,
+        isScrapeOlder,
+        accountEmail,
+        provider,
+      };
+      const { data } = await addProductFromScraper(addProductData);
+      if (data.status === 'success') {
+        dispatch(updateScraperStatus(SCRAPECOMPLETE));
+        if (typeRef.current === SCRAPEOLDER) {
+          await updateUserAttributes({ 'custom:scan_older_done': '1' });
+        }
+        showSuccess({
+          message: (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <AlertCircle />
+              <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+                Scrape successful.
+              </h4>
+            </div>
+          ),
+        });
       }
-      showSuccess({
-        message: (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <AlertCircle />
-            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              Scrape successful.
-            </h4>
-          </div>
-        ),
-      });
     } catch (e) {
       console.log(e.response);
     }

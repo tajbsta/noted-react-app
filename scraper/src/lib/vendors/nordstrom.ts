@@ -21,6 +21,7 @@ export default class Nordstrom {
 
     return {
       vendor: code,
+      emailId: payload.id,
       orderRef,
       orderDate,
       products: rawProducts
