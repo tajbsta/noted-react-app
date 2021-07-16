@@ -98,8 +98,21 @@ export const getVendors = async (queries = []) => {
   return res.data.data;
 };
 
-export const addProductFromScraper = async (orders) => {
+export const addProductFromScraper = async ({
+  orders,
+  isScrapeRegular,
+  isScrapeOlder,
+  accountEmail,
+  provider,
+}) => {
+  const data = {
+    isScrapeRegular,
+    isScrapeOlder,
+    accountEmail,
+    provider,
+    orders,
+  };
   const { userId } = await getUserSession();
   const axios = await api();
-  return axios.post(`${userId}/products`, orders);
+  return axios.post(`${userId}/products`, data);
 };
