@@ -7,6 +7,7 @@ export interface RawProduct {
 
 export interface OrderData {
   vendor: string;
+  emailId: string;
   orderRef: string;
   orderDate: number;
   products: RawProduct[];
