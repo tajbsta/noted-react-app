@@ -181,6 +181,14 @@ export const addProductDonationSchema = Yup.object({
     itemImage: Yup.string().required('Please upload an image of the item'),
 });
 
+export const addProductMiscSchema = Yup.object({
+    itemName: Yup.string().required('Product name is required'),
+    pickUpLocation: Yup.string().required('Please enter a pickup location'),
+    dropOffLocation: Yup.string().required('Please enter a dropoff location'),
+    amount: Yup.string().required("Product's amount is required"),
+    itemImage: Yup.string().required('Please upload an image of the item'),
+});
+
 export const editProductSchema = Yup.object({
     productUrl: Yup.string()
         .url('Enter valid url')

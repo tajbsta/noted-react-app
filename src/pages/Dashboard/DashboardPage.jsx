@@ -388,14 +388,6 @@ export default function DashboardPage() {
 
                                 {isEmpty(search) && (
                                     <div>
-                                        {/* <div className='row justify-center mobile-footer-row'>
-                      <div className='col-sm-7 text-center'>
-                        <div className='text-muted text-center sofia-pro line-height-16 text-bottom-title'>
-                          These are all the purchases we found in the past 90
-                          days from your address
-                        </div>
-                      </div>
-                    </div> */}
                                         <div className='row justify-center mt-3 mobile-footer-row mt-5'>
                                             <div className='col-sm-6 text-center'>
                                                 <div className='text-muted text-center text-cant-find sofia-pro'>
