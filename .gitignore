@@ -138,3 +138,4 @@ amplifytools.xcconfig
 .secret-*
 .eslintcache
 .prettierrc
+/public/scraper.js
