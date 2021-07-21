@@ -52,6 +52,7 @@ export default function PickUpDetails({
     const [paymentFormValues, setPaymentFormValues] = useState(null);
     const [isPaymentFormEmpty, setIsPaymentFormEmpty] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [timeSlot, setTimeSlot] = useState([]);
 
     const colourStyles = {
         control: (styles, state) => ({
@@ -159,10 +160,11 @@ export default function PickUpDetails({
     });
 
     const renderTime = () => {
-
-        return pickUpDateFormValues.time.map(el => `Between ${el.label
-            .replace('-', 'and')
-            .replace(new RegExp(/\./g), '')}`);
+        setTimeSlot(pickUpDateFormValues.time === 'AM' ? ADD_PICKUP_SLOT_OPTIONS_AM : ADD_PICKUP_SLOT_OPTIONS_PM)
+        
+        return timeSlot.map(el => `Between ${el.label
+                .replace('-', 'and')
+                .replace(new RegExp(/\./g), '')}`);
     };
 
     const setDefaults = async () => {
@@ -859,7 +861,7 @@ export default function PickUpDetails({
                                                     isSearchable={false}
                                                     name='pickup_slot'
                                                     styles={colourStyles}
-                                                    options={pickUpDateFormValues.time === 'AM' ? ADD_PICKUP_SLOT_OPTIONS_AM : ADD_PICKUP_SLOT_OPTIONS_PM}
+                                                    options={timeSlot}
                                                     onChange={handleOnPickupSelectType}
                                                 ></Select>
                                             </div>
