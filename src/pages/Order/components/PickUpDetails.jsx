@@ -853,7 +853,7 @@ export default function PickUpDetails({
 
                                             <div>
                                                 <Select
-                                                    className='merchant-dropdown-menu'
+                                                    className='pickup-dropdown-menu'
                                                     isLoading={false}
                                                     isClearable={false}
                                                     isSearchable={false}
