@@ -30,6 +30,7 @@ import DownArrow from '../../../assets/icons/DownArrow.svg';
 import { Col, Row } from 'react-bootstrap';
 import { truncateString } from '../../../utils/data';
 import PRICING from '../../../constants/pricing';
+import { ADD_PICKUP_SLOT_OPTIONS_AM, ADD_PICKUP_SLOT_OPTIONS_PM } from '../../../constants/addPickupSlot';
 
 export default function PickUpDetails({
     setValidAddress,
@@ -51,6 +52,21 @@ export default function PickUpDetails({
     const [paymentFormValues, setPaymentFormValues] = useState(null);
     const [isPaymentFormEmpty, setIsPaymentFormEmpty] = useState(true);
     const [loading, setLoading] = useState(false);
+
+    const colourStyles = {
+        control: (styles, state) => ({
+            ...styles,
+            backgroundColor: 'white',
+            outline: 'none',
+            boxShadow: 'none',
+            border: state.isFocused ? '1px solid #ece4f2' : '1px solid #ece4f2',
+        }),
+        option: (styles, state) => ({
+            ...styles,
+            backgroundColor: state.isSelected ? '#57009799' : 'white',
+        }),
+    };
+
 
     const initialCheckoutView = ['/checkout'];
     const {
@@ -74,6 +90,7 @@ export default function PickUpDetails({
     });
 
     useEffect(() => {
+        renderTime()
         setValidAddress(
             Object.values(addressFormValues).map((addressField) => {
                 return addressField.length;
@@ -142,14 +159,10 @@ export default function PickUpDetails({
     });
 
     const renderTime = () => {
-        const timeText =
-            pickUpDateFormValues.time === 'AM'
-                ? '9 A.M. - 12 P.M.'
-                : '12 P.M. - 3 P.M.';
 
-        return `Between ${timeText
+        return pickUpDateFormValues.time.map(el => `Between ${el.label
             .replace('-', 'and')
-            .replace(new RegExp(/\./g), '')}`;
+            .replace(new RegExp(/\./g), '')}`);
     };
 
     const setDefaults = async () => {
@@ -193,8 +206,8 @@ export default function PickUpDetails({
         // Set payment method default
         const orderPayment = order
             ? order.billing.find(
-                  (billing) => billing.pricing === PRICING.STANDARD
-              )
+                (billing) => billing.pricing === PRICING.STANDARD
+            )
             : {};
         const orderPaymentId = orderPayment
             ? orderPayment.paymentMethodId
@@ -229,6 +242,10 @@ export default function PickUpDetails({
         const cardBrand = cardType.text;
         return cardBrand;
     };
+
+    const handleOnPickupSelectType = (val) => {
+        console.log(val);
+    }
 
     const expirationMonth =
         paymentFormValues && paymentFormValues.card.exp_month;
@@ -275,9 +292,8 @@ export default function PickUpDetails({
                                     )}
                                     <div className='mt-2'>
                                         <h4
-                                            className={`sofia-pro mb-0 ${
-                                                isMobile ? 'text-14' : 'text-16'
-                                            }`}
+                                            className={`sofia-pro mb-0 ${isMobile ? 'text-14' : 'text-16'
+                                                }`}
                                         >
                                             Payment Method
                                         </h4>
@@ -423,11 +439,11 @@ export default function PickUpDetails({
                                                                                 {addressFormValues
                                                                                     .line1
                                                                                     .length >
-                                                                                12
+                                                                                    12
                                                                                     ? `,${truncateString(
-                                                                                          addressFormValues.line1,
-                                                                                          12
-                                                                                      )}`
+                                                                                        addressFormValues.line1,
+                                                                                        12
+                                                                                    )}`
                                                                                     : `, ${addressFormValues.line1}`}
                                                                             </>
                                                                         )}
@@ -810,7 +826,7 @@ export default function PickUpDetails({
                                     </div>
                                     {get(pickUpDateFormValues, 'date', null) ===
                                         null &&
-                                    get(pickUpDateFormValues, 'time', null) ===
+                                        get(pickUpDateFormValues, 'time', null) ===
                                         null ? (
                                         <>
                                             <h4 className='p-0 m-0 sofia-pro'>
@@ -834,7 +850,19 @@ export default function PickUpDetails({
                                                     )
                                                 ).format('MMMM DD, YYYY')}
                                             </h4>
-                                            {renderTime()}
+
+                                            <div>
+                                                <Select
+                                                    className='merchant-dropdown-menu'
+                                                    isLoading={false}
+                                                    isClearable={false}
+                                                    isSearchable={false}
+                                                    name='pickup_slot'
+                                                    styles={colourStyles}
+                                                    options={pickUpDateFormValues.time === 'AM' ? ADD_PICKUP_SLOT_OPTIONS_AM : ADD_PICKUP_SLOT_OPTIONS_PM}
+                                                    onChange={handleOnPickupSelectType}
+                                                ></Select>
+                                            </div>
                                             <button
                                                 className='btn p-0 sofia-pro btn-edit'
                                                 style={{ display: 'block' }}
@@ -845,33 +873,33 @@ export default function PickUpDetails({
                                             {!initialCheckoutView.includes(
                                                 pathname
                                             ) && (
-                                                <>
-                                                    <hr
-                                                        style={{
-                                                            borderTop:
-                                                                '1px solid #E8E7E9',
-                                                            marginTop: '0px',
-                                                        }}
-                                                    />
-                                                    <h4
-                                                        className='p-0 m-0 sofia-pro mt-2'
-                                                        style={{
-                                                            color: '#570097',
-                                                        }}
-                                                    >
-                                                        Schedule another date
-                                                    </h4>
-                                                    <h4
-                                                        className='p-0 m-0 sofia-pro'
-                                                        style={{
-                                                            color: '#2E1D3A',
-                                                            opacity: '0.6',
-                                                        }}
-                                                    >
-                                                        (-$5.00)
-                                                    </h4>
-                                                </>
-                                            )}
+                                                    <>
+                                                        <hr
+                                                            style={{
+                                                                borderTop:
+                                                                    '1px solid #E8E7E9',
+                                                                marginTop: '0px',
+                                                            }}
+                                                        />
+                                                        <h4
+                                                            className='p-0 m-0 sofia-pro mt-2'
+                                                            style={{
+                                                                color: '#570097',
+                                                            }}
+                                                        >
+                                                            Schedule another date
+                                                        </h4>
+                                                        <h4
+                                                            className='p-0 m-0 sofia-pro'
+                                                            style={{
+                                                                color: '#2E1D3A',
+                                                                opacity: '0.6',
+                                                            }}
+                                                        >
+                                                            (-$5.00)
+                                                        </h4>
+                                                    </>
+                                                )}
                                         </>
                                     )}
                                 </div>
