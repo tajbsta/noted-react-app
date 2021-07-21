@@ -54,21 +54,6 @@ export default function PickUpDetails({
     const [loading, setLoading] = useState(false);
     const [timeSlot, setTimeSlot] = useState([]);
 
-    const colourStyles = {
-        control: (styles, state) => ({
-            ...styles,
-            backgroundColor: 'white',
-            outline: 'none',
-            boxShadow: 'none',
-            border: state.isFocused ? '1px solid #ece4f2' : '1px solid #ece4f2',
-        }),
-        option: (styles, state) => ({
-            ...styles,
-            backgroundColor: state.isSelected ? '#57009799' : 'white',
-        }),
-    };
-
-
     const initialCheckoutView = ['/checkout'];
     const {
         errors: addressFormErrors,
@@ -91,7 +76,6 @@ export default function PickUpDetails({
     });
 
     useEffect(() => {
-        renderTime()
         setValidAddress(
             Object.values(addressFormValues).map((addressField) => {
                 return addressField.length;
@@ -160,13 +144,10 @@ export default function PickUpDetails({
     });
 
     const renderTime = () => {
-        setTimeSlot(pickUpDateFormValues.time === 'AM' ? ADD_PICKUP_SLOT_OPTIONS_AM : ADD_PICKUP_SLOT_OPTIONS_PM)
-        
-        return timeSlot.map(el => `Between ${el.label
-                .replace('-', 'and')
-                .replace(new RegExp(/\./g), '')}`);
+        return `Between ${pickUpDateFormValues.time
+            .replace('-', 'and')
+            .replace(new RegExp(/\./g), '')}`;
     };
-
     const setDefaults = async () => {
         const [user, paymentMethods] = await Promise.all([
             getUser(),
@@ -244,10 +225,6 @@ export default function PickUpDetails({
         const cardBrand = cardType.text;
         return cardBrand;
     };
-
-    const handleOnPickupSelectType = (val) => {
-        console.log(val);
-    }
 
     const expirationMonth =
         paymentFormValues && paymentFormValues.card.exp_month;
@@ -852,19 +829,7 @@ export default function PickUpDetails({
                                                     )
                                                 ).format('MMMM DD, YYYY')}
                                             </h4>
-
-                                            <div>
-                                                <Select
-                                                    className='pickup-dropdown-menu'
-                                                    isLoading={false}
-                                                    isClearable={false}
-                                                    isSearchable={false}
-                                                    name='pickup_slot'
-                                                    styles={colourStyles}
-                                                    options={timeSlot}
-                                                    onChange={handleOnPickupSelectType}
-                                                ></Select>
-                                            </div>
+                                            {renderTime()}
                                             <button
                                                 className='btn p-0 sofia-pro btn-edit'
                                                 style={{ display: 'block' }}
