@@ -18,7 +18,7 @@ export const ADD_PRODUCT_OPTIONS = [
 ];
 
 export const TAX_FORMS = {
-    M2M: `${process.env.REACT_APP_ASSETS_URL}/forms/M2M+Tax+Form.pdf`,
-    OASIS: `${process.env.REACT_APP_ASSETS_URL}/forms/Oasis+Donation+_Noted.pdf`,
-    TND: `${process.env.REACT_APP_ASSETS_URL}/forms/TND+Tax+Form.pdf`,
+    M2M: `${process.env.REACT_APP_ASSETS_URL}/forms/M2M_Tax_Form.pdf`,
+    OASIS: `${process.env.REACT_APP_ASSETS_URL}/forms/Oasis_Donation_Form.pdf`,
+    TND: `${process.env.REACT_APP_ASSETS_URL}/forms/TND_Tax_Form.pdf`,
 };
