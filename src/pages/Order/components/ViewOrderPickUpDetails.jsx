@@ -70,6 +70,7 @@ export default function ViewOrderPickUpDetails({ order }) {
         initialValues: {
             date: null,
             time: null,
+            slot: null,
         },
         validationSchema: pickUpDateSchema,
         // enableReinitialize: true,
@@ -93,10 +94,10 @@ export default function ViewOrderPickUpDetails({ order }) {
         setModalShow(false);
     };
 
-    const savePickUpDetails = async ({ date, time }) => {
+    const savePickUpDetails = async ({ date, time, slot }) => {
         //
         // console.log('⊂(・ヮ・⊂)', { date, time });
-        dispatch(setPickupDetails({ date, time }));
+        dispatch(setPickupDetails({ date, time, slot }));
     };
 
     const openDatePickerModal = () => {
@@ -806,12 +807,14 @@ export default function ViewOrderPickUpDetails({ order }) {
                     show={isDatePickerOpen}
                     onHide={() => setisDatePickerOpen(false)}
                     pickUpDateFormValues={pickUpDateFormValues}
-                    onConfirm={(pickupDate, pickupTime) => {
+                    onConfirm={(pickupDate, pickupTime, pickupSlot) => {
                         pickupDateSetFieldValue('date', pickupDate);
                         pickupDateSetFieldValue('time', pickupTime);
+                        pickupDateSetFieldValue('slot', pickupSlot);
                         savePickUpDetails({
                             date: pickupDate,
                             time: pickupTime,
+                            slot: pickupSlot
                         });
                     }}
                 />

@@ -30,7 +30,6 @@ import DownArrow from '../../../assets/icons/DownArrow.svg';
 import { Col, Row } from 'react-bootstrap';
 import { truncateString } from '../../../utils/data';
 import PRICING from '../../../constants/pricing';
-import { ADD_PICKUP_SLOT_OPTIONS_AM, ADD_PICKUP_SLOT_OPTIONS_PM } from '../../../constants/addPickupSlot';
 
 export default function PickUpDetails({
     setValidAddress,
@@ -90,6 +89,7 @@ export default function PickUpDetails({
         initialValues: {
             date: null,
             time: null,
+            slot: null
         },
         validationSchema: pickUpDateSchema,
         // enableReinitialize: true,

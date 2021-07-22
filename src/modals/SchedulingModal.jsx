@@ -7,7 +7,7 @@ import { getPickupSlots } from '../api/orderApi';
 import { getUserId } from '../api/auth';
 import { isEmpty } from 'lodash-es';
 import { showError } from '../library/notifications.library';
-import { PICKUP_SLOT_LABELS } from '../constants/addPickupSlot';
+import { ORDER_PICKUP_SLOT, PICKUP_SLOT_LABELS } from '../constants/addPickupSlot';
 
 export default function SchedulingModal({
   pickUpDateFormValues,
@@ -18,6 +18,7 @@ export default function SchedulingModal({
   const [slots, setSlots] = useState({ AM: { A: 0, B: 0, C: 0 }, PM: { A: 0, B: 0, C: 0 } });
   const [pickupDate, setPickupDate] = useState(null);
   const [pickupTime, setPickupTime] = useState(null);
+  const [pickupSlot, setPickupSlot] = useState(null);
 
   const setFieldValue = (field, value) => {
     if (field === 'date') {
@@ -26,6 +27,10 @@ export default function SchedulingModal({
 
     if (field === 'time') {
       setPickupTime(value);
+    }
+
+    if (field === 'slot') {
+      setPickupSlot(value);
     }
   };
 
@@ -92,6 +97,7 @@ export default function SchedulingModal({
             className={pickupTime === PICKUP_SLOT_LABELS.AM.A ? buttonClassname.concat('isSelected') : buttonClassname}
             onClick={() => {
               setFieldValue('time', PICKUP_SLOT_LABELS.AM.A);
+              setFieldValue('slot', ORDER_PICKUP_SLOT.A);
             }}
             style={{
               cursor: slots.AM.A === 0 ? 'not-allowed' : 'pointer',
@@ -114,6 +120,7 @@ export default function SchedulingModal({
             className={pickupTime === PICKUP_SLOT_LABELS.AM.B ? buttonClassname.concat('isSelected') : buttonClassname}
             onClick={() => {
               setFieldValue('time', PICKUP_SLOT_LABELS.AM.B);
+              setFieldValue('slot', ORDER_PICKUP_SLOT.B);
             }}
             style={{
               cursor: slots.AM.B === 0 ? 'not-allowed' : 'pointer',
@@ -133,6 +140,7 @@ export default function SchedulingModal({
             className={pickupTime === PICKUP_SLOT_LABELS.AM.C ? buttonClassname.concat('isSelected') : buttonClassname}
             onClick={() => {
               setFieldValue('time', PICKUP_SLOT_LABELS.AM.C);
+              setFieldValue('slot', ORDER_PICKUP_SLOT.C);
             }}
             style={{
               cursor: slots.AM.C === 0 ? 'not-allowed' : 'pointer',
@@ -170,6 +178,7 @@ export default function SchedulingModal({
             className={pickupTime === PICKUP_SLOT_LABELS.PM.A ? buttonClassname.concat('isSelected') : buttonClassname}
             onClick={() => {
               setFieldValue('time', PICKUP_SLOT_LABELS.PM.A);
+              setFieldValue('slot', ORDER_PICKUP_SLOT.A);
             }}
             style={{
               cursor: slots.PM.A === 0 ? 'not-allowed' : 'pointer',
@@ -191,6 +200,8 @@ export default function SchedulingModal({
             className={pickupTime === PICKUP_SLOT_LABELS.PM.B ? buttonClassname.concat('isSelected') : buttonClassname}
             onClick={() => {
               setFieldValue('time', PICKUP_SLOT_LABELS.PM.B);
+              setFieldValue('slot', ORDER_PICKUP_SLOT.B);
+
             }}
             style={{
               cursor: slots.PM.B === 0 ? 'not-allowed' : 'pointer',
@@ -212,6 +223,8 @@ export default function SchedulingModal({
             className={pickupTime === PICKUP_SLOT_LABELS.PM.C ? buttonClassname.concat('isSelected') : buttonClassname}
             onClick={() => {
               setFieldValue('time', PICKUP_SLOT_LABELS.PM.C);
+              setFieldValue('slot', ORDER_PICKUP_SLOT.C);
+
             }}
             style={{
               cursor: slots.PM.C === 0 ? 'not-allowed' : 'pointer',
@@ -347,7 +360,7 @@ export default function SchedulingModal({
                   console.log("pickupTime: ", pickupTime)
 
                   props.onHide();
-                  onConfirm(pickupDate, pickupTime);
+                  onConfirm(pickupDate, pickupTime, pickupSlot);
                 }}
               >
                 <span className='confirmPickUpText'>Confirm Schedule</span>

@@ -105,6 +105,7 @@ const Checkout = () => {
                 pickupInstruction: address.instructions,
                 pickupDate: details.date,
                 pickupTime: details.time,
+                pickupSlot: details.slot,
             };
 
             // Pre validate order and get the assigned order id

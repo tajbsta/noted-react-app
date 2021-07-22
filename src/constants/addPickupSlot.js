@@ -10,3 +10,9 @@ export const PICKUP_SLOT_LABELS = {
         C: '2 P.M. - 3 P.M.'
     }
 };
+
+export const ORDER_PICKUP_SLOT = {
+    A: "A",
+    B: "B",
+    C: "C"
+};
