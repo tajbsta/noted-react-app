@@ -489,7 +489,7 @@ const AddProductDonation = ({ handleClose }) => {
 
     const handleCancelModal = () => {
         setAllDonationOrgs([]);
-        selectOptions({});
+        setSelectOptions({});
         setIsFetchingDonationOrgs(false);
         setFormUrl('');
         setAllFiles([]);
