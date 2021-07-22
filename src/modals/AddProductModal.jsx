@@ -13,14 +13,13 @@ import { getFileTypeIcon } from '../utils/file';
 import { formatCurrency } from '../library/number';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/src/stylesheets/datepicker.scss';
-import { getVendors } from '../api/productsApi';
+import { getDonationOrgs, getVendors } from '../api/productsApi';
 import { get, isEmpty } from 'lodash';
 import {
     ADD_PRODUCT_OPTIONS,
     DONATION,
     STANDARD,
     MISCELLANEOUS,
-    TAX_FORMS,
 } from '../constants/addProducts';
 
 const colourStyles = {
@@ -432,22 +431,11 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
 };
 
 const AddProductDonation = ({ handleClose }) => {
-    const DONATION_ORGS = [
-        {
-            value: 'OASIS',
-            label: 'OASIS',
-        },
-        {
-            value: 'M2M',
-            label: 'M2M',
-        },
-        {
-            value: 'TND',
-            label: 'TND',
-        },
-    ];
-
+    const [allDonationOrgs, setAllDonationOrgs] = useState([]);
+    const [selectOptions, setSelectOptions] = useState({});
     const [allFiles, setAllFiles] = useState([]);
+    const [isFetchingDonationOrgs, setIsFetchingDonationOrgs] = useState(false);
+    const [formUrl, setFormUrl] = useState('');
 
     const {
         errors,
@@ -457,11 +445,12 @@ const AddProductDonation = ({ handleClose }) => {
     } = useFormik({
         initialValues: {
             itemName: '',
-            organisation: 'OASIS',
+            organisation: '',
             amount: '',
             itemImage: '',
         },
         validationSchema: addProductDonationSchema,
+        enableReinitialize: true,
     });
 
     const handleSubmitProduct = async (e) => {
@@ -485,10 +474,24 @@ const AddProductDonation = ({ handleClose }) => {
     );
 
     const handleOnSelectDonationOrg = (change) => {
+        const organisation =
+            allDonationOrgs.find(
+                (donationOrg) => donationOrg.code === change.value
+            ) || '';
+        if (organisation) {
+            setFormUrl(
+                `${process.env.REACT_APP_ASSETS_URL}/${organisation.formKey}`
+            );
+        }
+
         setFieldValue('organisation', change.value);
     };
 
     const handleCancelModal = () => {
+        setAllDonationOrgs([]);
+        selectOptions({});
+        setIsFetchingDonationOrgs(false);
+        setFormUrl('');
         setAllFiles([]);
         setFieldValue('itemName', '');
         setFieldValue('amount', '');
@@ -550,6 +553,27 @@ const AddProductDonation = ({ handleClose }) => {
         );
     });
 
+    const fetchDonationOrgs = async () => {
+        try {
+            setIsFetchingDonationOrgs(true);
+            const donationOrgs = await getDonationOrgs();
+            // setFieldValue('organisation', donationOrgs[0].code);
+            const newSelectOptions = donationOrgs.map((donationOrg) => ({
+                value: donationOrg.code,
+                label: donationOrg.name,
+            }));
+            setIsFetchingDonationOrgs(false);
+            setAllDonationOrgs(donationOrgs);
+            setSelectOptions(newSelectOptions);
+        } catch (e) {
+            setIsFetchingDonationOrgs(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchDonationOrgs();
+    }, []);
+
     return (
         <Form id='passForm' onSubmit={handleSubmitProduct}>
             <Row className='m-row' style={{ marginBottom: '1.5rem' }}>
@@ -561,15 +585,17 @@ const AddProductDonation = ({ handleClose }) => {
                                 <div>
                                     <Select
                                         className='merchant-dropdown-menu'
-                                        defaultValue={DONATION_ORGS[0]}
-                                        isLoading={false}
+                                        defaultValue={selectOptions[0]}
+                                        isLoading={isFetchingDonationOrgs}
                                         isClearable={false}
                                         isSearchable={false}
                                         name='merchant'
                                         styles={colourStyles}
-                                        options={DONATION_ORGS}
+                                        options={selectOptions}
                                         onChange={handleOnSelectDonationOrg}
                                     ></Select>
+                                    {errors.organisation &&
+                                        renderInlineError(errors.organisation)}
                                 </div>
                                 {renderInlineError(errors.vendorTag)}
                             </Form.Group>
@@ -657,27 +683,30 @@ const AddProductDonation = ({ handleClose }) => {
                     </Row>
                     <Row>
                         <Col>
-                            <small
-                                style={{
-                                    fontSize: '14px',
-                                    lineHeight: '16px',
-                                    color: '#2e1d3a',
-                                    mixBlendMode: 'normal',
-                                    opacity: '0.6',
-                                }}
-                            >
-                                Please note that you will need to download the
-                                charity’s form and follow the instructions for
-                                tax deduction purposes. Download the form{' '}
-                                <a
-                                    download
-                                    target='_blank'
-                                    href={TAX_FORMS[productValues.organisation]}
-                                    rel='noreferrer'
+                            {formUrl && (
+                                <small
+                                    style={{
+                                        fontSize: '14px',
+                                        lineHeight: '16px',
+                                        color: '#2e1d3a',
+                                        mixBlendMode: 'normal',
+                                        opacity: '0.6',
+                                    }}
                                 >
-                                    here.
-                                </a>
-                            </small>
+                                    Please note that you will need to download
+                                    the charity’s form and follow the
+                                    instructions for tax deduction purposes.
+                                    Download the form{' '}
+                                    <a
+                                        download
+                                        target='_blank'
+                                        href={formUrl}
+                                        rel='noreferrer'
+                                    >
+                                        here.
+                                    </a>
+                                </small>
+                            )}
                         </Col>
                     </Row>
                 </Col>
