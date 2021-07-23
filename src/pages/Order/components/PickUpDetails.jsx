@@ -51,8 +51,6 @@ export default function PickUpDetails({
     const [paymentFormValues, setPaymentFormValues] = useState(null);
     const [isPaymentFormEmpty, setIsPaymentFormEmpty] = useState(true);
     const [loading, setLoading] = useState(false);
-    const [timeSlot, setTimeSlot] = useState([]);
-
     const initialCheckoutView = ['/checkout'];
     const {
         errors: addressFormErrors,
@@ -89,7 +87,8 @@ export default function PickUpDetails({
         initialValues: {
             date: null,
             time: null,
-            slot: null
+            timeLabel: null,
+            slot: null,
         },
         validationSchema: pickUpDateSchema,
         // enableReinitialize: true,
@@ -122,10 +121,10 @@ export default function PickUpDetails({
         setModalShow(false);
     };
 
-    const savePickUpDetails = async ({ date, time }) => {
+    const savePickUpDetails = async ({ date, time, slot, timeLabel }) => {
         //
         // console.log('⊂(・ヮ・⊂)', { date, time });
-        dispatch(setPickupDetails({ date, time }));
+        dispatch(setPickupDetails({ date, time, slot, timeLabel }));
     };
 
     const openDatePickerModal = () => {
@@ -144,7 +143,7 @@ export default function PickUpDetails({
     });
 
     const renderTime = () => {
-        return `Between ${pickUpDateFormValues.time
+        return `Between ${pickUpDateFormValues.timeLabel
             .replace('-', 'and')
             .replace(new RegExp(/\./g), '')}`;
     };
@@ -837,36 +836,34 @@ export default function PickUpDetails({
                                             >
                                                 Edit
                                             </button>
-                                            {!initialCheckoutView.includes(
-                                                pathname
-                                            ) && (
-                                                    <>
-                                                        <hr
-                                                            style={{
-                                                                borderTop:
-                                                                    '1px solid #E8E7E9',
-                                                                marginTop: '0px',
-                                                            }}
-                                                        />
-                                                        <h4
-                                                            className='p-0 m-0 sofia-pro mt-2'
-                                                            style={{
-                                                                color: '#570097',
-                                                            }}
-                                                        >
-                                                            Schedule another date
-                                                        </h4>
-                                                        <h4
-                                                            className='p-0 m-0 sofia-pro'
-                                                            style={{
-                                                                color: '#2E1D3A',
-                                                                opacity: '0.6',
-                                                            }}
-                                                        >
-                                                            (-$5.00)
-                                                        </h4>
-                                                    </>
-                                                )}
+                                            {!initialCheckoutView.includes(pathname) && (
+                                                <>
+                                                    <hr
+                                                        style={{
+                                                            borderTop:
+                                                                '1px solid #E8E7E9',
+                                                            marginTop: '0px',
+                                                        }}
+                                                    />
+                                                    <h4
+                                                        className='p-0 m-0 sofia-pro mt-2'
+                                                        style={{
+                                                            color: '#570097',
+                                                        }}
+                                                    >
+                                                        Schedule another date
+                                                    </h4>
+                                                    <h4
+                                                        className='p-0 m-0 sofia-pro'
+                                                        style={{
+                                                            color: '#2E1D3A',
+                                                            opacity: '0.6',
+                                                        }}
+                                                    >
+                                                        (-$5.00)
+                                                    </h4>
+                                                </>
+                                            )}
                                         </>
                                     )}
                                 </div>
@@ -878,12 +875,17 @@ export default function PickUpDetails({
                     show={isDatePickerOpen}
                     onHide={() => setisDatePickerOpen(false)}
                     pickUpDateFormValues={pickUpDateFormValues}
-                    onConfirm={(pickupDate, pickupTime) => {
+                    onConfirm={(pickupDate, pickupTime, pickupSlot, pickupTimeLabel) => {
                         pickupDateSetFieldValue('date', pickupDate);
                         pickupDateSetFieldValue('time', pickupTime);
+                        pickupDateSetFieldValue('slot', pickupSlot);
+                        pickupDateSetFieldValue('timeLabel', pickupTimeLabel);
+
                         savePickUpDetails({
                             date: pickupDate,
                             time: pickupTime,
+                            slot: pickupSlot,
+                            timeLabel: pickupTimeLabel
                         });
                     }}
                 />

@@ -7,7 +7,7 @@ import { getPickupSlots } from '../api/orderApi';
 import { getUserId } from '../api/auth';
 import { isEmpty } from 'lodash-es';
 import { showError } from '../library/notifications.library';
-import { ORDER_PICKUP_SLOT, PICKUP_SLOT_LABELS } from '../constants/addPickupSlot';
+import { ORDER_PICKUP_SLOT, ORDER_PICKUP_TIME, PICKUP_SLOT_LABELS } from '../constants/addPickupSlot';
 
 export default function SchedulingModal({
   pickUpDateFormValues,
@@ -19,6 +19,7 @@ export default function SchedulingModal({
   const [pickupDate, setPickupDate] = useState(null);
   const [pickupTime, setPickupTime] = useState(null);
   const [pickupSlot, setPickupSlot] = useState(null);
+  const [pickupTimeLabel, setPickupTimeLabel] = useState(null);
 
   const setFieldValue = (field, value) => {
     if (field === 'date') {
@@ -31,6 +32,10 @@ export default function SchedulingModal({
 
     if (field === 'slot') {
       setPickupSlot(value);
+    }
+
+    if (field === 'timeLabel') {
+      setPickupTimeLabel(value);
     }
   };
 
@@ -94,9 +99,10 @@ export default function SchedulingModal({
         >
           <Button
             disabled={slots.AM.A === 0}
-            className={pickupTime === PICKUP_SLOT_LABELS.AM.A ? buttonClassname.concat('isSelected') : buttonClassname}
+            className={pickupTimeLabel === PICKUP_SLOT_LABELS.AM.A ? buttonClassname.concat('isSelected') : buttonClassname}
             onClick={() => {
-              setFieldValue('time', PICKUP_SLOT_LABELS.AM.A);
+              setFieldValue('time', ORDER_PICKUP_TIME.AM);
+              setFieldValue('timeLabel', PICKUP_SLOT_LABELS.AM.A);
               setFieldValue('slot', ORDER_PICKUP_SLOT.A);
             }}
             style={{
@@ -104,8 +110,8 @@ export default function SchedulingModal({
               backgroundColor: slots.AM.A === 0 ? '#ffcccb' : '#ffffff',
             }}
           >
-            <Row className={pickupTime === PICKUP_SLOT_LABELS.AM.A ? rangeTextClassname.concat('selected') : rangeTextClassname}>9 A.M. - 10 A.M.</Row>
-            <Row className={pickupTime === PICKUP_SLOT_LABELS.AM.A ? slotsAvailableClassname.concat('selected') : slotsAvailableClassname}>
+            <Row className={pickupTimeLabel === PICKUP_SLOT_LABELS.AM.A ? rangeTextClassname.concat('selected') : rangeTextClassname}>9 A.M. - 10 A.M.</Row>
+            <Row className={pickupTimeLabel === PICKUP_SLOT_LABELS.AM.A ? slotsAvailableClassname.concat('selected') : slotsAvailableClassname}>
               Slots available: {slots.AM.A}
             </Row>
           </Button>
@@ -117,9 +123,10 @@ export default function SchedulingModal({
         }}>
           <Button
             disabled={slots.AM.B === 0}
-            className={pickupTime === PICKUP_SLOT_LABELS.AM.B ? buttonClassname.concat('isSelected') : buttonClassname}
+            className={pickupTimeLabel === PICKUP_SLOT_LABELS.AM.B ? buttonClassname.concat('isSelected') : buttonClassname}
             onClick={() => {
-              setFieldValue('time', PICKUP_SLOT_LABELS.AM.B);
+              setFieldValue('time', ORDER_PICKUP_TIME.AM);
+              setFieldValue('timeLabel', PICKUP_SLOT_LABELS.AM.B);
               setFieldValue('slot', ORDER_PICKUP_SLOT.B);
             }}
             style={{
@@ -127,8 +134,8 @@ export default function SchedulingModal({
               backgroundColor: slots.AM.B === 0 ? '#ffcccb' : '#ffffff',
             }}
           >
-            <Row className={pickupTime === PICKUP_SLOT_LABELS.AM.B ? rangeTextClassname.concat('selected') : rangeTextClassname}>10 A.M. - 11 A.M.</Row>
-            <Row className={pickupTime === PICKUP_SLOT_LABELS.AM.B ? slotsAvailableClassname.concat('selected') : slotsAvailableClassname}>Slots available: {slots.AM.B}</Row>
+            <Row className={pickupTimeLabel === PICKUP_SLOT_LABELS.AM.B ? rangeTextClassname.concat('selected') : rangeTextClassname}>10 A.M. - 11 A.M.</Row>
+            <Row className={pickupTimeLabel === PICKUP_SLOT_LABELS.AM.B ? slotsAvailableClassname.concat('selected') : slotsAvailableClassname}>Slots available: {slots.AM.B}</Row>
           </Button>
         </Col>
         <Col style={{
@@ -137,9 +144,10 @@ export default function SchedulingModal({
         }}>
           <Button
             disabled={slots.AM.C === 0}
-            className={pickupTime === PICKUP_SLOT_LABELS.AM.C ? buttonClassname.concat('isSelected') : buttonClassname}
+            className={pickupTimeLabel === PICKUP_SLOT_LABELS.AM.C ? buttonClassname.concat('isSelected') : buttonClassname}
             onClick={() => {
-              setFieldValue('time', PICKUP_SLOT_LABELS.AM.C);
+              setFieldValue('time', ORDER_PICKUP_TIME.AM);
+              setFieldValue('timeLabel', PICKUP_SLOT_LABELS.AM.C);
               setFieldValue('slot', ORDER_PICKUP_SLOT.C);
             }}
             style={{
@@ -147,8 +155,8 @@ export default function SchedulingModal({
               backgroundColor: slots.AM.C === 0 ? '#ffcccb' : '#ffffff',
             }}
           >
-            <Row className={pickupTime === PICKUP_SLOT_LABELS.AM.C ? rangeTextClassname.concat('selected') : rangeTextClassname}>11 A.M. - 12 P.M.</Row>
-            <Row className={pickupTime === PICKUP_SLOT_LABELS.AM.C ? slotsAvailableClassname.concat('selected') : slotsAvailableClassname}> Slots available: {slots.AM.C}</Row>
+            <Row className={pickupTimeLabel === PICKUP_SLOT_LABELS.AM.C ? rangeTextClassname.concat('selected') : rangeTextClassname}>11 A.M. - 12 P.M.</Row>
+            <Row className={pickupTimeLabel === PICKUP_SLOT_LABELS.AM.C ? slotsAvailableClassname.concat('selected') : slotsAvailableClassname}> Slots available: {slots.AM.C}</Row>
           </Button>
         </Col>
       </Row>
@@ -175,9 +183,10 @@ export default function SchedulingModal({
         >
           <Button
             disabled={slots.PM.A === 0}
-            className={pickupTime === PICKUP_SLOT_LABELS.PM.A ? buttonClassname.concat('isSelected') : buttonClassname}
+            className={pickupTimeLabel === PICKUP_SLOT_LABELS.PM.A ? buttonClassname.concat('isSelected') : buttonClassname}
             onClick={() => {
-              setFieldValue('time', PICKUP_SLOT_LABELS.PM.A);
+              setFieldValue('time', ORDER_PICKUP_TIME.PM);
+              setFieldValue('timeLabel', PICKUP_SLOT_LABELS.PM.A);
               setFieldValue('slot', ORDER_PICKUP_SLOT.A);
             }}
             style={{
@@ -185,8 +194,8 @@ export default function SchedulingModal({
               backgroundColor: slots.PM.A === 0 ? '#ffcccb' : '#ffffff',
             }}
           >
-            <Row className={pickupTime === PICKUP_SLOT_LABELS.PM.A ? rangeTextClassname.concat('selected') : rangeTextClassname}>12 P.M. - 1 P.M.</Row>
-            <Row className={pickupTime === PICKUP_SLOT_LABELS.PM.A ? slotsAvailableClassname.concat('selected') : slotsAvailableClassname}>Slots available: {slots.PM.A}</Row>
+            <Row className={pickupTimeLabel === PICKUP_SLOT_LABELS.PM.A ? rangeTextClassname.concat('selected') : rangeTextClassname}>12 P.M. - 1 P.M.</Row>
+            <Row className={pickupTimeLabel === PICKUP_SLOT_LABELS.PM.A ? slotsAvailableClassname.concat('selected') : slotsAvailableClassname}>Slots available: {slots.PM.A}</Row>
           </Button>
         </Col>
         <Col
@@ -197,9 +206,10 @@ export default function SchedulingModal({
         >
           <Button
             disabled={slots.PM.B === 0}
-            className={pickupTime === PICKUP_SLOT_LABELS.PM.B ? buttonClassname.concat('isSelected') : buttonClassname}
+            className={pickupTimeLabel === PICKUP_SLOT_LABELS.PM.B ? buttonClassname.concat('isSelected') : buttonClassname}
             onClick={() => {
-              setFieldValue('time', PICKUP_SLOT_LABELS.PM.B);
+              setFieldValue('time', ORDER_PICKUP_TIME.PM);
+              setFieldValue('timeLabel', PICKUP_SLOT_LABELS.PM.B);
               setFieldValue('slot', ORDER_PICKUP_SLOT.B);
 
             }}
@@ -208,8 +218,8 @@ export default function SchedulingModal({
               backgroundColor: slots.PM.B === 0 ? '#ffcccb' : '#ffffff',
             }}
           >
-            <Row className={pickupTime === PICKUP_SLOT_LABELS.PM.B ? rangeTextClassname.concat('selected') : rangeTextClassname}>1 P.M. - 2 P.M.</Row>
-            <Row className={pickupTime === PICKUP_SLOT_LABELS.PM.B ? slotsAvailableClassname.concat('selected') : slotsAvailableClassname}>Slots available: {slots.PM.B}</Row>
+            <Row className={pickupTimeLabel === PICKUP_SLOT_LABELS.PM.B ? rangeTextClassname.concat('selected') : rangeTextClassname}>1 P.M. - 2 P.M.</Row>
+            <Row className={pickupTimeLabel === PICKUP_SLOT_LABELS.PM.B ? slotsAvailableClassname.concat('selected') : slotsAvailableClassname}>Slots available: {slots.PM.B}</Row>
           </Button>
         </Col>
         <Col
@@ -220,9 +230,10 @@ export default function SchedulingModal({
         >
           <Button
             disabled={slots.PM.C === 0}
-            className={pickupTime === PICKUP_SLOT_LABELS.PM.C ? buttonClassname.concat('isSelected') : buttonClassname}
+            className={pickupTimeLabel === PICKUP_SLOT_LABELS.PM.C ? buttonClassname.concat('isSelected') : buttonClassname}
             onClick={() => {
-              setFieldValue('time', PICKUP_SLOT_LABELS.PM.C);
+              setFieldValue('time', ORDER_PICKUP_TIME.PM);
+              setFieldValue('timeLabel', PICKUP_SLOT_LABELS.PM.C);
               setFieldValue('slot', ORDER_PICKUP_SLOT.C);
 
             }}
@@ -231,8 +242,8 @@ export default function SchedulingModal({
               backgroundColor: slots.PM.C === 0 ? '#ffcccb' : '#ffffff',
             }}
           >
-            <Row className={pickupTime === PICKUP_SLOT_LABELS.PM.C ? rangeTextClassname.concat('selected') : rangeTextClassname}>2 P.M. - 3 P.M.</Row>
-            <Row className={pickupTime === PICKUP_SLOT_LABELS.PM.C ? slotsAvailableClassname.concat('selected') : slotsAvailableClassname}>Slots available: {slots.PM.C}</Row>
+            <Row className={pickupTimeLabel === PICKUP_SLOT_LABELS.PM.C ? rangeTextClassname.concat('selected') : rangeTextClassname}>2 P.M. - 3 P.M.</Row>
+            <Row className={pickupTimeLabel === PICKUP_SLOT_LABELS.PM.C ? slotsAvailableClassname.concat('selected') : slotsAvailableClassname}>Slots available: {slots.PM.C}</Row>
           </Button>
         </Col>
       </Row>
@@ -356,11 +367,8 @@ export default function SchedulingModal({
                 className='btn-ok'
                 disabled={!pickupDate || !pickupTime}
                 onClick={() => {
-                  console.log("pickupDate: ", pickupDate)
-                  console.log("pickupTime: ", pickupTime)
-
                   props.onHide();
-                  onConfirm(pickupDate, pickupTime, pickupSlot);
+                  onConfirm(pickupDate, pickupTime, pickupSlot, pickupTimeLabel);
                 }}
               >
                 <span className='confirmPickUpText'>Confirm Schedule</span>

@@ -1,3 +1,9 @@
+
+export const ORDER_PICKUP_TIME = {
+    AM: 'AM',
+    PM: 'PM'
+}
+
 export const PICKUP_SLOT_LABELS = {
     AM: {
         A: '9 A.M. - 10 A.M.',
