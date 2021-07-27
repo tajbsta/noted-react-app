@@ -1,26 +1,27 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col, Spinner } from 'react-bootstrap';
 import Select from 'react-select';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { useDropzone } from 'react-dropzone';
 import {
     addProductStandardSchema,
     addProductDonationSchema,
-    addProductMiscSchema,
 } from '../models/formSchema';
 import { useFormik } from 'formik';
 import { getFileTypeIcon } from '../utils/file';
 import { formatCurrency } from '../library/number';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/src/stylesheets/datepicker.scss';
-import { getDonationOrgs, getVendors } from '../api/productsApi';
+import { getDonationOrgs, getVendors, uploadProduct } from '../api/productsApi';
 import { get, isEmpty } from 'lodash';
 import {
     ADD_PRODUCT_OPTIONS,
     DONATION,
     STANDARD,
-    MISCELLANEOUS,
 } from '../constants/addProducts';
+import moment from 'moment';
+import { showError, showSuccess } from '../library/notifications.library';
+import { AlertCircle, CheckCircle } from 'react-feather';
 
 const colourStyles = {
     control: (styles, state) => ({
@@ -46,6 +47,7 @@ export default function AddProductModal(props) {
 
     const handleClose = () => {
         setType(STANDARD);
+        setProductImage('');
         props.onHide();
     };
 
@@ -104,9 +106,6 @@ export default function AddProductModal(props) {
                     {type === DONATION && (
                         <AddProductDonation handleClose={handleClose} />
                     )}
-                    {type === MISCELLANEOUS && (
-                        <AddProductMisc handleClose={handleClose} />
-                    )}
                 </Modal.Body>
             </Modal>
         </div>
@@ -120,7 +119,9 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
     const [allMerchants, setAllMerchants] = useState([]);
     const [selectOptions, setSelectOptions] = useState([
         { label: 'Select or Type a vendor', value: '' },
+        { label: 'Others', value: 'Others' },
     ]);
+    const [isSubmittingProducts, setIsSubmittingProducts] = useState(false);
     const {
         errors,
         values: productValues,
@@ -133,7 +134,8 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
             orderRef: '',
             itemName: '',
             amount: '',
-            returnDocument: '',
+            returnDocuments: [],
+            itemNotes: '',
         },
         validationSchema: addProductStandardSchema,
     });
@@ -142,6 +144,11 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
         if (action.action === 'clear' || isEmpty(data.value)) {
             setSelectedMerchant({});
             setFieldValue('vendorTag', '');
+            return;
+        }
+        if (data.value === 'Others') {
+            setSelectedMerchant({});
+            setFieldValue('vendorTag', 'Others');
             return;
         }
         setSelectedMerchant(
@@ -166,17 +173,11 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
     const handleChangeProductName = (e) => {
         setFieldValue('itemName', e.target.value, true);
     };
+    const handleChangeProductNotes = (e) => {
+        setFieldValue('itemNotes', e.target.value, true);
+    };
     const handleChangeProductPrice = (e) => {
         setFieldValue('amount', e.target.value, true);
-    };
-
-    const handleSubmitProduct = async (e) => {
-        e.preventDefault();
-        const errors = await handleProductValidation();
-
-        if (!isEmpty(errors)) return;
-
-        console.log(productValues);
     };
 
     const handleCancelModal = () => {
@@ -185,9 +186,66 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
         setFieldValue('orderDate', '');
         setFieldValue('orderRef', '');
         setFieldValue('itemName', '');
+        setFieldValue('itemNotes', '');
         setFieldValue('amount', '');
         setFieldValue('vendorTag', '');
+        setFieldValue('returnDocuments', []);
         handleClose();
+    };
+
+    const handleSubmitProduct = async (e) => {
+        e.preventDefault();
+        const errors = await handleProductValidation();
+
+        if (!isEmpty(errors)) return;
+
+        try {
+            setIsSubmittingProducts(true);
+            const res = await uploadProduct({
+                type: STANDARD,
+                merchant: productValues.vendorTag,
+                orderRef: productValues.orderRef,
+                orderDate: productValues.orderDate,
+                name: productValues.itemName,
+                price: productValues.amount,
+                files: productValues.returnDocuments,
+                notes: productValues.itemNotes,
+            });
+            if (res.status === 'success') {
+                showSuccess({
+                    message: (
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <CheckCircle />
+                            <h4
+                                className='ml-3 mb-0'
+                                style={{ lineHeight: '19px' }}
+                            >
+                                Success! Your product has been submitted
+                                successfully.
+                            </h4>
+                        </div>
+                    ),
+                });
+                setIsSubmittingProducts(false);
+                handleCancelModal();
+            }
+        } catch (e) {
+            console.log(e);
+            setIsSubmittingProducts(false);
+            showError({
+                message: (
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <AlertCircle />
+                        <h4
+                            className='ml-3 mb-0'
+                            style={{ lineHeight: '16px' }}
+                        >
+                            Error submitting product. Please try again.
+                        </h4>
+                    </div>
+                ),
+            });
+        }
     };
 
     const renderInlineError = (errors) => (
@@ -196,32 +254,12 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
 
     const onDrop = useCallback((acceptedFiles) => {
         setAllFiles(acceptedFiles);
-        acceptedFiles.forEach((file) => {
-            const reader = new FileReader();
-            reader.onabort = () => {};
-            reader.onerror = () => {};
-            reader.onload = () => {
-                // Do whatever with the file contents
-                const dataUrl = reader.result;
-                setFieldValue('returnDocument', dataUrl);
-            };
-            reader.readAsDataURL(file);
-            // reader.readAsArrayBuffer(file);
-        });
+        setFieldValue('returnDocuments', [...acceptedFiles]);
     }, []);
-    const { getRootProps, getInputProps, fileRejections } = useDropzone({
+    const { getRootProps, getInputProps } = useDropzone({
         onDrop,
-        maxFiles: 1,
+        accept: 'image/jpeg, image/png',
     });
-
-    const fileRejectionMessage =
-        fileRejections.length > 0 ? (
-            <p className='sofia-pro' style={{ color: 'red', fontSize: '12px' }}>
-                {'Kindly select one file.'}
-            </p>
-        ) : (
-            ''
-        );
 
     const acceptedFileItems = allFiles.map((file) => {
         return (
@@ -254,7 +292,9 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
                 <div id='DatePicker'>
                     <DatePicker
                         selected={productValues.orderDate}
-                        onChange={(date) => setFieldValue('orderDate', date)}
+                        onChange={(date) =>
+                            setFieldValue('orderDate', date.valueOf())
+                        }
                         className='date-picker'
                     />
                 </div>
@@ -278,6 +318,7 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
             setSelectOptions([
                 { label: 'Select or Type a vendor', value: '' },
                 ...newSelectOptions,
+                { label: 'Others', value: 'Others' },
             ]);
         } catch (e) {
             setIsFetchingVendors(false);
@@ -389,11 +430,40 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
                             </Form.Group>
                         </Col>
                     </Row>
+                    {productValues.vendorTag === 'Others' && (
+                        <Row>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Additional Notes</Form.Label>
+                                    <div>
+                                        <Form.Control
+                                            as='textarea'
+                                            style={{ maxWidth: 'none' }}
+                                            rows='3'
+                                            isValid={
+                                                !errors.itemNotes &&
+                                                productValues.itemNotes.length >
+                                                    0
+                                            }
+                                            isInvalid={errors.itemNotes}
+                                            name='itemNotes'
+                                            value={
+                                                productValues.itemNotes || ''
+                                            }
+                                            onChange={handleChangeProductNotes}
+                                        />
+                                        {productValues.itemNotes.length > 0 &&
+                                            renderInlineError(errors.itemNotes)}
+                                    </div>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                    )}
                     <Row>
                         <Col>
                             <Form.Group>
                                 <Form.Label className='documents-title'>
-                                    Return Document{' '}
+                                    Return Documents{' '}
                                     <small style={{ fontSize: '11px' }}>
                                         (i.e Shipping or order receipts)
                                     </small>
@@ -408,8 +478,7 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
                                         Drag & drop or click to upload
                                     </p>
                                 </div>
-                                {fileRejectionMessage}
-                                {renderInlineError(errors.returnDocument)}
+                                {renderInlineError(errors.returnDocuments)}
                                 {acceptedFileItems}
                             </Form.Group>
                         </Col>
@@ -421,8 +490,24 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
                     <Button className='btn-cancel' onClick={handleCancelModal}>
                         Cancel
                     </Button>
-                    <Button className='btn-save' type='submit'>
-                        Submit Product
+                    <Button
+                        disabled={isSubmittingProducts}
+                        className='btn-save'
+                        type='submit'
+                    >
+                        {isSubmittingProducts ? 'Submitting' : 'Submit Product'}
+                        {isSubmittingProducts && (
+                            <Spinner
+                                animation='border'
+                                size='sm'
+                                style={{
+                                    color: '#fff',
+                                    opacity: '1',
+                                    marginLeft: '8px',
+                                }}
+                                className='spinner'
+                            />
+                        )}
                     </Button>
                 </Col>
             </Row>
@@ -447,7 +532,7 @@ const AddProductDonation = ({ handleClose }) => {
             itemName: '',
             organisation: '',
             amount: '',
-            itemImage: '',
+            itemImages: [],
         },
         validationSchema: addProductDonationSchema,
         enableReinitialize: true,
@@ -483,7 +568,6 @@ const AddProductDonation = ({ handleClose }) => {
                 `${process.env.REACT_APP_ASSETS_URL}/${organisation.formKey}`
             );
         }
-
         setFieldValue('organisation', change.value);
     };
 
@@ -496,37 +580,18 @@ const AddProductDonation = ({ handleClose }) => {
         setFieldValue('itemName', '');
         setFieldValue('amount', '');
         setFieldValue('organisation', '');
-        setFieldValue('itemImage', '');
+        setFieldValue('itemImages', []);
         handleClose();
     };
 
     const onDrop = useCallback((acceptedFiles) => {
         setAllFiles(acceptedFiles);
-        acceptedFiles.forEach((file) => {
-            const reader = new FileReader();
-            reader.onabort = () => {};
-            reader.onerror = () => {};
-            reader.onload = () => {
-                // Do whatever with the file contents
-                const dataUrl = reader.result;
-                setFieldValue('itemImage', dataUrl);
-            };
-            reader.readAsDataURL(file);
-        });
+        setFieldValue('itemImages', [...acceptedFiles]);
     }, []);
-    const { getRootProps, getInputProps, fileRejections } = useDropzone({
+    const { getRootProps, getInputProps } = useDropzone({
         onDrop,
-        maxFiles: 1,
+        accept: 'image/jpeg, image/png',
     });
-
-    const fileRejectionMessage =
-        fileRejections.length > 0 ? (
-            <p className='sofia-pro' style={{ color: 'red', fontSize: '12px' }}>
-                {'Kindly select one file.'}
-            </p>
-        ) : (
-            ''
-        );
 
     const acceptedFileItems = allFiles.map((file) => {
         return (
@@ -675,8 +740,7 @@ const AddProductDonation = ({ handleClose }) => {
                                         Drag & drop or click to upload
                                     </p>
                                 </div>
-                                {fileRejectionMessage}
-                                {renderInlineError(errors.itemImage)}
+                                {renderInlineError(errors.itemImages)}
                                 {acceptedFileItems}
                             </Form.Group>
                         </Col>
@@ -707,274 +771,6 @@ const AddProductDonation = ({ handleClose }) => {
                                     </a>
                                 </small>
                             )}
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
-            <Row>
-                <Col className='btn btn-container'>
-                    <Button className='btn-cancel' onClick={handleCancelModal}>
-                        Cancel
-                    </Button>
-                    <Button className='btn-save' type='submit'>
-                        Submit Product
-                    </Button>
-                </Col>
-            </Row>
-        </Form>
-    );
-};
-
-const AddProductMisc = ({ handleClose }) => {
-    const [allFiles, setAllFiles] = useState([]);
-
-    const {
-        errors,
-        values: productValues,
-        setFieldValue,
-        validateForm: handleProductValidation,
-    } = useFormik({
-        initialValues: {
-            itemName: '',
-            pickUpLocation: '',
-            dropOffLocation: '',
-            amount: '',
-            itemImage: '',
-        },
-        validationSchema: addProductMiscSchema,
-    });
-
-    const handleSubmitProduct = async (e) => {
-        e.preventDefault();
-        const errors = await handleProductValidation();
-
-        if (!isEmpty(errors)) return;
-
-        console.log(productValues);
-    };
-
-    const handleChangeProductName = (e) => {
-        setFieldValue('itemName', e.target.value, true);
-    };
-    const handleChangeProductPrice = (e) => {
-        setFieldValue('amount', e.target.value, true);
-    };
-    const handleChangePickUp = (e) => {
-        setFieldValue('pickUpLocation', e.target.value, true);
-    };
-    const handleChangeDropOff = (e) => {
-        setFieldValue('dropOffLocation', e.target.value, true);
-    };
-
-    const renderInlineError = (errors) => (
-        <small className='form-text p-0 m-0 noted-red'>{errors}</small>
-    );
-
-    const handleOnSelectDonationOrg = (change) => {
-        setFieldValue('organisation', change.value);
-    };
-
-    const handleCancelModal = () => {
-        setAllFiles([]);
-        setFieldValue('itemName', '');
-        setFieldValue('amount', '');
-        setFieldValue('pickUpLocation', '');
-        setFieldValue('dropOffLocation', '');
-        setFieldValue('itemImage', '');
-        handleClose();
-    };
-
-    const onDrop = useCallback((acceptedFiles) => {
-        setAllFiles(acceptedFiles);
-        acceptedFiles.forEach((file) => {
-            const reader = new FileReader();
-            reader.onabort = () => {};
-            reader.onerror = () => {};
-            reader.onload = () => {
-                // Do whatever with the file contents
-                const dataUrl = reader.result;
-                setFieldValue('itemImage', dataUrl);
-            };
-            reader.readAsDataURL(file);
-        });
-    }, []);
-    const { getRootProps, getInputProps, fileRejections } = useDropzone({
-        onDrop,
-        maxFiles: 1,
-    });
-
-    const fileRejectionMessage =
-        fileRejections.length > 0 ? (
-            <p className='sofia-pro' style={{ color: 'red', fontSize: '12px' }}>
-                {'Kindly select one file.'}
-            </p>
-        ) : (
-            ''
-        );
-
-    const acceptedFileItems = allFiles.map((file) => {
-        return (
-            <li
-                key={file.path}
-                className='list-item'
-                style={{
-                    listStyle: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                }}
-            >
-                {getFileTypeIcon(file.path)}
-                <span className='ml-2'>{file.path}</span>
-                <img
-                    src={URL.createObjectURL(file)}
-                    alt=''
-                    style={{
-                        width: 60,
-                        height: 60,
-                    }}
-                />
-            </li>
-        );
-    });
-    return (
-        <Form id='passForm' onSubmit={handleSubmitProduct}>
-            <Row className='m-row' style={{ marginBottom: '1.5rem' }}>
-                <Col>
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>Item Description</Form.Label>
-                                <div>
-                                    <Form.Control
-                                        style={{ maxWidth: 'none' }}
-                                        type='name'
-                                        isValid={
-                                            !errors.itemName &&
-                                            productValues.itemName.length > 0
-                                        }
-                                        isInvalid={errors.itemName}
-                                        name='itemName'
-                                        value={productValues.itemName || ''}
-                                        onChange={handleChangeProductName}
-                                        required
-                                    />
-                                    {productValues.itemName.length > 0 &&
-                                        renderInlineError(errors.itemName)}
-                                </div>
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>Pick Up Location</Form.Label>
-                                <div>
-                                    <Form.Control
-                                        style={{ maxWidth: 'none' }}
-                                        type='name'
-                                        isValid={
-                                            !errors.pickUpLocation &&
-                                            productValues.pickUpLocation
-                                                .length > 0
-                                        }
-                                        isInvalid={errors.pickUpLocation}
-                                        name='itemName'
-                                        value={
-                                            productValues.pickUpLocation || ''
-                                        }
-                                        onChange={handleChangePickUp}
-                                        required
-                                    />
-                                    {productValues.pickUpLocation.length > 0 &&
-                                        renderInlineError(
-                                            errors.pickUpLocation
-                                        )}
-                                </div>
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>Drop Off Location</Form.Label>
-                                <div>
-                                    <Form.Control
-                                        style={{ maxWidth: 'none' }}
-                                        type='name'
-                                        isValid={
-                                            !errors.dropOffLocation &&
-                                            productValues.dropOffLocation
-                                                .length > 0
-                                        }
-                                        isInvalid={errors.dropOffLocation}
-                                        name='itemName'
-                                        value={
-                                            productValues.dropOffLocation || ''
-                                        }
-                                        onChange={handleChangeDropOff}
-                                        required
-                                    />
-                                    {productValues.dropOffLocation.length > 0 &&
-                                        renderInlineError(
-                                            errors.dropOffLocation
-                                        )}
-                                </div>
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>Price</Form.Label>
-                                <div>
-                                    <Form.Control
-                                        style={{ maxWidth: 'none' }}
-                                        isValid={
-                                            !errors.amount &&
-                                            productValues.amount.length > 0
-                                        }
-                                        isInvalid={errors.amount}
-                                        name='amount'
-                                        value={productValues.amount}
-                                        onChange={handleChangeProductPrice}
-                                        onBlur={(e) =>
-                                            setFieldValue(
-                                                'amount',
-                                                formatCurrency(e.target.value)
-                                            )
-                                        }
-                                        required
-                                    />
-                                    {productValues.amount.length > 0 &&
-                                        renderInlineError(errors.amount)}
-                                </div>
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label className='documents-title'>
-                                    Item Image{' '}
-                                    <small style={{ fontSize: '11px' }}>
-                                        (i.e Upload an image of your donation
-                                        items)
-                                    </small>
-                                </Form.Label>
-                                <div
-                                    style={{ maxWidth: 'none' }}
-                                    className='dropzone-container'
-                                    {...getRootProps()}
-                                >
-                                    <input {...getInputProps()} />
-                                    <p className='sofia-pro text-drag'>
-                                        Drag & drop or click to upload
-                                    </p>
-                                </div>
-                                {fileRejectionMessage}
-                                {renderInlineError(errors.itemImage)}
-                                {acceptedFileItems}
-                            </Form.Group>
                         </Col>
                     </Row>
                 </Col>
