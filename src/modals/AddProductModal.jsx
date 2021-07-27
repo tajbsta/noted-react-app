@@ -19,7 +19,6 @@ import {
     DONATION,
     STANDARD,
 } from '../constants/addProducts';
-import moment from 'moment';
 import { showError, showSuccess } from '../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
 
@@ -230,7 +229,6 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
                 handleCancelModal();
             }
         } catch (e) {
-            console.log(e);
             setIsSubmittingProducts(false);
             showError({
                 message: (

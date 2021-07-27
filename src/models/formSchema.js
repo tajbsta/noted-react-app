@@ -169,7 +169,8 @@ export const addProductStandardSchema = Yup.object({
     orderRef: Yup.string().required('Order ref # is required'),
     itemName: Yup.string().required('Product name is required'),
     amount: Yup.string().required("Product's amount is required"),
-    returnDocument: Yup.string().required(
+    returnDocuments: Yup.array().min(
+        1,
         'Please upload a receipt for this product.'
     ),
 });
@@ -178,15 +179,7 @@ export const addProductDonationSchema = Yup.object({
     itemName: Yup.string().required('Product name is required'),
     organisation: Yup.string().required('Please select an organisation'),
     amount: Yup.string().required("Product's amount is required"),
-    itemImage: Yup.string().required('Please upload an image of the item'),
-});
-
-export const addProductMiscSchema = Yup.object({
-    itemName: Yup.string().required('Product name is required'),
-    pickUpLocation: Yup.string().required('Please enter a pickup location'),
-    dropOffLocation: Yup.string().required('Please enter a dropoff location'),
-    amount: Yup.string().required("Product's amount is required"),
-    itemImage: Yup.string().required('Please upload an image of the item'),
+    itemImages: Yup.array().min(1, 'Please upload a receipt for this product.'),
 });
 
 export const editProductSchema = Yup.object({

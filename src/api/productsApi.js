@@ -1,6 +1,6 @@
 import axiosLib from 'axios';
 import { api } from './api';
-import { getUserSession } from './auth';
+import { getUserId, getUserSession } from './auth';
 
 // Get user products
 export const getProducts = async ({
@@ -104,4 +104,64 @@ export const getDonationOrgs = async () => {
     const { userId } = await getUserSession();
     const res = await axios.get(`/${userId}/products/donate/organizations`);
     return res.data.data;
+};
+
+export const uploadImage = async (file) => {
+    const userId = await getUserId();
+
+    const axios = await api();
+    const res = await axios.post(`${userId}/profile/generatePresigned`, {
+        name: file.name,
+        type: file.type,
+    });
+
+    const { url } = res.data.data;
+
+    const config = {
+        headers: {
+            'Content-Type': file.type,
+            'x-file-upload-header': 'file_upload',
+        },
+    };
+
+    await axiosLib.put(url, file, config);
+
+    return res.data.data;
+};
+
+/**
+ *
+ * @param {Object} data - Data to send to {userId}/products endpoint
+ * @param {String} data.type - Type of manual product upload
+ * @param {String} data.merchant - Merchant Code
+ * @param {String} data.orderRef - Order Reference of the Receipt
+ * @param {String} data.orderDate - Order date of the Receipt
+ * @param {String} data.name - Name of Product of the Receipt
+ * @param {String} data.price - Price of item on Receipt
+ * @param {Array<T>} data.files - Array of files to upload along with product
+ * @param {String} data.notes - Any additional notes
+ */
+export const uploadProduct = async (data) => {
+    const fileKeys = await Promise.all(
+        data.files.map(async (file) => {
+            const res = await uploadImage(file);
+            return res.key;
+        })
+    );
+
+    const dataToSend = {
+        type: data.type,
+        merchant: data.merchant,
+        orderRef: data.orderRef,
+        orderDate: data.orderDate,
+        name: data.name,
+        price: data.price,
+        files: fileKeys,
+        notes: data.notes,
+    };
+
+    const userId = await getUserId();
+    const axios = await api();
+    const res = await axios.post(`${userId}/products`, dataToSend);
+    return res.data;
 };
