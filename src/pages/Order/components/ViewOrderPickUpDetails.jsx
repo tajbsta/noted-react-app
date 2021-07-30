@@ -119,7 +119,7 @@ export default function ViewOrderPickUpDetails({ order }) {
     const renderTime = () => {
         let timeText = '';
         if (pickUpDateFormValues.time === ORDER_PICKUP_TIME.AM) {
-            
+
             if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.A) timeText = PICKUP_SLOT_LABELS.AM.A;
             else if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.B) timeText = PICKUP_SLOT_LABELS.AM.B;
             else if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.C) timeText = PICKUP_SLOT_LABELS.AM.C;
@@ -405,10 +405,7 @@ export default function ViewOrderPickUpDetails({ order }) {
                                                                         }
                                                                         {!IsAddressOpen && (
                                                                             <>
-                                                                                {addressFormValues
-                                                                                    .line1
-                                                                                    .length >
-                                                                                    12
+                                                                                {addressFormValues.line1.length > 12
                                                                                     ? `,${truncateString(
                                                                                         addressFormValues.line1,
                                                                                         12
