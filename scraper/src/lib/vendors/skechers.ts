@@ -4,7 +4,7 @@ import { parseHtmlString, productQuantityHelper } from '../helpers';
 import { decode as htmlDecode } from 'html-entities';
 import { OrderData, RawProduct, IEmailPayload } from '../../models';
 
-export default class Belk {
+export default class Skechers {
   static async parse(code: string, payload: IEmailPayload): Promise<OrderData> {
     const doc = parseHtmlString(payload.decodedBody);
     const [orderRef, orderDate, rawProducts] = await Promise.all([
@@ -29,11 +29,9 @@ export default class Belk {
   static async getOrderRef(root: Document): Promise<string | null> {
     try {
       const orderRefElement = root.querySelector(
-        'html > body > table > tbody > tr > td > table > tbody > tr:nth-child(6) > td > table > tbody > tr > td > table > tbody > tr > td > table > tbody > tr:nth-child(1) > td > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > table > tbody > tr > td > table > tbody > tr:nth-child(1) > td > table > tbody > tr > th:nth-child(2) > table > tbody > tr:nth-child(1) > td'
+        'html > body > div:nth-child(5) > table > tbody > tr > td > table:nth-child(3) > tbody > tr > td > table:nth-child(2) > tbody > tr > td > table:nth-child(7) > tbody > tr > td > table:nth-child(2) > tbody > tr > td > div > span > span > span'
       );
-      const orderRef = orderRefElement
-        ? orderRefElement.textContent.split('Order Date')[0].split('#:')[1].trim()
-        : null;
+      const orderRef = orderRefElement ? orderRefElement.textContent.split(':').pop()?.trim() : null;
       return `${orderRef}`;
     } catch (error) {
       /* istanbul ignore next */
@@ -41,33 +39,37 @@ export default class Belk {
     }
   }
 
+  /* istanbul ignore next */
   static async getOrderDate(root: Document): Promise<number | null> {
     try {
       const orderDateElement = root.querySelector(
-        'html > body > table > tbody > tr > td > table > tbody > tr:nth-child(6) > td > table > tbody > tr > td > table > tbody > tr > td > table > tbody > tr:nth-child(1) > td > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > table > tbody > tr > td > table > tbody > tr:nth-child(1) > td > table > tbody > tr > th:nth-child(2) > table > tbody > tr:nth-child(1) > td'
+        'html > body > div:nth-child(5) > table > tbody > tr > td > table:nth-child(3) > tbody > tr > td > table:nth-child(2) > tbody > tr > td > table:nth-child(7) > tbody > tr > td > table:nth-child(1) > tbody > tr > td > div > span > span > span'
       );
 
-      const orderDate = orderDateElement ? orderDateElement.textContent.split('Order Date:')[1].trim() : null;
+      const orderDate = orderDateElement ? orderDateElement.textContent.split(':').pop()?.trim() : null;
 
-      return orderDate ? moment(orderDate, 'MM/DD/YYYY').startOf('day').valueOf() : null;
+      return orderDate ? moment(orderDate, 'MMM DD, YYYY').startOf('day').valueOf() : null;
     } catch (error) {
       /* istanbul ignore next */
       return null;
     }
   }
+
   static async getProducts(root: Document): Promise<RawProduct[]> {
     try {
       const initialContainer = root.querySelector(
-        'html > body > table > tbody > tr > td > table > tbody > tr:nth-child(6) > td > table > tbody > tr > td > table > tbody > tr > td > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td > table > tbody > tr:nth-child(1) > td > table > tbody'
+        'html > body > div:nth-child(5) > table > tbody > tr > td > table:nth-child(3) > tbody > tr > td > table:nth-child(2) > tbody > tr > td'
       );
       const orderTableContainer = [];
 
-      initialContainer.querySelectorAll('tr').forEach((item) => {
+      initialContainer.querySelectorAll('table').forEach((item) => {
         const hasThumbnail = item
-          .querySelector('td:nth-child(1) > table > tbody > tr > td > a >img')
+          .querySelector('tbody > tr > td:nth-child(1) > table > tbody > tr > td > a > img')
           ?.getAttribute('src');
-        const hasTwoChildrenNodes = item.children.length === 2;
-        const isProduct = !!hasThumbnail && hasTwoChildrenNodes;
+        const hasProductName = item.querySelector(
+          'tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(1) > td > div > span > span > span > strong'
+        )?.textContent;
+        const isProduct = !!hasThumbnail && !!hasProductName;
         if (isProduct) {
           orderTableContainer.push(item);
         }
@@ -78,29 +80,29 @@ export default class Belk {
       orderTableContainer.forEach((item) => {
         const productRowElement = item;
         const productNameElement = productRowElement.querySelector(
-          'td:nth-child(2) > table > tbody > tr > th:nth-child(1) > a > b'
+          'tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(1) > td > div > span > span > span > strong'
         );
-        const productName = productNameElement.textContent.trim() || /* istanbul ignore next */ '';
+        const productName = productNameElement.textContent.split('$').shift().trim() || /* istanbul ignore next */ '';
 
         const productQuantityElement = productRowElement.querySelector(
-          'td:nth-child(2) > table > tbody > tr > th:nth-child(1)'
+          'tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td > div > span > span > span'
         );
 
         /* istanbul ignore next */
-        const productQuantity = productQuantityElement.innerHTML.split('<br>')[3].split(': ').pop();
+        const productQuantity = productQuantityElement.textContent.split('QUANTITY:').pop().trim();
         const quantity = productQuantity ? parseInt(productQuantity, 10) : /* istanbul ignore next */ 1;
 
         const productThumbnailElement = productRowElement.querySelector(
-          'td:nth-child(1) > table > tbody > tr > td > a >img'
+          'tbody > tr > td:nth-child(1) > table > tbody > tr > td > a > img'
         );
         const productThumbnail = productThumbnailElement
           ? productThumbnailElement.getAttribute('src')
           : /* istanbul ignore next */ '';
 
         const productPriceElement = productRowElement.querySelector(
-          'td:nth-child(2) > table > tbody > tr > th:nth-child(1)'
+          'tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(1) > td > div > span > span > span > strong > span:nth-child(3)'
         );
-        const price = /* istanbul ignore next */ productPriceElement.innerHTML.split('<br>')[4].split(': ').pop();
+        const price = /* istanbul ignore next */ productPriceElement.innerHTML.trim();
         const productPrice = productPriceElement ? accounting.unformat(price) : /* istanbul ignore next */ 0;
 
         products = products.concat(

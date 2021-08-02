@@ -1,39 +1,95 @@
-import Nordstrom from './nordstrom';
-import Lululemon from './lululemon';
-import Abercrombie from './abercrombie';
-import Adidas from './adidas';
+import FashionNova from './fashionNova';
 import Aerie from './aerie';
-import BedBathBeyond from './bedBathBeyond';
-import Belk from './belk';
-import BrooksBrothers from './brooksBrothers';
+import GAP from './gap';
+import BananaRepublic from './bananaRepublic';
 import CalvinKlein from './calvinKlein';
 import Carters from './carters';
+import NordstromRack from './nordstromRack';
+import Nordstrom from './nordstrom';
+import HM from './hm';
+import JCPenney from './jcPenney';
+import TJMaxx from './tjMaxx';
+import Levi from './levi';
+import kMccarthy from './kMccarthy';
+import LaneBryant from './laneBryant';
+import JCrew from './jCrew';
+import Aldo from './aldo';
+import Abercrombie from './abercrombie';
+import AmericanEagleOutfitters from './americanEagleOutfitters';
+import BedBathBeyond from './bedBathBeyond';
+import BrooksBrothers from './brooksBrothers';
+import Express from './express';
+import VictoriaSecret from './victoriaSecret';
+import Target from './target';
+import Adidas from './adidas';
+import Journeys from './journeys';
 import Chicos from './chicos';
 import Converse from './converse';
-import Express from './express';
-import FashionNova from './fashionNova';
 import FinishLine from './finishLine';
 import FootLocker from './footLocker';
 import FreePeople from './freePeople';
-import GAP from './gap';
+import Gymboree from './gymboree';
+import Kohls from './kohls';
+import ShoeCarnival from './shoeCarnival';
+import Soma from './soma';
+import SteveMadden from './steveMadden';
+import Walmart from './walmart';
+import Talbots from './talbots';
+import UnderArmour from './underArmour';
+import Belk from './belk';
+import WhiteHouse from './whiteHouse';
+import Lululemon from './lululemon';
+import Macys from './macys';
+import Zara from './zara';
+import NorthFace from './northFace';
+import Skechers from './skechers';
+import OldNavy from './oldNavy';
 
 export {
-  Nordstrom,
-  Lululemon,
-  Abercrombie,
-  Adidas,
+  FashionNova,
   Aerie,
-  BedBathBeyond,
-  Belk,
-  BrooksBrothers,
+  GAP,
+  BananaRepublic,
   CalvinKlein,
   Carters,
+  NordstromRack,
+  Nordstrom,
+  HM,
+  JCPenney,
+  TJMaxx,
+  Levi,
+  kMccarthy,
+  LaneBryant,
+  JCrew,
+  Aldo,
+  Abercrombie,
+  AmericanEagleOutfitters,
+  BedBathBeyond,
+  BrooksBrothers,
+  Express,
+  VictoriaSecret,
+  Target,
+  Adidas,
+  Journeys,
   Chicos,
   Converse,
-  Express,
-  FashionNova,
   FinishLine,
   FootLocker,
   FreePeople,
-  GAP
+  Gymboree,
+  Kohls,
+  ShoeCarnival,
+  Soma,
+  SteveMadden,
+  Walmart,
+  Talbots,
+  UnderArmour,
+  Belk,
+  WhiteHouse,
+  Lululemon,
+  Macys,
+  Zara,
+  NorthFace,
+  Skechers,
+  OldNavy
 };
