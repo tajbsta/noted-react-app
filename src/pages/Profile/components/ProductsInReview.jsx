@@ -45,10 +45,10 @@ export default function ProductsInReview() {
         setIsFetchingProducts(true);
         const allProducts = await getProducts({
             size,
-            sortBy: 'created_at,_id',
+            sortBy,
             sort: 'desc',
             inReview: true,
-            nextPageToken: nextPageToken,
+            nextPageToken,
         });
         setIsFetchingProducts(false);
         const newProducts = [...products, ...allProducts];
