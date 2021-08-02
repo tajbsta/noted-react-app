@@ -583,6 +583,15 @@ const AddProductDonation = ({ handleClose }) => {
         } catch (e) {
             console.log(e.response);
             setIsSubmittingProducts(false);
+            let message = '';
+            switch (e.response.data.details) {
+                case 'PRODUCT_ALREADY_EXIST':
+                    message =
+                        'Error! Looks like this product has already been submitted for review';
+                    break;
+                default:
+                    message = 'Error submitting product. Please try again.';
+            }
             showError({
                 message: (
                     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -591,7 +600,7 @@ const AddProductDonation = ({ handleClose }) => {
                             className='ml-3 mb-0'
                             style={{ lineHeight: '16px' }}
                         >
-                            Error submitting product. Please try again.
+                            {message}
                         </h4>
                     </div>
                 ),
