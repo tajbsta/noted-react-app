@@ -118,7 +118,7 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
     const [allMerchants, setAllMerchants] = useState([]);
     const [selectOptions, setSelectOptions] = useState([
         { label: 'Select or Type a vendor', value: '' },
-        { label: 'Others', value: 'Others' },
+        { label: 'Others', value: 'OTHERS' },
     ]);
     const [isSubmittingProducts, setIsSubmittingProducts] = useState(false);
     const {
@@ -145,9 +145,9 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
             setFieldValue('vendorTag', '');
             return;
         }
-        if (data.value === 'Others') {
+        if (data.value === 'OTHERS') {
             setSelectedMerchant({});
-            setFieldValue('vendorTag', 'Others');
+            setFieldValue('vendorTag', 'OTHERS');
             return;
         }
         setSelectedMerchant(
@@ -229,7 +229,17 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
                 handleCancelModal();
             }
         } catch (e) {
+            console.log(e.response);
             setIsSubmittingProducts(false);
+            let message = '';
+            switch (e.response.data.details) {
+                case 'PRODUCT_ALREADY_EXIST':
+                    message =
+                        'Error! Looks like this product has already been submitted for review';
+                    break;
+                default:
+                    message = 'Error submitting product. Please try again.';
+            }
             showError({
                 message: (
                     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -238,7 +248,7 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
                             className='ml-3 mb-0'
                             style={{ lineHeight: '16px' }}
                         >
-                            Error submitting product. Please try again.
+                            {message}
                         </h4>
                     </div>
                 ),
@@ -316,7 +326,7 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
             setSelectOptions([
                 { label: 'Select or Type a vendor', value: '' },
                 ...newSelectOptions,
-                { label: 'Others', value: 'Others' },
+                { label: 'Others', value: 'OTHERS' },
             ]);
         } catch (e) {
             setIsFetchingVendors(false);
@@ -428,7 +438,7 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
                             </Form.Group>
                         </Col>
                     </Row>
-                    {productValues.vendorTag === 'Others' && (
+                    {productValues.vendorTag === 'OTHERS' && (
                         <Row>
                             <Col>
                                 <Form.Group>
@@ -519,6 +529,7 @@ const AddProductDonation = ({ handleClose }) => {
     const [allFiles, setAllFiles] = useState([]);
     const [isFetchingDonationOrgs, setIsFetchingDonationOrgs] = useState(false);
     const [formUrl, setFormUrl] = useState('');
+    const [isSubmittingProducts, setIsSubmittingProducts] = useState(false);
 
     const {
         errors,
@@ -542,7 +553,50 @@ const AddProductDonation = ({ handleClose }) => {
 
         if (!isEmpty(errors)) return;
 
-        console.log(productValues);
+        try {
+            setIsSubmittingProducts(true);
+            const res = await uploadProduct({
+                type: DONATION,
+                merchant: productValues.organisation,
+                name: productValues.itemName,
+                price: productValues.amount,
+                files: productValues.itemImages,
+            });
+            if (res.status === 'success') {
+                showSuccess({
+                    message: (
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <CheckCircle />
+                            <h4
+                                className='ml-3 mb-0'
+                                style={{ lineHeight: '19px' }}
+                            >
+                                Success! Your product has been submitted
+                                successfully.
+                            </h4>
+                        </div>
+                    ),
+                });
+                setIsSubmittingProducts(false);
+                handleCancelModal();
+            }
+        } catch (e) {
+            console.log(e.response);
+            setIsSubmittingProducts(false);
+            showError({
+                message: (
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <AlertCircle />
+                        <h4
+                            className='ml-3 mb-0'
+                            style={{ lineHeight: '16px' }}
+                        >
+                            Error submitting product. Please try again.
+                        </h4>
+                    </div>
+                ),
+            });
+        }
     };
 
     const handleChangeProductName = (e) => {
@@ -778,8 +832,24 @@ const AddProductDonation = ({ handleClose }) => {
                     <Button className='btn-cancel' onClick={handleCancelModal}>
                         Cancel
                     </Button>
-                    <Button className='btn-save' type='submit'>
-                        Submit Product
+                    <Button
+                        className='btn-save'
+                        type='submit'
+                        disabled={isSubmittingProducts}
+                    >
+                        {isSubmittingProducts ? 'Submitting' : 'Submit Product'}
+                        {isSubmittingProducts && (
+                            <Spinner
+                                animation='border'
+                                size='sm'
+                                style={{
+                                    color: '#fff',
+                                    opacity: '1',
+                                    marginLeft: '8px',
+                                }}
+                                className='spinner'
+                            />
+                        )}
                     </Button>
                 </Col>
             </Row>

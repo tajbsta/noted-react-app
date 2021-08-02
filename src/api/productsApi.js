@@ -1,4 +1,5 @@
 import axiosLib from 'axios';
+import { STANDARD } from '../constants/addProducts';
 import { api } from './api';
 import { getUserId, getUserSession } from './auth';
 
@@ -10,6 +11,7 @@ export const getProducts = async ({
     sort,
     nextPageToken,
     search,
+    inReview,
 }) => {
     const axios = await api();
 
@@ -35,6 +37,10 @@ export const getProducts = async ({
 
     if (search) {
         queries.push(`search=${search}`);
+    }
+
+    if (inReview) {
+        queries.push(`inReview=${inReview}`);
     }
 
     const query = queries.join('&');
@@ -148,17 +154,17 @@ export const uploadProduct = async (data) => {
             return res.key;
         })
     );
-
-    const dataToSend = {
-        type: data.type,
-        merchant: data.merchant,
-        orderRef: data.orderRef,
-        orderDate: data.orderDate,
-        name: data.name,
-        price: data.price,
-        files: fileKeys,
-        notes: data.notes,
-    };
+    let dataToSend = {};
+    dataToSend.type = data.type;
+    dataToSend.merchant = data.merchant;
+    dataToSend.files = fileKeys;
+    dataToSend.name = data.name;
+    dataToSend.price = data.price;
+    if (data.type === STANDARD) {
+        dataToSend.orderRef = data.orderRef;
+        dataToSend.orderDate = data.orderDate;
+        dataToSend.notes = data.notes;
+    }
 
     const userId = await getUserId();
     const axios = await api();

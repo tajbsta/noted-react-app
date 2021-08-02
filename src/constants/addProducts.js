@@ -1,13 +1,13 @@
-export const STANDARD = 'STANDARD';
-export const DONATION = 'DONATION';
+export const STANDARD = 'standard';
+export const DONATION = 'donation';
 
 export const ADD_PRODUCT_OPTIONS = [
     {
         value: STANDARD,
-        label: STANDARD,
+        label: 'STANDARD',
     },
     {
         value: DONATION,
-        label: DONATION,
+        label: 'DONATION',
     },
 ];
