@@ -21,6 +21,8 @@ import {
 } from '../constants/addProducts';
 import { showError, showSuccess } from '../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
+import { toTitleCase } from '../utils/data';
+import { Fragment } from 'react';
 
 const colourStyles = {
     control: (styles, state) => ({
@@ -94,24 +96,22 @@ export default function AddProductModal(props) {
                             </Form.Group>
                         </Col>
                     </Row>
-                    {type === STANDARD && (
-                        <AddProductStandard
-                            handleClose={handleClose}
-                            updatePlaceholderImage={(val) =>
-                                setProductImage(val)
-                            }
-                        />
-                    )}
-                    {type === DONATION && (
-                        <AddProductDonation handleClose={handleClose} />
-                    )}
+                    <AddProductStandard
+                        handleClose={handleClose}
+                        updatePlaceholderImage={(val) => setProductImage(val)}
+                        show={type === STANDARD}
+                    />
+                    <AddProductDonation
+                        handleClose={handleClose}
+                        show={type === DONATION}
+                    />
                 </Modal.Body>
             </Modal>
         </div>
     );
 }
 
-const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
+const AddProductStandard = ({ handleClose, updatePlaceholderImage, show }) => {
     const [allFiles, setAllFiles] = useState([]);
     const [isFetchingVendors, setIsFetchingVendors] = useState(false);
     const [selectedMerchant, setSelectedMerchant] = useState({});
@@ -182,6 +182,10 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
     const handleCancelModal = () => {
         setSelectedMerchant({});
         setAllFiles([]);
+        setSelectOptions([
+            { label: 'Select or Type a vendor', value: '' },
+            { label: 'Others', value: 'OTHERS' },
+        ]);
         setFieldValue('orderDate', '');
         setFieldValue('orderRef', '');
         setFieldValue('itemName', '');
@@ -205,8 +209,8 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
                 merchant: productValues.vendorTag,
                 orderRef: productValues.orderRef,
                 orderDate: productValues.orderDate,
-                name: productValues.itemName,
-                price: productValues.amount,
+                name: toTitleCase(productValues.itemName),
+                price: parseFloat(productValues.amount),
                 files: productValues.returnDocuments,
                 notes: productValues.itemNotes,
             });
@@ -337,195 +341,251 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage }) => {
         fetchVendors();
     }, []);
 
-    return (
-        <Form id='passForm' onSubmit={handleSubmitProduct}>
-            <Row className='m-row'>
-                <Col>
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>Merchant</Form.Label>
-                                <div>
-                                    <Select
-                                        className='merchant-dropdown-menu'
-                                        defaultValue={selectOptions[0]}
-                                        isLoading={isFetchingVendors}
-                                        isClearable={!isEmpty(selectedMerchant)}
-                                        isSearchable={true}
-                                        name='merchant'
-                                        styles={colourStyles}
-                                        options={selectOptions}
-                                        onChange={handleOnSelectMerchant}
-                                    ></Select>
-                                </div>
-                                {renderInlineError(errors.vendorTag)}
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>Order Date</Form.Label>
-                                <div>{renderDatePicker()}</div>
-                            </Form.Group>
-                        </Col>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>Order Ref. #</Form.Label>
-                                <div>
-                                    <Form.Control
-                                        name='order ref'
-                                        type='text'
-                                        onChange={handleChangeOrderRef}
-                                        value={productValues.orderRef}
-                                        required
-                                    />
-                                </div>
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>Product Name</Form.Label>
-                                <div>
-                                    <Form.Control
-                                        style={{ maxWidth: 'none' }}
-                                        type='name'
-                                        isValid={
-                                            !errors.itemName &&
-                                            productValues.itemName.length > 0
-                                        }
-                                        isInvalid={errors.itemName}
-                                        name='itemName'
-                                        value={productValues.itemName || ''}
-                                        onChange={handleChangeProductName}
-                                        required
-                                    />
-                                    {productValues.itemName.length > 0 &&
-                                        renderInlineError(errors.itemName)}
-                                </div>
-                            </Form.Group>
-                        </Col>
-                    </Row>
+    useEffect(() => {
+        if (!show) {
+            setSelectedMerchant({});
+            setAllFiles([]);
+            setFieldValue('orderDate', '');
+            setFieldValue('orderRef', '');
+            setFieldValue('itemName', '');
+            setFieldValue('itemNotes', '');
+            setFieldValue('amount', '');
+            setFieldValue('vendorTag', '');
+            setFieldValue('returnDocuments', []);
+        }
+    }, [show]);
 
-                    <Row>
+    return (
+        <Fragment>
+            {show && (
+                <Form id='passForm' onSubmit={handleSubmitProduct}>
+                    <Row className='m-row'>
                         <Col>
-                            <Form.Group>
-                                <Form.Label>Price</Form.Label>
-                                <div>
-                                    <Form.Control
-                                        style={{ maxWidth: 'none' }}
-                                        isValid={
-                                            !errors.amount &&
-                                            productValues.amount.length > 0
-                                        }
-                                        isInvalid={errors.amount}
-                                        name='amount'
-                                        value={productValues.amount}
-                                        onChange={handleChangeProductPrice}
-                                        onBlur={(e) =>
-                                            setFieldValue(
-                                                'amount',
-                                                formatCurrency(e.target.value)
-                                            )
-                                        }
-                                        required
-                                    />
-                                    {productValues.amount.length > 0 &&
-                                        renderInlineError(errors.amount)}
-                                </div>
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    {productValues.vendorTag === 'OTHERS' && (
-                        <Row>
-                            <Col>
-                                <Form.Group>
-                                    <Form.Label>Additional Notes</Form.Label>
-                                    <div>
-                                        <Form.Control
-                                            as='textarea'
+                            <Row>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>Merchant</Form.Label>
+                                        <div>
+                                            <Select
+                                                className='merchant-dropdown-menu'
+                                                defaultValue={selectOptions[0]}
+                                                isLoading={isFetchingVendors}
+                                                isClearable={
+                                                    !isEmpty(selectedMerchant)
+                                                }
+                                                isSearchable={true}
+                                                name='merchant'
+                                                styles={colourStyles}
+                                                options={selectOptions}
+                                                onChange={
+                                                    handleOnSelectMerchant
+                                                }
+                                            ></Select>
+                                        </div>
+                                        {renderInlineError(errors.vendorTag)}
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>Order Date</Form.Label>
+                                        <div>{renderDatePicker()}</div>
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>Order Ref. #</Form.Label>
+                                        <div>
+                                            <Form.Control
+                                                name='order ref'
+                                                type='text'
+                                                onChange={handleChangeOrderRef}
+                                                value={productValues.orderRef}
+                                                required
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>Product Name</Form.Label>
+                                        <div>
+                                            <Form.Control
+                                                style={{ maxWidth: 'none' }}
+                                                type='name'
+                                                isValid={
+                                                    !errors.itemName &&
+                                                    productValues.itemName
+                                                        .length > 0
+                                                }
+                                                isInvalid={errors.itemName}
+                                                name='itemName'
+                                                value={
+                                                    productValues.itemName || ''
+                                                }
+                                                onChange={
+                                                    handleChangeProductName
+                                                }
+                                                required
+                                            />
+                                            {productValues.itemName.length >
+                                                0 &&
+                                                renderInlineError(
+                                                    errors.itemName
+                                                )}
+                                        </div>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>Price</Form.Label>
+                                        <div>
+                                            <Form.Control
+                                                style={{ maxWidth: 'none' }}
+                                                isValid={
+                                                    !errors.amount &&
+                                                    productValues.amount
+                                                        .length > 0
+                                                }
+                                                isInvalid={errors.amount}
+                                                name='amount'
+                                                value={productValues.amount}
+                                                onChange={
+                                                    handleChangeProductPrice
+                                                }
+                                                onBlur={(e) => {
+                                                    if (e.target.value) {
+                                                        setFieldValue(
+                                                            'amount',
+                                                            formatCurrency(
+                                                                e.target.value
+                                                            )
+                                                        );
+                                                    }
+                                                }}
+                                                required
+                                            />
+                                            {productValues.amount.length > 0 &&
+                                                renderInlineError(
+                                                    errors.amount
+                                                )}
+                                        </div>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            {productValues.vendorTag === 'OTHERS' && (
+                                <Row>
+                                    <Col>
+                                        <Form.Group>
+                                            <Form.Label>
+                                                Additional Notes
+                                            </Form.Label>
+                                            <div>
+                                                <Form.Control
+                                                    as='textarea'
+                                                    style={{ maxWidth: 'none' }}
+                                                    rows='3'
+                                                    isValid={
+                                                        !errors.itemNotes &&
+                                                        productValues.itemNotes
+                                                            .length > 0
+                                                    }
+                                                    isInvalid={errors.itemNotes}
+                                                    name='itemNotes'
+                                                    value={
+                                                        productValues.itemNotes ||
+                                                        ''
+                                                    }
+                                                    onChange={
+                                                        handleChangeProductNotes
+                                                    }
+                                                />
+                                                {productValues.itemNotes
+                                                    .length > 0 &&
+                                                    renderInlineError(
+                                                        errors.itemNotes
+                                                    )}
+                                            </div>
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                            )}
+                            <Row>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label className='documents-title'>
+                                            Return Documents{' '}
+                                            <small style={{ fontSize: '11px' }}>
+                                                (i.e Shipping or order receipts)
+                                            </small>
+                                        </Form.Label>
+                                        <div
                                             style={{ maxWidth: 'none' }}
-                                            rows='3'
-                                            isValid={
-                                                !errors.itemNotes &&
-                                                productValues.itemNotes.length >
-                                                    0
-                                            }
-                                            isInvalid={errors.itemNotes}
-                                            name='itemNotes'
-                                            value={
-                                                productValues.itemNotes || ''
-                                            }
-                                            onChange={handleChangeProductNotes}
-                                        />
-                                        {productValues.itemNotes.length > 0 &&
-                                            renderInlineError(errors.itemNotes)}
-                                    </div>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                    )}
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label className='documents-title'>
-                                    Return Documents{' '}
-                                    <small style={{ fontSize: '11px' }}>
-                                        (i.e Shipping or order receipts)
-                                    </small>
-                                </Form.Label>
-                                <div
-                                    style={{ maxWidth: 'none' }}
-                                    className='dropzone-container'
-                                    {...getRootProps()}
-                                >
-                                    <input {...getInputProps()} />
-                                    <p className='sofia-pro text-drag'>
-                                        Drag & drop or click to upload
-                                    </p>
-                                </div>
-                                {renderInlineError(errors.returnDocuments)}
-                                {acceptedFileItems}
-                            </Form.Group>
+                                            className='dropzone-container'
+                                            {...getRootProps()}
+                                        >
+                                            <input {...getInputProps()} />
+                                            <p className='sofia-pro text-drag'>
+                                                Drag & drop or click to upload
+                                            </p>
+                                        </div>
+                                        {renderInlineError(
+                                            errors.returnDocuments
+                                        )}
+                                        {acceptedFileItems}
+                                    </Form.Group>
+                                </Col>
+                            </Row>
                         </Col>
                     </Row>
-                </Col>
-            </Row>
-            <Row>
-                <Col className='btn btn-container'>
-                    <Button className='btn-cancel' onClick={handleCancelModal}>
-                        Cancel
-                    </Button>
-                    <Button
-                        disabled={isSubmittingProducts}
-                        className='btn-save'
-                        type='submit'
-                    >
-                        {isSubmittingProducts ? 'Submitting' : 'Submit Product'}
-                        {isSubmittingProducts && (
-                            <Spinner
-                                animation='border'
-                                size='sm'
-                                style={{
-                                    color: '#fff',
-                                    opacity: '1',
-                                    marginLeft: '8px',
-                                }}
-                                className='spinner'
-                            />
-                        )}
-                    </Button>
-                </Col>
-            </Row>
-        </Form>
+                    <Row>
+                        <Col className='btn btn-container'>
+                            <Button
+                                className='btn-cancel'
+                                onClick={handleCancelModal}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                disabled={isSubmittingProducts}
+                                className='btn-save'
+                                type='submit'
+                            >
+                                {isSubmittingProducts
+                                    ? 'Submitting'
+                                    : 'Submit Product'}
+                                {isSubmittingProducts && (
+                                    <Spinner
+                                        animation='border'
+                                        size='sm'
+                                        style={{
+                                            color: '#fff',
+                                            opacity: '1',
+                                            marginLeft: '8px',
+                                        }}
+                                        className='spinner'
+                                    />
+                                )}
+                            </Button>
+                        </Col>
+                    </Row>
+                </Form>
+            )}
+        </Fragment>
     );
 };
 
-const AddProductDonation = ({ handleClose }) => {
+const AddProductDonation = ({ handleClose, show }) => {
     const [allDonationOrgs, setAllDonationOrgs] = useState([]);
-    const [selectOptions, setSelectOptions] = useState({});
+    const [selectOptions, setSelectOptions] = useState([
+        { label: 'Select or Type a vendor', value: '' },
+    ]);
     const [allFiles, setAllFiles] = useState([]);
     const [isFetchingDonationOrgs, setIsFetchingDonationOrgs] = useState(false);
     const [formUrl, setFormUrl] = useState('');
@@ -558,8 +618,8 @@ const AddProductDonation = ({ handleClose }) => {
             const res = await uploadProduct({
                 type: DONATION,
                 merchant: productValues.organisation,
-                name: productValues.itemName,
-                price: productValues.amount,
+                name: toTitleCase(productValues.itemName),
+                price: parseFloat(productValues.amount),
                 files: productValues.itemImages,
             });
             if (res.status === 'success') {
@@ -634,7 +694,7 @@ const AddProductDonation = ({ handleClose }) => {
 
     const handleCancelModal = () => {
         setAllDonationOrgs([]);
-        setSelectOptions({});
+        setSelectOptions([{ label: 'Select or Type a vendor', value: '' }]);
         setIsFetchingDonationOrgs(false);
         setFormUrl('');
         setAllFiles([]);
@@ -690,7 +750,10 @@ const AddProductDonation = ({ handleClose }) => {
             }));
             setIsFetchingDonationOrgs(false);
             setAllDonationOrgs(donationOrgs);
-            setSelectOptions(newSelectOptions);
+            setSelectOptions([
+                { label: 'Select or Type a vendor', value: '' },
+                ...newSelectOptions,
+            ]);
         } catch (e) {
             setIsFetchingDonationOrgs(false);
         }
@@ -700,168 +763,215 @@ const AddProductDonation = ({ handleClose }) => {
         fetchDonationOrgs();
     }, []);
 
-    return (
-        <Form id='passForm' onSubmit={handleSubmitProduct}>
-            <Row className='m-row' style={{ marginBottom: '1.5rem' }}>
-                <Col>
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>Donation Organization</Form.Label>
-                                <div>
-                                    <Select
-                                        className='merchant-dropdown-menu'
-                                        defaultValue={selectOptions[0]}
-                                        isLoading={isFetchingDonationOrgs}
-                                        isClearable={false}
-                                        isSearchable={false}
-                                        name='merchant'
-                                        styles={colourStyles}
-                                        options={selectOptions}
-                                        onChange={handleOnSelectDonationOrg}
-                                    ></Select>
-                                    {errors.organisation &&
-                                        renderInlineError(errors.organisation)}
-                                </div>
-                                {renderInlineError(errors.vendorTag)}
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>Donation Item</Form.Label>
-                                <div>
-                                    <Form.Control
-                                        style={{ maxWidth: 'none' }}
-                                        type='name'
-                                        isValid={
-                                            !errors.itemName &&
-                                            productValues.itemName.length > 0
-                                        }
-                                        isInvalid={errors.itemName}
-                                        name='itemName'
-                                        value={productValues.itemName || ''}
-                                        onChange={handleChangeProductName}
-                                        required
-                                    />
-                                    {productValues.itemName.length > 0 &&
-                                        renderInlineError(errors.itemName)}
-                                </div>
-                            </Form.Group>
-                        </Col>
-                    </Row>
+    useEffect(() => {
+        if (!show) {
+            setIsFetchingDonationOrgs(false);
+            setFormUrl('');
+            setAllFiles([]);
+            setFieldValue('itemName', '');
+            setFieldValue('amount', '');
+            setFieldValue('organisation', '');
+            setFieldValue('itemImages', []);
+        }
+    }, [show]);
 
-                    <Row>
+    return (
+        <Fragment>
+            {show && (
+                <Form id='passForm' onSubmit={handleSubmitProduct}>
+                    <Row className='m-row' style={{ marginBottom: '1.5rem' }}>
                         <Col>
-                            <Form.Group>
-                                <Form.Label>Price</Form.Label>
-                                <div>
-                                    <Form.Control
-                                        style={{ maxWidth: 'none' }}
-                                        isValid={
-                                            !errors.amount &&
-                                            productValues.amount.length > 0
-                                        }
-                                        isInvalid={errors.amount}
-                                        name='amount'
-                                        value={productValues.amount}
-                                        onChange={handleChangeProductPrice}
-                                        onBlur={(e) =>
-                                            setFieldValue(
-                                                'amount',
-                                                formatCurrency(e.target.value)
-                                            )
-                                        }
-                                        required
+                            <Row>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>
+                                            Donation Organization
+                                        </Form.Label>
+                                        <div>
+                                            <Select
+                                                className='merchant-dropdown-menu'
+                                                defaultValue={selectOptions[0]}
+                                                isLoading={
+                                                    isFetchingDonationOrgs
+                                                }
+                                                isClearable={false}
+                                                isSearchable={false}
+                                                name='merchant'
+                                                styles={colourStyles}
+                                                options={selectOptions}
+                                                onChange={
+                                                    handleOnSelectDonationOrg
+                                                }
+                                            ></Select>
+                                            {errors.organisation &&
+                                                renderInlineError(
+                                                    errors.organisation
+                                                )}
+                                        </div>
+                                        {renderInlineError(errors.vendorTag)}
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>Donation Item</Form.Label>
+                                        <div>
+                                            <Form.Control
+                                                style={{ maxWidth: 'none' }}
+                                                type='name'
+                                                isValid={
+                                                    !errors.itemName &&
+                                                    productValues.itemName
+                                                        .length > 0
+                                                }
+                                                isInvalid={errors.itemName}
+                                                name='itemName'
+                                                value={
+                                                    productValues.itemName || ''
+                                                }
+                                                onChange={
+                                                    handleChangeProductName
+                                                }
+                                                required
+                                            />
+                                            {productValues.itemName.length >
+                                                0 &&
+                                                renderInlineError(
+                                                    errors.itemName
+                                                )}
+                                        </div>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>Price</Form.Label>
+                                        <div>
+                                            <Form.Control
+                                                style={{ maxWidth: 'none' }}
+                                                isValid={
+                                                    !errors.amount &&
+                                                    productValues.amount
+                                                        .length > 0
+                                                }
+                                                isInvalid={errors.amount}
+                                                name='amount'
+                                                value={productValues.amount}
+                                                onChange={
+                                                    handleChangeProductPrice
+                                                }
+                                                onBlur={(e) => {
+                                                    if (e.target.value) {
+                                                        setFieldValue(
+                                                            'amount',
+                                                            formatCurrency(
+                                                                e.target.value
+                                                            )
+                                                        );
+                                                    }
+                                                }}
+                                                required
+                                            />
+                                            {productValues.amount.length > 0 &&
+                                                renderInlineError(
+                                                    errors.amount
+                                                )}
+                                        </div>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label className='documents-title'>
+                                            Item Image{' '}
+                                            <small style={{ fontSize: '11px' }}>
+                                                (i.e Upload an image of your
+                                                donation items)
+                                            </small>
+                                        </Form.Label>
+                                        <div
+                                            style={{ maxWidth: 'none' }}
+                                            className='dropzone-container'
+                                            {...getRootProps()}
+                                        >
+                                            <input {...getInputProps()} />
+                                            <p className='sofia-pro text-drag'>
+                                                Drag & drop or click to upload
+                                            </p>
+                                        </div>
+                                        {renderInlineError(errors.itemImages)}
+                                        {acceptedFileItems}
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    {formUrl && (
+                                        <small
+                                            style={{
+                                                fontSize: '14px',
+                                                lineHeight: '16px',
+                                                color: '#2e1d3a',
+                                                mixBlendMode: 'normal',
+                                                opacity: '0.6',
+                                            }}
+                                        >
+                                            Please note that you will need to
+                                            download the charity’s form and
+                                            follow the instructions for tax
+                                            deduction purposes. Download the
+                                            form{' '}
+                                            <a
+                                                download
+                                                target='_blank'
+                                                href={formUrl}
+                                                rel='noreferrer'
+                                            >
+                                                here.
+                                            </a>
+                                        </small>
+                                    )}
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className='btn btn-container'>
+                            <Button
+                                className='btn-cancel'
+                                onClick={handleCancelModal}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                className='btn-save'
+                                type='submit'
+                                disabled={isSubmittingProducts}
+                            >
+                                {isSubmittingProducts
+                                    ? 'Submitting'
+                                    : 'Submit Product'}
+                                {isSubmittingProducts && (
+                                    <Spinner
+                                        animation='border'
+                                        size='sm'
+                                        style={{
+                                            color: '#fff',
+                                            opacity: '1',
+                                            marginLeft: '8px',
+                                        }}
+                                        className='spinner'
                                     />
-                                    {productValues.amount.length > 0 &&
-                                        renderInlineError(errors.amount)}
-                                </div>
-                            </Form.Group>
+                                )}
+                            </Button>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label className='documents-title'>
-                                    Item Image{' '}
-                                    <small style={{ fontSize: '11px' }}>
-                                        (i.e Upload an image of your donation
-                                        items)
-                                    </small>
-                                </Form.Label>
-                                <div
-                                    style={{ maxWidth: 'none' }}
-                                    className='dropzone-container'
-                                    {...getRootProps()}
-                                >
-                                    <input {...getInputProps()} />
-                                    <p className='sofia-pro text-drag'>
-                                        Drag & drop or click to upload
-                                    </p>
-                                </div>
-                                {renderInlineError(errors.itemImages)}
-                                {acceptedFileItems}
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            {formUrl && (
-                                <small
-                                    style={{
-                                        fontSize: '14px',
-                                        lineHeight: '16px',
-                                        color: '#2e1d3a',
-                                        mixBlendMode: 'normal',
-                                        opacity: '0.6',
-                                    }}
-                                >
-                                    Please note that you will need to download
-                                    the charity’s form and follow the
-                                    instructions for tax deduction purposes.
-                                    Download the form{' '}
-                                    <a
-                                        download
-                                        target='_blank'
-                                        href={formUrl}
-                                        rel='noreferrer'
-                                    >
-                                        here.
-                                    </a>
-                                </small>
-                            )}
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
-            <Row>
-                <Col className='btn btn-container'>
-                    <Button className='btn-cancel' onClick={handleCancelModal}>
-                        Cancel
-                    </Button>
-                    <Button
-                        className='btn-save'
-                        type='submit'
-                        disabled={isSubmittingProducts}
-                    >
-                        {isSubmittingProducts ? 'Submitting' : 'Submit Product'}
-                        {isSubmittingProducts && (
-                            <Spinner
-                                animation='border'
-                                size='sm'
-                                style={{
-                                    color: '#fff',
-                                    opacity: '1',
-                                    marginLeft: '8px',
-                                }}
-                                className='spinner'
-                            />
-                        )}
-                    </Button>
-                </Col>
-            </Row>
-        </Form>
+                </Form>
+            )}
+        </Fragment>
     );
 };

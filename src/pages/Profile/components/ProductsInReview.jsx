@@ -42,18 +42,22 @@ export default function ProductsInReview() {
     };
 
     const fetchProductsInReview = async (nextPageToken) => {
-        setIsFetchingProducts(true);
-        const allProducts = await getProducts({
-            size,
-            sortBy,
-            sort: 'desc',
-            inReview: true,
-            nextPageToken,
-        });
-        setIsFetchingProducts(false);
-        const newProducts = [...products, ...allProducts];
-        setProducts(newProducts);
-        setShowNextPageButton(newProducts.length >= size);
+        try {
+            setIsFetchingProducts(true);
+            const allProducts = await getProducts({
+                size,
+                sortBy,
+                sort: 'desc',
+                inReview: true,
+                nextPageToken,
+            });
+            setIsFetchingProducts(false);
+            const newProducts = [...products, ...allProducts];
+            setProducts(newProducts);
+            setShowNextPageButton(newProducts.length >= size);
+        } catch (e) {
+            console.log(e.response);
+        }
     };
 
     useEffect(() => {
