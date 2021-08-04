@@ -11,7 +11,7 @@ export const getProducts = async ({
     sort,
     nextPageToken,
     search,
-    inReview,
+    reviewStatus,
 }) => {
     const axios = await api();
 
@@ -39,8 +39,8 @@ export const getProducts = async ({
         queries.push(`search=${search}`);
     }
 
-    if (inReview) {
-        queries.push(`inReview=${inReview}`);
+    if (reviewStatus) {
+        queries.push(`review_status=${reviewStatus}`);
     }
 
     const query = queries.join('&');

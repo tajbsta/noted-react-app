@@ -48,9 +48,10 @@ export default function ProductsInReview() {
                 size,
                 sortBy,
                 sort: 'desc',
-                inReview: true,
+                reviewStatus: 'pending,approved,rejected',
                 nextPageToken,
             });
+            console.log(allProducts);
             setIsFetchingProducts(false);
             const newProducts = [...products, ...allProducts];
             setProducts(newProducts);

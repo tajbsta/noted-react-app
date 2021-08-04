@@ -26,7 +26,6 @@ export default function ProductInReviewCard({ item }) {
     const RenderStatus = (status) => {
         switch (status) {
             case 'pending':
-            case 'default':
                 return (
                     <h4 className='sofia-pro pending-status mb-0'>Pending</h4>
                 );
@@ -34,9 +33,9 @@ export default function ProductInReviewCard({ item }) {
                 return (
                     <h4 className='sofia-pro rejected-status mb-0'>Rejected</h4>
                 );
-            case 'accepted':
+            case 'approved':
                 return (
-                    <h4 className='sofia-pro accepted-status mb-0'>Accepted</h4>
+                    <h4 className='sofia-pro accepted-status mb-0'>Approved</h4>
                 );
             default:
                 return <></>;
@@ -118,7 +117,7 @@ export default function ProductInReviewCard({ item }) {
                                     xs={3}
                                 >
                                     {RenderStatus(
-                                        get(item, 'return_status', 'pending')
+                                        get(item, 'review_status', 'pending')
                                     )}
                                 </Col>
                                 <Col xs={3}>
