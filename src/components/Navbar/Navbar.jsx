@@ -63,6 +63,14 @@ export default function Topnav() {
         '/code/verify',
     ];
 
+    const publicViews = [
+        '/',
+        '/login',
+        '/join',
+        '/forgot-password',
+        '/reset-password',
+    ];
+
     const {
         location: { pathname },
     } = useHistory();
@@ -95,7 +103,15 @@ export default function Topnav() {
     };
 
     const backToHome = () => {
-        if (guestViews.indexOf(pageLocation) != -1) {
+        if (publicViews.includes(pageLocation)) {
+            window.open(
+                `${process.env.REACT_APP_NOTED_LANDING || ''}`,
+                '_blank'
+            );
+            return;
+        }
+
+        if (guestViews.indexOf(pageLocation) !== -1) {
             history.push('/');
         } else {
             if (searchQuery) {
@@ -151,8 +167,10 @@ export default function Topnav() {
                 <>
                     <Navbar.Brand
                         onClick={backToHome}
-                        style={{ cursor: 'pointer' }}
-                        className="ml-4 mr-1"
+                        style={{
+                            cursor: 'pointer',
+                        }}
+                        className='ml-4 mr-1'
                     >
                         <BrandLogoSvg />
                     </Navbar.Brand>
@@ -172,23 +190,23 @@ export default function Topnav() {
 
             {!guestViews.includes(pathname) && (
                 <>
-                    <div id="DashboardNav">
-                        <Container className="ml-3">
+                    <div id='DashboardNav'>
+                        <Container className='ml-3'>
                             <Form onSubmit={(e) => e.preventDefault()}>
-                                <div className="input-group input-group-lg input-group-merge background-color search-bar-input">
+                                <div className='input-group input-group-lg input-group-merge background-color search-bar-input'>
                                     <Form.Control
-                                        type="text"
-                                        className="form-control form-control-prepended list-search background-color sofia-pro text-16 color"
-                                        placeholder="Search purchases"
+                                        type='text'
+                                        className='form-control form-control-prepended list-search background-color sofia-pro text-16 color'
+                                        placeholder='Search purchases'
                                         value={searchQuery}
                                         onChange={(e) =>
                                             setSearchQuery(e.target.value)
                                         }
                                         onKeyPress={submitsearch}
                                     />
-                                    <div className="input-group-prepend">
-                                        <div className="input-group-text background-color">
-                                            <span className="fe fe-search">
+                                    <div className='input-group-prepend'>
+                                        <div className='input-group-text background-color'>
+                                            <span className='fe fe-search'>
                                                 <img src={Search} />
                                             </span>
                                         </div>
@@ -196,31 +214,31 @@ export default function Topnav() {
                                 </div>
                             </Form>
                         </Container>
-                        <div className="mr-4" id="nav-toggle">
-                            <ul className="navbar-nav">
-                                <li className="nav-item dropdown">
+                        <div className='mr-4' id='nav-toggle'>
+                            <ul className='navbar-nav'>
+                                <li className='nav-item dropdown'>
                                     <a
-                                        className="nav-link dropdown-toggle"
-                                        id="navbarDropdownMenuLink"
-                                        role="button"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false"
+                                        className='nav-link dropdown-toggle'
+                                        id='navbarDropdownMenuLink'
+                                        role='button'
+                                        data-toggle='dropdown'
+                                        aria-haspopup='true'
+                                        aria-expanded='false'
                                         onClick={() =>
                                             setShowDropdown(!showDropdown)
                                         }
                                     >
                                         <img
                                             src={ProfileIcon}
-                                            width="30"
-                                            height="30"
-                                            id="navbarDropdownMenuLink"
+                                            width='30'
+                                            height='30'
+                                            id='navbarDropdownMenuLink'
                                         />
                                     </a>
                                     <div
-                                        id="navigation-menu"
-                                        className="dropdown-menu"
-                                        aria-labelledby="navbarDropdownMenuLink"
+                                        id='navigation-menu'
+                                        className='dropdown-menu'
+                                        aria-labelledby='navbarDropdownMenuLink'
                                         style={{
                                             display: showDropdown
                                                 ? 'block'
@@ -228,20 +246,20 @@ export default function Topnav() {
                                         }}
                                     >
                                         <button
-                                            className="dropdown-item sofia-pro"
+                                            className='dropdown-item sofia-pro'
                                             onClick={profile}
                                         >
                                             Profile
                                         </button>
                                         <button
-                                            className="dropdown-item sofia-pro"
+                                            className='dropdown-item sofia-pro'
                                             onClick={settings}
                                         >
                                             Settings
                                         </button>
-                                        <hr className="dropdown-line"></hr>
+                                        <hr className='dropdown-line'></hr>
                                         <button
-                                            className="dropdown-item sofia-pro"
+                                            className='dropdown-item sofia-pro'
                                             onClick={logout}
                                         >
                                             Log Out
