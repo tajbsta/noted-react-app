@@ -51,7 +51,6 @@ export default function PickUpDetails({
     const [paymentFormValues, setPaymentFormValues] = useState(null);
     const [isPaymentFormEmpty, setIsPaymentFormEmpty] = useState(true);
     const [loading, setLoading] = useState(false);
-
     const initialCheckoutView = ['/checkout'];
     const {
         errors: addressFormErrors,
@@ -88,6 +87,8 @@ export default function PickUpDetails({
         initialValues: {
             date: null,
             time: null,
+            timeLabel: null,
+            slot: null,
         },
         validationSchema: pickUpDateSchema,
         // enableReinitialize: true,
@@ -120,10 +121,10 @@ export default function PickUpDetails({
         setModalShow(false);
     };
 
-    const savePickUpDetails = async ({ date, time }) => {
+    const savePickUpDetails = async ({ date, time, slot, timeLabel }) => {
         //
         // console.log('⊂(・ヮ・⊂)', { date, time });
-        dispatch(setPickupDetails({ date, time }));
+        dispatch(setPickupDetails({ date, time, slot, timeLabel }));
     };
 
     const openDatePickerModal = () => {
@@ -142,16 +143,10 @@ export default function PickUpDetails({
     });
 
     const renderTime = () => {
-        const timeText =
-            pickUpDateFormValues.time === 'AM'
-                ? '9 A.M. - 12 P.M.'
-                : '12 P.M. - 3 P.M.';
-
-        return `Between ${timeText
+        return `Between ${pickUpDateFormValues.timeLabel
             .replace('-', 'and')
             .replace(new RegExp(/\./g), '')}`;
     };
-
     const setDefaults = async () => {
         const [user, paymentMethods] = await Promise.all([
             getUser(),
@@ -193,8 +188,8 @@ export default function PickUpDetails({
         // Set payment method default
         const orderPayment = order
             ? order.billing.find(
-                  (billing) => billing.pricing === PRICING.STANDARD
-              )
+                (billing) => billing.pricing === PRICING.STANDARD
+            )
             : {};
         const orderPaymentId = orderPayment
             ? orderPayment.paymentMethodId
@@ -275,9 +270,8 @@ export default function PickUpDetails({
                                     )}
                                     <div className='mt-2'>
                                         <h4
-                                            className={`sofia-pro mb-0 ${
-                                                isMobile ? 'text-14' : 'text-16'
-                                            }`}
+                                            className={`sofia-pro mb-0 ${isMobile ? 'text-14' : 'text-16'
+                                                }`}
                                         >
                                             Payment Method
                                         </h4>
@@ -423,11 +417,11 @@ export default function PickUpDetails({
                                                                                 {addressFormValues
                                                                                     .line1
                                                                                     .length >
-                                                                                12
+                                                                                    12
                                                                                     ? `,${truncateString(
-                                                                                          addressFormValues.line1,
-                                                                                          12
-                                                                                      )}`
+                                                                                        addressFormValues.line1,
+                                                                                        12
+                                                                                    )}`
                                                                                     : `, ${addressFormValues.line1}`}
                                                                             </>
                                                                         )}
@@ -810,7 +804,7 @@ export default function PickUpDetails({
                                     </div>
                                     {get(pickUpDateFormValues, 'date', null) ===
                                         null &&
-                                    get(pickUpDateFormValues, 'time', null) ===
+                                        get(pickUpDateFormValues, 'time', null) ===
                                         null ? (
                                         <>
                                             <h4 className='p-0 m-0 sofia-pro'>
@@ -842,9 +836,7 @@ export default function PickUpDetails({
                                             >
                                                 Edit
                                             </button>
-                                            {!initialCheckoutView.includes(
-                                                pathname
-                                            ) && (
+                                            {!initialCheckoutView.includes(pathname) && (
                                                 <>
                                                     <hr
                                                         style={{
@@ -883,12 +875,17 @@ export default function PickUpDetails({
                     show={isDatePickerOpen}
                     onHide={() => setisDatePickerOpen(false)}
                     pickUpDateFormValues={pickUpDateFormValues}
-                    onConfirm={(pickupDate, pickupTime) => {
+                    onConfirm={(pickupDate, pickupTime, pickupSlot, pickupTimeLabel) => {
                         pickupDateSetFieldValue('date', pickupDate);
                         pickupDateSetFieldValue('time', pickupTime);
+                        pickupDateSetFieldValue('slot', pickupSlot);
+                        pickupDateSetFieldValue('timeLabel', pickupTimeLabel);
+
                         savePickUpDetails({
                             date: pickupDate,
                             time: pickupTime,
+                            slot: pickupSlot,
+                            timeLabel: pickupTimeLabel
                         });
                     }}
                 />

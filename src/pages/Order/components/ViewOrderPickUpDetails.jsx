@@ -29,6 +29,7 @@ import DownArrow from '../../../assets/icons/DownArrow.svg';
 import { Col, Row } from 'react-bootstrap';
 import { truncateString } from '../../../utils/data';
 import PRICING from '../../../constants/pricing';
+import { ORDER_PICKUP_SLOT, ORDER_PICKUP_TIME, PICKUP_SLOT_LABELS } from '../../../constants/addPickupSlot';
 
 export default function ViewOrderPickUpDetails({ order }) {
     const dispatch = useDispatch();
@@ -70,6 +71,7 @@ export default function ViewOrderPickUpDetails({ order }) {
         initialValues: {
             date: null,
             time: null,
+            slot: null,
         },
         validationSchema: pickUpDateSchema,
         // enableReinitialize: true,
@@ -93,10 +95,10 @@ export default function ViewOrderPickUpDetails({ order }) {
         setModalShow(false);
     };
 
-    const savePickUpDetails = async ({ date, time }) => {
+    const savePickUpDetails = async ({ date, time, slot }) => {
         //
         // console.log('⊂(・ヮ・⊂)', { date, time });
-        dispatch(setPickupDetails({ date, time }));
+        dispatch(setPickupDetails({ date, time, slot }));
     };
 
     const openDatePickerModal = () => {
@@ -115,10 +117,19 @@ export default function ViewOrderPickUpDetails({ order }) {
     });
 
     const renderTime = () => {
-        const timeText =
-            pickUpDateFormValues.time === 'AM'
-                ? '9 A.M. - 12 P.M.'
-                : '12 P.M. - 3 P.M.';
+        let timeText = '';
+        if (pickUpDateFormValues.time === ORDER_PICKUP_TIME.AM) {
+
+            if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.A) timeText = PICKUP_SLOT_LABELS.AM.A;
+            else if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.B) timeText = PICKUP_SLOT_LABELS.AM.B;
+            else if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.C) timeText = PICKUP_SLOT_LABELS.AM.C;
+
+        } else if (pickUpDateFormValues.time === ORDER_PICKUP_TIME.PM) {
+
+            if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.A) timeText = PICKUP_SLOT_LABELS.PM.A;
+            else if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.B) timeText = PICKUP_SLOT_LABELS.PM.B;
+            else if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.C) timeText = PICKUP_SLOT_LABELS.PM.C;
+        }
 
         return `Between ${timeText
             .replace('-', 'and')
@@ -156,9 +167,11 @@ export default function ViewOrderPickUpDetails({ order }) {
         const defaultPickup = {
             date: order ? order.pickupDate : null,
             time: order ? order.pickupTime : null,
+            slot: order ? order.pickupSlot : null,
         };
         pickupDateSetFieldValue('date', defaultPickup.date);
         pickupDateSetFieldValue('time', defaultPickup.time);
+        pickupDateSetFieldValue('slot', defaultPickup.slot);
 
         savePickUpDetails(defaultPickup);
 
@@ -166,8 +179,8 @@ export default function ViewOrderPickUpDetails({ order }) {
         // Set payment method default
         const orderPayment = order
             ? order.billing.find(
-                  (billing) => billing.pricing === PRICING.STANDARD
-              )
+                (billing) => billing.pricing === PRICING.STANDARD
+            )
             : {};
         const orderPaymentId = orderPayment
             ? orderPayment.paymentMethodId
@@ -248,9 +261,8 @@ export default function ViewOrderPickUpDetails({ order }) {
                                     )}
                                     <div className='mt-2'>
                                         <h4
-                                            className={`sofia-pro mb-0 ${
-                                                isMobile ? 'text-14' : 'text-16'
-                                            }`}
+                                            className={`sofia-pro mb-0 ${isMobile ? 'text-14' : 'text-16'
+                                                }`}
                                         >
                                             Payment Method
                                         </h4>
@@ -393,14 +405,11 @@ export default function ViewOrderPickUpDetails({ order }) {
                                                                         }
                                                                         {!IsAddressOpen && (
                                                                             <>
-                                                                                {addressFormValues
-                                                                                    .line1
-                                                                                    .length >
-                                                                                12
+                                                                                {addressFormValues.line1.length > 12
                                                                                     ? `,${truncateString(
-                                                                                          addressFormValues.line1,
-                                                                                          12
-                                                                                      )}`
+                                                                                        addressFormValues.line1,
+                                                                                        12
+                                                                                    )}`
                                                                                     : `, ${addressFormValues.line1}`}
                                                                             </>
                                                                         )}
@@ -737,7 +746,7 @@ export default function ViewOrderPickUpDetails({ order }) {
                                     </div>
                                     {get(pickUpDateFormValues, 'date', null) ===
                                         null &&
-                                    get(pickUpDateFormValues, 'time', null) ===
+                                        get(pickUpDateFormValues, 'time', null) ===
                                         null ? (
                                         <>
                                             <h4 className='p-0 m-0 sofia-pro'>
@@ -806,12 +815,14 @@ export default function ViewOrderPickUpDetails({ order }) {
                     show={isDatePickerOpen}
                     onHide={() => setisDatePickerOpen(false)}
                     pickUpDateFormValues={pickUpDateFormValues}
-                    onConfirm={(pickupDate, pickupTime) => {
+                    onConfirm={(pickupDate, pickupTime, pickupSlot) => {
                         pickupDateSetFieldValue('date', pickupDate);
                         pickupDateSetFieldValue('time', pickupTime);
+                        pickupDateSetFieldValue('slot', pickupSlot);
                         savePickUpDetails({
                             date: pickupDate,
                             time: pickupTime,
+                            slot: pickupSlot
                         });
                     }}
                 />

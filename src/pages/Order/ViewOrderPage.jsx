@@ -295,6 +295,7 @@ const ViewOrder = () => {
                 pickupInstruction: address.instructions,
                 pickupDate: details.date,
                 pickupTime: details.time,
+                pickupSlot: details.slot,
             };
 
             if (billing) {
