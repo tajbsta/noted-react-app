@@ -22,3 +22,16 @@ export const ORDER_PICKUP_SLOT = {
     B: "B",
     C: "C"
 };
+
+
+export const SLOTS_BOX_AM = [
+    "9 A.M. - 10 A.M.",
+    "10 A.M. - 11 A.M.",
+    "11 A.M. - 12 P.M."
+]
+
+export const SLOTS_BOX_PM = [
+    "12 P.M. - 1 P.M.",
+    "1 P.M. - 2 P.M.",
+    "2 P.M. - 3 P.M."
+]
