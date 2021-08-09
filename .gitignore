@@ -139,3 +139,4 @@ amplifytools.xcconfig
 .eslintcache
 .prettierrc
 /public/scraper.js
+.env.local
