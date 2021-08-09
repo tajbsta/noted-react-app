@@ -108,7 +108,7 @@ export default function ProductsInReview() {
                 }
             >
                 {!isFetchingProducts && isEmpty(products) && renderEmptiness()}
-                {!isFetchingProducts && !isEmpty(products) && renderItems()}
+                {!isEmpty(products) && renderItems()}
                 {isFetchingProducts && (
                     <ProgressBar
                         animated

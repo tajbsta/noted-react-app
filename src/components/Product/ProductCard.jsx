@@ -38,8 +38,6 @@ export default function ProductCard({
     const [modalEditShow, setModalEditShow] = useState(false);
     const [modalDonateShow, setModalDonateShow] = useState(false);
 
-    console.log(item);
-
     useEffect(() => {
         function handleResize() {
             setIsMobile(window.innerWidth <= 991);
