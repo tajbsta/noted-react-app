@@ -1,7 +1,9 @@
 import { isEmpty } from 'lodash-es';
 import React, { useEffect, useState } from 'react';
 import Collapsible from 'react-collapsible';
+import { ProgressBar } from 'react-bootstrap';
 import { getProducts } from '../../../api/productsApi';
+import { timeout } from '../../../utils/time';
 import ProductInReviewCard from './ProductInReviewCard';
 
 export default function ProductsInReview() {
@@ -9,6 +11,7 @@ export default function ProductsInReview() {
     const [isOpen, setIsOpen] = useState(false);
     const [isFetchingProducts, setIsFetchingProducts] = useState(false);
     const [showNextPageButton, setShowNextPageButton] = useState(false);
+    const [loadProgress, setLoadProgress] = useState(0);
     const sortBy = 'created_at,_id';
     const size = 5;
 
@@ -44,6 +47,13 @@ export default function ProductsInReview() {
     const fetchProductsInReview = async (nextPageToken) => {
         try {
             setIsFetchingProducts(true);
+
+            setLoadProgress(20);
+            await timeout(200);
+            setLoadProgress(35);
+            await timeout(200);
+            setLoadProgress(65);
+
             const allProducts = await getProducts({
                 size,
                 sortBy,
@@ -51,18 +61,33 @@ export default function ProductsInReview() {
                 reviewStatus: 'pending,approved,rejected',
                 nextPageToken,
             });
-            console.log(allProducts);
-            setIsFetchingProducts(false);
+
+            setLoadProgress(80);
+            await timeout(200);
+            setLoadProgress(100);
+            await timeout(1000);
+
+            /**
+             * Give animation some time
+             */
+            setTimeout(() => {
+                setIsFetchingProducts(false);
+            }, 600);
+
             const newProducts = [...products, ...allProducts];
             setProducts(newProducts);
             setShowNextPageButton(newProducts.length >= size);
         } catch (e) {
             console.log(e.response);
+            setIsFetchingProducts(false);
         }
     };
 
     useEffect(() => {
-        fetchProductsInReview('');
+        if (products.length === 0) {
+            fetchProductsInReview('');
+            setIsOpen(true);
+        }
     }, []);
 
     return (
@@ -82,7 +107,16 @@ export default function ProductsInReview() {
                     </div>
                 }
             >
-                {isEmpty(products) ? renderEmptiness() : renderItems()}
+                {!isFetchingProducts && isEmpty(products) && renderEmptiness()}
+                {!isFetchingProducts && !isEmpty(products) && renderItems()}
+                {isFetchingProducts && (
+                    <ProgressBar
+                        animated
+                        striped
+                        now={loadProgress}
+                        className='mt-4 m-3'
+                    />
+                )}
                 {showNextPageButton && !isFetchingProducts && (
                     <div className='d-flex justify-content-center'>
                         <button
