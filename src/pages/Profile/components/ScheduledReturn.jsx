@@ -39,7 +39,7 @@ export default function ScheduledReturn() {
         return data;
     };
 
-    const getScheduledOrders = async () => {
+    const getScheduledOrders = async (nextToken = '') => {
         try {
             setFetchingOrders(true);
 
@@ -49,9 +49,9 @@ export default function ScheduledReturn() {
             await timeout(200);
             setLoadProgress(65);
 
-            const orderResponse = await fetchOrdersWithAirtableId();
+            const orderResponse = await fetchOrdersWithAirtableId(nextToken);
 
-            setOrders(orderResponse);
+            setOrders([...orders, ...orderResponse]);
 
             setLoadProgress(80);
             await timeout(200);
@@ -83,8 +83,7 @@ export default function ScheduledReturn() {
 
     const showMore = async () => {
         if (lastEvaluatedKey) {
-            const res = await fetchOrdersWithAirtableId(lastEvaluatedKey);
-            setOrders([...orders, ...res]);
+            getScheduledOrders(lastEvaluatedKey);
         }
     };
 
@@ -124,6 +123,11 @@ export default function ScheduledReturn() {
                         </div>
                     }
                 >
+                    {!isEmpty(orders) &&
+                        orders.map((order) => (
+                            <ScheduledReturnItem order={order} key={order.id} />
+                        ))}
+
                     {fetchingOrders && (
                         <ProgressBar
                             animated
@@ -132,10 +136,6 @@ export default function ScheduledReturn() {
                             className='mt-4 m-3'
                         />
                     )}
-                    {!fetchingOrders &&
-                        orders.map((order) => (
-                            <ScheduledReturnItem order={order} key={order.id} />
-                        ))}
                     {!fetchingOrders && isEmpty(orders) && renderEmptiness()}
                     {lastEvaluatedKey && (
                         <div className='d-flex justify-content-center'>
