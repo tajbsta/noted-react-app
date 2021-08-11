@@ -234,18 +234,7 @@ export default function RegisterPage() {
                                 >
                                     Terms
                                 </a>
-                                . <br></br>Furthermore, noted's use and transfer
-                                to any other app of information received from
-                                Google APIs will adhere to{' '}
-                                <a
-                                    href='https://developers.google.com/terms/api-services-user-data-policy'
-                                    style={policyStyle}
-                                    target='_blank'
-                                    rel='noreferrer'
-                                >
-                                    Google API Services User Data Policy
-                                </a>{' '}
-                                , including the Limited Use requirements.
+                                .
                             </small>
                         </div>
                         <h3 className='text-already'>
