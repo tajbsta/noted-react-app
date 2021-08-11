@@ -188,6 +188,20 @@ export default function AuthorizePage() {
                             we will never sell or transfer any of your personal
                             info to anyone.
                         </h4>
+                        <h4 className='text-second'>
+                            Furthermore, noted&apos;s use and transfer to any
+                            other app of information received from Google APIs
+                            will adhere to{' '}
+                            <a
+                                href='https://developers.google.com/terms/api-services-user-data-policy'
+                                target='_blank'
+                                rel='noreferrer'
+                                className='sofia-pro text-underline'
+                            >
+                                Google API Services User Data Policy
+                            </a>{' '}
+                            , including the Limited Use requirements.
+                        </h4>
                         <h4 className='text-underline'>
                             <a href='#' className='sofia-pro'>
                                 Learn more about security
