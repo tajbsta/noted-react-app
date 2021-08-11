@@ -350,14 +350,6 @@ export default function DashboardPage() {
 
                 {isEmpty(search) && (
                   <div>
-                    {/* <div className='row justify-center mobile-footer-row'>
-                      <div className='col-sm-7 text-center'>
-                        <div className='text-muted text-center sofia-pro line-height-16 text-bottom-title'>
-                          These are all the purchases we found in the past 90
-                          days from your address
-                        </div>
-                      </div>
-                    </div> */}
                     <div className='row justify-center mt-3 mobile-footer-row mt-5'>
                       <div className='col-sm-6 text-center'>
                         <div className='text-muted text-center text-cant-find sofia-pro'>
@@ -365,8 +357,10 @@ export default function DashboardPage() {
                           <button
                             className='btn btn-add-product mr-1'
                             onClick={() => setModalProductShow(true)}
-                            disabled
-                            style={{ padding: '0px' }}
+                            disabled={false}
+                            style={{
+                              padding: '0px',
+                            }}
                           >
                             <h4 className='mb-0 noted-purple sofia-pro line-height-16 text-add'>
                               &nbsp; Add it manually
@@ -402,7 +396,10 @@ export default function DashboardPage() {
                                 className='mr-3 noted-purple'
                                 animation='border'
                                 size='md'
-                                style={{ height: '1.5rem', width: '1.5rem' }}
+                                style={{
+                                  height: '1.5rem',
+                                  width: '1.5rem',
+                                }}
                               />
                             )}
                             <button
