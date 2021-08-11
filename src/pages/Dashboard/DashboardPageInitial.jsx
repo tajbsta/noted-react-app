@@ -42,7 +42,7 @@ const Authorize = ({ triggerScanNow }) => {
   return (
     <div id='AuthorizeUpdate'>
       <Container className='main-body' fluid='lg'>
-        <Row md='2' className='text-left align-items-end'>
+        <Row md='2' className='text-left align-items-center'>
           <Col xs='6' className='info'>
             <h1 className='bold text-title'>Everything is automatic</h1>
             <h4 className='text-noted'>
@@ -62,6 +62,19 @@ const Authorize = ({ triggerScanNow }) => {
               You first need to authorized noted to read your emails. Only bots
               will see the relevant emails and we will never sell or transfer
               any of your personal info to anyone.
+            </h4>
+            <h4 className='text-second'>
+              Furthermore, noted&apos;s use and transfer to any other app of
+              information received from Google APIs will adhere to{' '}
+              <a
+                href='https://developers.google.com/terms/api-services-user-data-policy'
+                target='_blank'
+                rel='noreferrer'
+                className='sofia-pro text-underline'
+              >
+                Google API Services User Data Policy
+              </a>{' '}
+              , including the Limited Use requirements.
             </h4>
             <h4 className='text-underline'>
               <a
@@ -120,6 +133,19 @@ const Authorize = ({ triggerScanNow }) => {
               You first need to authorized noted to read your emails. Only bots
               will see the relevant emails and we will never sell or transfer
               any of your personal info to anyone.
+            </h4>
+            <h4 className='text-second'>
+              Furthermore, noted&apos;s use and transfer to any other app of
+              information received from Google APIs will adhere to{' '}
+              <a
+                href='https://developers.google.com/terms/api-services-user-data-policy'
+                target='_blank'
+                rel='noreferrer'
+                className='sofia-pro text-underline'
+              >
+                Google API Services User Data Policy
+              </a>{' '}
+              , including the Limited Use requirements.
             </h4>
             <h4 className='text-underline'>
               <a href='#' className='sofia-pro'>
