@@ -30,11 +30,14 @@ export default function ScheduledReturn() {
         } else {
             setLastEvaluatedKey(null);
         }
-        console.log(res.order);
         const data = await Promise.all(
             res.orders.map(async (activeOrder) => {
                 const order = await getOrder(activeOrder.id);
-                return { ...activeOrder, airtableId: order.airtableId };
+                return {
+                    ...activeOrder,
+                    airtableId: order.airtableId,
+                    pickupSlot: order.pickupSlot,
+                };
             })
         );
         return data;
