@@ -1,0 +1,13 @@
+#DashboardInitial {
+  //   height: calc(100vh - 76px);
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  overflow-y: hidden;
+  @media (max-width: 1024px) {
+    overflow-y: auto;
+    height: auto;
+  }
+}

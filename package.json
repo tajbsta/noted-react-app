@@ -5,9 +5,6 @@
   "dependencies": {
     "@stripe/react-stripe-js": "^1.4.1",
     "@stripe/stripe-js": "^1.15.0",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
     "aws-amplify": "^3.3.21",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
@@ -40,13 +37,13 @@
     "yup": "^0.32.9"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "develop": "NODE_ENV=local react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "npm run build-scraper && react-scripts start",
+    "develop": "npm run build-scraper && NODE_ENV=local react-scripts start",
+    "build": "npm run build-scraper && react-scripts build",
     "eject": "react-scripts eject",
     "lint": "eslint --fix .",
-    "lint-check": "eslint ."
+    "lint-check": "eslint .",
+    "build-scraper": "npm run --prefix ./scraper build"
   },
   "eslintConfig": {
     "extends": [

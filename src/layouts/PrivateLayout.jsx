@@ -18,11 +18,16 @@ function PrivateLayout({ component: Component, ...allProps }) {
   return (
     <Route
       {...allProps}
-      render={(props) => (
-        <AppLayout>
-          <Component {...props} />
-        </AppLayout>
-      )}
+      render={(props) => {
+        if (allProps.path === '/dashboard') {
+          return <Component {...props} />;
+        }
+        return (
+          <AppLayout>
+            <Component {...props} />
+          </AppLayout>
+        );
+      }}
     />
   );
 }
