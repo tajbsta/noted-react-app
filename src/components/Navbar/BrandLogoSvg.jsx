@@ -14,9 +14,6 @@ export default function BrandLogoSvg() {
     '/reset-password',
     '/request-permission/',
     '/request-permission',
-    '/code',
-    '/code/',
-    '/code/verify',
   ];
   return (
     <div>
