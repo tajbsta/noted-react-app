@@ -5,6 +5,7 @@ import { Accordion, Card, Col, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import ReturnScore from '../../../components/Product/ReturnsScore';
+import { PICKUP_SLOT_LABELS } from '../../../constants/addPickupSlot';
 import { toTitleCase } from '../../../utils/data';
 
 export const ScheduledReturnItem = ({ order }) => {
@@ -150,7 +151,17 @@ export const ScheduledReturnItem = ({ order }) => {
         );
     };
 
+    // const renderTime = (label) => {
+    //     if (label) {
+    //         return `Between ${label
+    //             .replace('-', 'and')
+    //             .replace(new RegExp(/\./g), '')}`;
+    //     }
+    // };
+
     const hasAirtableId = get(order, 'airtableId', '') !== '';
+
+    // const timeToUse = PICKUP_SLOT_LABELS[order.pickupTime][order.pickupSlot];
 
     return (
         <div className='row' key={order.id}>
@@ -343,7 +354,7 @@ export const ScheduledReturnItem = ({ order }) => {
                                             </h4>
                                         </div>
                                     </Row>
-                                    <Row
+                                    {/* <Row
                                         style={{
                                             marginRight: '0px',
                                             justifyContent: 'flex-end',
@@ -352,12 +363,10 @@ export const ScheduledReturnItem = ({ order }) => {
                                         <div className='sched-time-container'>
                                             <h4>Between &nbsp;</h4>
                                             <h4 className='sched-value'>
-                                                {order.pickupTime == 'AM'
-                                                    ? '9 am to 12 pm'
-                                                    : '12pm to 3pm'}
+                                                {renderTime(timeT)}
                                             </h4>
                                         </div>
-                                    </Row>
+                                    </Row> */}
                                     <Row
                                         style={{
                                             justifyContent: 'flex-end',

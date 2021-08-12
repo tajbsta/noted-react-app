@@ -49,7 +49,13 @@ export default function SchedulingModal({
     };
 
     const fetchPickupSlots = async () => {
+        let shouldFetchSlots = false;
         if (!isEmpty(pickupDate)) {
+            shouldFetchSlots =
+                moment(pickupDate).isAfter(moment().format('MM/DD/YYYY')) ||
+                pickupDate === moment().format('MM/DD/YYYY');
+        }
+        if (shouldFetchSlots) {
             try {
                 setLoading(true);
                 const pickupSlots = await getPickupSlots(
@@ -63,10 +69,14 @@ export default function SchedulingModal({
 
                 setLoading(false);
             } catch (err) {
-                if (!axios.isCancel(err)) {
-                    setLoading(false);
-                    showError('No pickup slots available at this time');
-                }
+                console.log(err.response);
+                // if (!axios.isCancel(err)) {
+                //     setLoading(false);
+                //     showError({
+                //         title: 'Error',
+                //         message: 'No pickup slots available at this time',
+                //     });
+                // }
             }
         }
     };
@@ -309,6 +319,11 @@ export default function SchedulingModal({
         });
     };
 
+    const showBoxes =
+        moment(pickupDate).isAfter(moment().format('MM/DD/YYYY')) ||
+        pickupDate === moment().format('MM/DD/YYYY') ||
+        false;
+
     return (
         <Modal
             {...props}
@@ -352,7 +367,7 @@ export default function SchedulingModal({
                         justifyContent: 'center',
                     }}
                 >
-                    {pickupDate && !loading && renderNewTimeSlot()}
+                    {pickupDate && showBoxes && !loading && renderNewTimeSlot()}
                     {renderLoading()}
                 </div>
             </Modal.Body>

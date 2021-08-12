@@ -29,7 +29,11 @@ import DownArrow from '../../../assets/icons/DownArrow.svg';
 import { Col, Row } from 'react-bootstrap';
 import { truncateString } from '../../../utils/data';
 import PRICING from '../../../constants/pricing';
-import { ORDER_PICKUP_SLOT, ORDER_PICKUP_TIME, PICKUP_SLOT_LABELS } from '../../../constants/addPickupSlot';
+import {
+    ORDER_PICKUP_SLOT,
+    ORDER_PICKUP_TIME,
+    PICKUP_SLOT_LABELS,
+} from '../../../constants/addPickupSlot';
 
 export default function ViewOrderPickUpDetails({ order }) {
     const dispatch = useDispatch();
@@ -71,6 +75,7 @@ export default function ViewOrderPickUpDetails({ order }) {
         initialValues: {
             date: null,
             time: null,
+            timeLabel: null,
             slot: null,
         },
         validationSchema: pickUpDateSchema,
@@ -95,10 +100,10 @@ export default function ViewOrderPickUpDetails({ order }) {
         setModalShow(false);
     };
 
-    const savePickUpDetails = async ({ date, time, slot }) => {
+    const savePickUpDetails = async ({ date, time, slot, timeLabel }) => {
         //
         // console.log('⊂(・ヮ・⊂)', { date, time });
-        dispatch(setPickupDetails({ date, time, slot }));
+        dispatch(setPickupDetails({ date, time, slot, timeLabel }));
     };
 
     const openDatePickerModal = () => {
@@ -117,23 +122,11 @@ export default function ViewOrderPickUpDetails({ order }) {
     });
 
     const renderTime = () => {
-        let timeText = '';
-        if (pickUpDateFormValues.time === ORDER_PICKUP_TIME.AM) {
-
-            if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.A) timeText = PICKUP_SLOT_LABELS.AM.A;
-            else if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.B) timeText = PICKUP_SLOT_LABELS.AM.B;
-            else if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.C) timeText = PICKUP_SLOT_LABELS.AM.C;
-
-        } else if (pickUpDateFormValues.time === ORDER_PICKUP_TIME.PM) {
-
-            if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.A) timeText = PICKUP_SLOT_LABELS.PM.A;
-            else if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.B) timeText = PICKUP_SLOT_LABELS.PM.B;
-            else if (pickUpDateFormValues.slot === ORDER_PICKUP_SLOT.C) timeText = PICKUP_SLOT_LABELS.PM.C;
+        if (pickUpDateFormValues.timeLabel) {
+            return `Between ${pickUpDateFormValues.timeLabel
+                .replace('-', 'and')
+                .replace(new RegExp(/\./g), '')}`;
         }
-
-        return `Between ${timeText
-            .replace('-', 'and')
-            .replace(new RegExp(/\./g), '')}`;
     };
 
     const setDefaults = async () => {
@@ -167,11 +160,13 @@ export default function ViewOrderPickUpDetails({ order }) {
         const defaultPickup = {
             date: order ? order.pickupDate : null,
             time: order ? order.pickupTime : null,
-            slot: order ? order.pickupSlot : null,
         };
         pickupDateSetFieldValue('date', defaultPickup.date);
         pickupDateSetFieldValue('time', defaultPickup.time);
-        pickupDateSetFieldValue('slot', defaultPickup.slot);
+        pickupDateSetFieldValue(
+            'timeLabel',
+            PICKUP_SLOT_LABELS[defaultPickup.time][order.pickupSlot]
+        );
 
         savePickUpDetails(defaultPickup);
 
@@ -179,8 +174,8 @@ export default function ViewOrderPickUpDetails({ order }) {
         // Set payment method default
         const orderPayment = order
             ? order.billing.find(
-                (billing) => billing.pricing === PRICING.STANDARD
-            )
+                  (billing) => billing.pricing === PRICING.STANDARD
+              )
             : {};
         const orderPaymentId = orderPayment
             ? orderPayment.paymentMethodId
@@ -261,8 +256,9 @@ export default function ViewOrderPickUpDetails({ order }) {
                                     )}
                                     <div className='mt-2'>
                                         <h4
-                                            className={`sofia-pro mb-0 ${isMobile ? 'text-14' : 'text-16'
-                                                }`}
+                                            className={`sofia-pro mb-0 ${
+                                                isMobile ? 'text-14' : 'text-16'
+                                            }`}
                                         >
                                             Payment Method
                                         </h4>
@@ -405,11 +401,14 @@ export default function ViewOrderPickUpDetails({ order }) {
                                                                         }
                                                                         {!IsAddressOpen && (
                                                                             <>
-                                                                                {addressFormValues.line1.length > 12
+                                                                                {addressFormValues
+                                                                                    .line1
+                                                                                    .length >
+                                                                                12
                                                                                     ? `,${truncateString(
-                                                                                        addressFormValues.line1,
-                                                                                        12
-                                                                                    )}`
+                                                                                          addressFormValues.line1,
+                                                                                          12
+                                                                                      )}`
                                                                                     : `, ${addressFormValues.line1}`}
                                                                             </>
                                                                         )}
@@ -746,7 +745,7 @@ export default function ViewOrderPickUpDetails({ order }) {
                                     </div>
                                     {get(pickUpDateFormValues, 'date', null) ===
                                         null &&
-                                        get(pickUpDateFormValues, 'time', null) ===
+                                    get(pickUpDateFormValues, 'time', null) ===
                                         null ? (
                                         <>
                                             <h4 className='p-0 m-0 sofia-pro'>
@@ -815,14 +814,22 @@ export default function ViewOrderPickUpDetails({ order }) {
                     show={isDatePickerOpen}
                     onHide={() => setisDatePickerOpen(false)}
                     pickUpDateFormValues={pickUpDateFormValues}
-                    onConfirm={(pickupDate, pickupTime, pickupSlot) => {
+                    onConfirm={(
+                        pickupDate,
+                        pickupTime,
+                        pickupSlot,
+                        pickupTimeLabel
+                    ) => {
                         pickupDateSetFieldValue('date', pickupDate);
                         pickupDateSetFieldValue('time', pickupTime);
                         pickupDateSetFieldValue('slot', pickupSlot);
+                        pickupDateSetFieldValue('timeLabel', pickupTimeLabel);
+
                         savePickUpDetails({
                             date: pickupDate,
                             time: pickupTime,
-                            slot: pickupSlot
+                            slot: pickupSlot,
+                            timeLabel: pickupTimeLabel,
                         });
                     }}
                 />
