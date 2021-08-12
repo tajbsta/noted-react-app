@@ -906,6 +906,8 @@ const AddProductDonation = ({ handleClose, show }) => {
                         target='_blank'
                         href={formUrl}
                         rel='noreferrer'
+                        style={{ fontWeight: '600', fontSize: '13px' }}
+                        className='noted-purple'
                       >
                         here.
                       </a>

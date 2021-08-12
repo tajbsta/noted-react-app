@@ -83,22 +83,6 @@ export default function SettingsPage() {
               Basic Information
             </Link>
           </li>
-          <li className='nav-item'>
-            <Link
-              to='EmailAddresses'
-              spy={true}
-              smooth={true}
-              className='nav-link'
-              offset={-70}
-              duration={500}
-              onClick={() => {
-                setCurrenTab('EmailAddresses');
-              }}
-              style={isActive('EmailAddresses')}
-            >
-              Email Addresses
-            </Link>
-          </li>
           {isGoogleSignIn === false && (
             <li className='nav-item'>
               <Link
@@ -157,7 +141,6 @@ export default function SettingsPage() {
           {/* RIGHT CARD */}
           <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
             <BasicInfo user={user} />
-            <EmailAddresses user={user} />
             {isGoogleSignIn === false && <ChangePass />}
             <DeleteAccount />
           </div>
