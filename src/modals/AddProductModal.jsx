@@ -233,7 +233,6 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage, show }) => {
                 handleCancelModal();
             }
         } catch (e) {
-            console.log(e.response);
             setIsSubmittingProducts(false);
             let message = '';
             switch (e.response.data.details) {
@@ -641,7 +640,6 @@ const AddProductDonation = ({ handleClose, show }) => {
                 handleCancelModal();
             }
         } catch (e) {
-            console.log(e.response);
             setIsSubmittingProducts(false);
             let message = '';
             switch (e.response.data.details) {

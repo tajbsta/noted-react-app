@@ -5,7 +5,6 @@ import { Accordion, Card, Col, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import ReturnScore from '../../../components/Product/ReturnsScore';
-import { PICKUP_SLOT_LABELS } from '../../../constants/addPickupSlot';
 import { toTitleCase } from '../../../utils/data';
 
 export const ScheduledReturnItem = ({ order }) => {

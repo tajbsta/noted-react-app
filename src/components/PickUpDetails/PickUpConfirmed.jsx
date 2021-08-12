@@ -42,7 +42,7 @@ function PickUpConfirmed({ order, isUpdate = false }) {
     });
 
     const orderDate = get(order, 'pickupDate', '');
-    const orderTime = get(order, 'pickupTime', '');
+    // const orderTime = get(order, 'pickupTime', '');
 
     const renderDate = () => {
         return (

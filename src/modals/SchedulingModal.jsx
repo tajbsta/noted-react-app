@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Spinner, Col, Row } from 'react-bootstrap';
 import moment from 'moment';
@@ -6,7 +5,6 @@ import { generateSchedules } from '../utils/schedule';
 import { getPickupSlots } from '../api/orderApi';
 import { getUserId } from '../api/auth';
 import { isEmpty } from 'lodash-es';
-import { showError } from '../library/notifications.library';
 import {
     ORDER_PICKUP_SLOT,
     ORDER_PICKUP_TIME,
@@ -69,7 +67,6 @@ export default function SchedulingModal({
 
                 setLoading(false);
             } catch (err) {
-                console.log(err.response);
                 // if (!axios.isCancel(err)) {
                 //     setLoading(false);
                 //     showError({

@@ -29,11 +29,7 @@ import DownArrow from '../../../assets/icons/DownArrow.svg';
 import { Col, Row } from 'react-bootstrap';
 import { truncateString } from '../../../utils/data';
 import PRICING from '../../../constants/pricing';
-import {
-    ORDER_PICKUP_SLOT,
-    ORDER_PICKUP_TIME,
-    PICKUP_SLOT_LABELS,
-} from '../../../constants/addPickupSlot';
+import { PICKUP_SLOT_LABELS } from '../../../constants/addPickupSlot';
 
 export default function ViewOrderPickUpDetails({ order }) {
     const dispatch = useDispatch();
