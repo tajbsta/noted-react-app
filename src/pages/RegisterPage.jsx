@@ -13,49 +13,50 @@ import GoogleLogo from '../assets/icons/Google.svg';
 import { resetAuthorizeNewEmail } from '../utils/data';
 
 export default function RegisterPage() {
-  const history = useHistory();
-  const [error, setError] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [passwordShown, setPasswordShown] = useState(false);
-  const togglePasswordVisibility = () => {
-    setPasswordShown(passwordShown ? false : true);
-  };
+    const history = useHistory();
+    const [error, setError] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [passwordShown, setPasswordShown] = useState(false);
+    const togglePasswordVisibility = () => {
+        setPasswordShown(passwordShown ? false : true);
+    };
 
-  useEffect(() => {
-    resetAuthorizeNewEmail();
-    scrollToTop();
-  }, []);
+    useEffect(() => {
+        resetAuthorizeNewEmail();
+        scrollToTop();
+    }, []);
 
-  const eyeOff = <EyeOff />;
-  const eye = <Eye />;
+    const eyeOff = <EyeOff />;
+    const eye = <Eye />;
 
-  const { errors, handleChange, values } = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    validationSchema: registerSchema,
-  });
-
-  const { email, password } = values;
-
-  const register = async (e) => {
-    e.preventDefault();
-    try {
-      setError(null);
-      setIsSubmitting(true);
-
-      await Auth.signUp({
-        username: email,
-        password,
-        attributes: {
-          email,
-          'custom:created_at': new Date().getTime().toString(),
+    const { errors, handleChange, values } = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
         },
-      });
+        validationSchema: registerSchema,
+    });
+
+    const { email, password } = values;
+
+    const register = async (e) => {
+        e.preventDefault();
+        try {
+            setError(null);
+            setIsSubmitting(true);
+
+            await Auth.signUp({
+                username: email,
+                password,
+                attributes: {
+                    email,
+                    'custom:created_at': new Date().getTime().toString(),
+                },
+            });
 
       await Auth.signIn(email, password);
       history.push('/dashboard');
+      return
     } catch (error) {
       // console.log(Object.values(error));
       setError(
@@ -69,9 +70,9 @@ export default function RegisterPage() {
     }
   };
 
-  const policyStyle = {
-    textDecoration: 'underline',
-  };
+    const policyStyle = {
+        textDecoration: 'underline',
+    };
 
   const renderPasswordValidationError = () => (
     <small className="form-text p-0 noted-red error-pass-msg">
@@ -224,5 +225,5 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
-  );
+    );
 }

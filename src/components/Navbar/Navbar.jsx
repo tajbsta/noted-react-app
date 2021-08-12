@@ -70,12 +70,12 @@ export default function Topnav() {
     '/forgot-password',
     '/reset-password',
   ];
-
+  
   /**VIEW DOES NOT HAVE DATA BUT USER HAS ACCOUNT */
   const preDataViews = ['/dashboard/initial'];
 
   const {
-    location: { pathname },
+      location: { pathname },
   } = useHistory();
 
   const showShadow = guestViews.includes(pathname) ? '' : 'shadow-sm';
@@ -101,25 +101,29 @@ export default function Topnav() {
     history.push('/profile');
   };
 
+  const backToHome = () => {
+      if (publicViews.includes(pageLocation)) {
+          window.open(
+              `${process.env.REACT_APP_NOTED_LANDING || ''}`,
+              '_blank'
+          );
+          return;
+      }
+
+      if (guestViews.indexOf(pageLocation) !== -1) {
+          history.push('/');
+      } else {
+          if (searchQuery) {
+              dispatch(searchScans(''));
+          }
+          history.push('/dashboard');
+      }
+  };
+    
   const settings = () => {
     history.push('/settings');
   };
 
-  const backToHome = () => {
-    if (publicViews.includes(pageLocation)) {
-      window.open(`${process.env.REACT_APP_NOTED_LANDING || ''}`, '_blank');
-      return;
-    }
-
-    if (guestViews.indexOf(pageLocation) !== -1) {
-      history.push('/');
-    } else {
-      if (searchQuery) {
-        dispatch(searchScans(''));
-      }
-      history.push('/dashboard');
-    }
-  };
 
   const submitsearch = (e) => {
     if (e.key === 'Enter') {
