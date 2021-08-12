@@ -150,7 +150,17 @@ export const ScheduledReturnItem = ({ order }) => {
         );
     };
 
+    // const renderTime = (label) => {
+    //     if (label) {
+    //         return `Between ${label
+    //             .replace('-', 'and')
+    //             .replace(new RegExp(/\./g), '')}`;
+    //     }
+    // };
+
     const hasAirtableId = get(order, 'airtableId', '') !== '';
+
+    // const timeToUse = PICKUP_SLOT_LABELS[order.pickupTime][order.pickupSlot];
 
     return (
         <div className='row' key={order.id}>
@@ -343,7 +353,7 @@ export const ScheduledReturnItem = ({ order }) => {
                                             </h4>
                                         </div>
                                     </Row>
-                                    <Row
+                                    {/* <Row
                                         style={{
                                             marginRight: '0px',
                                             justifyContent: 'flex-end',
@@ -352,12 +362,10 @@ export const ScheduledReturnItem = ({ order }) => {
                                         <div className='sched-time-container'>
                                             <h4>Between &nbsp;</h4>
                                             <h4 className='sched-value'>
-                                                {order.pickupTime == 'AM'
-                                                    ? '9 am to 12 pm'
-                                                    : '12pm to 3pm'}
+                                                {renderTime(timeT)}
                                             </h4>
                                         </div>
-                                    </Row>
+                                    </Row> */}
                                     <Row
                                         style={{
                                             justifyContent: 'flex-end',

@@ -188,8 +188,8 @@ export default function PickUpDetails({
         // Set payment method default
         const orderPayment = order
             ? order.billing.find(
-                (billing) => billing.pricing === PRICING.STANDARD
-            )
+                  (billing) => billing.pricing === PRICING.STANDARD
+              )
             : {};
         const orderPaymentId = orderPayment
             ? orderPayment.paymentMethodId
@@ -270,8 +270,9 @@ export default function PickUpDetails({
                                     )}
                                     <div className='mt-2'>
                                         <h4
-                                            className={`sofia-pro mb-0 ${isMobile ? 'text-14' : 'text-16'
-                                                }`}
+                                            className={`sofia-pro mb-0 ${
+                                                isMobile ? 'text-14' : 'text-16'
+                                            }`}
                                         >
                                             Payment Method
                                         </h4>
@@ -417,11 +418,11 @@ export default function PickUpDetails({
                                                                                 {addressFormValues
                                                                                     .line1
                                                                                     .length >
-                                                                                    12
+                                                                                12
                                                                                     ? `,${truncateString(
-                                                                                        addressFormValues.line1,
-                                                                                        12
-                                                                                    )}`
+                                                                                          addressFormValues.line1,
+                                                                                          12
+                                                                                      )}`
                                                                                     : `, ${addressFormValues.line1}`}
                                                                             </>
                                                                         )}
@@ -804,7 +805,7 @@ export default function PickUpDetails({
                                     </div>
                                     {get(pickUpDateFormValues, 'date', null) ===
                                         null &&
-                                        get(pickUpDateFormValues, 'time', null) ===
+                                    get(pickUpDateFormValues, 'time', null) ===
                                         null ? (
                                         <>
                                             <h4 className='p-0 m-0 sofia-pro'>
@@ -836,7 +837,9 @@ export default function PickUpDetails({
                                             >
                                                 Edit
                                             </button>
-                                            {!initialCheckoutView.includes(pathname) && (
+                                            {!initialCheckoutView.includes(
+                                                pathname
+                                            ) && (
                                                 <>
                                                     <hr
                                                         style={{
@@ -875,7 +878,12 @@ export default function PickUpDetails({
                     show={isDatePickerOpen}
                     onHide={() => setisDatePickerOpen(false)}
                     pickUpDateFormValues={pickUpDateFormValues}
-                    onConfirm={(pickupDate, pickupTime, pickupSlot, pickupTimeLabel) => {
+                    onConfirm={(
+                        pickupDate,
+                        pickupTime,
+                        pickupSlot,
+                        pickupTimeLabel
+                    ) => {
                         pickupDateSetFieldValue('date', pickupDate);
                         pickupDateSetFieldValue('time', pickupTime);
                         pickupDateSetFieldValue('slot', pickupSlot);
@@ -885,7 +893,7 @@ export default function PickUpDetails({
                             date: pickupDate,
                             time: pickupTime,
                             slot: pickupSlot,
-                            timeLabel: pickupTimeLabel
+                            timeLabel: pickupTimeLabel,
                         });
                     }}
                 />
