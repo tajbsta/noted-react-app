@@ -1,23 +1,25 @@
 env:
-  browser: true
-  node: true
-  commonjs: true
-  es2021: true
+    browser: true
+    node: true
+    commonjs: true
+    es2021: true
+    mocha: true
 extends:
-  - 'eslint:recommended'
-  - 'plugin:react/recommended'
+    - 'eslint:recommended'
+    - 'plugin:react/recommended'
 parserOptions:
-  ecmaFeatures:
-    jsx: true
-  ecmaVersion: 12
-  sourceType: module
+    ecmaFeatures:
+        jsx: true
+    ecmaVersion: 12
+    sourceType: module
 plugins:
-  - react
+    - react
 rules:
-  {
-    'react/react-in-jsx-scope': 'off',
-    'react/prop-types': 0,
-    'no-unused-vars': 'warn',
-    'no-console': 'warn',
-  }
+    {
+        'react/react-in-jsx-scope': 'off',
+        'react/prop-types': 0,
+        'no-unused-vars': 'warn',
+        'no-console': 'warn',
+        'no-extra-boolean-cast': 'off',
+    }
 parser: 'babel-eslint'
