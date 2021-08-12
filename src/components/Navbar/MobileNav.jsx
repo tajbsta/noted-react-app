@@ -30,9 +30,6 @@ export default function MobileNav({
     '/reset-password',
     '/request-permission/',
     '/request-permission',
-    '/code',
-    '/code/',
-    '/code/verify',
   ];
 
   const submitsearch = (e) => {
