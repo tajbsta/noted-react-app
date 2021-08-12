@@ -181,6 +181,9 @@
       bottom: 40%;
       height: 19px;
       right: 28.46%;
+      @media (min-width: 768px) {
+        right: 31%;
+      }
 
       .date {
         margin-bottom: 0px;

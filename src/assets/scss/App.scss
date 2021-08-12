@@ -20,12 +20,12 @@ html {
 @import './pages/forgotpass';
 @import './pages/resetpass';
 @import './pages/authorize';
-@import './pages/code';
 @import './pages/dashboard';
 @import './pages/scanning';
 @import './pages/checkout';
 @import './pages/profile';
 @import './pages/settings';
+@import './pages/dashboardinitial';
 
 /* Components in Pages styling */
 @import './components/brandlogo';
@@ -43,6 +43,7 @@ html {
 @import './components/productsinreview';
 @import './components/toast';
 @import './components/returnvalueinfoicon';
+@import './components/scanning';
 
 /* Modals */
 @import './modals/returnpolicy';

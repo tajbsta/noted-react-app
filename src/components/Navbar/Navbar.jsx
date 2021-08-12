@@ -58,13 +58,21 @@ export default function Topnav() {
     '/reset-password',
     '/request-permission/',
     '/request-permission',
-    '/code',
-    '/code/',
-    '/code/verify',
   ];
 
+  const publicViews = [
+    '/',
+    '/login',
+    '/join',
+    '/forgot-password',
+    '/reset-password',
+  ];
+  
+  /**VIEW DOES NOT HAVE DATA BUT USER HAS ACCOUNT */
+  const preDataViews = ['/dashboard/initial'];
+
   const {
-    location: { pathname },
+      location: { pathname },
   } = useHistory();
 
   const showShadow = guestViews.includes(pathname) ? '' : 'shadow-sm';
@@ -81,8 +89,7 @@ export default function Topnav() {
           dispatch(clearCart());
         }, 400);
       })
-      .catch((error) => {
-        // console.log('Error Signing Out: ', error);
+      .catch(() => {
         showError({ message: 'Error Signing Out' });
       });
   };
@@ -91,20 +98,29 @@ export default function Topnav() {
     history.push('/profile');
   };
 
+  const backToHome = () => {
+      if (publicViews.includes(pageLocation)) {
+          window.open(
+              `${process.env.REACT_APP_NOTED_LANDING || ''}`,
+              '_blank'
+          );
+          return;
+      }
+
+      if (guestViews.indexOf(pageLocation) !== -1) {
+          history.push('/');
+      } else {
+          if (searchQuery) {
+              dispatch(searchScans(''));
+          }
+          history.push('/dashboard');
+      }
+  };
+    
   const settings = () => {
     history.push('/settings');
   };
 
-  const backToHome = () => {
-    if (guestViews.indexOf(pageLocation) != -1) {
-      history.push('/');
-    } else {
-      if (searchQuery) {
-        dispatch(searchScans(''));
-      }
-      history.push('/dashboard');
-    }
-  };
 
   const submitsearch = (e) => {
     if (e.key === 'Enter') {
@@ -182,6 +198,7 @@ export default function Topnav() {
                     className='form-control form-control-prepended list-search background-color sofia-pro text-16 color'
                     placeholder='Search purchases'
                     value={searchQuery}
+                    disabled={preDataViews.includes(pathname)}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyPress={submitsearch}
                   />

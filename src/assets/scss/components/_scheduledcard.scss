@@ -1,9 +1,11 @@
 #ScheduledCard {
   font-family: 'Sofia Pro';
 
-  // .card {
-  //   background-color: aquamarine;
-  // }
+  .spinner {
+    margin: auto;
+    color: #570097 !important;
+    display: flex;
+  }
 
   .icon-col {
     display: flex;
@@ -39,6 +41,7 @@
     line-height: 19px;
     color: #0e0018;
     opacity: 0.6;
+
     @media (max-width: 540px) {
       margin-bottom: 5px;
     }

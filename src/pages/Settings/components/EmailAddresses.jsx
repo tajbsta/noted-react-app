@@ -29,7 +29,7 @@ export default function EmailAddresses({ user }) {
   });
 
   const goToAuthorize = () => {
-    history.push('/request-permission');
+    history.push('/request-permission?authorized=true');
   };
 
   const fetchAccounts = async () => {

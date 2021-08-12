@@ -1,18 +1,11 @@
-import { isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ReturnCategory from '../../components/Product/ReturnCategory';
 import RightCard from './components/RightCard';
-import {
-  getUserId,
-  getUser,
-  updateUserAttributes,
-  scrapeOlderEmails,
-} from '../../api/auth';
+import { getUserId, getUser } from '../../api/auth';
 import { getOrders } from '../../api/orderApi';
-import { getAccounts } from '../../api/accountsApi';
 import {
   LAST_CALL,
   NOT_ELIGIBLE,
@@ -26,9 +19,10 @@ import { scrollToTop } from '../../utils/window';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
+import { resetAuthorizeNewEmail } from '../../utils/data';
+import { NORMAL, SCRAPEOLDER } from '../../constants/scraper';
 
-export default function DashboardPage() {
-  const history = useHistory();
+export default function DashboardPage({ triggerScanNow }) {
   const [search, setSearch] = useState('');
   const [refreshCategory, setRefreshCategory] = useState({
     LAST_CALL: () => {},
@@ -49,7 +43,6 @@ export default function DashboardPage() {
   const [user, setUser] = useState('');
   const [userId, setUserId] = useState('');
   const [showScanOlderButton, setShowScanOlderButton] = useState(false);
-  const [olderScanDone, setIsOlderScanDone] = useState(false);
   const [modalProductShow, setModalProductShow] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -81,9 +74,7 @@ export default function DashboardPage() {
       setOrders(res.orders);
       // console.log(res.orders);
     } catch (error) {
-      // TODO: ERROR HANDLING
-      // console.log(error);
-      showError('An error occurred. Unable to retrieve orders');
+      setFetchingOrders(false);
     }
   };
 
@@ -108,86 +99,51 @@ export default function DashboardPage() {
       const userId = await getUserId();
 
       setUserId(userId);
-      await fetchAccounts(userId);
       setLoading(false);
     } catch (error) {
-      setLoading(false);
-      // TODO: show error here
-    }
-  }
-
-  async function fetchAccounts(userId) {
-    try {
-      const accounts = await getAccounts(userId);
-
-      // Redirect to request-permission if user has no accounts
-      if (accounts.length === 0) {
-        history.push('/request-permission');
-        return;
-      }
-
-      const scrapeNotUpdated = accounts.every(
-        (acc) => acc.lastScrapeAttempt === 0
-      );
-
-      setShowScanning(scrapeNotUpdated);
-
-      if (scrapeNotUpdated) {
-        setTimeout(async () => {
-          await fetchAccounts(userId);
-        }, 1000 * 60); // 1 minute
-      }
-    } catch (error) {
-      setShowScanning(false);
-    }
-  }
-
-  const scanOlderRequest = async () => {
-    setShowScanOlderButton(false);
-    try {
-      setLoading(true);
-      showSuccess({
-        message: (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <CheckCircle />
-            <h4 className='ml-3 mb-0' style={{ lineHeight: '19px' }}>
-              Success! Please wait a few seconds to scan
-            </h4>
-          </div>
-        ),
-      });
-      await scrapeOlderEmails(userId);
-      await updateUserAttributes({ 'custom:scan_older_done': '1' });
-
-      setTimeout(() => {
-        setLoading(false);
-      }, 5000);
-
-      setIsOlderScanDone(true);
-    } catch (error) {
-      // TODO: show error alert here
-      setLoading(false);
       showError({
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AlertCircle />
             <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              File is too large! Maximum size for file upload is 5 MB.
+              Error! Failed to load products!
             </h4>
           </div>
         ),
       });
+      setLoading(false);
+    }
+  }
+
+  const scanOlderRequest = async () => {
+    setShowScanOlderButton(false);
+    triggerScanNow(SCRAPEOLDER);
+  };
+
+  const checkForJustAuthorizedMail = () => {
+    const isMailJustAuthorized =
+      localStorage.getItem('authorizeNewEmail') === 'true' || false;
+    if (isMailJustAuthorized) {
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Successfully added an email! Please wait a few minutes to show
+              your returns on the dashboard
+            </h4>
+          </div>
+        ),
+      });
+      resetAuthorizeNewEmail();
     }
   };
 
   useEffect(() => {
     scrollToTop();
     loadScans();
+    checkForJustAuthorizedMail();
   }, []);
-
-  const goToAuthorize = () => {
-    history.push('/request-permission');
-  };
 
   useEffect(() => {
     function handleResize() {
@@ -216,19 +172,20 @@ export default function DashboardPage() {
       // await updateUserAttributes({ 'custom:scan_older_done': '0' }); // don't delete: helps to bring back 'Scan for older items' button if not-commented
       const user = await getUser();
       setUser(user);
-      setShowScanOlderButton(user['custom:scan_older_done'] !== '1');
+      setShowScanOlderButton(user['custom:scan_older_done'] === '0');
     })();
   }, []);
 
-  const beyond90days =
-    olderScanDone || (user && user['custom:scan_older_done'] == '1');
+  const beyond90days = get(user, 'custom:scan_older_done', '0') === '1';
 
   return (
     <div id='DashboardPage'>
       <div className='container mt-6 main-mobile-dashboard'>
         <div className='row sched-row'>
           {/* If there are in progress orders */}
-          {!isEmpty(orders) && <ScheduledCard />}
+          {!isEmpty(orders) && (
+            <ScheduledCard fetchingOrders={fetchingOrders} />
+          )}
         </div>
         <div className='row ipad-row'>
           <div className={`mt-4 w-840 bottom ${isTablet ? 'col' : 'col-sm-9'}`}>
@@ -321,14 +278,6 @@ export default function DashboardPage() {
 
                 {isEmpty(search) && (
                   <div>
-                    {/* <div className='row justify-center mobile-footer-row'>
-                      <div className='col-sm-7 text-center'>
-                        <div className='text-muted text-center sofia-pro line-height-16 text-bottom-title'>
-                          These are all the purchases we found in the past 90
-                          days from your address
-                        </div>
-                      </div>
-                    </div> */}
                     <div className='row justify-center mt-3 mobile-footer-row mt-5'>
                       <div className='col-sm-6 text-center'>
                         <div className='text-muted text-center text-cant-find sofia-pro'>
@@ -336,7 +285,10 @@ export default function DashboardPage() {
                           <button
                             className='btn btn-add-product mr-1'
                             onClick={() => setModalProductShow(true)}
-                            style={{ padding: '0px' }}
+                            disabled={false}
+                            style={{
+                              padding: '0px',
+                            }}
                           >
                             <h4 className='mb-0 noted-purple sofia-pro line-height-16 text-add'>
                               &nbsp; Add it manually
@@ -353,9 +305,9 @@ export default function DashboardPage() {
                       <div className='col-sm-6 text-center'>
                         <button
                           className='btn text-center noted-purple sofia-pro line-height-16 text-new-email'
-                          onClick={goToAuthorize}
+                          onClick={() => triggerScanNow(NORMAL)}
                         >
-                          Add new email address
+                          Scan Now
                         </button>
                       </div>
                     </div>
@@ -372,7 +324,10 @@ export default function DashboardPage() {
                                 className='mr-3 noted-purple'
                                 animation='border'
                                 size='md'
-                                style={{ height: '1.5rem', width: '1.5rem' }}
+                                style={{
+                                  height: '1.5rem',
+                                  width: '1.5rem',
+                                }}
                               />
                             )}
                             <button

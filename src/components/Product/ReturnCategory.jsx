@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { DONATE, NOT_ELIGIBLE } from '../../constants/actions/runtime';
 import { timeout } from '../../utils/time';
 import { setCartItems } from '../../actions/cart.action';
+import { fixedEncodeURIComponent } from '../../utils/data';
+import { isEmpty } from 'lodash';
 
 export default function ReturnCategory({
   userId,
@@ -52,7 +54,7 @@ export default function ReturnCategory({
       setLoadProgress(95);
 
       if (search) {
-        params.search = encodeURIComponent(search);
+        params.search = fixedEncodeURIComponent(search);
       }
 
       if (nextPageToken) {
@@ -67,7 +69,6 @@ export default function ReturnCategory({
       setShowNextPageButton(products.length > 0 && products.length === size);
 
       setItems(newItems);
-
       setLoadProgress(100);
       await timeout(500);
       /**
@@ -82,12 +83,16 @@ export default function ReturnCategory({
   };
 
   useEffect(() => {
-    fetchItems();
-    handleRefreshCategory(fetchItems, category);
+    if (isEmpty(search)) {
+      fetchItems();
+      handleRefreshCategory(fetchItems, category);
+    }
   }, []);
 
   useEffect(() => {
-    fetchItems();
+    if (!isEmpty(search)) {
+      fetchItems();
+    }
   }, [search]);
 
   const getNextPageToken = () => {
