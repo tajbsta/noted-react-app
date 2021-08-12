@@ -6,6 +6,7 @@ import { useHistory } from 'react-router';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import ReturnScore from '../../../components/Product/ReturnsScore';
 import { toTitleCase } from '../../../utils/data';
+import { PICKUP_SLOT_LABELS } from '../../../constants/addPickupSlot';
 
 export const ScheduledReturnItem = ({ order }) => {
     const [eventKey, setEventKey] = useState('0');
@@ -150,17 +151,32 @@ export const ScheduledReturnItem = ({ order }) => {
         );
     };
 
-    // const renderTime = (label) => {
-    //     if (label) {
-    //         return `Between ${label
-    //             .replace('-', 'and')
-    //             .replace(new RegExp(/\./g), '')}`;
-    //     }
-    // };
+    const renderTime = (label) => {
+        if (label) {
+            return (
+                <Row
+                    style={{
+                        marginRight: '0px',
+                        justifyContent: 'flex-end',
+                    }}
+                >
+                    <div className='sched-time-container'>
+                        <h4>Between &nbsp;</h4>
+                        <h4 className='sched-value'>
+                            {label
+                                .replace('-', 'and')
+                                .replace(new RegExp(/\./g), '')}
+                        </h4>
+                    </div>
+                </Row>
+            );
+        }
+    };
 
     const hasAirtableId = get(order, 'airtableId', '') !== '';
 
-    // const timeToUse = PICKUP_SLOT_LABELS[order.pickupTime][order.pickupSlot];
+    const timeToUse =
+        PICKUP_SLOT_LABELS[order.pickupTime][order.pickupSlot] || '';
 
     return (
         <div className='row' key={order.id}>
@@ -353,19 +369,7 @@ export const ScheduledReturnItem = ({ order }) => {
                                             </h4>
                                         </div>
                                     </Row>
-                                    {/* <Row
-                                        style={{
-                                            marginRight: '0px',
-                                            justifyContent: 'flex-end',
-                                        }}
-                                    >
-                                        <div className='sched-time-container'>
-                                            <h4>Between &nbsp;</h4>
-                                            <h4 className='sched-value'>
-                                                {renderTime(timeT)}
-                                            </h4>
-                                        </div>
-                                    </Row> */}
+                                    {renderTime(timeToUse)}
                                     <Row
                                         style={{
                                             justifyContent: 'flex-end',
