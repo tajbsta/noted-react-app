@@ -6,12 +6,12 @@
 */
 
 @font-face {
-    font-family: 'Sofia Pro';
-    src: url('../fonts/SofiaPro/Sofia\ Pro\ Regular.otf') format('opentype');
+  font-family: 'Sofia Pro';
+  src: url('../fonts/SofiaPro/Sofia\ Pro\ Regular.otf') format('opentype');
 }
 
 html {
-    background-color: white;
+  background-color: white;
 }
 
 /* Pages styling */
@@ -20,7 +20,6 @@ html {
 @import './pages/forgotpass';
 @import './pages/resetpass';
 @import './pages/authorize';
-@import './pages/code';
 @import './pages/dashboard';
 @import './pages/scanning';
 @import './pages/checkout';
@@ -59,5 +58,5 @@ html {
 
 html,
 body {
-    background-color: #faf8fa;
+  background-color: #faf8fa;
 }

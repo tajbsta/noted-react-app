@@ -2,7 +2,6 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage';
 import ResetPasswordPage from '../pages/ResetPasswordPage';
-import Code from '../pages/Code';
 
 export default [
   {
@@ -25,12 +24,4 @@ export default [
     path: '/reset-password',
     component: ResetPasswordPage,
   },
-  {
-    path: '/code',
-    component: Code,
-  },
-  {
-    path: '/code/verify',
-    component: Code,
-  }
 ];

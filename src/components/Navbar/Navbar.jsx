@@ -58,9 +58,6 @@ export default function Topnav() {
     '/reset-password',
     '/request-permission/',
     '/request-permission',
-    '/code',
-    '/code/',
-    '/code/verify',
   ];
 
   const publicViews = [
