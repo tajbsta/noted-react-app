@@ -205,8 +205,7 @@ const DashboardPageInitial = () => {
       if (isSignedIn) {
         gapi.current.auth2.getAuthInstance().signOut();
       }
-      const result = await gapi.current.auth2.getAuthInstance().signIn();
-      console.log(result);
+      await gapi.current.auth2.getAuthInstance().signIn({ prompt: 'consent' });
       dispatch(updateScraperStatus(ISAUTHORIZING));
     } catch (error) {
       if (error.error === 'popup_closed_by_user') {
@@ -234,6 +233,8 @@ const DashboardPageInitial = () => {
             </div>
           ),
         });
+        gapi.current.auth2.getAuthInstance().signOut();
+        gapi.current.auth2.getAuthInstance().disconnect();
         return;
       }
       showError({
