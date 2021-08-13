@@ -206,6 +206,7 @@ const DashboardPageInitial = () => {
         gapi.current.auth2.getAuthInstance().signOut();
       }
       const result = await gapi.current.auth2.getAuthInstance().signIn();
+      console.log(result);
       dispatch(updateScraperStatus(ISAUTHORIZING));
     } catch (error) {
       if (error.error === 'popup_closed_by_user') {
@@ -215,6 +216,20 @@ const DashboardPageInitial = () => {
               <AlertCircle />
               <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
                 Error! Please reauthorise this scan
+              </h4>
+            </div>
+          ),
+        });
+        return;
+      }
+      if (error.error === 'access_denied') {
+        showError({
+          message: (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <AlertCircle />
+              <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+                Please re-authorise this scan and grant adequate permissions to
+                noted.
               </h4>
             </div>
           ),
@@ -362,6 +377,8 @@ const DashboardPageInitial = () => {
             </div>
           ),
         });
+        gapi.current.auth2.getAuthInstance().signOut();
+        checkIfProductsExist();
         return;
       }
       showError({
@@ -369,11 +386,13 @@ const DashboardPageInitial = () => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AlertCircle />
             <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              Please refresh the page and reauthorise the scan.
+              Please refresh the page and re-authorise the scan.
             </h4>
           </div>
         ),
       });
+      gapi.current.auth2.getAuthInstance().signOut();
+      checkIfProductsExist();
     }
   };
 
