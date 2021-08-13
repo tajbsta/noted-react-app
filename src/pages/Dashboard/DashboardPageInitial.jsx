@@ -205,10 +205,10 @@ const DashboardPageInitial = () => {
       if (isSignedIn) {
         gapi.current.auth2.getAuthInstance().signOut();
       }
-      await gapi.current.auth2.getAuthInstance().signIn();
+      const result = await gapi.current.auth2.getAuthInstance().signIn();
+      console.log(result);
       dispatch(updateScraperStatus(ISAUTHORIZING));
     } catch (error) {
-      console.log(error);
       if (error.error === 'popup_closed_by_user') {
         showError({
           message: (
@@ -216,6 +216,20 @@ const DashboardPageInitial = () => {
               <AlertCircle />
               <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
                 Error! Please reauthorise this scan
+              </h4>
+            </div>
+          ),
+        });
+        return;
+      }
+      if (error.error === 'access_denied') {
+        showError({
+          message: (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <AlertCircle />
+              <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+                Please re-authorise this scan and grant adequate permissions to
+                noted.
               </h4>
             </div>
           ),
@@ -334,7 +348,8 @@ const DashboardPageInitial = () => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <AlertCircle />
               <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-                Error! An error occurred
+                We couldn&apos;t find any orders in this email. Try authorizing
+                another email address.
               </h4>
             </div>
           ),
@@ -346,17 +361,38 @@ const DashboardPageInitial = () => {
 
       await sendToBE(data);
     } catch (error) {
-      console.log(error);
+      if (
+        error &&
+        error?.result?.error?.message ===
+          'Request had insufficient authentication scopes.'
+      ) {
+        showError({
+          message: (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <AlertCircle />
+              <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+                Unable to run the scan. Kindly re-authorize scan and select View
+                your email messages and settings in the Google popup.
+              </h4>
+            </div>
+          ),
+        });
+        gapi.current.auth2.getAuthInstance().signOut();
+        checkIfProductsExist();
+        return;
+      }
       showError({
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AlertCircle />
             <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              Error! An error occurred
+              Please refresh the page and re-authorise the scan.
             </h4>
           </div>
         ),
       });
+      gapi.current.auth2.getAuthInstance().signOut();
+      checkIfProductsExist();
     }
   };
 
