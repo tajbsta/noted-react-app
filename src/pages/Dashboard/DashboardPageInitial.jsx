@@ -233,8 +233,6 @@ const DashboardPageInitial = () => {
             </div>
           ),
         });
-        gapi.current.auth2.getAuthInstance().signOut();
-        gapi.current.auth2.getAuthInstance().disconnect();
         return;
       }
       showError({

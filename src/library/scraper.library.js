@@ -97,7 +97,7 @@ export const getAccountMessages = async (q, gapi) => {
  * @param {Object} gapi - Google API attached to window object
  */
 export const convertMessagesToEmails = async (messageIds, gapi) => {
-  const chunkMessages = _.chunk(messageIds, 100);
+  const chunkMessages = _.chunk(messageIds, 90);
 
   const batchResponses = await Promise.all(
     chunkMessages.map(async (ids) => {
@@ -120,7 +120,8 @@ export const convertMessagesToEmails = async (messageIds, gapi) => {
   for (const res of batchResponses) {
     const batchRes = res;
 
-    const responses = Object.values(batchRes.result);
+    let responses = Object.values(batchRes.result);
+    responses = responses.filter((response) => response.status === 200);
 
     emails = emails.concat(
       responses.map((x) => {
