@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from 'react-bootstrap';
 import BasicInfo from './components/BasicInfo';
-import EmailAddresses from './components/EmailAddresses';
 import ChangePass from './components/ChangePass';
 import DeleteAccount from './components/DeleteAccount';
 import UserInfo from './../Profile/components/UserInfo';
