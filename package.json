@@ -1,8 +1,10 @@
 {
   "name": "noted-react-app",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@sentry/react": "^6.11.0",
+    "@sentry/tracing": "^6.11.0",
     "@stripe/react-stripe-js": "^1.4.1",
     "@stripe/stripe-js": "^1.15.0",
     "aws-amplify": "^3.3.21",
