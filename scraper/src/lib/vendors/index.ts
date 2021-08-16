@@ -12,7 +12,7 @@ import TJMaxx from './tjMaxx';
 import Levi from './levi';
 import kMccarthy from './kMccarthy';
 import LaneBryant from './laneBryant';
-import JCrew from './jCrew';
+import JCrew from './jcrew';
 import Aldo from './aldo';
 import Abercrombie from './abercrombie';
 import AmericanEagleOutfitters from './americanEagleOutfitters';
