@@ -333,7 +333,8 @@ const DashboardPageInitial = () => {
         if (typeRef.current === SCRAPEOLDER) {
           await updateUserAttributes({ 'custom:scan_older_done': '1' });
         }
-        checkIfProductsExist();
+        // checkIfProductsExist();
+        dispatch(updateScraperStatus(SCRAPECANCEL));
         return;
       }
 
@@ -342,7 +343,7 @@ const DashboardPageInitial = () => {
       data = data.filter((item) => item !== undefined);
 
       if (data.length <= 0) {
-        showError({
+        showSuccess({
           message: (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <AlertCircle />
@@ -354,7 +355,8 @@ const DashboardPageInitial = () => {
           ),
         });
         gapi.current.auth2.getAuthInstance().signOut();
-        checkIfProductsExist();
+        // checkIfProductsExist();
+        dispatch(updateScraperStatus(SCRAPECANCEL));
         return;
       }
 
@@ -377,7 +379,8 @@ const DashboardPageInitial = () => {
           ),
         });
         gapi.current.auth2.getAuthInstance().signOut();
-        checkIfProductsExist();
+        // checkIfProductsExist();
+        dispatch(updateScraperStatus(SCRAPECANCEL));
         return;
       }
       showError({
@@ -391,7 +394,8 @@ const DashboardPageInitial = () => {
         ),
       });
       gapi.current.auth2.getAuthInstance().signOut();
-      checkIfProductsExist();
+      // checkIfProductsExist();
+      dispatch(updateScraperStatus(SCRAPECANCEL));
     }
   };
 
@@ -445,7 +449,8 @@ const DashboardPageInitial = () => {
     };
 
     loadGoogleScript();
-    checkIfProductsExist();
+    // checkIfProductsExist();
+    dispatch(updateScraperStatus(SCRAPECANCEL));
   }, []);
 
   useEffect(() => {
