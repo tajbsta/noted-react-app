@@ -1,6 +1,7 @@
 import { RawProduct } from '../models';
 
 export const cleanRawBody = (body: string): string => {
+  /* istanbul ignore next */
   return body.replace(/-/g, '+').replace(/_/g, '/');
 };
 
@@ -17,7 +18,7 @@ export const productQuantityHelper = (product: RawProduct): RawProduct[] => {
     const qntyLabel = product.quantity > 1 ? ` (${qnty})` : '';
 
     products.push({
-      name: `${product.name}${qntyLabel}` || '',
+      name: `${product.name}${qntyLabel}` || /* istanbul ignore next */ '',
       thumbnail: product.thumbnail,
       price: product.price
     });
