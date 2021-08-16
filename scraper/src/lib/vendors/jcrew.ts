@@ -4,7 +4,7 @@ import { parseHtmlString, productQuantityHelper } from '../helpers';
 import { decode as htmlDecode } from 'html-entities';
 import { OrderData, RawProduct, IEmailPayload } from '../../models';
 
-export default class JCREW {
+export default class JCrew {
   static async parse(code: string, payload: IEmailPayload): Promise<OrderData> {
     const doc = parseHtmlString(payload.decodedBody);
     const [orderRef, orderDate, rawProducts] = await Promise.all([
