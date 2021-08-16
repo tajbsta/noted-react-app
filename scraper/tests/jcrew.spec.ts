@@ -9,7 +9,7 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import JCREW from '../src/lib/vendors/jcrew';
+import JCrew from '../src/lib/vendors/jcrew';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
@@ -46,7 +46,7 @@ describe('JCREW', () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await JCREW.parse(VENDOR_CODES.JCREW, payload);
+      const orderData = await JCrew.parse(VENDOR_CODES.JCREW, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '1185936048',
         orderDate: 1618876800000,
@@ -75,7 +75,7 @@ describe('JCREW', () => {
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await JCREW.parse(VENDOR_CODES.JCREW, updatedPayload);
+      const orderData = await JCrew.parse(VENDOR_CODES.JCREW, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '1185936048',
         orderDate: 1618876800000,
@@ -109,7 +109,7 @@ describe('JCREW', () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(JCREW.parse(VENDOR_CODES.JCREW, updatedPayload)).to.eventually.be.rejectedWith(Error);
+      expect(JCrew.parse(VENDOR_CODES.JCREW, updatedPayload)).to.eventually.be.rejectedWith(Error);
     });
   });
 });
