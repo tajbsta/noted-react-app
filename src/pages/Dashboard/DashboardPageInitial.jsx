@@ -1,6 +1,6 @@
 import React, { useEffect, Fragment } from 'react';
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap';
-import * as Sentry from "@sentry/react";
+import * as Sentry from '@sentry/react';
 
 import AuthorizeImg from '../../assets/img/Authorize.svg';
 import ScanningIcon from '../../assets/icons/Scanning.svg';
@@ -433,7 +433,7 @@ const DashboardPageInitial = () => {
         }
       });
     } catch (error) {
-      Sentry.captureException(error);      
+      Sentry.captureException(error);
     }
   };
 
