@@ -12,6 +12,7 @@ import { savePaymentMethod } from '../../api/orderApi';
 import { updateUserAttributes } from '../../api/auth';
 import { showError } from '../../library/notifications.library';
 import { orderErrors } from '../../library/errors.library';
+import * as Sentry from "@sentry/react";
 
 export default function AddPaymentForm({
   close,
@@ -96,6 +97,8 @@ export default function AddPaymentForm({
           'Your request could not be completed because of an error. Please try again later.'
         ),
       });
+
+      Sentry.captureException(error);
     }
   };
 
