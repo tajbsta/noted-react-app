@@ -21,6 +21,8 @@ import { orderErrors } from '../../library/errors.library';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
+import * as Sentry from "@sentry/react";
+
 import {
     getPublicKey,
     createPaymentIntent,
@@ -162,6 +164,7 @@ const ViewOrder = () => {
         } catch (error) {
             setOrderLoading(false);
             showError({ message: 'Error loading order' });
+            Sentry.captureException(error);
         }
     };
 
@@ -270,6 +273,8 @@ const ViewOrder = () => {
                     'Cannot cancel order at this time'
                 ),
             });
+
+            Sentry.captureException(error);
         }
     };
 
@@ -382,6 +387,8 @@ const ViewOrder = () => {
                     'Cannot update order at this time'
                 ),
             });
+
+            Sentry.captureException(error);
         }
     };
 

@@ -4,6 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Amplify from 'aws-amplify';
+import * as Sentry from '@sentry/react';
+import { Integrations } from '@sentry/tracing';
+
+const version = JSON.stringify(require('../package.json').version);
+
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    release: 'noted-react-app@' + version,
+    environment: process.env.REACT_APP_ENV,
+    dsn: process.env.REACT_APP_SENTRY_URL,
+    integrations: [new Integrations.BrowserTracing()],
+    autoSessionTracking: false,
+    tracesSampleRate: 0,
+  });
+}
 
 Amplify.configure({
   Auth: {
