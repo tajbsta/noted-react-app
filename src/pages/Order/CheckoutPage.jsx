@@ -19,6 +19,7 @@ import { orderErrors } from '../../library/errors.library';
 import { getOtherReturnProducts } from '../../api/productsApi';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
+import * as Sentry from "@sentry/react";
 import {
     getPublicKey,
     createPaymentIntent,
@@ -177,6 +178,8 @@ const Checkout = () => {
                     'Cannot place order at this time'
                 ),
             });
+
+            Sentry.captureException(error);
         }
     };
 

@@ -1,5 +1,7 @@
 import React, { useEffect, Fragment } from 'react';
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap';
+import * as Sentry from '@sentry/react';
+
 import AuthorizeImg from '../../assets/img/Authorize.svg';
 import ScanningIcon from '../../assets/icons/Scanning.svg';
 import CustomRow from '../../components/Row';
@@ -245,6 +247,8 @@ const DashboardPageInitial = () => {
           </div>
         ),
       });
+
+      Sentry.captureException(error);
     }
   };
 
@@ -282,8 +286,8 @@ const DashboardPageInitial = () => {
           ),
         });
       }
-    } catch (e) {
-      console.log(e.response);
+    } catch (error) {
+      Sentry.captureException(error);
     }
   };
 
@@ -333,7 +337,8 @@ const DashboardPageInitial = () => {
         if (typeRef.current === SCRAPEOLDER) {
           await updateUserAttributes({ 'custom:scan_older_done': '1' });
         }
-        checkIfProductsExist();
+        // checkIfProductsExist();
+        dispatch(updateScraperStatus(SCRAPECANCEL));
         return;
       }
 
@@ -342,7 +347,7 @@ const DashboardPageInitial = () => {
       data = data.filter((item) => item !== undefined);
 
       if (data.length <= 0) {
-        showError({
+        showSuccess({
           message: (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <AlertCircle />
@@ -354,7 +359,8 @@ const DashboardPageInitial = () => {
           ),
         });
         gapi.current.auth2.getAuthInstance().signOut();
-        checkIfProductsExist();
+        // checkIfProductsExist();
+        dispatch(updateScraperStatus(SCRAPECANCEL));
         return;
       }
 
@@ -377,7 +383,8 @@ const DashboardPageInitial = () => {
           ),
         });
         gapi.current.auth2.getAuthInstance().signOut();
-        checkIfProductsExist();
+        // checkIfProductsExist();
+        dispatch(updateScraperStatus(SCRAPECANCEL));
         return;
       }
       showError({
@@ -391,7 +398,10 @@ const DashboardPageInitial = () => {
         ),
       });
       gapi.current.auth2.getAuthInstance().signOut();
-      checkIfProductsExist();
+      // checkIfProductsExist();
+      dispatch(updateScraperStatus(SCRAPECANCEL));
+
+      Sentry.captureException(error);
     }
   };
 
@@ -423,7 +433,7 @@ const DashboardPageInitial = () => {
         }
       });
     } catch (error) {
-      console.log('NEW ERROR', error);
+      Sentry.captureException(error);
     }
   };
 
@@ -445,7 +455,8 @@ const DashboardPageInitial = () => {
     };
 
     loadGoogleScript();
-    checkIfProductsExist();
+    // checkIfProductsExist();
+    dispatch(updateScraperStatus(SCRAPECANCEL));
   }, []);
 
   useEffect(() => {
