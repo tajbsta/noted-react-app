@@ -38,7 +38,8 @@ import {
 } from '../../actions/scraper.action';
 import { ToastContainer } from 'react-toastify';
 import Topnav from '../../components/Navbar/Navbar';
-import { updateUserAttributes } from '../../api/auth';
+import { getUser, updateUserAttributes } from '../../api/auth';
+import { get } from 'lodash';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -207,7 +208,7 @@ const DashboardPageInitial = () => {
       if (isSignedIn) {
         gapi.current.auth2.getAuthInstance().signOut();
       }
-      await gapi.current.auth2.getAuthInstance().signIn({ prompt: 'consent' });
+      await window.gapi.auth2.getAuthInstance().signIn({ prompt: 'consent' });
       dispatch(updateScraperStatus(ISAUTHORIZING));
     } catch (error) {
       if (error.error === 'popup_closed_by_user') {
@@ -291,6 +292,19 @@ const DashboardPageInitial = () => {
     }
   };
 
+  const getNoOfMonthsToScan = async () => {
+    const user = await getUser();
+    const monthsScanned = parseInt(get(user, 'custom:scan_months', 0));
+    if (monthsScanned === 0) {
+      await updateUserAttributes({ 'custom:scan_months': '3' });
+      return 3;
+    }
+    if (monthsScanned === 3) {
+      await updateUserAttributes({ 'custom:scan_months': '0' });
+      return 6;
+    }
+  };
+
   /**
    * HANDLE EMAIl SCRAPING
    * @param {string} type - Scraper Types - normal, scrapeOlder
@@ -299,15 +313,18 @@ const DashboardPageInitial = () => {
     try {
       dispatch(updateScraperStatus(ISSCRAPING));
       const vendors = await getVendors(['supported=true']);
+      const noOfMonths = await getNoOfMonthsToScan();
 
       let before;
       let after;
 
       if (type === NORMAL) {
-        after = moment().startOf('day').subtract(3, 'months');
+        after = moment().startOf('day').subtract(noOfMonths, 'months');
         before = moment().startOf('day').add(1, 'd');
       } else {
-        const startDate = moment().startOf('day').subtract(3, 'months');
+        const startDate = moment()
+          .startOf('day')
+          .subtract(noOfMonths, 'months');
         after = startDate.clone().subtract(1, 'years');
         before = startDate;
       }
@@ -447,6 +464,17 @@ const DashboardPageInitial = () => {
     dispatch(updateScraperStatus(SCRAPECANCEL));
   };
 
+  /**CHECK IF FIRST TIME USER */
+  const checkIfFirstTimeUser = async () => {
+    const user = await getUser();
+    const monthsScanned = get(user, 'custom:scan_months', undefined);
+    if (monthsScanned === undefined) {
+      dispatch(updateScraperStatus(NOTAUTHORIZED));
+      return;
+    }
+    dispatch(updateScraperStatus(SCRAPECANCEL));
+  };
+
   //INITIALIZE GOOGLE API
   useEffect(() => {
     window.onGoogleScriptLoad = () => {
@@ -455,9 +483,14 @@ const DashboardPageInitial = () => {
     };
 
     loadGoogleScript();
+    checkIfFirstTimeUser();
     // checkIfProductsExist();
-    dispatch(updateScraperStatus(SCRAPECANCEL));
+    // dispatch(updateScraperStatus(SCRAPECANCEL));
   }, []);
+
+  useEffect(() => {
+    gapi.current = window.gapi;
+  });
 
   useEffect(() => {
     typeRef.current = type;
