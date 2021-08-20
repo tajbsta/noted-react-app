@@ -9,54 +9,54 @@ import { get } from 'lodash';
 import { useFormik } from 'formik';
 import { registerSchema } from '../models/formSchema';
 import { scrollToTop } from '../utils/window';
-import GoogleLogo from '../assets/icons/Google.svg';
 import { resetAuthorizeNewEmail } from '../utils/data';
+import GoogleLogoItem from '../assets/img/google_signup.png';
 
 export default function RegisterPage() {
-    const history = useHistory();
-    const [error, setError] = useState(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [passwordShown, setPasswordShown] = useState(false);
-    const togglePasswordVisibility = () => {
-        setPasswordShown(passwordShown ? false : true);
-    };
+  const history = useHistory();
+  const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [passwordShown, setPasswordShown] = useState(false);
+  const togglePasswordVisibility = () => {
+    setPasswordShown(passwordShown ? false : true);
+  };
 
-    useEffect(() => {
-        resetAuthorizeNewEmail();
-        scrollToTop();
-    }, []);
+  useEffect(() => {
+    resetAuthorizeNewEmail();
+    scrollToTop();
+  }, []);
 
-    const eyeOff = <EyeOff />;
-    const eye = <Eye />;
+  const eyeOff = <EyeOff />;
+  const eye = <Eye />;
 
-    const { errors, handleChange, values } = useFormik({
-        initialValues: {
-            email: '',
-            password: '',
+  const { errors, handleChange, values } = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: registerSchema,
+  });
+
+  const { email, password } = values;
+
+  const register = async (e) => {
+    e.preventDefault();
+    try {
+      setError(null);
+      setIsSubmitting(true);
+
+      await Auth.signUp({
+        username: email,
+        password,
+        attributes: {
+          email,
+          'custom:created_at': new Date().getTime().toString(),
         },
-        validationSchema: registerSchema,
-    });
-
-    const { email, password } = values;
-
-    const register = async (e) => {
-        e.preventDefault();
-        try {
-            setError(null);
-            setIsSubmitting(true);
-
-            await Auth.signUp({
-                username: email,
-                password,
-                attributes: {
-                    email,
-                    'custom:created_at': new Date().getTime().toString(),
-                },
-            });
+      });
 
       await Auth.signIn(email, password);
       history.push('/dashboard');
-      return
+      return;
     } catch (error) {
       // console.log(Object.values(error));
       setError(
@@ -70,81 +70,82 @@ export default function RegisterPage() {
     }
   };
 
-    const policyStyle = {
-        textDecoration: 'underline',
-    };
+  const policyStyle = {
+    textDecoration: 'underline',
+  };
 
   const renderPasswordValidationError = () => (
-    <small className="form-text p-0 noted-red error-pass-msg">
+    <small className='form-text p-0 noted-red error-pass-msg'>
       {errors.password}
     </small>
   );
 
   const renderEmailValidationError = () => (
-    <small className="form-text p-0 noted-red error-email">
+    <small className='form-text p-0 noted-red error-email'>
       {errors.email}
     </small>
   );
 
   return (
-    <div id="RegisterPage">
+    <div id='RegisterPage'>
       <div>
-        <div className="row justify-content-center index-container">
-          <div className="text-need col-md-5 col-xl-4">
-            <p className="text-center">Need to return or donate</p>
-            <p className="text-center">purchases made in the past?</p>
-            <p className="text-center">Let's go!</p>
-            <div className="form-group">
+        <div className='row justify-content-center index-container'>
+          <div className='text-need col-md-5 col-xl-4'>
+            <p className='text-center'>Need to return or donate</p>
+            <p className='text-center'>purchases made in the past?</p>
+            <p className='text-center'>Let's go!</p>
+            <div className='form-group'>
               <button
                 onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
-                className="btn btn-md btn-block btn-google"
+                style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  height: '48px',
+                }}
               >
-                <div className="avatar avatar-xs mr-3">
-                  <img
-                    className="avatar-img"
-                    style={{ height: '24px', width: '24px', marginTop: '2px' }}
-                    src={GoogleLogo}
-                  />
-                </div>
-                <h4 className="mb-0 sofia-pro text-google">Join with Google</h4>
+                <img
+                  src={GoogleLogoItem}
+                  style={{ marginRight: '15px', height: '48px' }}
+                  alt='google_sign_in'
+                />
               </button>
             </div>
-            <div className="line-container">
-              <p className="line-break">
+            <div className='line-container'>
+              <p className='line-break'>
                 <span>or</span>
               </p>
             </div>
             <Form>
               {error && (
-                <div className="alert alert-danger" role="alert">
-                  <h4 className="text-center text-alert">{error}</h4>
+                <div className='alert alert-danger' role='alert'>
+                  <h4 className='text-center text-alert'>{error}</h4>
                 </div>
               )}
 
-              <div className="form-group">
+              <div className='form-group'>
                 <input
-                  className="form-control form-control-appended"
-                  type="email"
-                  name="email"
-                  placeholder="Your email..."
+                  className='form-control form-control-appended'
+                  type='email'
+                  name='email'
+                  placeholder='Your email...'
                   onChange={handleChange}
                 />
               </div>
               {email.length > 0 && errors.email && renderEmailValidationError()}
 
-              <div className="form-group">
-                <div className="input-group input-group-merge">
+              <div className='form-group'>
+                <div className='input-group input-group-merge'>
                   <input
-                    className="form-control form-control-appended form-pass"
+                    className='form-control form-control-appended form-pass'
                     type={passwordShown ? 'text' : 'password'}
-                    name="password"
-                    placeholder="Your password..."
+                    name='password'
+                    placeholder='Your password...'
                     onChange={handleChange}
                   />
-                  <div className="input-group-append">
-                    <span className="input-group-text">
+                  <div className='input-group-append'>
+                    <span className='input-group-text'>
                       <i
-                        className="fe fe-eye"
+                        className='fe fe-eye'
                         onClick={togglePasswordVisibility}
                       >
                         {passwordShown ? eye : eyeOff}
@@ -157,8 +158,8 @@ export default function RegisterPage() {
                 errors.password &&
                 renderPasswordValidationError()}
               <button
-                className="btn btn-lg btn-block btn-green mb-3 btn-submit"
-                type="submit"
+                className='btn btn-lg btn-block btn-green mb-3 btn-submit'
+                type='submit'
                 disabled={
                   isSubmitting ||
                   email.length === 0 ||
@@ -170,53 +171,53 @@ export default function RegisterPage() {
               >
                 {!isSubmitting ? (
                   <>
-                    <i className="fe fe-mail">
+                    <i className='fe fe-mail'>
                       <Mail />
                     </i>
                     Join with email
                   </>
                 ) : (
                   <Spinner
-                    animation="border"
-                    size="sm"
-                    className="spinner btn-spinner"
+                    animation='border'
+                    size='sm'
+                    className='spinner btn-spinner'
                   />
                 )}
               </button>
             </Form>
-            <div className="text-left">
-              <small className="text-muted text-left">
+            <div className='text-left'>
+              <small className='text-muted text-left'>
                 By joining noted you agree to our{' '}
                 <a
-                  href="https://www.notedreturns.com/terms-and-conditions"
+                  href='https://www.notedreturns.com/terms-and-conditions'
                   style={policyStyle}
                 >
                   Terms of Service
                 </a>{' '}
                 and{' '}
                 <a
-                  href="https://www.notedreturns.com/privacy-policy"
+                  href='https://www.notedreturns.com/privacy-policy'
                   style={policyStyle}
                 >
                   Privacy Policy
                 </a>
                 . Protected by Google's{' '}
                 <a
-                  href="https://policies.google.com/privacy"
+                  href='https://policies.google.com/privacy'
                   style={policyStyle}
                 >
                   Privacy
                 </a>{' '}
                 and{' '}
-                <a href="https://policies.google.com/terms" style={policyStyle}>
+                <a href='https://policies.google.com/terms' style={policyStyle}>
                   Terms
                 </a>
                 .
               </small>
             </div>
-            <h3 className="text-already">
+            <h3 className='text-already'>
               Already a member?{' '}
-              <Link to="login" className="text-decoration-underline text-login">
+              <Link to='login' className='text-decoration-underline text-login'>
                 {' '}
                 Log in
               </Link>
@@ -225,5 +226,5 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
-    );
+  );
 }
