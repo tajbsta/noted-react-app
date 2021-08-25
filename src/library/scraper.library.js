@@ -91,35 +91,37 @@ export const getAccountMessages = async (q, gapi) => {
   return emails;
 };
 
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 /**
  * CONVERT MESSAGES TO EMAILS
  * @param {Array<string>} messageIds
  * @param {Object} gapi - Google API attached to window object
  */
 export const convertMessagesToEmails = async (messageIds, gapi) => {
-  const chunkMessages = _.chunk(messageIds, 50);
+  const chunkMessages = _.chunk(messageIds, 90);
 
-  const batchResponses = [];
+  const finalResponses = [];
 
-  chunkMessages.forEach(async (ids) => {
+  for (let i = 0; i < chunkMessages.length; i++) {
+    const ids = chunkMessages[i];
+
     const batch = gapi.current.client.newBatch();
+
     ids.forEach((id) => {
       const getEmail = gapi.current.client.gmail.users.messages.get({
         userId: 'me',
         id,
         format: 'full',
-        fields: 'id,payload,internalDate,sizeEstimate',
+        fields: 'id,payload,internalDate',
       });
       batch.add(getEmail);
     });
-    batchResponses.push(batch);
-  });
-
-  const finalResponses = [];
-
-  for (let i = 0; i < batchResponses.length; i++) {
-    const val = await batchResponses[i];
-    finalResponses.push(val);
+    const res = await batch;
+    finalResponses.push(res);
+    await wait(1000);
   }
 
   let emails = [];
