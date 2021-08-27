@@ -42,6 +42,7 @@ import Topnav from '../../components/Navbar/Navbar';
 import { getUser, updateUserAttributes } from '../../api/auth';
 import { get } from 'lodash';
 import { useState } from 'react';
+import GoogleAuthorize from '../../assets/img/authorize.png';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -81,7 +82,7 @@ const Authorize = ({ triggerScanNow }) => {
               </a>{' '}
               , including the Limited Use requirements.
             </h4>
-            <h4 className='text-underline'>
+            <h4 className='text-underline' style={{ marginBottom: '1rem' }}>
               <a
                 href='https://notedreturns.com/privacy-policy'
                 target='_blank'
@@ -91,12 +92,27 @@ const Authorize = ({ triggerScanNow }) => {
                 Learn more about security
               </a>
             </h4>
-            <Button
+            <button
               onClick={triggerScanNow}
+              style={{
+                backgroundColor: 'transparent',
+                border: 'none',
+                height: '48px',
+                padding: 0,
+              }}
+            >
+              <img
+                src={GoogleAuthorize}
+                style={{ height: '48px' }}
+                alt='google_authorize'
+              />
+            </button>
+            {/* <Button
+              onClick={}
               className='btn btn-green btn-authorize'
             >
               Authorize Now
-            </Button>
+            </Button> */}
           </Col>
           <Col xs='6'>
             <div className='authorize-img'>
@@ -152,17 +168,33 @@ const Authorize = ({ triggerScanNow }) => {
               </a>{' '}
               , including the Limited Use requirements.
             </h4>
-            <h4 className='text-underline'>
+            <h4 className='text-underline' style={{ marginBottom: '1rem' }}>
               <a href='#' className='sofia-pro'>
                 Learn more about security
               </a>
             </h4>
-            <Button
+            <button
+              onClick={triggerScanNow}
+              style={{
+                backgroundColor: 'transparent',
+                border: 'none',
+                height: '48px',
+                padding: 0,
+                justifySelf: 'start',
+              }}
+            >
+              <img
+                src={GoogleAuthorize}
+                style={{ height: '48px' }}
+                alt='google_authorize'
+              />
+            </button>
+            {/* <Button
               onClick={() => triggerScanNow(NORMAL)}
               className='btn btn-green btn-authorize'
             >
               Authorize Now
-            </Button>
+            </Button> */}
           </Col>
         </Row>
       </Container>
