@@ -29,6 +29,7 @@ import {
   SCRAPECOMPLETE,
   SCRAPEOLDER,
   SCRAPECANCEL,
+  COOKIE_ENABLED,
 } from '../../constants/scraper';
 import DashboardPage from './DashboardPage';
 import { useSelector, useDispatch } from 'react-redux';
@@ -40,6 +41,7 @@ import { ToastContainer } from 'react-toastify';
 import Topnav from '../../components/Navbar/Navbar';
 import { getUser, updateUserAttributes } from '../../api/auth';
 import { get } from 'lodash';
+import { useState } from 'react';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -199,6 +201,7 @@ const DashboardPageInitial = () => {
   const dispatch = useDispatch();
   const gapi = useRef(null);
   const typeRef = useRef(type);
+  const [thirdPartyCookie, setThirdPartyCookie] = useState(false);
 
   /**TRIGGER SCAN NOW FOR USERS */
   const triggerScanNow = async (type) => {
@@ -212,6 +215,19 @@ const DashboardPageInitial = () => {
       dispatch(updateScraperStatus(ISAUTHORIZING));
     } catch (error) {
       if (error.error === 'popup_closed_by_user') {
+        if (!thirdPartyCookie) {
+          showError({
+            message: (
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <AlertCircle />
+                <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+                  Error! Please allow third party cookies and try again.
+                </h4>
+              </div>
+            ),
+          });
+          return;
+        }
         showError({
           message: (
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -475,6 +491,41 @@ const DashboardPageInitial = () => {
     dispatch(updateScraperStatus(SCRAPECANCEL));
   };
 
+  const is3PCookieAllowed = async () =>
+    new Promise((resolve) => {
+      {
+        const frame = document.createElement('iframe');
+
+        frame.id = '3P';
+        frame.src = process.env.REACT_APP_COOKIE_URL;
+        frame.style.display = 'none';
+        frame.style.position = 'fixed';
+
+        window.addEventListener('message', function listen(event) {
+          const accurateOrigin =
+            process.env.REACT_APP_COOKIE_URL === event.origin;
+          if (accurateOrigin) {
+            if (!event.data) {
+              resolve(false);
+              window.removeEventListener('message', listen);
+              return;
+            }
+            const cookieEnabled =
+              `${event.data}`.split('=')[0] === COOKIE_ENABLED;
+
+            resolve(cookieEnabled);
+          }
+        });
+
+        document.body.appendChild(frame);
+      }
+    });
+
+  const checkForCookie = async () => {
+    const cookieIsSet = await is3PCookieAllowed();
+    setThirdPartyCookie(cookieIsSet);
+  };
+
   //INITIALIZE GOOGLE API
   useEffect(() => {
     window.onGoogleScriptLoad = () => {
@@ -486,6 +537,7 @@ const DashboardPageInitial = () => {
     checkIfFirstTimeUser();
     // checkIfProductsExist();
     // dispatch(updateScraperStatus(SCRAPECANCEL));
+    checkForCookie();
   }, []);
 
   useEffect(() => {
