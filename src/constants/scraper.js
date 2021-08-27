@@ -5,3 +5,4 @@ export const ISAUTHORIZING = 'isAuthorizing'; // - Authorization in progress, Go
 export const ISSCRAPING = 'isScraping'; // - Authorization is complete and Scraping has been initiated
 export const SCRAPECOMPLETE = 'scrapeComplete'; // - Scraping is complete
 export const SCRAPECANCEL = 'scrapeCancel'; // - Scraping is canceled
+export const COOKIE_ENABLED = 'COOKIE_ENABLED';
