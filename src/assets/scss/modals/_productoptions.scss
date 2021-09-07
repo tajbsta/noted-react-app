@@ -1,0 +1,102 @@
+#ProductOptionsModal {
+  justify-content: center;
+  border-radius: 8px;
+  font-family: 'Sofia Pro';
+
+  .modal-content {
+    min-height: 540px;
+    max-width: 528px;
+    max-height: 650px;
+
+    .row-one {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 8px;
+
+      .header-text-bold {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .header-text-normal {
+        font-size: 14px;
+        text-align: center;
+      }
+      .btn-cancel {
+        background-color: transparent;
+        color: #2e1d3a;
+        padding: 0;
+        width: fit-content;
+        align-self: flex-end;
+        font-size: 14px;
+        border: none;
+        padding: 5px 10px;
+      }
+    }
+    .row-two {
+      display: flex;
+      flex-wrap: nowrap;
+      flex-direction: column;
+      padding-left: 6px;
+      padding-right: 6px;
+      //   height: 400px;
+      overflow-y: auto;
+      margin-bottom: 8px;
+    }
+
+    .row-three {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+
+      .btn-cancel {
+        background-color: transparent;
+        color: #2e1d3a;
+        border: none;
+        margin-right: 16px;
+      }
+    }
+  }
+}
+
+#ProductOption {
+  display: flex;
+  border-radius: 8px;
+  border: 1px solid #edf2f9;
+  margin-bottom: 12px;
+  background-color: white;
+  align-items: center;
+  position: relative;
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  .checkbox {
+    margin-right: 16px;
+    margin-left: 16px;
+  }
+
+  .img-container {
+    width: 50px;
+    margin-right: 16px;
+    margin-left: 16px;
+    .product-img {
+      max-width: 50px;
+      max-height: 50px;
+      object-fit: contain;
+      border: 1px solid rgb(240, 240, 240);
+      border-radius: 8px;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: rgb(255, 255, 255);
+    }
+  }
+
+  .text-container {
+    flex: 1;
+    .vendor,
+    .price {
+      font-weight: bold;
+    }
+  }
+}
