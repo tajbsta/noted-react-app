@@ -37,7 +37,7 @@ export default function ProductOptionsModal(props) {
   const { show, data, sendToBE, isSavingProducts, handleCancel } = props;
 
   const [allProducts, setAllProducts] = useState([]);
-  const [selectText, setSelectText] = useState('Select All Products');
+  const [selectText, setSelectText] = useState('Deselect all');
   const [hasSelected, setHasSelected] = useState(false);
 
   const handleSaveProducts = async () => {
@@ -90,7 +90,7 @@ export default function ProductOptionsModal(props) {
         isSelected: true,
       }));
       setAllProducts(newAllProducts);
-      setSelectText('Unselect all');
+      setSelectText('Deselect all');
     } else {
       const newAllProducts = allProducts.map((item) => ({
         ...item,
@@ -124,7 +124,7 @@ export default function ProductOptionsModal(props) {
       if (response.length > 0) {
         const newData = response.map((item) => ({
           ...item,
-          isSelected: false,
+          isSelected: true,
         }));
         setAllProducts(newData);
       }
@@ -135,6 +135,8 @@ export default function ProductOptionsModal(props) {
     const exists = allProducts.findIndex((item) => item.isSelected);
     if (exists !== -1) {
       setHasSelected(true);
+    } else {
+      setHasSelected(false);
     }
   }, [allProducts]);
 
