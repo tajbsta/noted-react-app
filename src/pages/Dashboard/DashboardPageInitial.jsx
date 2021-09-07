@@ -43,6 +43,7 @@ import { getUser, updateUserAttributes } from '../../api/auth';
 import { get } from 'lodash';
 import { useState } from 'react';
 import GoogleAuthorize from '../../assets/img/authorize.png';
+import ProductOptionsModal from '../../modals/ProductOptionsModal';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -234,6 +235,9 @@ const DashboardPageInitial = () => {
   const gapi = useRef(null);
   const typeRef = useRef(type);
   const [thirdPartyCookie, setThirdPartyCookie] = useState(false);
+  const [productOptions, setProductOptions] = useState([]);
+  const [showProductOptions, setShowProductOptions] = useState(false);
+  const [isSavingProducts, setIsSavingProducts] = useState(false);
 
   /**TRIGGER SCAN NOW FOR USERS */
   const triggerScanNow = async (type) => {
@@ -318,9 +322,12 @@ const DashboardPageInitial = () => {
         accountEmail,
         provider,
       };
+      setIsSavingProducts(true);
       const { data } = await addProductFromScraper(addProductData);
+      setIsSavingProducts(false);
       if (data.status === 'success') {
         dispatch(updateScraperStatus(SCRAPECOMPLETE));
+        setShowProductOptions(false);
         if (typeRef.current === SCRAPEOLDER) {
           await updateUserAttributes({ 'custom:scan_older_done': '1' });
         }
@@ -336,8 +343,14 @@ const DashboardPageInitial = () => {
         });
       }
     } catch (error) {
+      setIsSavingProducts(false);
       Sentry.captureException(error);
     }
+  };
+
+  const showModalWithProducts = async (products) => {
+    setProductOptions(products);
+    setShowProductOptions(true);
   };
 
   const getNoOfMonthsToScan = async () => {
@@ -429,7 +442,8 @@ const DashboardPageInitial = () => {
         return;
       }
 
-      await sendToBE(data);
+      // await sendToBE(data);
+      showModalWithProducts(data);
     } catch (error) {
       if (
         error &&
@@ -558,6 +572,11 @@ const DashboardPageInitial = () => {
     setThirdPartyCookie(cookieIsSet);
   };
 
+  const handleCancelProductOptionsModal = () => {
+    dispatch(updateScraperStatus(SCRAPECOMPLETE));
+    setShowProductOptions(false);
+  };
+
   //INITIALIZE GOOGLE API
   useEffect(() => {
     window.onGoogleScriptLoad = () => {
@@ -567,8 +586,6 @@ const DashboardPageInitial = () => {
 
     loadGoogleScript();
     checkIfFirstTimeUser();
-    // checkIfProductsExist();
-    // dispatch(updateScraperStatus(SCRAPECANCEL));
     checkForCookie();
   }, []);
 
@@ -604,6 +621,13 @@ const DashboardPageInitial = () => {
           <DashboardPage triggerScanNow={triggerScanNow} />
         </Fragment>
       )}
+      <ProductOptionsModal
+        show={showProductOptions}
+        isSavingProducts={isSavingProducts}
+        sendToBE={sendToBE}
+        data={productOptions}
+        handleCancel={handleCancelProductOptionsModal}
+      />
     </Fragment>
   );
 };
