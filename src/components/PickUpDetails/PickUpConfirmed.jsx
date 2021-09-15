@@ -97,7 +97,8 @@ function PickUpConfirmed({ order, isUpdate = false, donationOrg }) {
   //   );
   // };
 
-  const formUrl = `${process.env.REACT_APP_ASSETS_URL}/${donationOrg.formKey}`;
+  const key = get(donationOrg, 'formKey', '');
+  const formUrl = `${process.env.REACT_APP_ASSETS_URL}/${key}`;
 
   return (
     <div className='card shadow-sm max-w-840 card-height'>
@@ -115,10 +116,13 @@ function PickUpConfirmed({ order, isUpdate = false, donationOrg }) {
         {renderTime(timeToUse)}
         <Row>
           <div
-            className={`col-sm-9 p-0 ${isUpdate ? 'd-flex' : ''}`}
-            style={{ alignItems: isUpdate ? 'center' : '' }}
+            className={`col-sm-9 p-0`}
+            style={{
+              alignItems: isUpdate ? 'center' : '',
+              flexDirection: 'column',
+            }}
           >
-            <p className='sofia-pro mb-0 text-14'>
+            <p className='sofia-pro mb-3 text-14'>
               We have sent you a confirmation by email for order #
               <strong>{order.id}</strong>
             </p>
@@ -136,14 +140,14 @@ function PickUpConfirmed({ order, isUpdate = false, donationOrg }) {
                 </span>
               </p>
             )}
-            {donationOrg.formKey && (
+            {key && (
               <small
                 style={{
                   fontSize: '14px',
                   lineHeight: '16px',
                   color: '#2e1d3a',
                   mixBlendMode: 'normal',
-                  opacity: '0.7',
+                  opacity: '0.9',
                 }}
               >
                 Please note that you will need to download the charity’s form
@@ -154,7 +158,7 @@ function PickUpConfirmed({ order, isUpdate = false, donationOrg }) {
                   target='_blank'
                   href={formUrl}
                   rel='noreferrer'
-                  style={{ fontWeight: '600', fontSize: '13px' }}
+                  style={{ fontWeight: '600', fontSize: '14px' }}
                   className='noted-purple'
                 >
                   here.

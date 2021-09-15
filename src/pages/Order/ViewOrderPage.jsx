@@ -522,7 +522,11 @@ const ViewOrder = () => {
                   {cancelled ? (
                     <PickUpCancelled order={order} />
                   ) : (
-                    <PickUpConfirmed order={order} isUpdate={true} />
+                    <PickUpConfirmed
+                      order={order}
+                      isUpdate={true}
+                      donationOrg={selectedDonationOrg}
+                    />
                   )}
                 </div>
               </div>
