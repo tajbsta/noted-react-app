@@ -1,8 +1,8 @@
 import React, { useEffect, Fragment } from 'react';
-import { Button, Col, Container, Row, Spinner } from 'react-bootstrap';
+import { Col, Container, Row, Spinner } from 'react-bootstrap';
 import * as Sentry from '@sentry/react';
 
-import AuthorizeImg from '../../assets/img/Authorize.svg';
+import AuthorizeImg from '../../assets/img/AuthorizePlain.svg';
 import ScanningIcon from '../../assets/icons/Scanning.svg';
 import CustomRow from '../../components/Row';
 import { loadGoogleScript } from '../../library/loadGoogleScript';
@@ -65,6 +65,14 @@ const Authorize = ({ triggerScanNow }) => {
               <h4>Declutter your home and donate to local charities</h4>
             </div>
 
+            <button onClick={triggerScanNow} className='authorize-now-button'>
+              <img
+                src={GoogleAuthorize}
+                style={{ height: '48px' }}
+                alt='google_authorize'
+              />
+            </button>
+
             <h4 className='text-first'>
               You first need to authorized noted to read your emails. Only bots
               will see the relevant emails and we will never sell or transfer
@@ -93,27 +101,6 @@ const Authorize = ({ triggerScanNow }) => {
                 Learn more about security
               </a>
             </h4>
-            <button
-              onClick={triggerScanNow}
-              style={{
-                backgroundColor: 'transparent',
-                border: 'none',
-                height: '48px',
-                padding: 0,
-              }}
-            >
-              <img
-                src={GoogleAuthorize}
-                style={{ height: '48px' }}
-                alt='google_authorize'
-              />
-            </button>
-            {/* <Button
-              onClick={}
-              className='btn btn-green btn-authorize'
-            >
-              Authorize Now
-            </Button> */}
           </Col>
           <Col xs='6'>
             <div className='authorize-img'>
@@ -174,28 +161,13 @@ const Authorize = ({ triggerScanNow }) => {
                 Learn more about security
               </a>
             </h4>
-            <button
-              onClick={triggerScanNow}
-              style={{
-                backgroundColor: 'transparent',
-                border: 'none',
-                height: '48px',
-                padding: 0,
-                justifySelf: 'start',
-              }}
-            >
+            <button onClick={triggerScanNow} className='authorize-now-button'>
               <img
                 src={GoogleAuthorize}
                 style={{ height: '48px' }}
                 alt='google_authorize'
               />
             </button>
-            {/* <Button
-              onClick={() => triggerScanNow(NORMAL)}
-              className='btn btn-green btn-authorize'
-            >
-              Authorize Now
-            </Button> */}
           </Col>
         </Row>
       </Container>
