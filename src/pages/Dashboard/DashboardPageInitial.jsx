@@ -65,6 +65,23 @@ const Authorize = ({ triggerScanNow }) => {
               <h4>Declutter your home and donate to local charities</h4>
             </div>
 
+            <button
+              onClick={triggerScanNow}
+              style={{
+                backgroundColor: '#570097',
+                border: '4px dotted #570097',
+                // height: '48px',
+                padding: '5px 10px',
+                // marginBottom: '1rem',
+              }}
+            >
+              <img
+                src={GoogleAuthorize}
+                style={{ height: '48px' }}
+                alt='google_authorize'
+              />
+            </button>
+
             <h4 className='text-first'>
               You first need to authorized noted to read your emails. Only bots
               will see the relevant emails and we will never sell or transfer
@@ -93,21 +110,7 @@ const Authorize = ({ triggerScanNow }) => {
                 Learn more about security
               </a>
             </h4>
-            <button
-              onClick={triggerScanNow}
-              style={{
-                backgroundColor: 'transparent',
-                border: 'none',
-                height: '48px',
-                padding: 0,
-              }}
-            >
-              <img
-                src={GoogleAuthorize}
-                style={{ height: '48px' }}
-                alt='google_authorize'
-              />
-            </button>
+
             {/* <Button
               onClick={}
               className='btn btn-green btn-authorize'
@@ -177,11 +180,11 @@ const Authorize = ({ triggerScanNow }) => {
             <button
               onClick={triggerScanNow}
               style={{
-                backgroundColor: 'transparent',
-                border: 'none',
-                height: '48px',
-                padding: 0,
-                justifySelf: 'start',
+                backgroundColor: '#570097',
+                border: '4px dotted #570097',
+                // height: '48px',
+                padding: '5px 10px',
+                // marginBottom: '1rem',
               }}
             >
               <img
