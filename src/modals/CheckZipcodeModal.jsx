@@ -30,7 +30,11 @@ export default function CheckZipcodeModal(props) {
             <CheckForZipCode onHide={props.onHide} updateZipCode={setZipCode} />
           )}
           {zipCode && (
-            <CollateUserInfo onHide={props.onHide} zipCode={zipCode} />
+            <CollateUserInfo
+              onHide={props.onHide}
+              updateZipCode={setZipCode}
+              zipCode={zipCode}
+            />
           )}
         </Modal.Body>
       </Modal>
@@ -103,7 +107,6 @@ const CheckForZipCode = (props) => {
 };
 
 const CollateUserInfo = (props) => {
-  const history = useHistory();
   const [isSubmittingUserInfo, setIsSubmittingUserInfo] = useState(false);
   const collateUserInfoFormik = useFormik({
     initialValues: {
@@ -178,6 +181,12 @@ const CollateUserInfo = (props) => {
     }
 
     console.log(data);
+  };
+
+  const handleCancel = async () => {
+    collateUserInfoFormik.resetForm();
+    setIsSubmittingUserInfo(false);
+    props.updateZipCode('');
   };
 
   const renderInlineError = (errors) => (
@@ -305,7 +314,7 @@ const CollateUserInfo = (props) => {
           type='submit'
           disabled={isSubmittingUserInfo}
         >
-          {isSubmittingUserInfo ? 'Submitting' : 'Continue'}
+          {isSubmittingUserInfo ? 'Subscribing' : 'Subscribe'}
           {isSubmittingUserInfo && (
             <Spinner
               animation='border'
@@ -318,6 +327,9 @@ const CollateUserInfo = (props) => {
               className='spinner'
             />
           )}
+        </Button>
+        <Button className='btn-cancel btn-lg btn-block' onClick={handleCancel}>
+          Cancel
         </Button>
       </Form>
     </div>
