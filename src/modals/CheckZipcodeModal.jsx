@@ -3,8 +3,8 @@ import { useFormik } from 'formik';
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Spinner, Row, Col } from 'react-bootstrap';
 import { CheckCircle } from 'react-feather';
-import { useHistory } from 'react-router';
-import { showSuccess } from '../library/notifications.library';
+import { createUnsupportedUser } from '../api/accountsApi';
+import { showError, showSuccess } from '../library/notifications.library';
 import {
   checkZipcodeSchema,
   collateUserInfoSchema,
@@ -154,30 +154,36 @@ const CollateUserInfo = (props) => {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       email: email.trim(),
-      zipCode: zipCode.trim(),
+      zipcode: zipCode.trim(),
     };
 
     setIsSubmittingUserInfo(true);
 
     try {
       //HANDLE SENDING DATA TO BE HERE
+      const response = await createUnsupportedUser(data);
+      console.log(response);
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Details submitted successfully. You will be notified as soon as we
+              are in your neighbourhood
+            </h4>
+          </div>
+        ),
+      });
       setTimeout(() => {
-        // showSuccess({
-        //   message: (
-        //     <div style={{ display: 'flex', alignItems: 'center' }}>
-        //       <CheckCircle />
-        //       <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-        //         Thank you for submitting your information. You&apos;ll be
-        //         notified as soon as we support your zipcode.
-        //       </h4>
-        //     </div>
-        //   ),
-        // });
         window.location.href = 'https://notedreturns.com';
-        setIsSubmittingUserInfo(false);
-      }, 3000);
+      }, 4000);
+      setIsSubmittingUserInfo(false);
     } catch (e) {
       setIsSubmittingUserInfo(false);
+      showError({
+        message:
+          'An error occurred while submitting your details, please try again later',
+      });
     }
 
     console.log(data);
