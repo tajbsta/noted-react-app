@@ -6,7 +6,7 @@ import ResetPasswordPage from '../pages/ResetPasswordPage';
 export default [
   {
     path: '/',
-    component: RegisterPage,
+    component: LoginPage,
   },
   {
     path: '/join',

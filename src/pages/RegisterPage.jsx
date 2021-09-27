@@ -11,12 +11,15 @@ import { registerSchema } from '../models/formSchema';
 import { scrollToTop } from '../utils/window';
 import { resetAuthorizeNewEmail } from '../utils/data';
 import GoogleLogoItem from '../assets/img/google_signup.png';
+import CheckZipcodeModal from '../modals/CheckZipcodeModal';
 
 export default function RegisterPage() {
   const history = useHistory();
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
+  const [showCheckZipcodeModal, setShowCheckZipcodeModal] = useState(true);
+
   const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
   };
@@ -225,6 +228,10 @@ export default function RegisterPage() {
           </div>
         </div>
       </div>
+      <CheckZipcodeModal
+        show={showCheckZipcodeModal}
+        onHide={() => setShowCheckZipcodeModal(false)}
+      />
     </div>
   );
 }
