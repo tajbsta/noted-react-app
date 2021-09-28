@@ -117,8 +117,6 @@ const ViewOrder = () => {
         return push('/profile');
       }
 
-      console.log(data);
-
       setOrder(data);
       dispatch(setCartItems(data.orderItems || []));
       setOrderLoading(false);
@@ -250,7 +248,10 @@ const ViewOrder = () => {
         pickupDate: details.date,
         pickupTime: details.time,
         pickupSlot: details.slot,
+        donationOrg: get(selectedDonationOrg, 'code', ''),
       };
+
+      // console.log(updatedOrder);
 
       if (billing) {
         updatedOrder.billing = billing;

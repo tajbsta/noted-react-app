@@ -16,7 +16,7 @@ import { showError, showSuccess } from '../../library/notifications.library';
 import { Box } from 'react-feather';
 import { createOrder, getOrderPricing } from '../../api/orderApi';
 import { orderErrors } from '../../library/errors.library';
-import { donateItem, getOtherReturnProducts } from '../../api/productsApi';
+import { getOtherReturnProducts } from '../../api/productsApi';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
 import * as Sentry from '@sentry/react';
@@ -69,6 +69,7 @@ const Checkout = () => {
       setSelectedDonationOrg({});
       return;
     }
+
     setSelectedDonationOrg(org);
   };
 
@@ -117,7 +118,10 @@ const Checkout = () => {
         pickupDate: details.date,
         pickupTime: details.time,
         pickupSlot: details.slot,
+        donationOrg: get(selectedDonationOrg, 'code', ''),
       };
+
+      // console.log(newOrder);
 
       // Pre validate order and get the assigned order id
       const orderId = await prevalidateOrder(newOrder);
@@ -251,8 +255,6 @@ const Checkout = () => {
   };
 
   const donationOrgIsValid = checkDonation();
-
-  console.log('DONATION SELECTED', donationOrgIsValid);
 
   const validOrder =
     validAddress &&
