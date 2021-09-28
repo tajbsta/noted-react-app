@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { PASSWORD_REGEX_FORMAT } from '../constants/errors/regexFormats';
+import { supportedZipcode } from '../constants/utils';
 
 export const registerSchema = Yup.object({
   email: Yup.string()
@@ -40,70 +41,6 @@ export const resetPasswordSchema = Yup.object().shape({
     ),
   }),
 });
-
-const supportedZipcode = [
-  '37201',
-  '37014',
-  '37202',
-  '37024',
-  '37203',
-  '37027',
-  '37204',
-  '37046',
-  '37205',
-  '37062',
-  '37206',
-  '37064',
-  '37207',
-  '37065',
-  '37208',
-  '37067',
-  '37209',
-  '37068',
-  '37210',
-  '37069',
-  '37211',
-  '37135',
-  '37212',
-  '38476',
-  '37213',
-  '37179',
-  '37214',
-  '37071',
-  '37215',
-  '37087',
-  '37216',
-  '37088',
-  '37217',
-  '37090',
-  '37218',
-  '37121',
-  '37219',
-  '37122',
-  '37220',
-  '37136',
-  '37221',
-  '37184',
-  '37222',
-  '37223',
-  '37224',
-  '37225',
-  '37226',
-  '37227',
-  '37228',
-  '37229',
-  '37230',
-  '37235',
-  '37238',
-  '37239',
-  '37242',
-  '37243',
-  '37244',
-  '37245',
-  '37247',
-  '37248',
-  '37249',
-];
 
 export const pickUpAddressSchema = Yup.object({
   fullName: Yup.string().required('Fill in your name'),
@@ -200,4 +137,22 @@ export const selectDonationOrgSchema = Yup.object({
   donationOrg: Yup.string().required(
     'Please select a charity before confirming order.'
   ),
+});
+
+export const checkZipcodeSchema = Yup.object({
+  zipCode: Yup.string()
+    .oneOf(supportedZipcode, 'not available')
+    .min(4, 'Enter a valid zip code')
+    .required('Zip code is required'),
+});
+
+export const collateUserInfoSchema = Yup.object({
+  firstName: Yup.string().required('First name is required'),
+  lastName: Yup.string().required('Last name is required'),
+  email: Yup.string()
+    .email('Enter a valid email address')
+    .required('Email is required'),
+  zipCode: Yup.string()
+    .min(4, 'Enter a valid zip code')
+    .required('Zip code is required'),
 });
