@@ -133,6 +133,12 @@ export const editProductSchema = Yup.object({
     .label('File'),
 });
 
+export const selectDonationOrgSchema = Yup.object({
+  donationOrg: Yup.string().required(
+    'Please select a charity before confirming order.'
+  ),
+});
+
 export const checkZipcodeSchema = Yup.object({
   zipCode: Yup.string()
     .oneOf(supportedZipcode, 'not available')
