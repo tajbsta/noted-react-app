@@ -60,4 +60,20 @@
       }
     }
   }
+
+  .modal-header .close {
+    position: absolute;
+    right: 11px;
+    top: 11px;
+    color: black;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 7px;
+    border: 1px solid #eae8eb;
+    box-shadow: 0px 1px 10px rgba(78, 72, 103, 0.08);
+  }
 }
