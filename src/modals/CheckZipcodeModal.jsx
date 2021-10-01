@@ -1,6 +1,8 @@
 import { isEmpty } from '@aws-amplify/core';
 import { useFormik } from 'formik';
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import { Modal, Button, Form, Spinner, Row, Col } from 'react-bootstrap';
 import { CheckCircle } from 'react-feather';
 import { createUnsupportedUser } from '../api/accountsApi';
@@ -12,6 +14,7 @@ import {
 
 export default function CheckZipcodeModal(props) {
   const [zipCode, setZipCode] = useState('');
+  const history = useHistory();
 
   return (
     <div>
@@ -25,7 +28,10 @@ export default function CheckZipcodeModal(props) {
         animation={false}
         id='CheckZipcodeModal'
       >
-        <Modal.Header closeButton onClick={props.onHide}></Modal.Header>
+        <Modal.Header
+          closeButton
+          onClick={() => history.push('/login')}
+        ></Modal.Header>
         <Modal.Body className='sofia-pro modal-body'>
           {!zipCode && (
             <CheckForZipCode onHide={props.onHide} updateZipCode={setZipCode} />
