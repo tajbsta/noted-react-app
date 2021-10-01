@@ -61,6 +61,11 @@
     }
   }
 
+  .modal-header {
+    padding: 0;
+    border: none;
+  }
+
   .modal-header .close {
     position: absolute;
     right: 11px;
