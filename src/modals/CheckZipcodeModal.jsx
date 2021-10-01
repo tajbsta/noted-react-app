@@ -25,6 +25,7 @@ export default function CheckZipcodeModal(props) {
         animation={false}
         id='CheckZipcodeModal'
       >
+        <Modal.Header closeButton onClick={props.onHide}></Modal.Header>
         <Modal.Body className='sofia-pro modal-body'>
           {!zipCode && (
             <CheckForZipCode onHide={props.onHide} updateZipCode={setZipCode} />
@@ -143,12 +144,8 @@ const CollateUserInfo = (props) => {
       return;
     }
 
-    const {
-      firstName,
-      lastName,
-      email,
-      zipCode,
-    } = collateUserInfoFormik.values;
+    const { firstName, lastName, email, zipCode } =
+      collateUserInfoFormik.values;
 
     const data = {
       firstName: firstName.trim(),
