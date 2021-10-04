@@ -70,6 +70,8 @@ export default function DashboardPage({ triggerScanNow }) {
       const userId = await getUserId();
       const res = await getOrders(userId, 'active');
 
+      console.log(res.orders);
+
       setFetchingOrders(false);
       setOrders(res.orders);
       // console.log(res.orders);

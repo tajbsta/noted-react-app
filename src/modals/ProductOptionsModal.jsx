@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect, Fragment } from 'react';
-import { Modal, Button, Form, Row, Col, Spinner } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Modal, Button, Row, Spinner } from 'react-bootstrap';
 import NotedCheckbox from '../components/Product/NotedCheckbox';
 import { get } from 'lodash';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';

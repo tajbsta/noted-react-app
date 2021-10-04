@@ -106,7 +106,7 @@ dist
 .tern-port
 
 # installation locks
-# package-lock.json
+package-lock.json
 yarn.lock
 
 build
