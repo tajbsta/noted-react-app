@@ -1,5 +1,5 @@
 import { get, isEmpty } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import ReturnCategory from '../../components/Product/ReturnCategory';
@@ -21,6 +21,7 @@ import { AlertCircle, CheckCircle } from 'react-feather';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 import { resetAuthorizeNewEmail } from '../../utils/data';
 import { NORMAL, SCRAPEOLDER } from '../../constants/scraper';
+import InitialScanModal from '../../modals/initialScanModal';
 
 export default function DashboardPage({ triggerScanNow }) {
   const [search, setSearch] = useState('');
@@ -48,6 +49,8 @@ export default function DashboardPage({ triggerScanNow }) {
   const [isTablet, setIsTablet] = useState(false);
   const [orders, setOrders] = useState([]);
   const [fetchingOrders, setFetchingOrders] = useState(false);
+  const addManualRef = useRef(null);
+  const [showInitialScanModal, setShowInitialScanModal] = useState(false);
 
   /**HANDLE CATEGORY REFRESH */
   const handleRefreshCategory = (method, category) => {
@@ -69,8 +72,6 @@ export default function DashboardPage({ triggerScanNow }) {
       setFetchingOrders(true);
       const userId = await getUserId();
       const res = await getOrders(userId, 'active');
-
-      console.log(res.orders);
 
       setFetchingOrders(false);
       setOrders(res.orders);
@@ -102,6 +103,9 @@ export default function DashboardPage({ triggerScanNow }) {
 
       setUserId(userId);
       setLoading(false);
+      setTimeout(() => {
+        setShowInitialScanModal(true);
+      }, 5000);
     } catch (error) {
       showError({
         message: (
@@ -180,6 +184,16 @@ export default function DashboardPage({ triggerScanNow }) {
 
   const beyond90days = get(user, 'custom:scan_older_done', '0') === '1';
 
+  // SCROLL TO
+  const executeScroll = (ref) => {
+    ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setShowInitialScanModal(false);
+
+    setTimeout(() => {
+      setModalProductShow(true);
+    }, 1200);
+  };
+
   return (
     <div id='DashboardPage'>
       <div className='container mt-6 main-mobile-dashboard'>
@@ -203,11 +217,23 @@ export default function DashboardPage({ triggerScanNow }) {
                 >
                   {showScanning && <Scanning />}
                   {loading && (
-                    <Spinner className='dashboard-spinner' animation='border' />
+                    <div>
+                      <Spinner
+                        className='dashboard-spinner'
+                        animation='border'
+                      />
+                    </div>
                   )}
                 </div>
               </>
             )}
+
+            <InitialScanModal
+              show={showInitialScanModal}
+              onHide={() => setShowInitialScanModal(false)}
+              onButtonClick={() => executeScroll(addManualRef)}
+            />
+
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
             {!loading && !showScanning && (
               <>
@@ -291,6 +317,7 @@ export default function DashboardPage({ triggerScanNow }) {
                             style={{
                               padding: '0px',
                             }}
+                            ref={addManualRef}
                           >
                             <h4 className='mb-0 noted-purple sofia-pro line-height-16 text-add'>
                               &nbsp; Add it manually
