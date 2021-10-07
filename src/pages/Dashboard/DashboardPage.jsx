@@ -1,7 +1,7 @@
 import { get, isEmpty } from 'lodash';
 import React, { useEffect, useState, useRef } from 'react';
 import { Spinner } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ReturnCategory from '../../components/Product/ReturnCategory';
 import RightCard from './components/RightCard';
 import { getUserId, getUser } from '../../api/auth';
@@ -22,6 +22,7 @@ import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 import { resetAuthorizeNewEmail } from '../../utils/data';
 import { NORMAL, SCRAPEOLDER } from '../../constants/scraper';
 import InitialScanModal from '../../modals/initialScanModal';
+import { setIsNewlySignedUp } from '../../actions/auth.action';
 
 export default function DashboardPage({ triggerScanNow }) {
   const [search, setSearch] = useState('');
@@ -31,6 +32,7 @@ export default function DashboardPage({ triggerScanNow }) {
     RETURNABLE: () => {},
     DONATE: () => {},
   });
+  const isNewlySignedUp = useSelector((state) => state.auth.isNewlySignedUp);
 
   const { search: searchSession } = useSelector(
     ({ runtime: { search }, auth: { scheduledReturns } }) => ({
@@ -51,6 +53,7 @@ export default function DashboardPage({ triggerScanNow }) {
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const addManualRef = useRef(null);
   const [showInitialScanModal, setShowInitialScanModal] = useState(false);
+  const dispatch = useDispatch();
 
   /**HANDLE CATEGORY REFRESH */
   const handleRefreshCategory = (method, category) => {
@@ -188,10 +191,16 @@ export default function DashboardPage({ triggerScanNow }) {
   const executeScroll = (ref) => {
     ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     setShowInitialScanModal(false);
+    dispatch(setIsNewlySignedUp(false));
 
     setTimeout(() => {
       setModalProductShow(true);
     }, 1200);
+  };
+
+  const onHide = () => {
+    setShowInitialScanModal(false);
+    dispatch(setIsNewlySignedUp(false));
   };
 
   return (
@@ -229,8 +238,8 @@ export default function DashboardPage({ triggerScanNow }) {
             )}
 
             <InitialScanModal
-              show={showInitialScanModal}
-              onHide={() => setShowInitialScanModal(false)}
+              show={showInitialScanModal && isNewlySignedUp}
+              onHide={onHide}
               onButtonClick={() => executeScroll(addManualRef)}
             />
 

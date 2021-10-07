@@ -12,6 +12,8 @@ import { scrollToTop } from '../utils/window';
 import { resetAuthorizeNewEmail } from '../utils/data';
 import GoogleLogoItem from '../assets/img/google_signup.png';
 import CheckZipcodeModal from '../modals/CheckZipcodeModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsNewlySignedUp } from '../actions/auth.action';
 
 export default function RegisterPage() {
   const history = useHistory();
@@ -19,6 +21,7 @@ export default function RegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
   const [showCheckZipcodeModal, setShowCheckZipcodeModal] = useState(true);
+  const dispatch = useDispatch();
 
   const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
@@ -58,6 +61,8 @@ export default function RegisterPage() {
       });
 
       await Auth.signIn(email, password);
+
+      dispatch(setIsNewlySignedUp(true));
       history.push('/dashboard');
       return;
     } catch (error) {
