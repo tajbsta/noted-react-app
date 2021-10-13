@@ -590,6 +590,7 @@ const DashboardPageInitial = () => {
       {(status === SCRAPECOMPLETE || status === SCRAPECANCEL) && (
         <Fragment>
           <Topnav />
+
           <DashboardPage triggerScanNow={triggerScanNow} />
         </Fragment>
       )}
