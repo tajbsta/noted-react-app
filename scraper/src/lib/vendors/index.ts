@@ -44,6 +44,7 @@ import Zara from './zara';
 import NorthFace from './northFace';
 import Skechers from './skechers';
 import OldNavy from './oldNavy';
+import MichaelKors from './michaelKors';
 
 export {
   FashionNova,
@@ -91,5 +92,6 @@ export {
   Zara,
   NorthFace,
   Skechers,
-  OldNavy
+  OldNavy,
+  MichaelKors
 };
