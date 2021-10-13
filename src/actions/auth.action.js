@@ -5,6 +5,7 @@ import {
   SUBMIT_ORDER,
   CLEAR_ORDER,
   UPDATE_ORDERS,
+  SET_IS_NEWLY_SIGNED_UP,
 } from '../constants/actions/auth';
 
 export function setUser(data) {
@@ -52,6 +53,13 @@ export function updateOrders(scheduledReturns) {
   return {
     type: UPDATE_ORDERS,
     data: scheduledReturns,
+  };
+}
+
+export function setIsNewlySignedUp(bool) {
+  return {
+    type: SET_IS_NEWLY_SIGNED_UP,
+    data: bool,
   };
 }
 
