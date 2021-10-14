@@ -44,6 +44,7 @@ import Zara from './zara';
 import NorthFace from './northFace';
 import Skechers from './skechers';
 import OldNavy from './oldNavy';
+import Lush from './lush';
 import MacCosmetics from './macCosmetics';
 import LuckyBrand from './luckybrand';
 import MichaelKors from './michaelKors';
@@ -95,6 +96,7 @@ export {
   NorthFace,
   Skechers,
   OldNavy,
+  Lush,
   MacCosmetics,
   LuckyBrand,
   MichaelKors

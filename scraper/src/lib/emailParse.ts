@@ -44,6 +44,7 @@ import {
   Walmart,
   WhiteHouse,
   Zara,
+  Lush,
   MacCosmetics,
   LuckyBrand,
   MichaelKors
@@ -183,6 +184,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.ZARA:
         orderData = await Zara.parse(code, payload);
+        break;
+      case VENDOR_CODES.LUSH:
+        orderData = await Lush.parse(code, payload);
         break;
       case VENDOR_CODES.MACCOSMETICS:
         orderData = await MacCosmetics.parse(code, payload);
