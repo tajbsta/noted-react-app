@@ -44,6 +44,7 @@ import {
   Walmart,
   WhiteHouse,
   Zara,
+  LuckyBrand,
   MichaelKors
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
@@ -181,6 +182,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.ZARA:
         orderData = await Zara.parse(code, payload);
+        break;
+      case VENDOR_CODES.LUCKYBRAND:
+        orderData = await LuckyBrand.parse(code, payload);
         break;
       case VENDOR_CODES.MICHAELKORS:
         orderData = await MichaelKors.parse(code, payload);
