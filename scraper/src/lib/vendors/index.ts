@@ -49,6 +49,7 @@ import Lush from './lush';
 import MacCosmetics from './macCosmetics';
 import LuckyBrand from './luckybrand';
 import MichaelKors from './michaelKors';
+import Dillards from './dillards';
 
 export {
   FashionNova,
@@ -101,5 +102,6 @@ export {
   Lush,
   MacCosmetics,
   LuckyBrand,
-  MichaelKors
+  MichaelKors,
+  Dillards
 };
