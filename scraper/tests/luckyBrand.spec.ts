@@ -9,7 +9,7 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import LuckyBrand from '../src/lib/vendors/luckyBrand';
+import LuckyBrand from '../src/lib/vendors/luckybrand';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
