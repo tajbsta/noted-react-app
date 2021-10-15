@@ -47,7 +47,7 @@ import OldNavy from './oldNavy';
 import Vans from './vans';
 import Lush from './lush';
 import MacCosmetics from './macCosmetics';
-import LuckyBrand from './luckybrand';
+import LuckyBrand from './luckyBrand';
 import MichaelKors from './michaelKors';
 import Dillards from './dillards';
 
