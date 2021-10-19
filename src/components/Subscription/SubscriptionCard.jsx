@@ -33,6 +33,7 @@ export default function SubscriptionCard(props) {
             variant={props.recommended ? 'primary' : 'outline-primary'}
             size='md'
             block
+            onClick={props.onButtonClick}
           >
             Choose Plan
           </Button>

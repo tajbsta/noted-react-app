@@ -21,7 +21,14 @@
     align-items: center;
     border: none;
     padding-top: 4rem;
-    padding-bottom: 2rem;
+  }
+
+  .subscriptions {
+    padding-top: 2rem;
+  }
+
+  .user-details {
+    padding-top: 0;
   }
 
   .modal-header h2 {

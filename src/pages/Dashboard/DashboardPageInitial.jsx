@@ -211,6 +211,9 @@ const DashboardPageInitial = () => {
   const [productOptions, setProductOptions] = useState([]);
   const [showProductOptions, setShowProductOptions] = useState(false);
   const [isSavingProducts, setIsSavingProducts] = useState(false);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+
+  const { subscriptionType } = useSelector((state) => state.subscription);
 
   /**TRIGGER SCAN NOW FOR USERS */
   const triggerScanNow = async (type) => {
@@ -505,6 +508,7 @@ const DashboardPageInitial = () => {
     const monthsScanned = get(user, 'custom:scan_months', undefined);
     if (monthsScanned === undefined) {
       dispatch(updateScraperStatus(NOTAUTHORIZED));
+
       return;
     }
     dispatch(updateScraperStatus(SCRAPECANCEL));
@@ -570,21 +574,25 @@ const DashboardPageInitial = () => {
     typeRef.current = type;
   }, [type]);
 
+  useEffect(() => {
+    if (subscriptionType === '') {
+      setShowSubscriptionModal(true);
+    }
+  }, [subscriptionType]);
+
   return (
     <Fragment>
       <ToastContainer />
       <Fragment>
         {status !== SCRAPECOMPLETE && status !== SCRAPECANCEL && (
           <div id='DashboardInitial'>
+            <SubscriptionModal
+              show={showSubscriptionModal}
+              onClose={() => setShowSubscriptionModal(false)}
+            />
+
             {status === NOTAUTHORIZED && (
-              <>
-                <SubscriptionModal
-                  show={true}
-                  // onHide={onHide}
-                  onButtonClick={() => {}}
-                />
-                <Authorize triggerScanNow={() => triggerScanNow(NORMAL)} />
-              </>
+              <Authorize triggerScanNow={() => triggerScanNow(NORMAL)} />
             )}
             {status === ISSCRAPING && <Scanning></Scanning>}
             {(status === ISAUTHORIZING || status === '') && (
