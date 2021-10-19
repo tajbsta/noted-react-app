@@ -1,0 +1,69 @@
+#SubscriptionModal {
+  .modal-body {
+    padding: 3rem 5rem;
+
+    @media (max-width: 992px) {
+      padding: 2rem 3rem;
+    }
+
+    @media (max-width: 576px) {
+      padding: 1rem 1rem;
+    }
+
+    .subscription-container {
+      align-items: flex-end;
+    }
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+  }
+
+  .modal-header h2 {
+    font-size: 20px;
+    line-height: 28px;
+    text-align: center;
+    color: #21003a;
+    font-weight: bold;
+  }
+
+  .modal-header .close {
+    position: absolute;
+    right: 11px;
+    top: 11px;
+    color: black;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 7px;
+    border: 1px solid #eae8eb;
+    box-shadow: 0px 1px 10px rgba(78, 72, 103, 0.08);
+  }
+
+  .free-pickup {
+    margin-top: 2rem;
+  }
+
+  .free-pickup p {
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    color: #6e6674;
+  }
+
+  .free-pickup span {
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    color: #570097;
+    cursor: pointer;
+  }
+}

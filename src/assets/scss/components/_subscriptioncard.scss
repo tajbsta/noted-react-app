@@ -1,0 +1,90 @@
+.SubscriptionCard {
+  border: 2px solid #570097;
+  box-sizing: border-box;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  padding-top: 1rem;
+  position: relative;
+
+  &.recommended {
+    background: #eee4f6;
+  }
+
+  img.diamond {
+    position: absolute;
+    top: -90px;
+    left: 50%;
+    margin-left: -50px;
+  }
+
+  img.emerald {
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    margin-left: -50px;
+  }
+
+  img.ruby {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    margin-left: -30px;
+  }
+
+  .recommended-text {
+    background-color: #fff;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 14px;
+    margin-bottom: 1rem;
+
+    span {
+      font-size: 12px;
+      line-height: 14px;
+      text-align: center;
+      color: #570097;
+    }
+  }
+
+  .card-title {
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    color: #570097;
+    text-transform: capitalize;
+  }
+
+  .subscription-price {
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
+    color: #570097;
+    margin-bottom: 4px;
+  }
+
+  .subscription-details {
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    color: #6e6674;
+  }
+}
+
+.savings {
+  font-size: 12px;
+  line-height: 14px;
+  text-align: center;
+  color: #6e6674;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1rem;
+}
+
+@media (max-width: 564px) {
+  .SubscriptionCardContainer {
+    margin: 3rem auto;
+  }
+}

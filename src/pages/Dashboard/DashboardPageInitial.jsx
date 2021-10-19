@@ -44,6 +44,7 @@ import { get } from 'lodash';
 import { useState } from 'react';
 import GoogleAuthorize from '../../assets/img/authorize.png';
 import ProductOptionsModal from '../../modals/ProductOptionsModal';
+import SubscriptionModal from '../../modals/SubscriptionModal';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -51,7 +52,7 @@ const Authorize = ({ triggerScanNow }) => {
       <Container className='main-body' fluid='lg'>
         <Row md='2' className='text-left align-items-center'>
           <Col xs='6' className='info'>
-            <h1 className='bold text-title'>Everything is automatic</h1>
+            <h1 className='bold text-title'>Everything is automatic!!</h1>
             <h4 className='text-noted'>
               noted will scan your email inbox and find all of your online
               purchases and their return limits.
@@ -576,7 +577,14 @@ const DashboardPageInitial = () => {
         {status !== SCRAPECOMPLETE && status !== SCRAPECANCEL && (
           <div id='DashboardInitial'>
             {status === NOTAUTHORIZED && (
-              <Authorize triggerScanNow={() => triggerScanNow(NORMAL)} />
+              <>
+                <SubscriptionModal
+                  show={true}
+                  // onHide={onHide}
+                  onButtonClick={() => {}}
+                />
+                <Authorize triggerScanNow={() => triggerScanNow(NORMAL)} />
+              </>
             )}
             {status === ISSCRAPING && <Scanning></Scanning>}
             {(status === ISAUTHORIZING || status === '') && (
