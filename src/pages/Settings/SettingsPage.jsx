@@ -4,6 +4,7 @@ import BasicInfo from './components/BasicInfo';
 import ChangePass from './components/ChangePass';
 import DeleteAccount from './components/DeleteAccount';
 import UserInfo from './../Profile/components/UserInfo';
+import MyCredits from './components/MyCredits';
 import { Link } from 'react-scroll';
 import { getUser } from '../../api/auth';
 import { scrollToTop } from '../../utils/window';
@@ -141,6 +142,7 @@ export default function SettingsPage() {
           <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
             <BasicInfo user={user} />
             {isGoogleSignIn === false && <ChangePass />}
+            <MyCredits />
             <DeleteAccount />
           </div>
         </div>

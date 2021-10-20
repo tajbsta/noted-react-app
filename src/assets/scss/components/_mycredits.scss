@@ -1,0 +1,96 @@
+#mycredits-container {
+  table {
+    width: 100%;
+  }
+
+  h4 {
+    font-size: 14px;
+    line-height: 18px;
+    color: #0e0018;
+  }
+
+  .mycredits-table-1 {
+    background-color: #fff;
+    border: none;
+    margin-top: 20px;
+
+    th {
+      font-size: 14px;
+      line-height: 16px;
+      color: #2e1d3a;
+      opacity: 0.6;
+      border: none;
+      padding: 0 0 10px;
+      text-align: center;
+    }
+
+    th:nth-child(1) {
+      text-align: left;
+    }
+
+    td {
+      font-size: 14px;
+      line-height: 19px;
+      text-align: center;
+      color: #2e1d3a;
+      border: none;
+      padding: 7px 0;
+    }
+
+    td:nth-child(1) {
+      text-align: left;
+    }
+  }
+
+  .col-2-table {
+    height: 250px;
+    overflow: auto;
+    width: 100%;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #570097;
+    border-radius: 3px;
+  }
+
+  .mycredits-table-2 {
+    border: none;
+
+    th {
+      font-size: 14px;
+      line-height: 16px;
+      color: #2e1d3a;
+      opacity: 0.6;
+      border: none;
+      padding: 0 0 15px;
+      border: 0;
+      position: sticky;
+      top: 0;
+      background-color: #fff;
+      opacity: 1;
+    }
+
+    td {
+      font-size: 14px;
+      line-height: 16px;
+      color: #2e1d3a;
+      padding: 7px 0;
+      border: 0;
+    }
+
+    td:nth-child(3) {
+      color: #570097;
+    }
+
+    td:nth-child(4) {
+      font-weight: bold;
+    }
+  }
+}
