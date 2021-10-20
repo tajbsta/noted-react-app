@@ -1,0 +1,126 @@
+#PickUpLeftModal {
+  .modal-body {
+    padding: 1rem 10rem 3rem;
+
+    @media (max-width: 992px) {
+      padding: 2rem 3rem;
+    }
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    padding-top: 4rem;
+  }
+
+  .modal-header h2 {
+    font-size: 20px;
+    line-height: 28px;
+    text-align: center;
+    color: #21003a;
+    font-weight: bold;
+  }
+
+  h3 {
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: bold;
+    color: #2e1d3a;
+    margin-bottom: 0;
+  }
+
+  .modal-header .close {
+    position: absolute;
+    right: 11px;
+    top: 11px;
+    color: black;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 7px;
+    border: 1px solid #eae8eb;
+    box-shadow: 0px 1px 10px rgba(78, 72, 103, 0.08);
+  }
+
+  .subtle-text {
+    font-size: 9px;
+    line-height: 11px;
+    color: #d1cfd1;
+    width: 100%;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #e8e7e9;
+  }
+
+  .pickups,
+  .taxes {
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018;
+    mix-blend-mode: normal;
+    opacity: 0.6;
+    margin-bottom: 6px;
+  }
+
+  .totalpay {
+    font-size: 12px;
+    line-height: 14px;
+    color: #0e0018;
+  }
+
+  .totalpay span:nth-child(2) {
+    font-size: 14px;
+    line-height: 16px;
+    text-align: right;
+    color: #2e1d3a;
+  }
+
+  .dummyCard {
+    background: #f6f1f8;
+    border-radius: 4px;
+    width: 40px;
+    height: 32px;
+    margin-right: 10px;
+  }
+
+  .cardNumber {
+    font-size: 14px;
+    line-height: 19px;
+    color: #0e0018;
+  }
+
+  .address span {
+    display: block;
+    font-size: 14px;
+    line-height: 18px;
+    color: #0e0018;
+    margin-top: 4px;
+  }
+
+  .button-container {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .edit {
+    font-size: 14px;
+    line-height: 16px;
+    text-align: right;
+    color: #570097;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .cancel {
+    background-color: #fff;
+    color: #570097;
+    border: none;
+  }
+}

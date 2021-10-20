@@ -22,6 +22,7 @@ import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 import { resetAuthorizeNewEmail } from '../../utils/data';
 import { NORMAL, SCRAPEOLDER } from '../../constants/scraper';
 import InitialScanModal from '../../modals/initialScanModal';
+import PickUpLeftModal from '../../modals/PickUpLeftModal';
 import { setIsNewlySignedUp } from '../../actions/auth.action';
 
 export default function DashboardPage({ triggerScanNow }) {
@@ -236,6 +237,8 @@ export default function DashboardPage({ triggerScanNow }) {
                 </div>
               </>
             )}
+
+            <PickUpLeftModal show={true} />
 
             <InitialScanModal
               show={showInitialScanModal && isNewlySignedUp}
