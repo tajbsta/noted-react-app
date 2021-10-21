@@ -34,6 +34,7 @@ export default function DashboardPage({ triggerScanNow }) {
     DONATE: () => {},
   });
   const isNewlySignedUp = useSelector((state) => state.auth.isNewlySignedUp);
+  const { pickups } = useSelector((state) => state.subscription);
 
   const { search: searchSession } = useSelector(
     ({ runtime: { search }, auth: { scheduledReturns } }) => ({
@@ -54,6 +55,7 @@ export default function DashboardPage({ triggerScanNow }) {
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const addManualRef = useRef(null);
   const [showInitialScanModal, setShowInitialScanModal] = useState(false);
+  const [showPickupsLeftModal, setShowPickupsLeftModal] = useState(false);
   const dispatch = useDispatch();
 
   /**HANDLE CATEGORY REFRESH */
@@ -186,6 +188,14 @@ export default function DashboardPage({ triggerScanNow }) {
     })();
   }, []);
 
+  useEffect(() => {
+    if (pickups == 1) {
+      setShowPickupsLeftModal(true);
+    } else {
+      setShowPickupsLeftModal(false);
+    }
+  }, [pickups]);
+
   const beyond90days = get(user, 'custom:scan_older_done', '0') === '1';
 
   // SCROLL TO
@@ -201,6 +211,7 @@ export default function DashboardPage({ triggerScanNow }) {
 
   const onHide = () => {
     setShowInitialScanModal(false);
+    setShowPickupsLeftModal(false);
     dispatch(setIsNewlySignedUp(false));
   };
 
@@ -238,7 +249,10 @@ export default function DashboardPage({ triggerScanNow }) {
               </>
             )}
 
-            <PickUpLeftModal show={true} />
+            <PickUpLeftModal
+              show={pickups === 1 && showPickupsLeftModal}
+              onHide={() => onHide()}
+            />
 
             <InitialScanModal
               show={showInitialScanModal && isNewlySignedUp}

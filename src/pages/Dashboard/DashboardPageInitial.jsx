@@ -214,6 +214,7 @@ const DashboardPageInitial = () => {
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
 
   const { subscriptionType } = useSelector((state) => state.subscription);
+  const isNewlySignedUp = useSelector((state) => state.auth.isNewlySignedUp);
 
   /**TRIGGER SCAN NOW FOR USERS */
   const triggerScanNow = async (type) => {
@@ -587,7 +588,7 @@ const DashboardPageInitial = () => {
         {status !== SCRAPECOMPLETE && status !== SCRAPECANCEL && (
           <div id='DashboardInitial'>
             <SubscriptionModal
-              show={showSubscriptionModal}
+              show={showSubscriptionModal && isNewlySignedUp}
               onClose={() => setShowSubscriptionModal(false)}
             />
 

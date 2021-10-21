@@ -13,7 +13,7 @@ export default function PickUpLeftModal(props) {
       animation={false}
       id='PickUpLeftModal'
     >
-      <Modal.Header closeButton onClick={props.onClose}>
+      <Modal.Header closeButton onClick={props.onHide}>
         <h2>You have 1 pick up left!</h2>
       </Modal.Header>
       <Modal.Body className='sofia-pro subscriptions'>
