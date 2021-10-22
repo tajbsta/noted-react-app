@@ -43,7 +43,13 @@ import {
   VictoriaSecret,
   Walmart,
   WhiteHouse,
-  Zara
+  Zara,
+  Vans,
+  Lush,
+  MacCosmetics,
+  LuckyBrand,
+  MichaelKors,
+  Dillards
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -180,6 +186,24 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.ZARA:
         orderData = await Zara.parse(code, payload);
+        break;
+      case VENDOR_CODES.VANS:
+        orderData = await Vans.parse(code, payload);
+        break;
+      case VENDOR_CODES.LUSH:
+        orderData = await Lush.parse(code, payload);
+        break;
+      case VENDOR_CODES.MACCOSMETICS:
+        orderData = await MacCosmetics.parse(code, payload);
+        break;
+      case VENDOR_CODES.LUCKYBRAND:
+        orderData = await LuckyBrand.parse(code, payload);
+        break;
+      case VENDOR_CODES.MICHAELKORS:
+        orderData = await MichaelKors.parse(code, payload);
+        break;
+      case VENDOR_CODES.DILLARDS:
+        orderData = await Dillards.parse(code, payload);
         break;
       default:
         break;
