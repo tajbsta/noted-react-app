@@ -44,6 +44,7 @@ import { get } from 'lodash';
 import { useState } from 'react';
 import GoogleAuthorize from '../../assets/img/authorize.png';
 import ProductOptionsModal from '../../modals/ProductOptionsModal';
+import { SUBMIT_APPLICATION } from '../../analytics/fbpixels';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -65,7 +66,13 @@ const Authorize = ({ triggerScanNow }) => {
               <h4>Declutter your home and donate to local charities</h4>
             </div>
 
-            <button onClick={triggerScanNow} className='authorize-now-button'>
+            <button
+              onClick={() => {
+                SUBMIT_APPLICATION();
+                triggerScanNow();
+              }}
+              className='authorize-now-button'
+            >
               <img
                 src={GoogleAuthorize}
                 style={{ height: '48px' }}
@@ -161,7 +168,13 @@ const Authorize = ({ triggerScanNow }) => {
                 Learn more about security
               </a>
             </h4>
-            <button onClick={triggerScanNow} className='authorize-now-button'>
+            <button
+              onClick={() => {
+                SUBMIT_APPLICATION();
+                triggerScanNow();
+              }}
+              className='authorize-now-button'
+            >
               <img
                 src={GoogleAuthorize}
                 style={{ height: '48px' }}
