@@ -10,6 +10,7 @@ import { Eye, EyeOff } from 'react-feather';
 import { scrollToTop } from '../utils/window';
 import { resetAuthorizeNewEmail } from '../utils/data';
 import GoogleLogoItem from '../assets/img/google_signin.png';
+import { INITIATE_CHECKOUT } from '../analytics/fbpixels';
 
 export default function LoginPage() {
   const history = useHistory();
@@ -184,7 +185,13 @@ export default function LoginPage() {
             </div>
             <h3 className='text-already'>
               Not a member?{' '}
-              <Link to='join' className='text-decoration-underline text-login'>
+              <Link
+                to='join'
+                className='text-decoration-underline text-login'
+                onClick={() =>
+                  process.env.NODE_ENV === 'production' && INITIATE_CHECKOUT
+                }
+              >
                 {' '}
                 Sign up now
               </Link>

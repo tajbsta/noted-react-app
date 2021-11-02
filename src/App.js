@@ -13,6 +13,14 @@ IMPORTS ROUTES
 import AppRouteSwitcher from './routes/AppRouteSwitcher';
 import configureStore from './store';
 
+import ReactPixel from 'react-facebook-pixel';
+
+const options = {
+  autoConfig: true, // set pixel's autoConfig. More info: https://developers.facebook.com/docs/facebook-pixel/advanced/
+  debug: false, // enable logs
+};
+ReactPixel.init('590385872010513', options);
+
 const { persistor, store } = configureStore();
 
 function App() {
