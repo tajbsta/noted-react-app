@@ -23,6 +23,7 @@ import { resetAuthorizeNewEmail } from '../../utils/data';
 import { NORMAL, SCRAPEOLDER } from '../../constants/scraper';
 import InitialScanModal from '../../modals/initialScanModal';
 import { setIsNewlySignedUp } from '../../actions/auth.action';
+import { Auth } from 'aws-amplify';
 
 export default function DashboardPage({ triggerScanNow }) {
   const [search, setSearch] = useState('');
@@ -54,6 +55,22 @@ export default function DashboardPage({ triggerScanNow }) {
   const addManualRef = useRef(null);
   const [showInitialScanModal, setShowInitialScanModal] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    async function sendSession() {
+      const session = await Auth.currentSession();
+      const extensionID = process.env.REACT_APP_CHROME_EXT_ID;
+      window.chrome.runtime.sendMessage(
+        extensionID,
+        JSON.stringify(session),
+        function (response) {
+          console.log(response);
+        }
+      );
+    }
+
+    sendSession();
+  }, []);
 
   /**HANDLE CATEGORY REFRESH */
   const handleRefreshCategory = (method, category) => {
@@ -88,6 +105,7 @@ export default function DashboardPage({ triggerScanNow }) {
     // console.log({
     //   searchSession,
     // });
+
     setSearch(searchSession.trim());
   }, [searchSession]);
 
