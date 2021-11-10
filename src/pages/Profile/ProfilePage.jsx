@@ -4,6 +4,7 @@ import Address from './components/Address';
 import Payment from './components/Payment';
 import ReturnHistory from './components/ReturnHistory';
 import ScheduledReturn from './components/ScheduledReturn';
+import Archive from './components/Archive';
 import { getUser } from '../../api/auth';
 import { scrollToTop } from '../../utils/window';
 import ProductsInReview from './components/ProductsInReview';
@@ -69,6 +70,9 @@ export default function ProfilePage() {
             <ScheduledReturn />
             <hr />
             <ReturnHistory user={user} />
+            <hr />
+            <Archive />
+            <hr />
           </div>
         </div>
       )}
