@@ -120,31 +120,31 @@ export default function ProductCardHover({ show, item, editproductform }) {
               </div>
             </div>
           )}
-          <Row
-            className='container-archive'
-            onMouseOver={() => setShowToolTip(true)}
-            onMouseLeave={() => setShowToolTip(false)}
-          >
+          <Row className='container-archive'>
             <img
               src={ArchiveIcon}
               alt='archive'
               className='col-sm-3 sofia-pro archive'
+              ref={target}
+              onMouseOver={() => setShowToolTip(true)}
+              onMouseLeave={() => setShowToolTip(false)}
             />
-            <Overlay
-              target={target.current}
-              show={showToolTip}
-              placement='right'
-            >
-              {(props) => (
-                <Tooltip id='overlay-example' {...props}>
-                  <span style={{ fontFamily: 'Sofia Pro !important' }}>
-                    Archive your item
-                  </span>
-                </Tooltip>
-              )}
-            </Overlay>
           </Row>
           {RenderRating}
+
+          <Overlay
+            target={target.current}
+            show={showToolTip}
+            placement='bottom'
+          >
+            {(props) => (
+              <Tooltip id='overlay-example' {...props}>
+                <span style={{ fontFamily: 'Sofia Pro !important' }}>
+                  Archive your item
+                </span>
+              </Tooltip>
+            )}
+          </Overlay>
         </div>
       )}
 
