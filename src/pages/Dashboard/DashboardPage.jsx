@@ -60,13 +60,18 @@ export default function DashboardPage({ triggerScanNow }) {
     async function sendSession() {
       const session = await Auth.currentSession();
       const extensionID = process.env.REACT_APP_CHROME_EXT_ID;
-      window.chrome.runtime.sendMessage(
-        extensionID,
-        JSON.stringify(session),
-        function (response) {
-          console.log(response);
-        }
-      );
+
+      try {
+        window.chrome.runtime.sendMessage(
+          extensionID,
+          JSON.stringify(session),
+          function (response) {
+            console.log(response);
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     sendSession();
