@@ -50,6 +50,7 @@ import MacCosmetics from './macCosmetics';
 import LuckyBrand from './luckybrand';
 import MichaelKors from './michaelKors';
 import Dillards from './dillards';
+import AltardState from './altardstate';
 
 export {
   FashionNova,
@@ -103,5 +104,6 @@ export {
   MacCosmetics,
   LuckyBrand,
   MichaelKors,
-  Dillards
+  Dillards,
+  AltardState
 };
