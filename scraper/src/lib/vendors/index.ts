@@ -51,6 +51,7 @@ import LuckyBrand from './luckybrand';
 import MichaelKors from './michaelKors';
 import Dillards from './dillards';
 import AltardState from './altardstate';
+import AnnTaylor from './annTaylor';
 
 export {
   FashionNova,
@@ -105,5 +106,6 @@ export {
   LuckyBrand,
   MichaelKors,
   Dillards,
-  AltardState
+  AltardState,
+  AnnTaylor
 };
