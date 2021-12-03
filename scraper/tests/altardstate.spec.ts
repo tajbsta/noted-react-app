@@ -16,7 +16,7 @@ moment.tz.setDefault('Etc/UTC');
 
 const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/ALTARDSTATE.json';
 
-describe.only(`Altar'd State`, () => {
+describe(`Altar'd State`, () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
