@@ -51,7 +51,8 @@ import {
   MichaelKors,
   Dillards,
   AltardState,
-  AnnTaylor
+  AnnTaylor,
+  Athleta
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -212,6 +213,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.ANNTAYLOR:
         orderData = await AnnTaylor.parse(code, payload);
+        break;
+      case VENDOR_CODES.ATHLETA:
+        orderData = await Athleta.parse(code, payload);
         break;
       default:
         break;

@@ -22,9 +22,6 @@ export default class AnnTaylor {
     };
   }
 
-  //   const productNameElement = productRowElement.querySelector('td:nth-child(2) > div > div > b');
-  //   const price = /* istanbul ignore next */ productPriceElement.childNodes[8].textContent
-
   static async getOrderRef(root: Document): Promise<string | null> {
     try {
       const orderRefElement = root.querySelector('body > table > tbody > tr:nth-child(1) > td');
