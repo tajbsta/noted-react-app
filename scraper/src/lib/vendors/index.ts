@@ -54,6 +54,7 @@ import AltardState from './altardstate';
 import AnnTaylor from './annTaylor';
 import Athleta from './athleta';
 import Aveda from './aveda';
+import BrightonCollectibles from './brightonCollectibles';
 
 export {
   FashionNova,
@@ -111,5 +112,6 @@ export {
   AltardState,
   AnnTaylor,
   Athleta,
-  Aveda
+  Aveda,
+  BrightonCollectibles
 };
