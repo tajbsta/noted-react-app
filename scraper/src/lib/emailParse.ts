@@ -54,7 +54,8 @@ import {
   AnnTaylor,
   Athleta,
   Aveda,
-  BrightonCollectibles
+  BrightonCollectibles,
+  Coach
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -224,6 +225,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.BRIGHTONCOLLECTIBLES:
         orderData = await BrightonCollectibles.parse(code, payload);
+        break;
+      case VENDOR_CODES.COACH:
+        orderData = await Coach.parse(code, payload);
         break;
       default:
         break;

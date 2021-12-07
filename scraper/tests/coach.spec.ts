@@ -9,14 +9,14 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import BrightonCollectibles from '../src/lib/vendors/brightonCollectibles';
+import Coach from '../src/lib/vendors/coach';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
 
-const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/BRIGHTONCOLLECTIBLES.json';
+const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/COACH.json';
 
-describe(`Brighton Collectibles`, () => {
+describe.only(`Coach`, () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
@@ -46,23 +46,23 @@ describe(`Brighton Collectibles`, () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await BrightonCollectibles.parse(VENDOR_CODES.BRIGHTONCOLLECTIBLES, payload);
+      const orderData = await Coach.parse(VENDOR_CODES.COACH, payload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '2129914',
+        orderRef: 'CUP00191939',
         orderDate: 0,
         products: [
           {
-            name: 'BRIGHTON MINTS',
-            price: 2.5,
-            thumbnail: 'https://www.brighton.com/photos/product/standard/369560S238726/small-collectibles/size-os.jpg'
+            name: 'Hoop Earrings',
+            price: 45.0,
+            thumbnail: 'https://images.coach.com/is/image/Coach/c5730_gld_a0?$desktopProduct$'
           },
           {
-            name: 'BRIGHTON YOUR DAY HAND SANITIZER',
-            price: 3.0,
-            thumbnail: 'https://www.brighton.com/photos/product/standard/369560S248593/small-collectibles/size-os.jpg'
+            name: 'Eau De Toilette 30 Ml',
+            price: 58.0,
+            thumbnail: 'https://images.coach.com/is/image/Coach/b2006_l38_a0?$desktopProduct$'
           }
         ],
-        vendor: VENDOR_CODES.BRIGHTONCOLLECTIBLES,
+        vendor: VENDOR_CODES.COACH,
         emailId: payload.id
       });
     });
@@ -71,32 +71,35 @@ describe(`Brighton Collectibles`, () => {
       const updatedPayload = Object.assign({}, payload);
       let updatedBody = updatedPayload.decodedBody;
 
-      updatedBody = updatedBody.replace('Quantity: 1<br>', 'Quantity: 2<br>');
+      updatedBody = updatedBody.replace(
+        'class="product_section_productquantity" style="padding-top:4px; padding-bottom: 8px;"> QTY: 1</td>',
+        'class="product_section_productquantity" style="padding-top:4px; padding-bottom: 8px;"> QTY: 2</td>'
+      );
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await BrightonCollectibles.parse(VENDOR_CODES.BRIGHTONCOLLECTIBLES, updatedPayload);
+      const orderData = await Coach.parse(VENDOR_CODES.COACH, updatedPayload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '2129914',
+        orderRef: 'CUP00191939',
         orderDate: 0,
         products: [
           {
-            name: 'BRIGHTON MINTS (1)',
-            price: 2.5,
-            thumbnail: 'https://www.brighton.com/photos/product/standard/369560S238726/small-collectibles/size-os.jpg'
+            name: 'Hoop Earrings (1)',
+            price: 45.0,
+            thumbnail: 'https://images.coach.com/is/image/Coach/c5730_gld_a0?$desktopProduct$'
           },
           {
-            name: 'BRIGHTON MINTS (2)',
-            price: 2.5,
-            thumbnail: 'https://www.brighton.com/photos/product/standard/369560S238726/small-collectibles/size-os.jpg'
+            name: 'Hoop Earrings (2)',
+            price: 45.0,
+            thumbnail: 'https://images.coach.com/is/image/Coach/c5730_gld_a0?$desktopProduct$'
           },
           {
-            name: 'BRIGHTON YOUR DAY HAND SANITIZER',
-            price: 3.0,
-            thumbnail: 'https://www.brighton.com/photos/product/standard/369560S248593/small-collectibles/size-os.jpg'
+            name: 'Eau De Toilette 30 Ml',
+            price: 58.0,
+            thumbnail: 'https://images.coach.com/is/image/Coach/b2006_l38_a0?$desktopProduct$'
           }
         ],
-        vendor: VENDOR_CODES.BRIGHTONCOLLECTIBLES,
+        vendor: VENDOR_CODES.COACH,
         emailId: payload.id
       });
     });
@@ -104,9 +107,7 @@ describe(`Brighton Collectibles`, () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(
-        BrightonCollectibles.parse(VENDOR_CODES.BRIGHTONCOLLECTIBLES, updatedPayload)
-      ).to.eventually.be.rejectedWith(Error);
+      expect(Coach.parse(VENDOR_CODES.COACH, updatedPayload)).to.eventually.be.rejectedWith(Error);
     });
   });
 });
