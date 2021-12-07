@@ -9,14 +9,14 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import Coach from '../src/lib/vendors/coach';
+import Forever21 from '../src/lib/vendors/forever21';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
 
-const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/COACH.json';
+const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/FOREVER21.json';
 
-describe(`Coach`, () => {
+describe(`Forever 21`, () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
@@ -46,23 +46,25 @@ describe(`Coach`, () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await Coach.parse(VENDOR_CODES.COACH, payload);
+      const orderData = await Forever21.parse(VENDOR_CODES.FOREVER21, payload);
       expect(orderData).to.be.deep.equal({
-        orderRef: 'CUP00191939',
-        orderDate: 0,
+        orderRef: '8100308025',
+        orderDate: 1602979200000,
         products: [
           {
-            name: 'Hoop Earrings',
-            price: 45.0,
-            thumbnail: 'https://images.coach.com/is/image/Coach/c5730_gld_a0?$desktopProduct$'
+            name: 'Ruched Cap Sleeve Top',
+            price: 22.99,
+            thumbnail:
+              'https://www.forever21.com/on/demandware.static/-/Sites-f21-master-catalog/default/dw88bd9919/1_front_750/00433214-07.jpg'
           },
           {
-            name: 'Eau De Toilette 30 Ml',
-            price: 58.0,
-            thumbnail: 'https://images.coach.com/is/image/Coach/b2006_l38_a0?$desktopProduct$'
+            name: 'Smocked Chiffon Top',
+            price: 24.99,
+            thumbnail:
+              'https://www.forever21.com/on/demandware.static/-/Sites-f21-master-catalog/default/dw364058f4/1_front_750/00443731-02.jpg'
           }
         ],
-        vendor: VENDOR_CODES.COACH,
+        vendor: VENDOR_CODES.FOREVER21,
         emailId: payload.id
       });
     });
@@ -71,35 +73,35 @@ describe(`Coach`, () => {
       const updatedPayload = Object.assign({}, payload);
       let updatedBody = updatedPayload.decodedBody;
 
-      updatedBody = updatedBody.replace(
-        'class="product_section_productquantity" style="padding-top:4px; padding-bottom: 8px;"> QTY: 1</td>',
-        'class="product_section_productquantity" style="padding-top:4px; padding-bottom: 8px;"> QTY: 2</td>'
-      );
+      updatedBody = updatedBody.replace('Qty: 1', 'Qty: 2');
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await Coach.parse(VENDOR_CODES.COACH, updatedPayload);
+      const orderData = await Forever21.parse(VENDOR_CODES.FOREVER21, updatedPayload);
       expect(orderData).to.be.deep.equal({
-        orderRef: 'CUP00191939',
-        orderDate: 0,
+        orderRef: '8100308025',
+        orderDate: 1602979200000,
         products: [
           {
-            name: 'Hoop Earrings (1)',
-            price: 45.0,
-            thumbnail: 'https://images.coach.com/is/image/Coach/c5730_gld_a0?$desktopProduct$'
+            name: 'Ruched Cap Sleeve Top (1)',
+            price: 22.99,
+            thumbnail:
+              'https://www.forever21.com/on/demandware.static/-/Sites-f21-master-catalog/default/dw88bd9919/1_front_750/00433214-07.jpg'
           },
           {
-            name: 'Hoop Earrings (2)',
-            price: 45.0,
-            thumbnail: 'https://images.coach.com/is/image/Coach/c5730_gld_a0?$desktopProduct$'
+            name: 'Ruched Cap Sleeve Top (2)',
+            price: 22.99,
+            thumbnail:
+              'https://www.forever21.com/on/demandware.static/-/Sites-f21-master-catalog/default/dw88bd9919/1_front_750/00433214-07.jpg'
           },
           {
-            name: 'Eau De Toilette 30 Ml',
-            price: 58.0,
-            thumbnail: 'https://images.coach.com/is/image/Coach/b2006_l38_a0?$desktopProduct$'
+            name: 'Smocked Chiffon Top',
+            price: 24.99,
+            thumbnail:
+              'https://www.forever21.com/on/demandware.static/-/Sites-f21-master-catalog/default/dw364058f4/1_front_750/00443731-02.jpg'
           }
         ],
-        vendor: VENDOR_CODES.COACH,
+        vendor: VENDOR_CODES.FOREVER21,
         emailId: payload.id
       });
     });
@@ -107,7 +109,7 @@ describe(`Coach`, () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(Coach.parse(VENDOR_CODES.COACH, updatedPayload)).to.eventually.be.rejectedWith(Error);
+      expect(Forever21.parse(VENDOR_CODES.FOREVER21, updatedPayload)).to.eventually.be.rejectedWith(Error);
     });
   });
 });

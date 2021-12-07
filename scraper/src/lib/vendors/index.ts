@@ -56,6 +56,7 @@ import Athleta from './athleta';
 import Aveda from './aveda';
 import BrightonCollectibles from './brightonCollectibles';
 import Coach from './coach';
+import Forever21 from './forever21';
 
 export {
   FashionNova,
@@ -115,5 +116,6 @@ export {
   Athleta,
   Aveda,
   BrightonCollectibles,
-  Coach
+  Coach,
+  Forever21
 };
