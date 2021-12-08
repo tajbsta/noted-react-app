@@ -57,6 +57,7 @@ import Aveda from './aveda';
 import BrightonCollectibles from './brightonCollectibles';
 import Coach from './coach';
 import Forever21 from './forever21';
+import Gucci from './gucci';
 
 export {
   FashionNova,
@@ -117,5 +118,6 @@ export {
   Aveda,
   BrightonCollectibles,
   Coach,
-  Forever21
+  Forever21,
+  Gucci
 };
