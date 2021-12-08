@@ -58,6 +58,7 @@ import BrightonCollectibles from './brightonCollectibles';
 import Coach from './coach';
 import Forever21 from './forever21';
 import Gucci from './gucci';
+import Burberry from './burberry';
 
 export {
   FashionNova,
@@ -119,5 +120,6 @@ export {
   BrightonCollectibles,
   Coach,
   Forever21,
-  Gucci
+  Gucci,
+  Burberry
 };
