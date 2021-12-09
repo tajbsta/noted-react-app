@@ -4,6 +4,7 @@ import NotedCheckbox from '../components/Product/NotedCheckbox';
 import { get } from 'lodash';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { formatCurrency } from '../library/number';
+import { DuplicateReducer } from '../utils/duplicateReducer';
 
 const ProductOptionEntry = ({ data, onSelect }) => {
   const orderRef = get(data, 'orderRef', '');
@@ -115,7 +116,10 @@ export default function ProductOptionsModal(props) {
         products.push(productEntry);
       });
     });
-    return products;
+
+    const reducedProducts = DuplicateReducer(products);
+
+    return reducedProducts;
   };
 
   useEffect(() => {

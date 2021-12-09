@@ -188,7 +188,9 @@ export default function LoginPage() {
               <Link
                 to='join'
                 className='text-decoration-underline text-login'
-                onClick={INITIATE_CHECKOUT}
+                onClick={() =>
+                  process.env.NODE_ENV === 'production' && INITIATE_CHECKOUT
+                }
               >
                 {' '}
                 Sign up now

@@ -106,7 +106,7 @@ const CheckForZipCode = (props) => {
         <Button
           className='btn btn-lg btn-block btn-green btn-submit'
           type='submit'
-          onClick={LEAD}
+          onClick={() => process.env.NODE_ENV === 'production' && LEAD}
         >
           Continue
         </Button>
@@ -152,8 +152,12 @@ const CollateUserInfo = (props) => {
       return;
     }
 
-    const { firstName, lastName, email, zipCode } =
-      collateUserInfoFormik.values;
+    const {
+      firstName,
+      lastName,
+      email,
+      zipCode,
+    } = collateUserInfoFormik.values;
 
     const data = {
       firstName: firstName.trim(),
