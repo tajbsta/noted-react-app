@@ -60,6 +60,7 @@ import Forever21 from './forever21';
 import Gucci from './gucci';
 import Burberry from './burberry';
 import Claires from './claires';
+import DakotaWatch from './dakotaWatch';
 
 export {
   FashionNova,
@@ -123,5 +124,6 @@ export {
   Forever21,
   Gucci,
   Burberry,
-  Claires
+  Claires,
+  DakotaWatch
 };
