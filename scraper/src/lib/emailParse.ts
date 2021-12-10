@@ -58,7 +58,8 @@ import {
   Coach,
   Forever21,
   Gucci,
-  Burberry
+  Burberry,
+  Claires
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -240,6 +241,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.BURBERRY:
         orderData = await Burberry.parse(code, payload);
+        break;
+      case VENDOR_CODES.CLAIRES:
+        orderData = await Claires.parse(code, payload);
         break;
       default:
         break;

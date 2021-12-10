@@ -16,7 +16,7 @@ moment.tz.setDefault('Etc/UTC');
 
 const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/BURBERRY.json';
 
-describe.only(`Burberry`, () => {
+describe(`Burberry`, () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
