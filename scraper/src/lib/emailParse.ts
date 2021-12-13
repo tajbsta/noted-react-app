@@ -61,7 +61,8 @@ import {
   Burberry,
   Claires,
   DakotaWatch,
-  DavidYurman
+  DavidYurman,
+  EverythingButWater
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -252,6 +253,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.DAVIDYURMAN:
         orderData = await DavidYurman.parse(code, payload);
+        break;
+      case VENDOR_CODES.EVERYTHINGBUTWATER:
+        orderData = await EverythingButWater.parse(code, payload);
         break;
       default:
         break;
