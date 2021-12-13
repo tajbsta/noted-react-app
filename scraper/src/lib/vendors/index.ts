@@ -61,6 +61,7 @@ import Gucci from './gucci';
 import Burberry from './burberry';
 import Claires from './claires';
 import DakotaWatch from './dakotaWatch';
+import DavidYurman from './davidYurman';
 
 export {
   FashionNova,
@@ -125,5 +126,6 @@ export {
   Gucci,
   Burberry,
   Claires,
-  DakotaWatch
+  DakotaWatch,
+  DavidYurman
 };
