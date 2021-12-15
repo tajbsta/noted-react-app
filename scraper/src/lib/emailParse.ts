@@ -62,7 +62,8 @@ import {
   Claires,
   DakotaWatch,
   DavidYurman,
-  EverythingButWater
+  EverythingButWater,
+  Fabletics
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -256,6 +257,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.EVERYTHINGBUTWATER:
         orderData = await EverythingButWater.parse(code, payload);
+        break;
+      case VENDOR_CODES.FABLETICS:
+        orderData = await Fabletics.parse(code, payload);
         break;
       default:
         break;
