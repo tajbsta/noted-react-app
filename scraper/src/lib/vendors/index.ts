@@ -59,6 +59,12 @@ import Coach from './coach';
 import Forever21 from './forever21';
 import Gucci from './gucci';
 import Burberry from './burberry';
+import Claires from './claires';
+import DakotaWatch from './dakotaWatch';
+import DavidYurman from './davidYurman';
+import EverythingButWater from './everythingButWater';
+import Fabletics from './fabletics';
+import KateSpade from './katespade';
 
 export {
   FashionNova,
@@ -121,5 +127,11 @@ export {
   Coach,
   Forever21,
   Gucci,
-  Burberry
+  Burberry,
+  Claires,
+  DakotaWatch,
+  DavidYurman,
+  EverythingButWater,
+  Fabletics,
+  KateSpade
 };

@@ -58,7 +58,13 @@ import {
   Coach,
   Forever21,
   Gucci,
-  Burberry
+  Burberry,
+  Claires,
+  DakotaWatch,
+  DavidYurman,
+  EverythingButWater,
+  Fabletics,
+  KateSpade
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -240,6 +246,24 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.BURBERRY:
         orderData = await Burberry.parse(code, payload);
+        break;
+      case VENDOR_CODES.CLAIRES:
+        orderData = await Claires.parse(code, payload);
+        break;
+      case VENDOR_CODES.DAKOTAWATCH:
+        orderData = await DakotaWatch.parse(code, payload);
+        break;
+      case VENDOR_CODES.DAVIDYURMAN:
+        orderData = await DavidYurman.parse(code, payload);
+        break;
+      case VENDOR_CODES.EVERYTHINGBUTWATER:
+        orderData = await EverythingButWater.parse(code, payload);
+        break;
+      case VENDOR_CODES.FABLETICS:
+        orderData = await Fabletics.parse(code, payload);
+        break;
+      case VENDOR_CODES.KATESPADE:
+        orderData = await KateSpade.parse(code, payload);
         break;
       default:
         break;

@@ -9,14 +9,14 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import Burberry from '../src/lib/vendors/burberry';
+import Fabletics from '../src/lib/vendors/fabletics';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
 
-const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/BURBERRY.json';
+const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/FABLETICS.json';
 
-describe(`Burberry`, () => {
+describe(`Fabletics`, () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
@@ -46,25 +46,25 @@ describe(`Burberry`, () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await Burberry.parse(VENDOR_CODES.BURBERRY, payload);
+      const orderData = await Fabletics.parse(VENDOR_CODES.FABLETICS, payload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '20012864',
+        orderRef: '1089587349',
         orderDate: 0,
         products: [
           {
-            name: 'Burberry Brit Sheer Eau de Toilette 30ml',
-            price: 60,
+            name: 'Define High-Waisted 7/8 Legging',
+            price: 64.95,
             thumbnail:
-              'https://assets.burberry.com/is/image/Burberryltd/AE256A42-7595-43AD-85DF-81830EB22B6A.jpg?$BBY_V2_SL_9X16$&wid=141&hei=250&wid=141&hei=250'
+              'http://fabletics-us-cdn.justfab.com/media/images/products/CS1719629-0001/CS1719629-0001-1_130x195.jpg'
           },
           {
-            name: 'Her London Dream Hair Mist 30ml',
-            price: 47,
+            name: 'Sync Seamless Midi Bra',
+            price: 34.95,
             thumbnail:
-              'https://assets.burberry.com/is/image/Burberryltd/988B2260-8BBB-445D-A1A8-FBEDC0C2D3B1.jpg?$BBY_V2_B_9X16$&wid=141&hei=250&wid=141&hei=250'
+              'http://fabletics-us-cdn.justfab.com/media/images/products/BA1937538-0001/BA1937538-0001-1_130x195.jpg'
           }
         ],
-        vendor: VENDOR_CODES.BURBERRY,
+        vendor: VENDOR_CODES.FABLETICS,
         emailId: payload.id
       });
     });
@@ -73,35 +73,35 @@ describe(`Burberry`, () => {
       const updatedPayload = Object.assign({}, payload);
       let updatedBody = updatedPayload.decodedBody;
 
-      updatedBody = updatedBody.replace('class="quantity">1', 'class="quantity">2');
+      updatedBody = updatedBody.replace('<td>Qty:1</td>', '<td>Qty:2</td>');
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await Burberry.parse(VENDOR_CODES.BURBERRY, updatedPayload);
+      const orderData = await Fabletics.parse(VENDOR_CODES.FABLETICS, updatedPayload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '20012864',
+        orderRef: '1089587349',
         orderDate: 0,
         products: [
           {
-            name: 'Burberry Brit Sheer Eau de Toilette 30ml (1)',
-            price: 60,
+            name: 'Define High-Waisted 7/8 Legging (1)',
+            price: 64.95,
             thumbnail:
-              'https://assets.burberry.com/is/image/Burberryltd/AE256A42-7595-43AD-85DF-81830EB22B6A.jpg?$BBY_V2_SL_9X16$&wid=141&hei=250&wid=141&hei=250'
+              'http://fabletics-us-cdn.justfab.com/media/images/products/CS1719629-0001/CS1719629-0001-1_130x195.jpg'
           },
           {
-            name: 'Burberry Brit Sheer Eau de Toilette 30ml (2)',
-            price: 60,
+            name: 'Define High-Waisted 7/8 Legging (2)',
+            price: 64.95,
             thumbnail:
-              'https://assets.burberry.com/is/image/Burberryltd/AE256A42-7595-43AD-85DF-81830EB22B6A.jpg?$BBY_V2_SL_9X16$&wid=141&hei=250&wid=141&hei=250'
+              'http://fabletics-us-cdn.justfab.com/media/images/products/CS1719629-0001/CS1719629-0001-1_130x195.jpg'
           },
           {
-            name: 'Her London Dream Hair Mist 30ml',
-            price: 47,
+            name: 'Sync Seamless Midi Bra',
+            price: 34.95,
             thumbnail:
-              'https://assets.burberry.com/is/image/Burberryltd/988B2260-8BBB-445D-A1A8-FBEDC0C2D3B1.jpg?$BBY_V2_B_9X16$&wid=141&hei=250&wid=141&hei=250'
+              'http://fabletics-us-cdn.justfab.com/media/images/products/BA1937538-0001/BA1937538-0001-1_130x195.jpg'
           }
         ],
-        vendor: VENDOR_CODES.BURBERRY,
+        vendor: VENDOR_CODES.FABLETICS,
         emailId: payload.id
       });
     });
@@ -109,7 +109,7 @@ describe(`Burberry`, () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(Burberry.parse(VENDOR_CODES.BURBERRY, updatedPayload)).to.eventually.be.rejectedWith(Error);
+      expect(Fabletics.parse(VENDOR_CODES.FABLETICS, updatedPayload)).to.eventually.be.rejectedWith(Error);
     });
   });
 });

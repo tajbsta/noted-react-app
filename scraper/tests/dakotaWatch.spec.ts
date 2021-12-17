@@ -9,14 +9,14 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import Burberry from '../src/lib/vendors/burberry';
+import DakotaWatch from '../src/lib/vendors/dakotaWatch';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
 
-const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/BURBERRY.json';
+const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/DAKOTAWATCH.json';
 
-describe(`Burberry`, () => {
+describe(`Dakota Watch`, () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
@@ -46,25 +46,25 @@ describe(`Burberry`, () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await Burberry.parse(VENDOR_CODES.BURBERRY, payload);
+      const orderData = await DakotaWatch.parse(VENDOR_CODES.DAKOTAWATCH, payload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '20012864',
+        orderRef: '1037',
         orderDate: 0,
         products: [
           {
-            name: 'Burberry Brit Sheer Eau de Toilette 30ml',
-            price: 60,
+            name: 'Day/Date Wood - Zebrawood/Ebonywood Case/Band Black Dial',
+            price: 79.95,
             thumbnail:
-              'https://assets.burberry.com/is/image/Burberryltd/AE256A42-7595-43AD-85DF-81830EB22B6A.jpg?$BBY_V2_SL_9X16$&wid=141&hei=250&wid=141&hei=250'
+              'https://cdn11.bigcommerce.com/s-1ewq4rhics/products/124/images/392/36392__91567.1603903665.220.290.jpg?c=1'
           },
           {
-            name: 'Her London Dream Hair Mist 30ml',
-            price: 47,
+            name: 'Wellness Plus Smart Watch',
+            price: 79.95,
             thumbnail:
-              'https://assets.burberry.com/is/image/Burberryltd/988B2260-8BBB-445D-A1A8-FBEDC0C2D3B1.jpg?$BBY_V2_B_9X16$&wid=141&hei=250&wid=141&hei=250'
+              'https://cdn11.bigcommerce.com/s-1ewq4rhics/products/169/images/448/837995133d89c2bd3058a6eb0f628157607b1761__92754.1605839077.220.290.jpg?c=1'
           }
         ],
-        vendor: VENDOR_CODES.BURBERRY,
+        vendor: VENDOR_CODES.DAKOTAWATCH,
         emailId: payload.id
       });
     });
@@ -73,35 +73,35 @@ describe(`Burberry`, () => {
       const updatedPayload = Object.assign({}, payload);
       let updatedBody = updatedPayload.decodedBody;
 
-      updatedBody = updatedBody.replace('class="quantity">1', 'class="quantity">2');
+      updatedBody = updatedBody.replace('Qty:', 'Qty:\n\t\t\t\t\t\t\t\t\t2');
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await Burberry.parse(VENDOR_CODES.BURBERRY, updatedPayload);
+      const orderData = await DakotaWatch.parse(VENDOR_CODES.DAKOTAWATCH, updatedPayload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '20012864',
+        orderRef: '1037',
         orderDate: 0,
         products: [
           {
-            name: 'Burberry Brit Sheer Eau de Toilette 30ml (1)',
-            price: 60,
+            name: 'Day/Date Wood - Zebrawood/Ebonywood Case/Band Black Dial (1)',
+            price: 79.95,
             thumbnail:
-              'https://assets.burberry.com/is/image/Burberryltd/AE256A42-7595-43AD-85DF-81830EB22B6A.jpg?$BBY_V2_SL_9X16$&wid=141&hei=250&wid=141&hei=250'
+              'https://cdn11.bigcommerce.com/s-1ewq4rhics/products/124/images/392/36392__91567.1603903665.220.290.jpg?c=1'
           },
           {
-            name: 'Burberry Brit Sheer Eau de Toilette 30ml (2)',
-            price: 60,
+            name: 'Day/Date Wood - Zebrawood/Ebonywood Case/Band Black Dial (2)',
+            price: 79.95,
             thumbnail:
-              'https://assets.burberry.com/is/image/Burberryltd/AE256A42-7595-43AD-85DF-81830EB22B6A.jpg?$BBY_V2_SL_9X16$&wid=141&hei=250&wid=141&hei=250'
+              'https://cdn11.bigcommerce.com/s-1ewq4rhics/products/124/images/392/36392__91567.1603903665.220.290.jpg?c=1'
           },
           {
-            name: 'Her London Dream Hair Mist 30ml',
-            price: 47,
+            name: 'Wellness Plus Smart Watch',
+            price: 79.95,
             thumbnail:
-              'https://assets.burberry.com/is/image/Burberryltd/988B2260-8BBB-445D-A1A8-FBEDC0C2D3B1.jpg?$BBY_V2_B_9X16$&wid=141&hei=250&wid=141&hei=250'
+              'https://cdn11.bigcommerce.com/s-1ewq4rhics/products/169/images/448/837995133d89c2bd3058a6eb0f628157607b1761__92754.1605839077.220.290.jpg?c=1'
           }
         ],
-        vendor: VENDOR_CODES.BURBERRY,
+        vendor: VENDOR_CODES.DAKOTAWATCH,
         emailId: payload.id
       });
     });
@@ -109,7 +109,7 @@ describe(`Burberry`, () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(Burberry.parse(VENDOR_CODES.BURBERRY, updatedPayload)).to.eventually.be.rejectedWith(Error);
+      expect(DakotaWatch.parse(VENDOR_CODES.DAKOTAWATCH, updatedPayload)).to.eventually.be.rejectedWith(Error);
     });
   });
 });
