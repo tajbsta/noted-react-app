@@ -64,6 +64,7 @@ import DakotaWatch from './dakotaWatch';
 import DavidYurman from './davidYurman';
 import EverythingButWater from './everythingButWater';
 import Fabletics from './fabletics';
+import KateSpade from './katespade';
 
 export {
   FashionNova,
@@ -131,5 +132,6 @@ export {
   DakotaWatch,
   DavidYurman,
   EverythingButWater,
-  Fabletics
+  Fabletics,
+  KateSpade
 };
