@@ -64,7 +64,8 @@ import {
   DavidYurman,
   EverythingButWater,
   Fabletics,
-  KateSpade
+  KateSpade,
+  GNCLiveWell
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -264,6 +265,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.KATESPADE:
         orderData = await KateSpade.parse(code, payload);
+        break;
+      case VENDOR_CODES.GNCLIVEWELL:
+        orderData = await GNCLiveWell.parse(code, payload);
         break;
       default:
         break;

@@ -16,7 +16,7 @@ moment.tz.setDefault('Etc/UTC');
 
 const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/KATESPADE.json';
 
-describe.only('Kate Spade', () => {
+describe('Kate Spade', () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
