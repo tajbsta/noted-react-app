@@ -67,6 +67,7 @@ import Fabletics from './fabletics';
 import KateSpade from './katespade';
 import GNCLiveWell from './gncLiveWell';
 import GoldenGoose from './goldenGoose';
+import GusMayer from './gusMayer';
 
 export {
   FashionNova,
@@ -137,5 +138,6 @@ export {
   Fabletics,
   KateSpade,
   GNCLiveWell,
-  GoldenGoose
+  GoldenGoose,
+  GusMayer
 };

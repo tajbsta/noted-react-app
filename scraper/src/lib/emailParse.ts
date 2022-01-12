@@ -66,7 +66,8 @@ import {
   Fabletics,
   KateSpade,
   GNCLiveWell,
-  GoldenGoose
+  GoldenGoose,
+  GusMayer
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -272,6 +273,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.GOLDENGOOSE:
         orderData = await GoldenGoose.parse(code, payload);
+        break;
+      case VENDOR_CODES.GUSMAYER:
+        orderData = await GusMayer.parse(code, payload);
         break;
       default:
         break;
