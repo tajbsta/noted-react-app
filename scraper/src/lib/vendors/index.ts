@@ -68,6 +68,7 @@ import KateSpade from './katespade';
 import GNCLiveWell from './gncLiveWell';
 import GoldenGoose from './goldenGoose';
 import GusMayer from './gusMayer';
+import Freebird from './freebird';
 
 export {
   FashionNova,
@@ -139,5 +140,6 @@ export {
   KateSpade,
   GNCLiveWell,
   GoldenGoose,
-  GusMayer
+  GusMayer,
+  Freebird
 };

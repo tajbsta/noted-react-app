@@ -67,7 +67,8 @@ import {
   KateSpade,
   GNCLiveWell,
   GoldenGoose,
-  GusMayer
+  GusMayer,
+  Freebird
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -276,6 +277,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.GUSMAYER:
         orderData = await GusMayer.parse(code, payload);
+        break;
+      case VENDOR_CODES.FREEBIRD:
+        orderData = await Freebird.parse(code, payload);
         break;
       default:
         break;
