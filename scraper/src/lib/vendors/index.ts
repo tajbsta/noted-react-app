@@ -69,6 +69,7 @@ import GNCLiveWell from './gncLiveWell';
 import GoldenGoose from './goldenGoose';
 import GusMayer from './gusMayer';
 import Freebird from './freebird';
+import JohnnyWas from './johnnyWas';
 
 export {
   FashionNova,
@@ -141,5 +142,6 @@ export {
   GNCLiveWell,
   GoldenGoose,
   GusMayer,
-  Freebird
+  Freebird,
+  JohnnyWas
 };
