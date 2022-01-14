@@ -65,6 +65,11 @@ import DavidYurman from './davidYurman';
 import EverythingButWater from './everythingButWater';
 import Fabletics from './fabletics';
 import KateSpade from './katespade';
+import GNCLiveWell from './gncLiveWell';
+import GoldenGoose from './goldenGoose';
+import GusMayer from './gusMayer';
+import Freebird from './freebird';
+import JohnnyWas from './johnnyWas';
 
 export {
   FashionNova,
@@ -133,5 +138,10 @@ export {
   DavidYurman,
   EverythingButWater,
   Fabletics,
-  KateSpade
+  KateSpade,
+  GNCLiveWell,
+  GoldenGoose,
+  GusMayer,
+  Freebird,
+  JohnnyWas
 };

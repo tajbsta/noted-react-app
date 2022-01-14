@@ -9,14 +9,14 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import KateSpade from '../src/lib/vendors/katespade';
+import Freebird from '../src/lib/vendors/freebird';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
 
-const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/KATESPADE.json';
+const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/FREEBIRD.json';
 
-describe('Kate Spade', () => {
+describe(`Freebird`, () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
@@ -46,23 +46,25 @@ describe('Kate Spade', () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await KateSpade.parse(VENDOR_CODES.KATESPADE, payload);
+      const orderData = await Freebird.parse(VENDOR_CODES.FREEBIRD, payload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '20974058',
-        orderDate: 1634860800000,
+        orderRef: '624081',
+        orderDate: 0,
         products: [
           {
-            name: 'small square studs',
-            price: 38.0,
-            thumbnail: 'http://s7d4.scene7.com/is/image/KateSpade/WBRU9356_986?$medium$'
+            name: 'Baby Coal White Snake',
+            price: 79.0,
+            thumbnail:
+              'https://cdn.shopify.com/s/files/1/1288/8475/products/9.8.21-baby-coal-white-snake-lifestyle-summer-4_compact_cropped.gif?v=1634166080'
           },
           {
-            name: 'set in stone hinged bangle',
-            price: 48.0,
-            thumbnail: 'http://s7d4.scene7.com/is/image/KateSpade/WBRUB744_921?$medium$'
+            name: 'Baby Coal Cognac',
+            price: 79.0,
+            thumbnail:
+              'https://cdn.shopify.com/s/files/1/1288/8475/products/8.17.21-baby-coal-cognac-lifestyle-summer-2_compact_cropped.gif?v=1634165842'
           }
         ],
-        vendor: VENDOR_CODES.KATESPADE,
+        vendor: VENDOR_CODES.FREEBIRD,
         emailId: payload.id
       });
     });
@@ -71,32 +73,35 @@ describe('Kate Spade', () => {
       const updatedPayload = Object.assign({}, payload);
       let updatedBody = updatedPayload.decodedBody;
 
-      updatedBody = updatedBody.replace(`\n1`, `\n2`);
+      updatedBody = updatedBody.replace(`1</span>`, `2</span>`);
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await KateSpade.parse(VENDOR_CODES.KATESPADE, updatedPayload);
+      const orderData = await Freebird.parse(VENDOR_CODES.FREEBIRD, updatedPayload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '20974058',
-        orderDate: 1634860800000,
+        orderRef: '624081',
+        orderDate: 0,
         products: [
           {
-            name: 'small square studs (1)',
-            price: 38.0,
-            thumbnail: 'http://s7d4.scene7.com/is/image/KateSpade/WBRU9356_986?$medium$'
+            name: 'Baby Coal White Snake (1)',
+            price: 79.0,
+            thumbnail:
+              'https://cdn.shopify.com/s/files/1/1288/8475/products/9.8.21-baby-coal-white-snake-lifestyle-summer-4_compact_cropped.gif?v=1634166080'
           },
           {
-            name: 'small square studs (2)',
-            price: 38.0,
-            thumbnail: 'http://s7d4.scene7.com/is/image/KateSpade/WBRU9356_986?$medium$'
+            name: 'Baby Coal White Snake (2)',
+            price: 79.0,
+            thumbnail:
+              'https://cdn.shopify.com/s/files/1/1288/8475/products/9.8.21-baby-coal-white-snake-lifestyle-summer-4_compact_cropped.gif?v=1634166080'
           },
           {
-            name: 'set in stone hinged bangle',
-            price: 48.0,
-            thumbnail: 'http://s7d4.scene7.com/is/image/KateSpade/WBRUB744_921?$medium$'
+            name: 'Baby Coal Cognac',
+            price: 79.0,
+            thumbnail:
+              'https://cdn.shopify.com/s/files/1/1288/8475/products/8.17.21-baby-coal-cognac-lifestyle-summer-2_compact_cropped.gif?v=1634165842'
           }
         ],
-        vendor: VENDOR_CODES.KATESPADE,
+        vendor: VENDOR_CODES.FREEBIRD,
         emailId: payload.id
       });
     });
@@ -104,7 +109,7 @@ describe('Kate Spade', () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(KateSpade.parse(VENDOR_CODES.KATESPADE, updatedPayload)).to.eventually.be.rejectedWith(Error);
+      expect(Freebird.parse(VENDOR_CODES.FREEBIRD, updatedPayload)).to.eventually.be.rejectedWith(Error);
     });
   });
 });

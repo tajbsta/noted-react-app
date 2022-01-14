@@ -64,7 +64,12 @@ import {
   DavidYurman,
   EverythingButWater,
   Fabletics,
-  KateSpade
+  KateSpade,
+  GNCLiveWell,
+  GoldenGoose,
+  GusMayer,
+  Freebird,
+  JohnnyWas
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -264,6 +269,21 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.KATESPADE:
         orderData = await KateSpade.parse(code, payload);
+        break;
+      case VENDOR_CODES.GNCLIVEWELL:
+        orderData = await GNCLiveWell.parse(code, payload);
+        break;
+      case VENDOR_CODES.GOLDENGOOSE:
+        orderData = await GoldenGoose.parse(code, payload);
+        break;
+      case VENDOR_CODES.GUSMAYER:
+        orderData = await GusMayer.parse(code, payload);
+        break;
+      case VENDOR_CODES.FREEBIRD:
+        orderData = await Freebird.parse(code, payload);
+        break;
+      case VENDOR_CODES.JOHNNYWAS:
+        orderData = await JohnnyWas.parse(code, payload);
         break;
       default:
         break;

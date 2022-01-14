@@ -9,14 +9,14 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import KateSpade from '../src/lib/vendors/katespade';
+import JohnnyWas from '../src/lib/vendors/johnnyWas';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
 
-const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/KATESPADE.json';
+const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/JOHNNYWAS.json';
 
-describe('Kate Spade', () => {
+describe.only(`Johnny Was`, () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
@@ -36,6 +36,7 @@ describe('Kate Spade', () => {
     sandbox = sinon.createSandbox();
     sandbox.stub(helpers, 'parseHtmlString').callsFake((body: string) => {
       const dom = new jsdom.JSDOM(body);
+
       return dom.window.document;
     });
   });
@@ -46,57 +47,63 @@ describe('Kate Spade', () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await KateSpade.parse(VENDOR_CODES.KATESPADE, payload);
+      const orderData = await JohnnyWas.parse(VENDOR_CODES.JOHNNYWAS, payload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '20974058',
+        orderRef: '12052801',
         orderDate: 1634860800000,
         products: [
           {
-            name: 'small square studs',
-            price: 38.0,
-            thumbnail: 'http://s7d4.scene7.com/is/image/KateSpade/WBRU9356_986?$medium$'
+            name: 'STONE AND PEARL MULTI STRAND BRACELET',
+            price: 88.0,
+            thumbnail:
+              'https://www.johnnywas.com/media/catalog/product/cache/348e6be5e21a19dad99561e82abea322/n/a/nak0061_mti_1.jpg'
           },
           {
-            name: 'set in stone hinged bangle',
-            price: 48.0,
-            thumbnail: 'http://s7d4.scene7.com/is/image/KateSpade/WBRUB744_921?$medium$'
+            name: 'AGATE TASSEL HOOP EARRING',
+            price: 68.0,
+            thumbnail:
+              'https://www.johnnywas.com/media/catalog/product/cache/348e6be5e21a19dad99561e82abea322/n/a/nak0064_mti_1.jpg'
           }
         ],
-        vendor: VENDOR_CODES.KATESPADE,
+        vendor: VENDOR_CODES.JOHNNYWAS,
         emailId: payload.id
       });
     });
 
     it('should return order data with quantity handled', async () => {
       const updatedPayload = Object.assign({}, payload);
+
       let updatedBody = updatedPayload.decodedBody;
 
-      updatedBody = updatedBody.replace(`\n1`, `\n2`);
+      updatedBody = updatedBody.replace(`class="item-qty">1</td>`, `class="item-qty">2</td>`);
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await KateSpade.parse(VENDOR_CODES.KATESPADE, updatedPayload);
+      const orderData = await JohnnyWas.parse(VENDOR_CODES.JOHNNYWAS, updatedPayload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '20974058',
+        orderRef: '12052801',
         orderDate: 1634860800000,
         products: [
           {
-            name: 'small square studs (1)',
-            price: 38.0,
-            thumbnail: 'http://s7d4.scene7.com/is/image/KateSpade/WBRU9356_986?$medium$'
+            name: 'STONE AND PEARL MULTI STRAND BRACELET (1)',
+            price: 88.0,
+            thumbnail:
+              'https://www.johnnywas.com/media/catalog/product/cache/348e6be5e21a19dad99561e82abea322/n/a/nak0061_mti_1.jpg'
           },
           {
-            name: 'small square studs (2)',
-            price: 38.0,
-            thumbnail: 'http://s7d4.scene7.com/is/image/KateSpade/WBRU9356_986?$medium$'
+            name: 'STONE AND PEARL MULTI STRAND BRACELET (2)',
+            price: 88.0,
+            thumbnail:
+              'https://www.johnnywas.com/media/catalog/product/cache/348e6be5e21a19dad99561e82abea322/n/a/nak0061_mti_1.jpg'
           },
           {
-            name: 'set in stone hinged bangle',
-            price: 48.0,
-            thumbnail: 'http://s7d4.scene7.com/is/image/KateSpade/WBRUB744_921?$medium$'
+            name: 'AGATE TASSEL HOOP EARRING',
+            price: 68.0,
+            thumbnail:
+              'https://www.johnnywas.com/media/catalog/product/cache/348e6be5e21a19dad99561e82abea322/n/a/nak0064_mti_1.jpg'
           }
         ],
-        vendor: VENDOR_CODES.KATESPADE,
+        vendor: VENDOR_CODES.JOHNNYWAS,
         emailId: payload.id
       });
     });
@@ -104,7 +111,7 @@ describe('Kate Spade', () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(KateSpade.parse(VENDOR_CODES.KATESPADE, updatedPayload)).to.eventually.be.rejectedWith(Error);
+      expect(JohnnyWas.parse(VENDOR_CODES.JOHNNYWAS, updatedPayload)).to.eventually.be.rejectedWith(Error);
     });
   });
 });
