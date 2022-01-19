@@ -23,12 +23,15 @@ import * as Sentry from '@sentry/react';
 import {
   getPublicKey,
   createPaymentIntent,
+  createSubscriptionPaymentIntent,
   prevalidateOrder,
 } from '../../api/orderApi';
 import PRICING from '../../constants/pricing';
 import { STRIPE_PAYMENT_INSUFFICIENT_FUNDS } from '../../constants/errors/errorCodes';
 import DonateSection from './components/DonateSection';
 import { DONATE } from '../../constants/actions/runtime';
+import UserInfo from '../Profile/components/UserInfo';
+import { getUserId, getUser } from '../../api/auth';
 
 const Checkout = () => {
   const stripe = useStripe();
@@ -62,6 +65,7 @@ const Checkout = () => {
   const [itemsToDonate, setItemsToDonate] = useState([]);
   const [itemsToReturn, setItemsToReturn] = useState([]);
   const [selectedDonationOrg, setSelectedDonationOrg] = useState({});
+  const [user, setUser] = useState('');
 
   /**HANDLE SELECT DONATION ORGANIZATION */
   const handleSelectDonationOrg = (org) => {
@@ -84,9 +88,17 @@ const Checkout = () => {
 
   const placeOrder = async (newOrder) => {
     setLoading(true);
-    const order = await createOrder(newOrder);
 
-    setOrder(order);
+    if (
+      user?.['custom:stripe_sub_name'] === '' ||
+      user?.['custom:stripe_sub_name'] === 'Ruby'
+    ) {
+      const order = await createOrder(newOrder);
+      setOrder(order);
+    } else {
+      setOrder(newOrder);
+    }
+
     setConfirmed(true);
 
     scrollToTop();
@@ -128,52 +140,74 @@ const Checkout = () => {
 
       newOrder.id = orderId;
 
-      // Get payment intent from BE, used for getting payment from the user/payment method
-      const paymentIntent = await createPaymentIntent(
-        PRICING.STANDARD,
-        orderId
-      );
+      if (
+        user?.['custom:stripe_sub_name'] === '' ||
+        user?.['custom:stripe_sub_name'] === 'Ruby'
+      ) {
+        // Get payment intent from BE, used for getting payment from the user/payment method
+        const paymentIntent = await createPaymentIntent(
+          PRICING.STANDARD,
+          orderId
+        );
 
-      // console.log(paymentIntent);
+        // console.log(paymentIntent);
 
-      newOrder.billing = {
-        paymentIntentId: paymentIntent.paymentIntentId,
-        paymentMethodId: paymentIntent.paymentMethodId,
-        productId: paymentIntent.productId,
-        taxId: paymentIntent.taxId,
-        priceId: paymentIntent.priceId,
-        pricing: paymentIntent.pricing,
-      };
+        newOrder.billing = {
+          paymentIntentId: paymentIntent.paymentIntentId,
+          paymentMethodId: paymentIntent.paymentMethodId,
+          productId: paymentIntent.productId,
+          taxId: paymentIntent.taxId,
+          priceId: paymentIntent.priceId,
+          pricing: paymentIntent.pricing,
+        };
 
-      // Confirm payment intent using stripe here
-      const result = await stripe.confirmCardPayment(
-        paymentIntent.clientSecret
-      );
+        // Confirm payment intent using stripe here
+        const result = await stripe.confirmCardPayment(
+          paymentIntent.clientSecret
+        );
 
-      if (result.error) {
-        setLoading(false);
+        if (result.error) {
+          setLoading(false);
 
-        // Show error to customer
-        if (
-          result.error.code === 'card_declined' &&
-          result.error.decline_code === 'insufficient_funds'
-        ) {
-          showError({
-            message: get(
-              orderErrors.find(
-                ({ code }) => code === STRIPE_PAYMENT_INSUFFICIENT_FUNDS
+          // Show error to customer
+          if (
+            result.error.code === 'card_declined' &&
+            result.error.decline_code === 'insufficient_funds'
+          ) {
+            showError({
+              message: get(
+                orderErrors.find(
+                  ({ code }) => code === STRIPE_PAYMENT_INSUFFICIENT_FUNDS
+                ),
+                'message',
+                'Cannot place order at this time'
               ),
-              'message',
-              'Cannot place order at this time'
-            ),
-          });
+            });
+          } else {
+            showError({ message: result.error.message });
+          }
         } else {
-          showError({ message: result.error.message });
+          if (result.paymentIntent.status === 'succeeded') {
+            // Place order - call create order endpoint
+            await placeOrder(newOrder);
+            return;
+          } else {
+            throw new Error('Unknown Error');
+          }
         }
       } else {
-        if (result.paymentIntent.status === 'succeeded') {
+        newOrder.billing = {
+          paymentMethod: 'subscription',
+        };
+
+        const result = await createSubscriptionPaymentIntent(newOrder);
+
+        console.log(result);
+
+        if (result.status === 'success') {
           // Place order - call create order endpoint
-          await placeOrder(newOrder);
+
+          await placeOrder(result.data);
           return;
         } else {
           throw new Error('Unknown Error');
@@ -199,6 +233,13 @@ const Checkout = () => {
 
     dispatch(setCartItems(newItems));
   };
+
+  useEffect(() => {
+    (async () => {
+      const user = await getUser();
+      setUser(user);
+    })();
+  }, []);
 
   useEffect(() => {
     function handleResize() {

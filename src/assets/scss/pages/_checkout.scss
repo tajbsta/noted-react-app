@@ -143,8 +143,8 @@
   }
 
   .payment-details-card-body {
-    min-height: 232px;
-    max-height: 232px;
+    min-height: 250px;
+    max-height: 250px;
 
     @media (max-width: 991px) {
       min-height: auto;
@@ -184,6 +184,16 @@
       color: #570097;
       margin-bottom: 0px;
     }
+  }
+
+  .pickups-left {
+    font-family: 'Sofia Pro';
+    font-size: 14px;
+    line-height: 16px;
+    color: #570097;
+    margin-bottom: 0px;
+    border-top: 1px solid #e8e7e9;
+    padding-top: 13px;
   }
 
   .pick-up-address {

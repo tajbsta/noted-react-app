@@ -53,6 +53,7 @@ export default function PickUpDetails({
   const [paymentFormValues, setPaymentFormValues] = useState(null);
   const [isPaymentFormEmpty, setIsPaymentFormEmpty] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
   const initialCheckoutView = ['/checkout'];
   const {
     errors: addressFormErrors,
@@ -154,6 +155,10 @@ export default function PickUpDetails({
       getUser(),
       getUserPaymentMethods(),
     ]);
+
+    console.log(user);
+
+    setUserInfo(user);
 
     // Set default address
     addressFormValues.fullName = (order ? order.fullName : user.name) || '';
@@ -402,7 +407,7 @@ export default function PickUpDetails({
           {addressFormValues.line1 == '' && (
             <EmptyAddress
               loading={loading}
-              renderSpinner={renderSpinner}
+              // renderSpinner={renderSpinner}
               renderStopSpinner={renderStopSpinner}
               onClick={() => setShowEditAddress(true)}
             />
@@ -437,11 +442,15 @@ export default function PickUpDetails({
               <div>
                 <img src={DiamondLogo} className='mb-3' />
                 <h4 className='p-0 m-0 sofia-pro mb-2'>Total Pickups</h4>
-                <h4 className='p-0 m-0 sofia-pro mb-2'>10 pick ups</h4>
+                <h4 className='p-0 m-0 sofia-pro mb-2'>
+                  {userInfo?.['custom:no_of_pickups'] || 0} pick ups
+                </h4>
                 <span className='text-muted mb-3'>(-1 pick up)</span>
               </div>
 
-              <h4 className='mt-3 mb-0'>9 Pick ups left</h4>
+              <h4 className='mt-3 mb-0 pickups-left'>
+                {userInfo?.['custom:no_of_pickups'] - 1 || 0} Pick ups left
+              </h4>
               <span
                 className='text-muted p-0 m-0 text-sm'
                 style={{ fontSize: 9 }}
@@ -468,7 +477,8 @@ export default function PickUpDetails({
                         <img src={DiamondLogo} className='mb-3' />
                         {!isMyPlanOpen && (
                           <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                            9 pick ups left
+                            {userInfo?.['custom:no_of_pickups'] || 0} pick ups
+                            left
                           </h4>
                         )}
                       </Col>
@@ -495,13 +505,18 @@ export default function PickUpDetails({
                         <h4 className='p-0 m-0 sofia-pro mb-2'>
                           Total Pickups
                         </h4>
-                        <h4 className='p-0 m-0 sofia-pro mb-2'>10 pick ups</h4>
+                        <h4 className='p-0 m-0 sofia-pro mb-2'>
+                          {userInfo?.['custom:no_of_pickups'] || 0} pick ups
+                        </h4>
                         <span className='text-muted mb-3'>(-1 pick up)</span>
                       </div>
 
                       <div className='d-flex align-items-center justify-content-between mt-2'>
                         <div>
-                          <h4 className='mt-3 mb-0'>9 Pick ups left</h4>
+                          <h4 className='mt-3 mb-0 pickups-left'>
+                            {userInfo?.['custom:no_of_pickups'] - 1 || 0} Pick
+                            ups left
+                          </h4>
                           <span
                             className='text-muted p-0 m-0 text-sm'
                             style={{ fontSize: 9 }}
@@ -861,9 +876,8 @@ export default function PickUpDetails({
             )}
 
             {/* MY PLAN */}
-            {subscriptionType !== '' && subscriptionType !== 'ruby' && (
-              <MyPlan />
-            )}
+            {userInfo?.['custom:stripe_sub_name'] !== '' &&
+              userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && <MyPlan />}
 
             {/* RETURN SCHEDULE */}
             <ReturnSchedule />
