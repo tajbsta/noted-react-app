@@ -12,7 +12,9 @@ import { getUser, getUserId, uploadProfilePic } from '../../../api/auth';
 import { showError, showSuccess } from '../../../library/notifications.library';
 import { CheckCircle } from 'react-feather';
 import { getOrderHistoryCounts } from '../../../api/orderApi';
-import DiamondLogo from '../../../assets/img/diamond-logo.svg';
+import Diamond from '../../../assets/icons/DiamondIcon.svg';
+import Ruby from '../../../assets/icons/RubyIcon.svg';
+import Emerald from '../../../assets/icons/EmeraldIcon.svg';
 
 export default function UserInfo({ user: userData = {} }) {
   const {
@@ -28,6 +30,7 @@ export default function UserInfo({ user: userData = {} }) {
   const [isMobile, setIsMobile] = useState(false);
   const [orderCount, setOrderCount] = useState(false);
   const hiddenFileInput = useRef(null);
+  const PlanIcon = user?.['custom:stripe_sub_name'] || 'Ruby';
 
   const getOrderItemHistoryCount = async () => {
     try {
@@ -59,6 +62,8 @@ export default function UserInfo({ user: userData = {} }) {
       // console.log(user);
       setUser(user);
     })();
+
+    console.log(user);
   }, []);
 
   const handleClick = () => {
@@ -321,8 +326,15 @@ export default function UserInfo({ user: userData = {} }) {
           <div className='row align-items-center justify-content-between m-info-row mt-4'>
             <div className='col-sm-6 p-0'>
               <div>
-                <h4 className='text-left total'>
-                  <img src={DiamondLogo} className='image-fluid' />
+                <h4 className='row align-items-center text-left total'>
+                  <img
+                    src={
+                      require(`../../../assets/icons/${PlanIcon}Icon.svg`)
+                        .default
+                    }
+                    className='image-fluid'
+                  />
+                  <span className='user-plan ml-2'>{PlanIcon}</span>
                 </h4>
                 <h5 className='total-label text-left'>My Plan</h5>
               </div>
@@ -330,7 +342,7 @@ export default function UserInfo({ user: userData = {} }) {
             <div className='col-sm-6 p-0'>
               <div>
                 <h4 className='text-left total'>
-                  {orderCount.totalDonations || 0}
+                  {user?.['custom:no_of_pickups'] || 0}
                 </h4>
                 <h5 className='total-label text-left'>Pick ups left</h5>
               </div>
