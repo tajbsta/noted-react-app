@@ -47,6 +47,8 @@ import ProductOptionsModal from '../../modals/ProductOptionsModal';
 import SubscriptionModal from '../../modals/SubscriptionModal';
 import { SUBMIT_APPLICATION } from '../../analytics/fbpixels';
 
+import { subscriptionPlans } from '../../api/subscription';
+
 const Authorize = ({ triggerScanNow }) => {
   return (
     <div id='AuthorizeUpdate'>
@@ -225,8 +227,10 @@ const DashboardPageInitial = () => {
   const [showProductOptions, setShowProductOptions] = useState(false);
   const [isSavingProducts, setIsSavingProducts] = useState(false);
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+  const [user, setUser] = useState(null);
 
   const { subscriptionType } = useSelector((state) => state.subscription);
+  const [plans, setPlans] = useState([]);
   const isNewlySignedUp = useSelector((state) => state.auth.isNewlySignedUp);
 
   /**TRIGGER SCAN NOW FOR USERS */
@@ -520,6 +524,13 @@ const DashboardPageInitial = () => {
   const checkIfFirstTimeUser = async () => {
     const user = await getUser();
     const monthsScanned = get(user, 'custom:scan_months', undefined);
+
+    setUser(user);
+
+    if (!user?.['custom:stripe_sub_id']) {
+      setShowSubscriptionModal(true);
+    }
+
     if (monthsScanned === undefined) {
       dispatch(updateScraperStatus(NOTAUTHORIZED));
 
@@ -588,11 +599,19 @@ const DashboardPageInitial = () => {
     typeRef.current = type;
   }, [type]);
 
-  useEffect(() => {
-    if (subscriptionType === '') {
-      setShowSubscriptionModal(true);
-    }
-  }, [subscriptionType]);
+  useEffect(async () => {
+    const user = await getUser();
+
+    console.log(user);
+
+    setUser(user);
+  }, [showSubscriptionModal]);
+
+  useEffect(async () => {
+    const plans = await subscriptionPlans();
+
+    setPlans(plans.data);
+  }, []);
 
   return (
     <Fragment>
@@ -601,8 +620,9 @@ const DashboardPageInitial = () => {
         {status !== SCRAPECOMPLETE && status !== SCRAPECANCEL && (
           <div id='DashboardInitial'>
             <SubscriptionModal
-              show={showSubscriptionModal && isNewlySignedUp}
+              show={showSubscriptionModal}
               onClose={() => setShowSubscriptionModal(false)}
+              plans={plans}
             />
 
             {status === NOTAUTHORIZED && (

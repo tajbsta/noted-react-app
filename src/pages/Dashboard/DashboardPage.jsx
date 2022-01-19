@@ -206,6 +206,7 @@ export default function DashboardPage({ triggerScanNow }) {
     (async () => {
       // await updateUserAttributes({ 'custom:scan_older_done': '0' }); // don't delete: helps to bring back 'Scan for older items' button if not-commented
       const user = await getUser();
+      console.log(user);
       setUser(user);
       setShowScanOlderButton(user['custom:scan_older_done'] === '0');
     })();

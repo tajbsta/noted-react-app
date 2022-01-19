@@ -1,45 +1,69 @@
 import React from 'react';
-import { Button, Card, Col } from 'react-bootstrap';
-import RubySVG from '../../assets/img/ruby-subscription.svg';
-import EmeraldSVG from '../../assets/img/emerald-subscription.svg';
-import DiamondSVG from '../../assets/img/diamond-subscription.svg';
+import { Button, Card, Spinner } from 'react-bootstrap';
 
-export default function SubscriptionCard(props) {
+export default function SubscriptionCard({
+  subscriptionDetails,
+  onButtonClick,
+  isLoading,
+}) {
+  const {
+    recommendation,
+    tag,
+    plan_name,
+    price,
+    duration,
+    description,
+  } = subscriptionDetails;
+
   return (
     <div className='SubscriptionCardContainer'>
       <Card
-        className={`SubscriptionCard ${props.recommended ? 'recommended' : ''}`}
+        className={`SubscriptionCard ${recommendation ? 'recommended' : ''}`}
       >
         {/* <Card.Header>Featured</Card.Header> */}
         <img
-          className={props.subscriptionType}
+          className={tag}
           src={
-            props.subscriptionType &&
-            require(`../../assets/img/${props.subscriptionType}-subscription.svg`)
-              .default
+            tag && require(`../../assets/img/${tag}-subscription.svg`).default
           }
         />
         <Card.Body>
-          {props.recommended && (
+          {recommendation && (
             <div className='recommended-text'>
               <span>Recommended</span>
             </div>
           )}
 
-          <Card.Title>{props.subscriptionType}</Card.Title>
-          <Card.Text className='subscription-price'>$14.99/pick up</Card.Text>
-          <Card.Text className='subscription-details'>pay as you go</Card.Text>
+          <Card.Title>{plan_name}</Card.Title>
+          <Card.Text className='subscription-price'>
+            {price}/{duration}
+          </Card.Text>
+          <Card.Text className='subscription-details'>{description}</Card.Text>
           <Button
-            variant={props.recommended ? 'primary' : 'outline-primary'}
+            variant={recommendation ? 'primary' : 'outline-primary'}
             size='md'
             block
-            onClick={props.onButtonClick}
+            onClick={onButtonClick}
           >
-            Choose Plan
+            {isLoading ? (
+              <Spinner
+                as='span'
+                animation='border'
+                size='sm'
+                role='status'
+                aria-hidden='true'
+              />
+            ) : (
+              'Choose Plan'
+            )}
           </Button>
         </Card.Body>
       </Card>
-      {<span className='savings'>{props.savings}</span>}
+      {
+        <span className='savings'>
+          {subscriptionDetails.save && `Save ${subscriptionDetails.save}`}
+        </span>
+      }
     </div>
   );
 }

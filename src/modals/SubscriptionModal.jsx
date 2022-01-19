@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Row, Col, Form, Button } from 'react-bootstrap';
+import { Modal, Row, Col, Form, Button, Spinner } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSubscriptionType } from '../actions/subscription.action';
 
 import SubscriptionCard from '../components/Subscription/SubscriptionCard';
 import { paymentAddressSchema } from '../models/formSchema';
-import DiamondLogo from '../assets/img/diamond-logo.svg';
+import DiamondIcon from '../assets/icons/DiamondIcon.svg';
+import EmeraldIcon from '../assets/icons/EmeraldIcon.svg';
 
-export default function SubscriptionModal(props) {
+import { subscribeUser } from '../api/subscription';
+
+export default function SubscriptionModal({ show, onClose, plans }) {
   const dispatch = useDispatch();
+
   const { subscriptionType } = useSelector((state) => state.subscription);
-  const [formState, setFormState] = useState({
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const initialValues = {
     fullName: '',
     cardNumber: '',
     expirationMonth: '',
@@ -24,32 +31,79 @@ export default function SubscriptionModal(props) {
     state: '',
     zipCode: '',
     billingAddress: '',
-  });
-
-  const onSubscriptionSelect = (type) => {
-    dispatch(setSubscriptionType(type));
   };
 
-  const { errors, values, setFieldValue, touched, handleBlur } = useFormik({
+  const onSubscriptionSelect = (subscription) => {
+    // dispatch(setSubscriptionType(subscription.tag));
+    setSelectedPlan(subscription);
+  };
+
+  const {
+    errors,
+    values,
+    setFieldValue,
+    touched,
+    handleBlur,
+    handleSubmit,
+  } = useFormik({
     initialValues: {
-      ...formState,
+      ...initialValues,
     },
     validationSchema: paymentAddressSchema,
+    onSubmit(values) {
+      setIsLoading(true);
+      try {
+        const {
+          cardNumber,
+          expirationMonth,
+          expirationYear,
+          cvc,
+          fullName,
+        } = values;
+
+        const subscriptionPayload = {
+          cardNumber: Number(cardNumber),
+          expirationDateMonth: Number(expirationMonth),
+          expirationDateYear: Number(expirationYear),
+          cvc: Number(cvc),
+          cardholderName: fullName,
+          no_of_pickups: selectedPlan?.no_of_pickups,
+          stripe_plan_id: selectedPlan?.stripe_plan_id,
+          plan_name: selectedPlan?.plan_name,
+        };
+
+        subscribeUser(subscriptionPayload);
+        setIsLoading(false);
+        onClose();
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
+    },
   });
 
-  const renderSubscriptionForm = () => {
+  const renderSubscriptionForm = (subscription) => {
     return (
       <Modal.Body className='sofia-pro subscription-form'>
         <>
           <h3>Plan Selected</h3>
           <Row>
             <Col sm={6} className='d-flex align-items-center'>
-              <img src={DiamondLogo} />
+              <img
+                className='mr-3'
+                src={
+                  subscription?.tag === 'diamond' ? DiamondIcon : EmeraldIcon
+                }
+              />
+              <p className='m-0 subscription-name'>
+                {subscription?.tag === 'diamond' ? 'Diamond' : 'Emerald'}
+              </p>
             </Col>
             <Col sm={6}>
               <span className='totalText'>Total</span>
               <span className='subscriptionPrice'>
-                $107.88/year <span>for 12 pick ups</span>
+                {subscription?.price}/{subscription?.duration}{' '}
+                <span>{subscription?.description}</span>
               </span>
               <span className='subscriptionDetails'>
                 All plans comes with
@@ -71,13 +125,12 @@ export default function SubscriptionModal(props) {
                 <Form.Label>Cardholder Name</Form.Label>
                 <Form.Control
                   className='form-control'
-                  type='name'
+                  autoComplete='off'
                   name='fullName'
                   value={values.fullName}
                   onBlur={handleBlur}
                   onChange={(e) => {
                     setFieldValue('fullName', e.target.value);
-                    setFormState({ ...formState, fullName: values.fullName });
                   }}
                   isInvalid={touched.fullName && errors.fullName}
                 />
@@ -92,17 +145,14 @@ export default function SubscriptionModal(props) {
                 <Form.Label>Expiration Date</Form.Label>
                 <Form.Control
                   className='form-control'
+                  autoComplete='off'
                   type='number'
                   name='expirationMonth'
-                  maxLength={2}
+                  maxLength='2'
                   value={values.expirationMonth}
                   onBlur={handleBlur}
                   onChange={(e) => {
                     setFieldValue('expirationMonth', e.target.value);
-                    setFormState({
-                      ...formState,
-                      expirationMonth: values.expirationMonth,
-                    });
                   }}
                   isInvalid={touched.expirationMonth && errors.expirationMonth}
                 />
@@ -114,18 +164,15 @@ export default function SubscriptionModal(props) {
               <Form.Group className='expirationYear'>
                 <Form.Control
                   style={{ marginTop: 27 }}
-                  className='form-control'
                   type='number'
+                  className='form-control'
+                  autoComplete='off'
                   name='expirationYear'
-                  maxLength={2}
+                  maxLength='2'
                   value={values.expirationYear}
                   onBlur={handleBlur}
                   onChange={(e) => {
                     setFieldValue('expirationYear', e.target.value);
-                    setFormState({
-                      ...formState,
-                      expirationYear: values.expirationYear,
-                    });
                   }}
                   isInvalid={touched.expirationYear && errors.expirationYear}
                 />
@@ -144,16 +191,14 @@ export default function SubscriptionModal(props) {
                 <Form.Label>Card Number</Form.Label>
                 <Form.Control
                   className='form-control'
+                  autoComplete='off'
                   type='number'
                   name='cardNumber'
                   value={values.cardNumber}
+                  maxLength='16'
                   onBlur={handleBlur}
                   onChange={(e) => {
                     setFieldValue('cardNumber', e.target.value);
-                    setFormState({
-                      ...formState,
-                      cardNumber: values.cardNumber,
-                    });
                   }}
                   isInvalid={touched.cardNumber && errors.cardNumber}
                 />
@@ -167,17 +212,14 @@ export default function SubscriptionModal(props) {
                 <Form.Label>CVC</Form.Label>
                 <Form.Control
                   className='form-control'
+                  autoComplete='off'
                   type='number'
                   name='cvc'
-                  maxLength={3}
+                  maxLength='3'
                   value={values.cvc}
                   onBlur={handleBlur}
                   onChange={(e) => {
                     setFieldValue('cvc', e.target.value);
-                    setFormState({
-                      ...formState,
-                      cvc: values.cvc,
-                    });
                   }}
                   isInvalid={touched.cvc && errors.cvc}
                 />
@@ -206,10 +248,6 @@ export default function SubscriptionModal(props) {
                   onBlur={handleBlur}
                   onChange={(e) => {
                     setFieldValue('billingAddress', e.target.value);
-                    setFormState({
-                      ...formState,
-                      billingAddress: values.billingAddress,
-                    });
                   }}
                 />
               </Form.Group>
@@ -221,16 +259,13 @@ export default function SubscriptionModal(props) {
                 <Form.Label>Full Name</Form.Label>
                 <Form.Control
                   className='form-control'
+                  autoComplete='off'
                   type='name'
                   name='name'
                   onBlur={handleBlur}
                   value={values.name}
                   onChange={(e) => {
                     setFieldValue('name', e.target.value);
-                    setFormState({
-                      ...formState,
-                      name: values.name,
-                    });
                   }}
                   isInvalid={touched.name && errors.name}
                 />
@@ -244,16 +279,13 @@ export default function SubscriptionModal(props) {
                 <Form.Label>State</Form.Label>
                 <Form.Control
                   className='form-control'
+                  autoComplete='off'
                   type='name'
                   name='state'
                   onBlur={handleBlur}
                   value={values.state}
                   onChange={(e) => {
                     setFieldValue('state', e.target.value);
-                    setFormState({
-                      ...formState,
-                      state: values.state,
-                    });
                   }}
                   isInvalid={touched.state && errors.state}
                 />
@@ -267,16 +299,13 @@ export default function SubscriptionModal(props) {
                 <Form.Label>Zip Code</Form.Label>
                 <Form.Control
                   className='form-control'
+                  autoComplete='off'
                   type='name'
                   name='zipCode'
                   onBlur={handleBlur}
-                  value={values.state}
+                  value={values.zipCode}
                   onChange={(e) => {
                     setFieldValue('zipCode', e.target.value);
-                    setFormState({
-                      ...formState,
-                      state: values.zipCode,
-                    });
                   }}
                   isInvalid={touched.zipCode && errors.zipCode}
                 />
@@ -292,16 +321,13 @@ export default function SubscriptionModal(props) {
                 <Form.Label>Address Line 1</Form.Label>
                 <Form.Control
                   className='form-control'
+                  autoComplete='off'
                   type='name'
                   name='line1'
                   onBlur={handleBlur}
                   value={values.line1}
                   onChange={(e) => {
                     setFieldValue('line1', e.target.value);
-                    setFormState({
-                      ...formState,
-                      state: values.line1,
-                    });
                   }}
                   isInvalid={touched.line1 && errors.line1}
                 />
@@ -315,16 +341,13 @@ export default function SubscriptionModal(props) {
                 <Form.Label>City</Form.Label>
                 <Form.Control
                   className='form-control'
+                  autoComplete='off'
                   type='name'
                   name='city'
                   onBlur={handleBlur}
-                  value={values.state}
+                  value={values.city}
                   onChange={(e) => {
                     setFieldValue('city', e.target.value);
-                    setFormState({
-                      ...formState,
-                      state: values.city,
-                    });
                   }}
                   isInvalid={touched.city && errors.city}
                 />
@@ -338,16 +361,13 @@ export default function SubscriptionModal(props) {
                 <Form.Label>Phone</Form.Label>
                 <Form.Control
                   className='form-control'
+                  autoComplete='off'
                   type='name'
                   name='phoneNumber'
                   onBlur={handleBlur}
                   value={values.phone}
                   onChange={(e) => {
                     setFieldValue('phoneNumber', e.target.value);
-                    setFormState({
-                      ...formState,
-                      state: values.phoneNumber,
-                    });
                   }}
                   isInvalid={touched.phoneNumber && errors.phoneNumber}
                 />
@@ -363,16 +383,13 @@ export default function SubscriptionModal(props) {
                 <Form.Label>Address Line 2</Form.Label>
                 <Form.Control
                   className='form-control'
+                  autoComplete='off'
                   type='name'
                   name='line2'
                   onBlur={handleBlur}
                   value={values.line2}
                   onChange={(e) => {
                     setFieldValue('line2', e.target.value);
-                    setFormState({
-                      ...formState,
-                      state: values.line2,
-                    });
                   }}
                 />
               </Form.Group>
@@ -380,10 +397,29 @@ export default function SubscriptionModal(props) {
           </Row>
 
           <Row className='button-container'>
-            <Button variant='success' size='md' block type='submit'>
-              Subscribe
+            <Button
+              variant='success'
+              size='md'
+              block
+              type='submit'
+              onClick={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+            >
+              {isLoading ? (
+                <Spinner
+                  as='span'
+                  animation='border'
+                  size='sm'
+                  role='status'
+                  aria-hidden='true'
+                />
+              ) : (
+                'Subscribe'
+              )}
             </Button>
-            <Button variant='light' size='md' block onClick={props.onClose}>
+            <Button variant='light' size='md' block>
               Cancel
             </Button>
           </Row>
@@ -392,13 +428,9 @@ export default function SubscriptionModal(props) {
     );
   };
 
-  useEffect(() => {
-    dispatch(setSubscriptionType(''));
-  }, []);
-
   return (
     <Modal
-      show={props.show}
+      show={show}
       size='lg'
       aria-labelledby='contained-modal-title-vcenter'
       centered
@@ -407,50 +439,63 @@ export default function SubscriptionModal(props) {
       animation={false}
       id='SubscriptionModal'
     >
-      <Modal.Header closeButton onClick={props.onClose}>
+      <Modal.Header closeButton onClick={onClose}>
         <h2>Select your plan</h2>
       </Modal.Header>
-      {subscriptionType === '' && (
-        <Modal.Body className='sofia-pro subscriptions'>
-          <Row className='subscription-container'>
-            <Col sm={4}>
-              <SubscriptionCard
-                subscriptionType='ruby'
-                onButtonClick={() => {
-                  onSubscriptionSelect('ruby');
-                  props.onClose();
-                }}
-              />
-            </Col>
-            <Col sm={4}>
-              <SubscriptionCard
-                subscriptionType='emerald'
-                savings='Save 13%'
-                onButtonClick={() => onSubscriptionSelect('emarald')}
-              />
-            </Col>
-            <Col sm={4}>
-              <SubscriptionCard
-                recommended={true}
-                subscriptionType='diamond'
-                savings='Save 40%'
-                onButtonClick={() => onSubscriptionSelect('diamond')}
-              />
-            </Col>
-          </Row>
-          <Row className='free-pickup'>
-            <Col>
-              <p>
-                All plans comes with
-                <span>1 Free Pick up</span> upon registration.
-              </p>
-            </Col>
-          </Row>
-        </Modal.Body>
+      {!selectedPlan && (
+        <>
+          {plans.length > 0 && (
+            <Modal.Body className='sofia-pro subscriptions'>
+              <Row className='subscription-container'>
+                <Col sm={4}>
+                  <SubscriptionCard
+                    subscriptionType='ruby'
+                    subscriptionDetails={plans.find((p) => p.tag === 'ruby')}
+                    onButtonClick={() => {
+                      onSubscriptionSelect(plans.find((p) => p.tag === 'ruby'));
+                      onClose();
+                    }}
+                  />
+                </Col>
+                <Col sm={4}>
+                  <SubscriptionCard
+                    subscriptionType='emerald'
+                    subscriptionDetails={plans.find((p) => p.tag === 'emerald')}
+                    savings='Save 13%'
+                    onButtonClick={() =>
+                      onSubscriptionSelect(
+                        plans.find((p) => p.tag === 'emerald')
+                      )
+                    }
+                  />
+                </Col>
+                <Col sm={4}>
+                  <SubscriptionCard
+                    recommended={true}
+                    subscriptionDetails={plans.find((p) => p.tag === 'diamond')}
+                    subscriptionType='diamond'
+                    savings='Save 40%'
+                    onButtonClick={() =>
+                      onSubscriptionSelect(
+                        plans.find((p) => p.tag === 'diamond')
+                      )
+                    }
+                  />
+                </Col>
+              </Row>
+              <Row className='free-pickup'>
+                <Col>
+                  <p>
+                    All plans comes with
+                    <span>1 Free Pick up</span> upon registration.
+                  </p>
+                </Col>
+              </Row>
+            </Modal.Body>
+          )}
+        </>
       )}
-      {subscriptionType !== '' &&
-        subscriptionType !== 'ruby' &&
-        renderSubscriptionForm()}
+      {selectedPlan && renderSubscriptionForm(selectedPlan)}
     </Modal>
   );
 }
