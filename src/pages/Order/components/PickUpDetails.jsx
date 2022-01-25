@@ -156,8 +156,6 @@ export default function PickUpDetails({
       getUserPaymentMethods(),
     ]);
 
-    console.log(user);
-
     setUserInfo(user);
 
     // Set default address

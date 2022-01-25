@@ -48,6 +48,9 @@ import SubscriptionModal from '../../modals/SubscriptionModal';
 import { SUBMIT_APPLICATION } from '../../analytics/fbpixels';
 
 import { subscriptionPlans } from '../../api/subscription';
+import { loadStripe } from '@stripe/stripe-js';
+import { getPublicKey } from '../../api/orderApi';
+import { Elements, useStripe } from '@stripe/react-stripe-js';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -228,10 +231,7 @@ const DashboardPageInitial = () => {
   const [isSavingProducts, setIsSavingProducts] = useState(false);
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   const [user, setUser] = useState(null);
-
-  const { subscriptionType } = useSelector((state) => state.subscription);
   const [plans, setPlans] = useState([]);
-  const isNewlySignedUp = useSelector((state) => state.auth.isNewlySignedUp);
 
   /**TRIGGER SCAN NOW FOR USERS */
   const triggerScanNow = async (type) => {
@@ -602,7 +602,9 @@ const DashboardPageInitial = () => {
   useEffect(async () => {
     const user = await getUser();
 
-    console.log(user);
+    if (!user?.['custom:stripe_sub_id']) {
+      setShowSubscriptionModal(true);
+    }
 
     setUser(user);
   }, [showSubscriptionModal]);
@@ -655,4 +657,23 @@ const DashboardPageInitial = () => {
   );
 };
 
-export default DashboardPageInitial;
+export const DashboardPageInitialWrapper = () => {
+  const [stripePromise, setStripePromise] = useState(null);
+
+  const loadStripeComponent = async () => {
+    const key = await getPublicKey();
+    const stripePromise = loadStripe(key);
+    setStripePromise(stripePromise);
+  };
+
+  // Fetch stripe publishable api key
+  useEffect(() => {
+    loadStripeComponent();
+  }, []);
+
+  return (
+    <Elements stripe={stripePromise}>
+      <DashboardPageInitial />
+    </Elements>
+  );
+};

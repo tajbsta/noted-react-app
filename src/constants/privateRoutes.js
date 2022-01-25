@@ -3,12 +3,12 @@ import ProfilePage from '../pages/Profile/ProfilePage';
 import SettingsPage from '../pages/Settings/SettingsPage';
 import { CheckoutPage } from '../pages/Order/CheckoutPage';
 import { ViewOrderPage } from '../pages/Order/ViewOrderPage';
-import DashboardPageInitial from '../pages/Dashboard/DashboardPageInitial';
+import { DashboardPageInitialWrapper } from '../pages/Dashboard/DashboardPageInitial';
 // import EditOrderPage from '../pages/EditOrder/EditOrder';
 
 export default [
   { path: '/request-permission', component: AuthorizePage },
-  { path: '/dashboard', component: DashboardPageInitial },
+  { path: '/dashboard', component: DashboardPageInitialWrapper },
   { path: '/checkout', component: CheckoutPage },
   { path: '/profile', component: ProfilePage },
   { path: '/settings', component: SettingsPage },

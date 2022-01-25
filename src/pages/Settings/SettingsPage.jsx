@@ -9,6 +9,7 @@ import { Link } from 'react-scroll';
 import { getUser } from '../../api/auth';
 import { scrollToTop } from '../../utils/window';
 import { Auth } from 'aws-amplify';
+import { subscriptionHistory } from '../../api/subscription';
 
 export default function SettingsPage() {
   const [user, setUser] = useState({});
@@ -44,6 +45,9 @@ export default function SettingsPage() {
     (async () => {
       const user = await getUser();
       setUser(user);
+
+      const history = await subscriptionHistory();
+      console.log(history);
     })();
   }, []);
 
