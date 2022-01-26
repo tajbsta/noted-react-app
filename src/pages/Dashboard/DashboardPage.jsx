@@ -283,7 +283,12 @@ export default function DashboardPage({ triggerScanNow }) {
             <InitialScanModal
               show={showInitialScanModal && isNewlySignedUp}
               onHide={onHide}
-              onButtonClick={() => executeScroll(addManualRef)}
+              // onButtonClick={() => executeScroll(addManualRef)}
+              onButtonClick={() =>
+                window.open(
+                  'https://chrome.google.com/webstore/detail/noted/balllddlldhlonjikikjlonmjpdgjcof'
+                )
+              }
             />
 
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
