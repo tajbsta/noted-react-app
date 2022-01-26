@@ -8,6 +8,7 @@ import DiamondIcon from '../assets/icons/DiamondIcon.svg';
 import EmeraldIcon from '../assets/icons/EmeraldIcon.svg';
 import StripeForm from '../components/Forms/StripeForm';
 import { setPayment } from '../actions/cart.action';
+import { subscribeUserToRuby } from '../api/subscription';
 
 export default function SubscriptionModal({ show, onClose, plans }) {
   const dispatch = useDispatch();
@@ -25,6 +26,10 @@ export default function SubscriptionModal({ show, onClose, plans }) {
   const onModalClose = () => {
     onClose();
     setSelectedPlan(null);
+  };
+
+  const onRubyClick = async () => {
+    await subscribeUserToRuby();
   };
 
   useEffect(() => {
@@ -149,6 +154,8 @@ export default function SubscriptionModal({ show, onClose, plans }) {
                     subscriptionDetails={plans.find((p) => p.tag === 'ruby')}
                     onButtonClick={() => {
                       onSubscriptionSelect(plans.find((p) => p.tag === 'ruby'));
+
+                      onRubyClick();
                       onClose();
                     }}
                   />

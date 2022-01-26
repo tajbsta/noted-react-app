@@ -602,10 +602,9 @@ const DashboardPageInitial = () => {
   useEffect(async () => {
     const user = await getUser();
 
-    if (!user?.['custom:stripe_sub_id']) {
+    if (user && !user?.['custom:stripe_sub_name']) {
       setShowSubscriptionModal(true);
     }
-
     setUser(user);
   }, [showSubscriptionModal]);
 

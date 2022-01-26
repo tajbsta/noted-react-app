@@ -275,7 +275,9 @@ export default function DashboardPage({ triggerScanNow }) {
 
             <PickUpLeftModal
               show={
-                user?.['custom:no_of_pickups'] === 1 && showPickupsLeftModal
+                user?.['custom:stripe_sub_id'] &&
+                user?.['custom:no_of_pickups'] === '1' &&
+                showPickupsLeftModal
               }
               onHide={() => onHide()}
             />

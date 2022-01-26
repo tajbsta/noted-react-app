@@ -42,3 +42,18 @@ export const subscriptionHistory = async () => {
     return false;
   }
 };
+
+export const subscribeUserToRuby = async () => {
+  try {
+    const axios = await api();
+    const { userId } = await getUserSession();
+
+    const subscriptionResponse = await axios.post(
+      `${userId}/subscription/ruby?plan_name=Ruby`
+    );
+    return subscriptionResponse;
+  } catch (error) {
+    // console.log(error);
+    return false;
+  }
+};
