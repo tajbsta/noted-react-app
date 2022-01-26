@@ -17,6 +17,7 @@ export default function SettingsPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [isGoogleSignIn, setIsGoogleSignIn] = useState(false);
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
     scrollToTop();
@@ -47,7 +48,8 @@ export default function SettingsPage() {
       setUser(user);
 
       const history = await subscriptionHistory();
-      console.log(history);
+      setHistory(history);
+      console.log(history, 'history');
     })();
   }, []);
 
@@ -146,7 +148,7 @@ export default function SettingsPage() {
           <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
             <BasicInfo user={user} />
             {isGoogleSignIn === false && <ChangePass />}
-            <MyCredits />
+            <MyCredits user={user} history={history} />
             <DeleteAccount />
           </div>
         </div>
