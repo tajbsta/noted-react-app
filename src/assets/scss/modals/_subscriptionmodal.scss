@@ -1,9 +1,25 @@
 #SubscriptionModal {
-  .modal-body {
+  .modal-body.subscriptions {
     padding: 3rem 5rem;
 
     @media (max-width: 992px) {
       padding: 2rem 3rem;
+    }
+
+    @media (max-width: 576px) {
+      padding: 1rem 1rem;
+    }
+
+    .subscription-container {
+      align-items: flex-end;
+    }
+  }
+
+  .modal-body.addOrUpgrade {
+    padding: 3rem;
+
+    @media (max-width: 992px) {
+      padding: 2rem;
     }
 
     @media (max-width: 576px) {

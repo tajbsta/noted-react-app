@@ -1,8 +1,9 @@
 import React from 'react';
 import { Row, Col, Table, Button, Spinner } from 'react-bootstrap';
 import moment from 'moment';
+import NotedIcon from '../../../assets/icons/NoteeIcon.svg';
 
-export default function MyCredits({ user, history }) {
+export default function MyCredits({ user, history, onAdd, addPickUp }) {
   return (
     <div className='mt-5' id='mycredits-container'>
       <h3 className='sofia-pro text-18 mb-3 mb-0 ml-3'>My Credits</h3>
@@ -35,45 +36,28 @@ export default function MyCredits({ user, history }) {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr id='current_plan'>
-                      <td>
-                        <img
-                          src={
-                            require(`../../../assets/icons/${
-                              user?.['custom:stripe_sub_name'] || 'Ruby'
-                            }Icon.svg`).default
-                          }
-                          className='mr-2'
-                        />
-                        {user?.['custom:stripe_sub_name']}
-                      </td>
-                      <td>{user?.['custom:no_of_pickups']}</td>
-                      <td>
-                        {moment(
-                          Number.parseInt(user['custom:stripe_sub_exp_date'])
-                        ).format('YYYY-MM-DD')}
-                      </td>
-                    </tr>
-                    {history.map((item, i) => {
-                      return (
-                        <tr key={i}>
-                          <td>
-                            <img
-                              src={
-                                require(`../../../assets/icons/${item.plan_name}Icon.svg`)
-                                  .default
-                              }
-                              className='mr-2'
-                            />
-                            {item.plan_name}
-                          </td>
-                          <td>0</td>
-                          <td>
-                            {moment(item.expiration_date).format('YYYY-MM-DD')}
-                          </td>
-                        </tr>
-                      );
-                    })}
+                    {history.length > 0 ? (
+                      history.map((item, i) => {
+                        return (
+                          <tr key={i}>
+                            <td>
+                              <img src={NotedIcon} className='mr-2' />
+                              {item.plan_name}
+                            </td>
+                            <td>0</td>
+                            <td>
+                              {moment(item.expiration_date).format(
+                                'YYYY-MM-DD'
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <tr id='current_plan'>
+                        <td>No active subscription</td>
+                      </tr>
+                    )}
                   </tbody>
                 </Table>
               </Col>
@@ -89,21 +73,33 @@ export default function MyCredits({ user, history }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {history.map((item, i) => {
-                        return (
-                          <tr key={`tr-${i}`}>
-                            <td>{moment(item.date).format('YYYY-MM-DD')}</td>
-                            <td>${item.price}</td>
-                            <td>+{item.no_of_pick_ups} pickups</td>
-                            <td>{item.no_of_pick_ups} pickups</td>
-                          </tr>
-                        );
-                      })}
+                      {history.lenght > 0 ? (
+                        history.map((item, i) => {
+                          return (
+                            <tr key={`tr-${i}`}>
+                              <td>
+                                {moment(item.created_date * 1000).format(
+                                  'YYYY-MM-DD'
+                                )}
+                              </td>
+                              <td>${item.price}</td>
+                              <td>+{item.no_of_pick_ups} pickups</td>
+                              <td>{item.no_of_pick_ups} pickups</td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <tr id='current_plan'>
+                          <td>No active subscription</td>
+                        </tr>
+                      )}
                     </tbody>
                   </Table>
                 </div>
                 <Row className='d-flex align-items-center justify-content-end mt-3'>
-                  <Button className='primary'>Add a Pickup</Button>
+                  <Button className='primary' onClick={onAdd}>
+                    Add a Pickup
+                  </Button>
                 </Row>
               </Col>
             </Row>

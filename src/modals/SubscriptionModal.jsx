@@ -9,6 +9,7 @@ import EmeraldIcon from '../assets/icons/EmeraldIcon.svg';
 import StripeForm from '../components/Forms/StripeForm';
 import { setPayment } from '../actions/cart.action';
 import { subscribeUserToRuby } from '../api/subscription';
+import { data } from 'jquery';
 
 export default function SubscriptionModal({ show, onClose, plans }) {
   const dispatch = useDispatch();
@@ -29,7 +30,12 @@ export default function SubscriptionModal({ show, onClose, plans }) {
   };
 
   const onRubyClick = async () => {
-    await subscribeUserToRuby();
+    onSubscriptionSelect(plans.find((p) => p.tag === 'ruby'));
+
+    const resp = await subscribeUserToRuby(false);
+    if (resp.status === 201) {
+      onClose();
+    }
   };
 
   useEffect(() => {
@@ -39,6 +45,7 @@ export default function SubscriptionModal({ show, onClose, plans }) {
   }, [subscriptionSuccess]);
 
   const renderSubscriptionForm = (subscription) => {
+    if (subscription.plan_name === 'Ruby') return;
     return (
       <>
         <Modal.Header closeButton onClick={onModalClose}>
@@ -152,12 +159,7 @@ export default function SubscriptionModal({ show, onClose, plans }) {
                   <SubscriptionCard
                     subscriptionType='ruby'
                     subscriptionDetails={plans.find((p) => p.tag === 'ruby')}
-                    onButtonClick={() => {
-                      onSubscriptionSelect(plans.find((p) => p.tag === 'ruby'));
-
-                      onRubyClick();
-                      onClose();
-                    }}
+                    onButtonClick={onRubyClick}
                   />
                 </Col>
                 <Col sm={4}>
@@ -198,7 +200,9 @@ export default function SubscriptionModal({ show, onClose, plans }) {
           )}
         </>
       )}
-      {selectedPlan && renderSubscriptionForm(selectedPlan)}
+      {selectedPlan &&
+        selectedPlan !== 'Ruby' &&
+        renderSubscriptionForm(selectedPlan)}
     </Modal>
   );
 }

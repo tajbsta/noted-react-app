@@ -25,6 +25,7 @@ import InitialScanModal from '../../modals/initialScanModal';
 import PickUpLeftModal from '../../modals/PickUpLeftModal';
 import { setIsNewlySignedUp } from '../../actions/auth.action';
 import { Auth } from 'aws-amplify';
+import { subscribeUserToRuby } from '../../api/subscription';
 
 export default function DashboardPage({ triggerScanNow }) {
   const [search, setSearch] = useState('');
@@ -57,6 +58,8 @@ export default function DashboardPage({ triggerScanNow }) {
   const addManualRef = useRef(null);
   const [showInitialScanModal, setShowInitialScanModal] = useState(false);
   const [showPickupsLeftModal, setShowPickupsLeftModal] = useState(false);
+  const [validPayment, setValidPayment] = useState(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -206,7 +209,6 @@ export default function DashboardPage({ triggerScanNow }) {
     (async () => {
       // await updateUserAttributes({ 'custom:scan_older_done': '0' }); // don't delete: helps to bring back 'Scan for older items' button if not-commented
       const user = await getUser();
-      console.log(user);
       setUser(user);
       setShowScanOlderButton(user['custom:scan_older_done'] === '0');
     })();
@@ -219,6 +221,12 @@ export default function DashboardPage({ triggerScanNow }) {
       setShowPickupsLeftModal(false);
     }
   }, [pickups]);
+
+  useEffect(async () => {
+    if (user && !user['custom:stripe_sub_name']) {
+      await subscribeUserToRuby(true);
+    }
+  }, []);
 
   const beyond90days = get(user, 'custom:scan_older_done', '0') === '1';
 
@@ -280,6 +288,7 @@ export default function DashboardPage({ triggerScanNow }) {
                 showPickupsLeftModal
               }
               onHide={() => onHide()}
+              setValidPayment={setValidPayment}
             />
 
             <InitialScanModal

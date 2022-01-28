@@ -527,8 +527,10 @@ const DashboardPageInitial = () => {
 
     setUser(user);
 
-    if (!user?.['custom:stripe_sub_id']) {
+    if (user && !user['custom:stripe_sub_name']) {
       setShowSubscriptionModal(true);
+    } else {
+      setShowSubscriptionModal(false);
     }
 
     if (monthsScanned === undefined) {
@@ -602,9 +604,12 @@ const DashboardPageInitial = () => {
   useEffect(async () => {
     const user = await getUser();
 
-    if (user && !user?.['custom:stripe_sub_name']) {
+    if (user && !user['custom:stripe_sub_name']) {
       setShowSubscriptionModal(true);
+    } else {
+      setShowSubscriptionModal(false);
     }
+
     setUser(user);
   }, [showSubscriptionModal]);
 

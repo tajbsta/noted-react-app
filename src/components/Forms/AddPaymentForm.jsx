@@ -12,7 +12,7 @@ import { savePaymentMethod } from '../../api/orderApi';
 import { updateUserAttributes } from '../../api/auth';
 import { showError } from '../../library/notifications.library';
 import { orderErrors } from '../../library/errors.library';
-import * as Sentry from "@sentry/react";
+import * as Sentry from '@sentry/react';
 
 export default function AddPaymentForm({
   close,
@@ -89,6 +89,7 @@ export default function AddPaymentForm({
 
       setProcessing(false);
     } catch (error) {
+      console.log(error);
       setProcessing(false);
       showError({
         message: get(

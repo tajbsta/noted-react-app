@@ -43,15 +43,34 @@ export const subscriptionHistory = async () => {
   }
 };
 
-export const subscribeUserToRuby = async () => {
+export const subscribeUserToRuby = async (isExistingUser) => {
   try {
     const axios = await api();
     const { userId } = await getUserSession();
 
     const subscriptionResponse = await axios.post(
-      `${userId}/subscription/ruby?plan_name=Ruby`
+      `${userId}/subscription/ruby`,
+      {
+        planName: 'Ruby',
+        existingUser: isExistingUser,
+      }
     );
     return subscriptionResponse;
+  } catch (error) {
+    // console.log(error);
+    return false;
+  }
+};
+
+export const pickUpRefill = async () => {
+  try {
+    const axios = await api();
+    const { userId } = await getUserSession();
+
+    const refillResponse = await axios.post(`${userId}/subscription/refill`, {
+      plan_name: 'Refill',
+    });
+    return refillResponse;
   } catch (error) {
     // console.log(error);
     return false;

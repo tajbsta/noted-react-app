@@ -1,9 +1,22 @@
 #PickUpLeftModal {
-  .modal-body {
+  .modal-body.subscriptions {
     padding: 1rem 10rem 3rem;
 
     @media (max-width: 992px) {
       padding: 2rem 3rem;
+    }
+  }
+
+  .modal-body.addOrUpgrade {
+    padding: 1rem 4rem 3rem;
+
+    @media (max-width: 992px) {
+      padding: 1rem 3rem;
+    }
+
+    .subscription-container {
+      margin-top: 50px;
+      align-items: flex-end;
     }
   }
 
@@ -122,5 +135,52 @@
     background-color: #fff;
     color: #570097;
     border: none;
+  }
+
+  .refill-addOrUpgrade {
+    padding: 0 8rem;
+
+    @media (max-width: 992px) {
+      padding: 0;
+    }
+  }
+
+  .payment-details-mobile {
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+
+  .payment-details-desktop {
+    display: none;
+    @media (min-width: 1024px) {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .divider {
+    display: flex;
+    flex-direction: row;
+  }
+  .divider:before,
+  .divider:after {
+    content: '';
+    flex: 1 1;
+    border-bottom: 1px solid;
+    margin: auto;
+  }
+  .divider:before {
+    margin-right: 10px;
+  }
+  .divider:after {
+    margin-left: 10px;
+    font-family: 'Sofia Pro';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+    color: #827889;
   }
 }
