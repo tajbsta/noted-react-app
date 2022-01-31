@@ -76,3 +76,19 @@ export const pickUpRefill = async () => {
     return false;
   }
 };
+
+export const subscriptionUpgrade = async (values) => {
+  try {
+    const axios = await api();
+    const { userId } = await getUserSession();
+
+    const upgradeResponse = await axios.post(
+      `${userId}/subscription/upgrade`,
+      values
+    );
+    return upgradeResponse;
+  } catch (error) {
+    // console.log(error);
+    return false;
+  }
+};

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Row, Col } from 'react-bootstrap';
+import { Modal, Button, Row, Col, Form, Spinner } from 'react-bootstrap';
 import { getCreditCardType } from '../utils/creditCards';
 import { getUserPaymentMethods } from '../api/orderApi';
 import { setPayment } from '../actions/cart.action';
@@ -8,10 +8,13 @@ import Collapsible from 'react-collapsible';
 import LeftArrow from '../assets/icons/RightArrow.svg';
 import DownArrow from '../assets/icons/DownArrow.svg';
 import PRICING from '../constants/pricing';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import AddPaymentForm from '../components/Forms/AddPaymentForm';
-import { pickUpRefill } from '../api/subscription';
+import { pickUpRefill, subscriptionUpgrade } from '../api/subscription';
 import SubscriptionCard from '../components/Subscription/SubscriptionCard';
+import { showError, showSuccess } from '../library/notifications.library';
+import { AlertCircle, CheckCircle } from 'react-feather';
+import { rest } from 'lodash';
 
 export default function PickUpLeftModal({
   setValidPayment,
@@ -28,10 +31,13 @@ export default function PickUpLeftModal({
   const [paymentFormValues, setPaymentFormValues] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [subscriptionSuccess, setSubscriptionSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
+  const [isRefillSelected, setISRefillSelected] = useState(false);
 
   const onSubscriptionSelect = (subscription) => {
     setSelectedPlan(subscription);
+    setIsSelected(subscription.plan_name);
   };
 
   const getCardImage = (payment) => {
@@ -56,6 +62,62 @@ export default function PickUpLeftModal({
     setIsPaymentFormEmpty(false);
     setShowEditPayment(false);
     setValidPayment(true);
+  };
+
+  const reset = () => {
+    setIsLoading(false);
+    setIsSelected(false);
+    setISRefillSelected(false);
+    onHide();
+  };
+
+  const onSubmitClick = async (plan) => {
+    setIsLoading(true);
+    try {
+      if (plan) {
+        await subscriptionUpgrade({ plan_name: plan });
+
+        showSuccess({
+          message: (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <CheckCircle />
+              <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+                Successfully subscribed, you can check your profile to confirm.
+              </h4>
+            </div>
+          ),
+        });
+      } else {
+        await pickUpRefill();
+
+        showSuccess({
+          message: (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <CheckCircle />
+              <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+                Successfully purchased refills, you can check your profile to
+                confirm.
+              </h4>
+            </div>
+          ),
+        });
+      }
+
+      reset();
+    } catch (error) {
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Error! subscription fail!
+            </h4>
+          </div>
+        ),
+      });
+
+      reset();
+    }
   };
 
   const setDefaults = async () => {
@@ -92,7 +154,6 @@ export default function PickUpLeftModal({
   }, []);
 
   useEffect(() => {
-    console.log(paymentFormValues);
     console.log('payment updated');
   }, [paymentFormValues]);
 
@@ -107,12 +168,14 @@ export default function PickUpLeftModal({
       animation={false}
       id='PickUpLeftModal'
     >
-      <Modal.Header closeButton onClick={onHide}>
-        <h2>
-          {isAddOrUpgrade
-            ? `You have ${userInfo?.['custom:no_of_pickups']} pickups left`
-            : 'You have 1 pick up left!'}
-        </h2>
+      <Modal.Header closeButton onClick={reset}>
+        {userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
+          <h2>
+            {isAddOrUpgrade
+              ? `You have ${userInfo?.['custom:no_of_pickups']} pickups left`
+              : 'You have 1 pick up left!'}
+          </h2>
+        )}
       </Modal.Header>
       <Modal.Body
         className={`sofia-pro ${
@@ -120,75 +183,101 @@ export default function PickUpLeftModal({
         }`}
       >
         {isAddOrUpgrade && (
-          <>
-            <Row className='subscription-container'>
-              <Col sm={4}>
-                <SubscriptionCard
-                  subscriptionType='ruby'
-                  subscriptionDetails={plans.find((p) => p.tag === 'ruby')}
-                />
-              </Col>
-              <Col sm={4}>
-                <SubscriptionCard
-                  subscriptionType='emerald'
-                  subscriptionDetails={plans.find((p) => p.tag === 'emerald')}
-                  savings='Save 13%'
-                  onButtonClick={() =>
-                    onSubscriptionSelect(plans.find((p) => p.tag === 'emerald'))
-                  }
-                />
-              </Col>
-              <Col sm={4}>
-                <SubscriptionCard
-                  recommended={true}
-                  subscriptionDetails={plans.find((p) => p.tag === 'diamond')}
-                  subscriptionType='diamond'
-                  savings='Save 40%'
-                  onButtonClick={() =>
-                    onSubscriptionSelect(plans.find((p) => p.tag === 'diamond'))
-                  }
-                />
-              </Col>
-            </Row>
+          <Row
+            className={`subscription-container ${
+              isRefillSelected ? 'subscription-disabled' : ''
+            }`}
+          >
+            <Col sm={4}>
+              <SubscriptionCard
+                subscriptionType='ruby'
+                subscriptionDetails={plans.find((p) => p.tag === 'ruby')}
+                disabled={true}
+              />
+            </Col>
+            <Col sm={4}>
+              <SubscriptionCard
+                subscriptionType='emerald'
+                subscriptionDetails={plans.find((p) => p.tag === 'emerald')}
+                savings='Save 13%'
+                onButtonClick={() =>
+                  onSubscriptionSelect(plans.find((p) => p.tag === 'emerald'))
+                }
+                isSelected={isSelected === 'Emerald'}
+                disabled={isRefillSelected}
+              />
+            </Col>
+            <Col sm={4}>
+              <SubscriptionCard
+                recommended={true}
+                subscriptionDetails={plans.find((p) => p.tag === 'diamond')}
+                subscriptionType='diamond'
+                savings='Save 40%'
+                onButtonClick={() =>
+                  onSubscriptionSelect(plans.find((p) => p.tag === 'diamond'))
+                }
+                isSelected={isSelected === 'Diamond'}
+                disabled={isRefillSelected}
+              />
+            </Col>
+          </Row>
+        )}
 
+        {userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
+          <>
             <Row>
-              <Col className='px-6 py-4'>
+              <Col className='px-6 pt-4'>
                 <p className='divider'>or</p>
               </Col>
             </Row>
+
+            <div className={isAddOrUpgrade ? 'refill-addOrUpgrade' : ''}>
+              <Row>
+                <Form.Group className='checkbox'>
+                  <Form.Check
+                    inline
+                    label='Pickup Refill'
+                    name='pickUpRefill'
+                    type='checkbox'
+                    value={isRefillSelected}
+                    onChange={(e) => setISRefillSelected(e.target.checked)}
+                  />
+                </Form.Group>
+              </Row>
+
+              <Row className={!isRefillSelected ? 'refill-disabled' : ''}>
+                <h3>Pickup Refill</h3>
+                <Col
+                  sm={12}
+                  className='p-0 d-flex align-items-center justify-content-between pickups mt-4'
+                >
+                  <span>Three (3) Pickups*</span>
+                  <span>$39.99</span>
+                </Col>
+                <Col
+                  sm={12}
+                  className='p-0 d-flex align-items-center justify-content-between taxes'
+                >
+                  <span>Taxes</span>
+                  <span>$0.00</span>
+                </Col>
+                <Col sm={12} className='p-0 d-flex align-items-center my-3 '>
+                  <span className='subtle-text'>
+                    *3 pickups will last for 365 days from date of payment.
+                  </span>
+                </Col>
+
+                <Col
+                  sm={12}
+                  className='p-0 d-flex align-items-center justify-content-between mt-3 totalpay'
+                >
+                  <span>Total to pay</span>
+                  <span>$39.99</span>
+                </Col>
+              </Row>
+            </div>
           </>
         )}
-
-        <Row className={isAddOrUpgrade ? 'refill-addOrUpgrade' : ''}>
-          <h3>Pickup Refill</h3>
-          <Col
-            sm={12}
-            className='p-0 d-flex align-items-center justify-content-between pickups mt-4'
-          >
-            <span>Three (3) Pickups*</span>
-            <span>$39.99</span>
-          </Col>
-          <Col
-            sm={12}
-            className='p-0 d-flex align-items-center justify-content-between taxes'
-          >
-            <span>Taxes</span>
-            <span>$0.00</span>
-          </Col>
-          <Col sm={12} className='p-0 d-flex align-items-center my-3 '>
-            <span className='subtle-text'>
-              *3 pickups will last for 365 days from date of payment.
-            </span>
-          </Col>
-
-          <Col
-            sm={12}
-            className='p-0 d-flex align-items-center justify-content-between mt-3 totalpay'
-          >
-            <span>Total to pay</span>
-            <span>$39.99</span>
-          </Col>
-        </Row>
 
         <Row className={`mt-5 ${isAddOrUpgrade ? 'refill-addOrUpgrade' : ''}`}>
           {!isPaymentFormEmpty && !showEditPayment ? (
@@ -227,7 +316,10 @@ export default function PickUpLeftModal({
               {/**
                * PAYMENT DETAILS MOBILE
                */}
-              <div className='pl-4 pr-4 pb-0 pt-0 payment-details-mobile'>
+              <div
+                className='pl-4 pr-4 pb-0 pt-0 payment-details-mobile'
+                style={{ cursor: 'pointer' }}
+              >
                 <Collapsible
                   open={IsPaymentOpen}
                   onTriggerOpening={() => setIsPaymentOpen(true)}
@@ -301,21 +393,21 @@ export default function PickUpLeftModal({
               </div>
             </>
           ) : (
-            <Col>
+            <Col className='p-0'>
               {!showEditPayment && (
-                <Col>
-                  No Payment Method saved
+                <div className='block d-sm-flex justify-content-between align-items-center'>
+                  <p className='m-0'>No Payment Method saved</p>
                   <Button
                     variant='primary'
                     size='md'
-                    className='mx-5'
+                    className='m-0'
                     onClick={() => {
                       setShowEditPayment(true);
                     }}
                   >
                     Add payment method
                   </Button>
-                </Col>
+                </div>
               )}
               {showEditPayment && (
                 <AddPaymentForm
@@ -331,17 +423,53 @@ export default function PickUpLeftModal({
         </Row>
 
         <Row className='mt-5 button-container'>
-          <Button variant='light' size='md' className='mx-5 cancel'>
+          <Button
+            variant='light'
+            size='md'
+            className='mx-5 cancel'
+            onClick={reset}
+          >
             Cancel
           </Button>
-          {paymentFormValues && (
+          {selectedPlan && paymentFormValues && (
             <Button
               variant='primary'
               size='md'
               className='mx-5'
-              onClick={() => pickUpRefill()}
+              onClick={() => onSubmitClick(selectedPlan.plan_name)}
             >
-              Pay $39.99
+              {isLoading ? (
+                <Spinner
+                  as='span'
+                  animation='border'
+                  size='sm'
+                  role='status'
+                  aria-hidden='true'
+                />
+              ) : (
+                ` Pay {selectedPlan?.price}`
+              )}
+            </Button>
+          )}
+
+          {isRefillSelected && (
+            <Button
+              variant='primary'
+              size='md'
+              className='mx-5'
+              onClick={() => onSubmitClick()}
+            >
+              {isLoading ? (
+                <Spinner
+                  as='span'
+                  animation='border'
+                  size='sm'
+                  role='status'
+                  aria-hidden='true'
+                />
+              ) : (
+                'Pay $39.99'
+              )}
             </Button>
           )}
         </Row>

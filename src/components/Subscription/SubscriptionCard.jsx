@@ -5,6 +5,8 @@ export default function SubscriptionCard({
   subscriptionDetails,
   onButtonClick,
   isLoading,
+  disabled,
+  isSelected,
 }) {
   const {
     recommendation,
@@ -16,7 +18,9 @@ export default function SubscriptionCard({
   } = subscriptionDetails;
 
   return (
-    <div className='SubscriptionCardContainer'>
+    <div
+      className={`SubscriptionCardContainer ${disabled ? 'card-disabled' : ''}`}
+    >
       <Card
         className={`SubscriptionCard ${recommendation ? 'recommended' : ''}`}
       >
@@ -40,10 +44,13 @@ export default function SubscriptionCard({
           </Card.Text>
           <Card.Text className='subscription-details'>{description}</Card.Text>
           <Button
-            variant={recommendation ? 'primary' : 'outline-primary'}
+            variant={
+              recommendation || isSelected ? 'primary' : 'outline-primary'
+            }
             size='md'
             block
             onClick={onButtonClick}
+            disabled={disabled}
           >
             {isLoading ? (
               <Spinner
@@ -53,6 +60,8 @@ export default function SubscriptionCard({
                 role='status'
                 aria-hidden='true'
               />
+            ) : isSelected ? (
+              'Selected'
             ) : (
               'Choose Plan'
             )}

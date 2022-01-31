@@ -74,6 +74,17 @@
   }
 }
 
+.subscription-disabled,
+.refill-disabled,
+.card-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+
+  button {
+    cursor: not-allowed;
+  }
+}
+
 .savings {
   font-size: 12px;
   line-height: 14px;
