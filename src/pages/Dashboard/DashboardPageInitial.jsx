@@ -604,6 +604,8 @@ const DashboardPageInitial = () => {
   useEffect(async () => {
     const user = await getUser();
 
+    console.log(user);
+
     if (user && !user['custom:stripe_sub_name']) {
       setShowSubscriptionModal(true);
     } else {

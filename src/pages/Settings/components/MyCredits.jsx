@@ -1,9 +1,10 @@
 import React from 'react';
 import { Row, Col, Table, Button, Spinner } from 'react-bootstrap';
 import moment from 'moment';
-import NotedIcon from '../../../assets/icons/NoteeIcon.svg';
 
 export default function MyCredits({ user, history, onAdd, addPickUp }) {
+  console.log(history);
+
   return (
     <div className='mt-5' id='mycredits-container'>
       <h3 className='sofia-pro text-18 mb-3 mb-0 ml-3'>My Credits</h3>
@@ -27,39 +28,51 @@ export default function MyCredits({ user, history, onAdd, addPickUp }) {
                   top-ups.
                 </h4>
 
-                <Table responsive='sm' className='mycredits-table-1'>
-                  <thead>
-                    <tr>
-                      <th>Amount</th>
-                      <th>Pick ups</th>
-                      <th>Expiry</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {history.length > 0 ? (
-                      history.map((item, i) => {
-                        return (
-                          <tr key={i}>
-                            <td>
-                              <img src={NotedIcon} className='mr-2' />
-                              {item.plan_name}
-                            </td>
-                            <td>0</td>
-                            <td>
-                              {moment(item.expiration_date).format(
-                                'YYYY-MM-DD'
-                              )}
-                            </td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <tr id='current_plan'>
-                        <td>No active subscription</td>
+                <div className='col-2-table'>
+                  <Table responsive='sm' className='mycredits-table-1'>
+                    <thead>
+                      <tr>
+                        <th>Amount</th>
+                        <th>Pick ups</th>
+                        <th>Expiry</th>
                       </tr>
-                    )}
-                  </tbody>
-                </Table>
+                    </thead>
+                    <tbody>
+                      {history.length > 0 ? (
+                        history.map((item, i) => {
+                          return (
+                            <tr key={i}>
+                              <td>
+                                <img
+                                  src={
+                                    require(`../../../assets/icons/${item.plan_name}Icon.svg`)
+                                      .default
+                                  }
+                                  style={{
+                                    height: 30,
+                                    width: 40,
+                                    marginRight: 10,
+                                  }}
+                                />
+                                {item.plan_name}
+                              </td>
+                              <td>{item.no_of_pick_ups}</td>
+                              <td>
+                                {moment
+                                  .unix(item.expiration_date)
+                                  .format('YYYY-MM-DD')}
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <tr id='current_plan'>
+                          <td>No active subscription</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </Table>
+                </div>
               </Col>
               <Col>
                 <div className='pl-3 col-2-table'>
@@ -73,7 +86,7 @@ export default function MyCredits({ user, history, onAdd, addPickUp }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {history.lenght > 0 ? (
+                      {history.length > 0 ? (
                         history.map((item, i) => {
                           return (
                             <tr key={`tr-${i}`}>

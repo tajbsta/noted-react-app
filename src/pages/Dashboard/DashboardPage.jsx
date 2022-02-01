@@ -222,11 +222,11 @@ export default function DashboardPage({ triggerScanNow }) {
     }
   }, [pickups]);
 
-  useEffect(async () => {
-    if (user && !user['custom:stripe_sub_name']) {
-      await subscribeUserToRuby(true);
-    }
-  }, []);
+  // useEffect(async () => {
+  //   if (user && !user['custom:stripe_sub_name']) {
+  //     await subscribeUserToRuby(true);
+  //   }
+  // }, []);
 
   const beyond90days = get(user, 'custom:scan_older_done', '0') === '1';
 

@@ -9,7 +9,6 @@ import EmeraldIcon from '../assets/icons/EmeraldIcon.svg';
 import StripeForm from '../components/Forms/StripeForm';
 import { setPayment } from '../actions/cart.action';
 import { subscribeUserToRuby } from '../api/subscription';
-import { data } from 'jquery';
 
 export default function SubscriptionModal({ show, onClose, plans }) {
   const dispatch = useDispatch();
@@ -25,8 +24,9 @@ export default function SubscriptionModal({ show, onClose, plans }) {
   };
 
   const onModalClose = () => {
-    onClose();
     setSelectedPlan(null);
+    setSubscriptionSuccess(false);
+    onClose();
   };
 
   const onRubyClick = async () => {
@@ -79,7 +79,7 @@ export default function SubscriptionModal({ show, onClose, plans }) {
                   }}
                   size='md'
                   block
-                  onClick={onClose}
+                  onClick={onModalClose}
                 >
                   Continue
                 </Button>

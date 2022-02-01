@@ -31,6 +31,8 @@ const SettingsPage = () => {
   useEffect(async () => {
     const plans = await subscriptionPlans();
 
+    console.log(plans);
+
     setPlans(plans.data);
   }, []);
 
@@ -67,10 +69,10 @@ const SettingsPage = () => {
       setUser(user);
 
       const history = await subscriptionHistory();
+
       setHistory(history);
-      console.log(user);
     })();
-  }, []);
+  }, [showPickupsLeftModal]);
 
   const isActive = (tabName) => {
     return tabName === currentTab

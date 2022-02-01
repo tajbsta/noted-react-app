@@ -157,6 +157,146 @@ export default function PickUpLeftModal({
     console.log('payment updated');
   }, [paymentFormValues]);
 
+  const Summary = ({ plan }) => {
+    return (
+      <Row>
+        <h3>Pickup Refill</h3>
+        <Col
+          sm={12}
+          className='p-0 d-flex align-items-center justify-content-between pickups mt-4'
+        >
+          <span> {plan.no_of_pickups} Pickups*</span>
+          <span>{plan.price}</span>
+        </Col>
+        <Col
+          sm={12}
+          className='p-0 d-flex align-items-center justify-content-between taxes'
+        >
+          <span>Taxes</span>
+          <span>$0.00</span>
+        </Col>
+        <Col sm={12} className='p-0 d-flex align-items-center my-3 '>
+          <span className='subtle-text'>
+            *{plan.no_of_pickups} pickups will last for 365 days from date of
+            payment.
+          </span>
+        </Col>
+
+        <Col
+          sm={12}
+          className='p-0 d-flex align-items-center justify-content-between mt-3 totalpay'
+        >
+          <span>Total to pay</span>
+          <span>{plan.price}</span>
+        </Col>
+      </Row>
+    );
+  };
+
+  const ActionButtons = () => {
+    return (
+      <Row className='mt-5 button-container'>
+        <Button
+          variant='light'
+          size='md'
+          className='mx-5 cancel'
+          onClick={reset}
+        >
+          Cancel
+        </Button>
+
+        {selectedPlan && paymentFormValues && (
+          <Button
+            variant='primary'
+            size='md'
+            className='mx-5'
+            onClick={() => onSubmitClick(selectedPlan.plan_name)}
+          >
+            {isLoading ? (
+              <Spinner
+                as='span'
+                animation='border'
+                size='sm'
+                role='status'
+                aria-hidden='true'
+              />
+            ) : (
+              `Pay ${selectedPlan?.price}`
+            )}
+          </Button>
+        )}
+
+        {(userInfo?.['custom:stripe_sub_name'] === 'Diamond' ||
+          isRefillSelected) && (
+          <Button
+            variant='primary'
+            size='md'
+            className='mx-5'
+            onClick={() => onSubmitClick()}
+          >
+            {isLoading ? (
+              <Spinner
+                as='span'
+                animation='border'
+                size='sm'
+                role='status'
+                aria-hidden='true'
+              />
+            ) : (
+              'Pay $39.99'
+            )}
+          </Button>
+        )}
+      </Row>
+    );
+  };
+
+  const SubscriptionCards = () => {
+    return (
+      isAddOrUpgrade &&
+      userInfo?.['custom:stripe_sub_name'] !== 'Diamond' && (
+        <Row
+          className={`subscription-container ${
+            isRefillSelected ? 'subscription-disabled' : ''
+          }`}
+        >
+          <Col sm={4}>
+            <SubscriptionCard
+              subscriptionType='ruby'
+              subscriptionDetails={plans.find((p) => p.tag === 'ruby')}
+              disabled={true}
+            />
+          </Col>
+          <Col sm={4}>
+            <SubscriptionCard
+              subscriptionType='emerald'
+              subscriptionDetails={plans.find((p) => p.tag === 'emerald')}
+              savings='Save 13%'
+              onButtonClick={() =>
+                onSubscriptionSelect(plans.find((p) => p.tag === 'emerald'))
+              }
+              isSelected={isSelected === 'Emerald'}
+              disabled={isRefillSelected}
+            />
+          </Col>
+          <Col sm={4}>
+            <SubscriptionCard
+              recommended={true}
+              subscriptionDetails={plans.find((p) => p.tag === 'diamond')}
+              subscriptionType='diamond'
+              savings='Save 40%'
+              onButtonClick={() =>
+                onSubscriptionSelect(plans.find((p) => p.tag === 'diamond'))
+              }
+              isSelected={isSelected === 'Diamond'}
+              disabled={isRefillSelected}
+            />
+          </Col>
+        </Row>
+      )
+    );
+  };
+
   return (
     <Modal
       show={show}
@@ -182,48 +322,9 @@ export default function PickUpLeftModal({
           isAddOrUpgrade ? 'addOrUpgrade' : 'subscriptions'
         }`}
       >
-        {isAddOrUpgrade && (
-          <Row
-            className={`subscription-container ${
-              isRefillSelected ? 'subscription-disabled' : ''
-            }`}
-          >
-            <Col sm={4}>
-              <SubscriptionCard
-                subscriptionType='ruby'
-                subscriptionDetails={plans.find((p) => p.tag === 'ruby')}
-                disabled={true}
-              />
-            </Col>
-            <Col sm={4}>
-              <SubscriptionCard
-                subscriptionType='emerald'
-                subscriptionDetails={plans.find((p) => p.tag === 'emerald')}
-                savings='Save 13%'
-                onButtonClick={() =>
-                  onSubscriptionSelect(plans.find((p) => p.tag === 'emerald'))
-                }
-                isSelected={isSelected === 'Emerald'}
-                disabled={isRefillSelected}
-              />
-            </Col>
-            <Col sm={4}>
-              <SubscriptionCard
-                recommended={true}
-                subscriptionDetails={plans.find((p) => p.tag === 'diamond')}
-                subscriptionType='diamond'
-                savings='Save 40%'
-                onButtonClick={() =>
-                  onSubscriptionSelect(plans.find((p) => p.tag === 'diamond'))
-                }
-                isSelected={isSelected === 'Diamond'}
-                disabled={isRefillSelected}
-              />
-            </Col>
-          </Row>
-        )}
+        <SubscriptionCards />
 
-        {userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
+        {userInfo?.['custom:stripe_sub_name'] !== 'Diamond' && selectedPlan && (
           <>
             <Row>
               <Col className='px-6 pt-4'>
@@ -245,38 +346,13 @@ export default function PickUpLeftModal({
                 </Form.Group>
               </Row>
 
-              <Row className={!isRefillSelected ? 'refill-disabled' : ''}>
-                <h3>Pickup Refill</h3>
-                <Col
-                  sm={12}
-                  className='p-0 d-flex align-items-center justify-content-between pickups mt-4'
-                >
-                  <span>Three (3) Pickups*</span>
-                  <span>$39.99</span>
-                </Col>
-                <Col
-                  sm={12}
-                  className='p-0 d-flex align-items-center justify-content-between taxes'
-                >
-                  <span>Taxes</span>
-                  <span>$0.00</span>
-                </Col>
-                <Col sm={12} className='p-0 d-flex align-items-center my-3 '>
-                  <span className='subtle-text'>
-                    *3 pickups will last for 365 days from date of payment.
-                  </span>
-                </Col>
-
-                <Col
-                  sm={12}
-                  className='p-0 d-flex align-items-center justify-content-between mt-3 totalpay'
-                >
-                  <span>Total to pay</span>
-                  <span>$39.99</span>
-                </Col>
-              </Row>
+              <Summary plan={selectedPlan} />
             </div>
           </>
+        )}
+
+        {userInfo?.['custom:stripe_sub_name'] === 'Diamond' && selectedPlan && (
+          <Summary plan={selectedPlan} />
         )}
 
         <Row className={`mt-5 ${isAddOrUpgrade ? 'refill-addOrUpgrade' : ''}`}>
@@ -422,57 +498,7 @@ export default function PickUpLeftModal({
           )}
         </Row>
 
-        <Row className='mt-5 button-container'>
-          <Button
-            variant='light'
-            size='md'
-            className='mx-5 cancel'
-            onClick={reset}
-          >
-            Cancel
-          </Button>
-          {selectedPlan && paymentFormValues && (
-            <Button
-              variant='primary'
-              size='md'
-              className='mx-5'
-              onClick={() => onSubmitClick(selectedPlan.plan_name)}
-            >
-              {isLoading ? (
-                <Spinner
-                  as='span'
-                  animation='border'
-                  size='sm'
-                  role='status'
-                  aria-hidden='true'
-                />
-              ) : (
-                ` Pay {selectedPlan?.price}`
-              )}
-            </Button>
-          )}
-
-          {isRefillSelected && (
-            <Button
-              variant='primary'
-              size='md'
-              className='mx-5'
-              onClick={() => onSubmitClick()}
-            >
-              {isLoading ? (
-                <Spinner
-                  as='span'
-                  animation='border'
-                  size='sm'
-                  role='status'
-                  aria-hidden='true'
-                />
-              ) : (
-                'Pay $39.99'
-              )}
-            </Button>
-          )}
-        </Row>
+        <ActionButtons />
       </Modal.Body>
     </Modal>
   );
