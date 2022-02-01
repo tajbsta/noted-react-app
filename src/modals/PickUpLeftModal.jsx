@@ -160,7 +160,9 @@ export default function PickUpLeftModal({
   const Summary = ({ plan }) => {
     return (
       <Row>
-        <h3>Pickup Refill</h3>
+        <h3>
+          {plan.name === 'Refill' ? 'Pickup Refill' : `Subscription Upgrade`}
+        </h3>
         <Col
           sm={12}
           className='p-0 d-flex align-items-center justify-content-between pickups mt-4'
@@ -205,7 +207,7 @@ export default function PickUpLeftModal({
           Cancel
         </Button>
 
-        {selectedPlan && paymentFormValues && (
+        {selectedPlan && paymentFormValues && !isRefillSelected && (
           <Button
             variant='primary'
             size='md'
@@ -227,7 +229,7 @@ export default function PickUpLeftModal({
         )}
 
         {(userInfo?.['custom:stripe_sub_name'] === 'Diamond' ||
-          isRefillSelected) && (
+          (isRefillSelected && paymentFormValues)) && (
           <Button
             variant='primary'
             size='md'
@@ -324,35 +326,51 @@ export default function PickUpLeftModal({
       >
         <SubscriptionCards />
 
-        {userInfo?.['custom:stripe_sub_name'] !== 'Diamond' && selectedPlan && (
+        {userInfo?.['custom:stripe_sub_name'] !== 'Diamond' && (
           <>
-            <Row>
-              <Col className='px-6 pt-4'>
-                <p className='divider'>or</p>
-              </Col>
-            </Row>
+            {userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
+              <>
+                <Row>
+                  <Col className='px-6 pt-4'>
+                    <p className='divider'>or</p>
+                  </Col>
+                </Row>
+                <div className={isAddOrUpgrade ? 'refill-addOrUpgrade' : ''}>
+                  <Row>
+                    <Form.Group className='checkbox'>
+                      <Form.Check
+                        inline
+                        label='Pickup Refill'
+                        name='pickUpRefill'
+                        type='checkbox'
+                        value={isRefillSelected}
+                        onChange={(e) => {
+                          setISRefillSelected(e.target.checked);
+                          setSelectedPlan({
+                            no_of_pickups: 3,
+                            price: '$39.99',
+                            name: 'Refill',
+                          });
+                        }}
+                      />
+                    </Form.Group>
+                  </Row>
+                </div>
+              </>
+            )}
 
-            <div className={isAddOrUpgrade ? 'refill-addOrUpgrade' : ''}>
-              <Row>
-                <Form.Group className='checkbox'>
-                  <Form.Check
-                    inline
-                    label='Pickup Refill'
-                    name='pickUpRefill'
-                    type='checkbox'
-                    value={isRefillSelected}
-                    onChange={(e) => setISRefillSelected(e.target.checked)}
-                  />
-                </Form.Group>
-              </Row>
-
-              <Summary plan={selectedPlan} />
+            <div
+              className={isAddOrUpgrade ? 'refill-addOrUpgrade pt-4' : 'pt-4'}
+            >
+              {selectedPlan && <Summary plan={selectedPlan} />}
             </div>
           </>
         )}
 
-        {userInfo?.['custom:stripe_sub_name'] === 'Diamond' && selectedPlan && (
-          <Summary plan={selectedPlan} />
+        {userInfo?.['custom:stripe_sub_name'] === 'Diamond' && (
+          <Summary
+            plan={{ no_of_pickups: 3, price: '$39.99', name: 'Refill' }}
+          />
         )}
 
         <Row className={`mt-5 ${isAddOrUpgrade ? 'refill-addOrUpgrade' : ''}`}>

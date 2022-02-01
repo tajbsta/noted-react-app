@@ -31,8 +31,6 @@ const SettingsPage = () => {
   useEffect(async () => {
     const plans = await subscriptionPlans();
 
-    console.log(plans);
-
     setPlans(plans.data);
   }, []);
 
