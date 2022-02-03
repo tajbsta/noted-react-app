@@ -60,6 +60,7 @@ export default function AddOrUpgradeModal({
     setPaymentFormValues(paymentMethod);
     setIsPaymentFormEmpty(false);
     setShowEditPayment(false);
+
     setValidPayment(true);
   };
 
@@ -67,6 +68,7 @@ export default function AddOrUpgradeModal({
     setIsLoading(false);
     setIsSelected(false);
     setISRefillSelected(false);
+    setSelectedPlan(null);
     setTimeout(() => {
       onHide();
     }, 1000);
@@ -230,28 +232,26 @@ export default function AddOrUpgradeModal({
         )}
 
         {userInfo?.['custom:stripe_sub_name'] === 'Diamond' ||
-          (selectedPlan?.name === 'Refill' &&
-            isRefillSelected &&
-            paymentFormValues && (
-              <Button
-                variant='primary'
-                size='md'
-                className='mx-5'
-                onClick={() => onSubmitClick()}
-              >
-                {isLoading ? (
-                  <Spinner
-                    as='span'
-                    animation='border'
-                    size='sm'
-                    role='status'
-                    aria-hidden='true'
-                  />
-                ) : (
-                  'Pay $39.99'
-                )}
-              </Button>
-            ))}
+          (selectedPlan?.name === 'Refill' && (
+            <Button
+              variant='primary'
+              size='md'
+              className='mx-5'
+              onClick={() => onSubmitClick()}
+            >
+              {isLoading ? (
+                <Spinner
+                  as='span'
+                  animation='border'
+                  size='sm'
+                  role='status'
+                  aria-hidden='true'
+                />
+              ) : (
+                'Pay $39.99'
+              )}
+            </Button>
+          ))}
       </Row>
     );
   };

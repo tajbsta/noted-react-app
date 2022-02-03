@@ -36,8 +36,6 @@ export default function DashboardPage({ triggerScanNow }) {
     DONATE: () => {},
   });
   const isNewlySignedUp = useSelector((state) => state.auth.isNewlySignedUp);
-  const { pickups } = useSelector((state) => state.subscription);
-
   const { search: searchSession } = useSelector(
     ({ runtime: { search }, auth: { scheduledReturns } }) => ({
       search,
@@ -57,7 +55,6 @@ export default function DashboardPage({ triggerScanNow }) {
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const addManualRef = useRef(null);
   const [showInitialScanModal, setShowInitialScanModal] = useState(false);
-  const [showPickupsLeftModal, setShowPickupsLeftModal] = useState(false);
   const [validPayment, setValidPayment] = useState(false);
 
   const dispatch = useDispatch();
@@ -214,14 +211,6 @@ export default function DashboardPage({ triggerScanNow }) {
     })();
   }, []);
 
-  useEffect(() => {
-    if (pickups == 1) {
-      setShowPickupsLeftModal(true);
-    } else {
-      setShowPickupsLeftModal(false);
-    }
-  }, [pickups]);
-
   // useEffect(async () => {
   //   if (user && !user['custom:stripe_sub_name']) {
   //     await subscribeUserToRuby(true);
@@ -243,7 +232,6 @@ export default function DashboardPage({ triggerScanNow }) {
 
   const onHide = () => {
     setShowInitialScanModal(false);
-    setShowPickupsLeftModal(false);
     dispatch(setIsNewlySignedUp(false));
   };
 
@@ -284,8 +272,7 @@ export default function DashboardPage({ triggerScanNow }) {
             <PickUpLeftModal
               show={
                 user?.['custom:stripe_sub_id'] &&
-                user?.['custom:no_of_pickups'] === '1' &&
-                showPickupsLeftModal
+                user?.['custom:no_of_pickups'] === '1'
               }
               onHide={() => onHide()}
               setValidPayment={setValidPayment}
