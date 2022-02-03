@@ -15,7 +15,7 @@ import SubscriptionCard from '../components/Subscription/SubscriptionCard';
 import { showError, showSuccess } from '../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
 
-export default function PickUpLeftModal({
+export default function AddOrUpgradeModal({
   setValidPayment,
   order,
   onHide,
@@ -161,7 +161,9 @@ export default function PickUpLeftModal({
   const Summary = ({ plan }) => {
     return (
       <Row>
-        <h3>Pickup Refill</h3>
+        <h3>
+          {plan.name === 'Refill' ? 'Pickup Refill' : `Subscription Upgrade`}
+        </h3>
         <Col
           sm={12}
           className='p-0 d-flex align-items-center justify-content-between pickups mt-4'
@@ -206,25 +208,100 @@ export default function PickUpLeftModal({
           Cancel
         </Button>
 
-        <Button
-          variant='primary'
-          size='md'
-          className='mx-5'
-          onClick={() => onSubmitClick()}
-        >
-          {isLoading ? (
-            <Spinner
-              as='span'
-              animation='border'
-              size='sm'
-              role='status'
-              aria-hidden='true'
-            />
-          ) : (
-            'Pay $39.99'
-          )}
-        </Button>
+        {selectedPlan && !isRefillSelected && paymentFormValues && (
+          <Button
+            variant='primary'
+            size='md'
+            className='mx-5'
+            onClick={() => onSubmitClick(selectedPlan.plan_name)}
+          >
+            {isLoading ? (
+              <Spinner
+                as='span'
+                animation='border'
+                size='sm'
+                role='status'
+                aria-hidden='true'
+              />
+            ) : (
+              `Pay ${selectedPlan?.price}`
+            )}
+          </Button>
+        )}
+
+        {userInfo?.['custom:stripe_sub_name'] === 'Diamond' ||
+          (selectedPlan?.name === 'Refill' &&
+            isRefillSelected &&
+            paymentFormValues && (
+              <Button
+                variant='primary'
+                size='md'
+                className='mx-5'
+                onClick={() => onSubmitClick()}
+              >
+                {isLoading ? (
+                  <Spinner
+                    as='span'
+                    animation='border'
+                    size='sm'
+                    role='status'
+                    aria-hidden='true'
+                  />
+                ) : (
+                  'Pay $39.99'
+                )}
+              </Button>
+            ))}
       </Row>
+    );
+  };
+
+  const SubscriptionCards = () => {
+    return (
+      isAddOrUpgrade &&
+      userInfo?.['custom:stripe_sub_name'] !== 'Diamond' && (
+        <Row
+          className={`subscription-container ${
+            isRefillSelected ? 'subscription-disabled' : ''
+          }`}
+        >
+          <Col sm={4}>
+            <SubscriptionCard
+              subscriptionType='ruby'
+              subscriptionDetails={plans.find((p) => p.tag === 'ruby')}
+              disabled={true}
+            />
+          </Col>
+          <Col sm={4}>
+            <SubscriptionCard
+              subscriptionType='emerald'
+              subscriptionDetails={plans.find((p) => p.tag === 'emerald')}
+              savings='Save 13%'
+              onButtonClick={() =>
+                onSubscriptionSelect(plans.find((p) => p.tag === 'emerald'))
+              }
+              isSelected={isSelected === 'Emerald'}
+              disabled={
+                isRefillSelected ||
+                userInfo?.['custom:stripe_sub_name'] === 'Emerald'
+              }
+            />
+          </Col>
+          <Col sm={4}>
+            <SubscriptionCard
+              recommended={true}
+              subscriptionDetails={plans.find((p) => p.tag === 'diamond')}
+              subscriptionType='diamond'
+              savings='Save 40%'
+              onButtonClick={() =>
+                onSubscriptionSelect(plans.find((p) => p.tag === 'diamond'))
+              }
+              isSelected={isSelected === 'Diamond'}
+              disabled={isRefillSelected}
+            />
+          </Col>
+        </Row>
+      )
     );
   };
 
@@ -241,13 +318,75 @@ export default function PickUpLeftModal({
     >
       <Modal.Header closeButton onClick={reset}>
         {userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
-          <h2>You have 1 pick up left!</h2>
+          <h2>
+            {isAddOrUpgrade
+              ? `You have ${userInfo?.['custom:no_of_pickups']} pickups left`
+              : 'You have 1 pick up left!'}
+          </h2>
         )}
       </Modal.Header>
-      <Modal.Body className={`sofia-pro`}>
-        <Summary plan={{ no_of_pickups: 3, price: '$39.99', name: 'Refill' }} />
+      <Modal.Body
+        className={`sofia-pro ${
+          isAddOrUpgrade ? 'addOrUpgrade' : 'subscriptions'
+        }`}
+      >
+        <SubscriptionCards />
 
-        <Row className={`mt-5`}>
+        {userInfo?.['custom:stripe_sub_name'] !== 'Diamond' && (
+          <>
+            {userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
+              <>
+                <Row>
+                  <Col className='px-6 pt-4'>
+                    <p className='divider'>or</p>
+                  </Col>
+                </Row>
+                <div className={isAddOrUpgrade ? 'refill-addOrUpgrade' : ''}>
+                  <Row>
+                    <Form.Group className='checkbox'>
+                      <Form.Check
+                        inline
+                        label='Pickup Refill'
+                        name='pickUpRefill'
+                        type='checkbox'
+                        value={isRefillSelected}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setIsSelected('Refill');
+                            setSelectedPlan({
+                              no_of_pickups: 3,
+                              price: '$39.99',
+                              name: 'Refill',
+                            });
+                          } else {
+                            setIsSelected('');
+                            setSelectedPlan(null);
+                          }
+
+                          setISRefillSelected(e.target.checked);
+                        }}
+                      />
+                    </Form.Group>
+                  </Row>
+                </div>
+              </>
+            )}
+
+            <div
+              className={isAddOrUpgrade ? 'refill-addOrUpgrade pt-4' : 'pt-4'}
+            >
+              {selectedPlan && <Summary plan={selectedPlan} />}
+            </div>
+          </>
+        )}
+
+        {userInfo?.['custom:stripe_sub_name'] === 'Diamond' && (
+          <Summary
+            plan={{ no_of_pickups: 3, price: '$39.99', name: 'Refill' }}
+          />
+        )}
+
+        <Row className={`mt-5 ${isAddOrUpgrade ? 'refill-addOrUpgrade' : ''}`}>
           {!isPaymentFormEmpty && !showEditPayment ? (
             <>
               <div className='card-body pt-4 pb-3 px-0 m-0'>

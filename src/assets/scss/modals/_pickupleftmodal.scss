@@ -7,6 +7,19 @@
     }
   }
 
+  .modal-body {
+    padding: 1rem 4rem 3rem;
+
+    @media (max-width: 992px) {
+      padding: 1rem 3rem;
+    }
+
+    .subscription-container {
+      margin-top: 50px;
+      align-items: flex-end;
+    }
+  }
+
   .modal-body.addOrUpgrade {
     padding: 1rem 4rem 3rem;
 

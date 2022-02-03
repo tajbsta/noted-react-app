@@ -10,7 +10,7 @@ import { getUser } from '../../api/auth';
 import { scrollToTop } from '../../utils/window';
 import { Auth } from 'aws-amplify';
 import { subscriptionHistory } from '../../api/subscription';
-import PickUpLeftModal from '../../modals/PickUpLeftModal';
+import AddOrUpgradeModal from '../../modals/AddOrUpgradeModal';
 import CancelSubscriptionModal from '../../modals/CancelSubscriptionModal';
 import { subscriptionPlans } from '../../api/subscription';
 import { loadStripe } from '@stripe/stripe-js';
@@ -183,7 +183,7 @@ const SettingsPage = () => {
         </div>
       </div>
 
-      <PickUpLeftModal
+      <AddOrUpgradeModal
         show={showPickupsLeftModal}
         onHide={() => onHide()}
         setValidPayment={setValidPayment}
