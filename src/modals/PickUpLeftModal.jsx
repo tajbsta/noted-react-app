@@ -67,7 +67,9 @@ export default function PickUpLeftModal({
     setIsLoading(false);
     setIsSelected(false);
     setISRefillSelected(false);
-    onHide();
+    setTimeout(() => {
+      onHide();
+    }, 1000);
   };
 
   const onSubmitClick = async (plan) => {
@@ -124,7 +126,6 @@ export default function PickUpLeftModal({
       getUser(),
       getUserPaymentMethods(),
     ]);
-
     setUserInfo(user);
 
     // Set payment method default
@@ -150,7 +151,7 @@ export default function PickUpLeftModal({
 
   useEffect(() => {
     setDefaults();
-  }, []);
+  }, [show]);
 
   useEffect(() => {
     console.log('payment updated');

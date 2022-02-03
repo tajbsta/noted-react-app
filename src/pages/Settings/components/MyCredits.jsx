@@ -2,7 +2,50 @@ import React from 'react';
 import { Row, Col, Table, Button, Spinner } from 'react-bootstrap';
 import moment from 'moment';
 
-export default function MyCredits({ user, history, onAdd }) {
+export default function MyCredits({ user, history, onAdd, onCancel }) {
+  const renderUserSubscription = () => {
+    if (user?.['custom:stripe_sub_name'] === 'Ruby') {
+      return (
+        <tr id='current_plan'>
+          <td>No active subscription</td>
+          <td>{user?.['custom:no_of_pickups']}</td>
+          <td>
+            {moment
+              .unix(user?.['custom:stripe_sub_exp_date'])
+              .format('YYYY-MM-DD')}
+          </td>
+        </tr>
+      );
+    }
+
+    if (user?.['custom:stripe_sub_name'] !== 'Ruby') {
+      return (
+        <tr>
+          <td>
+            <img
+              src={
+                require(`../../../assets/icons/${user?.['custom:stripe_sub_name']}Icon.svg`)
+                  .default
+              }
+              style={{
+                height: 30,
+                width: 40,
+                marginRight: 10,
+              }}
+            />
+            {user?.['custom:stripe_sub_name']}
+          </td>
+          <td>{user?.['custom:no_of_pickups']}</td>
+          <td>
+            {moment
+              .unix(user?.['custom:stripe_sub_exp_date'])
+              .format('YYYY-MM-DD')}
+          </td>
+        </tr>
+      );
+    }
+  };
+
   return (
     <div className='mt-5' id='mycredits-container'>
       <h3 className='sofia-pro text-18 mb-3 mb-0 ml-3'>My Credits</h3>
@@ -36,7 +79,19 @@ export default function MyCredits({ user, history, onAdd }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {history.length > 0 ? (
+                      {user ? (
+                        renderUserSubscription()
+                      ) : (
+                        <Spinner
+                          as='span'
+                          animation='border'
+                          size='sm'
+                          role='status'
+                          aria-hidden='true'
+                        />
+                      )}
+
+                      {/* {history.length > 0 ? (
                         history.map((item, i) => {
                           return (
                             <tr key={i}>
@@ -67,9 +122,20 @@ export default function MyCredits({ user, history, onAdd }) {
                         <tr id='current_plan'>
                           <td>No active subscription</td>
                         </tr>
-                      )}
+                      )} */}
                     </tbody>
                   </Table>
+                  {user?.['custom:stripe_sub_name'] !== 'Ruby' && (
+                    <div className='d-flex justify-content-center'>
+                      <Button
+                        className='danger border-0'
+                        variant='outline-danger'
+                        onClick={onCancel}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </Col>
               <Col>

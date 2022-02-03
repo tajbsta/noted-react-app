@@ -11,21 +11,25 @@ import { scrollToTop } from '../../utils/window';
 import { Auth } from 'aws-amplify';
 import { subscriptionHistory } from '../../api/subscription';
 import PickUpLeftModal from '../../modals/PickUpLeftModal';
+import CancelSubscriptionModal from '../../modals/CancelSubscriptionModal';
 import { subscriptionPlans } from '../../api/subscription';
 import { loadStripe } from '@stripe/stripe-js';
 import { getPublicKey } from '../../api/orderApi';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
 
 const SettingsPage = () => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   const [currentTab, setCurrenTab] = useState('');
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [isGoogleSignIn, setIsGoogleSignIn] = useState(false);
   const [history, setHistory] = useState([]);
   const [showPickupsLeftModal, setShowPickupsLeftModal] = useState(false);
+  const [
+    showCancelSubscriptionModal,
+    setShowCancelSubscriptionModal,
+  ] = useState(false);
   const [validPayment, setValidPayment] = useState(false);
-
   const [plans, setPlans] = useState([]);
 
   useEffect(async () => {
@@ -36,6 +40,7 @@ const SettingsPage = () => {
 
   const onHide = () => {
     setShowPickupsLeftModal(false);
+    setShowCancelSubscriptionModal(false);
   };
 
   useEffect(() => {
@@ -65,12 +70,12 @@ const SettingsPage = () => {
     (async () => {
       const user = await getUser();
       setUser(user);
-
+      console.log(user, 'from refetch');
       const history = await subscriptionHistory();
 
       setHistory(history);
     })();
-  }, [showPickupsLeftModal]);
+  }, [showPickupsLeftModal, showCancelSubscriptionModal]);
 
   const isActive = (tabName) => {
     return tabName === currentTab
@@ -171,6 +176,7 @@ const SettingsPage = () => {
               user={user}
               history={history}
               onAdd={() => setShowPickupsLeftModal(true)}
+              onCancel={() => setShowCancelSubscriptionModal(true)}
             />
             <DeleteAccount />
           </div>
@@ -183,6 +189,13 @@ const SettingsPage = () => {
         setValidPayment={setValidPayment}
         isAddOrUpgrade={true}
         plans={plans}
+        user={user}
+      />
+
+      <CancelSubscriptionModal
+        show={showCancelSubscriptionModal}
+        onHide={() => onHide()}
+        user={user}
       />
     </div>
   );

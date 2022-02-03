@@ -92,3 +92,16 @@ export const subscriptionUpgrade = async (values) => {
     return false;
   }
 };
+
+export const cancelSubscription = async () => {
+  try {
+    const axios = await api();
+    const { userId } = await getUserSession();
+
+    const cancelResponse = await axios.post(`${userId}/subscription/cancel`);
+    return cancelResponse;
+  } catch (error) {
+    // console.log(error);
+    return false;
+  }
+};
