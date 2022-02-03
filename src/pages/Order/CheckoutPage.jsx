@@ -89,10 +89,7 @@ const Checkout = () => {
   const placeOrder = async (newOrder) => {
     setLoading(true);
 
-    if (
-      user?.['custom:stripe_sub_name'] === '' ||
-      user?.['custom:stripe_sub_name'] === 'Ruby'
-    ) {
+    if (!(Number(user?.['custom:no_of_pickups']) > 0)) {
       const order = await createOrder(newOrder);
       setOrder(order);
     } else {
@@ -133,24 +130,17 @@ const Checkout = () => {
         donationOrg: get(selectedDonationOrg, 'code', ''),
       };
 
-      // console.log(newOrder);
-
       // Pre validate order and get the assigned order id
       const orderId = await prevalidateOrder(newOrder);
 
       newOrder.id = orderId;
 
-      if (
-        user?.['custom:stripe_sub_name'] === '' ||
-        user?.['custom:stripe_sub_name'] === 'Ruby'
-      ) {
+      if (!(Number(user?.['custom:no_of_pickups']) > 0)) {
         // Get payment intent from BE, used for getting payment from the user/payment method
         const paymentIntent = await createPaymentIntent(
           PRICING.STANDARD,
           orderId
         );
-
-        // console.log(paymentIntent);
 
         newOrder.billing = {
           paymentIntentId: paymentIntent.paymentIntentId,
@@ -201,8 +191,6 @@ const Checkout = () => {
         };
 
         const result = await createSubscriptionPaymentIntent(newOrder);
-
-        console.log(result);
 
         if (result.status === 'success') {
           // Place order - call create order endpoint
@@ -358,6 +346,7 @@ const Checkout = () => {
           validOrder={validOrder}
           loading={loading}
           pricingDetails={pricingDetails}
+          user={user}
         />
       )}
       <div className={`container  ${isMobile ? 'mt-4' : 'mt-6'}`}>
@@ -500,6 +489,7 @@ const Checkout = () => {
                   loading={loading}
                   pricingDetails={pricingDetails}
                   isFetchingPrice={isFetchingPrice}
+                  user={user}
                 />
               </div>
             </>

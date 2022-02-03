@@ -14,7 +14,6 @@ import { pickUpRefill, subscriptionUpgrade } from '../api/subscription';
 import SubscriptionCard from '../components/Subscription/SubscriptionCard';
 import { showError, showSuccess } from '../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
-import { rest } from 'lodash';
 
 export default function PickUpLeftModal({
   setValidPayment,
@@ -155,7 +154,8 @@ export default function PickUpLeftModal({
 
   useEffect(() => {
     console.log('payment updated');
-  }, [paymentFormValues]);
+    console.log(isRefillSelected);
+  }, [paymentFormValues, isRefillSelected]);
 
   const Summary = ({ plan }) => {
     return (
@@ -207,7 +207,7 @@ export default function PickUpLeftModal({
           Cancel
         </Button>
 
-        {selectedPlan && paymentFormValues && !isRefillSelected && (
+        {selectedPlan && !isRefillSelected && paymentFormValues && (
           <Button
             variant='primary'
             size='md'
@@ -228,27 +228,29 @@ export default function PickUpLeftModal({
           </Button>
         )}
 
-        {(userInfo?.['custom:stripe_sub_name'] === 'Diamond' ||
-          (isRefillSelected && paymentFormValues)) && (
-          <Button
-            variant='primary'
-            size='md'
-            className='mx-5'
-            onClick={() => onSubmitClick()}
-          >
-            {isLoading ? (
-              <Spinner
-                as='span'
-                animation='border'
-                size='sm'
-                role='status'
-                aria-hidden='true'
-              />
-            ) : (
-              'Pay $39.99'
-            )}
-          </Button>
-        )}
+        {userInfo?.['custom:stripe_sub_name'] === 'Diamond' ||
+          (selectedPlan?.name === 'Refill' &&
+            isRefillSelected &&
+            paymentFormValues && (
+              <Button
+                variant='primary'
+                size='md'
+                className='mx-5'
+                onClick={() => onSubmitClick()}
+              >
+                {isLoading ? (
+                  <Spinner
+                    as='span'
+                    animation='border'
+                    size='sm'
+                    role='status'
+                    aria-hidden='true'
+                  />
+                ) : (
+                  'Pay $39.99'
+                )}
+              </Button>
+            ))}
       </Row>
     );
   };
@@ -278,7 +280,10 @@ export default function PickUpLeftModal({
                 onSubscriptionSelect(plans.find((p) => p.tag === 'emerald'))
               }
               isSelected={isSelected === 'Emerald'}
-              disabled={isRefillSelected}
+              disabled={
+                isRefillSelected ||
+                userInfo?.['custom:stripe_sub_name'] === 'Emerald'
+              }
             />
           </Col>
           <Col sm={4}>
@@ -345,12 +350,19 @@ export default function PickUpLeftModal({
                         type='checkbox'
                         value={isRefillSelected}
                         onChange={(e) => {
+                          if (e.target.checked) {
+                            setIsSelected('Refill');
+                            setSelectedPlan({
+                              no_of_pickups: 3,
+                              price: '$39.99',
+                              name: 'Refill',
+                            });
+                          } else {
+                            setIsSelected('');
+                            setSelectedPlan(null);
+                          }
+
                           setISRefillSelected(e.target.checked);
-                          setSelectedPlan({
-                            no_of_pickups: 3,
-                            price: '$39.99',
-                            name: 'Refill',
-                          });
                         }}
                       />
                     </Form.Group>

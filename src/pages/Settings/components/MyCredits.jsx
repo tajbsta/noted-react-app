@@ -2,9 +2,7 @@ import React from 'react';
 import { Row, Col, Table, Button, Spinner } from 'react-bootstrap';
 import moment from 'moment';
 
-export default function MyCredits({ user, history, onAdd, addPickUp }) {
-  console.log(history);
-
+export default function MyCredits({ user, history, onAdd }) {
   return (
     <div className='mt-5' id='mycredits-container'>
       <h3 className='sofia-pro text-18 mb-3 mb-0 ml-3'>My Credits</h3>
@@ -111,7 +109,9 @@ export default function MyCredits({ user, history, onAdd, addPickUp }) {
                 </div>
                 <Row className='d-flex align-items-center justify-content-end mt-3'>
                   <Button className='primary' onClick={onAdd}>
-                    Add a Pickup
+                    {user?.['custom:stripe_sub_name'] === 'Ruby'
+                      ? 'Upgrade'
+                      : 'Add a Pickup'}
                   </Button>
                 </Row>
               </Col>

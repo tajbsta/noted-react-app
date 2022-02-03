@@ -447,7 +447,7 @@ export default function DashboardPage({ triggerScanNow }) {
           {!isTablet && (
             <>
               <div className='col-sm-3 checkout-card'>
-                <RightCard beyond90days={beyond90days} />
+                <RightCard beyond90days={beyond90days} user={user} />
               </div>
             </>
           )}
@@ -456,7 +456,7 @@ export default function DashboardPage({ triggerScanNow }) {
       {isTablet && (
         <>
           <div className='col checkout-card'>
-            <RightCard beyond90days={beyond90days} />
+            <RightCard beyond90days={beyond90days} user={user} />
           </div>
         </>
       )}

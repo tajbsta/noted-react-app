@@ -13,6 +13,7 @@ export default function CheckoutCard({
   validOrder = false,
   pricingDetails = {},
   isFetchingPrice,
+  user,
 }) {
   const stripe = useStripe();
   const [modalShow, setModalShow] = useState(false);
@@ -88,35 +89,47 @@ export default function CheckoutCard({
                 <h3 className='return-type sofia-pro value-label'>Donations</h3>
 
                 <hr className='line-break-2' />
-                <div className='row'>
-                  <div className='col'>
-                    <h5 className='sofia-pro text-muted value-label'>
-                      Return total cost
-                    </h5>
-                  </div>
-                  <div className='col'>
-                    <h5 className='sofia-pro text-right'>${inPrice}</h5>
-                  </div>
-                </div>
-                <div className='row'>
-                  <div className='col'>
-                    <h5 className='sofia-pro text-muted value-label'>Taxes</h5>
-                  </div>
-                  <div className='col'>
-                    <h5 className='sofia-pro text-right'>${inTaxes}</h5>
-                  </div>
-                </div>
-                <hr className='line-break-3' />
-                <div className='row'>
-                  <div className='col'>
-                    <h5 className='sofia-pro text-muted'>Total to pay now</h5>
-                  </div>
-                  <div className='col'>
-                    <h5 className='sofia-pro text-right total-now'>
-                      ${inTotalPrice}
-                    </h5>
-                  </div>
-                </div>
+
+                {Number(user?.['custom:no_of_pickups']) > 0 ? (
+                  <h3 className='ml-auto sofia-pro text-right'>-1 pick-ups</h3>
+                ) : (
+                  <>
+                    <div className='row'>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-muted value-label'>
+                          Return total cost
+                        </h5>
+                      </div>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-right'>${inPrice}</h5>
+                      </div>
+                    </div>
+                    <div className='row'>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-muted value-label'>
+                          Taxes
+                        </h5>
+                      </div>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-right'>${inTaxes}</h5>
+                      </div>
+                    </div>
+                    <hr className='line-break-3' />
+                    <div className='row'>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-muted'>
+                          Total to pay now
+                        </h5>
+                      </div>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-right total-now'>
+                          ${inTotalPrice}
+                        </h5>
+                      </div>
+                    </div>
+                  </>
+                )}
+
                 <button
                   disabled={!validOrder || loading || !stripe}
                   className='btn btn-confirm text-16'
