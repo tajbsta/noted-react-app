@@ -208,14 +208,12 @@ export default function DashboardPage({ triggerScanNow }) {
       const user = await getUser();
       setUser(user);
       setShowScanOlderButton(user['custom:scan_older_done'] === '0');
+
+      if (user && !user['custom:stripe_sub_name']) {
+        await subscribeUserToRuby(true);
+      }
     })();
   }, []);
-
-  // useEffect(async () => {
-  //   if (user && !user['custom:stripe_sub_name']) {
-  //     await subscribeUserToRuby(true);
-  //   }
-  // }, []);
 
   const beyond90days = get(user, 'custom:scan_older_done', '0') === '1';
 
