@@ -231,27 +231,27 @@ export default function AddOrUpgradeModal({
           </Button>
         )}
 
-        {userInfo?.['custom:stripe_sub_name'] === 'Diamond' ||
-          (selectedPlan?.name === 'Refill' && (
-            <Button
-              variant='primary'
-              size='md'
-              className='mx-5'
-              onClick={() => onSubmitClick()}
-            >
-              {isLoading ? (
-                <Spinner
-                  as='span'
-                  animation='border'
-                  size='sm'
-                  role='status'
-                  aria-hidden='true'
-                />
-              ) : (
-                'Pay $39.99'
-              )}
-            </Button>
-          ))}
+        {(userInfo?.['custom:stripe_sub_name'] === 'Diamond' ||
+          selectedPlan?.name === 'Refill') && (
+          <Button
+            variant='primary'
+            size='md'
+            className='mx-5'
+            onClick={() => onSubmitClick()}
+          >
+            {isLoading ? (
+              <Spinner
+                as='span'
+                animation='border'
+                size='sm'
+                role='status'
+                aria-hidden='true'
+              />
+            ) : (
+              'Pay $39.99'
+            )}
+          </Button>
+        )}
       </Row>
     );
   };
