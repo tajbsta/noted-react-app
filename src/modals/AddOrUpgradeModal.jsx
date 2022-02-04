@@ -170,7 +170,7 @@ export default function AddOrUpgradeModal({
       setIsSelected('Refill');
       setSelectedPlan({
         no_of_pickups: 3,
-        price: '$19.99',
+        price: '$39.99',
         name: 'Refill',
       });
     } else {
@@ -267,7 +267,7 @@ export default function AddOrUpgradeModal({
                 aria-hidden='true'
               />
             ) : (
-              'Pay $19.99'
+              'Pay $39.99'
             )}
           </Button>
         )}
@@ -379,7 +379,7 @@ export default function AddOrUpgradeModal({
 
           {userInfo?.['custom:stripe_sub_name'] === 'Diamond' && (
             <Summary
-              plan={{ no_of_pickups: 3, price: '$19.99', name: 'Refill' }}
+              plan={{ no_of_pickups: 3, price: '$39.99', name: 'Refill' }}
             />
           )}
 

@@ -221,7 +221,7 @@ export default function PickUpLeftModal({
               aria-hidden='true'
             />
           ) : (
-            'Pay $19.99'
+            'Pay $39.99'
           )}
         </Button>
       </Row>
@@ -245,7 +245,7 @@ export default function PickUpLeftModal({
         )}
       </Modal.Header>
       <Modal.Body className={`sofia-pro`}>
-        <Summary plan={{ no_of_pickups: 3, price: '$19.99', name: 'Refill' }} />
+        <Summary plan={{ no_of_pickups: 3, price: '$39.99', name: 'Refill' }} />
 
         <Row className={`mt-5`}>
           {!isPaymentFormEmpty && !showEditPayment ? (
