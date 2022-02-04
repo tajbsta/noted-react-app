@@ -151,6 +151,12 @@ export default function AddOrUpgradeModal({
     setModalLoading(false);
   };
 
+  const onCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+
+    setISRefillSelected(checked);
+  };
+
   const expirationMonth = paymentFormValues && paymentFormValues.card.exp_month;
   const expirationYear = paymentFormValues && paymentFormValues.card.exp_year;
 
@@ -160,8 +166,17 @@ export default function AddOrUpgradeModal({
   }, [show]);
 
   useEffect(() => {
-    console.log('payment updated');
-    console.log(isRefillSelected);
+    if (isRefillSelected) {
+      setIsSelected('Refill');
+      setSelectedPlan({
+        no_of_pickups: 3,
+        price: '$19.99',
+        name: 'Refill',
+      });
+    } else {
+      setIsSelected('');
+      setSelectedPlan(null);
+    }
   }, [paymentFormValues, isRefillSelected]);
 
   const Summary = ({ plan }) => {
@@ -345,22 +360,8 @@ export default function AddOrUpgradeModal({
                           label='Pickup Refill'
                           name='pickUpRefill'
                           type='checkbox'
-                          value={isRefillSelected}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setIsSelected('Refill');
-                              setSelectedPlan({
-                                no_of_pickups: 3,
-                                price: '$19.99',
-                                name: 'Refill',
-                              });
-                            } else {
-                              setIsSelected('');
-                              setSelectedPlan(null);
-                            }
-
-                            setISRefillSelected(e.target.checked);
-                          }}
+                          checked={isRefillSelected}
+                          onChange={(e) => onCheckboxChange(e)}
                         />
                       </Form.Group>
                     </Row>

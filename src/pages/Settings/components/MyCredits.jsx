@@ -37,9 +37,11 @@ export default function MyCredits({ user, history, onAdd, onCancel }) {
           </td>
           <td>{user?.['custom:no_of_pickups']}</td>
           <td>
-            {moment
-              .unix(user?.['custom:stripe_sub_exp_date'])
-              .format('YYYY-MM-DD')}
+            {user?.['custom:stripe_sub_exp_date']
+              ? moment
+                  .unix(user?.['custom:stripe_sub_exp_date'])
+                  .format('YYYY-MM-DD')
+              : 'No expiration'}
           </td>
         </tr>
       );
