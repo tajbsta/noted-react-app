@@ -35,7 +35,7 @@ export const getUserId = async () => {
 };
 
 export const getUser = async () => {
-  const user = await Auth.currentAuthenticatedUser();
+  const user = await Auth.currentAuthenticatedUser({ bypassCache: true });
   const data = user.attributes;
 
   if (data['custom:created_at']) {

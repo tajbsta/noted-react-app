@@ -22,8 +22,10 @@ import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 import { resetAuthorizeNewEmail } from '../../utils/data';
 import { NORMAL, SCRAPEOLDER } from '../../constants/scraper';
 import InitialScanModal from '../../modals/initialScanModal';
+import PickUpLeftModal from '../../modals/PickUpLeftModal';
 import { setIsNewlySignedUp } from '../../actions/auth.action';
 import { Auth } from 'aws-amplify';
+import { subscribeUserToRuby } from '../../api/subscription';
 
 export default function DashboardPage({ triggerScanNow }) {
   const [search, setSearch] = useState('');
@@ -34,7 +36,6 @@ export default function DashboardPage({ triggerScanNow }) {
     DONATE: () => {},
   });
   const isNewlySignedUp = useSelector((state) => state.auth.isNewlySignedUp);
-
   const { search: searchSession } = useSelector(
     ({ runtime: { search }, auth: { scheduledReturns } }) => ({
       search,
@@ -54,6 +55,8 @@ export default function DashboardPage({ triggerScanNow }) {
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const addManualRef = useRef(null);
   const [showInitialScanModal, setShowInitialScanModal] = useState(false);
+  const [validPayment, setValidPayment] = useState(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -208,6 +211,12 @@ export default function DashboardPage({ triggerScanNow }) {
     })();
   }, []);
 
+  // useEffect(async () => {
+  //   if (user && !user['custom:stripe_sub_name']) {
+  //     await subscribeUserToRuby(true);
+  //   }
+  // }, []);
+
   const beyond90days = get(user, 'custom:scan_older_done', '0') === '1';
 
   // SCROLL TO
@@ -259,6 +268,15 @@ export default function DashboardPage({ triggerScanNow }) {
                 </div>
               </>
             )}
+
+            <PickUpLeftModal
+              show={
+                user?.['custom:stripe_sub_id'] &&
+                user?.['custom:no_of_pickups'] === '1'
+              }
+              onHide={() => onHide()}
+              setValidPayment={setValidPayment}
+            />
 
             <InitialScanModal
               show={showInitialScanModal && isNewlySignedUp}
@@ -416,7 +434,7 @@ export default function DashboardPage({ triggerScanNow }) {
           {!isTablet && (
             <>
               <div className='col-sm-3 checkout-card'>
-                <RightCard beyond90days={beyond90days} />
+                <RightCard beyond90days={beyond90days} user={user} />
               </div>
             </>
           )}
@@ -425,7 +443,7 @@ export default function DashboardPage({ triggerScanNow }) {
       {isTablet && (
         <>
           <div className='col checkout-card'>
-            <RightCard beyond90days={beyond90days} />
+            <RightCard beyond90days={beyond90days} user={user} />
           </div>
         </>
       )}

@@ -58,17 +58,25 @@ export const pickUpAddressSchema = Yup.object({
 });
 
 export const paymentAddressSchema = Yup.object({
-  fullName: Yup.string().required('Name on the card'),
+  fullName: Yup.string().required('Cardholder name is required'),
   cardNumber: Yup.string()
+    .matches(/^[0-9]+$/gi, 'Must be a Number')
+    .max(16, 'Enter a valid card number')
     .min(16, 'Enter a valid card number')
     .required('Card number is required'),
-  expirationMonth: Yup.number().required('Expiration month is required'),
+  expirationMonth: Yup.string()
+    .matches(/^[0-9]+$/gi, 'Must be a Number')
+    .max(2, 'Enter a valid expiration month')
+    .required('Expiration month is required'),
   expirationYear: Yup.string()
-    .min(2, 'Enter a valid expiration year')
+    .matches(/^[0-9]+$/gi, 'Must be a Number')
+    .max(2, 'Enter a valid expiration year')
     .required('Expiration year is required'),
   cvc: Yup.string()
-    .min(3, 'Invalid card security number')
-    .required('Line 2 is required'),
+    .matches(/^[0-9]+$/gi, 'Must be a Number')
+    .min(3, 'Enter a valid security number')
+    .max(3, 'Enter a valid security number')
+    .required('CVC is required'),
   name: Yup.string().required('Full Name is required'),
   phoneNumber: Yup.string()
     .required('Phone is required')

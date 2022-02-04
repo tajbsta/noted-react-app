@@ -44,7 +44,13 @@ import { get } from 'lodash';
 import { useState } from 'react';
 import GoogleAuthorize from '../../assets/img/authorize.png';
 import ProductOptionsModal from '../../modals/ProductOptionsModal';
+import SubscriptionModal from '../../modals/SubscriptionModal';
 import { SUBMIT_APPLICATION } from '../../analytics/fbpixels';
+
+import { subscriptionPlans } from '../../api/subscription';
+import { loadStripe } from '@stripe/stripe-js';
+import { getPublicKey } from '../../api/orderApi';
+import { Elements, useStripe } from '@stripe/react-stripe-js';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -52,7 +58,7 @@ const Authorize = ({ triggerScanNow }) => {
       <Container className='main-body' fluid='lg'>
         <Row md='2' className='text-left align-items-center'>
           <Col xs='6' className='info'>
-            <h1 className='bold text-title'>Everything is automatic</h1>
+            <h1 className='bold text-title'>Everything is automatic!!</h1>
             <h4 className='text-noted'>
               noted will scan your email inbox and find all of your online
               purchases and their return limits.
@@ -223,6 +229,9 @@ const DashboardPageInitial = () => {
   const [productOptions, setProductOptions] = useState([]);
   const [showProductOptions, setShowProductOptions] = useState(false);
   const [isSavingProducts, setIsSavingProducts] = useState(false);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+  const [user, setUser] = useState(null);
+  const [plans, setPlans] = useState([]);
 
   /**TRIGGER SCAN NOW FOR USERS */
   const triggerScanNow = async (type) => {
@@ -515,8 +524,18 @@ const DashboardPageInitial = () => {
   const checkIfFirstTimeUser = async () => {
     const user = await getUser();
     const monthsScanned = get(user, 'custom:scan_months', undefined);
+
+    setUser(user);
+
+    if (user && !user['custom:stripe_sub_name']) {
+      setShowSubscriptionModal(true);
+    } else {
+      setShowSubscriptionModal(false);
+    }
+
     if (monthsScanned === undefined) {
       dispatch(updateScraperStatus(NOTAUTHORIZED));
+
       return;
     }
     dispatch(updateScraperStatus(SCRAPECANCEL));
@@ -582,12 +601,38 @@ const DashboardPageInitial = () => {
     typeRef.current = type;
   }, [type]);
 
+  useEffect(async () => {
+    const user = await getUser();
+
+    console.log(user);
+
+    if (user && !user['custom:stripe_sub_name']) {
+      setShowSubscriptionModal(true);
+    } else {
+      setShowSubscriptionModal(false);
+    }
+
+    setUser(user);
+  }, [showSubscriptionModal]);
+
+  useEffect(async () => {
+    const plans = await subscriptionPlans();
+
+    setPlans(plans.data);
+  }, []);
+
   return (
     <Fragment>
       <ToastContainer />
       <Fragment>
         {status !== SCRAPECOMPLETE && status !== SCRAPECANCEL && (
           <div id='DashboardInitial'>
+            <SubscriptionModal
+              show={showSubscriptionModal}
+              onClose={() => setShowSubscriptionModal(false)}
+              plans={plans}
+            />
+
             {status === NOTAUTHORIZED && (
               <Authorize triggerScanNow={() => triggerScanNow(NORMAL)} />
             )}
@@ -618,4 +663,23 @@ const DashboardPageInitial = () => {
   );
 };
 
-export default DashboardPageInitial;
+export const DashboardPageInitialWrapper = () => {
+  const [stripePromise, setStripePromise] = useState(null);
+
+  const loadStripeComponent = async () => {
+    const key = await getPublicKey();
+    const stripePromise = loadStripe(key);
+    setStripePromise(stripePromise);
+  };
+
+  // Fetch stripe publishable api key
+  useEffect(() => {
+    loadStripeComponent();
+  }, []);
+
+  return (
+    <Elements stripe={stripePromise}>
+      <DashboardPageInitial />
+    </Elements>
+  );
+};
