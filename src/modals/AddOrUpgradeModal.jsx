@@ -33,6 +33,7 @@ export default function AddOrUpgradeModal({
   const [isLoading, setIsLoading] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   const [isRefillSelected, setISRefillSelected] = useState(false);
+  const [modalLoading, setModalLoading] = useState(true);
 
   const onSubscriptionSelect = (subscription) => {
     setSelectedPlan(subscription);
@@ -146,12 +147,15 @@ export default function AddOrUpgradeModal({
     if (defaultPaymentMethod) {
       savePayment(defaultPaymentMethod);
     }
+
+    setModalLoading(false);
   };
 
   const expirationMonth = paymentFormValues && paymentFormValues.card.exp_month;
   const expirationYear = paymentFormValues && paymentFormValues.card.exp_year;
 
   useEffect(() => {
+    setModalLoading(true);
     setDefaults();
   }, [show]);
 
@@ -305,6 +309,230 @@ export default function AddOrUpgradeModal({
     );
   };
 
+  const ModalContent = () => {
+    return (
+      <>
+        <Modal.Header closeButton onClick={reset}>
+          {userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
+            <h2>
+              {isAddOrUpgrade
+                ? `You have ${userInfo?.['custom:no_of_pickups']} pickups left`
+                : 'You have 1 pick up left!'}
+            </h2>
+          )}
+        </Modal.Header>
+        <Modal.Body
+          className={`sofia-pro ${
+            isAddOrUpgrade ? 'addOrUpgrade' : 'subscriptions'
+          }`}
+        >
+          <SubscriptionCards />
+
+          {userInfo?.['custom:stripe_sub_name'] !== 'Diamond' && (
+            <>
+              {userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
+                <>
+                  <Row>
+                    <Col className='px-6 pt-4'>
+                      <p className='divider'>or</p>
+                    </Col>
+                  </Row>
+                  <div className={isAddOrUpgrade ? 'refill-addOrUpgrade' : ''}>
+                    <Row>
+                      <Form.Group className='checkbox'>
+                        <Form.Check
+                          inline
+                          label='Pickup Refill'
+                          name='pickUpRefill'
+                          type='checkbox'
+                          value={isRefillSelected}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setIsSelected('Refill');
+                              setSelectedPlan({
+                                no_of_pickups: 3,
+                                price: '$19.99',
+                                name: 'Refill',
+                              });
+                            } else {
+                              setIsSelected('');
+                              setSelectedPlan(null);
+                            }
+
+                            setISRefillSelected(e.target.checked);
+                          }}
+                        />
+                      </Form.Group>
+                    </Row>
+                  </div>
+                </>
+              )}
+
+              <div
+                className={isAddOrUpgrade ? 'refill-addOrUpgrade pt-4' : 'pt-4'}
+              >
+                {selectedPlan && <Summary plan={selectedPlan} />}
+              </div>
+            </>
+          )}
+
+          {userInfo?.['custom:stripe_sub_name'] === 'Diamond' && (
+            <Summary
+              plan={{ no_of_pickups: 3, price: '$19.99', name: 'Refill' }}
+            />
+          )}
+
+          <Row
+            className={`mt-5 ${isAddOrUpgrade ? 'refill-addOrUpgrade' : ''}`}
+          >
+            {!isPaymentFormEmpty && !showEditPayment ? (
+              <>
+                <div className='card-body pt-4 pb-3 px-0 m-0'>
+                  <div className='title-container'>
+                    <div className='p-0 d-flex justify-content-between'>
+                      <p className='pick-up-message sofia-pro text-14 line-height-16'>
+                        Payment method
+                      </p>
+                      <a
+                        className='btn-edit sofia-pro text-14 line-height-16'
+                        onClick={() => setShowEditPayment(true)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        Edit
+                      </a>
+                    </div>
+                  </div>
+                  <div className='payment-details-desktop'>
+                    <div className='img-container d-flex align-items-center'>
+                      <img
+                        className='img-fluid'
+                        style={{
+                          width: '38px',
+                        }}
+                        src={getCardImage(paymentFormValues)}
+                        alt='...'
+                      />
+                      <h4 className='m-0 ml-2 text-14 text'>
+                        {`ending in ${paymentFormValues.card.last4}`}
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+                {/**
+                 * PAYMENT DETAILS MOBILE
+                 */}
+                <div
+                  className='pl-4 pr-4 pb-0 pt-0 payment-details-mobile'
+                  style={{ cursor: 'pointer' }}
+                >
+                  <Collapsible
+                    open={IsPaymentOpen}
+                    onTriggerOpening={() => setIsPaymentOpen(true)}
+                    onTriggerClosing={() => setIsPaymentOpen(false)}
+                    trigger={
+                      <div className='payment-trigger'>
+                        <Row
+                          className='p-3'
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <Col
+                            className='p-0'
+                            style={{
+                              display: 'flex',
+                            }}
+                          >
+                            <div className='img-container payment-card-logo'>
+                              <img
+                                style={{
+                                  width: '38px',
+                                }}
+                                src={getCardImage(paymentFormValues)}
+                                alt='...'
+                              />
+                            </div>
+                            <div
+                              className='ml-3'
+                              style={{
+                                marginTop: '5px',
+                              }}
+                            >
+                              <h4 className='text-14 text ending-text mb-0'>
+                                {getCardBrand(paymentFormValues)} ending in{' '}
+                                {paymentFormValues.card.last4}
+                              </h4>
+                              <small className='text-muted'>
+                                Expires {`${expirationMonth}/${expirationYear}`}
+                              </small>
+                            </div>
+                          </Col>
+                          <div
+                            className='arrow-container d-flex'
+                            style={{
+                              alignItems: 'center',
+                            }}
+                          >
+                            {IsPaymentOpen ? (
+                              <img src={DownArrow} />
+                            ) : (
+                              <img src={LeftArrow} />
+                            )}
+                          </div>
+                        </Row>
+                      </div>
+                    }
+                  >
+                    <div className='card-body payment-details-card-body m-0 p-0'>
+                      <div className='address-actions mt-2'>
+                        <h4
+                          className='text-instructions'
+                          onClick={() => setShowEditPayment(true)}
+                        >
+                          Use different payment method
+                        </h4>
+                      </div>
+                    </div>
+                  </Collapsible>
+                </div>
+              </>
+            ) : (
+              <Col className='p-0'>
+                {!showEditPayment && (
+                  <div className='block d-sm-flex justify-content-between align-items-center'>
+                    <p className='m-0'>No Payment Method saved</p>
+                    <Button
+                      variant='primary'
+                      size='md'
+                      className='m-0'
+                      onClick={() => {
+                        setShowEditPayment(true);
+                      }}
+                    >
+                      Add payment method
+                    </Button>
+                  </div>
+                )}
+                {showEditPayment && (
+                  <AddPaymentForm
+                    close={() => {
+                      setShowEditPayment(false);
+                    }}
+                    isCheckoutFlow={true}
+                    savePayment={savePayment}
+                  />
+                )}
+              </Col>
+            )}
+          </Row>
+
+          <ActionButtons />
+        </Modal.Body>
+      </>
+    );
+  };
+
   return (
     <Modal
       show={show}
@@ -316,221 +544,19 @@ export default function AddOrUpgradeModal({
       animation={false}
       id='PickUpLeftModal'
     >
-      <Modal.Header closeButton onClick={reset}>
-        {userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
-          <h2>
-            {isAddOrUpgrade
-              ? `You have ${userInfo?.['custom:no_of_pickups']} pickups left`
-              : 'You have 1 pick up left!'}
-          </h2>
-        )}
-      </Modal.Header>
-      <Modal.Body
-        className={`sofia-pro ${
-          isAddOrUpgrade ? 'addOrUpgrade' : 'subscriptions'
-        }`}
-      >
-        <SubscriptionCards />
-
-        {userInfo?.['custom:stripe_sub_name'] !== 'Diamond' && (
-          <>
-            {userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
-              <>
-                <Row>
-                  <Col className='px-6 pt-4'>
-                    <p className='divider'>or</p>
-                  </Col>
-                </Row>
-                <div className={isAddOrUpgrade ? 'refill-addOrUpgrade' : ''}>
-                  <Row>
-                    <Form.Group className='checkbox'>
-                      <Form.Check
-                        inline
-                        label='Pickup Refill'
-                        name='pickUpRefill'
-                        type='checkbox'
-                        value={isRefillSelected}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setIsSelected('Refill');
-                            setSelectedPlan({
-                              no_of_pickups: 3,
-                              price: '$19.99',
-                              name: 'Refill',
-                            });
-                          } else {
-                            setIsSelected('');
-                            setSelectedPlan(null);
-                          }
-
-                          setISRefillSelected(e.target.checked);
-                        }}
-                      />
-                    </Form.Group>
-                  </Row>
-                </div>
-              </>
-            )}
-
-            <div
-              className={isAddOrUpgrade ? 'refill-addOrUpgrade pt-4' : 'pt-4'}
-            >
-              {selectedPlan && <Summary plan={selectedPlan} />}
-            </div>
-          </>
-        )}
-
-        {userInfo?.['custom:stripe_sub_name'] === 'Diamond' && (
-          <Summary
-            plan={{ no_of_pickups: 3, price: '$19.99', name: 'Refill' }}
+      {modalLoading ? (
+        <Row className='d-flex justify-content-center align-items-center py-8'>
+          <Spinner
+            as='span'
+            animation='border'
+            size='lg'
+            role='status'
+            aria-hidden='true'
           />
-        )}
-
-        <Row className={`mt-5 ${isAddOrUpgrade ? 'refill-addOrUpgrade' : ''}`}>
-          {!isPaymentFormEmpty && !showEditPayment ? (
-            <>
-              <div className='card-body pt-4 pb-3 px-0 m-0'>
-                <div className='title-container'>
-                  <div className='p-0 d-flex justify-content-between'>
-                    <p className='pick-up-message sofia-pro text-14 line-height-16'>
-                      Payment method
-                    </p>
-                    <a
-                      className='btn-edit sofia-pro text-14 line-height-16'
-                      onClick={() => setShowEditPayment(true)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      Edit
-                    </a>
-                  </div>
-                </div>
-                <div className='payment-details-desktop'>
-                  <div className='img-container d-flex align-items-center'>
-                    <img
-                      className='img-fluid'
-                      style={{
-                        width: '38px',
-                      }}
-                      src={getCardImage(paymentFormValues)}
-                      alt='...'
-                    />
-                    <h4 className='m-0 ml-2 text-14 text'>
-                      {`ending in ${paymentFormValues.card.last4}`}
-                    </h4>
-                  </div>
-                </div>
-              </div>
-              {/**
-               * PAYMENT DETAILS MOBILE
-               */}
-              <div
-                className='pl-4 pr-4 pb-0 pt-0 payment-details-mobile'
-                style={{ cursor: 'pointer' }}
-              >
-                <Collapsible
-                  open={IsPaymentOpen}
-                  onTriggerOpening={() => setIsPaymentOpen(true)}
-                  onTriggerClosing={() => setIsPaymentOpen(false)}
-                  trigger={
-                    <div className='payment-trigger'>
-                      <Row
-                        className='p-3'
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                        }}
-                      >
-                        <Col
-                          className='p-0'
-                          style={{
-                            display: 'flex',
-                          }}
-                        >
-                          <div className='img-container payment-card-logo'>
-                            <img
-                              style={{
-                                width: '38px',
-                              }}
-                              src={getCardImage(paymentFormValues)}
-                              alt='...'
-                            />
-                          </div>
-                          <div
-                            className='ml-3'
-                            style={{
-                              marginTop: '5px',
-                            }}
-                          >
-                            <h4 className='text-14 text ending-text mb-0'>
-                              {getCardBrand(paymentFormValues)} ending in{' '}
-                              {paymentFormValues.card.last4}
-                            </h4>
-                            <small className='text-muted'>
-                              Expires {`${expirationMonth}/${expirationYear}`}
-                            </small>
-                          </div>
-                        </Col>
-                        <div
-                          className='arrow-container d-flex'
-                          style={{
-                            alignItems: 'center',
-                          }}
-                        >
-                          {IsPaymentOpen ? (
-                            <img src={DownArrow} />
-                          ) : (
-                            <img src={LeftArrow} />
-                          )}
-                        </div>
-                      </Row>
-                    </div>
-                  }
-                >
-                  <div className='card-body payment-details-card-body m-0 p-0'>
-                    <div className='address-actions mt-2'>
-                      <h4
-                        className='text-instructions'
-                        onClick={() => setShowEditPayment(true)}
-                      >
-                        Use different payment method
-                      </h4>
-                    </div>
-                  </div>
-                </Collapsible>
-              </div>
-            </>
-          ) : (
-            <Col className='p-0'>
-              {!showEditPayment && (
-                <div className='block d-sm-flex justify-content-between align-items-center'>
-                  <p className='m-0'>No Payment Method saved</p>
-                  <Button
-                    variant='primary'
-                    size='md'
-                    className='m-0'
-                    onClick={() => {
-                      setShowEditPayment(true);
-                    }}
-                  >
-                    Add payment method
-                  </Button>
-                </div>
-              )}
-              {showEditPayment && (
-                <AddPaymentForm
-                  close={() => {
-                    setShowEditPayment(false);
-                  }}
-                  isCheckoutFlow={true}
-                  savePayment={savePayment}
-                />
-              )}
-            </Col>
-          )}
         </Row>
-
-        <ActionButtons />
-      </Modal.Body>
+      ) : (
+        <ModalContent />
+      )}
     </Modal>
   );
 }
