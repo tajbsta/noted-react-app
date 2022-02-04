@@ -28,7 +28,7 @@ export default function UpgradePlanModal(props) {
             className='p-0 d-flex align-items-center justify-content-between pickups mt-4'
           >
             <span>Three (3) Pickups*</span>
-            <span>$39.99</span>
+            <span>$19.99</span>
           </Col>
           <Col
             sm={12}
@@ -48,7 +48,7 @@ export default function UpgradePlanModal(props) {
             className='p-0 d-flex align-items-center justify-content-between mt-3 totalpay'
           >
             <span>Total to pay</span>
-            <span>$39.99</span>
+            <span>$19.99</span>
           </Col>
         </Row>
 
@@ -243,7 +243,7 @@ export default function UpgradePlanModal(props) {
             Cancel
           </Button>
           <Button variant='primary' size='md' className='mx-5'>
-            Pay $39.99
+            Pay $19.99
           </Button>
         </Row>
       </Modal.Body>
