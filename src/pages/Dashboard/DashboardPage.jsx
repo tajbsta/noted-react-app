@@ -22,7 +22,10 @@ import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 import { resetAuthorizeNewEmail } from '../../utils/data';
 import { NORMAL, SCRAPEOLDER } from '../../constants/scraper';
 import InitialScanModal from '../../modals/initialScanModal';
+import PickUpLeftModal from '../../modals/PickUpLeftModal';
 import { setIsNewlySignedUp } from '../../actions/auth.action';
+import { Auth } from 'aws-amplify';
+import { subscribeUserToRuby } from '../../api/subscription';
 
 export default function DashboardPage({ triggerScanNow }) {
   const [search, setSearch] = useState('');
@@ -33,7 +36,6 @@ export default function DashboardPage({ triggerScanNow }) {
     DONATE: () => {},
   });
   const isNewlySignedUp = useSelector((state) => state.auth.isNewlySignedUp);
-
   const { search: searchSession } = useSelector(
     ({ runtime: { search }, auth: { scheduledReturns } }) => ({
       search,
@@ -53,7 +55,30 @@ export default function DashboardPage({ triggerScanNow }) {
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const addManualRef = useRef(null);
   const [showInitialScanModal, setShowInitialScanModal] = useState(false);
+  const [validPayment, setValidPayment] = useState(false);
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    async function sendSession() {
+      const session = await Auth.currentSession();
+      const extensionID = process.env.REACT_APP_CHROME_EXT_ID;
+
+      try {
+        window.chrome.runtime.sendMessage(
+          extensionID,
+          JSON.stringify(session),
+          function (response) {
+            console.log(response);
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    sendSession();
+  }, []);
 
   /**HANDLE CATEGORY REFRESH */
   const handleRefreshCategory = (method, category) => {
@@ -88,6 +113,7 @@ export default function DashboardPage({ triggerScanNow }) {
     // console.log({
     //   searchSession,
     // });
+
     setSearch(searchSession.trim());
   }, [searchSession]);
 
@@ -182,6 +208,10 @@ export default function DashboardPage({ triggerScanNow }) {
       const user = await getUser();
       setUser(user);
       setShowScanOlderButton(user['custom:scan_older_done'] === '0');
+
+      if (user && !user['custom:stripe_sub_name']) {
+        await subscribeUserToRuby(true);
+      }
     })();
   }, []);
 
@@ -237,10 +267,24 @@ export default function DashboardPage({ triggerScanNow }) {
               </>
             )}
 
+            <PickUpLeftModal
+              show={
+                user?.['custom:stripe_sub_id'] &&
+                user?.['custom:no_of_pickups'] === '1'
+              }
+              onHide={() => onHide()}
+              setValidPayment={setValidPayment}
+            />
+
             <InitialScanModal
               show={showInitialScanModal && isNewlySignedUp}
               onHide={onHide}
-              onButtonClick={() => executeScroll(addManualRef)}
+              // onButtonClick={() => executeScroll(addManualRef)}
+              onButtonClick={() =>
+                window.open(
+                  'https://chrome.google.com/webstore/detail/noted/balllddlldhlonjikikjlonmjpdgjcof'
+                )
+              }
             />
 
             {/*CONTAINS ALL SCANS LEFT CARD OF DASHBOARD PAGE*/}
@@ -388,7 +432,7 @@ export default function DashboardPage({ triggerScanNow }) {
           {!isTablet && (
             <>
               <div className='col-sm-3 checkout-card'>
-                <RightCard beyond90days={beyond90days} />
+                <RightCard beyond90days={beyond90days} user={user} />
               </div>
             </>
           )}
@@ -397,7 +441,7 @@ export default function DashboardPage({ triggerScanNow }) {
       {isTablet && (
         <>
           <div className='col checkout-card'>
-            <RightCard beyond90days={beyond90days} />
+            <RightCard beyond90days={beyond90days} user={user} />
           </div>
         </>
       )}

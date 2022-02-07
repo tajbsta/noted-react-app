@@ -49,7 +49,27 @@ import {
   MacCosmetics,
   LuckyBrand,
   MichaelKors,
-  Dillards
+  Dillards,
+  AltardState,
+  AnnTaylor,
+  Athleta,
+  Aveda,
+  BrightonCollectibles,
+  Coach,
+  Forever21,
+  Gucci,
+  Burberry,
+  Claires,
+  DakotaWatch,
+  DavidYurman,
+  EverythingButWater,
+  Fabletics,
+  KateSpade,
+  GNCLiveWell,
+  GoldenGoose,
+  GusMayer,
+  Freebird,
+  JohnnyWas
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -204,6 +224,66 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.DILLARDS:
         orderData = await Dillards.parse(code, payload);
+        break;
+      case VENDOR_CODES.ALTARDSTATE:
+        orderData = await AltardState.parse(code, payload);
+        break;
+      case VENDOR_CODES.ANNTAYLOR:
+        orderData = await AnnTaylor.parse(code, payload);
+        break;
+      case VENDOR_CODES.ATHLETA:
+        orderData = await Athleta.parse(code, payload);
+        break;
+      case VENDOR_CODES.AVEDA:
+        orderData = await Aveda.parse(code, payload);
+        break;
+      case VENDOR_CODES.BRIGHTONCOLLECTIBLES:
+        orderData = await BrightonCollectibles.parse(code, payload);
+        break;
+      case VENDOR_CODES.COACH:
+        orderData = await Coach.parse(code, payload);
+        break;
+      case VENDOR_CODES.FOREVER21:
+        orderData = await Forever21.parse(code, payload);
+        break;
+      case VENDOR_CODES.GUCCI:
+        orderData = await Gucci.parse(code, payload);
+        break;
+      case VENDOR_CODES.BURBERRY:
+        orderData = await Burberry.parse(code, payload);
+        break;
+      case VENDOR_CODES.CLAIRES:
+        orderData = await Claires.parse(code, payload);
+        break;
+      case VENDOR_CODES.DAKOTAWATCH:
+        orderData = await DakotaWatch.parse(code, payload);
+        break;
+      case VENDOR_CODES.DAVIDYURMAN:
+        orderData = await DavidYurman.parse(code, payload);
+        break;
+      case VENDOR_CODES.EVERYTHINGBUTWATER:
+        orderData = await EverythingButWater.parse(code, payload);
+        break;
+      case VENDOR_CODES.FABLETICS:
+        orderData = await Fabletics.parse(code, payload);
+        break;
+      case VENDOR_CODES.KATESPADE:
+        orderData = await KateSpade.parse(code, payload);
+        break;
+      case VENDOR_CODES.GNCLIVEWELL:
+        orderData = await GNCLiveWell.parse(code, payload);
+        break;
+      case VENDOR_CODES.GOLDENGOOSE:
+        orderData = await GoldenGoose.parse(code, payload);
+        break;
+      case VENDOR_CODES.GUSMAYER:
+        orderData = await GusMayer.parse(code, payload);
+        break;
+      case VENDOR_CODES.FREEBIRD:
+        orderData = await Freebird.parse(code, payload);
+        break;
+      case VENDOR_CODES.JOHNNYWAS:
+        orderData = await JohnnyWas.parse(code, payload);
         break;
       default:
         break;

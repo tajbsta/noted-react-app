@@ -101,7 +101,9 @@ export default function ProductCardHover({ show, item, editproductform }) {
           {inDashboard && (
             <div className='container-1'>
               <h4 className='date text-14 sofia-pro line-height-16'>
-                {moment(item.order_date).format('MMM DD, YYYY')}
+                {item.order_date
+                  ? moment(item.order_date).format('MMM DD, YYYY')
+                  : '----'}
               </h4>
               <div className='info-container'>
                 <p className='text-wrong-info sofia-pro'>Wrong info?&nbsp;</p>

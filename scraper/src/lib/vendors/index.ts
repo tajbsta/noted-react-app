@@ -50,6 +50,26 @@ import MacCosmetics from './macCosmetics';
 import LuckyBrand from './luckybrand';
 import MichaelKors from './michaelKors';
 import Dillards from './dillards';
+import AltardState from './altardstate';
+import AnnTaylor from './annTaylor';
+import Athleta from './athleta';
+import Aveda from './aveda';
+import BrightonCollectibles from './brightonCollectibles';
+import Coach from './coach';
+import Forever21 from './forever21';
+import Gucci from './gucci';
+import Burberry from './burberry';
+import Claires from './claires';
+import DakotaWatch from './dakotaWatch';
+import DavidYurman from './davidYurman';
+import EverythingButWater from './everythingButWater';
+import Fabletics from './fabletics';
+import KateSpade from './katespade';
+import GNCLiveWell from './gncLiveWell';
+import GoldenGoose from './goldenGoose';
+import GusMayer from './gusMayer';
+import Freebird from './freebird';
+import JohnnyWas from './johnnyWas';
 
 export {
   FashionNova,
@@ -103,5 +123,25 @@ export {
   MacCosmetics,
   LuckyBrand,
   MichaelKors,
-  Dillards
+  Dillards,
+  AltardState,
+  AnnTaylor,
+  Athleta,
+  Aveda,
+  BrightonCollectibles,
+  Coach,
+  Forever21,
+  Gucci,
+  Burberry,
+  Claires,
+  DakotaWatch,
+  DavidYurman,
+  EverythingButWater,
+  Fabletics,
+  KateSpade,
+  GNCLiveWell,
+  GoldenGoose,
+  GusMayer,
+  Freebird,
+  JohnnyWas
 };

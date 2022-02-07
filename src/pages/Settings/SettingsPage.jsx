@@ -4,17 +4,44 @@ import BasicInfo from './components/BasicInfo';
 import ChangePass from './components/ChangePass';
 import DeleteAccount from './components/DeleteAccount';
 import UserInfo from './../Profile/components/UserInfo';
+import MyCredits from './components/MyCredits';
 import { Link } from 'react-scroll';
 import { getUser } from '../../api/auth';
 import { scrollToTop } from '../../utils/window';
 import { Auth } from 'aws-amplify';
+import { subscriptionHistory } from '../../api/subscription';
+import AddOrUpgradeModal from '../../modals/AddOrUpgradeModal';
+import CancelSubscriptionModal from '../../modals/CancelSubscriptionModal';
+import { subscriptionPlans } from '../../api/subscription';
+import { loadStripe } from '@stripe/stripe-js';
+import { getPublicKey } from '../../api/orderApi';
+import { Elements, useStripe } from '@stripe/react-stripe-js';
 
-export default function SettingsPage() {
-  const [user, setUser] = useState({});
+const SettingsPage = () => {
+  const [user, setUser] = useState(null);
   const [currentTab, setCurrenTab] = useState('');
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [isGoogleSignIn, setIsGoogleSignIn] = useState(false);
+  const [history, setHistory] = useState([]);
+  const [showPickupsLeftModal, setShowPickupsLeftModal] = useState(false);
+  const [
+    showCancelSubscriptionModal,
+    setShowCancelSubscriptionModal,
+  ] = useState(false);
+  const [validPayment, setValidPayment] = useState(false);
+  const [plans, setPlans] = useState([]);
+
+  useEffect(async () => {
+    const plans = await subscriptionPlans();
+
+    setPlans(plans.data);
+  }, []);
+
+  const onHide = () => {
+    setShowPickupsLeftModal(false);
+    setShowCancelSubscriptionModal(false);
+  };
 
   useEffect(() => {
     scrollToTop();
@@ -43,8 +70,12 @@ export default function SettingsPage() {
     (async () => {
       const user = await getUser();
       setUser(user);
+      console.log(user, 'from refetch');
+      const history = await subscriptionHistory();
+
+      setHistory(history);
     })();
-  }, []);
+  }, [showPickupsLeftModal, showCancelSubscriptionModal]);
 
   const isActive = (tabName) => {
     return tabName === currentTab
@@ -141,10 +172,52 @@ export default function SettingsPage() {
           <div className={isTablet ? 'col-sm-12' : 'col-sm-9'}>
             <BasicInfo user={user} />
             {isGoogleSignIn === false && <ChangePass />}
+            <MyCredits
+              user={user}
+              history={history}
+              onAdd={() => setShowPickupsLeftModal(true)}
+              onCancel={() => setShowCancelSubscriptionModal(true)}
+            />
             <DeleteAccount />
           </div>
         </div>
       </div>
+
+      <AddOrUpgradeModal
+        show={showPickupsLeftModal}
+        onHide={() => onHide()}
+        setValidPayment={setValidPayment}
+        isAddOrUpgrade={true}
+        plans={plans}
+        user={user}
+      />
+
+      <CancelSubscriptionModal
+        show={showCancelSubscriptionModal}
+        onHide={() => onHide()}
+        user={user}
+      />
     </div>
   );
-}
+};
+
+export const SettingsPageWrapper = () => {
+  const [stripePromise, setStripePromise] = useState(null);
+
+  const loadStripeComponent = async () => {
+    const key = await getPublicKey();
+    const stripePromise = loadStripe(key);
+    setStripePromise(stripePromise);
+  };
+
+  // Fetch stripe publishable api key
+  useEffect(() => {
+    loadStripeComponent();
+  }, []);
+
+  return (
+    <Elements stripe={stripePromise}>
+      <SettingsPage />
+    </Elements>
+  );
+};

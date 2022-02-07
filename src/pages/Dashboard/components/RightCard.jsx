@@ -12,7 +12,7 @@ import NotedCheckbox from '../../../components/Product/NotedCheckbox';
 import { setCartItems } from '../../../actions/cart.action';
 import ReturnValueInfoIcon from '../../../components/ReturnValueInfoIcon';
 
-function RightCard({ beyond90days }) {
+function RightCard({ beyond90days, user }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
@@ -253,7 +253,11 @@ function RightCard({ beyond90days }) {
                 <PickUpButton
                   leadingText='Schedule Pickup'
                   disabled={!items.length || loading}
-                  price={pricing.pickupPrice}
+                  price={
+                    Number(user?.['custom:no_of_pickups']) > 0
+                      ? '0'
+                      : pricing.pickupPrice
+                  }
                   backgroundColor='#570097'
                   onClick={() => {
                     history.push('/checkout');

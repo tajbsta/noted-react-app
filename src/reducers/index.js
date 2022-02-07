@@ -5,6 +5,7 @@ import runtime from '../reducers/runtime.reducer';
 import cart from '../reducers/cart.reducer';
 import products from '../reducers/products.reducer';
 import scraper from '../reducers/scraper.reducer';
+import subscription from '../reducers/subscription.reducer';
 
 export default combineReducers({
   auth,
@@ -13,4 +14,5 @@ export default combineReducers({
   cart,
   products,
   scraper,
+  subscription,
 });

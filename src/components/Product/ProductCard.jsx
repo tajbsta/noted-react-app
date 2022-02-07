@@ -55,7 +55,7 @@ export default function ProductCard({
   };
 
   const formattedProductName = toTitleCase(item.name);
-  const formatPrice = item.price.toFixed(2);
+  const formatPrice = parseFloat(item.price).toFixed(2);
   const rating = get(item, 'vendor_data.rating', 1);
   const score = RETURN_SCORES.find(
     ({ rating: returnRating }) => rating === returnRating
@@ -443,7 +443,6 @@ export default function ProductCard({
               <ProductCardHover
                 orderDate={item.order_date}
                 show={showHoverContent}
-                // show={true}
                 item={item}
                 editproductform={{
                   handleChange,

@@ -44,6 +44,8 @@ html {
 @import './components/toast';
 @import './components/returnvalueinfoicon';
 @import './components/scanning';
+@import './components/subscriptioncard';
+@import './components/mycredits.scss';
 
 /* Modals */
 @import './modals/returnpolicy';
@@ -58,6 +60,9 @@ html {
 @import './modals/productoptions';
 @import './modals/checkzipcode';
 @import './modals/initialscanmodal';
+@import './modals/subscriptionmodal';
+@import './modals/pickupleftmodal';
+@import './modals/cancelsubscriptionmodal';
 
 html,
 body {
