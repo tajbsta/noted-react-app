@@ -211,7 +211,6 @@ export default function DashboardPage({ triggerScanNow }) {
 
       if (user && !user['custom:stripe_sub_name']) {
         await subscribeUserToRuby(true);
-        console.log('in dashboard page');
       }
     })();
   }, []);
