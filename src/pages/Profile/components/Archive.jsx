@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Collapsible from 'react-collapsible';
 import ArchivedItem from './ArchivedItem';
+import { getProducts } from '../../../api/productsApi';
 
-export default function Archive() {
+export default function Archive({ user }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const renderTrigger = () => {
@@ -16,6 +17,26 @@ export default function Archive() {
       </div>
     );
   };
+
+  const fetchArchivedItems = async () => {
+    const params = {
+      userId: user.sub,
+      size: 5,
+      sortBy: 'updated_at,_id',
+      sort: 'asc,asc',
+      isArchived: true,
+    };
+    try {
+      const products = await getProducts(params);
+      console.log(products);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchArchivedItems();
+  }, []);
 
   return (
     <Collapsible

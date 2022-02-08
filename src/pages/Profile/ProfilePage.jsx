@@ -71,7 +71,7 @@ export default function ProfilePage() {
             <hr />
             <ReturnHistory user={user} />
             <hr />
-            <Archive />
+            <Archive user={user} />
             <hr />
           </div>
         </div>

@@ -15,7 +15,12 @@ import { Col, Row, Overlay, Tooltip } from 'react-bootstrap';
 import ReturnValueInfoIcon from '../ReturnValueInfoIcon';
 import ArchiveIcon from '../../assets/icons/archive-icon.svg';
 
-export default function ProductCardHover({ show, item, editproductform }) {
+export default function ProductCardHover({
+  show,
+  item,
+  editproductform,
+  onArchive,
+}) {
   const dispatch = useDispatch();
   const {
     location: { pathname },
@@ -99,39 +104,43 @@ export default function ProductCardHover({ show, item, editproductform }) {
           }}
         >
           {inDashboard && (
-            <div className='container-1'>
-              <h4 className='date text-14 sofia-pro line-height-16'>
-                {item.order_date
-                  ? moment(item.order_date).format('MMM DD, YYYY')
-                  : '----'}
-              </h4>
-              <div className='info-container'>
-                <p className='text-wrong-info sofia-pro'>Wrong info?&nbsp;</p>
-                <button
-                  disabled
-                  className='btn-hover-edit sofia-pro btn mr-1'
-                  onClick={onEdit}
-                >
-                  Edit
-                </button>
+            <>
+              <div className='container-1'>
+                <h4 className='date text-14 sofia-pro line-height-16'>
+                  {item.order_date
+                    ? moment(item.order_date).format('MMM DD, YYYY')
+                    : '----'}
+                </h4>
+                <div className='info-container'>
+                  <p className='text-wrong-info sofia-pro'>Wrong info?&nbsp;</p>
+                  <button
+                    disabled
+                    className='btn-hover-edit sofia-pro btn mr-1'
+                    onClick={onEdit}
+                  >
+                    Edit
+                  </button>
 
-                <ReturnValueInfoIcon
-                  content="We're still working on this"
-                  iconClassname='info-icon-small'
-                />
+                  <ReturnValueInfoIcon
+                    content="We're still working on this"
+                    iconClassname='info-icon-small'
+                  />
+                </div>
               </div>
-            </div>
+              <Row className='container-archive'>
+                <img
+                  src={ArchiveIcon}
+                  alt='archive'
+                  className='col-sm-3 sofia-pro archive'
+                  ref={target}
+                  onMouseOver={() => setShowToolTip(true)}
+                  onMouseLeave={() => setShowToolTip(false)}
+                  onClick={() => onArchive(item._id)}
+                />
+              </Row>
+            </>
           )}
-          <Row className='container-archive'>
-            <img
-              src={ArchiveIcon}
-              alt='archive'
-              className='col-sm-3 sofia-pro archive'
-              ref={target}
-              onMouseOver={() => setShowToolTip(true)}
-              onMouseLeave={() => setShowToolTip(false)}
-            />
-          </Row>
+
           {RenderRating}
 
           <Overlay

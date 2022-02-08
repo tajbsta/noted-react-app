@@ -11,6 +11,7 @@ import { timeout } from '../../utils/time';
 import { setCartItems } from '../../actions/cart.action';
 import { fixedEncodeURIComponent } from '../../utils/data';
 import { isEmpty } from 'lodash';
+import { toggleArchiveItem } from '../../api/productsApi';
 
 export default function ReturnCategory({
   userId,
@@ -33,6 +34,7 @@ export default function ReturnCategory({
     category === DONATE ? 'updated_at,_id' : 'return_not_eligible_date,_id';
   const sort = category === DONATE ? 'desc' : 'asc,asc';
   const [loadProgress, setLoadProgress] = useState(0);
+  const [isItemArchived, setIsItemArchived] = useState(false);
 
   const fetchItems = async (nextPageToken) => {
     try {
@@ -87,7 +89,8 @@ export default function ReturnCategory({
       fetchItems();
       handleRefreshCategory(fetchItems, category);
     }
-  }, []);
+    setIsItemArchived(false);
+  }, [isItemArchived]);
 
   useEffect(() => {
     if (!isEmpty(search)) {
@@ -143,6 +146,11 @@ export default function ReturnCategory({
     dispatch(setCartItems(list));
   };
 
+  const onArchive = (id) => {
+    toggleArchiveItem({ _id: id, isArchived: true });
+    setIsItemArchived(true);
+  };
+
   return (
     <div id='ReturnCategory'>
       <Row>
@@ -186,6 +194,7 @@ export default function ReturnCategory({
             selected={!!cartItems.find((x) => x._id === item._id)}
             toggleSelected={toggleSelected}
             refreshCategory={refreshCategory}
+            onArchive={onArchive}
           />
         );
       })}

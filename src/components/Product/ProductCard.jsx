@@ -32,6 +32,7 @@ export default function ProductCard({
   onRemove = () => {},
   confirmed = false,
   refreshCategory = {},
+  onArchive,
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -450,6 +451,7 @@ export default function ProductCard({
                   setFieldValue,
                   errors,
                 }}
+                onArchive={onArchive}
               />
             )}
 

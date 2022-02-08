@@ -12,6 +12,7 @@ export const getProducts = async ({
   nextPageToken,
   search,
   reviewStatus,
+  isArchived,
 }) => {
   const axios = await api();
 
@@ -41,6 +42,10 @@ export const getProducts = async ({
 
   if (reviewStatus) {
     queries.push(`review_status=${reviewStatus}`);
+  }
+
+  if (isArchived) {
+    queries.push(`isArchived=${isArchived}`);
   }
 
   const query = queries.join('&');
@@ -189,4 +194,22 @@ export const addProductFromScraper = async ({
   const { userId } = await getUserSession();
   const axios = await api();
   return axios.post(`${userId}/products/scraped`, data);
+};
+
+export const toggleArchiveItem = async ({ _id, isArchived }) => {
+  try {
+    const axios = await api();
+    const { userId } = await getUserSession();
+
+    const archiveResponse = await axios.post(
+      `${userId}/products/${_id}/archive`,
+      {
+        isArchived,
+      }
+    );
+    return archiveResponse;
+  } catch (error) {
+    // console.log(error);
+    return false;
+  }
 };
