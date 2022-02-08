@@ -20,8 +20,6 @@ export default function PickUpLeftModal({
   order,
   onHide,
   show,
-  plans,
-  isAddOrUpgrade,
 }) {
   const dispatch = useDispatch();
   const [showEditPayment, setShowEditPayment] = useState(false);
@@ -63,15 +61,6 @@ export default function PickUpLeftModal({
     setValidPayment(true);
   };
 
-  const reset = () => {
-    setIsLoading(false);
-    setIsSelected(false);
-    setISRefillSelected(false);
-    setTimeout(() => {
-      onHide();
-    }, 1000);
-  };
-
   const onSubmitClick = async (plan) => {
     setIsLoading(true);
     try {
@@ -103,8 +92,6 @@ export default function PickUpLeftModal({
           ),
         });
       }
-
-      reset();
     } catch (error) {
       showError({
         message: (
@@ -116,8 +103,6 @@ export default function PickUpLeftModal({
           </div>
         ),
       });
-
-      reset();
     }
   };
 
@@ -201,7 +186,7 @@ export default function PickUpLeftModal({
           variant='light'
           size='md'
           className='mx-5 cancel'
-          onClick={reset}
+          onClick={onHide}
         >
           Cancel
         </Button>
@@ -239,7 +224,7 @@ export default function PickUpLeftModal({
       animation={false}
       id='PickUpLeftModal'
     >
-      <Modal.Header closeButton onClick={reset}>
+      <Modal.Header closeButton onClick={onHide}>
         {userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
           <h2>You have 1 pick up left!</h2>
         )}

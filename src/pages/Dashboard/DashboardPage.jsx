@@ -56,6 +56,7 @@ export default function DashboardPage({ triggerScanNow }) {
   const addManualRef = useRef(null);
   const [showInitialScanModal, setShowInitialScanModal] = useState(false);
   const [validPayment, setValidPayment] = useState(false);
+  const [isClosedToday, setIsClosedToday] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -269,10 +270,14 @@ export default function DashboardPage({ triggerScanNow }) {
 
             <PickUpLeftModal
               show={
+                !isClosedToday &&
                 user?.['custom:stripe_sub_id'] &&
                 user?.['custom:no_of_pickups'] === '1'
               }
-              onHide={() => onHide()}
+              onHide={() => {
+                onHide();
+                setIsClosedToday(true);
+              }}
               setValidPayment={setValidPayment}
             />
 

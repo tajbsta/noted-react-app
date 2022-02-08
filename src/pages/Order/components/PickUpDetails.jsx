@@ -155,6 +155,10 @@ export default function PickUpDetails({
       getUserPaymentMethods(),
     ]);
 
+    setUserInfo(user);
+
+    console.log(user);
+
     // Set default address
     addressFormValues.fullName = (order ? order.fullName : user.name) || '';
     addressFormValues.state =
@@ -438,241 +442,32 @@ export default function PickUpDetails({
         {/* ADDRESS DETAILS */}
         {!showEditAddress && !showEditPayment && (
           <>
-            {userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
-              <div className={isMobile ? 'col-sm-12' : 'col-sm-4'}>
-                {isMobile && (
-                  <p className='mobile-form-title first-title'>
-                    Pick-up Address
-                  </p>
-                )}
-                <div className='card shadow-sm'>
-                  {!addressFormValues.line1 == '' && !showEditAddress && (
-                    <>
-                      <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 pick-up-address'>
-                        <div className='title-container'>
-                          <div className='p-0'>
-                            <p className='pick-up-message sofia-pro text-14 line-height-16'>
-                              Pick-up Address
-                            </p>
-                          </div>
-                          <div>
-                            <a
-                              className='btn-edit sofia-pro text-14 line-height-16'
-                              onClick={() => setShowEditAddress(true)}
-                            >
-                              Edit
-                            </a>
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className='p-0 m-0 sofia-pro postal-name'>
-                            {addressFormValues.fullName}
-                          </h4>
-                          <h4 className='p-0 m-0 sofia-pro line1'>
-                            {addressFormValues.line1}
-                          </h4>
-                          <h4 className='p-0 m-0 sofia-pro line1'>
-                            {addressFormValues.line2}
-                          </h4>
-                          <h4 className='p-0 m-0 sofia-pro line1'>
-                            {addressFormValues.city}, {addressFormValues.state}{' '}
-                            {addressFormValues.zipCode}
-                          </h4>
-                          <h4 className='p-0 m-0 sofia-pro line1'>
-                            United States
-                          </h4>
-                        </div>
-                        <p className='sofia-pro mt-3 tel'>
-                          Tel:{' '}
-                          {formatPhoneNumber(addressFormValues.phoneNumber)}
-                        </p>
-                        <button
-                          className='btn btn-instructions'
-                          onClick={() => setModalShow(true)}
-                        >
-                          <h4 className='text-instructions'>
-                            {order ? 'Edit' : 'Add'} pick-up instructions
-                          </h4>
-                        </button>
-                      </div>
-
-                      {/***
-                       * Mobile pickup address
-                       */}
-                      <div className='pick-up-address-mobile pl-4 pr-4 pb-0 pt-1'>
-                        <Collapsible
-                          open={IsAddressOpen}
-                          onTriggerOpening={() => setIsAddressOpen(true)}
-                          onTriggerClosing={() => setIsAddressOpen(false)}
-                          trigger={
-                            <div>
-                              <Row
-                                className='p-3'
-                                style={{
-                                  display: 'flex',
-                                  justifyContent: 'space-between',
-                                }}
-                              >
-                                <Col className='p-0'>
-                                  <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                    {addressFormValues.fullName}
-                                    {!IsAddressOpen && (
-                                      <>
-                                        {addressFormValues.line1.length > 12
-                                          ? `,${truncateString(
-                                              addressFormValues.line1,
-                                              12
-                                            )}`
-                                          : `, ${addressFormValues.line1}`}
-                                      </>
-                                    )}
-                                  </h4>
-                                  {!IsAddressOpen && (
-                                    <p className='sofia-pro p-0 mb-0 tel mt-0 pb-1'>
-                                      Tel:{' '}
-                                      {formatPhoneNumber(
-                                        addressFormValues.phoneNumber
-                                      )}
-                                    </p>
-                                  )}
-                                </Col>
-                                <div
-                                  className='arrow-container d-flex'
-                                  style={{
-                                    alignItems: 'center',
-                                  }}
-                                >
-                                  {IsAddressOpen ? (
-                                    <img src={DownArrow} />
-                                  ) : (
-                                    <img src={LeftArrow} />
-                                  )}
-                                </div>
-                              </Row>
-                            </div>
-                          }
-                        >
-                          <div className='card-body payment-details-card-body mt-2 mb-2 p-0'>
-                            {IsAddressOpen && (
-                              <div>
-                                <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                  {addressFormValues.line1}
-                                </h4>
-                                {addressFormValues.line2 ? (
-                                  <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                    {addressFormValues.line2}
-                                  </h4>
-                                ) : (
-                                  ''
-                                )}
-                                <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                  {addressFormValues.city},{' '}
-                                  {addressFormValues.state}{' '}
-                                  {addressFormValues.zipCode}
-                                </h4>
-                                <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                  United States
-                                </h4>
-                                <p className='sofia-pro p-0 mb-0 tel mt-0 pb-1'>
-                                  Tel:{' '}
-                                  {formatPhoneNumber(
-                                    addressFormValues.phoneNumber
-                                  )}
-                                </p>
-                              </div>
-                            )}
-                            <div className='address-actions mt-2'>
-                              <h4
-                                className='text-instructions'
-                                onClick={() => setModalShow(true)}
-                              >
-                                {order ? 'Edit' : 'Add'} pick-up instructions
-                              </h4>
-                              <a
-                                className='btn-edit sofia-pro text-14 line-height-16'
-                                onClick={() => setShowEditAddress(true)}
-                              >
-                                Edit
-                              </a>
-                            </div>
-                          </div>
-                        </Collapsible>
-                      </div>
-                    </>
-                  )}
-
-                  <AddPickupModal
-                    instructions={addressFormValues.instructions}
-                    setFieldValue={setFieldValue}
-                    onDoneClick={saveAddress}
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                  />
-
-                  {addressFormValues.line1 == '' && (
-                    <EmptyAddress
-                      loading={loading}
-                      renderSpinner={renderSpinner}
-                      renderStopSpinner={renderStopSpinner}
-                      onClick={() => setShowEditAddress(true)}
-                    />
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* PAYMENT DETAILS */}
             <div className={isMobile ? 'col-sm-12' : 'col-sm-4'}>
               {isMobile && (
-                <p className='mobile-form-title mt-4'>Payment method</p>
+                <p className='mobile-form-title first-title'>Pick-up Address</p>
               )}
               <div className='card shadow-sm'>
-                {!isPaymentFormEmpty && !showEditPayment && (
+                {!addressFormValues.line1 == '' && !showEditAddress && (
                   <>
-                    <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 payment-method'>
+                    <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 pick-up-address'>
                       <div className='title-container'>
                         <div className='p-0'>
                           <p className='pick-up-message sofia-pro text-14 line-height-16'>
-                            Payment method
+                            Pick-up Address
                           </p>
                         </div>
                         <div>
                           <a
                             className='btn-edit sofia-pro text-14 line-height-16'
-                            onClick={() => setShowEditPayment(true)}
+                            onClick={() => setShowEditAddress(true)}
                           >
                             Edit
                           </a>
                         </div>
                       </div>
-                      <div className='end'>
-                        <div className='img-container'>
-                          <img
-                            className='img-fluid'
-                            style={{
-                              width: '38px',
-                            }}
-                            src={getCardImage(paymentFormValues)}
-                            alt='...'
-                          />
-                        </div>
-                        <div>
-                          <h4 className='mb-3 text-14 text'>
-                            {getCardBrand(paymentFormValues)} ending in{' '}
-                            {paymentFormValues.card.last4}
-                          </h4>
-                          <small className='text-muted'>
-                            Expires {`${expirationMonth}/${expirationYear}`}
-                          </small>
-                        </div>
-                      </div>
-
-                      {/* <h3 className='sofia-pro mb-0 mt-2 mb-2 text-14 ine-height-16 c-add'>
-                        Card Address
-                      </h3>
                       <div>
                         <h4 className='p-0 m-0 sofia-pro postal-name'>
-                          {paymentFormValues.billing_details.name}
+                          {addressFormValues.fullName}
                         </h4>
                         <h4 className='p-0 m-0 sofia-pro line1'>
                           {addressFormValues.line1}
@@ -680,63 +475,66 @@ export default function PickUpDetails({
                         <h4 className='p-0 m-0 sofia-pro line1'>
                           {addressFormValues.line2}
                         </h4>
-
-                        <h4 className='p-0 m-0 sofia-pro postal-address'>
+                        <h4 className='p-0 m-0 sofia-pro line1'>
                           {addressFormValues.city}, {addressFormValues.state}{' '}
                           {addressFormValues.zipCode}
                         </h4>
                         <h4 className='p-0 m-0 sofia-pro line1'>
                           United States
                         </h4>
-                      </div> */}
+                      </div>
+                      <p className='sofia-pro mt-3 tel'>
+                        Tel: {formatPhoneNumber(addressFormValues.phoneNumber)}
+                      </p>
+                      <button
+                        className='btn btn-instructions'
+                        onClick={() => setModalShow(true)}
+                      >
+                        <h4 className='text-instructions'>
+                          {order ? 'Edit' : 'Add'} pick-up instructions
+                        </h4>
+                      </button>
                     </div>
-                    {/**
-                     * PAYMENT DETAILS MOBILE
+
+                    {/***
+                     * Mobile pickup address
                      */}
-                    <div className='pl-4 pr-4 pb-0 pt-0 payment-details-mobile'>
+                    <div className='pick-up-address-mobile pl-4 pr-4 pb-0 pt-1'>
                       <Collapsible
-                        open={IsPaymentOpen}
-                        onTriggerOpening={() => setIsPaymentOpen(true)}
-                        onTriggerClosing={() => setIsPaymentOpen(false)}
+                        open={IsAddressOpen}
+                        onTriggerOpening={() => setIsAddressOpen(true)}
+                        onTriggerClosing={() => setIsAddressOpen(false)}
                         trigger={
-                          <div className='payment-trigger'>
+                          <div>
                             <Row
                               className='p-3'
                               style={{
                                 display: 'flex',
-                                justifyContent: 'center',
+                                justifyContent: 'space-between',
                               }}
                             >
-                              <Col
-                                className='p-0'
-                                style={{
-                                  display: 'flex',
-                                }}
-                              >
-                                <div className='img-container payment-card-logo'>
-                                  <img
-                                    style={{
-                                      width: '38px',
-                                    }}
-                                    src={getCardImage(paymentFormValues)}
-                                    alt='...'
-                                  />
-                                </div>
-                                <div
-                                  className='ml-3'
-                                  style={{
-                                    marginTop: '5px',
-                                  }}
-                                >
-                                  <h4 className='text-14 text ending-text mb-0'>
-                                    {getCardBrand(paymentFormValues)} ending in{' '}
-                                    {paymentFormValues.card.last4}
-                                  </h4>
-                                  <small className='text-muted'>
-                                    Expires{' '}
-                                    {`${expirationMonth}/${expirationYear}`}
-                                  </small>
-                                </div>
+                              <Col className='p-0'>
+                                <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                  {addressFormValues.fullName}
+                                  {!IsAddressOpen && (
+                                    <>
+                                      {addressFormValues.line1.length > 12
+                                        ? `,${truncateString(
+                                            addressFormValues.line1,
+                                            12
+                                          )}`
+                                        : `, ${addressFormValues.line1}`}
+                                    </>
+                                  )}
+                                </h4>
+                                {!IsAddressOpen && (
+                                  <p className='sofia-pro p-0 mb-0 tel mt-0 pb-1'>
+                                    Tel:{' '}
+                                    {formatPhoneNumber(
+                                      addressFormValues.phoneNumber
+                                    )}
+                                  </p>
+                                )}
                               </Col>
                               <div
                                 className='arrow-container d-flex'
@@ -744,7 +542,7 @@ export default function PickUpDetails({
                                   alignItems: 'center',
                                 }}
                               >
-                                {IsPaymentOpen ? (
+                                {IsAddressOpen ? (
                                   <img src={DownArrow} />
                                 ) : (
                                   <img src={LeftArrow} />
@@ -754,37 +552,48 @@ export default function PickUpDetails({
                           </div>
                         }
                       >
-                        <div className='card-body payment-details-card-body m-0 p-0'>
-                          {/* <div className='text-14 text ending-text'>
-                            Card Address
-                          </div>
-                          <div>
-                            <h4 className='p-0 m-0 sofia-pro postal-name'>
-                              {paymentFormValues.billing_details.name}
-                            </h4>
-                            <h4 className='p-0 m-0 sofia-pro line1'>
-                              {addressFormValues.line1}
-                            </h4>
-                            <h4 className='p-0 m-0 sofia-pro line2'>
-                              {addressFormValues.line2}
-                            </h4>
-
-                            <h4 className='p-0 m-0 sofia-pro postal-address'>
-                              {addressFormValues.city},{' '}
-                              {addressFormValues.state}{' '}
-                              {addressFormValues.zipCode}
-                            </h4>
-                            <h4 className='p-0 m-0 sofia-pro line1'>
-                              United States
-                            </h4>
-                          </div> */}
+                        <div className='card-body payment-details-card-body mt-2 mb-2 p-0'>
+                          {IsAddressOpen && (
+                            <div>
+                              <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                {addressFormValues.line1}
+                              </h4>
+                              {addressFormValues.line2 ? (
+                                <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                  {addressFormValues.line2}
+                                </h4>
+                              ) : (
+                                ''
+                              )}
+                              <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                {addressFormValues.city},{' '}
+                                {addressFormValues.state}{' '}
+                                {addressFormValues.zipCode}
+                              </h4>
+                              <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
+                                United States
+                              </h4>
+                              <p className='sofia-pro p-0 mb-0 tel mt-0 pb-1'>
+                                Tel:{' '}
+                                {formatPhoneNumber(
+                                  addressFormValues.phoneNumber
+                                )}
+                              </p>
+                            </div>
+                          )}
                           <div className='address-actions mt-2'>
                             <h4
                               className='text-instructions'
-                              onClick={() => setShowEditPayment(true)}
+                              onClick={() => setModalShow(true)}
                             >
-                              Use different payment method
+                              {order ? 'Edit' : 'Add'} pick-up instructions
                             </h4>
+                            <a
+                              className='btn-edit sofia-pro text-14 line-height-16'
+                              onClick={() => setShowEditAddress(true)}
+                            >
+                              Edit
+                            </a>
                           </div>
                         </div>
                       </Collapsible>
@@ -792,16 +601,213 @@ export default function PickUpDetails({
                   </>
                 )}
 
-                {isPaymentFormEmpty && (
-                  <EmptyPayment
+                <AddPickupModal
+                  instructions={addressFormValues.instructions}
+                  setFieldValue={setFieldValue}
+                  onDoneClick={saveAddress}
+                  show={modalShow}
+                  onHide={() => setModalShow(false)}
+                />
+
+                {addressFormValues.line1 == '' && (
+                  <EmptyAddress
                     loading={loading}
                     renderSpinner={renderSpinner}
                     renderStopSpinner={renderStopSpinner}
-                    onClick={() => setShowEditPayment(true)}
+                    onClick={() => setShowEditAddress(true)}
                   />
                 )}
               </div>
             </div>
+
+            {/* PAYMENT DETAILS */}
+            {userInfo && userInfo?.['custom:stripe_sub_name'] === 'Ruby' && (
+              <div className={isMobile ? 'col-sm-12' : 'col-sm-4'}>
+                {isMobile && (
+                  <p className='mobile-form-title mt-4'>Payment method</p>
+                )}
+                <div className='card shadow-sm'>
+                  {!isPaymentFormEmpty && !showEditPayment && (
+                    <>
+                      <div className='card-body payment-details-card-body pt-4 pb-3 pl-4 m-0 payment-method'>
+                        <div className='title-container'>
+                          <div className='p-0'>
+                            <p className='pick-up-message sofia-pro text-14 line-height-16'>
+                              Payment method
+                            </p>
+                          </div>
+                          <div>
+                            <a
+                              className='btn-edit sofia-pro text-14 line-height-16'
+                              onClick={() => setShowEditPayment(true)}
+                            >
+                              Edit
+                            </a>
+                          </div>
+                        </div>
+                        <div className='end'>
+                          <div className='img-container'>
+                            <img
+                              className='img-fluid'
+                              style={{
+                                width: '38px',
+                              }}
+                              src={getCardImage(paymentFormValues)}
+                              alt='...'
+                            />
+                          </div>
+                          <div>
+                            <h4 className='mb-3 text-14 text'>
+                              {getCardBrand(paymentFormValues)} ending in{' '}
+                              {paymentFormValues.card.last4}
+                            </h4>
+                            <small className='text-muted'>
+                              Expires {`${expirationMonth}/${expirationYear}`}
+                            </small>
+                          </div>
+                        </div>
+
+                        {/* <h3 className='sofia-pro mb-0 mt-2 mb-2 text-14 ine-height-16 c-add'>
+                                   Card Address
+                                 </h3>
+                                 <div>
+                                   <h4 className='p-0 m-0 sofia-pro postal-name'>
+                                     {paymentFormValues.billing_details.name}
+                                   </h4>
+                                   <h4 className='p-0 m-0 sofia-pro line1'>
+                                     {addressFormValues.line1}
+                                   </h4>
+                                   <h4 className='p-0 m-0 sofia-pro line1'>
+                                     {addressFormValues.line2}
+                                   </h4>
+           
+                                   <h4 className='p-0 m-0 sofia-pro postal-address'>
+                                     {addressFormValues.city}, {addressFormValues.state}{' '}
+                                     {addressFormValues.zipCode}
+                                   </h4>
+                                   <h4 className='p-0 m-0 sofia-pro line1'>
+                                     United States
+                                   </h4>
+                                 </div> */}
+                      </div>
+                      {/**
+                       * PAYMENT DETAILS MOBILE
+                       */}
+                      <div className='pl-4 pr-4 pb-0 pt-0 payment-details-mobile'>
+                        <Collapsible
+                          open={IsPaymentOpen}
+                          onTriggerOpening={() => setIsPaymentOpen(true)}
+                          onTriggerClosing={() => setIsPaymentOpen(false)}
+                          trigger={
+                            <div className='payment-trigger'>
+                              <Row
+                                className='p-3'
+                                style={{
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                }}
+                              >
+                                <Col
+                                  className='p-0'
+                                  style={{
+                                    display: 'flex',
+                                  }}
+                                >
+                                  <div className='img-container payment-card-logo'>
+                                    <img
+                                      style={{
+                                        width: '38px',
+                                      }}
+                                      src={getCardImage(paymentFormValues)}
+                                      alt='...'
+                                    />
+                                  </div>
+                                  <div
+                                    className='ml-3'
+                                    style={{
+                                      marginTop: '5px',
+                                    }}
+                                  >
+                                    <h4 className='text-14 text ending-text mb-0'>
+                                      {getCardBrand(paymentFormValues)} ending
+                                      in {paymentFormValues.card.last4}
+                                    </h4>
+                                    <small className='text-muted'>
+                                      Expires{' '}
+                                      {`${expirationMonth}/${expirationYear}`}
+                                    </small>
+                                  </div>
+                                </Col>
+                                <div
+                                  className='arrow-container d-flex'
+                                  style={{
+                                    alignItems: 'center',
+                                  }}
+                                >
+                                  {IsPaymentOpen ? (
+                                    <img src={DownArrow} />
+                                  ) : (
+                                    <img src={LeftArrow} />
+                                  )}
+                                </div>
+                              </Row>
+                            </div>
+                          }
+                        >
+                          <div className='card-body payment-details-card-body m-0 p-0'>
+                            {/* <div className='text-14 text ending-text'>
+                                       Card Address
+                                     </div>
+                                     <div>
+                                       <h4 className='p-0 m-0 sofia-pro postal-name'>
+                                         {paymentFormValues.billing_details.name}
+                                       </h4>
+                                       <h4 className='p-0 m-0 sofia-pro line1'>
+                                         {addressFormValues.line1}
+                                       </h4>
+                                       <h4 className='p-0 m-0 sofia-pro line2'>
+                                         {addressFormValues.line2}
+                                       </h4>
+           
+                                       <h4 className='p-0 m-0 sofia-pro postal-address'>
+                                         {addressFormValues.city},{' '}
+                                         {addressFormValues.state}{' '}
+                                         {addressFormValues.zipCode}
+                                       </h4>
+                                       <h4 className='p-0 m-0 sofia-pro line1'>
+                                         United States
+                                       </h4>
+                                     </div> */}
+                            <div className='address-actions mt-2'>
+                              <h4
+                                className='text-instructions'
+                                onClick={() => setShowEditPayment(true)}
+                              >
+                                Use different payment method
+                              </h4>
+                            </div>
+                          </div>
+                        </Collapsible>
+                      </div>
+                    </>
+                  )}
+
+                  {isPaymentFormEmpty && (
+                    <EmptyPayment
+                      loading={loading}
+                      renderSpinner={renderSpinner}
+                      renderStopSpinner={renderStopSpinner}
+                      onClick={() => setShowEditPayment(true)}
+                    />
+                  )}
+                </div>
+              </div>
+            )}
+
+            {userInfo && userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
+              <MyPlan />
+            )}
+
             {/* RETURN SCHEDULE */}
             <div className={isMobile ? 'col-sm-12' : 'col-sm-4'}>
               {isMobile && <p className='mobile-form-title mt-4'>Pick up</p>}
@@ -877,10 +883,6 @@ export default function PickUpDetails({
                 </div>
               </div>
             </div>
-
-            {userInfo && userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
-              <MyPlan />
-            )}
           </>
         )}
         <SchedulingModal
