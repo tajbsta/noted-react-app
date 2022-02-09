@@ -19,6 +19,7 @@ export default function ModifyCheckoutCard({
   pricingDetails = {},
   isFetchingPrice,
   confirmed,
+  user,
 }) {
   const potentialReturnValue = get(pricingDetails, 'potentialReturnValue', 0);
   const inReturn = get(pricingDetails, 'totalReturns', 0);
@@ -85,37 +86,54 @@ export default function ModifyCheckoutCard({
             {!confirmed && (
               <>
                 <hr className='line-break-2' />
-                <div className='row'>
-                  <div className='col'>
-                    <h5 className='sofia-pro text-muted value-label'>
-                      Return total cost
-                    </h5>
+                {Number(user?.['custom:no_of_pickups']) > 0 ? (
+                  <>
+                    <div className='row'>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-muted value-label'>
+                          Return total cost
+                        </h5>
+                      </div>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-right'>${inPrice}</h5>
+                      </div>
+                    </div>
+                    <div className='row'>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-muted value-label'>
+                          Taxes
+                        </h5>
+                      </div>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-right'>
+                          ${inTaxes.toFixed(2)}
+                        </h5>
+                      </div>
+                    </div>
+                    <hr className='line-break-3' />
+                    <div className='row'>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-muted'>Total paid</h5>
+                      </div>
+                      <div className='col'>
+                        <h5 className='sofia-pro text-right total-now'>
+                          ${inTotalPrice}
+                        </h5>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className='row'>
+                    <div className='col'>
+                      <h5 className='sofia-pro text-muted value-label'>
+                        Pick-up spent
+                      </h5>
+                    </div>
+                    <div className='col'>
+                      <h5 className='sofia-pro text-right'>1</h5>
+                    </div>
                   </div>
-                  <div className='col'>
-                    <h5 className='sofia-pro text-right'>${inPrice}</h5>
-                  </div>
-                </div>
-                <div className='row'>
-                  <div className='col'>
-                    <h5 className='sofia-pro text-muted value-label'>Taxes</h5>
-                  </div>
-                  <div className='col'>
-                    <h5 className='sofia-pro text-right'>
-                      ${inTaxes.toFixed(2)}
-                    </h5>
-                  </div>
-                </div>
-                <hr className='line-break-3' />
-                <div className='row'>
-                  <div className='col'>
-                    <h5 className='sofia-pro text-muted'>Total paid</h5>
-                  </div>
-                  <div className='col'>
-                    <h5 className='sofia-pro text-right total-now'>
-                      ${inTotalPrice}
-                    </h5>
-                  </div>
-                </div>
+                )}
 
                 {!cancelled && (
                   <>
