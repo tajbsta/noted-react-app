@@ -115,12 +115,6 @@ export const getActiveOrderCounts = async () => {
   return res.data.data;
 };
 
-// Cancel Order
-export const cancelOrder = async (userId, orderId, billing = null) => {
-  const axios = await api();
-  await axios.post(`/${userId}/orders/${orderId}/cancel`, { billing });
-};
-
 // Get Stripe publishable key
 export const getPublicKey = async () => {
   const axios = await api();
@@ -192,4 +186,25 @@ export const updateOrder = async (userId, orderId, order) => {
 
   const res = await axios.patch(`/${userId}/orders/${orderId}`, order);
   return res.data.data;
+};
+
+// Cancel Order
+export const cancelOrder = async (userId, orderId, billing = null) => {
+  const axios = await api();
+  await axios.post(`/${userId}/orders/${orderId}/cancel`, { billing });
+};
+
+export const cancelSubscriptionOrder = async (orderId) => {
+  try {
+    const axios = await api();
+    const { userId } = await getUserSession();
+
+    const cancelResponse = await axios.post(
+      `${userId}/subscription/${orderId}/cancel`
+    );
+    return cancelResponse;
+  } catch (error) {
+    // console.log(error);
+    return false;
+  }
 };

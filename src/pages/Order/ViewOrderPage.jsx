@@ -15,7 +15,7 @@ import ModifyCheckoutCard from './components/ModifyCheckoutCard';
 import MobileModifyCheckoutCard from './components/MobileModifyCheckoutCard';
 import SizeGuideModal from '../../modals/SizeGuideModal';
 import CancelOrderModal from '../../modals/CancelOrderModal';
-import { getUserId } from '../../api/auth';
+import { getUserId, getUser } from '../../api/auth';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { orderErrors } from '../../library/errors.library';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
@@ -30,6 +30,7 @@ import {
   cancelOrder,
   getOrder,
   getOrderPricing,
+  cancelSubscriptionOrder,
 } from '../../api/orderApi';
 import { setCartItems, clearCart } from '../../actions/cart.action';
 import PRICING from '../../constants/pricing';
@@ -81,6 +82,7 @@ const ViewOrder = () => {
   const [itemsToDonate, setItemsToDonate] = useState([]);
   const [itemsToReturn, setItemsToReturn] = useState([]);
   const [selectedDonationOrg, setSelectedDonationOrg] = useState({});
+  const [user, setUser] = useState(null);
 
   /**HANDLE SELECT DONATION ORGANIZATION */
   const handleSelectDonationOrg = (org) => {
@@ -141,7 +143,13 @@ const ViewOrder = () => {
     setLoading(true);
     try {
       const userId = await getUserId();
-      await cancelOrder(userId, order.id, billing);
+
+      if (order.billing[0].paymentMethod === 'subscription') {
+        await cancelSubscriptionOrder(order.id);
+      } else {
+        await cancelOrder(userId, order.id, billing);
+      }
+
       setShowCancelOrderModal(false);
       setLoading(false);
       showSuccess({
@@ -497,6 +505,13 @@ const ViewOrder = () => {
     setItemsToReturn(notDonations);
   }, [items]);
 
+  useEffect(() => {
+    (async () => {
+      const user = await getUser();
+      setUser(user);
+    })();
+  }, []);
+
   return (
     <div id='ViewOrderPage'>
       {isMobile && (
@@ -505,6 +520,7 @@ const ViewOrder = () => {
           confirmed={confirmed}
           loading={loading}
           hasModifications={hasModifications}
+          user={user}
           ConfirmUpdate={() => {
             ConfirmUpdate();
           }}
