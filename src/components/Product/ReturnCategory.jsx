@@ -12,6 +12,8 @@ import { setCartItems } from '../../actions/cart.action';
 import { fixedEncodeURIComponent } from '../../utils/data';
 import { isEmpty } from 'lodash';
 import { toggleArchiveItem } from '../../api/productsApi';
+import { showError, showSuccess } from '../../library/notifications.library';
+import { AlertCircle, CheckCircle } from 'react-feather';
 
 export default function ReturnCategory({
   userId,
@@ -90,6 +92,13 @@ export default function ReturnCategory({
       handleRefreshCategory(fetchItems, category);
     }
     setIsItemArchived(false);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      fetchItems();
+    }, 1000);
+    setIsItemArchived(false);
   }, [isItemArchived]);
 
   useEffect(() => {
@@ -146,9 +155,33 @@ export default function ReturnCategory({
     dispatch(setCartItems(list));
   };
 
-  const onArchive = (id) => {
-    toggleArchiveItem({ _id: id, isArchived: true });
+  const onArchive = async (id) => {
+    const response = await toggleArchiveItem({ _id: id, isArchived: true });
     setIsItemArchived(true);
+
+    if (response) {
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Successfully unarchived your item, check your dashboard.
+            </h4>
+          </div>
+        ),
+      });
+    } else {
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Failed to unarchive your item, try again later.
+            </h4>
+          </div>
+        ),
+      });
+    }
   };
 
   return (

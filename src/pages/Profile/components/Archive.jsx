@@ -5,8 +5,8 @@ import { getProducts } from '../../../api/productsApi';
 import { timeout } from '../../../utils/time';
 import { isEmpty } from 'lodash-es';
 import { ProgressBar } from 'react-bootstrap';
-import { AlertCircle } from 'react-feather';
-import { showError } from '../../../library/notifications.library';
+import { AlertCircle, CheckCircle } from 'react-feather';
+import { showError, showSuccess } from '../../../library/notifications.library';
 import { toggleArchiveItem } from '../../../api/productsApi';
 
 export default function Archive({ user }) {
@@ -14,15 +14,10 @@ export default function Archive({ user }) {
   const [archivedItems, setArchivedItems] = useState(null);
   const [lastEvaluatedKey, setLastEvaluatedKey] = useState(null);
   const [loadProgress, setLoadProgress] = useState(0);
-  const [fetchingOrders, setFetchingOrders] = useState(false);
-  const [isItemUnArchived, setIsItemunArchived] = useState(false);
+  const [fetchArchivedItems, setFetchArchivedItems] = useState(false);
+  const [isitemArchived, setIsItemArchived] = useState(false);
 
-  const onArchive = (id) => {
-    toggleArchiveItem({ _id: id, isArchived: false });
-    setIsItemunArchived(true);
-  };
-
-  const fetchArchivedItems = async (nextPageKey = null) => {
+  const initFetchArchivedItems = async (nextPageKey = null) => {
     const params = {
       userId: user.sub,
       sortBy: 'updated_at,_id',
@@ -31,7 +26,7 @@ export default function Archive({ user }) {
     };
 
     try {
-      setFetchingOrders(true);
+      setFetchArchivedItems(true);
 
       setLoadProgress(20);
       await timeout(200);
@@ -50,7 +45,7 @@ export default function Archive({ user }) {
        * Give animation some time
        */
       setTimeout(() => {
-        setFetchingOrders(false);
+        setFetchArchivedItems(false);
       }, 600);
     } catch (error) {
       showError({
@@ -63,8 +58,38 @@ export default function Archive({ user }) {
           </div>
         ),
       });
-      setFetchingOrders(false);
+      setFetchArchivedItems(false);
     }
+  };
+
+  const onArchive = async (id) => {
+    const response = await toggleArchiveItem({ _id: id, isArchived: false });
+
+    if (response) {
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Successfully unarchived your item, check your dashboard.
+            </h4>
+          </div>
+        ),
+      });
+    } else {
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Failed to unarchive your item, try again later.
+            </h4>
+          </div>
+        ),
+      });
+    }
+
+    setIsItemArchived(true);
   };
 
   const renderTrigger = () => {
@@ -103,9 +128,15 @@ export default function Archive({ user }) {
   };
 
   useEffect(() => {
-    fetchArchivedItems();
-    setIsItemunArchived(false);
-  }, [isItemUnArchived]);
+    initFetchArchivedItems();
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      initFetchArchivedItems();
+    }, 1000);
+    setIsItemArchived(false);
+  }, [isitemArchived]);
 
   return (
     <Collapsible
@@ -115,8 +146,9 @@ export default function Archive({ user }) {
       onTriggerClosing={() => setIsOpen(false)}
       trigger={renderTrigger()}
     >
-      {!fetchingOrders && isEmpty(archivedItems) && renderEmptiness()}
+      {!fetchArchivedItems && isEmpty(archivedItems) && renderEmptiness()}
       {!isEmpty(archivedItems) &&
+        !fetchArchivedItems &&
         archivedItems.map((item) => (
           <ArchivedItem
             archivedItem={item}
@@ -124,7 +156,7 @@ export default function Archive({ user }) {
             onArchive={onArchive}
           />
         ))}
-      {fetchingOrders && (
+      {fetchArchivedItems && (
         <ProgressBar
           animated
           striped

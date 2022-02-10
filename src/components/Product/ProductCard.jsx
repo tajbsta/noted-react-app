@@ -234,9 +234,14 @@ export default function ProductCard({
                         Donate instead
                       </button>
                     )}
-
-                    <img src={ArchiveIcon} alt='archive' />
                   </Row>
+                  <div
+                    className='d-flex align-items-center pt-2'
+                    onClick={() => onArchive(item)}
+                  >
+                    <img src={ArchiveIcon} alt='archive' className='mr-2' />
+                    <span>Archive your item</span>
+                  </div>
                 </Container>
               </>
             )}
