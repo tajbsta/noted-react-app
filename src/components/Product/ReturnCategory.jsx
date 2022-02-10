@@ -165,7 +165,7 @@ export default function ReturnCategory({
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <CheckCircle />
             <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              Successfully unarchived your item, check your dashboard.
+              Successfully archived your item.
             </h4>
           </div>
         ),
@@ -176,7 +176,7 @@ export default function ReturnCategory({
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AlertCircle />
             <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              Failed to unarchive your item, try again later.
+              Failed to archive your item, try again later.
             </h4>
           </div>
         ),
