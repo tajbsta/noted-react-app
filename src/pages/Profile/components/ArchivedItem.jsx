@@ -41,7 +41,7 @@ export default function ArchivedItem({ archivedItem, onArchive }) {
           <div className='flex row align-items-center justify-content-between'>
             <Col sm={6} className='flex row px-0'>
               <img
-                src={thumbnail}
+                src={thumbnail ? thumbnail : ProductPlaceholder}
                 className='mr-3'
                 style={{
                   border: '1px solid #f0f0f0',
