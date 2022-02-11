@@ -237,7 +237,7 @@ export default function ProductCard({
                   </Row>
                   <div
                     className='d-flex align-items-center pt-2'
-                    onClick={() => onArchive(item)}
+                    onClick={() => onArchive(item._id)}
                   >
                     <img src={ArchiveIcon} alt='archive' className='mr-2' />
                     <span>Archive your item</span>
