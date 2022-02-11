@@ -11,9 +11,9 @@ import PRICING from '../constants/pricing';
 import { useDispatch } from 'react-redux';
 import AddPaymentForm from '../components/Forms/AddPaymentForm';
 import { pickUpRefill, subscriptionUpgrade } from '../api/subscription';
-import SubscriptionCard from '../components/Subscription/SubscriptionCard';
 import { showError, showSuccess } from '../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
+import * as Sentry from '@sentry/react';
 
 export default function PickUpLeftModal({
   setValidPayment,
@@ -27,15 +27,8 @@ export default function PickUpLeftModal({
   const [isPaymentFormEmpty, setIsPaymentFormEmpty] = useState(true);
   const [paymentFormValues, setPaymentFormValues] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
-  const [selectedPlan, setSelectedPlan] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
   const [isRefillSelected, setISRefillSelected] = useState(false);
-
-  const onSubscriptionSelect = (subscription) => {
-    setSelectedPlan(subscription);
-    setIsSelected(subscription.plan_name);
-  };
 
   const getCardImage = (payment) => {
     const brand = payment ? payment.card.brand : null;
@@ -103,6 +96,8 @@ export default function PickUpLeftModal({
           </div>
         ),
       });
+
+      Sentry.captureException(error);
     }
   };
 
@@ -120,7 +115,6 @@ export default function PickUpLeftModal({
     const orderPaymentId = orderPayment ? orderPayment.paymentMethodId : null;
     const defaultPaymentId =
       orderPaymentId || user['custom:default_payment'] || null;
-    // console.log({ orderPaymentId, defaultPaymentId, paymentMethods });
 
     const defaultPaymentMethod = paymentMethods.find(
       (method) => defaultPaymentId && defaultPaymentId === method.id
@@ -140,7 +134,6 @@ export default function PickUpLeftModal({
 
   useEffect(() => {
     console.log('payment updated');
-    console.log(isRefillSelected);
   }, [paymentFormValues, isRefillSelected]);
 
   const Summary = ({ plan }) => {

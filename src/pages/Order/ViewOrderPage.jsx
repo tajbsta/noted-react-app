@@ -643,6 +643,8 @@ const ViewOrder = () => {
                   isFetchingPrice={isFetchingPrice}
                   hasModifications={hasModifications}
                   confirmed={confirmed}
+                  paymentMethod={order && order?.billing[0].paymentMethod}
+                  user={user}
                 />
               </div>
             </>
@@ -733,6 +735,8 @@ const ViewOrder = () => {
             ConfirmCancellation={ConfirmCancellation}
             initiateCancelOrder={initiateCancelOrder}
             removeCancelOrderModal={removeCancelOrderModal}
+            paymentMethod={order?.billing[0].paymentMethod}
+            user={user}
           />
         </>
       )}

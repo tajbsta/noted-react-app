@@ -47,14 +47,34 @@ export default function CancelOrderModal(props) {
       </Modal.Header>
       <Modal.Body className='sofia-pro'>
         <div className='d-flex justify-content-center'>
-          <p className='sofia-pro info'>
-            Canceling pick-ups less than 24h before schedule will result in a $5
-            penalty.
-          </p>
+          {props.paymentMethod !== 'subscription' &&
+            props.user?.['custom:stripe_sub_name'] === 'Ruby' && (
+              <p className='sofia-pro info'>
+                Canceling pick-ups less than 24h before schedule will result in
+                a $4.99 penalty.
+              </p>
+            )}
+
+          {props.paymentMethod === 'subscription' &&
+            (props.user?.['custom:stripe_sub_name'] === 'Ruby' ||
+              props.user?.['custom:stripe_sub_name'] === 'Emerald') && (
+              <p className='sofia-pro info'>
+                Canceling pick-ups less than 24h before schedule will not refund
+                your pickup credit.
+              </p>
+            )}
+
+          {props.paymentMethod === 'subscription' &&
+            props.user?.['custom:stripe_sub_name'] === 'Diamond' && (
+              <p className='sofia-pro info'>
+                Canceling pick-ups less than 1h before schedule will not refund
+                your pickup credit.
+              </p>
+            )}
         </div>
-        <div className='d-flex justify-content-center'>
+        {/* <div className='d-flex justify-content-center'>
           <a className='sofia-pro view-link'>More info</a>
-        </div>
+        </div> */}
         <div className='button-group'>
           <Button
             className='btn-cancel'

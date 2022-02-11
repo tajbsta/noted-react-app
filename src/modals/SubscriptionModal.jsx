@@ -9,6 +9,9 @@ import EmeraldIcon from '../assets/icons/EmeraldIcon.svg';
 import StripeForm from '../components/Forms/StripeForm';
 import { setPayment } from '../actions/cart.action';
 import { subscribeUserToRuby } from '../api/subscription';
+import { AlertCircle } from 'react-feather';
+import { showError } from '../library/notifications.library';
+import * as Sentry from '@sentry/react';
 
 export default function SubscriptionModal({ show, onClose, plans }) {
   const dispatch = useDispatch();
@@ -32,9 +35,23 @@ export default function SubscriptionModal({ show, onClose, plans }) {
   const onRubyClick = async () => {
     onSubscriptionSelect(plans.find((p) => p.tag === 'ruby'));
 
-    const resp = await subscribeUserToRuby(false);
-    if (resp.status === 201) {
-      onClose();
+    try {
+      const resp = await subscribeUserToRuby(false);
+      if (resp.status === 201) {
+        onClose();
+      }
+    } catch (error) {
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Error! subscription fail!
+            </h4>
+          </div>
+        ),
+      });
+      Sentry.captureException(error);
     }
   };
 

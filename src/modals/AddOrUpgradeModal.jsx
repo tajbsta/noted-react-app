@@ -14,6 +14,7 @@ import { pickUpRefill, subscriptionUpgrade } from '../api/subscription';
 import SubscriptionCard from '../components/Subscription/SubscriptionCard';
 import { showError, showSuccess } from '../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
+import * as Sentry from '@sentry/react';
 
 export default function AddOrUpgradeModal({
   setValidPayment,
@@ -121,6 +122,7 @@ export default function AddOrUpgradeModal({
       });
 
       reset();
+      Sentry.captureException(error);
     }
   };
 

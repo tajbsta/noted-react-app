@@ -16,6 +16,7 @@ import { orderErrors } from '../../library/errors.library';
 import * as Sentry from '@sentry/react';
 import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../models/formSchema';
+import { AlertCircle } from 'react-feather';
 
 export default function StripeForm({
   isCheckoutFlow,
@@ -155,9 +156,20 @@ export default function StripeForm({
             try {
               await subscribeUser(subscriptionPayload);
               isSuccess(true);
+
               reset();
             } catch (error) {
-              console.log(error);
+              showError({
+                message: (
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <AlertCircle />
+                    <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+                      Error! subscription fail!
+                    </h4>
+                  </div>
+                ),
+              });
+              Sentry.captureException(error);
             }
 
             if (isCheckoutFlow) {

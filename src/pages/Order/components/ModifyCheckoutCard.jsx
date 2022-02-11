@@ -20,6 +20,7 @@ export default function ModifyCheckoutCard({
   isFetchingPrice,
   confirmed,
   user,
+  paymentMethod,
 }) {
   const potentialReturnValue = get(pricingDetails, 'potentialReturnValue', 0);
   const inReturn = get(pricingDetails, 'totalReturns', 0);
@@ -86,7 +87,7 @@ export default function ModifyCheckoutCard({
             {!confirmed && (
               <>
                 <hr className='line-break-2' />
-                {Number(user?.['custom:no_of_pickups']) > 0 ? (
+                {paymentMethod !== 'subscription' ? (
                   <>
                     <div className='row'>
                       <div className='col'>
@@ -216,6 +217,8 @@ export default function ModifyCheckoutCard({
         initiateCancelOrder={initiateCancelOrder}
         removeCancelOrderModal={removeCancelOrderModal}
         loading={loading}
+        paymentMethod={paymentMethod}
+        user={user}
       />
     </div>
   );
