@@ -91,7 +91,9 @@ export default function CheckoutCard({
                 <hr className='line-break-2' />
 
                 {Number(user?.['custom:no_of_pickups']) > 0 ? (
-                  <h3 className='ml-auto sofia-pro text-right'>-1 pick-up</h3>
+                  <h3 className='ml-auto sofia-pro text-right noted-red'>
+                    -1 pick-up
+                  </h3>
                 ) : (
                   <>
                     <div className='row'>
