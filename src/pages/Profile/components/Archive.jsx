@@ -107,14 +107,7 @@ export default function Archive({ user }) {
   const renderEmptiness = () => {
     return (
       <>
-        <h3 className='sofia pro empty-message mt-5'>No returns yet!</h3>
-        <h5 className='sofia pro empty-submessage mb-5'>
-          I&apos;m sorry {(user && user.name) || (user && user.email)}, I&apos;m
-          afraid there&apos;s nothing here. Change that by {''}
-          <a href='/dashboard' className='start-returning'>
-            start returning.
-          </a>
-        </h5>
+        <h3 className='sofia pro empty-message mt-5'>No archived items yet!</h3>
       </>
     );
   };
