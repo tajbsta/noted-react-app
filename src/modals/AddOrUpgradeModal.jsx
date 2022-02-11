@@ -306,6 +306,7 @@ export default function AddOrUpgradeModal({
                 isRefillSelected ||
                 userInfo?.['custom:stripe_sub_name'] === 'Emerald'
               }
+              isAddOrUpgrade={isAddOrUpgrade}
             />
           </Col>
           <Col sm={4}>
@@ -319,6 +320,7 @@ export default function AddOrUpgradeModal({
               }
               isSelected={isSelected === 'Diamond'}
               disabled={isRefillSelected}
+              isAddOrUpgrade={isAddOrUpgrade}
             />
           </Col>
         </Row>

@@ -7,6 +7,7 @@ export default function SubscriptionCard({
   isLoading,
   disabled,
   isSelected,
+  isAddOrUpgrade,
 }) {
   const {
     recommendation,
@@ -15,7 +16,10 @@ export default function SubscriptionCard({
     price,
     duration,
     description,
+    upgrade_description,
   } = subscriptionDetails;
+
+  console.log(subscriptionDetails);
 
   return (
     <div
@@ -42,7 +46,9 @@ export default function SubscriptionCard({
           <Card.Text className='subscription-price'>
             {price}/{duration}
           </Card.Text>
-          <Card.Text className='subscription-details'>{description}</Card.Text>
+          <Card.Text className='subscription-details'>
+            {isAddOrUpgrade ? upgrade_description : description}
+          </Card.Text>
           <Button
             variant={
               recommendation || isSelected ? 'primary' : 'outline-primary'
