@@ -76,53 +76,74 @@ export default function AddOrUpgradeModal({
     }, 1000);
   };
 
-  const onSubmitClick = async (plan) => {
-    setIsLoading(true);
-    try {
-      if (plan) {
-        await subscriptionUpgrade({ plan_name: plan });
-
-        showSuccess({
-          message: (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <CheckCircle />
-              <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-                Successfully subscribed, you can check your profile to confirm.
-              </h4>
-            </div>
-          ),
-        });
-      } else {
-        await pickUpRefill();
-
-        showSuccess({
-          message: (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <CheckCircle />
-              <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-                Successfully purchased refills, you can check your profile to
-                confirm.
-              </h4>
-            </div>
-          ),
-        });
-      }
-
-      reset();
-    } catch (error) {
+  const addRefill = async () => {
+    const response = await pickUpRefill();
+    if (!response) {
       showError({
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <AlertCircle />
             <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-              Error! subscription fail!
+              Error! transaction fail!
+            </h4>
+          </div>
+        ),
+      });
+      setIsLoading(false);
+    } else {
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Successfully purchased refills, you can check your profile to
+              confirm.
             </h4>
           </div>
         ),
       });
 
       reset();
-      Sentry.captureException(error);
+    }
+  };
+
+  const upgradeUserSubscription = async (plan) => {
+    const response = await subscriptionUpgrade({ plan_name: plan });
+    if (!response) {
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Error! transaction fail!
+            </h4>
+          </div>
+        ),
+      });
+      setIsLoading(false);
+    } else {
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Subscription successful, you can check your profile to confirm.
+            </h4>
+          </div>
+        ),
+      });
+
+      reset();
+    }
+  };
+
+  const onSubmitClick = async (plan) => {
+    setIsLoading(true);
+
+    if (plan) {
+      await upgradeUserSubscription(plan);
+    } else {
+      await addRefill();
     }
   };
 

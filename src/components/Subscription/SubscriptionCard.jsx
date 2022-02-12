@@ -19,8 +19,6 @@ export default function SubscriptionCard({
     upgrade_description,
   } = subscriptionDetails;
 
-  console.log(subscriptionDetails);
-
   return (
     <div
       className={`SubscriptionCardContainer ${disabled ? 'card-disabled' : ''}`}

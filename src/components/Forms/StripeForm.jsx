@@ -153,12 +153,9 @@ export default function StripeForm({
               phone: values.phoneNumber,
             };
 
-            try {
-              await subscribeUser(subscriptionPayload);
-              isSuccess(true);
+            const response = await subscribeUser(subscriptionPayload);
 
-              reset();
-            } catch (error) {
+            if (!response) {
               showError({
                 message: (
                   <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -169,7 +166,9 @@ export default function StripeForm({
                   </div>
                 ),
               });
-              Sentry.captureException(error);
+            } else {
+              isSuccess(true);
+              reset();
             }
 
             if (isCheckoutFlow) {
