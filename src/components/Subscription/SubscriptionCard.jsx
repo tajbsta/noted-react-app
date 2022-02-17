@@ -8,6 +8,7 @@ export default function SubscriptionCard({
   disabled,
   isSelected,
   isAddOrUpgrade,
+  recommended,
 }) {
   const {
     recommendation,
@@ -23,9 +24,7 @@ export default function SubscriptionCard({
     <div
       className={`SubscriptionCardContainer ${disabled ? 'card-disabled' : ''}`}
     >
-      <Card
-        className={`SubscriptionCard ${recommendation ? 'recommended' : ''}`}
-      >
+      <Card className={`SubscriptionCard ${recommended ? 'recommended' : ''}`}>
         {/* <Card.Header>Featured</Card.Header> */}
         <img
           className={tag}
@@ -34,7 +33,7 @@ export default function SubscriptionCard({
           }
         />
         <Card.Body>
-          {recommendation && (
+          {recommended && (
             <div className='recommended-text'>
               <span>Recommended</span>
             </div>
@@ -48,9 +47,7 @@ export default function SubscriptionCard({
             {isAddOrUpgrade ? upgrade_description : description}
           </Card.Text>
           <Button
-            variant={
-              recommendation || isSelected ? 'primary' : 'outline-primary'
-            }
+            variant={recommended || isSelected ? 'primary' : 'outline-primary'}
             size='md'
             block
             onClick={onButtonClick}
