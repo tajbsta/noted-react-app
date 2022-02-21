@@ -9,14 +9,14 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import JohnnyWas from '../src/lib/vendors/johnnyWas';
+import JohnstonAndMurphy from '../src/lib/vendors/johnstonAndMurphy';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
 
-const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/JOHNNYWAS.json';
+const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/JOHNSTONANDMURPHY.json';
 
-describe(`Johnny Was`, () => {
+describe(`Johnston and Murphy`, () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
@@ -47,25 +47,23 @@ describe(`Johnny Was`, () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await JohnnyWas.parse(VENDOR_CODES.JOHNNYWAS, payload);
+      const orderData = await JohnstonAndMurphy.parse(VENDOR_CODES.JOHNSTONANDMURPHY, payload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '12052801',
+        orderRef: '502133622',
         orderDate: 1634860800000,
         products: [
           {
-            name: 'STONE AND PEARL MULTI STRAND BRACELET',
-            price: 88.0,
-            thumbnail:
-              'https://www.johnnywas.com/media/catalog/product/cache/348e6be5e21a19dad99561e82abea322/n/a/nak0061_mti_1.jpg'
+            name: 'High-Rise Liner Sock',
+            price: 8.0,
+            thumbnail: ''
           },
           {
-            name: 'AGATE TASSEL HOOP EARRING',
-            price: 68.0,
-            thumbnail:
-              'https://www.johnnywas.com/media/catalog/product/cache/348e6be5e21a19dad99561e82abea322/n/a/nak0064_mti_1.jpg'
+            name: 'XC4® Performance Golf Socks',
+            price: 14.0,
+            thumbnail: ''
           }
         ],
-        vendor: VENDOR_CODES.JOHNNYWAS,
+        vendor: VENDOR_CODES.JOHNSTONANDMURPHY,
         emailId: payload.id
       });
     });
@@ -75,35 +73,35 @@ describe(`Johnny Was`, () => {
 
       let updatedBody = updatedPayload.decodedBody;
 
-      updatedBody = updatedBody.replace(`class="item-qty">1</td>`, `class="item-qty">2</td>`);
+      updatedBody = updatedBody.replace(
+        `<td style="vertical-align: top; padding: 10px 0px;">\r\n1\r\n</td>`,
+        `<td style="vertical-align: top; padding: 10px 0px;">\r\n2\r\n</td>`
+      );
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await JohnnyWas.parse(VENDOR_CODES.JOHNNYWAS, updatedPayload);
+      const orderData = await JohnstonAndMurphy.parse(VENDOR_CODES.JOHNSTONANDMURPHY, updatedPayload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '12052801',
+        orderRef: '502133622',
         orderDate: 1634860800000,
         products: [
           {
-            name: 'STONE AND PEARL MULTI STRAND BRACELET (1)',
-            price: 88.0,
-            thumbnail:
-              'https://www.johnnywas.com/media/catalog/product/cache/348e6be5e21a19dad99561e82abea322/n/a/nak0061_mti_1.jpg'
+            name: 'High-Rise Liner Sock (1)',
+            price: 8.0,
+            thumbnail: ''
           },
           {
-            name: 'STONE AND PEARL MULTI STRAND BRACELET (2)',
-            price: 88.0,
-            thumbnail:
-              'https://www.johnnywas.com/media/catalog/product/cache/348e6be5e21a19dad99561e82abea322/n/a/nak0061_mti_1.jpg'
+            name: 'High-Rise Liner Sock (2)',
+            price: 8.0,
+            thumbnail: ''
           },
           {
-            name: 'AGATE TASSEL HOOP EARRING',
-            price: 68.0,
-            thumbnail:
-              'https://www.johnnywas.com/media/catalog/product/cache/348e6be5e21a19dad99561e82abea322/n/a/nak0064_mti_1.jpg'
+            name: 'XC4® Performance Golf Socks',
+            price: 14.0,
+            thumbnail: ''
           }
         ],
-        vendor: VENDOR_CODES.JOHNNYWAS,
+        vendor: VENDOR_CODES.JOHNSTONANDMURPHY,
         emailId: payload.id
       });
     });
@@ -111,7 +109,9 @@ describe(`Johnny Was`, () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(JohnnyWas.parse(VENDOR_CODES.JOHNNYWAS, updatedPayload)).to.eventually.be.rejectedWith(Error);
+      expect(JohnstonAndMurphy.parse(VENDOR_CODES.JOHNSTONANDMURPHY, updatedPayload)).to.eventually.be.rejectedWith(
+        Error
+      );
     });
   });
 });
