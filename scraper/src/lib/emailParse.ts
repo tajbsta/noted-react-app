@@ -70,7 +70,8 @@ import {
   GusMayer,
   Freebird,
   JohnnyWas,
-  JohnstonAndMurphy
+  JohnstonAndMurphy,
+  JosABank
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -288,6 +289,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.JOHNSTONANDMURPHY:
         orderData = await JohnstonAndMurphy.parse(code, payload);
+        break;
+      case VENDOR_CODES.JOSABANK:
+        orderData = await JosABank.parse(code, payload);
         break;
       default:
         break;

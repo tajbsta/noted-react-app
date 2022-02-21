@@ -71,6 +71,7 @@ import GusMayer from './gusMayer';
 import Freebird from './freebird';
 import JohnnyWas from './johnnyWas';
 import JohnstonAndMurphy from './johnstonAndMurphy';
+import JosABank from './josABank';
 
 export {
   FashionNova,
@@ -145,5 +146,6 @@ export {
   GusMayer,
   Freebird,
   JohnnyWas,
-  JohnstonAndMurphy
+  JohnstonAndMurphy,
+  JosABank
 };
