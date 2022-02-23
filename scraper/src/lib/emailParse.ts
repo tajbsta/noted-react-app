@@ -72,7 +72,8 @@ import {
   JohnnyWas,
   JohnstonAndMurphy,
   JosABank,
-  KayJewelers
+  KayJewelers,
+  KiehlsSince1851
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -296,6 +297,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.KAYJEWELERS:
         orderData = await KayJewelers.parse(code, payload);
+        break;
+      case VENDOR_CODES.KIEHLSSINCE1851:
+        orderData = await KiehlsSince1851.parse(code, payload);
         break;
       default:
         break;

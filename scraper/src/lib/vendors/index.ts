@@ -73,6 +73,7 @@ import JohnnyWas from './johnnyWas';
 import JohnstonAndMurphy from './johnstonAndMurphy';
 import JosABank from './josABank';
 import KayJewelers from './kayJewelers';
+import KiehlsSince1851 from './kiehlsSince1851';
 
 export {
   FashionNova,
@@ -149,5 +150,6 @@ export {
   JohnnyWas,
   JohnstonAndMurphy,
   JosABank,
-  KayJewelers
+  KayJewelers,
+  KiehlsSince1851
 };
