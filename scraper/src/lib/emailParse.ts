@@ -75,7 +75,8 @@ import {
   KayJewelers,
   KiehlsSince1851,
   LillyPulitzer,
-  Marmi
+  Marmi,
+  MollyGreen
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -308,6 +309,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.MARMI:
         orderData = await Marmi.parse(code, payload);
+        break;
+      case VENDOR_CODES.MOLLYGREEN:
+        orderData = await MollyGreen.parse(code, payload);
         break;
       default:
         break;
