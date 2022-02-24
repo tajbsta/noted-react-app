@@ -75,6 +75,7 @@ import JosABank from './josABank';
 import KayJewelers from './kayJewelers';
 import KiehlsSince1851 from './kiehlsSince1851';
 import LillyPulitzer from './lillyPulitzer';
+import Marmi from './marmi';
 
 export {
   FashionNova,
@@ -153,5 +154,6 @@ export {
   JosABank,
   KayJewelers,
   KiehlsSince1851,
-  LillyPulitzer
+  LillyPulitzer,
+  Marmi
 };
