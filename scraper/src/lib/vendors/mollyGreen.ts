@@ -27,7 +27,7 @@ export default class MollyGreen {
       const orderRefElement = root.querySelector(
         'body > table > tbody > tr > td > table.header.row > tbody > tr > td > center > table > tbody > tr > td > table > tbody > tr > td.order-number__cell > span'
       );
-      const orderRef = orderRefElement ? orderRefElement.textContent.replace('ORDER #', '').trim() : null;
+      const orderRef = orderRefElement ? orderRefElement.textContent.replace('Order #', '').trim() : null;
       return `${orderRef}`;
     } catch (error) {
       /* istanbul ignore next */

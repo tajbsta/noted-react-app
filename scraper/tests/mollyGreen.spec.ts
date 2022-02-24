@@ -16,7 +16,7 @@ moment.tz.setDefault('Etc/UTC');
 
 const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/MOLLYGREEN.json';
 
-describe.only(`Molly Green`, () => {
+describe(`Molly Green`, () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
@@ -75,7 +75,7 @@ describe.only(`Molly Green`, () => {
 
       let updatedBody = updatedPayload.decodedBody;
 
-      updatedBody = updatedBody.replace(`1</span>`, `2</span>`);
+      updatedBody = updatedBody.replace(`1</span><br/>`, `2</span><br/>`);
 
       updatedPayload.decodedBody = updatedBody;
 
