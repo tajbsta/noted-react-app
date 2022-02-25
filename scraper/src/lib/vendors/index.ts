@@ -78,6 +78,7 @@ import LillyPulitzer from './lillyPulitzer';
 import Marmi from './marmi';
 import MollyGreen from './mollyGreen';
 import Morphe from './morphe';
+import Pandora from './pandora';
 
 export {
   FashionNova,
@@ -159,5 +160,6 @@ export {
   LillyPulitzer,
   Marmi,
   MollyGreen,
-  Morphe
+  Morphe,
+  Pandora
 };

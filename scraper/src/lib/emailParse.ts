@@ -77,7 +77,8 @@ import {
   LillyPulitzer,
   Marmi,
   MollyGreen,
-  Morphe
+  Morphe,
+  Pandora
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -316,6 +317,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.MORPHE:
         orderData = await Morphe.parse(code, payload);
+        break;
+      case VENDOR_CODES.PANDORA:
+        orderData = await Pandora.parse(code, payload);
         break;
       default:
         break;
