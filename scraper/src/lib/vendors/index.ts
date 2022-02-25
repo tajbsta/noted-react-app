@@ -77,6 +77,7 @@ import KiehlsSince1851 from './kiehlsSince1851';
 import LillyPulitzer from './lillyPulitzer';
 import Marmi from './marmi';
 import MollyGreen from './mollyGreen';
+import Morphe from './morphe';
 
 export {
   FashionNova,
@@ -157,5 +158,6 @@ export {
   KiehlsSince1851,
   LillyPulitzer,
   Marmi,
-  MollyGreen
+  MollyGreen,
+  Morphe
 };

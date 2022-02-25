@@ -76,7 +76,8 @@ import {
   KiehlsSince1851,
   LillyPulitzer,
   Marmi,
-  MollyGreen
+  MollyGreen,
+  Morphe
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -312,6 +313,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.MOLLYGREEN:
         orderData = await MollyGreen.parse(code, payload);
+        break;
+      case VENDOR_CODES.MORPHE:
+        orderData = await Morphe.parse(code, payload);
         break;
       default:
         break;
