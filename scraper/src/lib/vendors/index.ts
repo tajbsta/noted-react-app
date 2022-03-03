@@ -80,6 +80,7 @@ import MollyGreen from './mollyGreen';
 import Morphe from './morphe';
 import Pandora from './pandora';
 import SoftSurroundings from './softSurroundings';
+import Sephora from './sephora';
 
 export {
   FashionNova,
@@ -163,5 +164,6 @@ export {
   MollyGreen,
   Morphe,
   Pandora,
-  SoftSurroundings
+  SoftSurroundings,
+  Sephora
 };

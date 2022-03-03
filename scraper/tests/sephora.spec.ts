@@ -9,14 +9,14 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import SoftSurroundings from '../src/lib/vendors/softSurroundings';
+import Sephora from '../src/lib/vendors/sephora';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
 
-const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/SOFTSURROUNDINGS.json';
+const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/SEPHORA.json';
 
-describe('Soft Surroundings', () => {
+describe(`Sephora`, () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
@@ -36,6 +36,7 @@ describe('Soft Surroundings', () => {
     sandbox = sinon.createSandbox();
     sandbox.stub(helpers, 'parseHtmlString').callsFake((body: string) => {
       const dom = new jsdom.JSDOM(body);
+
       return dom.window.document;
     });
   });
@@ -46,57 +47,60 @@ describe('Soft Surroundings', () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await SoftSurroundings.parse(VENDOR_CODES.SOFTSURROUNDINGS, payload);
+      const orderData = await Sephora.parse(VENDOR_CODES.SEPHORA, payload);
+
       expect(orderData).to.be.deep.equal({
-        orderRef: '215047718',
-        orderDate: 0,
+        orderRef: '39571954423',
+        orderDate: 1634515200000,
         products: [
           {
-            name: 'BEAD AND WOOD STRETCH BELT',
-            price: 49.95,
-            thumbnail: 'https://images.softsurroundings.com/products/70x105/1CL5810.jpg'
+            name: 'Mini Forbidden Fig Decorative Tin Candle',
+            thumbnail: 'https://www.sephora.com/sku/pbimage/2471001',
+            price: 10.0
           },
           {
-            name: 'CHIC SNEAKERS',
-            price: 84.0,
-            thumbnail: 'https://images.softsurroundings.com/products/70x105/1BE4821.jpg'
+            name: 'GloWish Luminous Pressed Powder Foundation',
+            thumbnail: 'https://www.sephora.com/sku/pbimage/2474617',
+            price: 33.0
           }
         ],
-        vendor: VENDOR_CODES.SOFTSURROUNDINGS,
+        vendor: VENDOR_CODES.SEPHORA,
         emailId: payload.id
       });
     });
 
     it('should return order data with quantity handled', async () => {
       const updatedPayload = Object.assign({}, payload);
+
       let updatedBody = updatedPayload.decodedBody;
 
-      updatedBody = updatedBody.replace(`line-height:20px;">1</td>`, `line-height:20px;">2</td>`);
+      updatedBody = updatedBody.replace(`Qty: 1`, `Qty: 2`);
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await SoftSurroundings.parse(VENDOR_CODES.SOFTSURROUNDINGS, updatedPayload);
+      const orderData = await Sephora.parse(VENDOR_CODES.SEPHORA, updatedPayload);
+
       expect(orderData).to.be.deep.equal({
-        orderRef: '215047718',
-        orderDate: 0,
+        orderRef: '39571954423',
+        orderDate: 1634515200000,
         products: [
           {
-            name: 'BEAD AND WOOD STRETCH BELT (1)',
-            price: 49.95,
-            thumbnail: 'https://images.softsurroundings.com/products/70x105/1CL5810.jpg'
+            name: 'Mini Forbidden Fig Decorative Tin Candle (1)',
+            thumbnail: 'https://www.sephora.com/sku/pbimage/2471001',
+            price: 10.0
           },
           {
-            name: 'BEAD AND WOOD STRETCH BELT (2)',
-            price: 49.95,
-            thumbnail: 'https://images.softsurroundings.com/products/70x105/1CL5810.jpg'
+            name: 'Mini Forbidden Fig Decorative Tin Candle (2)',
+            thumbnail: 'https://www.sephora.com/sku/pbimage/2471001',
+            price: 10.0
           },
           {
-            name: 'CHIC SNEAKERS',
-            price: 84.0,
-            thumbnail: 'https://images.softsurroundings.com/products/70x105/1BE4821.jpg'
+            name: 'GloWish Luminous Pressed Powder Foundation',
+            thumbnail: 'https://www.sephora.com/sku/pbimage/2474617',
+            price: 33.0
           }
         ],
-        vendor: VENDOR_CODES.SOFTSURROUNDINGS,
+        vendor: VENDOR_CODES.SEPHORA,
         emailId: payload.id
       });
     });
@@ -104,9 +108,7 @@ describe('Soft Surroundings', () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(SoftSurroundings.parse(VENDOR_CODES.SOFTSURROUNDINGS, updatedPayload)).to.eventually.be.rejectedWith(
-        Error
-      );
+      expect(Sephora.parse(VENDOR_CODES.SEPHORA, updatedPayload)).to.eventually.be.rejectedWith(Error);
     });
   });
 });
