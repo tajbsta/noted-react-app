@@ -79,6 +79,7 @@ import Marmi from './marmi';
 import MollyGreen from './mollyGreen';
 import Morphe from './morphe';
 import Pandora from './pandora';
+import SoftSurroundings from './softSurroundings';
 
 export {
   FashionNova,
@@ -161,5 +162,6 @@ export {
   Marmi,
   MollyGreen,
   Morphe,
-  Pandora
+  Pandora,
+  SoftSurroundings
 };

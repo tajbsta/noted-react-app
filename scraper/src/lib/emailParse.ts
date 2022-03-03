@@ -78,7 +78,8 @@ import {
   Marmi,
   MollyGreen,
   Morphe,
-  Pandora
+  Pandora,
+  SoftSurroundings
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -320,6 +321,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.PANDORA:
         orderData = await Pandora.parse(code, payload);
+        break;
+      case VENDOR_CODES.SOFTSURROUNDINGS:
+        orderData = await SoftSurroundings.parse(code, payload);
         break;
       default:
         break;
