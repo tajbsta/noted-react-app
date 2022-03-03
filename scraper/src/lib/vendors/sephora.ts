@@ -45,7 +45,7 @@ export default class Sephora {
 
       const orderDate = orderDateElement ? orderDateElement.childNodes[1].textContent.trim() : null;
 
-      return orderDate ? moment(orderDate, 'MMMM DD, YYYY HH:mm A').startOf('day').valueOf() : null;
+      return orderDate ? moment(orderDate, 'MMMM DD, YYYY, hh:mm A').startOf('day').valueOf() : null;
     } catch (error) {
       /* istanbul ignore next */
       return null;
