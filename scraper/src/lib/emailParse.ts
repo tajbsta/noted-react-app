@@ -80,7 +80,8 @@ import {
   Morphe,
   Pandora,
   SoftSurroundings,
-  Sephora
+  Sephora,
+  Sundance
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -328,6 +329,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.SEPHORA:
         orderData = await Sephora.parse(code, payload);
+        break;
+      case VENDOR_CODES.SUNDANCE:
+        orderData = await Sundance.parse(code, payload);
         break;
       default:
         break;

@@ -81,6 +81,7 @@ import Morphe from './morphe';
 import Pandora from './pandora';
 import SoftSurroundings from './softSurroundings';
 import Sephora from './sephora';
+import Sundance from './sundance';
 
 export {
   FashionNova,
@@ -165,5 +166,6 @@ export {
   Morphe,
   Pandora,
   SoftSurroundings,
-  Sephora
+  Sephora,
+  Sundance
 };
