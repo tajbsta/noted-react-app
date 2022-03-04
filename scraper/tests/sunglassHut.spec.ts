@@ -9,14 +9,14 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import Sundance from '../src/lib/vendors/sundance';
+import SunglassHut from '../src/lib/vendors/sunglassHut';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
 
-const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/SUNDANCE.json';
+const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/SUNGLASSHUT.json';
 
-describe('Sundance', () => {
+describe('Sunglass Hut', () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
@@ -46,25 +46,25 @@ describe('Sundance', () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await Sundance.parse(VENDOR_CODES.SUNDANCE, payload);
+      const orderData = await SunglassHut.parse(VENDOR_CODES.SUNGLASSHUT, payload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '21815983',
-        orderDate: 0,
+        orderRef: '29069354',
+        orderDate: 1634601600000,
         products: [
           {
-            name: 'STOCKING STYLE 4',
-            price: 98.0,
+            name: 'RAY-BAN / RB2195 THALIA / Standard',
+            price: 161.0,
             thumbnail:
-              'http://ii.sundancecatalog.com/fcgi-bin/iipsrv.fcgi?FIF=/images/sundance/source/products/en_us/source/99031.tif&wid=100&cvt=jpeg'
+              'https://assets.sunglasshut.com/is/image/LuxotticaRetail/8056597364065__001.png?SGH_bgtransparent&width=180'
           },
           {
-            name: 'BLACK/GOLD SATIN 4PC CHEESE SET',
-            price: 58.0,
+            name: 'MICHAEL KORS / MK5004 CHELSEA / Standard',
+            price: 99.0,
             thumbnail:
-              'http://ii.sundancecatalog.com/fcgi-bin/iipsrv.fcgi?FIF=/images/sundance/source/products/en_us/source/98281.tif&wid=100&cvt=jpeg'
+              'https://assets.sunglasshut.com/is/image/LuxotticaRetail/725125941938__001.png?SGH_bgtransparent&width=180'
           }
         ],
-        vendor: VENDOR_CODES.SUNDANCE,
+        vendor: VENDOR_CODES.SUNGLASSHUT,
         emailId: payload.id
       });
     });
@@ -73,35 +73,35 @@ describe('Sundance', () => {
       const updatedPayload = Object.assign({}, payload);
       let updatedBody = updatedPayload.decodedBody;
 
-      updatedBody = updatedBody.replace(`(1)</a></p>`, `(2)</a></p>`);
+      updatedBody = updatedBody.replace(`color: #555555;">1</span>`, `color: #555555;">2</span>`);
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await Sundance.parse(VENDOR_CODES.SUNDANCE, updatedPayload);
+      const orderData = await SunglassHut.parse(VENDOR_CODES.SUNGLASSHUT, updatedPayload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '21815983',
-        orderDate: 0,
+        orderRef: '29069354',
+        orderDate: 1634601600000,
         products: [
           {
-            name: 'STOCKING STYLE 4 (1)',
-            price: 98.0,
+            name: 'RAY-BAN / RB2195 THALIA / Standard (1)',
+            price: 161.0,
             thumbnail:
-              'http://ii.sundancecatalog.com/fcgi-bin/iipsrv.fcgi?FIF=/images/sundance/source/products/en_us/source/99031.tif&wid=100&cvt=jpeg'
+              'https://assets.sunglasshut.com/is/image/LuxotticaRetail/8056597364065__001.png?SGH_bgtransparent&width=180'
           },
           {
-            name: 'STOCKING STYLE 4 (2)',
-            price: 98.0,
+            name: 'RAY-BAN / RB2195 THALIA / Standard (2)',
+            price: 161.0,
             thumbnail:
-              'http://ii.sundancecatalog.com/fcgi-bin/iipsrv.fcgi?FIF=/images/sundance/source/products/en_us/source/99031.tif&wid=100&cvt=jpeg'
+              'https://assets.sunglasshut.com/is/image/LuxotticaRetail/8056597364065__001.png?SGH_bgtransparent&width=180'
           },
           {
-            name: 'BLACK/GOLD SATIN 4PC CHEESE SET',
-            price: 58.0,
+            name: 'MICHAEL KORS / MK5004 CHELSEA / Standard',
+            price: 99.0,
             thumbnail:
-              'http://ii.sundancecatalog.com/fcgi-bin/iipsrv.fcgi?FIF=/images/sundance/source/products/en_us/source/98281.tif&wid=100&cvt=jpeg'
+              'https://assets.sunglasshut.com/is/image/LuxotticaRetail/725125941938__001.png?SGH_bgtransparent&width=180'
           }
         ],
-        vendor: VENDOR_CODES.SUNDANCE,
+        vendor: VENDOR_CODES.SUNGLASSHUT,
         emailId: payload.id
       });
     });
@@ -109,7 +109,7 @@ describe('Sundance', () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(Sundance.parse(VENDOR_CODES.SUNDANCE, updatedPayload)).to.eventually.be.rejectedWith(Error);
+      expect(SunglassHut.parse(VENDOR_CODES.SUNGLASSHUT, updatedPayload)).to.eventually.be.rejectedWith(Error);
     });
   });
 });

@@ -81,7 +81,8 @@ import {
   Pandora,
   SoftSurroundings,
   Sephora,
-  Sundance
+  Sundance,
+  SunglassHut
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -332,6 +333,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.SUNDANCE:
         orderData = await Sundance.parse(code, payload);
+        break;
+      case VENDOR_CODES.SUNGLASSHUT:
+        orderData = await SunglassHut.parse(code, payload);
         break;
       default:
         break;
