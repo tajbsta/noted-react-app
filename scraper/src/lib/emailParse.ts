@@ -83,7 +83,8 @@ import {
   Sephora,
   Sundance,
   SunglassHut,
-  TheContainerStore
+  TheContainerStore,
+  TiffanyAndCo
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -340,6 +341,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.THECONTAINERSTORE:
         orderData = await TheContainerStore.parse(code, payload);
+        break;
+      case VENDOR_CODES.TIFFANYANDCO:
+        orderData = await TiffanyAndCo.parse(code, payload);
         break;
       default:
         break;
