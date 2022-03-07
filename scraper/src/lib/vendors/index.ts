@@ -83,6 +83,7 @@ import SoftSurroundings from './softSurroundings';
 import Sephora from './sephora';
 import Sundance from './sundance';
 import SunglassHut from './sunglassHut';
+import TheContainerStore from './theContainerStore';
 
 export {
   FashionNova,
@@ -169,5 +170,6 @@ export {
   SoftSurroundings,
   Sephora,
   Sundance,
-  SunglassHut
+  SunglassHut,
+  TheContainerStore
 };
