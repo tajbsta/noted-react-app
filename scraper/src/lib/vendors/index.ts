@@ -85,6 +85,7 @@ import Sundance from './sundance';
 import SunglassHut from './sunglassHut';
 import TheContainerStore from './theContainerStore';
 import TiffanyAndCo from './tiffanyAndco';
+import TommyJohn from './tommyJohn';
 
 export {
   FashionNova,
@@ -173,5 +174,6 @@ export {
   Sundance,
   SunglassHut,
   TheContainerStore,
-  TiffanyAndCo
+  TiffanyAndCo,
+  TommyJohn
 };

@@ -84,7 +84,8 @@ import {
   Sundance,
   SunglassHut,
   TheContainerStore,
-  TiffanyAndCo
+  TiffanyAndCo,
+  TommyJohn
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -344,6 +345,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.TIFFANYANDCO:
         orderData = await TiffanyAndCo.parse(code, payload);
+        break;
+      case VENDOR_CODES.TOMMYJOHN:
+        orderData = await TommyJohn.parse(code, payload);
         break;
       default:
         break;
