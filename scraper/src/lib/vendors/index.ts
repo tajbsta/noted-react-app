@@ -86,6 +86,7 @@ import SunglassHut from './sunglassHut';
 import TheContainerStore from './theContainerStore';
 import TiffanyAndCo from './tiffanyAndco';
 import TommyJohn from './tommyJohn';
+import ToryBurch from './toryBurch';
 
 export {
   FashionNova,
@@ -175,5 +176,6 @@ export {
   SunglassHut,
   TheContainerStore,
   TiffanyAndCo,
-  TommyJohn
+  TommyJohn,
+  ToryBurch
 };
