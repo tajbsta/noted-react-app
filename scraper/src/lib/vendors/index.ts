@@ -88,6 +88,7 @@ import TiffanyAndCo from './tiffanyAndco';
 import TommyJohn from './tommyJohn';
 import ToryBurch from './toryBurch';
 import Untuckit from './untuckit';
+import WilliamsSonoma from './williamsSonoma';
 
 export {
   FashionNova,
@@ -179,5 +180,6 @@ export {
   TiffanyAndCo,
   TommyJohn,
   ToryBurch,
-  Untuckit
+  Untuckit,
+  WilliamsSonoma
 };
