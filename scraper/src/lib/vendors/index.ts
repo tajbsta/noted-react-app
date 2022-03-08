@@ -87,6 +87,7 @@ import TheContainerStore from './theContainerStore';
 import TiffanyAndCo from './tiffanyAndco';
 import TommyJohn from './tommyJohn';
 import ToryBurch from './toryBurch';
+import Untuckit from './untuckit';
 
 export {
   FashionNova,
@@ -177,5 +178,6 @@ export {
   TheContainerStore,
   TiffanyAndCo,
   TommyJohn,
-  ToryBurch
+  ToryBurch,
+  Untuckit
 };

@@ -86,7 +86,8 @@ import {
   TheContainerStore,
   TiffanyAndCo,
   TommyJohn,
-  ToryBurch
+  ToryBurch,
+  Untuckit
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -352,6 +353,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.TORYBURCH:
         orderData = await ToryBurch.parse(code, payload);
+        break;
+      case VENDOR_CODES.UNTUCKIT:
+        orderData = await Untuckit.parse(code, payload);
         break;
       default:
         break;
