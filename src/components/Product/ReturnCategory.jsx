@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Row from '../Row';
 import ProductCard from './ProductCard';
-import { ProgressBar } from 'react-bootstrap';
+import { ProgressBar, Overlay, Tooltip } from 'react-bootstrap';
 import QuestionMarkSvg from '../../assets/icons/QuestionMark.svg';
 import { getProducts } from '../../api/productsApi';
 import NotedCheckbox from './NotedCheckbox';
@@ -23,6 +23,7 @@ export default function ReturnCategory({
   search,
   refreshCategory = {},
   handleRefreshCategory = () => {},
+  tooltipMessage,
 }) {
   const { cartItems } = useSelector(({ cart: { items: cartItems } }) => ({
     cartItems,
@@ -37,6 +38,8 @@ export default function ReturnCategory({
   const sort = category === DONATE ? 'desc' : 'asc,asc';
   const [loadProgress, setLoadProgress] = useState(0);
   const [isItemArchived, setIsItemArchived] = useState(false);
+  const target = useRef(null);
+  const [showToolTip, setShowToolTip] = useState(false);
 
   const fetchItems = async (nextPageToken) => {
     try {
@@ -215,6 +218,9 @@ export default function ReturnCategory({
             }}
             data-toggle='tooltip'
             data-placement='top'
+            ref={target}
+            onMouseOver={() => setShowToolTip(true)}
+            onMouseLeave={() => setShowToolTip(false)}
           />
         </div>
       </Row>
@@ -253,6 +259,16 @@ export default function ReturnCategory({
           </button>
         </div>
       )}
+
+      <Overlay target={target.current} show={showToolTip} placement='right'>
+        {(props) => (
+          <Tooltip id='overlay-example' {...props}>
+            <span style={{ fontFamily: 'Sofia Pro !important' }}>
+              {tooltipMessage}
+            </span>
+          </Tooltip>
+        )}
+      </Overlay>
     </div>
   );
 }

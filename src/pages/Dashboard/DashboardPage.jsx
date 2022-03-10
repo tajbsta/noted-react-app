@@ -316,6 +316,7 @@ export default function DashboardPage({ triggerScanNow }) {
                         category={`${LAST_CALL},${NOT_ELIGIBLE}`}
                         refreshCategory={refreshCategory}
                         handleRefreshCategory={handleRefreshCategory}
+                        tooltipMessage='These items are down to the last 30 days'
                       />
                     </div>
                     <div className='mt-4 returnable-items'>
@@ -326,6 +327,7 @@ export default function DashboardPage({ triggerScanNow }) {
                         category={RETURNABLE}
                         refreshCategory={refreshCategory}
                         handleRefreshCategory={handleRefreshCategory}
+                        tooltipMessage='These items are eligible for return!'
                       />
                     </div>
                     <div>
@@ -341,6 +343,7 @@ export default function DashboardPage({ triggerScanNow }) {
                         category={DONATE}
                         refreshCategory={refreshCategory}
                         handleRefreshCategory={handleRefreshCategory}
+                        tooltipMessage='Unfortunately, these items are unreturnable. However, you can still have us pick them up and donate them to one of our community partners!'
                       />
                     </div>
                     <div>
