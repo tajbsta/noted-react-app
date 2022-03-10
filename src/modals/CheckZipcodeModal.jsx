@@ -152,12 +152,8 @@ const CollateUserInfo = (props) => {
       return;
     }
 
-    const {
-      firstName,
-      lastName,
-      email,
-      zipCode,
-    } = collateUserInfoFormik.values;
+    const { firstName, lastName, email, zipCode } =
+      collateUserInfoFormik.values;
 
     const data = {
       firstName: firstName.trim(),
@@ -216,9 +212,9 @@ const CollateUserInfo = (props) => {
     <div id='collateUserInfoForm'>
       <p className='unsupported sofia-pro noted-red'>Unsupported Location</p>
       <p className='sofia-pro noted-purple unsupported-mini'>
-        Your zip code is currently not supported by noted, please provide us
-        your information and we will contact you when we are in your
-        neighborhood!
+        Our service is rapidly expanding to other cities! Stay tuned for
+        updates, and we will let you know when we are ready to pick up in your
+        area!
       </p>
       <Form onSubmit={handleSubmitUserInfo}>
         <Row>
