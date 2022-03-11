@@ -109,6 +109,7 @@ export default function RegisterPage() {
                   backgroundColor: 'transparent',
                   border: 'none',
                   height: '48px',
+                  margin: '40px 0',
                 }}
               >
                 <img
@@ -118,12 +119,12 @@ export default function RegisterPage() {
                 />
               </button>
             </div>
-            <div className='line-container'>
+            {/* <div className='line-container'>
               <p className='line-break'>
                 <span>or</span>
               </p>
-            </div>
-            <Form>
+            </div> */}
+            {/* <Form>
               {error && (
                 <div className='alert alert-danger' role='alert'>
                   <h4 className='text-center text-alert'>{error}</h4>
@@ -192,7 +193,7 @@ export default function RegisterPage() {
                   />
                 )}
               </button>
-            </Form>
+            </Form> */}
             <div className='text-left'>
               <small className='text-muted text-left'>
                 By joining noted you agree to our{' '}

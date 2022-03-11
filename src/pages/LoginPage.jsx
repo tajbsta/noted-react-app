@@ -19,6 +19,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
+  const [isEmailLogin, setIsEmailLogin] = useState(false);
   const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
   };
@@ -63,96 +64,135 @@ export default function LoginPage() {
             <p className='text-center'>Need to return or donate</p>
             <p className='text-center'>purchases made in the past?</p>
             <p className='text-center'>Let's go!</p>
-            <div className='form-group'>
-              <button
-                onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
-                style={{
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  height: '48px',
-                }}
-              >
-                <img
-                  src={GoogleLogoItem}
-                  style={{ marginRight: '15px', height: '48px' }}
-                  alt='google_sign_in'
-                />
-              </button>
-            </div>
-            <div className='line-container'>
-              <p className='line-break'>
-                <span>or</span>
-              </p>
-            </div>
-            <Form>
-              {error && (
-                <div className='alert alert-danger' role='alert'>
-                  <h4 className='text-center text-alert'>{error}</h4>
+            {!isEmailLogin && (
+              <>
+                <div className='form-group'>
+                  <button
+                    onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
+                    style={{
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      height: '48px',
+                      margin: '40px 0',
+                    }}
+                  >
+                    <img
+                      src={GoogleLogoItem}
+                      style={{ marginRight: '15px', height: '48px' }}
+                      alt='google_sign_in'
+                    />
+                  </button>
                 </div>
-              )}
 
-              <div className='form-group'>
-                <input
-                  className='form-control form-control-appended'
-                  type='email'
-                  name='email'
-                  placeholder='Your email...'
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
+                <div className='d-flex justify-content-center'>
+                  <button
+                    className=' text-login'
+                    onClick={() => setIsEmailLogin(true)}
+                    style={{
+                      border: 'none',
+                      background: 'none',
+                      cursor: 'pointer',
+                      fontSize: 16,
+                      marginBottom: 40,
+                    }}
+                  >
+                    Login using Email instead
+                  </button>
+                </div>
+              </>
+            )}
 
-              <div className='form-group'>
-                <div className='input-group input-group-merge'>
-                  <input
-                    className='form-control form-control-appended form-pass'
-                    type={passwordShown ? 'text' : 'password'}
-                    name='password'
-                    placeholder='Your password...'
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <div className='input-group-append'>
-                    <span className='input-group-text'>
-                      <i
-                        className={!error ? 'fe-eye' : 'fe-eye-error'}
-                        onClick={togglePasswordVisibility}
-                      >
-                        {passwordShown ? eye : eyeOff}
-                      </i>
-                    </span>
+            {isEmailLogin && (
+              <>
+                <Form style={{ marginTop: 40 }}>
+                  {error && (
+                    <div className='alert alert-danger' role='alert'>
+                      <h4 className='text-center text-alert'>{error}</h4>
+                    </div>
+                  )}
+
+                  <div className='form-group'>
+                    <input
+                      className='form-control form-control-appended'
+                      type='email'
+                      name='email'
+                      placeholder='Your email...'
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
                   </div>
-                </div>
-              </div>
 
-              <h3 className='text-forgot'>
-                <Link
-                  to='forgot-password'
-                  className='text-decoration-underline'
-                >
-                  Forgot Password?
-                </Link>
-              </h3>
-              <button
-                className='btn btn-lg btn-block btn-green mb-3 btn-submit'
-                type='submit'
-                disabled={isSubmitting}
-                onClick={login}
-              >
-                {!isSubmitting ? (
-                  <>
-                    <i className='fe fe-arrow-right'>
-                      <ArrowRight />
-                    </i>
-                    Sign In
-                  </>
-                ) : (
-                  <Spinner
-                    animation='border'
-                    size='sm'
-                    className='spinner btn-spinner'
-                  />
-                )}
-              </button>
-            </Form>
+                  <div className='form-group'>
+                    <div className='input-group input-group-merge'>
+                      <input
+                        className='form-control form-control-appended form-pass'
+                        type={passwordShown ? 'text' : 'password'}
+                        name='password'
+                        placeholder='Your password...'
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                      <div className='input-group-append'>
+                        <span className='input-group-text'>
+                          <i
+                            className={!error ? 'fe-eye' : 'fe-eye-error'}
+                            onClick={togglePasswordVisibility}
+                          >
+                            {passwordShown ? eye : eyeOff}
+                          </i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* <h3 className='text-forgot'>
+    <Link
+      to='forgot-password'
+      className='text-decoration-underline'
+    >
+      Forgot Password?
+    </Link>
+  </h3> */}
+                  <button
+                    className='btn btn-lg btn-block btn-green mb-3 btn-submit'
+                    type='submit'
+                    disabled={isSubmitting}
+                    onClick={login}
+                  >
+                    {!isSubmitting ? (
+                      <>
+                        <i className='fe fe-arrow-right'>
+                          <ArrowRight />
+                        </i>
+                        Sign In
+                      </>
+                    ) : (
+                      <Spinner
+                        animation='border'
+                        size='sm'
+                        className='spinner btn-spinner'
+                      />
+                    )}
+                  </button>
+                </Form>
+
+                <div className='d-flex justify-content-center'>
+                  <button
+                    className=' text-login'
+                    onClick={() => setIsEmailLogin(false)}
+                    style={{
+                      border: 'none',
+                      background: 'none',
+                      cursor: 'pointer',
+                      fontSize: 16,
+                      marginTop: 20,
+                      marginBottom: 20,
+                    }}
+                  >
+                    Login using GMAIL instead
+                  </button>
+                </div>
+              </>
+            )}
+
             <div className='text-left'>
               <small className='text-muted text-left'>
                 By joining noted you agree to our{' '}
