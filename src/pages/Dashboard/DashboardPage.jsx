@@ -26,6 +26,7 @@ import PickUpLeftModal from '../../modals/PickUpLeftModal';
 import { setIsNewlySignedUp } from '../../actions/auth.action';
 import { Auth } from 'aws-amplify';
 import { subscribeUserToRuby } from '../../api/subscription';
+import moment from 'moment';
 
 export default function DashboardPage({ triggerScanNow }) {
   const [search, setSearch] = useState('');
@@ -210,7 +211,9 @@ export default function DashboardPage({ triggerScanNow }) {
       setUser(user);
       setShowScanOlderButton(user['custom:scan_older_done'] === '0');
 
-      if (user && !user['custom:stripe_sub_name']) {
+      const newUser = moment(user.createdAt).isSame(moment(), 'day');
+
+      if (user && !user['custom:stripe_sub_name'] && !newUser) {
         await subscribeUserToRuby(true);
       }
     })();

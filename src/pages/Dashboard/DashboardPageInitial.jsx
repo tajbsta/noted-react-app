@@ -51,6 +51,7 @@ import { subscriptionPlans } from '../../api/subscription';
 import { loadStripe } from '@stripe/stripe-js';
 import { getPublicKey } from '../../api/orderApi';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
+import { subscribeUserToRuby } from '../../api/subscription';
 
 const Authorize = ({ triggerScanNow }) => {
   return (
@@ -581,6 +582,11 @@ const DashboardPageInitial = () => {
     setShowProductOptions(false);
   };
 
+  const onsubscriptionModalClose = async () => {
+    setShowSubscriptionModal(false);
+    await subscribeUserToRuby(true);
+  };
+
   //INITIALIZE GOOGLE API
   useEffect(() => {
     window.onGoogleScriptLoad = () => {
@@ -604,13 +610,9 @@ const DashboardPageInitial = () => {
   useEffect(async () => {
     const user = await getUser();
 
-    if (user && !user['custom:stripe_sub_name']) {
-      setShowSubscriptionModal(true);
-    } else {
-      setShowSubscriptionModal(false);
-    }
-
     setUser(user);
+
+    console.log(user);
   }, [showSubscriptionModal]);
 
   useEffect(async () => {
@@ -627,7 +629,7 @@ const DashboardPageInitial = () => {
           <div id='DashboardInitial'>
             <SubscriptionModal
               show={showSubscriptionModal}
-              onClose={() => setShowSubscriptionModal(false)}
+              onClose={onsubscriptionModalClose}
               plans={plans}
             />
 
