@@ -91,6 +91,7 @@ import Untuckit from './untuckit';
 import WilliamsSonoma from './williamsSonoma';
 import JJill from './jjill';
 import CrateAndBarrel from './crateandbarrel';
+import BognarAndPiccolini from './bognarAndPiccolini';
 
 export {
   FashionNova,
@@ -185,5 +186,6 @@ export {
   Untuckit,
   WilliamsSonoma,
   JJill,
-  CrateAndBarrel
+  CrateAndBarrel,
+  BognarAndPiccolini
 };
