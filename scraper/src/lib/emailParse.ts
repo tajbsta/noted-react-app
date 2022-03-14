@@ -88,7 +88,8 @@ import {
   TommyJohn,
   ToryBurch,
   Untuckit,
-  WilliamsSonoma
+  WilliamsSonoma,
+  JJill
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -360,6 +361,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.WILLIAMSSONOMA:
         orderData = await WilliamsSonoma.parse(code, payload);
+        break;
+      case VENDOR_CODES.JJILL:
+        orderData = await JJill.parse(code, payload);
         break;
       default:
         break;
