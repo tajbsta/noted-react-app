@@ -90,6 +90,7 @@ import ToryBurch from './toryBurch';
 import Untuckit from './untuckit';
 import WilliamsSonoma from './williamsSonoma';
 import JJill from './jjill';
+import CrateAndBarrel from './crateandbarrel';
 
 export {
   FashionNova,
@@ -183,5 +184,6 @@ export {
   ToryBurch,
   Untuckit,
   WilliamsSonoma,
-  JJill
+  JJill,
+  CrateAndBarrel
 };

@@ -89,7 +89,8 @@ import {
   ToryBurch,
   Untuckit,
   WilliamsSonoma,
-  JJill
+  JJill,
+  CrateAndBarrel
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -364,6 +365,8 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.JJILL:
         orderData = await JJill.parse(code, payload);
+      case VENDOR_CODES.CRATEANDBARREL:
+        orderData = await CrateAndBarrel.parse(code, payload);
         break;
       default:
         break;
