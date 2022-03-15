@@ -92,6 +92,7 @@ import WilliamsSonoma from './williamsSonoma';
 import JJill from './jjill';
 import CrateAndBarrel from './crateandbarrel';
 import BognarAndPiccolini from './bognarAndPiccolini';
+import DryGoods from './dryGoods';
 
 export {
   FashionNova,
@@ -187,5 +188,6 @@ export {
   WilliamsSonoma,
   JJill,
   CrateAndBarrel,
-  BognarAndPiccolini
+  BognarAndPiccolini,
+  DryGoods
 };

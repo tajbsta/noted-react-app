@@ -91,7 +91,8 @@ import {
   WilliamsSonoma,
   JJill,
   CrateAndBarrel,
-  BognarAndPiccolini
+  BognarAndPiccolini,
+  DryGoods
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -372,6 +373,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.BOGNARANDPICCOLINI:
         orderData = await BognarAndPiccolini.parse(code, payload);
+        break;
+      case VENDOR_CODES.DRYGOODS:
+        orderData = await DryGoods.parse(code, payload);
         break;
       default:
         break;
