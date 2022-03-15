@@ -5,8 +5,6 @@ import emailParse from './lib/emailParse';
 export default async function main(vendors: IVendor[], rawEmails: IEmailPayload[]) {
   const promises = [];
 
-  console.log(rawEmails);
-
   for (let i = 0; i < rawEmails.length; i++) {
     const record: IEmailPayload = rawEmails[i];
 

@@ -93,6 +93,7 @@ import JJill from './jjill';
 import CrateAndBarrel from './crateandbarrel';
 import BognarAndPiccolini from './bognarAndPiccolini';
 import DryGoods from './dryGoods';
+import EileenFisher from './eileenFisher';
 
 export {
   FashionNova,
@@ -189,5 +190,6 @@ export {
   JJill,
   CrateAndBarrel,
   BognarAndPiccolini,
-  DryGoods
+  DryGoods,
+  EileenFisher
 };

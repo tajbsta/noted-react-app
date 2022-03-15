@@ -9,14 +9,14 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import DryGoods from '../src/lib/vendors/dryGoods';
+import EileenFisher from '../src/lib/vendors/eileenFisher';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
 
-const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/DRYGOODS.json';
+const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/EILEENFISHER.json';
 
-describe(`Dry Goods`, () => {
+describe('Eileen Fisher', () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
@@ -30,14 +30,12 @@ describe(`Dry Goods`, () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
-    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
     sandbox.stub(helpers, 'parseHtmlString').callsFake((body: string) => {
       const dom = new jsdom.JSDOM(body);
-
       return dom.window.document;
     });
   });
@@ -48,61 +46,60 @@ describe(`Dry Goods`, () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await DryGoods.parse(VENDOR_CODES.DRYGOODS, payload);
+      const orderData = await EileenFisher.parse(VENDOR_CODES.EILEENFISHER, payload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '300448514',
-        orderDate: Number(payload.internalDate),
+        orderRef: '001199724574',
+        orderDate: 1646870400000,
         products: [
           {
-            name: 'Jealous Tomato Seamed Front Flare Jean',
-            price: 0,
-            thumbnail: ''
+            name: 'Cozy Organic Cotton Interlock Lantern Pant',
+            price: 88.0,
+            thumbnail: 'https://s7ondemand5.scene7.com/is/image/EileenFisher/SLANF-B911M-030?$STANDARD_X_87$'
           },
           {
-            name: 'Moa Moa Halter Bodysuit  (Extended Sizes Available)',
-            price: 0,
-            thumbnail: ''
+            name: 'Organic Cotton Low-Profile Sock 3-Pack',
+            price: 18.0,
+            thumbnail: 'https://s7ondemand5.scene7.com/is/image/EileenFisher/S2YRN-L0311M-001?$STANDARD_X_87$'
           }
         ],
-        vendor: VENDOR_CODES.DRYGOODS,
+        vendor: VENDOR_CODES.EILEENFISHER,
         emailId: payload.id
       });
     });
 
     it('should return order data with quantity handled', async () => {
       const updatedPayload = Object.assign({}, payload);
-
       let updatedBody = updatedPayload.decodedBody;
 
       updatedBody = updatedBody.replace(
-        `<td style="text-align: center; width: 75px; ">1</td></tr>`,
-        `<td style="text-align: center; width: 75px; ">2</td></tr>`
+        'border-top: 0; padding-top: 0;">1</td>',
+        'border-top: 0; padding-top: 0;">2</td>'
       );
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await DryGoods.parse(VENDOR_CODES.DRYGOODS, updatedPayload);
+      const orderData = await EileenFisher.parse(VENDOR_CODES.EILEENFISHER, updatedPayload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '300448514',
-        orderDate: Number(payload.internalDate),
+        orderRef: '001199724574',
+        orderDate: 1646870400000,
         products: [
           {
-            name: 'Jealous Tomato Seamed Front Flare Jean (1)',
-            price: 0,
-            thumbnail: ''
+            name: 'Cozy Organic Cotton Interlock Lantern Pant (1)',
+            price: 88.0,
+            thumbnail: 'https://s7ondemand5.scene7.com/is/image/EileenFisher/SLANF-B911M-030?$STANDARD_X_87$'
           },
           {
-            name: 'Jealous Tomato Seamed Front Flare Jean (2)',
-            price: 0,
-            thumbnail: ''
+            name: 'Cozy Organic Cotton Interlock Lantern Pant (2)',
+            price: 88.0,
+            thumbnail: 'https://s7ondemand5.scene7.com/is/image/EileenFisher/SLANF-B911M-030?$STANDARD_X_87$'
           },
           {
-            name: 'Moa Moa Halter Bodysuit  (Extended Sizes Available)',
-            price: 0,
-            thumbnail: ''
+            name: 'Organic Cotton Low-Profile Sock 3-Pack',
+            price: 18.0,
+            thumbnail: 'https://s7ondemand5.scene7.com/is/image/EileenFisher/S2YRN-L0311M-001?$STANDARD_X_87$'
           }
         ],
-        vendor: VENDOR_CODES.DRYGOODS,
+        vendor: VENDOR_CODES.EILEENFISHER,
         emailId: payload.id
       });
     });
@@ -110,7 +107,7 @@ describe(`Dry Goods`, () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(DryGoods.parse(VENDOR_CODES.DRYGOODS, updatedPayload)).to.eventually.be.rejectedWith(Error);
+      expect(EileenFisher.parse(VENDOR_CODES.EILEENFISHER, updatedPayload)).to.eventually.be.rejectedWith(Error);
     });
   });
 });
