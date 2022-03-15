@@ -1,7 +1,7 @@
 import { isEmpty } from '@aws-amplify/core';
 import { useFormik } from 'formik';
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router';
 
 import { Modal, Button, Form, Spinner, Row, Col } from 'react-bootstrap';
 import { CheckCircle } from 'react-feather';
@@ -29,13 +29,14 @@ export default function CheckZipcodeModal(props) {
         animation={false}
         id='CheckZipcodeModal'
       >
-        <Modal.Header
-          closeButton
-          onClick={() => history.push('/login')}
-        ></Modal.Header>
+        <Modal.Header closeButton onClick={props.onHide}></Modal.Header>
         <Modal.Body className='sofia-pro modal-body'>
           {!zipCode && (
-            <CheckForZipCode onHide={props.onHide} updateZipCode={setZipCode} />
+            <CheckForZipCode
+              onHide={props.onHide}
+              updateZipCode={setZipCode}
+              history={history}
+            />
           )}
           {zipCode && (
             <CollateUserInfo
@@ -80,6 +81,7 @@ const CheckForZipCode = (props) => {
       return;
     }
 
+    props.history.push('/checkout');
     props.onHide();
   };
 
@@ -152,8 +154,12 @@ const CollateUserInfo = (props) => {
       return;
     }
 
-    const { firstName, lastName, email, zipCode } =
-      collateUserInfoFormik.values;
+    const {
+      firstName,
+      lastName,
+      email,
+      zipCode,
+    } = collateUserInfoFormik.values;
 
     const data = {
       firstName: firstName.trim(),
@@ -180,8 +186,10 @@ const CollateUserInfo = (props) => {
         ),
       });
       setTimeout(() => {
-        window.location.href = 'https://notedreturns.com';
-      }, 4000);
+        // window.location.href = 'https://notedreturns.com';
+        props.updateZipCode('');
+        props.onHide();
+      }, 3000);
       setIsSubmittingUserInfo(false);
     } catch (e) {
       setIsSubmittingUserInfo(false);

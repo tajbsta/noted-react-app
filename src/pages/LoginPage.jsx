@@ -73,12 +73,12 @@ export default function LoginPage() {
                       backgroundColor: 'transparent',
                       border: 'none',
                       height: '48px',
-                      margin: '40px 0',
+                      margin: '40px 0 20px',
                     }}
                   >
                     <img
                       src={GoogleLogoItem}
-                      style={{ marginRight: '15px', height: '48px' }}
+                      style={{ height: '48px' }}
                       alt='google_sign_in'
                     />
                   </button>
@@ -93,7 +93,7 @@ export default function LoginPage() {
                       background: 'none',
                       cursor: 'pointer',
                       fontSize: 16,
-                      marginBottom: 40,
+                      marginBottom: 60,
                     }}
                   >
                     Login using Email instead

@@ -20,7 +20,7 @@ export default function RegisterPage() {
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
-  const [showCheckZipcodeModal, setShowCheckZipcodeModal] = useState(true);
+  const [showCheckZipcodeModal, setShowCheckZipcodeModal] = useState(false);
   const dispatch = useDispatch();
 
   const togglePasswordVisibility = () => {

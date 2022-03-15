@@ -190,7 +190,11 @@ export default function ProductCard({
             >
               {daysLeft !== 'Donate' &&
                 daysLeft != 0 &&
-                `${daysLeft} ${daysLeft == 1 ? 'day' : 'days'} left`}
+                `${
+                  Number(daysLeft) > 1000
+                    ? 'Unlimited'
+                    : `${daysLeft} ${daysLeft == 1 ? 'day' : 'days'} left`
+                }`}
               {daysLeft === 'Donate' && daysLeft}
               {daysLeft == 0 && 'Expires today'}
             </h4>
@@ -471,7 +475,11 @@ export default function ProductCard({
                 >
                   {daysLeft !== 'Donate' &&
                     daysLeft != 0 &&
-                    `${daysLeft} ${daysLeft == 1 ? 'day' : 'days'} left`}
+                    `${
+                      Number(daysLeft) > 1000
+                        ? 'Unlimited'
+                        : `${daysLeft} ${daysLeft == 1 ? 'day' : 'days'} left`
+                    }`}
                   {daysLeft === 'Donate' && daysLeft}
                   {daysLeft == 0 && 'Expires today'}
                 </div>
