@@ -86,7 +86,7 @@ export default function LoginPage() {
 
                 <div className='d-flex justify-content-center'>
                   <button
-                    className=' text-login'
+                    className='text-login'
                     onClick={() => setIsEmailLogin(true)}
                     style={{
                       border: 'none',
@@ -94,6 +94,7 @@ export default function LoginPage() {
                       cursor: 'pointer',
                       fontSize: 16,
                       marginBottom: 60,
+                      color: '#570097',
                     }}
                   >
                     Login using Email instead
@@ -176,7 +177,7 @@ export default function LoginPage() {
 
                 <div className='d-flex justify-content-center'>
                   <button
-                    className=' text-login'
+                    className='text-login'
                     onClick={() => setIsEmailLogin(false)}
                     style={{
                       border: 'none',
@@ -185,6 +186,7 @@ export default function LoginPage() {
                       fontSize: 16,
                       marginTop: 20,
                       marginBottom: 20,
+                      color: '#570097',
                     }}
                   >
                     Login using GMAIL instead
