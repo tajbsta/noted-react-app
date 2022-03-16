@@ -30,6 +30,7 @@ describe('Gus Mayer', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe('Gus Mayer', () => {
       const orderData = await GusMayer.parse(VENDOR_CODES.GUSMAYER, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '3177',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Kensington Rainshine Chelsea Boot in Tea',
@@ -79,7 +80,7 @@ describe('Gus Mayer', () => {
       const orderData = await GusMayer.parse(VENDOR_CODES.GUSMAYER, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '3177',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Kensington Rainshine Chelsea Boot in Tea (1)',

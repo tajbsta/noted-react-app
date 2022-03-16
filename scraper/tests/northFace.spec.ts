@@ -28,6 +28,7 @@ describe('NORTHFACE', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -47,7 +48,7 @@ describe('NORTHFACE', () => {
       const orderData = await NorthFace.parse(VENDOR_CODES.NORTHFACE, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '47287322',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Men’s Short Sleeve Half Dome Tee',
@@ -79,7 +80,7 @@ describe('NORTHFACE', () => {
       const orderData = await NorthFace.parse(VENDOR_CODES.NORTHFACE, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '47287322',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Men’s Short Sleeve Half Dome Tee (1)',

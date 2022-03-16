@@ -30,6 +30,7 @@ describe('Sundance', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe('Sundance', () => {
       const orderData = await Sundance.parse(VENDOR_CODES.SUNDANCE, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '21815983',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'STOCKING STYLE 4',
@@ -80,7 +81,7 @@ describe('Sundance', () => {
       const orderData = await Sundance.parse(VENDOR_CODES.SUNDANCE, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '21815983',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'STOCKING STYLE 4 (1)',

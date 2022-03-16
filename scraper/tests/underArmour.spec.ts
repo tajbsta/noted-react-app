@@ -28,6 +28,7 @@ describe('UNDERARMOUR', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -47,7 +48,7 @@ describe('UNDERARMOUR', () => {
       const orderData = await UnderArmour.parse(VENDOR_CODES.UNDERARMOUR, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'US-05438313',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: "Girls' HeatGear® Armour Sports Bra",
@@ -72,7 +73,7 @@ describe('UNDERARMOUR', () => {
       const orderData = await UnderArmour.parse(VENDOR_CODES.UNDERARMOUR, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'US-05438313',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: "Girls' HeatGear® Armour Sports Bra (1)",

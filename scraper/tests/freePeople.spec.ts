@@ -28,6 +28,7 @@ describe('Free People', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -47,7 +48,7 @@ describe('Free People', () => {
       const orderData = await FreePeople.parse(VENDOR_CODES.FREEPEOPLE, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'FP03812907',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'James Chelsea Boots',
@@ -70,7 +71,7 @@ describe('Free People', () => {
       const orderData = await FreePeople.parse(VENDOR_CODES.FREEPEOPLE, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'FP03812907',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'James Chelsea Boots (1)',

@@ -28,6 +28,7 @@ describe('FootLocker', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -47,7 +48,7 @@ describe('FootLocker', () => {
       const orderData = await FootLocker.parse(VENDOR_CODES.FOOTLOCKER, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'V4011816446',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: "Nike NSW Collection Bra - Women's",
@@ -71,7 +72,7 @@ describe('FootLocker', () => {
       const orderData = await FootLocker.parse(VENDOR_CODES.FOOTLOCKER, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'V4011816446',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: "Nike NSW Collection Bra - Women's (1)",

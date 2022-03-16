@@ -30,6 +30,7 @@ describe(`Marmi`, () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -50,7 +51,7 @@ describe(`Marmi`, () => {
       const orderData = await Marmi.parse(VENDOR_CODES.MARMI, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '100203633',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Vaneli Bounty',
@@ -80,7 +81,7 @@ describe(`Marmi`, () => {
       const orderData = await Marmi.parse(VENDOR_CODES.MARMI, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '100203633',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Vaneli Bounty (1)',

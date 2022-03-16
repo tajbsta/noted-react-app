@@ -30,6 +30,7 @@ describe('The Container Store', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe('The Container Store', () => {
       const orderData = await TheContainerStore.parse(VENDOR_CODES.THECONTAINERSTORE, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '899112508622',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'iDESIGN Fridge Bins Soda Can Organizer Clear',
@@ -78,7 +79,7 @@ describe('The Container Store', () => {
       const orderData = await TheContainerStore.parse(VENDOR_CODES.THECONTAINERSTORE, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '899112508622',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'iDESIGN Fridge Bins Soda Can Organizer Clear (1)',

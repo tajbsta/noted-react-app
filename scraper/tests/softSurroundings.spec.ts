@@ -30,6 +30,7 @@ describe('Soft Surroundings', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe('Soft Surroundings', () => {
       const orderData = await SoftSurroundings.parse(VENDOR_CODES.SOFTSURROUNDINGS, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '215047718',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'BEAD AND WOOD STRETCH BELT',
@@ -78,7 +79,7 @@ describe('Soft Surroundings', () => {
       const orderData = await SoftSurroundings.parse(VENDOR_CODES.SOFTSURROUNDINGS, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '215047718',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'BEAD AND WOOD STRETCH BELT (1)',

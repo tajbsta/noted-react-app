@@ -30,6 +30,7 @@ describe('Lucky Brand', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe('Lucky Brand', () => {
       const orderData = await LuckyBrand.parse(VENDOR_CODES.LUCKYBRAND, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '15844897',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'SHORT SLEEVE OPEN NECK SHIRT',
@@ -86,7 +87,7 @@ describe('Lucky Brand', () => {
       const orderData = await LuckyBrand.parse(VENDOR_CODES.LUCKYBRAND, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '15844897',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'SHORT SLEEVE OPEN NECK SHIRT (1)',

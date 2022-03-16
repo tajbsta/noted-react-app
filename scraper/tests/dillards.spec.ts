@@ -30,6 +30,7 @@ describe('Dillards', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe('Dillards', () => {
       const orderData = await Dillards.parse(VENDOR_CODES.DILLARDS, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '627652703',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Free People FP Movement The Way Home Shorts',
@@ -74,7 +75,7 @@ describe('Dillards', () => {
       const orderData = await Dillards.parse(VENDOR_CODES.DILLARDS, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '627652703',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Free People FP Movement The Way Home Shorts (1)',

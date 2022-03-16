@@ -30,6 +30,7 @@ describe(`Brighton Collectibles`, () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe(`Brighton Collectibles`, () => {
       const orderData = await BrightonCollectibles.parse(VENDOR_CODES.BRIGHTONCOLLECTIBLES, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '2129914',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'BRIGHTON MINTS',
@@ -78,7 +79,7 @@ describe(`Brighton Collectibles`, () => {
       const orderData = await BrightonCollectibles.parse(VENDOR_CODES.BRIGHTONCOLLECTIBLES, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '2129914',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'BRIGHTON MINTS (1)',

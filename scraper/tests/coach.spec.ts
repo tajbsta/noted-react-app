@@ -30,6 +30,7 @@ describe(`Coach`, () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe(`Coach`, () => {
       const orderData = await Coach.parse(VENDOR_CODES.COACH, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'CUP00191939',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Hoop Earrings',
@@ -81,7 +82,7 @@ describe(`Coach`, () => {
       const orderData = await Coach.parse(VENDOR_CODES.COACH, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'CUP00191939',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Hoop Earrings (1)',

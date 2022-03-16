@@ -17,7 +17,7 @@ export default class Dillards {
       vendor: code,
       emailId: payload.id,
       orderRef,
-      orderDate: 0,
+      orderDate: Number(payload.internalDate),
       products: rawProducts
     };
   }

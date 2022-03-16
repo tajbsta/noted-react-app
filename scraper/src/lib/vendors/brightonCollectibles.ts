@@ -17,7 +17,7 @@ export default class BrightonCollectibles {
       vendor: code,
       emailId: payload.id,
       orderRef,
-      orderDate: 0,
+      orderDate: Number(payload.internalDate),
       products: rawProducts
     };
   }

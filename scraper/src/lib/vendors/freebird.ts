@@ -17,7 +17,7 @@ export default class Freebird {
       vendor: code,
       emailId: payload.id,
       orderRef,
-      orderDate: 0,
+      orderDate: Number(payload.internalDate),
       products: rawProducts
     };
   }
