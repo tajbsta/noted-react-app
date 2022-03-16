@@ -30,6 +30,7 @@ describe(`Ann Taylor`, () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe(`Ann Taylor`, () => {
       const orderData = await AnnTaylor.parse(VENDOR_CODES.ANNTAYLOR, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '112286141906',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Face Mask',
@@ -78,7 +79,7 @@ describe(`Ann Taylor`, () => {
       const orderData = await AnnTaylor.parse(VENDOR_CODES.ANNTAYLOR, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '112286141906',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Face Mask (1)',

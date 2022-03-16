@@ -9,14 +9,14 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import Dillards from '../src/lib/vendors/dillards';
+import DryGoods from '../src/lib/vendors/dryGoods';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
 
-const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/DILLARDS.json';
+const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/DRYGOODS.json';
 
-describe('Dillards', () => {
+describe(`Dry Goods`, () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
@@ -37,6 +37,7 @@ describe('Dillards', () => {
     sandbox = sinon.createSandbox();
     sandbox.stub(helpers, 'parseHtmlString').callsFake((body: string) => {
       const dom = new jsdom.JSDOM(body);
+
       return dom.window.document;
     });
   });
@@ -47,50 +48,61 @@ describe('Dillards', () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await Dillards.parse(VENDOR_CODES.DILLARDS, payload);
+      const orderData = await DryGoods.parse(VENDOR_CODES.DRYGOODS, payload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '627652703',
+        orderRef: '300448514',
         orderDate: Number(payload.internalDate),
         products: [
           {
-            name: 'Free People FP Movement The Way Home Shorts',
-            price: 30,
-            thumbnail:
-              'http://dimg.dillards.com/is/image/DillardsZoom/00000000_zi_73420d4a-3c5d-4d84-b57a-304c9d30c613?$itemThumb$'
+            name: 'Jealous Tomato Seamed Front Flare Jean',
+            price: 0,
+            thumbnail: ''
+          },
+          {
+            name: 'Moa Moa Halter Bodysuit  (Extended Sizes Available)',
+            price: 0,
+            thumbnail: ''
           }
         ],
-        vendor: VENDOR_CODES.DILLARDS,
+        vendor: VENDOR_CODES.DRYGOODS,
         emailId: payload.id
       });
     });
 
     it('should return order data with quantity handled', async () => {
       const updatedPayload = Object.assign({}, payload);
+
       let updatedBody = updatedPayload.decodedBody;
 
-      updatedBody = updatedBody.replace(`1</p>`, `2</p>`);
+      updatedBody = updatedBody.replace(
+        `<td style="text-align: center; width: 75px; ">1</td></tr>`,
+        `<td style="text-align: center; width: 75px; ">2</td></tr>`
+      );
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await Dillards.parse(VENDOR_CODES.DILLARDS, updatedPayload);
+      const orderData = await DryGoods.parse(VENDOR_CODES.DRYGOODS, updatedPayload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '627652703',
+        orderRef: '300448514',
         orderDate: Number(payload.internalDate),
         products: [
           {
-            name: 'Free People FP Movement The Way Home Shorts (1)',
-            price: 30,
-            thumbnail:
-              'http://dimg.dillards.com/is/image/DillardsZoom/00000000_zi_73420d4a-3c5d-4d84-b57a-304c9d30c613?$itemThumb$'
+            name: 'Jealous Tomato Seamed Front Flare Jean (1)',
+            price: 0,
+            thumbnail: ''
           },
           {
-            name: 'Free People FP Movement The Way Home Shorts (2)',
-            price: 30,
-            thumbnail:
-              'http://dimg.dillards.com/is/image/DillardsZoom/00000000_zi_73420d4a-3c5d-4d84-b57a-304c9d30c613?$itemThumb$'
+            name: 'Jealous Tomato Seamed Front Flare Jean (2)',
+            price: 0,
+            thumbnail: ''
+          },
+          {
+            name: 'Moa Moa Halter Bodysuit  (Extended Sizes Available)',
+            price: 0,
+            thumbnail: ''
           }
         ],
-        vendor: VENDOR_CODES.DILLARDS,
+        vendor: VENDOR_CODES.DRYGOODS,
         emailId: payload.id
       });
     });
@@ -98,7 +110,7 @@ describe('Dillards', () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(Dillards.parse(VENDOR_CODES.DILLARDS, updatedPayload)).to.eventually.be.rejectedWith(Error);
+      expect(DryGoods.parse(VENDOR_CODES.DRYGOODS, updatedPayload)).to.eventually.be.rejectedWith(Error);
     });
   });
 });

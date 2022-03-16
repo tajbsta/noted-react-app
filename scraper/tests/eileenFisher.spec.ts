@@ -9,14 +9,14 @@ import * as jsdom from 'jsdom';
 import { IEmailPayload } from '../src/models';
 import { VENDOR_CODES } from '../src/constants';
 import * as helpers from '../src/lib/helpers';
-import SoftSurroundings from '../src/lib/vendors/softSurroundings';
+import EileenFisher from '../src/lib/vendors/eileenFisher';
 
 chai.use(chaiAsPromised);
 moment.tz.setDefault('Etc/UTC');
 
-const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/SOFTSURROUNDINGS.json';
+const TEST_DATA_URL = 'https://noted-scrape-test.s3.us-west-2.amazonaws.com/EILEENFISHER.json';
 
-describe('Soft Surroundings', () => {
+describe('Eileen Fisher', () => {
   let sandbox: sinon.SinonSandbox;
   let payload: IEmailPayload = {
     raw: '',
@@ -30,7 +30,6 @@ describe('Soft Surroundings', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
-    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -47,23 +46,23 @@ describe('Soft Surroundings', () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await SoftSurroundings.parse(VENDOR_CODES.SOFTSURROUNDINGS, payload);
+      const orderData = await EileenFisher.parse(VENDOR_CODES.EILEENFISHER, payload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '215047718',
-        orderDate: Number(payload.internalDate),
+        orderRef: '001199724574',
+        orderDate: 1646870400000,
         products: [
           {
-            name: 'BEAD AND WOOD STRETCH BELT',
-            price: 49.95,
-            thumbnail: 'https://images.softsurroundings.com/products/70x105/1CL5810.jpg'
+            name: 'Cozy Organic Cotton Interlock Lantern Pant',
+            price: 88.0,
+            thumbnail: 'https://s7ondemand5.scene7.com/is/image/EileenFisher/SLANF-B911M-030?$STANDARD_X_87$'
           },
           {
-            name: 'CHIC SNEAKERS',
-            price: 84.0,
-            thumbnail: 'https://images.softsurroundings.com/products/70x105/1BE4821.jpg'
+            name: 'Organic Cotton Low-Profile Sock 3-Pack',
+            price: 18.0,
+            thumbnail: 'https://s7ondemand5.scene7.com/is/image/EileenFisher/S2YRN-L0311M-001?$STANDARD_X_87$'
           }
         ],
-        vendor: VENDOR_CODES.SOFTSURROUNDINGS,
+        vendor: VENDOR_CODES.EILEENFISHER,
         emailId: payload.id
       });
     });
@@ -72,32 +71,35 @@ describe('Soft Surroundings', () => {
       const updatedPayload = Object.assign({}, payload);
       let updatedBody = updatedPayload.decodedBody;
 
-      updatedBody = updatedBody.replace(`line-height:20px;">1</td>`, `line-height:20px;">2</td>`);
+      updatedBody = updatedBody.replace(
+        'border-top: 0; padding-top: 0;">1</td>',
+        'border-top: 0; padding-top: 0;">2</td>'
+      );
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await SoftSurroundings.parse(VENDOR_CODES.SOFTSURROUNDINGS, updatedPayload);
+      const orderData = await EileenFisher.parse(VENDOR_CODES.EILEENFISHER, updatedPayload);
       expect(orderData).to.be.deep.equal({
-        orderRef: '215047718',
-        orderDate: Number(payload.internalDate),
+        orderRef: '001199724574',
+        orderDate: 1646870400000,
         products: [
           {
-            name: 'BEAD AND WOOD STRETCH BELT (1)',
-            price: 49.95,
-            thumbnail: 'https://images.softsurroundings.com/products/70x105/1CL5810.jpg'
+            name: 'Cozy Organic Cotton Interlock Lantern Pant (1)',
+            price: 88.0,
+            thumbnail: 'https://s7ondemand5.scene7.com/is/image/EileenFisher/SLANF-B911M-030?$STANDARD_X_87$'
           },
           {
-            name: 'BEAD AND WOOD STRETCH BELT (2)',
-            price: 49.95,
-            thumbnail: 'https://images.softsurroundings.com/products/70x105/1CL5810.jpg'
+            name: 'Cozy Organic Cotton Interlock Lantern Pant (2)',
+            price: 88.0,
+            thumbnail: 'https://s7ondemand5.scene7.com/is/image/EileenFisher/SLANF-B911M-030?$STANDARD_X_87$'
           },
           {
-            name: 'CHIC SNEAKERS',
-            price: 84.0,
-            thumbnail: 'https://images.softsurroundings.com/products/70x105/1BE4821.jpg'
+            name: 'Organic Cotton Low-Profile Sock 3-Pack',
+            price: 18.0,
+            thumbnail: 'https://s7ondemand5.scene7.com/is/image/EileenFisher/S2YRN-L0311M-001?$STANDARD_X_87$'
           }
         ],
-        vendor: VENDOR_CODES.SOFTSURROUNDINGS,
+        vendor: VENDOR_CODES.EILEENFISHER,
         emailId: payload.id
       });
     });
@@ -105,9 +107,7 @@ describe('Soft Surroundings', () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(SoftSurroundings.parse(VENDOR_CODES.SOFTSURROUNDINGS, updatedPayload)).to.eventually.be.rejectedWith(
-        Error
-      );
+      expect(EileenFisher.parse(VENDOR_CODES.EILEENFISHER, updatedPayload)).to.eventually.be.rejectedWith(Error);
     });
   });
 });

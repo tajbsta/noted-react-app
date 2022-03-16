@@ -28,6 +28,7 @@ describe('KMCCARTHY', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -47,7 +48,7 @@ describe('KMCCARTHY', () => {
       const orderData = await KMCCARTHY.parse(VENDOR_CODES.KMCCARTHY, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '2422',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Macen Sandals',
@@ -80,7 +81,7 @@ describe('KMCCARTHY', () => {
       const orderData = await KMCCARTHY.parse(VENDOR_CODES.KMCCARTHY, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '2422',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Macen Sandals (1)',

@@ -28,6 +28,7 @@ describe('VICTORIA SECRET', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -47,7 +48,7 @@ describe('VICTORIA SECRET', () => {
       const orderData = await VictoriaSecret.parse(VENDOR_CODES.VICTORIASECRET, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'W008082814',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           { name: 'Everyday Lounge Classic Pant - 4JJ4 Camo Green', thumbnail: '', price: 33.48 },
           { name: 'Everyday Lounge Classic Pant - 3XZT Pure Black', thumbnail: '', price: 32.48 },
@@ -74,7 +75,7 @@ describe('VICTORIA SECRET', () => {
       const orderData = await VictoriaSecret.parse(VENDOR_CODES.VICTORIASECRET, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'W008082814',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           { name: 'Everyday Lounge Classic Pant - 4JJ4 Camo Green (1)', thumbnail: '', price: 33.48 },
           { name: 'Everyday Lounge Classic Pant - 4JJ4 Camo Green (2)', thumbnail: '', price: 33.48 },

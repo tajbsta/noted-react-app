@@ -4,20 +4,24 @@ import { parseHtmlString, productQuantityHelper } from '../helpers';
 import { decode as htmlDecode } from 'html-entities';
 import { OrderData, RawProduct, IEmailPayload } from '../../models';
 
-export default class SoftSurroundings {
+export default class EileenFisher {
   static async parse(code: string, payload: IEmailPayload): Promise<OrderData> {
     const doc = parseHtmlString(payload.decodedBody);
-    const [orderRef, rawProducts] = await Promise.all([this.getOrderRef(doc), this.getProducts(doc)]);
+    const [orderRef, orderDate, rawProducts] = await Promise.all([
+      this.getOrderRef(doc),
+      this.getOrderDate(doc),
+      this.getProducts(doc)
+    ]);
 
-    if (!orderRef || rawProducts.length === 0 || rawProducts.find((x) => !x.name || !x.price)) {
-      throw new Error(`Lacking info parsed from the email: ${JSON.stringify({ orderRef, rawProducts })}`);
+    if (!orderRef || !orderDate || rawProducts.length === 0 || rawProducts.find((x) => !x.name || !x.price)) {
+      throw new Error(`Lacking info parsed from the email: ${JSON.stringify({ orderRef, orderDate, rawProducts })}`);
     }
 
     return {
       vendor: code,
       emailId: payload.id,
       orderRef,
-      orderDate: Number(payload.internalDate),
+      orderDate,
       products: rawProducts
     };
   }
@@ -25,10 +29,24 @@ export default class SoftSurroundings {
   static async getOrderRef(root: Document): Promise<string | null> {
     try {
       const orderRefElement = root.querySelector(
-        'body > table > tbody > tr > td > table > tbody > tr > td > table:nth-child(6) > tbody > tr:nth-child(1) > td'
+        'body > table > tbody > tr > td > table > tbody > tr:nth-child(2) > td > table > tbody > tr.email-summary > td > p:nth-child(2) > a > span'
       );
-      const orderRef = orderRefElement ? orderRefElement.textContent.replace('Order Number:', '').trim() : null;
+      const orderRef = orderRefElement ? orderRefElement.textContent.trim() : null;
       return `${orderRef}`;
+    } catch (error) {
+      /* istanbul ignore next */
+      return null;
+    }
+  }
+
+  static async getOrderDate(root: Document): Promise<number | null> {
+    try {
+      const orderRefElement = root.querySelector(
+        'body > table > tbody > tr > td > table > tbody > tr:nth-child(2) > td > table > tbody > tr.email-summary > td > p:nth-child(3) > span'
+      );
+      const orderDate = orderRefElement ? orderRefElement.textContent.trim() : null;
+
+      return orderDate ? moment(orderDate, 'MMMM DD, YYYY, hh:mm:ss A').startOf('day').valueOf() : null;
     } catch (error) {
       /* istanbul ignore next */
       return null;
@@ -38,14 +56,14 @@ export default class SoftSurroundings {
   static async getProducts(root: Document): Promise<RawProduct[]> {
     try {
       const initialContainer = root.querySelector(
-        'body > table > tbody > tr > td > table > tbody > tr > td > table:nth-child(7) > tbody > tr'
+        'body > table > tbody > tr > td > table > tbody > tr:nth-child(2) > td > table > tbody > tr.email-information > td > table.email-items > tbody'
       );
 
       const orderTableContainer = [];
 
-      initialContainer.querySelectorAll('tr').forEach((item) => {
-        const hasThumbnail = item.querySelector('td:nth-child(1) > a > img');
-        const isProduct = !!hasThumbnail && item.children.length === 2 && item.childNodes.length === 2;
+      initialContainer.querySelectorAll('tr').forEach((item: any) => {
+        const hasTumbnail = item.querySelector('td:nth-child(1) > picture > img');
+        const isProduct = !!hasTumbnail && item.children.length === 4 && item.childNodes.length === 9;
 
         if (isProduct) {
           orderTableContainer.push(item);
@@ -57,25 +75,19 @@ export default class SoftSurroundings {
       orderTableContainer.forEach((item) => {
         const productRowElement = item;
 
-        const productNameElement = productRowElement.querySelector(
-          'td:nth-child(2) > table > tbody > tr > td > table:nth-child(1) > tbody > tr:nth-child(1)'
-        );
+        const productNameElement = productRowElement.querySelector('td:nth-child(2) > p:nth-child(1)');
         const productName = productNameElement.textContent.trim() || /* istanbul ignore next */ '';
 
-        const productQuantityElement = productRowElement.querySelector(
-          'td:nth-child(2) > table > tbody > tr > td > table:nth-child(2) > tbody > tr > td > table:nth-child(2) > tbody > tr > td'
-        );
+        const productQuantityElement = productRowElement.querySelector('td:nth-child(3)');
         const productQuantity = productQuantityElement.textContent.trim();
         const quantity = productQuantity ? parseInt(productQuantity, 10) : /* istanbul ignore next */ 1;
 
-        const productThumbnailElement = productRowElement.querySelector('td:nth-child(1) > a > img');
+        const productThumbnailElement = productRowElement.querySelector('td:nth-child(1) > picture > img');
         const productThumbnail = productThumbnailElement
           ? productThumbnailElement.getAttribute('src')
           : /* istanbul ignore next */ '';
 
-        const productPriceElement = productRowElement.querySelector(
-          'td:nth-child(2) > table > tbody > tr > td > table:nth-child(2) > tbody > tr > td > table:nth-child(3) > tbody > tr > td'
-        );
+        const productPriceElement = productRowElement.querySelector('td:nth-child(4)');
         const price = /* istanbul ignore next */ productPriceElement.textContent.replace('$', '').trim();
         const productPrice = productPriceElement ? accounting.unformat(price) : /* istanbul ignore next */ 0;
 

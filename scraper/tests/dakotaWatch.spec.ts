@@ -30,6 +30,7 @@ describe(`Dakota Watch`, () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe(`Dakota Watch`, () => {
       const orderData = await DakotaWatch.parse(VENDOR_CODES.DAKOTAWATCH, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '1037',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Day/Date Wood - Zebrawood/Ebonywood Case/Band Black Dial',
@@ -80,7 +81,7 @@ describe(`Dakota Watch`, () => {
       const orderData = await DakotaWatch.parse(VENDOR_CODES.DAKOTAWATCH, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '1037',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Day/Date Wood - Zebrawood/Ebonywood Case/Band Black Dial (1)',

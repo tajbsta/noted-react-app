@@ -28,6 +28,7 @@ describe('Carter', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -47,7 +48,7 @@ describe('Carter', () => {
       const orderData = await Carters.parse(VENDOR_CODES.CARTERS, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'BCAR69660662',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Glitter Giraffe Jersey Tee',
@@ -78,7 +79,7 @@ describe('Carter', () => {
       const orderData = await Carters.parse(VENDOR_CODES.CARTERS, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'BCAR69660662',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Glitter Giraffe Jersey Tee (1)',

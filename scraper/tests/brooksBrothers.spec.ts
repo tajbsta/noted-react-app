@@ -28,6 +28,7 @@ describe('BrooksBrothers', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -47,7 +48,7 @@ describe('BrooksBrothers', () => {
       const orderData = await BrooksBrothers.parse(VENDOR_CODES.BROOKSBROTHERS, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '30879096',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'COTTON EYELET TOP',
@@ -71,7 +72,7 @@ describe('BrooksBrothers', () => {
       const orderData = await BrooksBrothers.parse(VENDOR_CODES.BROOKSBROTHERS, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '30879096',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'COTTON EYELET TOP (1)',

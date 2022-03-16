@@ -28,6 +28,7 @@ describe('Adidas', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -47,7 +48,7 @@ describe('Adidas', () => {
       const orderData = await Adidas.parse(VENDOR_CODES.ADIDAS, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'AD056597079',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Ultraboost Summer.RDY Shoes',
@@ -72,7 +73,7 @@ describe('Adidas', () => {
       const orderData = await Adidas.parse(VENDOR_CODES.ADIDAS, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: 'AD056597079',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Ultraboost Summer.RDY Shoes (1)',

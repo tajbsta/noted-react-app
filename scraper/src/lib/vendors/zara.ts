@@ -16,7 +16,7 @@ export default class Zara {
       vendor: code,
       emailId: payload.id,
       orderRef,
-      orderDate: 0,
+      orderDate: Number(payload.internalDate),
       products: rawProducts
     };
   }

@@ -28,6 +28,7 @@ describe('ZARA', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -47,7 +48,7 @@ describe('ZARA', () => {
       const orderData = await Zara.parse(VENDOR_CODES.ZARA, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '52539009974',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'SOLID COLOR SHIRT',
@@ -81,7 +82,7 @@ describe('ZARA', () => {
       const orderData = await Zara.parse(VENDOR_CODES.ZARA, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '52539009974',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'SOLID COLOR SHIRT (1)',

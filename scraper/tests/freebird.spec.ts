@@ -30,6 +30,7 @@ describe(`Freebird`, () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe(`Freebird`, () => {
       const orderData = await Freebird.parse(VENDOR_CODES.FREEBIRD, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '624081',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Baby Coal White Snake',
@@ -80,7 +81,7 @@ describe(`Freebird`, () => {
       const orderData = await Freebird.parse(VENDOR_CODES.FREEBIRD, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '624081',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Baby Coal White Snake (1)',

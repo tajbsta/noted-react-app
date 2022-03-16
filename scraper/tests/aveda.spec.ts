@@ -30,6 +30,7 @@ describe(`Aveda`, () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe(`Aveda`, () => {
       const orderData = await Aveda.parse(VENDOR_CODES.AVEDA, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '4082305676',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'lip saver™ .15 oz/4.25g',
@@ -81,7 +82,7 @@ describe(`Aveda`, () => {
       const orderData = await Aveda.parse(VENDOR_CODES.AVEDA, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '4082305676',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'lip saver™ .15 oz/4.25g (1)',

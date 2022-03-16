@@ -30,6 +30,7 @@ describe('Vans', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe('Vans', () => {
       const orderData = await Vans.parse(VENDOR_CODES.VANS, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '35322167',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Toddler Checkerboard Slip-On V',
@@ -78,7 +79,7 @@ describe('Vans', () => {
       const orderData = await Vans.parse(VENDOR_CODES.VANS, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '35322167',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Toddler Checkerboard Slip-On V (1)',

@@ -30,6 +30,7 @@ describe(`Burberry`, () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe(`Burberry`, () => {
       const orderData = await Burberry.parse(VENDOR_CODES.BURBERRY, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '20012864',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Burberry Brit Sheer Eau de Toilette 30ml',
@@ -80,7 +81,7 @@ describe(`Burberry`, () => {
       const orderData = await Burberry.parse(VENDOR_CODES.BURBERRY, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '20012864',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Burberry Brit Sheer Eau de Toilette 30ml (1)',

@@ -30,6 +30,7 @@ describe(`Morphe`, () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -51,7 +52,7 @@ describe(`Morphe`, () => {
 
       expect(orderData).to.be.deep.equal({
         orderRef: '10612140',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'THE BEST OF BLENDS 7-PIECE BRUSH SET',
@@ -90,7 +91,7 @@ describe(`Morphe`, () => {
 
       expect(orderData).to.be.deep.equal({
         orderRef: '10612140',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'THE BEST OF BLENDS 7-PIECE BRUSH SET (1)',

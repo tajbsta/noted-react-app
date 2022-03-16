@@ -28,6 +28,7 @@ describe('SHOECARNIVAL', () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -47,7 +48,7 @@ describe('SHOECARNIVAL', () => {
       const orderData = await ShoeCarnival.parse(VENDOR_CODES.SHOECARNIVAL, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '800449001',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Air Max Excee',
@@ -72,7 +73,7 @@ describe('SHOECARNIVAL', () => {
       const orderData = await ShoeCarnival.parse(VENDOR_CODES.SHOECARNIVAL, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '800449001',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Air Max Excee (1)',

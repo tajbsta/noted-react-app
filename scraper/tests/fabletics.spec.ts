@@ -30,6 +30,7 @@ describe(`Fabletics`, () => {
 
     payload.decodedBody = Buffer.from(res.data.raw, 'base64').toString('utf-8');
     payload.id = res.data.id;
+    payload.internalDate = res.data.internalDate;
   });
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ describe(`Fabletics`, () => {
       const orderData = await Fabletics.parse(VENDOR_CODES.FABLETICS, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '1089587349',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Define High-Waisted 7/8 Legging',
@@ -80,7 +81,7 @@ describe(`Fabletics`, () => {
       const orderData = await Fabletics.parse(VENDOR_CODES.FABLETICS, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '1089587349',
-        orderDate: 0,
+        orderDate: Number(payload.internalDate),
         products: [
           {
             name: 'Define High-Waisted 7/8 Legging (1)',
