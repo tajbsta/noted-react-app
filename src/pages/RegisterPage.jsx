@@ -119,6 +119,14 @@ export default function RegisterPage() {
                 />
               </button>
             </div>
+
+            <h3 className='text-already'>
+              Already a member?{' '}
+              <Link to='login' className='text-decoration-underline text-login'>
+                {' '}
+                Log in
+              </Link>
+            </h3>
             {/* <div className='line-container'>
               <p className='line-break'>
                 <span>or</span>
@@ -224,13 +232,6 @@ export default function RegisterPage() {
                 .
               </small>
             </div>
-            <h3 className='text-already'>
-              Already a member?{' '}
-              <Link to='login' className='text-decoration-underline text-login'>
-                {' '}
-                Log in
-              </Link>
-            </h3>
           </div>
         </div>
       </div>

@@ -195,6 +195,20 @@ export default function LoginPage() {
               </>
             )}
 
+            <h3 className='text-already'>
+              Not a member?{' '}
+              <Link
+                to='join'
+                className='text-decoration-underline text-login'
+                onClick={() =>
+                  process.env.NODE_ENV === 'production' && INITIATE_CHECKOUT
+                }
+              >
+                {' '}
+                Sign up now
+              </Link>
+            </h3>
+
             <div className='text-left'>
               <small className='text-muted text-left'>
                 By joining noted you agree to our{' '}
@@ -225,19 +239,6 @@ export default function LoginPage() {
                 .
               </small>
             </div>
-            <h3 className='text-already'>
-              Not a member?{' '}
-              <Link
-                to='join'
-                className='text-decoration-underline text-login'
-                onClick={() =>
-                  process.env.NODE_ENV === 'production' && INITIATE_CHECKOUT
-                }
-              >
-                {' '}
-                Sign up now
-              </Link>
-            </h3>
           </div>
         </div>
       </div>

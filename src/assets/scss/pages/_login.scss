@@ -148,12 +148,13 @@
   }
 
   .text-already {
-    margin-top: 48px;
+    margin-bottom: 48px;
     color: #21003a;
     font-size: 16px;
     line-height: 19px;
     // font-weight: bold;
     font-family: 'Sofia Pro';
+    text-align: center;
 
     @media only screen and (max-width: 540px) {
       padding-bottom: 48px;
