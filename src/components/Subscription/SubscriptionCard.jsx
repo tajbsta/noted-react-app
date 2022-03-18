@@ -63,6 +63,8 @@ export default function SubscriptionCard({
               />
             ) : isSelected ? (
               'Selected'
+            ) : tag === 'ruby' ? (
+              'Try for free'
             ) : (
               'Choose Plan'
             )}

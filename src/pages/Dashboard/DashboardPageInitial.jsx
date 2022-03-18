@@ -584,7 +584,7 @@ const DashboardPageInitial = () => {
 
   const onsubscriptionModalClose = async () => {
     setShowSubscriptionModal(false);
-    await subscribeUserToRuby(true);
+    await subscribeUserToRuby(false);
   };
 
   //INITIALIZE GOOGLE API
