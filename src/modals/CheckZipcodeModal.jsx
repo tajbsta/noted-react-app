@@ -218,7 +218,9 @@ const CollateUserInfo = (props) => {
 
   return (
     <div id='collateUserInfoForm'>
-      <p className='unsupported sofia-pro noted-red'>Unsupported Location</p>
+      <p className='unsupported sofia-pro noted-purple'>
+        Coming Soon to Your Area
+      </p>
       <p className='sofia-pro noted-purple unsupported-mini'>
         Our service is rapidly expanding to other cities! Stay tuned for
         updates, and we will let you know when we are ready to pick up in your
