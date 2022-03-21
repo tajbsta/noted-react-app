@@ -14,6 +14,7 @@ export default async function main(vendors: IVendor[], rawEmails: IEmailPayload[
 
     const vendor = vendors.find((vendor) => {
       const keywords = vendor.keyword ? vendor.keyword.split(',') : [];
+
       const found = !!keywords.find((keyword: any) => {
         const searchRegex = new RegExp(keyword, 'i');
 

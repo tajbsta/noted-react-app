@@ -97,7 +97,8 @@ import {
   Apple,
   Buckle,
   Evereve,
-  LoccitaneEnProvence
+  LoccitaneEnProvence,
+  UltaBeauty
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -396,6 +397,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.LOCCITANEENPROVENCE:
         orderData = await LoccitaneEnProvence.parse(code, payload);
+        break;
+      case VENDOR_CODES.ULTABEAUTY:
+        orderData = await UltaBeauty.parse(code, payload);
         break;
       default:
         break;
