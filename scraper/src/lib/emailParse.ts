@@ -95,7 +95,8 @@ import {
   DryGoods,
   EileenFisher,
   Apple,
-  Buckle
+  Buckle,
+  Evereve
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -388,6 +389,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.BUCKLE:
         orderData = await Buckle.parse(code, payload);
+        break;
+      case VENDOR_CODES.EVEREVE:
+        orderData = await Evereve.parse(code, payload);
         break;
       default:
         break;
