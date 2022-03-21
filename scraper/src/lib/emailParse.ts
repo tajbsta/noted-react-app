@@ -94,7 +94,8 @@ import {
   BognarAndPiccolini,
   DryGoods,
   EileenFisher,
-  Apple
+  Apple,
+  Buckle
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -384,6 +385,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.APPLE:
         orderData = await Apple.parse(code, payload);
+        break;
+      case VENDOR_CODES.BUCKLE:
+        orderData = await Buckle.parse(code, payload);
         break;
       default:
         break;

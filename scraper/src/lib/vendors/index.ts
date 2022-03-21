@@ -95,6 +95,7 @@ import BognarAndPiccolini from './bognarAndPiccolini';
 import DryGoods from './dryGoods';
 import EileenFisher from './eileenFisher';
 import Apple from './apple';
+import Buckle from './buckle';
 
 export {
   FashionNova,
@@ -193,5 +194,6 @@ export {
   BognarAndPiccolini,
   DryGoods,
   EileenFisher,
-  Apple
+  Apple,
+  Buckle
 };
