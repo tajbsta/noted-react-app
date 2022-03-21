@@ -97,6 +97,7 @@ import EileenFisher from './eileenFisher';
 import Apple from './apple';
 import Buckle from './buckle';
 import Evereve from './evereve';
+import LoccitaneEnProvence from './loccitaneEnProvence';
 
 export {
   FashionNova,
@@ -197,5 +198,6 @@ export {
   EileenFisher,
   Apple,
   Buckle,
-  Evereve
+  Evereve,
+  LoccitaneEnProvence
 };
