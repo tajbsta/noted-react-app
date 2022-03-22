@@ -99,6 +99,7 @@ import Buckle from './buckle';
 import Evereve from './evereve';
 import LoccitaneEnProvence from './loccitaneEnProvence';
 import UltaBeauty from './ultaBeauty';
+import Loft from './loft';
 
 export {
   FashionNova,
@@ -201,5 +202,6 @@ export {
   Buckle,
   Evereve,
   LoccitaneEnProvence,
-  UltaBeauty
+  UltaBeauty,
+  Loft
 };
