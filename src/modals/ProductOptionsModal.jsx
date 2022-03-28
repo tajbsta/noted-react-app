@@ -7,11 +7,17 @@ import { formatCurrency } from '../library/number';
 import { DuplicateReducer } from '../utils/duplicateReducer';
 
 const ProductOptionEntry = ({ data, onSelect }) => {
+  const nameRegex = /[!@$%^&*+={}<>?]+/;
   const orderRef = get(data, 'orderRef', '');
   const thumbnail = get(data, 'thumbnail', ProductPlaceholder);
   const vendor = get(data, 'vendor', '');
-  const name = get(data, 'name', '');
-  const price = `${formatCurrency(get(data, 'price', 0))}`;
+  const name = nameRegex.test(data.name)
+    ? 'Name not found'
+    : get(data, 'name', '');
+  const price =
+    data.price === 0
+      ? 'Price Unavailable'
+      : `${formatCurrency(get(data, 'price', 0))}`;
   const isSelected = get(data, 'isSelected', false);
   return (
     <Row id='ProductOption'>
@@ -131,6 +137,8 @@ export default function ProductOptionsModal(props) {
           isSelected: true,
         }));
         setAllProducts(newData);
+
+        console.log(newData);
       }
     }
   }, [show]);

@@ -22,8 +22,15 @@ function ProductDetails({
   const [modalDonateShow, setModalDonateShow] = useState(false);
   const target = useRef(null);
 
-  const formattedProductName = toTitleCase(item.name);
-  const formatPrice = parseFloat(item.price).toFixed(2);
+  const nameRegex = /[!@$%^&*+={}<>?]+/;
+  const formattedProductName = nameRegex.test(item.name)
+    ? 'Name not found'
+    : toTitleCase(item.name);
+
+  const formatPrice =
+    item.price === 0
+      ? 'Price Unavailable'
+      : `$${parseFloat(item.price).toFixed(2)}`;
 
   // Truncate name if longer than 45 characters
   const truncateProductNameInDesktop = (str, num = 45) => {
@@ -112,7 +119,7 @@ function ProductDetails({
               opacity: isDonate ? '0.6' : '1',
             }}
           >
-            ${formatPrice}
+            {formatPrice}
           </h4>
         )}
         {isHovering &&

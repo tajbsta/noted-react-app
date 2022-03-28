@@ -55,8 +55,14 @@ export default function ProductCard({
     toggleSelected(item);
   };
 
-  const formattedProductName = toTitleCase(item.name);
-  const formatPrice = parseFloat(item.price).toFixed(2);
+  const nameRegex = /[!@$%^&*+={}<>?]+/;
+  const formattedProductName = nameRegex.test(item.name)
+    ? 'Name not found'
+    : toTitleCase(item.name);
+  const formatPrice =
+    item.price === 0
+      ? 'Price Unavailable'
+      : `$${parseFloat(item.price).toFixed(2)}`;
   const rating = get(item, 'vendor_data.rating', 1);
   const score = RETURN_SCORES.find(
     ({ rating: returnRating }) => rating === returnRating
@@ -221,7 +227,7 @@ export default function ProductCard({
                   opacity: isDonate ? '0.6' : '1',
                 }}
               >
-                ${formatPrice}
+                {formatPrice}
               </h4>
             )}
             {selected && (
