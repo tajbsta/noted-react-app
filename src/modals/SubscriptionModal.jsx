@@ -62,6 +62,7 @@ export default function SubscriptionModal({ show, onClose, plans }) {
   }, [subscriptionSuccess]);
 
   const renderSubscriptionForm = (subscription) => {
+    console.log(subscription);
     if (subscription.plan_name === 'Ruby') return;
     return (
       <>
@@ -128,7 +129,7 @@ export default function SubscriptionModal({ show, onClose, plans }) {
                     <span>{subscription?.description}</span>
                   </span>
                   <span className='subscriptionDetails'>
-                    All plans comes with
+                    All plans come with
                     <span>1 Free Pick up</span> upon registration.
                   </span>
                 </Col>
@@ -208,7 +209,7 @@ export default function SubscriptionModal({ show, onClose, plans }) {
               <Row className='free-pickup'>
                 <Col>
                   <p>
-                    All plans comes with
+                    All plans come with
                     <span>1 Free Pick up</span> upon registration.
                   </p>
                 </Col>

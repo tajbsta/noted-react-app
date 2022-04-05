@@ -445,26 +445,36 @@ const Checkout = () => {
                         More info
                       </button>
                       <hr style={{ marginTop: '8px' }} />
-                      <div className='row mt-3'>
-                        <div className='col m-label'>Return total cost</div>
-                        <div className='col m-value'>
-                          ${pricingDetails.price}
-                        </div>
-                      </div>
-                      <div className='row'>
-                        <div className='col m-label'>Taxes</div>
-                        <div className='col m-value'>${pricingDetails.tax}</div>
-                      </div>
-                      <hr
-                        style={{
-                          marginBottom: '21px',
-                          marginTop: '8px',
-                        }}
-                      />
+                      {Number(user?.['custom:no_of_pickups']) === 0 && (
+                        <>
+                          <div className='row mt-3'>
+                            <div className='col m-label'>Return total cost</div>
+                            <div className='col m-value'>
+                              ${pricingDetails.price}
+                            </div>
+                          </div>
+                          <div className='row'>
+                            <div className='col m-label'>Taxes</div>
+                            <div className='col m-value'>
+                              ${pricingDetails.tax}
+                            </div>
+                          </div>
+                          <hr
+                            style={{
+                              marginBottom: '21px',
+                              marginTop: '8px',
+                            }}
+                          />
+                        </>
+                      )}
+
                       <div className='row'>
                         <div className='col m-total-label'>Total paid</div>
                         <div className='col m-total-value'>
-                          ${pricingDetails.totalPrice}
+                          $
+                          {Number(user?.['custom:no_of_pickups']) > 0
+                            ? 0
+                            : pricingDetails.totalPrice}
                         </div>
                       </div>
                     </div>

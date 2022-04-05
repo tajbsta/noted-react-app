@@ -10,6 +10,7 @@ export default function MobileCheckoutCard({
   confirmOrder,
   validOrder = false,
   pricingDetails = {},
+  user,
 }) {
   // TODO: hookup pricing
   const potentialReturnValue = get(pricingDetails, 'potentialReturnValue', 0);
@@ -76,7 +77,11 @@ export default function MobileCheckoutCard({
                     ) : (
                       <>
                         <span>Confirm Order</span>
-                        <span>${inTotalPrice}</span>
+                        <span>
+                          {Number(user?.['custom:no_of_pickups']) > 0
+                            ? '-1 pickup'
+                            : `$${inTotalPrice}`}
+                        </span>
                       </>
                     )}
                   </button>
