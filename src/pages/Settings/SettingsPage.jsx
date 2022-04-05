@@ -5,6 +5,7 @@ import ChangePass from './components/ChangePass';
 import DeleteAccount from './components/DeleteAccount';
 import UserInfo from './../Profile/components/UserInfo';
 import MyCredits from './components/MyCredits';
+import EmailAddress from './components/EmailAddresses';
 import { Link } from 'react-scroll';
 import { getUser } from '../../api/auth';
 import { scrollToTop } from '../../utils/window';
@@ -70,9 +71,7 @@ const SettingsPage = () => {
     (async () => {
       const user = await getUser();
       setUser(user);
-      console.log(user, 'from refetch');
       const history = await subscriptionHistory();
-
       setHistory(history);
     })();
   }, [showPickupsLeftModal, showCancelSubscriptionModal]);
@@ -131,6 +130,39 @@ const SettingsPage = () => {
               </Link>
             </li>
           )}
+
+          <li className='nav-item'>
+            <Link
+              to='mycredits-container'
+              spy={true}
+              smooth={true}
+              className='nav-link'
+              offset={-70}
+              duration={500}
+              onClick={() => {
+                setCurrenTab('mycredits-container');
+              }}
+              style={isActive('mycredits-container')}
+            >
+              My Credits
+            </Link>
+          </li>
+          <li className='nav-item'>
+            <Link
+              to='EmailAddresses'
+              spy={true}
+              smooth={true}
+              className='nav-link'
+              offset={-70}
+              duration={500}
+              onClick={() => {
+                setCurrenTab('EmailAddresses');
+              }}
+              style={isActive('EmailAddresses')}
+            >
+              Email Addresses
+            </Link>
+          </li>
           <li className='nav-item'>
             <Link
               to='DeleteAccount'
@@ -155,7 +187,8 @@ const SettingsPage = () => {
   return (
     <div>
       <div id='Settings' className='container mt-6'>
-        {isMobile && (
+        {!user && 'Loading...'}
+        {user && isMobile && (
           <>
             <div className='row' style={{ paddingBottom: '48px' }}>
               <div className={isTablet ? 'col-sm-12' : 'col-sm-3'}>
@@ -178,6 +211,7 @@ const SettingsPage = () => {
               onAdd={() => setShowPickupsLeftModal(true)}
               onCancel={() => setShowCancelSubscriptionModal(true)}
             />
+            <EmailAddress user={user} />
             <DeleteAccount />
           </div>
         </div>

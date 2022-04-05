@@ -42,7 +42,7 @@ export default function EmailAddresses({ user }) {
     } catch (err) {
       setLoading(false);
       // console.log(err);
-      showError({ message: 'An error occurred deleting your email' });
+      // showError({ message: 'An error occurred deleting your email' });
     }
   };
 

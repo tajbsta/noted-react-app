@@ -12,9 +12,6 @@ import { getUser, getUserId, uploadProfilePic } from '../../../api/auth';
 import { showError, showSuccess } from '../../../library/notifications.library';
 import { CheckCircle } from 'react-feather';
 import { getOrderHistoryCounts } from '../../../api/orderApi';
-import Diamond from '../../../assets/icons/DiamondIcon.svg';
-import Ruby from '../../../assets/icons/RubyIcon.svg';
-import Emerald from '../../../assets/icons/EmeraldIcon.svg';
 
 export default function UserInfo({ user: userData = {} }) {
   const {
@@ -38,7 +35,6 @@ export default function UserInfo({ user: userData = {} }) {
       const orderCount = await getOrderHistoryCounts(userId);
 
       setOrderCount(orderCount);
-      // console.log(orderCount);
     } catch (error) {
       // Does not seem to be needing a handler
     }
@@ -59,11 +55,8 @@ export default function UserInfo({ user: userData = {} }) {
   useEffect(() => {
     (async () => {
       const user = await getUser();
-      // console.log(user);
       setUser(user);
     })();
-
-    console.log(user);
   }, []);
 
   const handleClick = () => {
