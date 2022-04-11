@@ -177,7 +177,9 @@ const Authorize = ({ triggerScanNow }) => {
             </h4>
             <button
               onClick={() => {
-                SUBMIT_APPLICATION();
+                if (process.env.NODE_ENV === 'production') {
+                  submitApplication();
+                }
                 triggerScanNow();
               }}
               className='authorize-now-button'
