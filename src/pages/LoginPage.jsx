@@ -10,7 +10,7 @@ import { Eye, EyeOff } from 'react-feather';
 import { scrollToTop } from '../utils/window';
 import { resetAuthorizeNewEmail } from '../utils/data';
 import GoogleLogoItem from '../assets/img/google_signin.png';
-import { INITIATE_CHECKOUT } from '../analytics/fbpixels';
+import { initiateCheckout } from '../analytics/fbpixels';
 
 export default function LoginPage() {
   const history = useHistory();
@@ -201,7 +201,7 @@ export default function LoginPage() {
                 to='join'
                 className='text-decoration-underline text-login'
                 onClick={() =>
-                  process.env.NODE_ENV === 'production' && INITIATE_CHECKOUT
+                  process.env.NODE_ENV === 'production' && initiateCheckout
                 }
               >
                 {' '}

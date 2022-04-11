@@ -45,7 +45,7 @@ import { useState } from 'react';
 import GoogleAuthorize from '../../assets/img/authorize.png';
 import ProductOptionsModal from '../../modals/ProductOptionsModal';
 import SubscriptionModal from '../../modals/SubscriptionModal';
-import { SUBMIT_APPLICATION } from '../../analytics/fbpixels';
+import { submitApplication } from '../../analytics/fbpixels';
 
 import { subscriptionPlans } from '../../api/subscription';
 import { loadStripe } from '@stripe/stripe-js';
@@ -75,7 +75,7 @@ const Authorize = ({ triggerScanNow }) => {
 
             <button
               onClick={() => {
-                process.env.NODE_ENV === 'production' && SUBMIT_APPLICATION();
+                process.env.NODE_ENV === 'production' && submitApplication();
                 triggerScanNow();
               }}
               className='authorize-now-button'

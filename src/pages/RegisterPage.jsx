@@ -14,6 +14,7 @@ import GoogleLogoItem from '../assets/img/google_signup.png';
 import CheckZipcodeModal from '../modals/CheckZipcodeModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsNewlySignedUp } from '../actions/auth.action';
+import { lead } from '../analytics/fbpixels';
 
 export default function RegisterPage() {
   const history = useHistory();
@@ -30,6 +31,10 @@ export default function RegisterPage() {
   useEffect(() => {
     resetAuthorizeNewEmail();
     scrollToTop();
+
+    if (process.env.NODE_ENV === 'production') {
+      lead();
+    }
   }, []);
 
   const eyeOff = <EyeOff />;

@@ -1,13 +1,13 @@
 import ReactPixel from 'react-facebook-pixel';
 
-export const INITIATE_CHECKOUT = () => {
+export const initiateCheckout = () => {
   ReactPixel.track('InitiateCheckout');
 };
 
-export const LEAD = () => {
+export const lead = () => {
   ReactPixel.track('Lead');
 };
 
-export const SUBMIT_APPLICATION = () => {
+export const submitApplication = () => {
   ReactPixel.track('SubmitApplication');
 };

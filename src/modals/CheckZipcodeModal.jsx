@@ -11,7 +11,7 @@ import {
   checkZipcodeSchema,
   collateUserInfoSchema,
 } from '../models/formSchema';
-import { LEAD } from '../analytics/fbpixels';
+import { lead } from '../analytics/fbpixels';
 
 export default function CheckZipcodeModal(props) {
   const [zipCode, setZipCode] = useState('');
@@ -108,7 +108,7 @@ const CheckForZipCode = (props) => {
         <Button
           className='btn btn-lg btn-block btn-green btn-submit'
           type='submit'
-          onClick={() => process.env.NODE_ENV === 'production' && LEAD}
+          onClick={() => process.env.NODE_ENV === 'production' && lead}
         >
           Continue
         </Button>

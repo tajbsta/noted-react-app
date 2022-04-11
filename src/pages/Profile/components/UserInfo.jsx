@@ -317,7 +317,7 @@ export default function UserInfo({ user: userData = {} }) {
             </div>
           </div>
           <div className='row align-items-center justify-content-between m-info-row mt-4'>
-            <div className='col-sm-6 p-0'>
+            <div className='col-sm-6 p-0 py-2'>
               <div>
                 <h4 className='row align-items-center text-left total'>
                   <img
@@ -332,7 +332,7 @@ export default function UserInfo({ user: userData = {} }) {
                 <h5 className='total-label text-left'>My Plan</h5>
               </div>
             </div>
-            <div className='col-sm-6 p-0'>
+            <div className='col-sm-6 p-0 py-2'>
               <div>
                 <h4 className='text-left total'>
                   {user?.['custom:no_of_pickups'] || 0}
