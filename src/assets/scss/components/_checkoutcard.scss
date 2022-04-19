@@ -1,6 +1,6 @@
 #CheckoutCard,
 #ModifyCheckoutCard {
-  font-family: "Sofia Pro";
+  font-family: 'Sofia Pro';
   .h-292 {
     height: 292px;
   }
@@ -102,6 +102,37 @@
     &:focus {
       outline: none !important;
       box-shadow: none;
+    }
+  }
+
+  .extra-bin {
+    .extra-bin__title {
+      color: #2e1d3a;
+      font-family: 'Sofia Pro';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 19px;
+      color: rgba(14, 0, 24, 0.6);
+    }
+
+    .extra-bin__total-items {
+      font-family: 'Sofia Pro';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
+      color: #2e1d3a;
+    }
+
+    .extra-bin__info {
+      font-size: 12px;
+      color: rgba(14, 0, 24, 0.6);
+
+      span {
+        font-weight: 500;
+        color: #000;
+      }
     }
   }
 }

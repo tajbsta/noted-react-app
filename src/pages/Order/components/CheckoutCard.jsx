@@ -25,6 +25,9 @@ export default function CheckoutCard({
   const inTaxes = get(pricingDetails, 'tax', 0);
   const inTotalPrice = get(pricingDetails, 'totalPrice', 0);
   const inPrice = get(pricingDetails, 'price', 0);
+  const extraBin = get(pricingDetails, 'extraBin', 0);
+  const extraBinPrice = get(pricingDetails, 'extraBinPrice', 0);
+  const totalItems = get(pricingDetails, 'numItems', 0);
 
   return (
     <div id='CheckoutCard'>
@@ -55,6 +58,19 @@ export default function CheckoutCard({
               show={modalShow}
               onHide={() => setModalShow(false)}
             />
+            <hr className='line-break-1' />
+
+            <div className='extra-bin'>
+              <p className='extra-bin__title'>Bins Required</p>
+              <p className='extra-bin__total-items'>
+                {extraBin !== 0 ? extraBin + 1 : 1}
+              </p>
+              <p className='extra-bin__info'>
+                Est. bins required for <span>{totalItems}</span> items:{' '}
+                <span>{extraBin !== 0 ? extraBin + 1 : 1} bin</span>
+              </p>
+            </div>
+
             <hr className='line-break-1' />
             {confirmed && (
               <div>
@@ -96,10 +112,24 @@ export default function CheckoutCard({
                   </h3>
                 ) : (
                   <>
+                    {extraBin !== 0 && (
+                      <div className='row'>
+                        <div className='col'>
+                          <h5 className='sofia-pro text-muted value-label'>
+                            Extra Bin Cost
+                          </h5>
+                        </div>
+                        <div className='col'>
+                          <h5 className='sofia-pro text-right'>
+                            ${extraBinPrice}
+                          </h5>
+                        </div>
+                      </div>
+                    )}
                     <div className='row'>
                       <div className='col'>
                         <h5 className='sofia-pro text-muted value-label'>
-                          Return total cost
+                          Return Cost
                         </h5>
                       </div>
                       <div className='col'>

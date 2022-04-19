@@ -32,6 +32,7 @@ export const getOrderPricing = async (productIds, orderId) => {
     productIds,
     orderId,
   });
+
   return res.data.data;
 };
 
@@ -157,18 +158,17 @@ export const deletePaymentMethod = async (paymentMethodId) => {
  * Create payment intent to process payment
  * @price - refer to constant price.js
  */
-export const createPaymentIntent = async (pricing, orderId) => {
+export const createPaymentIntent = async (pricing, orderId, productIds) => {
   const axios = await api();
   const { userId } = await getUserSession();
 
   const url = `/${userId}/orders/payment/intent/${pricing}`;
 
-  const res = await axios.post(url, { orderId });
+  const res = await axios.post(url, { orderId, productIds });
 
   return res.data.data;
 };
 
-// payment for subscribed user
 export const createSubscriptionPaymentIntent = async (payload) => {
   const axios = await api();
   const { userId } = await getUserSession();

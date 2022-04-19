@@ -55,6 +55,9 @@ const Checkout = () => {
   const [validPayment, setValidPayment] = useState(false);
   const [validPickUpDetails, setValidPickUpDetails] = useState(false);
   const [pricingDetails, setPricingDetails] = useState({
+    extraBin: 0,
+    extraBinPrice: 0,
+    numItems: 0,
     potentialReturnValue: 0,
     price: 0,
     tax: 0,
@@ -137,59 +140,18 @@ const Checkout = () => {
 
       if (!(Number(user?.['custom:no_of_pickups']) > 0)) {
         // Get payment intent from BE, used for getting payment from the user/payment method
-        const paymentIntent = await createPaymentIntent(
-          PRICING.STANDARD,
-          orderId
-        );
 
-        newOrder.billing = {
-          paymentIntentId: paymentIntent.paymentIntentId,
-          paymentMethodId: paymentIntent.paymentMethodId,
-          productId: paymentIntent.productId,
-          taxId: paymentIntent.taxId,
-          priceId: paymentIntent.priceId,
-          pricing: paymentIntent.pricing,
-        };
-
-        // Confirm payment intent using stripe here
-        const result = await stripe.confirmCardPayment(
-          paymentIntent.clientSecret
-        );
-
-        if (result.error) {
-          setLoading(false);
-
-          // Show error to customer
-          if (
-            result.error.code === 'card_declined' &&
-            result.error.decline_code === 'insufficient_funds'
-          ) {
-            showError({
-              message: get(
-                orderErrors.find(
-                  ({ code }) => code === STRIPE_PAYMENT_INSUFFICIENT_FUNDS
-                ),
-                'message',
-                'Cannot place order at this time'
-              ),
-            });
-          } else {
-            showError({ message: result.error.message });
-          }
-        } else {
-          if (result.paymentIntent.status === 'succeeded') {
-            // Place order - call create order endpoint
-            await placeOrder(newOrder);
-            return;
-          } else {
-            throw new Error('Unknown Error');
-          }
-        }
+        standardStripeCheckout(newOrder);
       } else {
+        if (items.length > 12) {
+          standardStripeCheckout(newOrder);
+        }
+
         newOrder.billing = {
           paymentMethod: 'subscription',
         };
 
+        // this checkout is jsut deductin 1 on pickups on aws cognito
         const result = await createSubscriptionPaymentIntent(newOrder);
 
         if (result.status === 'success') {
@@ -213,6 +175,56 @@ const Checkout = () => {
       });
 
       Sentry.captureException(error);
+    }
+  };
+
+  const standardStripeCheckout = async (order) => {
+    const paymentIntent = await createPaymentIntent(
+      PRICING.STANDARD, // $20
+      order.id,
+      order.orderItems
+    );
+
+    order.billing = {
+      paymentIntentId: paymentIntent.paymentIntentId,
+      paymentMethodId: paymentIntent.paymentMethodId,
+      productId: paymentIntent.productId,
+      taxId: paymentIntent.taxId,
+      priceId: paymentIntent.priceId,
+      pricing: paymentIntent.pricing,
+    };
+
+    // Confirm payment intent using stripe here
+    const result = await stripe.confirmCardPayment(paymentIntent.clientSecret);
+
+    if (result.error) {
+      setLoading(false);
+
+      // Show error to customer
+      if (
+        result.error.code === 'card_declined' &&
+        result.error.decline_code === 'insufficient_funds'
+      ) {
+        showError({
+          message: get(
+            orderErrors.find(
+              ({ code }) => code === STRIPE_PAYMENT_INSUFFICIENT_FUNDS
+            ),
+            'message',
+            'Cannot place order at this time'
+          ),
+        });
+      } else {
+        showError({ message: result.error.message });
+      }
+    } else {
+      if (result.paymentIntent.status === 'succeeded') {
+        // Place order - call create order endpoint
+        await placeOrder(order);
+        return;
+      } else {
+        throw new Error('Unknown Error');
+      }
     }
   };
 
@@ -258,6 +270,9 @@ const Checkout = () => {
       getPricingDetails();
     } else {
       setPricingDetails({
+        extraBin: 0,
+        extraBinPrice: 0,
+        numItems: 0,
         potentialReturnValue: 0,
         price: 0,
         tax: 0,
@@ -445,10 +460,39 @@ const Checkout = () => {
                         More info
                       </button>
                       <hr style={{ marginTop: '8px' }} />
+
+                      <div className='extra-bin'>
+                        <p className='extra-bin__title'>Bins Required</p>
+                        <p className='extra-bin__total-items'>
+                          {pricingDetails.extraBin !== 0
+                            ? pricingDetails.extraBin + 1
+                            : 1}
+                        </p>
+                        <p className='extra-bin__info'>
+                          Est. bins required for{' '}
+                          <span>{pricingDetails.totalItems}</span> items:{' '}
+                          <span>
+                            {pricingDetails.extraBin !== 0
+                              ? pricingDetails.extraBin + 1
+                              : 1}{' '}
+                            bin
+                          </span>
+                        </p>
+                      </div>
+
+                      <hr className='line-break-1 mb-3' />
                       {Number(user?.['custom:no_of_pickups']) === 0 && (
                         <>
-                          <div className='row mt-3'>
-                            <div className='col m-label'>Return total cost</div>
+                          {pricingDetails.extraBin !== 0 && (
+                            <div className='row'>
+                              <div className='col m-label'>Extra bin cost</div>
+                              <div className='col m-value'>
+                                ${pricingDetails.extraBinPrice}
+                              </div>
+                            </div>
+                          )}
+                          <div className='row'>
+                            <div className='col m-label'>Return cost</div>
                             <div className='col m-value'>
                               ${pricingDetails.price}
                             </div>
@@ -456,7 +500,7 @@ const Checkout = () => {
                           <div className='row'>
                             <div className='col m-label'>Taxes</div>
                             <div className='col m-value'>
-                              ${pricingDetails.tax}
+                              ${pricingDetails.totalTax}
                             </div>
                           </div>
                           <hr
