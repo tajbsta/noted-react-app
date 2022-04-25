@@ -342,10 +342,13 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage, show }) => {
     try {
       setIsFetchingVendors(true);
       const merchants = await getVendors();
-      const newSelectOptions = merchants.map((merchant) => ({
-        value: merchant.thumbnail,
-        label: merchant.name,
-      }));
+      const newSelectOptions = merchants
+        .filter((items) => items.code !== 'OTHERS')
+        .map((merchant) => ({
+          value: merchant.thumbnail,
+          label: merchant.name,
+        }));
+
       setIsFetchingVendors(false);
       setAllMerchants(merchants);
       setSelectOptions([
