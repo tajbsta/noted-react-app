@@ -137,8 +137,6 @@ export default function ProductOptionsModal(props) {
           isSelected: true,
         }));
         setAllProducts(newData);
-
-        console.log(newData);
       }
     }
   }, [show]);

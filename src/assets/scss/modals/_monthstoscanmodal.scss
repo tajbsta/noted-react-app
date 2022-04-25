@@ -1,0 +1,59 @@
+#MonthsToScanModal {
+  .modal-content {
+    padding: 3rem 10rem;
+    @media (max-width: 992px) {
+      padding: 2rem 3rem;
+    }
+    @media (max-width: 576px) {
+      padding: 1rem 1rem;
+    }
+  }
+
+  .h4 {
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+  }
+
+  .modal-header {
+    padding: 0;
+    border: none;
+  }
+
+  .modal-header .close {
+    position: absolute;
+    right: 11px;
+    top: 11px;
+    color: black;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 7px;
+    border: 1px solid #eae8eb;
+    box-shadow: 0px 1px 10px rgba(78, 72, 103, 0.08);
+  }
+
+  .modal-body {
+    width: 100%;
+  }
+
+  .days-button {
+    width: 100%;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: #ffffff;
+    border: 1px solid #eae8eb;
+    color: #0e0018;
+  }
+
+  .days-button.active {
+    background: #eee4f6;
+    border: 2px solid #570097;
+    color: #570097;
+    font-family: 'Sofia Pro';
+  }
+}

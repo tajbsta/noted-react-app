@@ -1,26 +1,23 @@
-import React, { useEffect, Fragment } from 'react';
-import { Col, Container, Row, Spinner } from 'react-bootstrap';
+import React, { useEffect, useState, Fragment } from 'react';
+import { Spinner } from 'react-bootstrap';
 import * as Sentry from '@sentry/react';
-
-import AuthorizeImg from '../../assets/img/AuthorizePlain.svg';
-import ScanningIcon from '../../assets/icons/Scanning.svg';
-import CustomRow from '../../components/Row';
-import { loadGoogleScript } from '../../library/loadGoogleScript';
-import {
-  addProductFromScraper,
-  getProducts,
-  getVendors,
-} from '../../api/productsApi';
-import ACCOUNT_PROVIDERS from '../../constants/accountProviders';
-import { showError, showSuccess } from '../../library/notifications.library';
-import {
-  getVendorsFromEmail,
-  buildEmailQuery,
-  getAccountMessages,
-} from '../../library/scraper.library';
 import moment from 'moment';
 import { useRef } from 'react';
 import { AlertCircle } from 'react-feather';
+import { useSelector, useDispatch } from 'react-redux';
+import { get } from 'lodash';
+import { Elements } from '@stripe/react-stripe-js';
+import { ToastContainer } from 'react-toastify';
+import { loadStripe } from '@stripe/stripe-js';
+
+import ProductOptionsModal from '../../modals/ProductOptionsModal';
+import SubscriptionModal from '../../modals/SubscriptionModal';
+import Authorize from './components/Authorize';
+import DashboardScan from './components/DashboardScan';
+import DashboardPage from './DashboardPage';
+import Topnav from '../../components/Navbar/Navbar';
+
+import ACCOUNT_PROVIDERS from '../../constants/accountProviders';
 import {
   ISAUTHORIZING,
   ISSCRAPING,
@@ -31,200 +28,34 @@ import {
   SCRAPECANCEL,
   COOKIE_ENABLED,
 } from '../../constants/scraper';
-import DashboardPage from './DashboardPage';
-import { useSelector, useDispatch } from 'react-redux';
+
+import { showError, showSuccess } from '../../library/notifications.library';
+import { loadGoogleScript } from '../../library/loadGoogleScript';
+import {
+  getVendorsFromEmail,
+  buildEmailQuery,
+  getAccountMessages,
+} from '../../library/scraper.library';
+
 import {
   updateScraperStatus,
   updateScraperType,
+  updateNoOfMonthsToScan,
 } from '../../actions/scraper.action';
-import { ToastContainer } from 'react-toastify';
-import Topnav from '../../components/Navbar/Navbar';
+
 import { getUser, updateUserAttributes } from '../../api/auth';
-import { get } from 'lodash';
-import { useState } from 'react';
-import GoogleAuthorize from '../../assets/img/authorize.png';
-import ProductOptionsModal from '../../modals/ProductOptionsModal';
-import SubscriptionModal from '../../modals/SubscriptionModal';
-import { submitApplication } from '../../analytics/fbpixels';
-
-import { subscriptionPlans } from '../../api/subscription';
-import { loadStripe } from '@stripe/stripe-js';
+import { subscriptionPlans, subscribeUserToRuby } from '../../api/subscription';
 import { getPublicKey } from '../../api/orderApi';
-import { Elements, useStripe } from '@stripe/react-stripe-js';
-import { subscribeUserToRuby } from '../../api/subscription';
-
-const Authorize = ({ triggerScanNow }) => {
-  return (
-    <div id='AuthorizeUpdate'>
-      <Container className='main-body' fluid='lg'>
-        <Row md='2' className='text-left align-items-center'>
-          <Col xs='6' className='info'>
-            <h1 className='bold text-title'>Everything is automatic!!</h1>
-            <h4 className='text-noted'>
-              noted will scan your email inbox and find all of your online
-              purchases and their return limits.
-            </h4>
-            <div className='text-subtitle'>
-              <h4 className='bold'>In time?</h4>
-              <h4>Get your cash back with one click</h4>
-            </div>
-            <div className='text-subtitle'>
-              <h4 className='bold'>Too late?</h4>
-              <h4>Declutter your home and donate to local charities</h4>
-            </div>
-
-            <button
-              onClick={() => {
-                process.env.NODE_ENV === 'production' && submitApplication();
-                triggerScanNow();
-              }}
-              className='authorize-now-button'
-            >
-              <img
-                src={GoogleAuthorize}
-                style={{ height: '48px' }}
-                alt='google_authorize'
-              />
-            </button>
-
-            <h4 className='text-first'>
-              You first need to authorized noted to read your emails. Only bots
-              will see the relevant emails and we will never sell or transfer
-              any of your personal info to anyone.
-            </h4>
-            <h4 className='text-second'>
-              Furthermore, noted&apos;s use and transfer to any other app of
-              information received from Google APIs will adhere to{' '}
-              <a
-                href='https://developers.google.com/terms/api-services-user-data-policy'
-                target='_blank'
-                rel='noreferrer'
-                className='sofia-pro text-underline'
-              >
-                Google API Services User Data Policy
-              </a>{' '}
-              , including the Limited Use requirements.
-            </h4>
-            <h4 className='text-underline' style={{ marginBottom: '1rem' }}>
-              <a
-                href='https://notedreturns.com/privacy-policy'
-                target='_blank'
-                rel='noreferrer'
-                className='sofia-pro'
-              >
-                Learn more about security
-              </a>
-            </h4>
-          </Col>
-          <Col xs='6'>
-            <div className='authorize-img'>
-              <img src={AuthorizeImg} />
-            </div>
-          </Col>
-        </Row>
-      </Container>
-      {/* MOBILE VIEW */}
-      <Container
-        className='main-body-mobile'
-        fluid='lg'
-        style={{ marginTop: '2.5rem' }}
-      >
-        <Row md='2' className='text-left align-items-end'>
-          <Col xs='6'>
-            <div className='authorize-img-mobile'>
-              <img src={AuthorizeImg} />
-            </div>
-          </Col>
-          <Col xs='6' className='info'>
-            <h1 className='bold text-title'>Everything is automatic</h1>
-            <h4 className='text-noted'>
-              noted will scan your email inbox and find all of your online
-              purchases and their return limits.
-            </h4>
-            <div className='text-subtitle'>
-              <h4 className='bold'>In time?</h4>
-              <h4 className='subtitle'>Get your cash back with one click</h4>
-            </div>
-            <div className='text-subtitle'>
-              <h4 className='bold'>Too late?</h4>
-              <h4 className='subtitle'>
-                Declutter your home and donate to local charities
-              </h4>
-            </div>
-
-            <h4 className='text-first'>
-              You first need to authorized noted to read your emails. Only bots
-              will see the relevant emails and we will never sell or transfer
-              any of your personal info to anyone.
-            </h4>
-            <h4 className='text-second'>
-              Furthermore, noted&apos;s use and transfer to any other app of
-              information received from Google APIs will adhere to{' '}
-              <a
-                href='https://developers.google.com/terms/api-services-user-data-policy'
-                target='_blank'
-                rel='noreferrer'
-                className='sofia-pro text-underline'
-              >
-                Google API Services User Data Policy
-              </a>{' '}
-              , including the Limited Use requirements.
-            </h4>
-            <h4 className='text-underline' style={{ marginBottom: '1rem' }}>
-              <a href='#' className='sofia-pro'>
-                Learn more about security
-              </a>
-            </h4>
-            <button
-              onClick={() => {
-                if (process.env.NODE_ENV === 'production') {
-                  submitApplication();
-                }
-                triggerScanNow();
-              }}
-              className='authorize-now-button'
-            >
-              <img
-                src={GoogleAuthorize}
-                style={{ height: '48px' }}
-                alt='google_authorize'
-              />
-            </button>
-          </Col>
-        </Row>
-      </Container>
-    </div>
-  );
-};
-
-const Scanning = () => {
-  return (
-    <div id='ScanningUpdate'>
-      <div className='card-body'>
-        <CustomRow marginBottom={2}>
-          <div
-            className='col-12'
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
-            <img src={ScanningIcon} />
-          </div>
-        </CustomRow>
-        <p className='text-center sofia-pro noted-purple text-18 text-subtitle'>
-          Scan running...
-        </p>
-        <p className='small text-muted mb-1 text-center text-16 sofia-pro'>
-          Go have some coffee - we&apos;ll email ya when it&apos;s done!
-        </p>
-      </div>
-    </div>
-  );
-};
+import {
+  addProductFromScraper,
+  getProducts,
+  getVendors,
+} from '../../api/productsApi';
 
 const DashboardPageInitial = () => {
-  const { status, type } = useSelector((state) => state.scraper);
+  const { status, type, noOfMonthsToScan } = useSelector(
+    (state) => state.scraper
+  );
   const dispatch = useDispatch();
   const gapi = useRef(null);
   const typeRef = useRef(type);
@@ -235,10 +66,13 @@ const DashboardPageInitial = () => {
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   const [user, setUser] = useState(null);
   const [plans, setPlans] = useState([]);
+  const [userGmailAuthenticated, setUserGmailAuthenticated] = useState(false);
 
   /**TRIGGER SCAN NOW FOR USERS */
-  const triggerScanNow = async (type) => {
-    dispatch(updateScraperType(type));
+  const triggerScanNow = async (noOfMonths) => {
+    dispatch(updateNoOfMonthsToScan(noOfMonths));
+    dispatch(updateScraperType(NORMAL));
+
     try {
       const isSignedIn = gapi.current.auth2.getAuthInstance().isSignedIn.get();
       if (isSignedIn) {
@@ -325,9 +159,7 @@ const DashboardPageInitial = () => {
       if (data.status === 'success') {
         dispatch(updateScraperStatus(SCRAPECOMPLETE));
         setShowProductOptions(false);
-        if (typeRef.current === SCRAPEOLDER) {
-          await updateUserAttributes({ 'custom:scan_older_done': '1' });
-        }
+
         showSuccess({
           message: (
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -350,42 +182,18 @@ const DashboardPageInitial = () => {
     setShowProductOptions(true);
   };
 
-  const getNoOfMonthsToScan = async () => {
-    const user = await getUser();
-    const monthsScanned = parseInt(get(user, 'custom:scan_months', 0));
-    if (monthsScanned === 0) {
-      await updateUserAttributes({ 'custom:scan_months': '3' });
-      return 3;
-    }
-    if (monthsScanned === 3) {
-      await updateUserAttributes({ 'custom:scan_months': '0' });
-      return 6;
-    }
-  };
-
   /**
    * HANDLE EMAIl SCRAPING
    * @param {string} type - Scraper Types - normal, scrapeOlder
    * */
-  const handleScraping = async (type) => {
+  const handleScraping = async () => {
     try {
       dispatch(updateScraperStatus(ISSCRAPING));
       const vendors = await getVendors(['supported=true']);
-      const noOfMonths = await getNoOfMonthsToScan();
+      await updateUserAttributes({ 'custom:scan_months': '3' });
 
-      let before;
-      let after;
-
-      if (type === NORMAL) {
-        after = moment().startOf('day').subtract(noOfMonths, 'months');
-        before = moment().startOf('day').add(1, 'd');
-      } else {
-        const startDate = moment()
-          .startOf('day')
-          .subtract(noOfMonths, 'months');
-        after = startDate.clone().subtract(1, 'years');
-        before = startDate;
-      }
+      let after = moment().startOf('day').subtract(noOfMonthsToScan, 'months');
+      let before = moment().startOf('day').add(1, 'd');
 
       const q = {
         from: getVendorsFromEmail(vendors),
@@ -409,10 +217,7 @@ const DashboardPageInitial = () => {
           ),
         });
         gapi.current.auth2.getAuthInstance().signOut();
-        if (typeRef.current === SCRAPEOLDER) {
-          await updateUserAttributes({ 'custom:scan_older_done': '1' });
-        }
-        // checkIfProductsExist();
+
         dispatch(updateScraperStatus(SCRAPECANCEL));
         return;
       }
@@ -434,12 +239,10 @@ const DashboardPageInitial = () => {
           ),
         });
         gapi.current.auth2.getAuthInstance().signOut();
-        // checkIfProductsExist();
         dispatch(updateScraperStatus(SCRAPECANCEL));
         return;
       }
 
-      // await sendToBE(data);
       showModalWithProducts(data);
     } catch (error) {
       if (
@@ -459,7 +262,6 @@ const DashboardPageInitial = () => {
           ),
         });
         gapi.current.auth2.getAuthInstance().signOut();
-        // checkIfProductsExist();
         dispatch(updateScraperStatus(SCRAPECANCEL));
         return;
       }
@@ -474,7 +276,6 @@ const DashboardPageInitial = () => {
         ),
       });
       gapi.current.auth2.getAuthInstance().signOut();
-      // checkIfProductsExist();
       dispatch(updateScraperStatus(SCRAPECANCEL));
 
       Sentry.captureException(error);
@@ -501,11 +302,8 @@ const DashboardPageInitial = () => {
       // Listen for sign-in state changes.
       gapi.current.auth2.getAuthInstance().isSignedIn.listen((success) => {
         if (success) {
-          if (typeRef.current === NORMAL) {
-            handleScraping(NORMAL);
-          } else {
-            handleScraping(SCRAPEOLDER);
-          }
+          // handleScraping();
+          setUserGmailAuthenticated(success);
         }
       });
     } catch (error) {
@@ -613,8 +411,6 @@ const DashboardPageInitial = () => {
     const user = await getUser();
 
     setUser(user);
-
-    console.log(user);
   }, [showSubscriptionModal]);
 
   useEffect(async () => {
@@ -622,6 +418,13 @@ const DashboardPageInitial = () => {
 
     setPlans(plans.data);
   }, []);
+
+  useEffect(() => {
+    if (userGmailAuthenticated) {
+      handleScraping();
+      setUserGmailAuthenticated(false);
+    }
+  }, [userGmailAuthenticated]);
 
   return (
     <Fragment>
@@ -636,9 +439,9 @@ const DashboardPageInitial = () => {
             />
 
             {status === NOTAUTHORIZED && (
-              <Authorize triggerScanNow={() => triggerScanNow(NORMAL)} />
+              <Authorize triggerScanNow={triggerScanNow} />
             )}
-            {status === ISSCRAPING && <Scanning></Scanning>}
+            {status === ISSCRAPING && <DashboardScan></DashboardScan>}
             {(status === ISAUTHORIZING || status === '') && (
               <div>
                 <Spinner size='lg' color='#570097' animation='border' />

@@ -27,6 +27,7 @@ import { setIsNewlySignedUp } from '../../actions/auth.action';
 import { Auth } from 'aws-amplify';
 import { subscribeUserToRuby } from '../../api/subscription';
 import moment from 'moment';
+import MonthsToScanModal from '../../modals/monthsToScanModal';
 
 export default function DashboardPage({ triggerScanNow }) {
   const [search, setSearch] = useState('');
@@ -56,6 +57,7 @@ export default function DashboardPage({ triggerScanNow }) {
   const [fetchingOrders, setFetchingOrders] = useState(false);
   const addManualRef = useRef(null);
   const [showInitialScanModal, setShowInitialScanModal] = useState(false);
+  const [showMonthsToScanModal, setShowMonthsToScanModal] = useState(false);
   const [validPayment, setValidPayment] = useState(false);
   const [isClosedToday, setIsClosedToday] = useState(false);
 
@@ -398,7 +400,7 @@ export default function DashboardPage({ triggerScanNow }) {
                       <div className='col-sm-6 text-center'>
                         <button
                           className='btn text-center noted-purple sofia-pro line-height-16 text-new-email'
-                          onClick={() => triggerScanNow(NORMAL)}
+                          onClick={() => setShowMonthsToScanModal(true)}
                         >
                           Scan Now
                         </button>
@@ -408,6 +410,13 @@ export default function DashboardPage({ triggerScanNow }) {
                       show={modalProductShow}
                       onHide={() => setModalProductShow(false)}
                     />
+
+                    <MonthsToScanModal
+                      show={showMonthsToScanModal}
+                      onHide={() => setShowMonthsToScanModal(false)}
+                      triggerScanNow={triggerScanNow}
+                    />
+
                     {showScanOlderButton && (
                       <>
                         <div className='row justify-center mt-2 mobile-footer-row'>

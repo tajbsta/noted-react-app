@@ -62,7 +62,6 @@ export default function SubscriptionModal({ show, onClose, plans }) {
   }, [subscriptionSuccess]);
 
   const renderSubscriptionForm = (subscription) => {
-    console.log(subscription);
     if (subscription.plan_name === 'Ruby') return;
     return (
       <>
