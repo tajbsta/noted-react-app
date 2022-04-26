@@ -335,7 +335,7 @@ export default function UserInfo({ user: userData = {} }) {
             <div className='col-sm-6 p-0 py-2'>
               <div>
                 <h4 className='text-left total'>
-                  {user?.['custom:no_of_pickups'] || 0}
+                  {user?.['custom:user_pickups'] || 0}
                 </h4>
                 <h5 className='total-label text-left'>Pick ups left</h5>
               </div>

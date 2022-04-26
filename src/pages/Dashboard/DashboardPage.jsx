@@ -275,7 +275,7 @@ export default function DashboardPage({ triggerScanNow }) {
               show={
                 !isClosedToday &&
                 user?.['custom:stripe_sub_id'] &&
-                user?.['custom:no_of_pickups'] === '1'
+                user?.['custom:user_pickups'] === '1'
               }
               onHide={() => {
                 onHide();
