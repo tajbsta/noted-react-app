@@ -12,7 +12,7 @@ import { scrollToTop } from '../utils/window';
 import { resetAuthorizeNewEmail } from '../utils/data';
 import GoogleLogoItem from '../assets/img/google_signup.png';
 import CheckZipcodeModal from '../modals/CheckZipcodeModal';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setIsNewlySignedUp } from '../actions/auth.action';
 import { lead } from '../analytics/fbpixels';
 
@@ -137,7 +137,7 @@ export default function RegisterPage() {
                 <span>or</span>
               </p>
             </div> */}
-            {/* <Form>
+            <Form>
               {error && (
                 <div className='alert alert-danger' role='alert'>
                   <h4 className='text-center text-alert'>{error}</h4>
@@ -206,7 +206,7 @@ export default function RegisterPage() {
                   />
                 )}
               </button>
-            </Form> */}
+            </Form>
             <div className='text-left'>
               <small className='text-muted text-left'>
                 By joining noted you agree to our{' '}
