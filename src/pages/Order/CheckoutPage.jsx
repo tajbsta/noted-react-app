@@ -92,7 +92,7 @@ const Checkout = () => {
   const placeOrder = async (newOrder) => {
     setLoading(true);
 
-    if (!(Number(user?.['custom:no_of_pickups']) > 0)) {
+    if (!(Number(user?.['custom:user_pickups']) > 0)) {
       const order = await createOrder(newOrder);
       setOrder(order);
     } else {
@@ -138,7 +138,7 @@ const Checkout = () => {
 
       newOrder.id = orderId;
 
-      if (!(Number(user?.['custom:no_of_pickups']) > 0)) {
+      if (!(Number(user?.['custom:user_pickups']) > 0)) {
         // Get payment intent from BE, used for getting payment from the user/payment method
 
         standardStripeCheckout(newOrder);
@@ -481,7 +481,7 @@ const Checkout = () => {
                       </div>
 
                       <hr className='line-break-1 mb-3' />
-                      {Number(user?.['custom:no_of_pickups']) === 0 && (
+                      {Number(user?.['custom:user_pickups']) === 0 && (
                         <>
                           {pricingDetails.extraBin !== 0 && (
                             <div className='row'>
@@ -516,7 +516,7 @@ const Checkout = () => {
                         <div className='col m-total-label'>Total paid</div>
                         <div className='col m-total-value'>
                           $
-                          {Number(user?.['custom:no_of_pickups']) > 0
+                          {Number(user?.['custom:user_pickups']) > 0
                             ? 0
                             : pricingDetails.totalPrice}
                         </div>

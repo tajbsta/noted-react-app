@@ -264,7 +264,7 @@ function RightCard({ beyond90days, user }) {
                   leadingText='Schedule Pickup'
                   disabled={!items.length || loading}
                   price={
-                    Number(user?.['custom:no_of_pickups']) > 0
+                    Number(user?.['custom:user_pickups']) > 0
                       ? '0'
                       : pricing.pickupPrice
                   }

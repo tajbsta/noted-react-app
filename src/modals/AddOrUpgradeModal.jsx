@@ -356,7 +356,7 @@ export default function AddOrUpgradeModal({
           {userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
             <h2>
               {isAddOrUpgrade
-                ? `You have ${userInfo?.['custom:no_of_pickups']} pickups left`
+                ? `You have ${userInfo?.['custom:user_pickups']} pickups left`
                 : 'You have 1 pick up left!'}
             </h2>
           )}

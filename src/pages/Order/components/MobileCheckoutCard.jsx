@@ -78,7 +78,7 @@ export default function MobileCheckoutCard({
                       <>
                         <span>Confirm Order</span>
                         <span>
-                          {Number(user?.['custom:no_of_pickups']) > 0
+                          {Number(user?.['custom:user_pickups']) > 0
                             ? '-1 pickup'
                             : `$${inTotalPrice}`}
                         </span>

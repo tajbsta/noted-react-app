@@ -273,13 +273,13 @@ export default function PickUpDetails({
                 />
                 <h4 className='p-0 m-0 sofia-pro mb-2'>Total Pickups</h4>
                 <h4 className='p-0 m-0 sofia-pro mb-2'>
-                  {userInfo?.['custom:no_of_pickups'] || 0} pick ups
+                  {userInfo?.['custom:user_pickups'] || 0} pick ups
                 </h4>
                 <span className='text-muted mb-3'>(-1 pick up)</span>
               </div>
 
               <h4 className='mt-3 mb-0 pickups-left'>
-                {userInfo?.['custom:no_of_pickups'] - 1 || 0} Pick ups left
+                {userInfo?.['custom:user_pickups'] - 1 || 0} Pick ups left
               </h4>
               <span
                 className='text-muted p-0 m-0 text-sm'
@@ -313,7 +313,7 @@ export default function PickUpDetails({
                         />
                         {!isMyPlanOpen && (
                           <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                            {userInfo?.['custom:no_of_pickups'] || 0} pick ups
+                            {userInfo?.['custom:user_pickups'] || 0} pick ups
                             left
                           </h4>
                         )}
@@ -342,7 +342,7 @@ export default function PickUpDetails({
                           Total Pickups
                         </h4>
                         <h4 className='p-0 m-0 sofia-pro mb-2'>
-                          {userInfo?.['custom:no_of_pickups'] || 0} pick ups
+                          {userInfo?.['custom:user_pickups'] || 0} pick ups
                         </h4>
                         <span className='text-muted mb-3'>(-1 pick up)</span>
                       </div>
@@ -350,7 +350,7 @@ export default function PickUpDetails({
                       <div className='d-flex align-items-center justify-content-between mt-2'>
                         <div>
                           <h4 className='mt-3 mb-0 pickups-left'>
-                            {userInfo?.['custom:no_of_pickups'] - 1 || 0} Pick
+                            {userInfo?.['custom:user_pickups'] - 1 || 0} Pick
                             ups left
                           </h4>
                           <span
