@@ -137,7 +137,7 @@ export default function RegisterPage() {
                 <span>or</span>
               </p>
             </div> */}
-            <Form>
+            {/* <Form>
               {error && (
                 <div className='alert alert-danger' role='alert'>
                   <h4 className='text-center text-alert'>{error}</h4>
@@ -206,7 +206,7 @@ export default function RegisterPage() {
                   />
                 )}
               </button>
-            </Form>
+            </Form> */}
             <div className='text-left'>
               <small className='text-muted text-left'>
                 By joining noted you agree to our{' '}
