@@ -384,7 +384,7 @@ const DashboardPageInitial = () => {
 
   const onsubscriptionModalClose = async () => {
     setShowSubscriptionModal(false);
-    await subscribeUserToRuby(false);
+    // await subscribeUserToRuby(false);
   };
 
   //INITIALIZE GOOGLE API
@@ -411,6 +411,8 @@ const DashboardPageInitial = () => {
     const user = await getUser();
 
     setUser(user);
+
+    console.log(user);
   }, [showSubscriptionModal]);
 
   useEffect(async () => {
