@@ -14,7 +14,7 @@ import NotedCheckbox from './NotedCheckbox';
 import { get } from 'lodash-es';
 import EditProductModal from '../../modals/EditProductModal';
 import { useFormik } from 'formik';
-import { addProductSchema } from '../../models/formSchema';
+
 import { useHistory } from 'react-router';
 import { formatCurrency } from '../../library/number';
 import ReturnValueInfoIcon from '../ReturnValueInfoIcon';
@@ -33,6 +33,7 @@ export default function ProductCard({
   confirmed = false,
   refreshCategory = {},
   onArchive,
+  onEdit,
 }) {
   const [isHover, setIsHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -100,19 +101,6 @@ export default function ProductCard({
   const isDonate = get(item, 'category', '') === 'DONATE';
   const isNotEligible = get(item, 'category', '') === 'NOT_ELIGIBLE';
   const isLastCall = get(item, 'category', '') === 'LAST_CALL';
-
-  const { handleChange, values, setFieldValue, errors } = useFormik({
-    initialValues: {
-      amount: formatCurrency(get(item, 'price', 0)),
-      vendorTag: get(item, 'vendor', ''),
-      orderDate: get(item, 'order_date', ''),
-      itemName: get(item, 'name', ''),
-      productUrl: '',
-      imageUrl: get(item, 'thumbnail', ''),
-      vendorLogo: get(item, 'vendor_data.thumbnail', ''),
-    },
-    validationSchema: addProductSchema,
-  });
 
   const inCheckout = useHistory().location.pathname === '/checkout';
 
@@ -321,11 +309,10 @@ export default function ProductCard({
                   <button
                     disabled
                     className='sofia-pro btn btn-m-edit mr-1'
-                    onClick={() => setModalEditShow(true)}
+                    onClick={() => onEdit(item)}
                   >
                     Edit
                   </button>
-                  <ReturnValueInfoIcon content="We're still working on this" />
                 </div>
               </Row>
             </Container>
@@ -339,16 +326,11 @@ export default function ProductCard({
             setModalPolicyShow(false);
           }}
         />
+
         <EditProductModal
           show={modalEditShow}
           onHide={() => {
             setModalEditShow(false);
-          }}
-          editproductform={{
-            handleChange,
-            values,
-            setFieldValue,
-            errors,
           }}
         />
 
@@ -425,18 +407,7 @@ export default function ProductCard({
               setModalPolicyShow(false);
             }}
           />
-          <EditProductModal
-            show={modalEditShow}
-            onHide={() => {
-              setModalEditShow(false);
-            }}
-            editproductform={{
-              handleChange,
-              values,
-              setFieldValue,
-              errors,
-            }}
-          />
+
           <ProductDetails
             item={item}
             isDonate={isDonate}
@@ -460,12 +431,7 @@ export default function ProductCard({
                 orderDate={item.order_date}
                 show={showHoverContent}
                 item={item}
-                editproductform={{
-                  handleChange,
-                  values,
-                  setFieldValue,
-                  errors,
-                }}
+                onEdit={() => onEdit(item)}
                 onArchive={onArchive}
               />
             )}

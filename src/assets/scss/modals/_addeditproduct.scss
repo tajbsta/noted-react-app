@@ -4,8 +4,8 @@
   border-radius: 8px;
 
   .modal-content {
-    min-height: 547px;
-    max-width: 528px;
+    // min-height: 547px;
+    max-width: 500px;
   }
 
   .m-row {
@@ -172,6 +172,10 @@
         box-shadow: none;
       }
     }
+
+    .react-datepicker__input-container {
+      width: 100%;
+    }
   }
 
   //   DROPZONE
@@ -212,9 +216,9 @@
     flex-wrap: initial;
   }
 
-  .form-control {
-    max-width: 400px;
-  }
+  // .form-control {
+  //   max-width: 400px;
+  // }
 
   .order-date-form {
     cursor: text;
