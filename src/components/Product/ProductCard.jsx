@@ -234,10 +234,10 @@ export default function ProductCard({
                     )}
                   </Row>
                   <div
-                    className='d-flex align-items-center pt-2'
+                    className='d-flex align-items-center mt-4'
                     onClick={() => onArchive(item._id)}
                   >
-                    <img src={ArchiveIcon} alt='archive' className='mr-2' />
+                    <img src={ArchiveIcon} alt='archive' className='mr-2 ' />
                     <span>Archive your item</span>
                   </div>
                 </Container>
@@ -306,13 +306,13 @@ export default function ProductCard({
               <Row>
                 <div className='m-edit-col'>
                   <h4 className='mb-0'>Wrong info? &nbsp;</h4>
-                  <button
+                  <div
                     disabled
                     className='sofia-pro btn btn-m-edit mr-1'
                     onClick={() => onEdit(item)}
                   >
                     Edit
-                  </button>
+                  </div>
                 </div>
               </Row>
             </Container>
