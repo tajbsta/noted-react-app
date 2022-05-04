@@ -34,11 +34,13 @@ export default function EditProductModal({
       name: get(product, 'name', ''),
       imageUrl: get(product, 'thumbnail', ''),
       vendorTag: get(product, 'vendor', ''),
+      notes: get(product, 'notes', ''),
     },
     validationSchema: addProductSchema,
     onSubmit: async (values) => {
       const _id = get(product, '_id', '');
       const { orderDate, name, price, orderRef } = values;
+      const existingImage = get(product, 'thumbnail', '');
 
       const payload = {
         _id,
@@ -46,7 +48,12 @@ export default function EditProductModal({
         name,
         price: Number(parseFloat(price).toFixed(2)),
         orderRef,
+        notes,
       };
+
+      if (existingImage !== values.imageUrl) {
+        payload.thumbnail = values.imageUrl;
+      }
 
       onEditSubmit({ _id, payload });
 
@@ -54,7 +61,15 @@ export default function EditProductModal({
     },
   });
 
-  const { imageUrl, vendorTag, orderDate, name, price, orderRef } = values;
+  const {
+    imageUrl,
+    vendorTag,
+    orderDate,
+    name,
+    price,
+    orderRef,
+    notes,
+  } = values;
 
   const hiddenFileInput = React.useRef(null);
 
@@ -83,9 +98,8 @@ export default function EditProductModal({
 
   // Handles file upload event and updates state
   const handleUpload = (event) => {
-    // const file = event.target.files[0];
     setFile(event.target.files[0]);
-    setFieldValue('imageUrl', URL.createObjectURL(event.target.files[0]));
+    setFieldValue('imageUrl', event.target.files[0]);
 
     if (file && file.size > 5097152) {
       alert('File is too large! The maximum size for file upload is 5 MB.');
@@ -136,7 +150,10 @@ export default function EditProductModal({
         <div id='DatePicker'>
           <DatePicker
             selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            onChange={(date) => {
+              setStartDate(date);
+              setFieldValue('orderDate', date.valueOf());
+            }}
             customInput={<CustomInput />}
           />
         </div>
@@ -214,10 +231,24 @@ export default function EditProductModal({
                     </Form.Group>
                   </Col>
 
-                  <Col xs={4}>
+                  <Col>
                     <Form.Group>
-                      <Form.Label>Order Date</Form.Label>
-                      {renderDatePicker()}
+                      <Form.Label>Price</Form.Label>
+                      <div>
+                        <Form.Control
+                          disabled
+                          name='price'
+                          onChange={handleChange}
+                          value={price}
+                          onBlur={(e) =>
+                            setFieldValue(
+                              'price',
+                              formatCurrency(e.target.value)
+                            )
+                          }
+                        />
+                      </div>
+                      {price.length > 0 && renderInlineError(errors.price)}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -250,23 +281,28 @@ export default function EditProductModal({
                     </Form.Group>
                   </Col>
 
+                  <Col xs={4}>
+                    <Form.Group>
+                      <Form.Label>Order Date</Form.Label>
+                      {renderDatePicker()}
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <Row>
                   <Col>
                     <Form.Group>
-                      <Form.Label>Price</Form.Label>
+                      <Form.Label>Additional Notes</Form.Label>
                       <div>
                         <Form.Control
-                          name='price'
+                          as='textarea'
+                          style={{ maxWidth: 'none' }}
+                          rows='3'
+                          name='notes'
+                          value={notes || ''}
                           onChange={handleChange}
-                          value={price}
-                          onBlur={(e) =>
-                            setFieldValue(
-                              'price',
-                              formatCurrency(e.target.value)
-                            )
-                          }
                         />
                       </div>
-                      {price.length > 0 && renderInlineError(errors.price)}
                     </Form.Group>
                   </Col>
                 </Row>
