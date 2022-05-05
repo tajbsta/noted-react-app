@@ -82,13 +82,13 @@ export default function ReturnCategory({
 
       setItems(newItems);
       setLoadProgress(100);
-      await timeout(500);
+      await timeout(700);
       /**
        * Give animation some time
        */
       setTimeout(() => {
         setLoading(false);
-      }, 600);
+      }, 800);
     } catch (error) {
       setLoading(false);
     }

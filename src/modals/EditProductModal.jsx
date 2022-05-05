@@ -10,6 +10,7 @@ import DatePicker from 'react-datepicker';
 import { useFormik } from 'formik';
 import 'react-datepicker/src/stylesheets/datepicker.scss';
 import { addProductSchema } from '../models/formSchema';
+import moment from 'moment';
 
 export default function EditProductModal({
   product,
@@ -56,7 +57,7 @@ export default function EditProductModal({
       }
 
       onEditSubmit({ _id, payload });
-
+      setFile('');
       onHide();
     },
   });
@@ -222,6 +223,7 @@ export default function EditProductModal({
                       <div className='merchant-container'>
                         <div className='merchant-form-control'>
                           <Form.Control
+                            style={{ backgroundColor: '#ECECEC' }}
                             name='vendorTag'
                             value={vendorTag || ''}
                             disabled
@@ -236,6 +238,7 @@ export default function EditProductModal({
                       <Form.Label>Price</Form.Label>
                       <div>
                         <Form.Control
+                          style={{ backgroundColor: '#ECECEC' }}
                           disabled
                           name='price'
                           onChange={handleChange}
@@ -284,7 +287,14 @@ export default function EditProductModal({
                   <Col xs={4}>
                     <Form.Group>
                       <Form.Label>Order Date</Form.Label>
-                      {renderDatePicker()}
+                      <Form.Control
+                        style={{ backgroundColor: '#ECECEC' }}
+                        disabled
+                        name='orderDate'
+                        onChange={handleChange}
+                        value={moment(orderDate).format('MMMM DD, YYYY')}
+                      />
+                      {/* {renderDatePicker()} */}
                     </Form.Group>
                   </Col>
                 </Row>

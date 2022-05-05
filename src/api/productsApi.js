@@ -215,7 +215,6 @@ export const toggleArchiveItem = async ({ _id, isArchived }) => {
 };
 
 export const updateProductDetails = async ({ _id, payload }) => {
-  console.log(payload);
   try {
     const axios = await api();
     const { userId } = await getUserSession();
@@ -225,10 +224,14 @@ export const updateProductDetails = async ({ _id, payload }) => {
       uploadResponse = await uploadImage(payload.thumbnail);
     }
 
-    const updateResponse = await axios.patch(`${userId}/products/${_id}`, {
-      ...payload,
-      thumbnail: uploadResponse ? uploadResponse.key : null,
-    });
+    if (uploadResponse) {
+      payload.thumbnail = uploadResponse.key;
+    }
+
+    const updateResponse = await axios.patch(
+      `${userId}/products/${_id}`,
+      payload
+    );
 
     return updateResponse;
   } catch (error) {
