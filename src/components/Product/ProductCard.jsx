@@ -302,20 +302,22 @@ export default function ProductCard({
               </Row>
             </Container>
 
-            <Container className='m-edit-container'>
-              <Row>
-                <div className='m-edit-col'>
-                  <h4 className='mb-0'>Wrong info? &nbsp;</h4>
-                  <div
-                    disabled
-                    className='sofia-pro btn btn-m-edit mr-1'
-                    onClick={() => onEdit(item)}
-                  >
-                    Edit
+            {item.provider === 'manual' && (
+              <Container className='m-edit-container'>
+                <Row>
+                  <div className='m-edit-col'>
+                    <h4 className='mb-0'>Wrong info? &nbsp;</h4>
+                    <div
+                      disabled
+                      className='sofia-pro btn btn-m-edit mr-1'
+                      onClick={() => onEdit(item)}
+                    >
+                      Edit
+                    </div>
                   </div>
-                </div>
-              </Row>
-            </Container>
+                </Row>
+              </Container>
+            )}
           </>
         )}
 

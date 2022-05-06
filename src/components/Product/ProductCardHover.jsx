@@ -86,7 +86,7 @@ export default function ProductCardHover({ show, item, onArchive, onEdit }) {
                     ? moment(item.order_date).format('MMM DD, YYYY')
                     : '----'}
                 </h4>
-                {item.vendor === 'OTHERS' && (
+                {item.provider === 'manual' && (
                   <div className='info-container'>
                     <p className='text-wrong-info sofia-pro'>
                       Wrong info?&nbsp;

@@ -179,7 +179,7 @@ export default function EditProductModal({
             <Row className='m-row'>
               <Col>
                 <Row>
-                  <Col xs={2}>
+                  <Col>
                     <Form.Group>
                       <div className='img-container'>
                         {!file && (
@@ -284,7 +284,7 @@ export default function EditProductModal({
                     </Form.Group>
                   </Col>
 
-                  <Col xs={4}>
+                  <Col>
                     <Form.Group>
                       <Form.Label>Order Date</Form.Label>
                       <Form.Control
