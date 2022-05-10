@@ -175,19 +175,10 @@
 
   // OnHoverProductCard
   #OnHoverProductCard {
-    .container-archive {
-      position: absolute;
-      top: 0;
-      height: 19px;
-      bottom: 40%;
-      @media (min-width: 768px) {
-        right: 9%;
-      }
-
-      .archive {
-        width: 200px;
-      }
+    .archive {
+      width: 26px;
     }
+
     .container-1 {
       // width: 20%;
       position: absolute;
@@ -257,6 +248,69 @@
       }
 
       .btn-policy {
+        line-height: 14px;
+        font-size: 12px;
+        text-decoration-line: underline;
+        color: #570097;
+        padding: 0;
+
+        &:hover {
+          color: #b079da;
+        }
+
+        &:focus {
+          outline: none !important;
+          box-shadow: none;
+        }
+      }
+    }
+
+    .render-rating {
+      .text-score {
+        margin-bottom: 0px;
+      }
+
+      .btn-policy {
+        line-height: 14px;
+        font-size: 12px;
+        text-decoration-line: underline;
+        color: #570097;
+        padding: 0;
+
+        &:hover {
+          color: #b079da;
+        }
+
+        &:focus {
+          outline: none !important;
+          box-shadow: none;
+        }
+      }
+    }
+
+    .edit {
+      .date {
+        margin-bottom: 0px;
+        color: #2e1d3a;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .info-container {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .text-wrong-info {
+        font-size: 12px;
+        line-height: 14px;
+        color: #0e0018;
+        mix-blend-mode: normal;
+        opacity: 0.6;
+        margin: 1px;
+      }
+
+      .btn-hover-edit {
         line-height: 14px;
         font-size: 12px;
         text-decoration-line: underline;

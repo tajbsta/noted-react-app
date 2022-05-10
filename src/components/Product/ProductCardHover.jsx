@@ -7,6 +7,7 @@ import ReturnScore from './ReturnsScore';
 import { useHistory } from 'react-router';
 import { Col, Row, Overlay, Tooltip } from 'react-bootstrap';
 import ArchiveIcon from '../../assets/icons/archive-icon.svg';
+import ProductPlaceholder from '../../assets/img/ProductPlaceholder.svg';
 
 export default function ProductCardHover({ show, item, onArchive, onEdit }) {
   const {
@@ -17,6 +18,7 @@ export default function ProductCardHover({ show, item, onArchive, onEdit }) {
   const [currentScore, setCurrentScore] = useState(null);
   const target = useRef(null);
   const [showToolTip, setShowToolTip] = useState(false);
+  const vendorThumbnail = get(item.vendor_data, 'thumbnail', '');
 
   useEffect(() => {
     const vendorRating = get(item, 'vendor_data.rating', 0);
@@ -40,7 +42,7 @@ export default function ProductCardHover({ show, item, onArchive, onEdit }) {
   const inCheckout = ['/checkout'].includes(pathname);
 
   const RenderRating = (
-    <Row className='container-3 text-left-3'>
+    <Row className='render-rating text-left-3'>
       <Col
         xs={2}
         style={{
@@ -72,65 +74,65 @@ export default function ProductCardHover({ show, item, onArchive, onEdit }) {
   return (
     <div>
       {!isMobile && (
-        <div
-          id='OnHoverProductCard'
-          style={{
-            display: show || inCheckout ? 'block' : 'none',
-          }}
-        >
-          {inDashboard && (
-            <>
-              <div className='container-1'>
-                <h4 className='date text-14 sofia-pro line-height-16'>
-                  {item.order_date
-                    ? moment(item.order_date).format('MMM DD, YYYY')
-                    : '----'}
-                </h4>
-                {item.provider === 'manual' && (
-                  <div className='info-container'>
-                    <p className='text-wrong-info sofia-pro'>
-                      Wrong info?&nbsp;
-                    </p>
-                    <div
-                      disabled
-                      className='btn-hover-edit sofia-pro btn mr-1'
-                      onClick={onEdit}
-                    >
-                      Edit
+        <div id='OnHoverProductCard'>
+          <Row className='flex align-items-center justify-content-center flex-nowrap mr-2'>
+            {inDashboard && (
+              <>
+                <Col sm={5} className='edit'>
+                  <h4 className='date text-14 sofia-pro line-height-16'>
+                    {item.order_date
+                      ? moment(item.order_date).format('MMM DD, YYYY')
+                      : '----'}
+                  </h4>
+                  {item.provider === 'manual' && (
+                    <div className='info-container'>
+                      <p className='text-wrong-info sofia-pro'>
+                        Wrong info?&nbsp;
+                      </p>
+                      <div
+                        disabled
+                        className='btn-hover-edit sofia-pro btn'
+                        onClick={onEdit}
+                      >
+                        Edit
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </Col>
 
-              <Row className='container-archive'>
-                <img
-                  src={ArchiveIcon}
-                  alt='archive'
-                  className='col-sm-3 sofia-pro archive'
-                  ref={target}
-                  onMouseOver={() => setShowToolTip(true)}
-                  onMouseLeave={() => setShowToolTip(false)}
-                  onClick={() => onArchive(item._id)}
-                />
-              </Row>
-            </>
-          )}
-
-          {RenderRating}
-
-          <Overlay
-            target={target.current}
-            show={showToolTip}
-            placement='bottom'
-          >
-            {(props) => (
-              <Tooltip id='overlay-example' {...props}>
-                <span style={{ fontFamily: 'Sofia Pro !important' }}>
-                  Archive your item
-                </span>
-              </Tooltip>
+                <Col sm={2}>
+                  <img
+                    src={ArchiveIcon}
+                    alt='archive'
+                    className='sofia-pro archive'
+                    ref={target}
+                    onMouseOver={() => setShowToolTip(true)}
+                    onMouseLeave={() => setShowToolTip(false)}
+                    onClick={() => onArchive(item._id)}
+                  />
+                </Col>
+              </>
             )}
-          </Overlay>
+
+            <Col sm={inCheckout ? 12 : 5}>{RenderRating}</Col>
+
+            {/* <Col sm={2}>
+              <img
+                src={vendorThumbnail || ProductPlaceholder}
+                onError={(e) => {
+                  e.currentTarget.src = ProductPlaceholder;
+                }}
+                alt=''
+                className='avatar-img ml-2 rounded-circle noted-border brand-img'
+                style={{
+                  width: 35,
+                  height: 35,
+                  objectFit: 'contain',
+                  background: '#fff',
+                }}
+              />
+            </Col> */}
+          </Row>
         </div>
       )}
 
@@ -141,6 +143,16 @@ export default function ProductCardHover({ show, item, onArchive, onEdit }) {
           setModalPolicyShow(false);
         }}
       />
+
+      <Overlay target={target.current} show={showToolTip} placement='bottom'>
+        {(props) => (
+          <Tooltip id='overlay-example' {...props}>
+            <span style={{ fontFamily: 'Sofia Pro !important' }}>
+              Archive your item
+            </span>
+          </Tooltip>
+        )}
+      </Overlay>
     </div>
   );
 }
