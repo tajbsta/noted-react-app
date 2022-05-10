@@ -203,6 +203,7 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage, show }) => {
 
     try {
       setIsSubmittingProducts(true);
+
       const res = await uploadProduct({
         type: STANDARD,
         merchant: productValues.vendorTag,

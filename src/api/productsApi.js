@@ -213,3 +213,28 @@ export const toggleArchiveItem = async ({ _id, isArchived }) => {
     return false;
   }
 };
+
+export const updateProductDetails = async ({ _id, payload }) => {
+  try {
+    const axios = await api();
+    const { userId } = await getUserSession();
+    let uploadResponse;
+
+    if (payload.thumbnail) {
+      uploadResponse = await uploadImage(payload.thumbnail);
+    }
+
+    if (uploadResponse) {
+      payload.thumbnail = uploadResponse.key;
+    }
+
+    const updateResponse = await axios.patch(
+      `${userId}/products/${_id}`,
+      payload
+    );
+
+    return updateResponse;
+  } catch (error) {
+    return false;
+  }
+};

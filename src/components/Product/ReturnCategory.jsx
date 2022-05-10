@@ -14,6 +14,9 @@ import { isEmpty } from 'lodash';
 import { toggleArchiveItem } from '../../api/productsApi';
 import { showError, showSuccess } from '../../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
+import EditProductModal from '../../modals/EditProductModal';
+
+import { updateProductDetails } from '../../api/productsApi';
 
 export default function ReturnCategory({
   userId,
@@ -40,6 +43,8 @@ export default function ReturnCategory({
   const [isItemArchived, setIsItemArchived] = useState(false);
   const target = useRef(null);
   const [showToolTip, setShowToolTip] = useState(false);
+  const [modalEditShow, setModalEditShow] = useState(false);
+  const [itemToEdit, setItemToEdit] = useState(null);
 
   const fetchItems = async (nextPageToken) => {
     try {
@@ -77,13 +82,13 @@ export default function ReturnCategory({
 
       setItems(newItems);
       setLoadProgress(100);
-      await timeout(500);
+      await timeout(700);
       /**
        * Give animation some time
        */
       setTimeout(() => {
         setLoading(false);
-      }, 600);
+      }, 800);
     } catch (error) {
       setLoading(false);
     }
@@ -187,6 +192,45 @@ export default function ReturnCategory({
     }
   };
 
+  const onEditInit = (item) => {
+    setItemToEdit(item);
+    setModalEditShow(true);
+  };
+
+  const onEditSubmit = async ({ _id, payload }) => {
+    const response = await updateProductDetails({
+      _id,
+      payload,
+    });
+
+    if (response) {
+      showSuccess({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Successfully edited your item.
+            </h4>
+          </div>
+        ),
+      });
+
+      fetchItems();
+      handleRefreshCategory(fetchItems, category);
+    } else {
+      showError({
+        message: (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <AlertCircle />
+            <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+              Failed to edit your item, try again later.
+            </h4>
+          </div>
+        ),
+      });
+    }
+  };
+
   return (
     <div id='ReturnCategory'>
       <Row>
@@ -234,6 +278,7 @@ export default function ReturnCategory({
             toggleSelected={toggleSelected}
             refreshCategory={refreshCategory}
             onArchive={onArchive}
+            onEdit={onEditInit}
           />
         );
       })}
@@ -269,6 +314,17 @@ export default function ReturnCategory({
           </Tooltip>
         )}
       </Overlay>
+
+      {itemToEdit?.category === category && (
+        <EditProductModal
+          product={itemToEdit}
+          show={modalEditShow}
+          onHide={() => {
+            setModalEditShow(false);
+          }}
+          onEditSubmit={onEditSubmit}
+        />
+      )}
     </div>
   );
 }
