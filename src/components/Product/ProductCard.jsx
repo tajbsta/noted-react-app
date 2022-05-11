@@ -177,6 +177,7 @@ export default function ProductCard({
                 {formattedProductName}
               </h4>
             </div>
+
             <h4
               className='sofia-pro mb-1'
               style={{
@@ -219,6 +220,13 @@ export default function ProductCard({
                 {formatPrice}
               </h4>
             )}
+
+            {userEmail && (
+              <p className='m-0 p-0 sofia-pro text-xs my-2 noted-purple'>
+                {userEmail}
+              </p>
+            )}
+
             {selected && (
               <>
                 <Container>
