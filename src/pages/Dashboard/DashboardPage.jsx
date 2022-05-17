@@ -406,7 +406,7 @@ export default function DashboardPage({ triggerScanNow }) {
                           className='btn text-center noted-purple sofia-pro line-height-16 text-new-email'
                           onClick={() => setShowMonthsToScanModal(true)}
                         >
-                          Scan Now
+                          Scan Email
                         </button>
                       </div>
                     </div>

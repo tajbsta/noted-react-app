@@ -33,7 +33,7 @@ function ProductDetails({
       : `$${parseFloat(item.price).toFixed(2)}`;
 
   // Truncate name if longer than 45 characters
-  const truncateProductNameInDesktop = (str, num = 45) => {
+  const truncateProductNameInDesktop = (str, num = 30) => {
     if (str && str.length > num) {
       return str.slice(0, num) + '...';
     } else {

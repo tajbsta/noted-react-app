@@ -191,6 +191,7 @@ export const addProductFromScraper = async ({
     provider,
     orders,
   };
+
   const { userId } = await getUserSession();
   const axios = await api();
   return axios.post(`${userId}/products/scraped`, data);
