@@ -102,6 +102,7 @@ import UltaBeauty from './ultaBeauty';
 import Loft from './loft';
 import Lulus from './lulus';
 import PotteryBarm from './potteryBarn';
+import AlexPlusNova from './alexPlusNova';
 
 export {
   FashionNova,
@@ -207,5 +208,6 @@ export {
   UltaBeauty,
   Loft,
   Lulus,
-  PotteryBarm
+  PotteryBarm,
+  AlexPlusNova
 };

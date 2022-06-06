@@ -101,7 +101,8 @@ import {
   UltaBeauty,
   Loft,
   Lulus,
-  PotteryBarm
+  PotteryBarm,
+  AlexPlusNova
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -412,6 +413,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.POTTERYBARN:
         orderData = await PotteryBarm.parse(code, payload);
+        break;
+      case VENDOR_CODES.ALEXPLUSNOVA:
+        orderData = await AlexPlusNova.parse(code, payload);
         break;
       default:
         break;
