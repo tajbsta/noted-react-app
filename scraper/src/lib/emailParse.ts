@@ -99,7 +99,8 @@ import {
   Evereve,
   LoccitaneEnProvence,
   UltaBeauty,
-  Loft
+  Loft,
+  Lulus
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -404,6 +405,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.LOFT:
         orderData = await Loft.parse(code, payload);
+        break;
+      case VENDOR_CODES.LULUS:
+        orderData = await Lulus.parse(code, payload);
         break;
       default:
         break;

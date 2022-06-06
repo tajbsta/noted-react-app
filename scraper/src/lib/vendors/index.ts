@@ -100,6 +100,7 @@ import Evereve from './evereve';
 import LoccitaneEnProvence from './loccitaneEnProvence';
 import UltaBeauty from './ultaBeauty';
 import Loft from './loft';
+import Lulus from './lulus';
 
 export {
   FashionNova,
@@ -203,5 +204,6 @@ export {
   Evereve,
   LoccitaneEnProvence,
   UltaBeauty,
-  Loft
+  Loft,
+  Lulus
 };
