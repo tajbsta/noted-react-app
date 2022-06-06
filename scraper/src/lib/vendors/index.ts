@@ -101,6 +101,7 @@ import LoccitaneEnProvence from './loccitaneEnProvence';
 import UltaBeauty from './ultaBeauty';
 import Loft from './loft';
 import Lulus from './lulus';
+import PotteryBarm from './potteryBarn';
 
 export {
   FashionNova,
@@ -205,5 +206,6 @@ export {
   LoccitaneEnProvence,
   UltaBeauty,
   Loft,
-  Lulus
+  Lulus,
+  PotteryBarm
 };
