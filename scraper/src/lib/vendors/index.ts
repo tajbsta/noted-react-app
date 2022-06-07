@@ -106,6 +106,7 @@ import AlexPlusNova from './alexPlusNova';
 import AmazingLace from './amazingLace';
 import EagleEyeOutfitters from './eagleEyeOutfitters';
 import PrettyLittleThing from './prettyLittleThing';
+import Skims from './skims';
 
 export {
   FashionNova,
@@ -215,5 +216,6 @@ export {
   AlexPlusNova,
   AmazingLace,
   EagleEyeOutfitters,
-  PrettyLittleThing
+  PrettyLittleThing,
+  Skims
 };

@@ -105,7 +105,8 @@ import {
   AlexPlusNova,
   AmazingLace,
   EagleEyeOutfitters,
-  PrettyLittleThing
+  PrettyLittleThing,
+  Skims
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -428,6 +429,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.PRETTYLITTLETHING:
         orderData = await PrettyLittleThing.parse(code, payload);
+        break;
+      case VENDOR_CODES.SKIMS:
+        orderData = await Skims.parse(code, payload);
         break;
       default:
         break;
