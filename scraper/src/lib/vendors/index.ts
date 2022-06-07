@@ -105,6 +105,7 @@ import PotteryBarm from './potteryBarn';
 import AlexPlusNova from './alexPlusNova';
 import AmazingLace from './amazingLace';
 import EagleEyeOutfitters from './eagleEyeOutfitters';
+import PrettyLittleThing from './prettyLittleThing';
 
 export {
   FashionNova,
@@ -213,5 +214,6 @@ export {
   PotteryBarm,
   AlexPlusNova,
   AmazingLace,
-  EagleEyeOutfitters
+  EagleEyeOutfitters,
+  PrettyLittleThing
 };
