@@ -103,7 +103,8 @@ import {
   Lulus,
   PotteryBarm,
   AlexPlusNova,
-  AmazingLace
+  AmazingLace,
+  EagleEyeOutfitters
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -420,6 +421,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.AMAZINGLACE:
         orderData = await AmazingLace.parse(code, payload);
+        break;
+      case VENDOR_CODES.EAGLEEYEOUTFITTERS:
+        orderData = await EagleEyeOutfitters.parse(code, payload);
         break;
       default:
         break;

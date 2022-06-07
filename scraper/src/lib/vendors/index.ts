@@ -104,6 +104,7 @@ import Lulus from './lulus';
 import PotteryBarm from './potteryBarn';
 import AlexPlusNova from './alexPlusNova';
 import AmazingLace from './amazingLace';
+import EagleEyeOutfitters from './eagleEyeOutfitters';
 
 export {
   FashionNova,
@@ -211,5 +212,6 @@ export {
   Lulus,
   PotteryBarm,
   AlexPlusNova,
-  AmazingLace
+  AmazingLace,
+  EagleEyeOutfitters
 };
