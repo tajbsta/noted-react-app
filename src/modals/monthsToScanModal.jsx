@@ -19,7 +19,7 @@ const MonthsToScanModal = (props) => {
     },
     {
       name: '180 Days',
-      value: 5,
+      value: 6,
     },
     {
       name: '1 year',
