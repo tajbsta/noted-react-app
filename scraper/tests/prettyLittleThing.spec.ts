@@ -48,7 +48,7 @@ describe(`Pretty Little Thing`, () => {
 
   describe('parse', () => {
     it('should return order data', async () => {
-      const orderData = await PrettyLittleThing.parse(VENDOR_CODES.PRETTYLITTLETHING, payload);
+      const orderData = await PrettyLittleThing.parse(VENDOR_CODES.PLT, payload);
       expect(orderData).to.be.deep.equal({
         orderRef: '522-1074090-2359417',
         orderDate: Number(payload.internalDate),
@@ -84,7 +84,7 @@ describe(`Pretty Little Thing`, () => {
               'https://cdn-img.prettylittlething.com/a/4/8/9/a489e3f9008f6b3c47fcec712eb797cf013c052e_cmu0170_1.jpg'
           }
         ],
-        vendor: VENDOR_CODES.PRETTYLITTLETHING,
+        vendor: VENDOR_CODES.PLT,
         emailId: payload.id
       });
     });
@@ -97,7 +97,7 @@ describe(`Pretty Little Thing`, () => {
 
       updatedPayload.decodedBody = updatedBody;
 
-      const orderData = await PrettyLittleThing.parse(VENDOR_CODES.PRETTYLITTLETHING, updatedPayload);
+      const orderData = await PrettyLittleThing.parse(VENDOR_CODES.PLT, updatedPayload);
       expect(orderData).to.be.deep.equal({
         orderRef: '522-1074090-2359417',
         orderDate: Number(payload.internalDate),
@@ -139,7 +139,7 @@ describe(`Pretty Little Thing`, () => {
               'https://cdn-img.prettylittlething.com/a/4/8/9/a489e3f9008f6b3c47fcec712eb797cf013c052e_cmu0170_1.jpg'
           }
         ],
-        vendor: VENDOR_CODES.PRETTYLITTLETHING,
+        vendor: VENDOR_CODES.PLT,
         emailId: payload.id
       });
     });
@@ -147,9 +147,7 @@ describe(`Pretty Little Thing`, () => {
     it('should throw error if contains lacking data', () => {
       const updatedPayload = Object.assign({}, payload);
       updatedPayload.decodedBody = '<body>Invalid Body</body>';
-      expect(PrettyLittleThing.parse(VENDOR_CODES.PRETTYLITTLETHING, updatedPayload)).to.eventually.be.rejectedWith(
-        Error
-      );
+      expect(PrettyLittleThing.parse(VENDOR_CODES.PLT, updatedPayload)).to.eventually.be.rejectedWith(Error);
     });
   });
 });

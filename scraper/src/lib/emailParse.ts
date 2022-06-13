@@ -427,7 +427,7 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
       case VENDOR_CODES.EAGLEEYEOUTFITTERS:
         orderData = await EagleEyeOutfitters.parse(code, payload);
         break;
-      case VENDOR_CODES.PRETTYLITTLETHING:
+      case VENDOR_CODES.PLT:
         orderData = await PrettyLittleThing.parse(code, payload);
         break;
       case VENDOR_CODES.SKIMS:

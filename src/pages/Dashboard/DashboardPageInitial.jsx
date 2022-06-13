@@ -302,7 +302,7 @@ const DashboardPageInitial = () => {
       // Listen for sign-in state changes.
       gapi.current.auth2.getAuthInstance().isSignedIn.listen((success) => {
         if (success) {
-          // handleScraping();
+          handleScraping();
           setUserGmailAuthenticated(success);
         }
       });
