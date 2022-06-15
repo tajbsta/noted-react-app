@@ -100,6 +100,13 @@ import Evereve from './evereve';
 import LoccitaneEnProvence from './loccitaneEnProvence';
 import UltaBeauty from './ultaBeauty';
 import Loft from './loft';
+import Lulus from './lulus';
+import PotteryBarm from './potteryBarn';
+import AlexPlusNova from './alexPlusNova';
+import AmazingLace from './amazingLace';
+import EagleEyeOutfitters from './eagleEyeOutfitters';
+import PrettyLittleThing from './prettyLittleThing';
+import Skims from './skims';
 
 export {
   FashionNova,
@@ -203,5 +210,12 @@ export {
   Evereve,
   LoccitaneEnProvence,
   UltaBeauty,
-  Loft
+  Loft,
+  Lulus,
+  PotteryBarm,
+  AlexPlusNova,
+  AmazingLace,
+  EagleEyeOutfitters,
+  PrettyLittleThing,
+  Skims
 };

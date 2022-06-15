@@ -99,7 +99,14 @@ import {
   Evereve,
   LoccitaneEnProvence,
   UltaBeauty,
-  Loft
+  Loft,
+  Lulus,
+  PotteryBarm,
+  AlexPlusNova,
+  AmazingLace,
+  EagleEyeOutfitters,
+  PrettyLittleThing,
+  Skims
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -404,6 +411,27 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.LOFT:
         orderData = await Loft.parse(code, payload);
+        break;
+      case VENDOR_CODES.LULUS:
+        orderData = await Lulus.parse(code, payload);
+        break;
+      case VENDOR_CODES.POTTERYBARN:
+        orderData = await PotteryBarm.parse(code, payload);
+        break;
+      case VENDOR_CODES.ALEXPLUSNOVA:
+        orderData = await AlexPlusNova.parse(code, payload);
+        break;
+      case VENDOR_CODES.AMAZINGLACE:
+        orderData = await AmazingLace.parse(code, payload);
+        break;
+      case VENDOR_CODES.EAGLEEYEOUTFITTERS:
+        orderData = await EagleEyeOutfitters.parse(code, payload);
+        break;
+      case VENDOR_CODES.PLT:
+        orderData = await PrettyLittleThing.parse(code, payload);
+        break;
+      case VENDOR_CODES.SKIMS:
+        orderData = await Skims.parse(code, payload);
         break;
       default:
         break;
