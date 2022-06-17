@@ -108,7 +108,8 @@ import {
   PrettyLittleThing,
   Skims,
   ErinCondren,
-  OrijinBees
+  OrijinBees,
+  BirdShop
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -440,6 +441,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.ORIJINBEES:
         orderData = await OrijinBees.parse(code, payload);
+        break;
+      case VENDOR_CODES.BIRDSHOP:
+        orderData = await BirdShop.parse(code, payload);
         break;
       default:
         break;

@@ -109,6 +109,7 @@ import PrettyLittleThing from './prettyLittleThing';
 import Skims from './skims';
 import ErinCondren from './erinCondren';
 import OrijinBees from './orijinBees';
+import BirdShop from './birdShop';
 
 export {
   FashionNova,
@@ -221,5 +222,6 @@ export {
   PrettyLittleThing,
   Skims,
   ErinCondren,
-  OrijinBees
+  OrijinBees,
+  BirdShop
 };
