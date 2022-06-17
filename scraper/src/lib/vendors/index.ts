@@ -108,6 +108,7 @@ import EagleEyeOutfitters from './eagleEyeOutfitters';
 import PrettyLittleThing from './prettyLittleThing';
 import Skims from './skims';
 import ErinCondren from './erinCondren';
+import OrijinBees from './orijinBees';
 
 export {
   FashionNova,
@@ -219,5 +220,6 @@ export {
   EagleEyeOutfitters,
   PrettyLittleThing,
   Skims,
-  ErinCondren
+  ErinCondren,
+  OrijinBees
 };
