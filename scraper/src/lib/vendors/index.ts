@@ -112,6 +112,7 @@ import OrijinBees from './orijinBees';
 import BirdShop from './birdShop';
 import Leovici from './leovici';
 import SwetTailor from './swetTailor';
+import UGG from './ugg';
 
 export {
   FashionNova,
@@ -227,5 +228,6 @@ export {
   OrijinBees,
   BirdShop,
   Leovici,
-  SwetTailor
+  SwetTailor,
+  UGG
 };

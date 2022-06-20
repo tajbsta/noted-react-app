@@ -111,7 +111,8 @@ import {
   OrijinBees,
   BirdShop,
   Leovici,
-  SwetTailor
+  SwetTailor,
+  UGG
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -452,6 +453,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.SWETTAILOR:
         orderData = await SwetTailor.parse(code, payload);
+        break;
+      case VENDOR_CODES.UGG:
+        orderData = await UGG.parse(code, payload);
         break;
       default:
         break;
