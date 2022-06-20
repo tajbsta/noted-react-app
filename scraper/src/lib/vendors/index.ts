@@ -111,6 +111,7 @@ import ErinCondren from './erinCondren';
 import OrijinBees from './orijinBees';
 import BirdShop from './birdShop';
 import Leovici from './leovici';
+import SwetTailor from './swetTailor';
 
 export {
   FashionNova,
@@ -225,5 +226,6 @@ export {
   ErinCondren,
   OrijinBees,
   BirdShop,
-  Leovici
+  Leovici,
+  SwetTailor
 };
