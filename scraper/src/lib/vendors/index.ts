@@ -110,6 +110,7 @@ import Skims from './skims';
 import ErinCondren from './erinCondren';
 import OrijinBees from './orijinBees';
 import BirdShop from './birdShop';
+import Leovici from './leovici';
 
 export {
   FashionNova,
@@ -223,5 +224,6 @@ export {
   Skims,
   ErinCondren,
   OrijinBees,
-  BirdShop
+  BirdShop,
+  Leovici
 };
