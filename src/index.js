@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import Amplify from 'aws-amplify';
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
+import { BrowserRouter } from 'react-router-dom';
 
 const version = JSON.stringify(require('../package.json').version);
 
@@ -38,7 +39,9 @@ Amplify.configure({
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
