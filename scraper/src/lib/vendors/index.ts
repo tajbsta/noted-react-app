@@ -113,6 +113,7 @@ import BirdShop from './birdShop';
 import Leovici from './leovici';
 import SwetTailor from './swetTailor';
 import UGG from './ugg';
+import UrbanOutfitters from './urbanOutfitters';
 
 export {
   FashionNova,
@@ -229,5 +230,6 @@ export {
   BirdShop,
   Leovici,
   SwetTailor,
-  UGG
+  UGG,
+  UrbanOutfitters
 };
