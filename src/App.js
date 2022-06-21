@@ -22,7 +22,7 @@ const options = {
 };
 
 ReactPixel.init('590385872010513', options);
-ReactGA.initialize('259926228');
+// ReactGA.initialize('G-XSRMBC9T9L');
 
 const { persistor, store } = configureStore();
 
@@ -30,7 +30,8 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-    ReactGA.pageview(location.pathname);
+    window.gtag('event', 'page_view', location.pathname);
+    // ReactGA.pageview(location.pathname);
   }, [location]);
 
   return (
