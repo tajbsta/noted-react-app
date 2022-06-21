@@ -393,7 +393,8 @@ const AddProductStandard = ({ handleClose, updatePlaceholderImage, show }) => {
                     <div>
                       <Select
                         className='merchant-dropdown-menu'
-                        defaultValue={selectOptions[0]}
+                        placeholder='Select or Type a vendor'
+                        // defaultValue={selectOptions[0]}
                         isLoading={isFetchingVendors}
                         isClearable={!isEmpty(selectedMerchant)}
                         isSearchable={true}
