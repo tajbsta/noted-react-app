@@ -172,8 +172,7 @@ const CollateUserInfo = (props) => {
 
     try {
       //HANDLE SENDING DATA TO BE HERE
-      const response = await createUnsupportedUser(data);
-      console.log(response);
+      await createUnsupportedUser(data);
       showSuccess({
         message: (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -198,8 +197,6 @@ const CollateUserInfo = (props) => {
           'An error occurred while submitting your details, please try again later',
       });
     }
-
-    console.log(data);
   };
 
   const handleCancel = async () => {

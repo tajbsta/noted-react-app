@@ -30,8 +30,7 @@ import PRICING from '../../constants/pricing';
 import { STRIPE_PAYMENT_INSUFFICIENT_FUNDS } from '../../constants/errors/errorCodes';
 import DonateSection from './components/DonateSection';
 import { DONATE } from '../../constants/actions/runtime';
-import UserInfo from '../Profile/components/UserInfo';
-import { getUserId, getUser } from '../../api/auth';
+import { getUser } from '../../api/auth';
 
 const Checkout = () => {
   const stripe = useStripe();

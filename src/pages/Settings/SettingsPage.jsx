@@ -16,7 +16,7 @@ import CancelSubscriptionModal from '../../modals/CancelSubscriptionModal';
 import { subscriptionPlans } from '../../api/subscription';
 import { loadStripe } from '@stripe/stripe-js';
 import { getPublicKey } from '../../api/orderApi';
-import { Elements, useStripe } from '@stripe/react-stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 
 const SettingsPage = () => {
   const [user, setUser] = useState(null);
@@ -30,7 +30,7 @@ const SettingsPage = () => {
     showCancelSubscriptionModal,
     setShowCancelSubscriptionModal,
   ] = useState(false);
-  const [validPayment, setValidPayment] = useState(false);
+  // const [validPayment, setValidPayment] = useState(false);
   const [plans, setPlans] = useState([]);
 
   useEffect(async () => {
@@ -220,7 +220,8 @@ const SettingsPage = () => {
       <AddOrUpgradeModal
         show={showPickupsLeftModal}
         onHide={() => onHide()}
-        setValidPayment={setValidPayment}
+        // setValidPayment={setValidPayment}
+        setValidPayment={() => {}}
         isAddOrUpgrade={true}
         plans={plans}
         user={user}

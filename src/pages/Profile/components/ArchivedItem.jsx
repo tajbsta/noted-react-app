@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Accordion, Card, Col, Row, Overlay, Tooltip } from 'react-bootstrap';
+import { Card, Col, Overlay, Tooltip } from 'react-bootstrap';
 import ReturnIcon from '../../../assets/icons/return-arrow-icon.svg';
 import ProductPlaceholder from '../../../assets/img/ProductPlaceholder.svg';
 import { toTitleCase } from '../../../utils/data';
@@ -11,7 +11,7 @@ export default function ArchivedItem({ archivedItem, onArchive }) {
   const [showToolTip, setShowToolTip] = useState(false);
 
   // Truncate name if longer than 45 characters
-  const truncateProductNameInDesktop = (str, num = 35) => {
+  const truncateProductNameInDesktop = (str) => {
     const truncLength = isMobile ? 20 : 35;
     if (str && str.length > truncLength) {
       return str.slice(0, truncLength) + '...';

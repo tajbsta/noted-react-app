@@ -20,7 +20,7 @@ import { showError, showSuccess } from '../../library/notifications.library';
 import { AlertCircle, CheckCircle } from 'react-feather';
 import ReturnValueInfoIcon from '../../components/ReturnValueInfoIcon';
 import { resetAuthorizeNewEmail } from '../../utils/data';
-import { NORMAL, SCRAPEOLDER } from '../../constants/scraper';
+import { SCRAPEOLDER } from '../../constants/scraper';
 import InitialScanModal from '../../modals/initialScanModal';
 import PickUpLeftModal from '../../modals/PickUpLeftModal';
 import { setIsNewlySignedUp } from '../../actions/auth.action';
@@ -46,7 +46,6 @@ export default function DashboardPage({ triggerScanNow }) {
   );
 
   const [loading, setLoading] = useState(true);
-  const [showScanning, setShowScanning] = useState(false);
   const [user, setUser] = useState('');
   const [userId, setUserId] = useState('');
   const [showScanOlderButton, setShowScanOlderButton] = useState(false);
@@ -58,8 +57,9 @@ export default function DashboardPage({ triggerScanNow }) {
   const addManualRef = useRef(null);
   const [showInitialScanModal, setShowInitialScanModal] = useState(false);
   const [showMonthsToScanModal, setShowMonthsToScanModal] = useState(false);
-  const [validPayment, setValidPayment] = useState(false);
+  // const [validPayment, setValidPayment] = useState(false);
   const [isClosedToday, setIsClosedToday] = useState(false);
+  const showScanning = false;
 
   const dispatch = useDispatch();
 
@@ -73,10 +73,12 @@ export default function DashboardPage({ triggerScanNow }) {
           extensionID,
           JSON.stringify(session),
           function (response) {
+            // eslint-disable-next-line no-console
             console.log(response);
           }
         );
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log(error);
       }
     }
@@ -228,15 +230,15 @@ export default function DashboardPage({ triggerScanNow }) {
   const beyond90days = get(user, 'custom:scan_older_done', '0') === '1';
 
   // SCROLL TO
-  const executeScroll = (ref) => {
-    ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setShowInitialScanModal(false);
-    dispatch(setIsNewlySignedUp(false));
+  // const executeScroll = (ref) => {
+  //   ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  //   setShowInitialScanModal(false);
+  //   dispatch(setIsNewlySignedUp(false));
 
-    setTimeout(() => {
-      setModalProductShow(true);
-    }, 1200);
-  };
+  //   setTimeout(() => {
+  //     setModalProductShow(true);
+  //   }, 1200);
+  // };
 
   const onHide = () => {
     setShowInitialScanModal(false);
@@ -287,7 +289,8 @@ export default function DashboardPage({ triggerScanNow }) {
                 onHide();
                 setIsClosedToday(true);
               }}
-              setValidPayment={setValidPayment}
+              // setValidPayment={setValidPayment}
+              setValidPayment={() => {}}
             />
 
             <InitialScanModal

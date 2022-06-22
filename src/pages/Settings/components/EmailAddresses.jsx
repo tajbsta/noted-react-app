@@ -6,7 +6,7 @@ import { getAccounts } from '../../../api/accountsApi';
 import { Spinner } from 'react-bootstrap';
 import DeleteEmailModal from '../../../modals/DeleteEmailModal';
 import Collapsible from 'react-collapsible';
-import { showSuccess, showError } from '../../../library/notifications.library';
+import { showSuccess } from '../../../library/notifications.library';
 
 export default function EmailAddresses({ user }) {
   const [accounts, setAccounts] = useState([]);

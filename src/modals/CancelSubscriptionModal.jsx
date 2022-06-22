@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { Modal, Button, Form, Spinner, Row, Col } from 'react-bootstrap';
-import { showError, showSuccess } from '../library/notifications.library';
-import { AlertCircle, CheckCircle } from 'react-feather';
+import { Modal, Button, Spinner } from 'react-bootstrap';
+import { showError } from '../library/notifications.library';
+import { AlertCircle } from 'react-feather';
 import { cancelSubscription } from '../api/subscription';
 import moment from 'moment';
 

@@ -9,7 +9,7 @@ export const DuplicateReducer = (arr) => {
     };
   }, {});
 
-  const productsArr = Object.keys(checkDuplicatesArr).map((key, value) => {
+  const productsArr = Object.keys(checkDuplicatesArr).map((key) => {
     const item = {
       ...checkDuplicatesArr[key],
       name:
@@ -18,7 +18,7 @@ export const DuplicateReducer = (arr) => {
           : `${checkDuplicatesArr[key].name} (${checkDuplicatesArr[key].quantity})`,
     };
 
-    const { quantity, ...rest } = item;
+    const { ...rest } = item;
 
     return rest;
   });

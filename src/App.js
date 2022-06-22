@@ -8,7 +8,6 @@ import './assets/scss/theme.scss';
 import './assets/scss/App.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import ReactPixel from 'react-facebook-pixel';
-import ReactGA from 'react-ga';
 
 /*
 IMPORTS ROUTES
