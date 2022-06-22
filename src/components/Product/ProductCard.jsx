@@ -13,11 +13,8 @@ import ConfirmDonate from '../../modals/ConfirmDonate';
 import NotedCheckbox from './NotedCheckbox';
 import { get } from 'lodash-es';
 import EditProductModal from '../../modals/EditProductModal';
-import { useFormik } from 'formik';
 
 import { useHistory } from 'react-router';
-import { formatCurrency } from '../../library/number';
-import ReturnValueInfoIcon from '../ReturnValueInfoIcon';
 import { toTitleCase } from '../../utils/data';
 import ArchiveIcon from '../../assets/icons/archive-icon.svg';
 

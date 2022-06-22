@@ -7,9 +7,8 @@ import ReturnScore from './ReturnsScore';
 import { useHistory } from 'react-router';
 import { Col, Row, Overlay, Tooltip } from 'react-bootstrap';
 import ArchiveIcon from '../../assets/icons/archive-icon.svg';
-import ProductPlaceholder from '../../assets/img/ProductPlaceholder.svg';
 
-export default function ProductCardHover({ show, item, onArchive, onEdit }) {
+export default function ProductCardHover({ item, onArchive, onEdit }) {
   const {
     location: { pathname },
   } = useHistory();
@@ -18,7 +17,6 @@ export default function ProductCardHover({ show, item, onArchive, onEdit }) {
   const [currentScore, setCurrentScore] = useState(null);
   const target = useRef(null);
   const [showToolTip, setShowToolTip] = useState(false);
-  const vendorThumbnail = get(item.vendor_data, 'thumbnail', '');
 
   useEffect(() => {
     const vendorRating = get(item, 'vendor_data.rating', 0);

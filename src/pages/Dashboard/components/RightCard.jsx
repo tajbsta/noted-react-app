@@ -81,7 +81,6 @@ function RightCard({ beyond90days, user }) {
   };
 
   const isZipCodeSupported = (isSupported) => {
-    console.log(isSupported);
     if (isSupported) {
       history.push('/checkout');
     }

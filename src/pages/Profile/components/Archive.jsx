@@ -12,12 +12,13 @@ import { toggleArchiveItem } from '../../../api/productsApi';
 export default function Archive({ user }) {
   const [isOpen, setIsOpen] = useState(false);
   const [archivedItems, setArchivedItems] = useState(null);
-  const [lastEvaluatedKey, setLastEvaluatedKey] = useState(null);
+  // const [lastEvaluatedKey, setLastEvaluatedKey] = useState(null);
   const [loadProgress, setLoadProgress] = useState(0);
   const [fetchArchivedItems, setFetchArchivedItems] = useState(false);
   const [isitemArchived, setIsItemArchived] = useState(false);
+  const lastEvaluatedKey = null;
 
-  const initFetchArchivedItems = async (nextPageKey = null) => {
+  const initFetchArchivedItems = async () => {
     const params = {
       userId: user.sub,
       sortBy: 'updated_at,_id',

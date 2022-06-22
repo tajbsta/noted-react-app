@@ -1,12 +1,12 @@
-import React, { useEffect, useState, forwardRef } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import ProductPlaceholder from '../assets/img/ProductPlaceholder.svg';
 import { UploadCloud } from 'react-feather';
-import { useDropzone } from 'react-dropzone';
 import { get } from 'lodash';
-import { getFileTypeIcon } from '../utils/file';
 import { formatCurrency } from '../library/number';
-import DatePicker from 'react-datepicker';
+// import { useDropzone } from 'react-dropzone';
+// import { getFileTypeIcon } from '../utils/file';
+// import DatePicker from 'react-datepicker';
 import { useFormik } from 'formik';
 import 'react-datepicker/src/stylesheets/datepicker.scss';
 import { addProductSchema } from '../models/formSchema';
@@ -78,24 +78,24 @@ export default function EditProductModal({
     hiddenFileInput.current.click();
   };
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone();
+  // const { acceptedFiles } = useDropzone();
 
-  const acceptedFileItems = acceptedFiles.map((file) => {
-    return (
-      <li
-        key={file.path}
-        className='edit-list-item'
-        style={{
-          listStyle: 'none',
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        {getFileTypeIcon(file.path)}
-        <span className='ml-2'>{file.path}</span>
-      </li>
-    );
-  });
+  // const acceptedFileItems = acceptedFiles.map((file) => {
+  //   return (
+  //     <li
+  //       key={file.path}
+  //       className='edit-list-item'
+  //       style={{
+  //         listStyle: 'none',
+  //         display: 'flex',
+  //         alignItems: 'center',
+  //       }}
+  //     >
+  //       {getFileTypeIcon(file.path)}
+  //       <span className='ml-2'>{file.path}</span>
+  //     </li>
+  //   );
+  // });
 
   // Handles file upload event and updates state
   const handleUpload = (event) => {
@@ -122,45 +122,45 @@ export default function EditProductModal({
     <small className='form-text p-0 m-0 noted-red'>{error}</small>
   );
 
-  const renderDatePicker = () => {
-    const [startDate, setStartDate] = useState(orderDate);
-    // eslint-disable-next-line react/display-name
-    const CustomInput = forwardRef(({ value, onClick }, ref) => (
-      <div
-        className='btn'
-        style={{ width: '100%' }}
-        onClick={(e) => {
-          e.preventDefault();
-          onClick();
-        }}
-        ref={ref}
-      >
-        {value}
-      </div>
-    ));
+  // const renderDatePicker = () => {
+  //   const [startDate, setStartDate] = useState(orderDate);
+  //   // eslint-disable-next-line react/display-name
+  //   const CustomInput = forwardRef(({ value, onClick }, ref) => (
+  //     <div
+  //       className='btn'
+  //       style={{ width: '100%' }}
+  //       onClick={(e) => {
+  //         e.preventDefault();
+  //         onClick();
+  //       }}
+  //       ref={ref}
+  //     >
+  //       {value}
+  //     </div>
+  //   ));
 
-    return (
-      <div
-        className='form-control'
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          padding: 0,
-        }}
-      >
-        <div id='DatePicker'>
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => {
-              setStartDate(date);
-              setFieldValue('orderDate', date.valueOf());
-            }}
-            customInput={<CustomInput />}
-          />
-        </div>
-      </div>
-    );
-  };
+  //   return (
+  //     <div
+  //       className='form-control'
+  //       style={{
+  //         display: 'flex',
+  //         justifyContent: 'center',
+  //         padding: 0,
+  //       }}
+  //     >
+  //       <div id='DatePicker'>
+  //         <DatePicker
+  //           selected={startDate}
+  //           onChange={(date) => {
+  //             setStartDate(date);
+  //             setFieldValue('orderDate', date.valueOf());
+  //           }}
+  //           customInput={<CustomInput />}
+  //         />
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   return (
     <div>

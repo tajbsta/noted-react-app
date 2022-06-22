@@ -44,13 +44,9 @@ import {
 } from '../../actions/scraper.action';
 
 import { getUser, updateUserAttributes } from '../../api/auth';
-import { subscriptionPlans, subscribeUserToRuby } from '../../api/subscription';
+import { subscriptionPlans } from '../../api/subscription';
 import { getPublicKey } from '../../api/orderApi';
-import {
-  addProductFromScraper,
-  getProducts,
-  getVendors,
-} from '../../api/productsApi';
+import { addProductFromScraper, getVendors } from '../../api/productsApi';
 
 const DashboardPageInitial = () => {
   const { status, type, noOfMonthsToScan } = useSelector(
@@ -64,7 +60,6 @@ const DashboardPageInitial = () => {
   const [showProductOptions, setShowProductOptions] = useState(false);
   const [isSavingProducts, setIsSavingProducts] = useState(false);
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
-  const [user, setUser] = useState(null);
   const [plans, setPlans] = useState([]);
   const [userGmailAuthenticated, setUserGmailAuthenticated] = useState(false);
 
@@ -312,21 +307,21 @@ const DashboardPageInitial = () => {
   };
 
   /**CHECK IF USER HAS PRODUCTS ON DASHBOARD */
-  const checkIfProductsExist = async () => {
-    const products = await getProducts({});
-    if (products.length <= 0) {
-      dispatch(updateScraperStatus(NOTAUTHORIZED));
-      return;
-    }
-    dispatch(updateScraperStatus(SCRAPECANCEL));
-  };
+  // const checkIfProductsExist = async () => {
+  //   const products = await getProducts({});
+  //   if (products.length <= 0) {
+  //     dispatch(updateScraperStatus(NOTAUTHORIZED));
+  //     return;
+  //   }
+  //   dispatch(updateScraperStatus(SCRAPECANCEL));
+  // };
 
   /**CHECK IF FIRST TIME USER */
   const checkIfFirstTimeUser = async () => {
     const user = await getUser();
     const monthsScanned = get(user, 'custom:scan_months', undefined);
 
-    setUser(user);
+    // setUser(user);
 
     if (user && !user['custom:stripe_sub_name']) {
       setShowSubscriptionModal(true);
@@ -407,13 +402,11 @@ const DashboardPageInitial = () => {
     typeRef.current = type;
   }, [type]);
 
-  useEffect(async () => {
-    const user = await getUser();
+  // useEffect(async () => {
+  //   const user = await getUser();
 
-    setUser(user);
-
-    console.log(user);
-  }, [showSubscriptionModal]);
+  //   setUser(user);
+  // }, [showSubscriptionModal]);
 
   useEffect(async () => {
     const plans = await subscriptionPlans();
