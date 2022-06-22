@@ -315,17 +315,16 @@ export default function ReturnCategory({
         )}
       </Overlay>
 
-      {itemToEdit?.category === category ||
-        (search && (
-          <EditProductModal
-            product={itemToEdit}
-            show={modalEditShow}
-            onHide={() => {
-              setModalEditShow(false);
-            }}
-            onEditSubmit={onEditSubmit}
-          />
-        ))}
+      {(itemToEdit?.category === category || search) && (
+        <EditProductModal
+          product={itemToEdit}
+          show={modalEditShow}
+          onHide={() => {
+            setModalEditShow(false);
+          }}
+          onEditSubmit={onEditSubmit}
+        />
+      )}
     </div>
   );
 }
