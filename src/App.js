@@ -30,7 +30,7 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-    window.gtag('event', 'page_view', location.pathname);
+    window.gtag('event', 'page_view', { page: location.pathname });
     // ReactGA.pageview(location.pathname);
   }, [location]);
 

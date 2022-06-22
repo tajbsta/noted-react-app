@@ -201,7 +201,9 @@ export default function LoginPage() {
                 to='join'
                 className='text-decoration-underline text-login'
                 onClick={() =>
-                  process.env.NODE_ENV === 'production' && initiateCheckout
+                  process.env.NODE_ENV === 'production' &&
+                  initiateCheckout &&
+                  window.gtag('event', 'sign_up')
                 }
               >
                 {' '}
