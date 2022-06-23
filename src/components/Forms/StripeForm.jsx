@@ -8,6 +8,7 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { get } from 'lodash';
+import USA_STATES from '../../assets/usa_states.json';
 import { savePaymentMethod } from '../../api/orderApi';
 import { subscribeUser } from '../../api/subscription';
 import { updateUserAttributes } from '../../api/auth';
@@ -17,6 +18,7 @@ import * as Sentry from '@sentry/react';
 import { useFormik } from 'formik';
 import { pickUpAddressSchema } from '../../models/formSchema';
 import { AlertCircle } from 'react-feather';
+import { formatPhoneNumber } from '../../utils/form';
 
 export default function StripeForm({
   isCheckoutFlow,
@@ -352,12 +354,24 @@ export default function StripeForm({
                   type='name'
                   name='state'
                   onBlur={handleBlur}
-                  value={values.state}
+                  value={values.state || ''}
                   onChange={(e) => {
                     setFieldValue('state', e.target.value);
                   }}
                   isInvalid={touched.state && errors.state}
-                />
+                  as='select'
+                  placeholder='Select State'
+                >
+                  {[
+                    { abbreviation: '', name: 'Select State' },
+                    ...USA_STATES,
+                  ].map(({ name, abbreviation }) => (
+                    <option value={abbreviation} key={`${abbreviation}`}>
+                      {name}
+                    </option>
+                  ))}
+                </Form.Control>
+
                 <Form.Control.Feedback type='invalid'>
                   {errors.state}
                 </Form.Control.Feedback>
@@ -385,26 +399,6 @@ export default function StripeForm({
             </Col>
           </Row>
           <Row>
-            <Col sm={6}>
-              <Form.Group>
-                <Form.Label>Address Line 1</Form.Label>
-                <Form.Control
-                  className='form-control'
-                  autoComplete='off'
-                  type='name'
-                  name='line1'
-                  onBlur={handleBlur}
-                  value={values.line1}
-                  onChange={(e) => {
-                    setFieldValue('line1', e.target.value);
-                  }}
-                  isInvalid={touched.line1 && errors.line1}
-                />
-                <Form.Control.Feedback type='invalid'>
-                  {errors.line1}
-                </Form.Control.Feedback>
-              </Form.Group>
-            </Col>
             <Col sm={3}>
               <Form.Group>
                 <Form.Label>City</Form.Label>
@@ -434,14 +428,38 @@ export default function StripeForm({
                   type='name'
                   name='phoneNumber'
                   onBlur={handleBlur}
-                  value={values.phone}
                   onChange={(e) => {
-                    setFieldValue('phoneNumber', e.target.value);
+                    const re = /^[0-9\b]+$/;
+                    if (e.target.value === '' || re.test(e.target.value)) {
+                      setFieldValue('phoneNumber', e.target.value);
+                    }
                   }}
+                  value={formatPhoneNumber(values.phoneNumber) || ''}
+                  maxLength={13}
                   isInvalid={touched.phoneNumber && errors.phoneNumber}
                 />
                 <Form.Control.Feedback type='invalid'>
                   {errors.phoneNumber}
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+            <Col sm={{ order: 'first', span: 6 }}>
+              <Form.Group>
+                <Form.Label>Address Line 1</Form.Label>
+                <Form.Control
+                  className='form-control'
+                  autoComplete='off'
+                  type='name'
+                  name='line1'
+                  onBlur={handleBlur}
+                  value={values.line1}
+                  onChange={(e) => {
+                    setFieldValue('line1', e.target.value);
+                  }}
+                  isInvalid={touched.line1 && errors.line1}
+                />
+                <Form.Control.Feedback type='invalid'>
+                  {errors.line1}
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
