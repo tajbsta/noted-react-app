@@ -107,6 +107,13 @@ import AmazingLace from './amazingLace';
 import EagleEyeOutfitters from './eagleEyeOutfitters';
 import PrettyLittleThing from './prettyLittleThing';
 import Skims from './skims';
+import ErinCondren from './erinCondren';
+import OrijinBees from './orijinBees';
+import BirdShop from './birdShop';
+import Leovici from './leovici';
+import SwetTailor from './swetTailor';
+import UGG from './ugg';
+import UrbanOutfitters from './urbanOutfitters';
 
 export {
   FashionNova,
@@ -217,5 +224,12 @@ export {
   AmazingLace,
   EagleEyeOutfitters,
   PrettyLittleThing,
-  Skims
+  Skims,
+  ErinCondren,
+  OrijinBees,
+  BirdShop,
+  Leovici,
+  SwetTailor,
+  UGG,
+  UrbanOutfitters
 };

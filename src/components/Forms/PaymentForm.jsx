@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { formatPhoneNumber, isFormEmpty } from '../../utils/form';
 import USA_STATES from '../../assets/usa_states.json';
@@ -21,13 +21,11 @@ export default function PaymentForm({
   line2,
   city,
   phoneNumber,
-  paymentFormValues,
   // phoneNumber,
   // touched,
   // billingAddress,
   // onBtnCheck,
   setShowEditPayment = () => {},
-  props,
 }) {
   const disableSubmit =
     isFormEmpty({
@@ -41,7 +39,6 @@ export default function PaymentForm({
   // const { address } = useSelector(({ runtime: { form: { address } } }) => ({
   //   address,
   // }))
-  const phoneForm = useRef('');
 
   // const [paymentInfo, setPaymentInfo] = useState([{
   //   name: address.fullName,
@@ -129,10 +126,6 @@ export default function PaymentForm({
       errors.phoneNumber = null;
       // console.log(errors);
     }
-  };
-
-  const formatPhone = (e) => {
-    e.target.value = formatPhoneNumber(phoneNumber);
   };
 
   return (

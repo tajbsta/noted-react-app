@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Row, Col, Form, Spinner } from 'react-bootstrap';
+import { Modal, Button, Row, Col, Spinner } from 'react-bootstrap';
 import { getCreditCardType } from '../utils/creditCards';
 import { getUserPaymentMethods } from '../api/orderApi';
 import { setPayment } from '../actions/cart.action';
@@ -28,7 +28,6 @@ export default function PickUpLeftModal({
   const [paymentFormValues, setPaymentFormValues] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isRefillSelected, setISRefillSelected] = useState(false);
 
   const getCardImage = (payment) => {
     const brand = payment ? payment.card.brand : null;
@@ -131,10 +130,6 @@ export default function PickUpLeftModal({
   useEffect(() => {
     setDefaults();
   }, [show]);
-
-  useEffect(() => {
-    console.log('payment updated');
-  }, [paymentFormValues, isRefillSelected]);
 
   const Summary = ({ plan }) => {
     return (

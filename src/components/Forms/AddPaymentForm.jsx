@@ -89,6 +89,7 @@ export default function AddPaymentForm({
 
       setProcessing(false);
     } catch (error) {
+      // eslint-disable-next-line
       console.log(error);
       setProcessing(false);
       showError({

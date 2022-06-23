@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, Row, Col } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 
@@ -54,12 +54,6 @@ export default function SubscriptionModal({ show, onClose, plans }) {
       Sentry.captureException(error);
     }
   };
-
-  useEffect(() => {
-    if (subscriptionSuccess) {
-      console.log('success');
-    }
-  }, [subscriptionSuccess]);
 
   const renderSubscriptionForm = (subscription) => {
     if (subscription.plan_name === 'Ruby') return;

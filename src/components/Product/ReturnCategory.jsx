@@ -315,7 +315,7 @@ export default function ReturnCategory({
         )}
       </Overlay>
 
-      {itemToEdit?.category === category && (
+      {(itemToEdit?.category === category || search) && (
         <EditProductModal
           product={itemToEdit}
           show={modalEditShow}

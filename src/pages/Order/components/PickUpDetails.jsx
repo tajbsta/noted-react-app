@@ -157,8 +157,6 @@ export default function PickUpDetails({
 
     setUserInfo(user);
 
-    console.log(user);
-
     // Set default address
     addressFormValues.fullName = (order ? order.fullName : user.name) || '';
     addressFormValues.state =

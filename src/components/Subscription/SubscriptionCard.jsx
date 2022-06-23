@@ -11,7 +11,6 @@ export default function SubscriptionCard({
   recommended,
 }) {
   const {
-    recommendation,
     tag,
     plan_name,
     price,

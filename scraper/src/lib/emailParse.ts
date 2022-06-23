@@ -106,7 +106,14 @@ import {
   AmazingLace,
   EagleEyeOutfitters,
   PrettyLittleThing,
-  Skims
+  Skims,
+  ErinCondren,
+  OrijinBees,
+  BirdShop,
+  Leovici,
+  SwetTailor,
+  UGG,
+  UrbanOutfitters
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -432,6 +439,27 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.SKIMS:
         orderData = await Skims.parse(code, payload);
+        break;
+      case VENDOR_CODES.ERINCONDREN:
+        orderData = await ErinCondren.parse(code, payload);
+        break;
+      case VENDOR_CODES.ORIJINBEES:
+        orderData = await OrijinBees.parse(code, payload);
+        break;
+      case VENDOR_CODES.BIRDSHOP:
+        orderData = await BirdShop.parse(code, payload);
+        break;
+      case VENDOR_CODES.LEOVICI:
+        orderData = await Leovici.parse(code, payload);
+        break;
+      case VENDOR_CODES.SWETTAILOR:
+        orderData = await SwetTailor.parse(code, payload);
+        break;
+      case VENDOR_CODES.UGG:
+        orderData = await UGG.parse(code, payload);
+        break;
+      case VENDOR_CODES.URBANOUTFITTERS:
+        orderData = await UrbanOutfitters.parse(code, payload);
         break;
       default:
         break;

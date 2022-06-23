@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form, Spinner, Row, Col } from 'react-bootstrap';
+import React from 'react';
+import { Modal, Button } from 'react-bootstrap';
 import AmazonLogo from '../assets/img/amazon.png';
 
 const initialScanModal = (props) => {
