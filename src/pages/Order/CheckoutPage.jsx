@@ -343,8 +343,6 @@ const Checkout = () => {
 
   useEffect(() => {
     getMissedOutProducts();
-
-    console.log(user);
   }, []);
 
   const RenderOtherReturnables = () => {

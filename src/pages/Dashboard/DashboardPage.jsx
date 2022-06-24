@@ -220,8 +220,6 @@ export default function DashboardPage({ triggerScanNow }) {
       if (user && !user['custom:stripe_sub_name'] && !newUser) {
         await subscribeUserToRuby(true);
       }
-
-      console.log(user);
     })();
   }, []);
 
