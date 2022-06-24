@@ -31,6 +31,9 @@ import { STRIPE_PAYMENT_INSUFFICIENT_FUNDS } from '../../constants/errors/errorC
 import DonateSection from './components/DonateSection';
 import { DONATE } from '../../constants/actions/runtime';
 import { getUser } from '../../api/auth';
+import { subscriptionPlans } from '../../api/subscription';
+import SubscriptionModal from '../../modals/SubscriptionModal';
+import { subscribeUserToRuby } from '../../api/subscription';
 
 const Checkout = () => {
   const stripe = useStripe();
@@ -68,6 +71,8 @@ const Checkout = () => {
   const [itemsToReturn, setItemsToReturn] = useState([]);
   const [selectedDonationOrg, setSelectedDonationOrg] = useState({});
   const [user, setUser] = useState('');
+  const [plans, setPlans] = useState([]);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
 
   /**HANDLE SELECT DONATION ORGANIZATION */
   const handleSelectDonationOrg = (org) => {
@@ -233,12 +238,21 @@ const Checkout = () => {
     dispatch(setCartItems(newItems));
   };
 
+  const onsubscriptionModalClose = async () => {
+    await subscribeUserToRuby(false);
+    setShowSubscriptionModal(false);
+  };
+
   useEffect(() => {
     (async () => {
       const user = await getUser();
       setUser(user);
+
+      if (user && !user['custom:stripe_sub_name']) {
+        setShowSubscriptionModal(true);
+      }
     })();
-  }, []);
+  }, [showSubscriptionModal]);
 
   useEffect(() => {
     function handleResize() {
@@ -297,6 +311,14 @@ const Checkout = () => {
     return false;
   };
 
+  useEffect(() => {
+    (async () => {
+      const plans = await subscriptionPlans();
+
+      setPlans(plans.data);
+    })();
+  }, []);
+
   const donationOrgIsValid = checkDonation();
 
   const validOrder =
@@ -321,6 +343,8 @@ const Checkout = () => {
 
   useEffect(() => {
     getMissedOutProducts();
+
+    console.log(user);
   }, []);
 
   const RenderOtherReturnables = () => {
@@ -353,202 +377,216 @@ const Checkout = () => {
 
   return (
     <div id='CheckoutPage'>
-      {isMobile && (
-        <MobileCheckoutCard
-          confirmed={confirmed}
-          confirmOrder={confirmOrder}
-          validOrder={validOrder}
-          loading={loading}
-          pricingDetails={pricingDetails}
-          user={user}
-        />
-      )}
-      <div className={`container  ${isMobile ? 'mt-4' : 'mt-6'}`}>
-        <div className='row mobile-row'>
-          <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
-            {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
-            {confirmed && order ? (
-              <div>
-                <h3 className='sofia-pro text-18 section-title'>
-                  Pick-up confirmed
-                </h3>
-                <div className='confirmed-container'>
-                  <PickUpConfirmed
-                    order={order}
-                    donationOrg={selectedDonationOrg}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className='mobile-checkout-col'>
-                <PickUpDetails
-                  setValidAddress={setValidAddress}
-                  setValidPayment={setValidPayment}
-                  setValidPickUpDetails={setValidPickUpDetails}
-                />
-              </div>
-            )}
-
-            <div className='col desktop-col'>
-              <h3 className='sofia-pro products-return text-18 section-title'>
-                Your products for pickup
-              </h3>
-              {isEmpty(itemsToReturn) && (
-                <h4 className='p-0 mb-0 mt-5 d-flex justify-content-center sofia-pro empty-message'>
-                  No more products. Click here to go back to &nbsp;
-                  <Link
-                    style={{
-                      textDecoration: 'underline',
-                      color: '#570097',
-                    }}
-                    to='/dashboard'
-                  >
-                    dashboard
-                  </Link>
-                  .
-                </h4>
-              )}
-
-              {itemsToReturn.map((item) => (
-                <ProductCard
-                  removable={!confirmed}
-                  scannedItem={item}
-                  key={item._id}
-                  item={item}
-                  selectable={false}
-                  clickable={false}
-                  onRemove={onCartRemove}
-                  confirmed={confirmed}
-                />
-              ))}
-            </div>
-
-            <DonateSection
-              items={itemsToDonate}
+      {user && user['custom:stripe_sub_name'] && (
+        <>
+          {isMobile && (
+            <MobileCheckoutCard
               confirmed={confirmed}
-              onCartRemove={onCartRemove}
-              handleSelectDonationOrg={handleSelectDonationOrg}
+              confirmOrder={confirmOrder}
+              validOrder={validOrder}
+              loading={loading}
+              pricingDetails={pricingDetails}
+              user={user}
             />
-
-            {items.length > 0 && otherReturns.length > 0 && (
-              <>
-                <h3 className='sofia-pro miss-out section-title'>
-                  Don&apos;t miss out on other returns
-                </h3>
-                {RenderOtherReturnables()}
-              </>
-            )}
-
-            {/* BILLING */}
-            {isMobile && (
-              <>
-                <div className='mobile-billing'>
-                  <div className='m-billing-container mt-5'>
-                    <h4>Billing</h4>
-                  </div>
-                  <div className='card m-billing-card shadow-sm mt-4'>
-                    <div className='card-body'>
-                      <h4 className='m-size-description'>
-                        All products need to fit in a 50&quot; x 30&quot; x
-                        20&quot; box
-                      </h4>
-                      <button
-                        className='btn m-btn-info'
-                        onClick={() => setModalSizeGuideShow(true)}
-                      >
-                        More info
-                      </button>
-                      <hr style={{ marginTop: '8px' }} />
-
-                      <div className='extra-bin'>
-                        <p className='extra-bin__title'>Bins Required</p>
-                        <p className='extra-bin__total-items'>
-                          {pricingDetails.extraBin !== 0
-                            ? pricingDetails.extraBin + 1
-                            : 1}
-                        </p>
-                        <p className='extra-bin__info'>
-                          Est. bins required for{' '}
-                          <span>{pricingDetails.totalItems}</span> items:{' '}
-                          <span>
-                            {pricingDetails.extraBin !== 0
-                              ? pricingDetails.extraBin + 1
-                              : 1}{' '}
-                            bin
-                          </span>
-                        </p>
-                      </div>
-
-                      <hr className='line-break-1 mb-3' />
-                      {Number(user?.['custom:user_pickups']) === 0 && (
-                        <>
-                          {pricingDetails.extraBin !== 0 && (
-                            <div className='row'>
-                              <div className='col m-label'>Extra bin cost</div>
-                              <div className='col m-value'>
-                                ${pricingDetails.extraBinPrice}
-                              </div>
-                            </div>
-                          )}
-                          <div className='row'>
-                            <div className='col m-label'>Return cost</div>
-                            <div className='col m-value'>
-                              ${pricingDetails.price}
-                            </div>
-                          </div>
-                          <div className='row'>
-                            <div className='col m-label'>Taxes</div>
-                            <div className='col m-value'>
-                              ${pricingDetails.totalTax}
-                            </div>
-                          </div>
-                          <hr
-                            style={{
-                              marginBottom: '21px',
-                              marginTop: '8px',
-                            }}
-                          />
-                        </>
-                      )}
-
-                      <div className='row'>
-                        <div className='col m-total-label'>Total paid</div>
-                        <div className='col m-total-value'>
-                          $
-                          {Number(user?.['custom:user_pickups']) > 0
-                            ? 0
-                            : pricingDetails.totalPrice}
-                        </div>
-                      </div>
+          )}
+          <div className={`container  ${isMobile ? 'mt-4' : 'mt-6'}`}>
+            <div className='row mobile-row'>
+              <div className={isMobile ? 'col-sm-12' : 'col-sm-9'}>
+                {/*CONTAINS ALL SCANS LEFT CARD OF VIEW SCAN PAGE*/}
+                {confirmed && order ? (
+                  <div>
+                    <h3 className='sofia-pro text-18 section-title'>
+                      Pick-up confirmed
+                    </h3>
+                    <div className='confirmed-container'>
+                      <PickUpConfirmed
+                        order={order}
+                        donationOrg={selectedDonationOrg}
+                      />
                     </div>
                   </div>
-                  <SizeGuideModal
-                    show={modalSizeGuideShow}
-                    onHide={() => setModalSizeGuideShow(false)}
-                  />
-                </div>
-              </>
-            )}
-          </div>
+                ) : (
+                  <div className='mobile-checkout-col'>
+                    <PickUpDetails
+                      setValidAddress={setValidAddress}
+                      setValidPayment={setValidPayment}
+                      setValidPickUpDetails={setValidPickUpDetails}
+                    />
+                  </div>
+                )}
 
-          {/* RIGHT CARDS */}
-          {!isMobile && (
-            <>
-              <div className='col-sm-3'>
-                <CheckoutCard
+                <div className='col desktop-col'>
+                  <h3 className='sofia-pro products-return text-18 section-title'>
+                    Your products for pickup
+                  </h3>
+                  {isEmpty(itemsToReturn) && (
+                    <h4 className='p-0 mb-0 mt-5 d-flex justify-content-center sofia-pro empty-message'>
+                      No more products. Click here to go back to &nbsp;
+                      <Link
+                        style={{
+                          textDecoration: 'underline',
+                          color: '#570097',
+                        }}
+                        to='/dashboard'
+                      >
+                        dashboard
+                      </Link>
+                      .
+                    </h4>
+                  )}
+
+                  {itemsToReturn.map((item) => (
+                    <ProductCard
+                      removable={!confirmed}
+                      scannedItem={item}
+                      key={item._id}
+                      item={item}
+                      selectable={false}
+                      clickable={false}
+                      onRemove={onCartRemove}
+                      confirmed={confirmed}
+                    />
+                  ))}
+                </div>
+
+                <DonateSection
+                  items={itemsToDonate}
                   confirmed={confirmed}
-                  confirmOrder={confirmOrder}
-                  validOrder={validOrder}
-                  loading={loading}
-                  pricingDetails={pricingDetails}
-                  isFetchingPrice={isFetchingPrice}
-                  user={user}
+                  onCartRemove={onCartRemove}
+                  handleSelectDonationOrg={handleSelectDonationOrg}
                 />
+
+                {items.length > 0 && otherReturns.length > 0 && (
+                  <>
+                    <h3 className='sofia-pro miss-out section-title'>
+                      Don&apos;t miss out on other returns
+                    </h3>
+                    {RenderOtherReturnables()}
+                  </>
+                )}
+
+                {/* BILLING */}
+                {isMobile && (
+                  <>
+                    <div className='mobile-billing'>
+                      <div className='m-billing-container mt-5'>
+                        <h4>Billing</h4>
+                      </div>
+                      <div className='card m-billing-card shadow-sm mt-4'>
+                        <div className='card-body'>
+                          <h4 className='m-size-description'>
+                            All products need to fit in a 50&quot; x 30&quot; x
+                            20&quot; box
+                          </h4>
+                          <button
+                            className='btn m-btn-info'
+                            onClick={() => setModalSizeGuideShow(true)}
+                          >
+                            More info
+                          </button>
+                          <hr style={{ marginTop: '8px' }} />
+
+                          <div className='extra-bin'>
+                            <p className='extra-bin__title'>Bins Required</p>
+                            <p className='extra-bin__total-items'>
+                              {pricingDetails.extraBin !== 0
+                                ? pricingDetails.extraBin + 1
+                                : 1}
+                            </p>
+                            <p className='extra-bin__info'>
+                              Est. bins required for{' '}
+                              <span>{pricingDetails.totalItems}</span> items:{' '}
+                              <span>
+                                {pricingDetails.extraBin !== 0
+                                  ? pricingDetails.extraBin + 1
+                                  : 1}{' '}
+                                bin
+                              </span>
+                            </p>
+                          </div>
+
+                          <hr className='line-break-1 mb-3' />
+                          {Number(user?.['custom:user_pickups']) === 0 && (
+                            <>
+                              {pricingDetails.extraBin !== 0 && (
+                                <div className='row'>
+                                  <div className='col m-label'>
+                                    Extra bin cost
+                                  </div>
+                                  <div className='col m-value'>
+                                    ${pricingDetails.extraBinPrice}
+                                  </div>
+                                </div>
+                              )}
+                              <div className='row'>
+                                <div className='col m-label'>Return cost</div>
+                                <div className='col m-value'>
+                                  ${pricingDetails.price}
+                                </div>
+                              </div>
+                              <div className='row'>
+                                <div className='col m-label'>Taxes</div>
+                                <div className='col m-value'>
+                                  ${pricingDetails.totalTax}
+                                </div>
+                              </div>
+                              <hr
+                                style={{
+                                  marginBottom: '21px',
+                                  marginTop: '8px',
+                                }}
+                              />
+                            </>
+                          )}
+
+                          <div className='row'>
+                            <div className='col m-total-label'>Total paid</div>
+                            <div className='col m-total-value'>
+                              $
+                              {Number(user?.['custom:user_pickups']) > 0
+                                ? 0
+                                : pricingDetails.totalPrice}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <SizeGuideModal
+                        show={modalSizeGuideShow}
+                        onHide={() => setModalSizeGuideShow(false)}
+                      />
+                    </div>
+                  </>
+                )}
               </div>
-            </>
-          )}
-        </div>
-      </div>
+
+              {/* RIGHT CARDS */}
+              {!isMobile && (
+                <>
+                  <div className='col-sm-3'>
+                    <CheckoutCard
+                      confirmed={confirmed}
+                      confirmOrder={confirmOrder}
+                      validOrder={validOrder}
+                      loading={loading}
+                      pricingDetails={pricingDetails}
+                      isFetchingPrice={isFetchingPrice}
+                      user={user}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+
+      {!user['custom:stripe_sub_name'] && plans && (
+        <SubscriptionModal
+          show={showSubscriptionModal}
+          onClose={onsubscriptionModalClose}
+          plans={plans}
+        />
+      )}
     </div>
   );
 };

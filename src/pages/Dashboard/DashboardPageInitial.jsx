@@ -11,7 +11,6 @@ import { ToastContainer } from 'react-toastify';
 import { loadStripe } from '@stripe/stripe-js';
 
 import ProductOptionsModal from '../../modals/ProductOptionsModal';
-import SubscriptionModal from '../../modals/SubscriptionModal';
 import Authorize from './components/Authorize';
 import DashboardScan from './components/DashboardScan';
 import DashboardPage from './DashboardPage';
@@ -44,7 +43,6 @@ import {
 } from '../../actions/scraper.action';
 
 import { getUser, updateUserAttributes } from '../../api/auth';
-import { subscriptionPlans } from '../../api/subscription';
 import { getPublicKey } from '../../api/orderApi';
 import { addProductFromScraper, getVendors } from '../../api/productsApi';
 
@@ -59,9 +57,8 @@ const DashboardPageInitial = () => {
   const [productOptions, setProductOptions] = useState([]);
   const [showProductOptions, setShowProductOptions] = useState(false);
   const [isSavingProducts, setIsSavingProducts] = useState(false);
-  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
-  const [plans, setPlans] = useState([]);
   const [userGmailAuthenticated, setUserGmailAuthenticated] = useState(false);
+  const [isInitialScan, setIsInitialScan] = useState(true);
 
   /**TRIGGER SCAN NOW FOR USERS */
   const triggerScanNow = async (noOfMonths) => {
@@ -297,8 +294,12 @@ const DashboardPageInitial = () => {
       // Listen for sign-in state changes.
       gapi.current.auth2.getAuthInstance().isSignedIn.listen((success) => {
         if (success) {
-          // handleScraping();
-          setUserGmailAuthenticated(success);
+          if (isInitialScan) {
+            handleScraping();
+            setIsInitialScan(false);
+          } else {
+            setUserGmailAuthenticated(success);
+          }
         }
       });
     } catch (error) {
@@ -320,14 +321,6 @@ const DashboardPageInitial = () => {
   const checkIfFirstTimeUser = async () => {
     const user = await getUser();
     const monthsScanned = get(user, 'custom:scan_months', undefined);
-
-    // setUser(user);
-
-    if (user && !user['custom:stripe_sub_name']) {
-      setShowSubscriptionModal(true);
-    } else {
-      setShowSubscriptionModal(false);
-    }
 
     if (monthsScanned === undefined) {
       dispatch(updateScraperStatus(NOTAUTHORIZED));
@@ -377,11 +370,6 @@ const DashboardPageInitial = () => {
     setShowProductOptions(false);
   };
 
-  const onsubscriptionModalClose = async () => {
-    setShowSubscriptionModal(false);
-    // await subscribeUserToRuby(false);
-  };
-
   //INITIALIZE GOOGLE API
   useEffect(() => {
     window.onGoogleScriptLoad = () => {
@@ -402,22 +390,11 @@ const DashboardPageInitial = () => {
     typeRef.current = type;
   }, [type]);
 
-  // useEffect(async () => {
-  //   const user = await getUser();
-
-  //   setUser(user);
-  // }, [showSubscriptionModal]);
-
-  useEffect(async () => {
-    const plans = await subscriptionPlans();
-
-    setPlans(plans.data);
-  }, []);
-
   useEffect(() => {
     if (userGmailAuthenticated) {
-      handleScraping();
-      setUserGmailAuthenticated(false);
+      (async () => {
+        await handleScraping();
+      })();
     }
   }, [userGmailAuthenticated]);
 
@@ -427,16 +404,11 @@ const DashboardPageInitial = () => {
       <Fragment>
         {status !== SCRAPECOMPLETE && status !== SCRAPECANCEL && (
           <div id='DashboardInitial'>
-            <SubscriptionModal
-              show={showSubscriptionModal}
-              onClose={onsubscriptionModalClose}
-              plans={plans}
-            />
-
             {status === NOTAUTHORIZED && (
               <Authorize triggerScanNow={triggerScanNow} />
             )}
             {status === ISSCRAPING && <DashboardScan></DashboardScan>}
+
             {(status === ISAUTHORIZING || status === '') && (
               <div>
                 <Spinner size='lg' color='#570097' animation='border' />
