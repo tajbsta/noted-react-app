@@ -32,8 +32,6 @@ export default function Address({ user }) {
     };
   });
 
-  console.log('user', user);
-
   const {
     errors,
     handleChange,
