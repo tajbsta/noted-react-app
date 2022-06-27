@@ -18,7 +18,6 @@ function RightCard({ beyond90days, user }) {
   const history = useHistory();
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showCheckZipcodeModal, setShowCheckZipcodeModal] = useState(false);
 
   const { items } = useSelector(({ cart: { items } }) => ({
     items,
@@ -78,12 +77,6 @@ function RightCard({ beyond90days, user }) {
 
   const handleCheckboxChange = () => {
     dispatch(setCartItems([]));
-  };
-
-  const isZipCodeSupported = (isSupported) => {
-    if (isSupported) {
-      history.push('/checkout');
-    }
   };
 
   return (
@@ -269,7 +262,7 @@ function RightCard({ beyond90days, user }) {
                   }
                   backgroundColor='#570097'
                   onClick={() => {
-                    setShowCheckZipcodeModal(true);
+                    history.push('/checkout');
                   }}
                 />
               </div>
@@ -277,12 +270,6 @@ function RightCard({ beyond90days, user }) {
           </div>
         </div>
       </div>
-
-      <CheckZipcodeModal
-        show={showCheckZipcodeModal}
-        onHide={() => setShowCheckZipcodeModal(false)}
-        isZipCodeSupported={isZipCodeSupported}
-      />
     </div>
   );
 }

@@ -46,6 +46,8 @@ import { getUser, updateUserAttributes } from '../../api/auth';
 import { getPublicKey } from '../../api/orderApi';
 import { addProductFromScraper, getVendors } from '../../api/productsApi';
 
+import CheckZipcodeModal from '../../modals/CheckZipcodeModal';
+
 const DashboardPageInitial = () => {
   const { status, type, noOfMonthsToScan } = useSelector(
     (state) => state.scraper
@@ -59,6 +61,7 @@ const DashboardPageInitial = () => {
   const [isSavingProducts, setIsSavingProducts] = useState(false);
   const [userGmailAuthenticated, setUserGmailAuthenticated] = useState(false);
   const [isInitialScan, setIsInitialScan] = useState(true);
+  const [showCheckZipcodeModal, setShowCheckZipcodeModal] = useState(false);
 
   /**TRIGGER SCAN NOW FOR USERS */
   const triggerScanNow = async (noOfMonths) => {
@@ -324,8 +327,11 @@ const DashboardPageInitial = () => {
 
     if (monthsScanned === undefined) {
       dispatch(updateScraperStatus(NOTAUTHORIZED));
+      setShowCheckZipcodeModal(true);
 
       return;
+    } else {
+      setShowCheckZipcodeModal(false);
     }
     dispatch(updateScraperStatus(SCRAPECANCEL));
   };
@@ -430,6 +436,11 @@ const DashboardPageInitial = () => {
         sendToBE={sendToBE}
         data={productOptions}
         handleCancel={handleCancelProductOptionsModal}
+      />
+
+      <CheckZipcodeModal
+        show={showCheckZipcodeModal}
+        onHide={() => setShowCheckZipcodeModal(false)}
       />
     </Fragment>
   );
