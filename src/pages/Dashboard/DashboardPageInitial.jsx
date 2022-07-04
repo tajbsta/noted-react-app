@@ -439,7 +439,7 @@ const DashboardPageInitial = () => {
       />
 
       <CheckZipcodeModal
-        show={showCheckZipcodeModal}
+        show={showCheckZipcodeModal && status === ISSCRAPING}
         onHide={() => setShowCheckZipcodeModal(false)}
       />
     </Fragment>

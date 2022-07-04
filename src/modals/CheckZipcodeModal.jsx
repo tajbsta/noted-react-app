@@ -81,13 +81,15 @@ const CheckForZipCode = (props) => {
       return;
     }
 
-    props.history.push('/checkout');
+    // props.history.push('/checkout');
     props.onHide();
   };
 
   return (
     <div id='checkForZipForm'>
-      <p className='zipcodeText sofia-pro'>What is your zip code?</p>
+      <p className='zipcodeText sofia-pro'>
+        Welcome to noted! Enter in your zip code to see if we service your area.
+      </p>
       <Form onSubmit={handleCheckZipcode}>
         <Form.Group>
           <div>
