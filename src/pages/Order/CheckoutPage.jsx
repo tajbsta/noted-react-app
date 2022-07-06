@@ -239,7 +239,6 @@ const Checkout = () => {
   };
 
   const onsubscriptionModalClose = async () => {
-    await subscribeUserToRuby(false);
     setShowSubscriptionModal(false);
   };
 
@@ -583,6 +582,7 @@ const Checkout = () => {
           show={showSubscriptionModal}
           onClose={onsubscriptionModalClose}
           plans={plans}
+          subscribeUserToRuby={subscribeUserToRuby}
         />
       )}
     </div>

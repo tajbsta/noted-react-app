@@ -147,6 +147,11 @@ export default function SubscriptionModal({ show, onClose, plans }) {
     );
   };
 
+  const onCloseWithoutSubscription = () => {
+    subscribeUserToRuby(false);
+    onModalClose();
+  };
+
   return (
     <Modal
       show={show}
@@ -160,7 +165,7 @@ export default function SubscriptionModal({ show, onClose, plans }) {
     >
       {!selectedPlan && (
         <>
-          <Modal.Header closeButton onClick={onModalClose}>
+          <Modal.Header closeButton onClick={onCloseWithoutSubscription}>
             <h2>Select your plan</h2>
           </Modal.Header>
           {plans?.length > 0 && (
