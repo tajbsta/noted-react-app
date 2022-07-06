@@ -430,8 +430,9 @@ const DashboardPageInitial = () => {
           <DashboardPage triggerScanNow={triggerScanNow} />
         </Fragment>
       )}
+
       <ProductOptionsModal
-        show={showProductOptions}
+        show={showProductOptions && !showCheckZipcodeModal}
         isSavingProducts={isSavingProducts}
         sendToBE={sendToBE}
         data={productOptions}
