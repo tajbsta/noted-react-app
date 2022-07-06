@@ -149,6 +149,7 @@ export default function PickUpDetails({
       .replace('-', 'and')
       .replace(new RegExp(/\./g), '')}`;
   };
+
   const setDefaults = async () => {
     const [user, paymentMethods] = await Promise.all([
       getUser(),
@@ -802,9 +803,9 @@ export default function PickUpDetails({
               </div>
             )}
 
-            {userInfo && userInfo?.['custom:stripe_sub_name'] !== 'Ruby' && (
-              <MyPlan />
-            )}
+            {userInfo &&
+              userInfo?.['custom:stripe_sub_name'] !== 'Ruby' &&
+              userInfo?.['custom:stripe_sub_name'] && <MyPlan />}
 
             {/* RETURN SCHEDULE */}
             <div className={isMobile ? 'col-sm-12' : 'col-sm-4'}>

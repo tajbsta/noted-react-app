@@ -80,17 +80,18 @@ export default function MyCredits({ user, history, onAdd, onCancel }) {
                       )}
                     </tbody>
                   </Table>
-                  {user?.['custom:stripe_sub_name'] !== 'Ruby' && (
-                    <div className='d-flex justify-content-center'>
-                      <Button
-                        className='danger border-0'
-                        variant='outline-danger'
-                        onClick={onCancel}
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  )}
+                  {user?.['custom:stripe_sub_name'] &&
+                    user?.['custom:stripe_sub_name'] !== 'Ruby' && (
+                      <div className='d-flex justify-content-center'>
+                        <Button
+                          className='danger border-0'
+                          variant='outline-danger'
+                          onClick={onCancel}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    )}
                 </div>
               </Col>
               <Col>

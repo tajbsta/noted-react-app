@@ -1,5 +1,6 @@
 import { get, isEmpty } from 'lodash';
 import React, { useEffect, useState, useRef } from 'react';
+import moment from 'moment';
 import { Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import ReturnCategory from '../../components/Product/ReturnCategory';
@@ -25,9 +26,8 @@ import InitialScanModal from '../../modals/initialScanModal';
 import PickUpLeftModal from '../../modals/PickUpLeftModal';
 import { setIsNewlySignedUp } from '../../actions/auth.action';
 import { Auth } from 'aws-amplify';
-import { subscribeUserToRuby } from '../../api/subscription';
-import moment from 'moment';
 import MonthsToScanModal from '../../modals/monthsToScanModal';
+import { subscribeUserToRuby } from '../../api/subscription';
 
 export default function DashboardPage({ triggerScanNow }) {
   const [search, setSearch] = useState('');
@@ -219,10 +219,6 @@ export default function DashboardPage({ triggerScanNow }) {
 
       if (user && !user['custom:stripe_sub_name'] && !newUser) {
         await subscribeUserToRuby(true);
-      }
-
-      if (user && newUser && !user['custom:stripe_sub_name']) {
-        await subscribeUserToRuby(false);
       }
     })();
   }, []);

@@ -29,7 +29,7 @@ export default function CheckZipcodeModal(props) {
         animation={false}
         id='CheckZipcodeModal'
       >
-        <Modal.Header closeButton onClick={props.onHide}></Modal.Header>
+        {/* <Modal.Header closeButton onClick={props.onHide}></Modal.Header> */}
         <Modal.Body className='sofia-pro modal-body'>
           {!zipCode && (
             <CheckForZipCode
@@ -81,13 +81,15 @@ const CheckForZipCode = (props) => {
       return;
     }
 
-    props.history.push('/checkout');
+    // props.history.push('/checkout');
     props.onHide();
   };
 
   return (
     <div id='checkForZipForm'>
-      <p className='zipcodeText sofia-pro'>What is your zip code?</p>
+      <p className='zipcodeText sofia-pro'>
+        Welcome to noted! Enter in your zip code to see if we service your area.
+      </p>
       <Form onSubmit={handleCheckZipcode}>
         <Form.Group>
           <div>
@@ -219,9 +221,8 @@ const CollateUserInfo = (props) => {
         Coming Soon to Your Area
       </p>
       <p className='sofia-pro noted-purple unsupported-mini'>
-        Our service is rapidly expanding to other cities! Stay tuned for
-        updates, and we will let you know when we are ready to pick up in your
-        area!
+        We don&apos;t currently service your area yet but you can still use our
+        email scanning service for free!
       </p>
       <Form onSubmit={handleSubmitUserInfo}>
         <Row>
@@ -346,9 +347,9 @@ const CollateUserInfo = (props) => {
             />
           )}
         </Button>
-        <Button className='btn-cancel btn-lg btn-block' onClick={handleCancel}>
+        {/* <Button className='btn-cancel btn-lg btn-block' onClick={handleCancel}>
           Cancel
-        </Button>
+        </Button> */}
       </Form>
     </div>
   );
