@@ -1,0 +1,62 @@
+#Vendors {
+  padding-bottom: 163px;
+
+  .container {
+    @media (max-width: 767px) {
+      max-width: 720px;
+    }
+  }
+
+  .max-w-440 {
+    max-width: 440px;
+  }
+
+  .loading-wrapper {
+    height: 200px;
+  }
+
+  .flex {
+    display: flex;
+  }
+
+  .justify-center {
+    justify-content: center;
+  }
+
+  .items-center {
+    align-items: center;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a {
+    font-family: 'Sofia Pro';
+  }
+
+  hr {
+    border-top: 1px solid #e8e7e9 !important;
+  }
+
+  .m-no-col {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .col-sm-3 {
+    @media (max-width: 1199px) {
+      flex: initial;
+    }
+  }
+
+  .col-sm-9 {
+    @media (max-width: 1199px) {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+}

@@ -1,0 +1,138 @@
+#AddVendorModal {
+  // AVATAR
+  .img-container {
+    background: #fff;
+    border: 1px solid #eae8eb;
+    border-radius: 3px;
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    position: relative;
+    cursor: pointer;
+
+    .upload-icon {
+      font-size: 30px;
+      color: #570097;
+
+      svg {
+        height: 40px;
+        width: 40px;
+      }
+    }
+
+    .upload-text {
+      color: #e8e7e9;
+    }
+
+    .upload-wrapper {
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      background: #570097;
+      transition: all 0.3s ease;
+      position: absolute;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .upload-icon {
+        font-size: 30px;
+        color: white;
+  
+        svg {
+          height: 40px;
+          width: 40px;
+        }
+      }
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    // &:hover {
+    //   transform: scale(1.05);
+    //   opacity: 0.7;
+    //   background-color: #570097;
+    //   box-shadow: 1px 1px 15px -5px black;
+    // }
+
+    .default-avatar {
+      width: 32px;
+      height: 32px;
+      position: absolute;
+    }
+
+    .no-default-avatar {
+      display: none;
+    }
+
+    .avatar-placeholder {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+
+    // Image file upload
+    .upload-button {
+      height: 100%;
+      width: 100%;
+      position: relative;
+      top: 1px;
+      left: 1px;
+
+      .fa-upload-icon {
+        position: relative;
+        top: 0px;
+        left: -1px;
+        text-align: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+        color: #fff;
+
+        svg {
+          height: 96px;
+          width: 96px;
+          padding: 33px;
+          border-radius: 50%;
+          background: #570097;
+        }
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+
+    // Get rid of Choose file upload button css
+    input {
+      outline: none !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+
+    .file-upload {
+      box-shadow: none;
+      border: none;
+
+      &:hover {
+        outline: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        cursor: pointer !important;
+      }
+    } 
+  }
+
+  .button-container {
+    justify-content: center;
+  }
+}

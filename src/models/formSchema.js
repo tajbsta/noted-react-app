@@ -160,3 +160,10 @@ export const collateUserInfoSchema = Yup.object({
     .min(4, 'Enter a valid zip code')
     .required('Zip code is required'),
 });
+
+export const addVendorSchema = Yup.object({
+  image: Yup.string().required('Vendor Logo is required'),
+  vendorName: Yup.string().required('Vendor Name is required'),
+  vendorAddress: Yup.string().required('Vendor Address is required'),
+  vendorWebsite: Yup.string().required('Vendor Website is required'),
+});
