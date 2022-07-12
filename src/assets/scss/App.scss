@@ -25,6 +25,7 @@ html {
 @import './pages/checkout';
 @import './pages/profile';
 @import './pages/settings';
+@import './pages/vendors';
 @import './pages/dashboardinitial';
 
 /* Components in Pages styling */
@@ -64,6 +65,7 @@ html {
 @import './modals/pickupleftmodal';
 @import './modals/cancelsubscriptionmodal';
 @import './modals/monthstoscanmodal';
+@import './modals/addvendor';
 
 html,
 body {
