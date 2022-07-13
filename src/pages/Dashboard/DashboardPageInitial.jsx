@@ -15,6 +15,7 @@ import Authorize from './components/Authorize';
 import DashboardScan from './components/DashboardScan';
 import DashboardPage from './DashboardPage';
 import Topnav from '../../components/Navbar/Navbar';
+import NewUserInfo from './components/NewUserInfo';
 
 import ACCOUNT_PROVIDERS from '../../constants/accountProviders';
 import {
@@ -46,22 +47,19 @@ import { getUser, updateUserAttributes } from '../../api/auth';
 import { getPublicKey } from '../../api/orderApi';
 import { addProductFromScraper, getVendors } from '../../api/productsApi';
 
-import CheckZipcodeModal from '../../modals/CheckZipcodeModal';
-
 const DashboardPageInitial = () => {
   const { status, type, noOfMonthsToScan } = useSelector(
     (state) => state.scraper
   );
+  const { infoAdded } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const gapi = useRef(null);
   const typeRef = useRef(type);
+  const monthsToScanRef = useRef(noOfMonthsToScan);
   const [thirdPartyCookie, setThirdPartyCookie] = useState(false);
   const [productOptions, setProductOptions] = useState([]);
   const [showProductOptions, setShowProductOptions] = useState(false);
   const [isSavingProducts, setIsSavingProducts] = useState(false);
-  const [userGmailAuthenticated, setUserGmailAuthenticated] = useState(false);
-  const [isInitialScan, setIsInitialScan] = useState(true);
-  const [showCheckZipcodeModal, setShowCheckZipcodeModal] = useState(false);
 
   /**TRIGGER SCAN NOW FOR USERS */
   const triggerScanNow = async (noOfMonths) => {
@@ -187,7 +185,9 @@ const DashboardPageInitial = () => {
       const vendors = await getVendors(['supported=true']);
       await updateUserAttributes({ 'custom:scan_months': '3' });
 
-      let after = moment().startOf('day').subtract(noOfMonthsToScan, 'months');
+      let after = moment()
+        .startOf('day')
+        .subtract(monthsToScanRef.current, 'months');
       let before = moment().startOf('day').add(1, 'd');
 
       const q = {
@@ -239,6 +239,7 @@ const DashboardPageInitial = () => {
       }
 
       showModalWithProducts(data);
+      console.log('reached');
     } catch (error) {
       if (
         error &&
@@ -297,28 +298,13 @@ const DashboardPageInitial = () => {
       // Listen for sign-in state changes.
       gapi.current.auth2.getAuthInstance().isSignedIn.listen((success) => {
         if (success) {
-          if (isInitialScan) {
-            handleScraping();
-            setIsInitialScan(false);
-          } else {
-            setUserGmailAuthenticated(success);
-          }
+          handleScraping();
         }
       });
     } catch (error) {
       Sentry.captureException(error);
     }
   };
-
-  /**CHECK IF USER HAS PRODUCTS ON DASHBOARD */
-  // const checkIfProductsExist = async () => {
-  //   const products = await getProducts({});
-  //   if (products.length <= 0) {
-  //     dispatch(updateScraperStatus(NOTAUTHORIZED));
-  //     return;
-  //   }
-  //   dispatch(updateScraperStatus(SCRAPECANCEL));
-  // };
 
   /**CHECK IF FIRST TIME USER */
   const checkIfFirstTimeUser = async () => {
@@ -327,12 +313,10 @@ const DashboardPageInitial = () => {
 
     if (monthsScanned === undefined) {
       dispatch(updateScraperStatus(NOTAUTHORIZED));
-      setShowCheckZipcodeModal(true);
 
       return;
-    } else {
-      setShowCheckZipcodeModal(false);
     }
+
     dispatch(updateScraperStatus(SCRAPECANCEL));
   };
 
@@ -378,14 +362,22 @@ const DashboardPageInitial = () => {
 
   //INITIALIZE GOOGLE API
   useEffect(() => {
-    window.onGoogleScriptLoad = () => {
-      gapi.current = window.gapi;
-      gapi.current.load('client:auth2', initClient);
-    };
+    let isMounted = false;
+
+    if (!isMounted) {
+      window.onGoogleScriptLoad = () => {
+        gapi.current = window.gapi;
+        gapi.current.load('client:auth2', initClient);
+      };
+    }
 
     loadGoogleScript();
     checkIfFirstTimeUser();
     checkForCookie();
+
+    return () => {
+      isMounted = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -397,18 +389,19 @@ const DashboardPageInitial = () => {
   }, [type]);
 
   useEffect(() => {
-    if (userGmailAuthenticated) {
-      (async () => {
-        await handleScraping();
-      })();
-    }
-  }, [userGmailAuthenticated]);
+    monthsToScanRef.current = noOfMonthsToScan;
+  }, [noOfMonthsToScan]);
 
   return (
     <Fragment>
       <ToastContainer />
+
+      {status !== SCRAPECOMPLETE && status !== SCRAPECANCEL && !infoAdded && (
+        <NewUserInfo />
+      )}
+
       <Fragment>
-        {status !== SCRAPECOMPLETE && status !== SCRAPECANCEL && (
+        {status !== SCRAPECOMPLETE && status !== SCRAPECANCEL && infoAdded && (
           <div id='DashboardInitial'>
             {status === NOTAUTHORIZED && (
               <Authorize triggerScanNow={triggerScanNow} />
@@ -423,7 +416,8 @@ const DashboardPageInitial = () => {
           </div>
         )}
       </Fragment>
-      {(status === SCRAPECOMPLETE || status === SCRAPECANCEL) && (
+
+      {(status === SCRAPECOMPLETE || status === SCRAPECANCEL) && infoAdded && (
         <Fragment>
           <Topnav />
 
@@ -432,16 +426,11 @@ const DashboardPageInitial = () => {
       )}
 
       <ProductOptionsModal
-        show={showProductOptions && !showCheckZipcodeModal}
+        show={showProductOptions}
         isSavingProducts={isSavingProducts}
         sendToBE={sendToBE}
         data={productOptions}
         handleCancel={handleCancelProductOptionsModal}
-      />
-
-      <CheckZipcodeModal
-        show={showCheckZipcodeModal && status === ISSCRAPING}
-        onHide={() => setShowCheckZipcodeModal(false)}
       />
     </Fragment>
   );

@@ -28,8 +28,8 @@ const Authorize = ({ triggerScanNow }) => {
 
             <button
               onClick={() => {
-                process.env.NODE_ENV === 'production' && submitApplication();
                 triggerScanNow(3);
+                process.env.NODE_ENV === 'production' && submitApplication();
               }}
               className='authorize-now-button'
             >
@@ -130,10 +130,10 @@ const Authorize = ({ triggerScanNow }) => {
             </h4>
             <button
               onClick={() => {
+                triggerScanNow(3);
                 if (process.env.NODE_ENV === 'production') {
                   submitApplication();
                 }
-                triggerScanNow(3);
               }}
               className='authorize-now-button'
             >

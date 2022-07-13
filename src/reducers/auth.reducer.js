@@ -7,6 +7,7 @@ import {
   CLEAR_ORDER,
   UPDATE_ORDERS,
   SET_IS_NEWLY_SIGNED_UP,
+  SET_INFO_ADDED,
 } from '../constants/actions/auth';
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
   scheduledReturns: [],
   paymentMethods: [],
   isNewlySignedUp: false,
+  infoAdded: false,
 };
 
 function auth(state = initialState, { type, data }) {
@@ -53,6 +55,11 @@ function auth(state = initialState, { type, data }) {
       return {
         ...state,
         isNewlySignedUp: data,
+      };
+    case SET_INFO_ADDED:
+      return {
+        ...state,
+        infoAdded: data,
       };
     default:
       return state;

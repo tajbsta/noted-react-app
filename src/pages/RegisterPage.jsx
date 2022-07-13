@@ -13,7 +13,7 @@ import { resetAuthorizeNewEmail } from '../utils/data';
 import GoogleLogoItem from '../assets/img/google_signup.png';
 import CheckZipcodeModal from '../modals/CheckZipcodeModal';
 import { useDispatch } from 'react-redux';
-import { setIsNewlySignedUp } from '../actions/auth.action';
+import { setIsNewlySignedUp, setIsInfoAdded } from '../actions/auth.action';
 import { lead } from '../analytics/fbpixels';
 
 export default function RegisterPage() {
@@ -68,6 +68,7 @@ export default function RegisterPage() {
       await Auth.signIn(email, password);
 
       dispatch(setIsNewlySignedUp(true));
+      dispatch(setIsInfoAdded(false));
       history.push('/dashboard');
       return;
     } catch (error) {

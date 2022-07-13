@@ -17,6 +17,17 @@ export const registerSchema = Yup.object({
     .resolve(),
 });
 
+export const newUserSchema = Yup.object({
+  firstName: Yup.string().required('Enter First Name'),
+  lastName: Yup.string().required('Enter Last Name'),
+  zipCode: Yup.string()
+    .min(4, 'Enter a valid zip code')
+    .required('Zip code is required'),
+  phoneNumber: Yup.string()
+    .matches(/^(\d{3})(\d{3})(\d{4})$/, 'Not a valid phone number')
+    .required('Phone number is required'),
+});
+
 export const forgotPasswordSchema = Yup.object({
   email: Yup.string()
     .email('Enter a valid email address')

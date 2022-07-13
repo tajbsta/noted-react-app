@@ -116,10 +116,6 @@ export default function DashboardPage({ triggerScanNow }) {
   };
 
   useEffect(() => {
-    // console.log({
-    //   searchSession,
-    // });
-
     setSearch(searchSession.trim());
   }, [searchSession]);
 
@@ -131,7 +127,6 @@ export default function DashboardPage({ triggerScanNow }) {
   }, []);
 
   async function loadScans() {
-    // dispatch(clearSearchQuery());
     try {
       setLoading(true);
       const userId = await getUserId();
@@ -210,7 +205,6 @@ export default function DashboardPage({ triggerScanNow }) {
 
   useEffect(() => {
     (async () => {
-      // await updateUserAttributes({ 'custom:scan_older_done': '0' }); // don't delete: helps to bring back 'Scan for older items' button if not-commented
       const user = await getUser();
       setUser(user);
       setShowScanOlderButton(user['custom:scan_older_done'] === '0');
@@ -224,17 +218,6 @@ export default function DashboardPage({ triggerScanNow }) {
   }, []);
 
   const beyond90days = get(user, 'custom:scan_older_done', '0') === '1';
-
-  // SCROLL TO
-  // const executeScroll = (ref) => {
-  //   ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  //   setShowInitialScanModal(false);
-  //   dispatch(setIsNewlySignedUp(false));
-
-  //   setTimeout(() => {
-  //     setModalProductShow(true);
-  //   }, 1200);
-  // };
 
   const onHide = () => {
     setShowInitialScanModal(false);
