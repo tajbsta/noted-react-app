@@ -77,7 +77,9 @@ const NewUserInfoPage = () => {
           'custom:fullname': `${firstName.trim()} ${lastName.trim()}`,
         });
 
-        await saveUserDataToMailchimp(data);
+        if (process.env.NODE_ENV === 'production') {
+          await saveUserDataToMailchimp(data);
+        }
 
         if (isZipCodeSupported) {
           setIsSubmitting(false);
