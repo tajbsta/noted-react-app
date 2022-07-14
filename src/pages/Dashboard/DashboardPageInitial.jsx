@@ -60,6 +60,7 @@ const DashboardPageInitial = () => {
   const [productOptions, setProductOptions] = useState([]);
   const [showProductOptions, setShowProductOptions] = useState(false);
   const [isSavingProducts, setIsSavingProducts] = useState(false);
+  const [isNewUser, setIsNewUser] = useState(true);
 
   /**TRIGGER SCAN NOW FOR USERS */
   const triggerScanNow = async (noOfMonths) => {
@@ -313,10 +314,12 @@ const DashboardPageInitial = () => {
 
     if (monthsScanned === undefined) {
       dispatch(updateScraperStatus(NOTAUTHORIZED));
+      setIsNewUser(true);
 
       return;
     }
 
+    setIsNewUser(false);
     dispatch(updateScraperStatus(SCRAPECANCEL));
   };
 
@@ -396,34 +399,35 @@ const DashboardPageInitial = () => {
     <Fragment>
       <ToastContainer />
 
-      {status !== SCRAPECOMPLETE && status !== SCRAPECANCEL && !infoAdded && (
-        <NewUserInfo />
-      )}
+      {!infoAdded && isNewUser && <NewUserInfo />}
 
       <Fragment>
-        {status !== SCRAPECOMPLETE && status !== SCRAPECANCEL && infoAdded && (
-          <div id='DashboardInitial'>
-            {status === NOTAUTHORIZED && (
-              <Authorize triggerScanNow={triggerScanNow} />
-            )}
-            {status === ISSCRAPING && <DashboardScan></DashboardScan>}
+        {status !== SCRAPECOMPLETE &&
+          status !== SCRAPECANCEL &&
+          (!isNewUser || infoAdded) && (
+            <div id='DashboardInitial'>
+              {status === NOTAUTHORIZED && (
+                <Authorize triggerScanNow={triggerScanNow} />
+              )}
+              {status === ISSCRAPING && <DashboardScan></DashboardScan>}
 
-            {(status === ISAUTHORIZING || status === '') && (
-              <div>
-                <Spinner size='lg' color='#570097' animation='border' />
-              </div>
-            )}
-          </div>
-        )}
+              {(status === ISAUTHORIZING || status === '') && (
+                <div>
+                  <Spinner size='lg' color='#570097' animation='border' />
+                </div>
+              )}
+            </div>
+          )}
       </Fragment>
 
-      {(status === SCRAPECOMPLETE || status === SCRAPECANCEL) && infoAdded && (
-        <Fragment>
-          <Topnav />
+      {(status === SCRAPECOMPLETE || status === SCRAPECANCEL) &&
+        (!isNewUser || infoAdded) && (
+          <Fragment>
+            <Topnav />
 
-          <DashboardPage triggerScanNow={triggerScanNow} />
-        </Fragment>
-      )}
+            <DashboardPage triggerScanNow={triggerScanNow} />
+          </Fragment>
+        )}
 
       <ProductOptionsModal
         show={showProductOptions}
