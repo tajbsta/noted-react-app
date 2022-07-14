@@ -19,27 +19,29 @@ export default function AddVendorModal({ onHide, show }) {
   };
 
   const handleAddVendor = async (vendor) => {
-    const file = vendor.image;
-    if (file && file.size > 5097152) {
-      alert('File is too large! The maximum size for file upload is 5 MB.');
-      return;
-    }
     try {
-      setIsSubmitting(true);
-      const logo = await uploadVendorLogo(user.sub, file);
-      const response = await saveVendorReview({
-        logo,
+      let payload = {
         name: vendor.vendorName,
-        address: vendor.vendorAddress,
         website: vendor.vendorWebsite,
-      });
+      };
+      setIsSubmitting(true);
+      if (vendor.image) {
+        const file = vendor.image;
+        if (file && file.size > 5097152) {
+          alert('File is too large! The maximum size for file upload is 5 MB.');
+          return;
+        }
+        const logo = await uploadVendorLogo(user.sub, file);
+        payload['logo'] = logo;
+      }
+      const response = await saveVendorReview(payload);
       if (response.status === 'success') {
         showSuccess({
           message: (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <AlertCircle />
               <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-                Add new vendor successful.
+                Suggested vendor successfully!
               </h4>
             </div>
           ),
@@ -50,7 +52,7 @@ export default function AddVendorModal({ onHide, show }) {
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <AlertCircle />
               <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-                Error! Add new vendor fail!
+                Error! Suggest vendor fail!
               </h4>
             </div>
           ),
@@ -79,7 +81,6 @@ export default function AddVendorModal({ onHide, show }) {
       image: '',
       vendorName: '',
       vendorWebsite: '',
-      vendorAddress: '',
     },
     validationSchema: addVendorSchema,
     enableReinitialize: true,
@@ -136,7 +137,7 @@ export default function AddVendorModal({ onHide, show }) {
     );
   };
 
-  const { image, vendorName, vendorWebsite, vendorAddress } = values;
+  const { image, vendorName, vendorWebsite } = values;
 
   const hiddenFileInput = React.useRef(null);
 
@@ -162,7 +163,7 @@ export default function AddVendorModal({ onHide, show }) {
       id='AddVendorModal'
     >
       <Modal.Header closeButton onClick={reset}>
-        <h2>New Vendor</h2>
+        <h2>Vendor Details</h2>
       </Modal.Header>
       <Modal.Body className='sofia-pro'>
         <form id='PaymentForm' className='mt-5' onSubmit={handleSubmit}>
@@ -229,19 +230,6 @@ export default function AddVendorModal({ onHide, show }) {
                   onFocus={onFocus}
                 />
                 {renderInlineValidationError('vendorWebsite')}
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Vendor Address</Form.Label>
-                <Form.Control
-                  className='form-control'
-                  type='name'
-                  name='vendorAddress'
-                  onChange={handleChange}
-                  value={vendorAddress}
-                  onBlur={handleBlur}
-                  onFocus={onFocus}
-                />
-                {renderInlineValidationError('vendorAddress')}
               </Form.Group>
             </Col>
           </Row>

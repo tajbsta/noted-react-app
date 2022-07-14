@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Vendors from './components/Vendors';
 import AddVendorModal from '../../modals/AddVendorModal';
 import { getVendors } from '../../api/productsApi';
+import { useHistory } from 'react-router-dom';
 
 export const VendorsPage = () => {
   const [vendors, setVendors] = useState([]);
   const [showPickupsLeftModal, setShowPickupsLeftModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const history = useHistory();
 
   const onHide = () => {
     setShowPickupsLeftModal(false);
@@ -27,7 +29,7 @@ export const VendorsPage = () => {
           vendors={vendors}
           loading={loading}
           onAdd={() => setShowPickupsLeftModal(true)}
-          // onCancel={() => setShowCancelSubscriptionModal(true)}
+          onCancel={() => history.push('/dashboard')}
         />
       </div>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Table, Button, Spinner } from 'react-bootstrap';
 
-export default function Vendors({ loading, vendors, onAdd }) {
+export default function Vendors({ loading, vendors, onAdd, onCancel }) {
   const renderUserSubscription = () => {
     return vendors.length > 0 ? (
       vendors.map((item, i) => {
@@ -67,11 +67,15 @@ export default function Vendors({ loading, vendors, onAdd }) {
               </div>
               <div className='mt-3'>
                 <Button variant='outline-primary w-100' onClick={onAdd}>
-                  + Add Vendor
+                  Suggest Vendor
                 </Button>
               </div>
               <div className='mt-3'>
-                <Button className='border-0' variant='outline-primary w-100'>
+                <Button
+                  className='border-0'
+                  variant='outline-primary w-100'
+                  onClick={onCancel}
+                >
                   Cancel
                 </Button>
               </div>

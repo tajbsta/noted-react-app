@@ -173,8 +173,6 @@ export const collateUserInfoSchema = Yup.object({
 });
 
 export const addVendorSchema = Yup.object({
-  image: Yup.string().required('Vendor Logo is required'),
   vendorName: Yup.string().required('Vendor Name is required'),
-  vendorAddress: Yup.string().required('Vendor Address is required'),
   vendorWebsite: Yup.string().required('Vendor Website is required'),
 });
