@@ -113,7 +113,8 @@ import {
   Leovici,
   SwetTailor,
   UGG,
-  UrbanOutfitters
+  UrbanOutfitters,
+  BuildABearWorkshop
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -460,6 +461,9 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.URBANOUTFITTERS:
         orderData = await UrbanOutfitters.parse(code, payload);
+        break;
+      case VENDOR_CODES.BUILDABEARWORKSHOP:
+        orderData = await BuildABearWorkshop.parse(code, payload);
         break;
       default:
         break;

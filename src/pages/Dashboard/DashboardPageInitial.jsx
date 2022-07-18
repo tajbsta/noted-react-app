@@ -60,7 +60,8 @@ const DashboardPageInitial = () => {
   const [productOptions, setProductOptions] = useState([]);
   const [showProductOptions, setShowProductOptions] = useState(false);
   const [isSavingProducts, setIsSavingProducts] = useState(false);
-  const [isNewUser, setIsNewUser] = useState(true);
+  const [isNewUser, setIsNewUser] = useState(null);
+  const [user, setUser] = useState(null);
 
   /**TRIGGER SCAN NOW FOR USERS */
   const triggerScanNow = async (noOfMonths) => {
@@ -312,6 +313,8 @@ const DashboardPageInitial = () => {
     const user = await getUser();
     const monthsScanned = get(user, 'custom:scan_months', undefined);
 
+    setUser(user);
+
     if (monthsScanned === undefined) {
       dispatch(updateScraperStatus(NOTAUTHORIZED));
       setIsNewUser(true);
@@ -320,6 +323,7 @@ const DashboardPageInitial = () => {
     }
 
     setIsNewUser(false);
+
     dispatch(updateScraperStatus(SCRAPECANCEL));
   };
 
@@ -365,22 +369,14 @@ const DashboardPageInitial = () => {
 
   //INITIALIZE GOOGLE API
   useEffect(() => {
-    let isMounted = false;
-
-    if (!isMounted) {
-      window.onGoogleScriptLoad = () => {
-        gapi.current = window.gapi;
-        gapi.current.load('client:auth2', initClient);
-      };
-    }
+    window.onGoogleScriptLoad = () => {
+      gapi.current = window.gapi;
+      gapi.current.load('client:auth2', initClient);
+    };
 
     loadGoogleScript();
     checkIfFirstTimeUser();
     checkForCookie();
-
-    return () => {
-      isMounted = true;
-    };
   }, []);
 
   useEffect(() => {
@@ -399,10 +395,11 @@ const DashboardPageInitial = () => {
     <Fragment>
       <ToastContainer />
 
-      {!infoAdded && isNewUser && <NewUserInfo />}
+      {user && !infoAdded && isNewUser && <NewUserInfo />}
 
       <Fragment>
-        {status !== SCRAPECOMPLETE &&
+        {user &&
+          status !== SCRAPECOMPLETE &&
           status !== SCRAPECANCEL &&
           (!isNewUser || infoAdded) && (
             <div id='DashboardInitial'>
