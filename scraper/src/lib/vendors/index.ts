@@ -116,6 +116,7 @@ import UGG from './ugg';
 import UrbanOutfitters from './urbanOutfitters';
 import BuildABearWorkshop from './buildABearWorkshop';
 import Aeropostale from './aeropostale';
+import AmericanGirl from './americanGirl';
 
 export {
   FashionNova,
@@ -235,5 +236,6 @@ export {
   UGG,
   UrbanOutfitters,
   BuildABearWorkshop,
-  Aeropostale
+  Aeropostale,
+  AmericanGirl
 };
