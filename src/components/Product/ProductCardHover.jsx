@@ -7,6 +7,7 @@ import ReturnScore from './ReturnsScore';
 import { useHistory } from 'react-router';
 import { Col, Row, Overlay, Tooltip } from 'react-bootstrap';
 import ArchiveIcon from '../../assets/icons/archive-icon.svg';
+import { isEmpty } from 'lodash';
 
 export default function ProductCardHover({ item, onArchive, onEdit }) {
   const {
@@ -48,7 +49,11 @@ export default function ProductCardHover({ item, onArchive, onEdit }) {
         }}
       >
         <span className='score-container mr-2 d-flex'>
-          <ReturnScore score={get(item.vendor_data, 'rating', 0)} />
+          <ReturnScore
+            score={
+              !isEmpty(item.vendor_data.rating) ? item.vendor_data.rating : 0
+            }
+          />
         </span>
       </Col>
       <Col xs={10}>

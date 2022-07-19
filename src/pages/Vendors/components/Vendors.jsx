@@ -2,25 +2,23 @@ import React from 'react';
 import { Row, Col, Table, Button, Spinner } from 'react-bootstrap';
 
 export default function Vendors({ loading, vendors, onAdd, onCancel }) {
-  const renderUserSubscription = () => {
+  const renderVendor = () => {
     return vendors.length > 0 ? (
       vendors.map((item, i) => {
         return (
           <tr key={i}>
             <td>{item.name}</td>
             <td>
-              <img
-                src={
-                  item.thumbnail
-                  // require(`../../../assets/icons/${item.plan_name}Icon.svg`)
-                  //   .default
-                }
-                style={{
-                  height: 30,
-                  width: 40,
-                  marginRight: 10,
-                }}
-              />
+              {item.thumbnail && (
+                <img
+                  src={item.thumbnail}
+                  style={{
+                    height: 30,
+                    width: 40,
+                    marginRight: 10,
+                  }}
+                />
+              )}
             </td>
           </tr>
         );
@@ -50,7 +48,7 @@ export default function Vendors({ loading, vendors, onAdd, onCancel }) {
                 <Table responsive='sm' className='mycredits-table-1'>
                   <tbody>
                     {!loading ? (
-                      renderUserSubscription()
+                      renderVendor()
                     ) : (
                       <div className='loading-wrapper flex justify-center items-center'>
                         <Spinner

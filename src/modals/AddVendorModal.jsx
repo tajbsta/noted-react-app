@@ -34,30 +34,47 @@ export default function AddVendorModal({ onHide, show }) {
         const logo = await uploadVendorLogo(user.sub, file);
         payload['logo'] = logo;
       }
-      const response = await saveVendorReview(payload);
-      if (response.status === 'success') {
-        showSuccess({
-          message: (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <AlertCircle />
-              <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-                Suggested vendor successfully!
-              </h4>
-            </div>
-          ),
+      saveVendorReview(payload)
+        .then((response) => {
+          if (response.status === 'success') {
+            showSuccess({
+              message: (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <AlertCircle />
+                  <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+                    Suggested vendor successfully!
+                  </h4>
+                </div>
+              ),
+            });
+            onHide();
+          }
+        })
+        .catch((err) => {
+          if (err?.response?.data?.status === 'fail') {
+            showError({
+              message: (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <AlertCircle />
+                  <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+                    {err.response.data.message}
+                  </h4>
+                </div>
+              ),
+            });
+          } else {
+            showError({
+              message: (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <AlertCircle />
+                  <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
+                    Error! Suggest vendor fail!
+                  </h4>
+                </div>
+              ),
+            });
+          }
         });
-      } else {
-        showError({
-          message: (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <AlertCircle />
-              <h4 className='ml-3 mb-0' style={{ lineHeight: '16px' }}>
-                Error! Suggest vendor fail!
-              </h4>
-            </div>
-          ),
-        });
-      }
       setIsSubmitting(false);
     } catch (error) {
       setIsSubmitting(false);

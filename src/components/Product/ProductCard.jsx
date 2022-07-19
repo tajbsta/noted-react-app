@@ -11,7 +11,7 @@ import moment from 'moment';
 import ReturnPolicyModal from '../../modals/ReturnPolicyModal';
 import ConfirmDonate from '../../modals/ConfirmDonate';
 import NotedCheckbox from './NotedCheckbox';
-import { get } from 'lodash-es';
+import { get, isEmpty } from 'lodash-es';
 import EditProductModal from '../../modals/EditProductModal';
 
 import { useHistory } from 'react-router';
@@ -61,7 +61,9 @@ export default function ProductCard({
     item.price === 0
       ? 'Price Unavailable'
       : `$${parseFloat(item.price).toFixed(2)}`;
-  const rating = get(item, 'vendor_data.rating', 1);
+  const rating = !isEmpty(item.vendor_data.rating)
+    ? item.vendor_data.rating
+    : 1;
   const score = RETURN_SCORES.find(
     ({ rating: returnRating }) => rating === returnRating
   );
