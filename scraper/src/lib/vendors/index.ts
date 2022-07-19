@@ -115,6 +115,7 @@ import SwetTailor from './swetTailor';
 import UGG from './ugg';
 import UrbanOutfitters from './urbanOutfitters';
 import BuildABearWorkshop from './buildABearWorkshop';
+import Aeropostale from './aeropostale';
 
 export {
   FashionNova,
@@ -233,5 +234,6 @@ export {
   SwetTailor,
   UGG,
   UrbanOutfitters,
-  BuildABearWorkshop
+  BuildABearWorkshop,
+  Aeropostale
 };
