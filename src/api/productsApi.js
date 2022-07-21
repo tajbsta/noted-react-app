@@ -103,7 +103,7 @@ export const getOtherReturnProducts = async (size = 5, productIds = []) => {
 export const getVendors = async () => {
   const axios = await api();
 
-  let queries = [];
+  let queries = ['supported=true'];
   const { userId } = await getUserSession();
   const query = queries.join('&');
   const res = await axios.get(`/${userId}/vendors?${query}`);
