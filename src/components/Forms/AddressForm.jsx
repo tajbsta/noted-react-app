@@ -15,8 +15,12 @@ export default function AddressForm({
   phoneNumber = '',
   instructions = '',
   errors,
+  isCoworkingSpace = false,
+  addressOption = 'my-address',
+  setAddressOption = () => {},
   handleChange = () => {},
   onDoneClick = () => {},
+  onCoworkingClick = () => {},
   setFieldValue = () => {},
   setShowEditAddress = () => {},
   handleBlur = () => {},
@@ -317,175 +321,410 @@ export default function AddressForm({
               id='AddressFormConfirmed'
               onSubmit={(e) => e.preventDefault()}
             >
-              <Row>
-                <Col>
-                  <Form.Group>
-                    <Form.Label>Full Name</Form.Label>
-                    <Form.Control
-                      isInvalid={errors.fullName}
-                      className='form-control-lg'
-                      onChange={(e) => {
-                        if (/^[a-zA-Z\s]*$/g.test(e.target.value)) {
-                          handleChange(e);
-                        }
-                      }}
-                      type='name'
-                      name='fullName'
-                      value={fullName || ''}
-                      onBlur={handleBlur}
-                      onFocus={onFocus}
+              {isCoworkingSpace && (
+                <>
+                  <div className='mb-3'>
+                    <Form.Label className='mb-2'>Select One</Form.Label>
+                    <Form.Check
+                      type='radio'
+                      id={`my-address`}
+                      label='My Address'
+                      name='address-option'
+                      checked={addressOption === 'my-address'}
+                      onClick={() => setAddressOption('my-address')}
                     />
-                    {renderInlineValidationError('fullName')}
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group>
-                    <Form.Label>State</Form.Label>
-                    <Form.Control
-                      className='form-control-md'
-                      as='select'
-                      value={state || ''}
-                      name='state'
-                      onChange={handleChange}
-                      placeholder='Select State'
-                      onBlur={handleBlur}
-                      onFocus={onFocus}
-                    >
-                      {[
-                        { abbreviation: '', name: 'Select State' },
-                        ...USA_STATES,
-                      ].map(({ name, abbreviation }) => (
-                        <option value={abbreviation} key={`${abbreviation}`}>
-                          {name}
-                        </option>
-                      ))}
-                    </Form.Control>
-                    {renderInlineValidationError('state')}
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group>
-                    <Form.Label>Zip Code</Form.Label>
-                    <Form.Control
-                      className='form-control-md'
-                      onChange={(e) => {
-                        const re = /^[0-9\b]+$/;
-                        if (e.target.value === '' || re.test(e.target.value)) {
-                          handleChange(e);
-                        }
-                      }}
-                      type='zip code'
-                      value={zipCode || ''}
-                      name='zipCode'
-                      maxLength={6}
-                      onBlur={handleBlur}
-                      onFocus={onFocus}
+                    <Form.Check
+                      type='radio'
+                      label={`Coworking-Space - The Wing | 52 Mercer St, New York`}
+                      id={`coworking-address`}
+                      name='address-option'
+                      checked={addressOption === 'coworking-address'}
+                      onClick={() => setAddressOption('coworking-address')}
                     />
-                    {zipCode.length > 0 && renderInlineError(errors.zipCode)}
-                  </Form.Group>
-                </Col>
-              </Row>
+                  </div>
+                  {addressOption === 'my-address' ? (
+                    <>
+                      <Row>
+                        <Col>
+                          <Form.Group>
+                            <Form.Label>Full Name</Form.Label>
+                            <Form.Control
+                              isInvalid={errors.fullName}
+                              className='form-control-lg'
+                              onChange={(e) => {
+                                if (/^[a-zA-Z\s]*$/g.test(e.target.value)) {
+                                  handleChange(e);
+                                }
+                              }}
+                              type='name'
+                              name='fullName'
+                              value={fullName || ''}
+                              onBlur={handleBlur}
+                              onFocus={onFocus}
+                            />
+                            {renderInlineValidationError('fullName')}
+                          </Form.Group>
+                        </Col>
+                        <Col>
+                          <Form.Group>
+                            <Form.Label>State</Form.Label>
+                            <Form.Control
+                              className='form-control-md'
+                              as='select'
+                              value={state || ''}
+                              name='state'
+                              onChange={handleChange}
+                              placeholder='Select State'
+                              onBlur={handleBlur}
+                              onFocus={onFocus}
+                            >
+                              {[
+                                { abbreviation: '', name: 'Select State' },
+                                ...USA_STATES,
+                              ].map(({ name, abbreviation }) => (
+                                <option
+                                  value={abbreviation}
+                                  key={`${abbreviation}`}
+                                >
+                                  {name}
+                                </option>
+                              ))}
+                            </Form.Control>
+                            {renderInlineValidationError('state')}
+                          </Form.Group>
+                        </Col>
+                        <Col>
+                          <Form.Group>
+                            <Form.Label>Zip Code</Form.Label>
+                            <Form.Control
+                              className='form-control-md'
+                              onChange={(e) => {
+                                const re = /^[0-9\b]+$/;
+                                if (
+                                  e.target.value === '' ||
+                                  re.test(e.target.value)
+                                ) {
+                                  handleChange(e);
+                                }
+                              }}
+                              type='zip code'
+                              value={zipCode || ''}
+                              name='zipCode'
+                              maxLength={6}
+                              onBlur={handleBlur}
+                              onFocus={onFocus}
+                            />
+                            {zipCode.length > 0 &&
+                              renderInlineError(errors.zipCode)}
+                          </Form.Group>
+                        </Col>
+                      </Row>
 
-              <Row>
-                <Col>
-                  <Form.Group>
-                    <Form.Label>Address Line 1</Form.Label>
-                    <Form.Control
-                      className='form-control-lg'
-                      onChange={handleChange}
-                      type='name'
-                      value={line1 || ''}
-                      name='line1'
-                      onBlur={handleBlur}
-                      onFocus={onFocus}
-                    />
-                    {renderInlineValidationError('line1')}
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group>
-                    <Form.Label>City</Form.Label>
-                    <Form.Control
-                      className='form-control-md'
-                      type='city'
-                      name='city'
-                      value={city || ''}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      onFocus={onFocus}
-                    />
-                    {renderInlineValidationError('city')}
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group>
-                    <Form.Label>Phone</Form.Label>
-                    <Form.Control
-                      className='form-control-md'
-                      onChange={(e) => {
-                        const re = /^[0-9\b]+$/;
-                        if (e.target.value === '' || re.test(e.target.value)) {
-                          handleChange(e);
-                        }
-                      }}
-                      value={formatPhoneNumber(phoneNumber) || ''}
-                      name='phoneNumber'
-                      maxLength={13}
-                      onBlur={handleBlur}
-                      onFocus={onFocus}
-                    />
-                    {renderInlineValidationError('phoneNumber')}
-                  </Form.Group>
-                </Col>
-              </Row>
+                      <Row>
+                        <Col>
+                          <Form.Group>
+                            <Form.Label>Address Line 1</Form.Label>
+                            <Form.Control
+                              className='form-control-lg'
+                              onChange={handleChange}
+                              type='name'
+                              value={line1 || ''}
+                              name='line1'
+                              onBlur={handleBlur}
+                              onFocus={onFocus}
+                            />
+                            {renderInlineValidationError('line1')}
+                          </Form.Group>
+                        </Col>
+                        <Col>
+                          <Form.Group>
+                            <Form.Label>City</Form.Label>
+                            <Form.Control
+                              className='form-control-md'
+                              type='city'
+                              name='city'
+                              value={city || ''}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              onFocus={onFocus}
+                            />
+                            {renderInlineValidationError('city')}
+                          </Form.Group>
+                        </Col>
+                        <Col>
+                          <Form.Group>
+                            <Form.Label>Phone</Form.Label>
+                            <Form.Control
+                              className='form-control-md'
+                              onChange={(e) => {
+                                const re = /^[0-9\b]+$/;
+                                if (
+                                  e.target.value === '' ||
+                                  re.test(e.target.value)
+                                ) {
+                                  handleChange(e);
+                                }
+                              }}
+                              value={formatPhoneNumber(phoneNumber) || ''}
+                              name='phoneNumber'
+                              maxLength={13}
+                              onBlur={handleBlur}
+                              onFocus={onFocus}
+                            />
+                            {renderInlineValidationError('phoneNumber')}
+                          </Form.Group>
+                        </Col>
+                      </Row>
 
-              <Row>
-                <Col xs={6}>
-                  <Form.Group>
-                    <Form.Label>Address Line 2</Form.Label>
-                    <Form.Control
-                      className='form-control-lg'
-                      type='name'
-                      value={line2 || ''}
-                      name='line2'
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      onFocus={onFocus}
+                      <Row>
+                        <Col xs={6}>
+                          <Form.Group>
+                            <Form.Label>Address Line 2</Form.Label>
+                            <Form.Control
+                              className='form-control-lg'
+                              type='name'
+                              value={line2 || ''}
+                              name='line2'
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              onFocus={onFocus}
+                            />
+                            {renderInlineValidationError('line2')}
+                          </Form.Group>
+                        </Col>
+
+                        <Col className='add-pick-up'>
+                          <button
+                            className='btn btn-instructions'
+                            onClick={() => setModalShow(true)}
+                          >
+                            <h4 className='text-instructions'>
+                              {instructions.length > 0 ? 'Edit' : 'Add'} pick-up
+                              instructions
+                            </h4>
+                          </button>
+                        </Col>
+
+                        <AddPickupModal
+                          instructions={instructions}
+                          setFieldValue={setFieldValue}
+                          show={modalShow}
+                          onDoneClick={onDoneClick}
+                          onHide={() => setModalShow(false)}
+                        />
+
+                        <Col className='btn-container'>
+                          <Button
+                            disabled={disableSubmit}
+                            className='btn-done'
+                            onClick={onDoneClick}
+                          >
+                            Done
+                          </Button>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : (
+                    <>
+                      <div className='btn-container'>
+                        <Button
+                          style={{ width: '110px' }}
+                          type='submit'
+                          onClick={(e) => {
+                            e.preventDefault();
+                            onCoworkingClick();
+                          }}
+                        >
+                          Done
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+              {!isCoworkingSpace && (
+                <>
+                  <Row>
+                    <Col>
+                      <Form.Group>
+                        <Form.Label>Full Name</Form.Label>
+                        <Form.Control
+                          isInvalid={errors.fullName}
+                          className='form-control-lg'
+                          onChange={(e) => {
+                            if (/^[a-zA-Z\s]*$/g.test(e.target.value)) {
+                              handleChange(e);
+                            }
+                          }}
+                          type='name'
+                          name='fullName'
+                          value={fullName || ''}
+                          onBlur={handleBlur}
+                          onFocus={onFocus}
+                        />
+                        {renderInlineValidationError('fullName')}
+                      </Form.Group>
+                    </Col>
+                    <Col>
+                      <Form.Group>
+                        <Form.Label>State</Form.Label>
+                        <Form.Control
+                          className='form-control-md'
+                          as='select'
+                          value={state || ''}
+                          name='state'
+                          onChange={handleChange}
+                          placeholder='Select State'
+                          onBlur={handleBlur}
+                          onFocus={onFocus}
+                        >
+                          {[
+                            { abbreviation: '', name: 'Select State' },
+                            ...USA_STATES,
+                          ].map(({ name, abbreviation }) => (
+                            <option
+                              value={abbreviation}
+                              key={`${abbreviation}`}
+                            >
+                              {name}
+                            </option>
+                          ))}
+                        </Form.Control>
+                        {renderInlineValidationError('state')}
+                      </Form.Group>
+                    </Col>
+                    <Col>
+                      <Form.Group>
+                        <Form.Label>Zip Code</Form.Label>
+                        <Form.Control
+                          className='form-control-md'
+                          onChange={(e) => {
+                            const re = /^[0-9\b]+$/;
+                            if (
+                              e.target.value === '' ||
+                              re.test(e.target.value)
+                            ) {
+                              handleChange(e);
+                            }
+                          }}
+                          type='zip code'
+                          value={zipCode || ''}
+                          name='zipCode'
+                          maxLength={6}
+                          onBlur={handleBlur}
+                          onFocus={onFocus}
+                        />
+                        {zipCode.length > 0 &&
+                          renderInlineError(errors.zipCode)}
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col>
+                      <Form.Group>
+                        <Form.Label>Address Line 1</Form.Label>
+                        <Form.Control
+                          className='form-control-lg'
+                          onChange={handleChange}
+                          type='name'
+                          value={line1 || ''}
+                          name='line1'
+                          onBlur={handleBlur}
+                          onFocus={onFocus}
+                        />
+                        {renderInlineValidationError('line1')}
+                      </Form.Group>
+                    </Col>
+                    <Col>
+                      <Form.Group>
+                        <Form.Label>City</Form.Label>
+                        <Form.Control
+                          className='form-control-md'
+                          type='city'
+                          name='city'
+                          value={city || ''}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          onFocus={onFocus}
+                        />
+                        {renderInlineValidationError('city')}
+                      </Form.Group>
+                    </Col>
+                    <Col>
+                      <Form.Group>
+                        <Form.Label>Phone</Form.Label>
+                        <Form.Control
+                          className='form-control-md'
+                          onChange={(e) => {
+                            const re = /^[0-9\b]+$/;
+                            if (
+                              e.target.value === '' ||
+                              re.test(e.target.value)
+                            ) {
+                              handleChange(e);
+                            }
+                          }}
+                          value={formatPhoneNumber(phoneNumber) || ''}
+                          name='phoneNumber'
+                          maxLength={13}
+                          onBlur={handleBlur}
+                          onFocus={onFocus}
+                        />
+                        {renderInlineValidationError('phoneNumber')}
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col xs={6}>
+                      <Form.Group>
+                        <Form.Label>Address Line 2</Form.Label>
+                        <Form.Control
+                          className='form-control-lg'
+                          type='name'
+                          value={line2 || ''}
+                          name='line2'
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          onFocus={onFocus}
+                        />
+                        {renderInlineValidationError('line2')}
+                      </Form.Group>
+                    </Col>
+
+                    <Col className='add-pick-up'>
+                      <button
+                        className='btn btn-instructions'
+                        onClick={() => setModalShow(true)}
+                      >
+                        <h4 className='text-instructions'>
+                          {instructions.length > 0 ? 'Edit' : 'Add'} pick-up
+                          instructions
+                        </h4>
+                      </button>
+                    </Col>
+
+                    <AddPickupModal
+                      instructions={instructions}
+                      setFieldValue={setFieldValue}
+                      show={modalShow}
+                      onDoneClick={onDoneClick}
+                      onHide={() => setModalShow(false)}
                     />
-                    {renderInlineValidationError('line2')}
-                  </Form.Group>
-                </Col>
 
-                <Col className='add-pick-up'>
-                  <button
-                    className='btn btn-instructions'
-                    onClick={() => setModalShow(true)}
-                  >
-                    <h4 className='text-instructions'>
-                      {instructions.length > 0 ? 'Edit' : 'Add'} pick-up
-                      instructions
-                    </h4>
-                  </button>
-                </Col>
-
-                <AddPickupModal
-                  instructions={instructions}
-                  setFieldValue={setFieldValue}
-                  show={modalShow}
-                  onDoneClick={onDoneClick}
-                  onHide={() => setModalShow(false)}
-                />
-
-                <Col className='btn-container'>
-                  <Button
-                    disabled={disableSubmit}
-                    className='btn-done'
-                    onClick={onDoneClick}
-                  >
-                    Done
-                  </Button>
-                </Col>
-              </Row>
+                    <Col className='btn-container'>
+                      <Button
+                        disabled={disableSubmit}
+                        className='btn-done'
+                        onClick={onDoneClick}
+                      >
+                        Done
+                      </Button>
+                    </Col>
+                  </Row>
+                </>
+              )}
             </Form>
           </div>
         </div>

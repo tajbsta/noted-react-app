@@ -54,6 +54,19 @@ export default function PickUpDetails({
   const initialCheckoutView = ['/checkout'];
   const [isMyPlanOpen, setIsMyPlanOpen] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  const [isCoworkingSpace, setIsCoworkingSpace] = useState(true);
+  const [addressOption, setAddressOption] = useState('my-address');
+
+  const [coworkingDetails, setCoworkingDetails] = useState({
+    city: 'New York',
+    fullName: 'The Wing',
+    instructions: '',
+    line1: '52 Mercer St',
+    line2: '',
+    phoneNumber: '2222222222',
+    state: 'NY',
+    zipCode: '10013',
+  });
 
   const {
     errors: addressFormErrors,
@@ -116,6 +129,26 @@ export default function PickUpDetails({
     dispatch(
       setPickupAddress({
         ...addressFormValues,
+        errors: addressFormErrors,
+      })
+    );
+    setShowEditAddress(false);
+    setModalShow(false);
+  };
+
+  const saveCoworkingAddress = async () => {
+    console.log('saveCoworkingAddress');
+    setFieldValue();
+    dispatch(
+      setPickupAddress({
+        city: 'New York',
+        fullName: 'The Wing',
+        instructions: '',
+        line1: '52 Mercer St',
+        line2: '',
+        phoneNumber: '2222222222',
+        state: 'NY',
+        zipCode: '10013',
         errors: addressFormErrors,
       })
     );
@@ -378,6 +411,9 @@ export default function PickUpDetails({
     );
   };
 
+  const addressValues =
+    addressOption === 'my-address' ? addressFormValues : coworkingDetails;
+
   return (
     <>
       {!showEditAddress && !showEditPayment && (
@@ -430,8 +466,12 @@ export default function PickUpDetails({
           <AddressForm
             {...addressFormValues}
             errors={addressFormErrors}
+            isCoworkingSpace={isCoworkingSpace}
+            addressOption={addressOption}
+            setAddressOption={setAddressOption}
             handleChange={handleAddressChange}
             onDoneClick={saveAddress}
+            onCoworkingClick={saveCoworkingAddress}
             setFieldValue={setFieldValue}
             setShowEditAddress={setShowEditAddress}
             handleBlur={handleAddressFormBlur}
@@ -466,24 +506,26 @@ export default function PickUpDetails({
                       </div>
                       <div>
                         <h4 className='p-0 m-0 sofia-pro postal-name'>
-                          {addressFormValues.fullName}
+                          {addressOption === 'my-address'
+                            ? addressValues.fullName
+                            : `${addressValues.fullName} (Coworking Space)`}
                         </h4>
                         <h4 className='p-0 m-0 sofia-pro line1'>
-                          {addressFormValues.line1}
+                          {addressValues.line1}
                         </h4>
                         <h4 className='p-0 m-0 sofia-pro line1'>
-                          {addressFormValues.line2}
+                          {addressValues.line2}
                         </h4>
                         <h4 className='p-0 m-0 sofia-pro line1'>
-                          {addressFormValues.city}, {addressFormValues.state}{' '}
-                          {addressFormValues.zipCode}
+                          {addressValues.city}, {addressValues.state}{' '}
+                          {addressValues.zipCode}
                         </h4>
                         <h4 className='p-0 m-0 sofia-pro line1'>
                           United States
                         </h4>
                       </div>
                       <p className='sofia-pro mt-3 tel'>
-                        Tel: {formatPhoneNumber(addressFormValues.phoneNumber)}
+                        Tel: {formatPhoneNumber(addressValues.phoneNumber)}
                       </p>
                       <button
                         className='btn btn-instructions'
@@ -514,15 +556,17 @@ export default function PickUpDetails({
                             >
                               <Col className='p-0'>
                                 <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                  {addressFormValues.fullName}
+                                  {addressOption === 'my-address'
+                                    ? addressValues.fullName
+                                    : `${addressValues.fullName} (Coworking Space)`}
                                   {!IsAddressOpen && (
                                     <>
-                                      {addressFormValues.line1.length > 12
+                                      {addressValues.line1.length > 12
                                         ? `,${truncateString(
-                                            addressFormValues.line1,
+                                            addressValues.line1,
                                             12
                                           )}`
-                                        : `, ${addressFormValues.line1}`}
+                                        : `, ${addressValues.line1}`}
                                     </>
                                   )}
                                 </h4>
@@ -530,7 +574,7 @@ export default function PickUpDetails({
                                   <p className='sofia-pro p-0 mb-0 tel mt-0 pb-1'>
                                     Tel:{' '}
                                     {formatPhoneNumber(
-                                      addressFormValues.phoneNumber
+                                      addressValues.phoneNumber
                                     )}
                                   </p>
                                 )}
@@ -555,28 +599,25 @@ export default function PickUpDetails({
                           {IsAddressOpen && (
                             <div>
                               <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                {addressFormValues.line1}
+                                {addressValues.line1}
                               </h4>
-                              {addressFormValues.line2 ? (
+                              {addressValues.line2 ? (
                                 <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                  {addressFormValues.line2}
+                                  {addressValues.line2}
                                 </h4>
                               ) : (
                                 ''
                               )}
                               <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
-                                {addressFormValues.city},{' '}
-                                {addressFormValues.state}{' '}
-                                {addressFormValues.zipCode}
+                                {addressValues.city}, {addressValues.state}{' '}
+                                {addressValues.zipCode}
                               </h4>
                               <h4 className='p-0 m-0 sofia-pro postal-name pt-1 pb-1'>
                                 United States
                               </h4>
                               <p className='sofia-pro p-0 mb-0 tel mt-0 pb-1'>
                                 Tel:{' '}
-                                {formatPhoneNumber(
-                                  addressFormValues.phoneNumber
-                                )}
+                                {formatPhoneNumber(addressValues.phoneNumber)}
                               </p>
                             </div>
                           )}
