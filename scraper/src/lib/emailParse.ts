@@ -114,7 +114,9 @@ import {
   SwetTailor,
   UGG,
   UrbanOutfitters,
-  BuildABearWorkshop
+  BuildABearWorkshop,
+  Aeropostale,
+  AmericanGirl
 } from './vendors';
 import { OrderData, IEmailPayload } from '../models';
 
@@ -464,6 +466,12 @@ const parse = async (code: string, payload: IEmailPayload): Promise<OrderData | 
         break;
       case VENDOR_CODES.BUILDABEARWORKSHOP:
         orderData = await BuildABearWorkshop.parse(code, payload);
+        break;
+      case VENDOR_CODES.AEROPOSTALE:
+        orderData = await Aeropostale.parse(code, payload);
+        break;
+      case VENDOR_CODES.AMERICANGIRL:
+        orderData = await AmericanGirl.parse(code, payload);
         break;
       default:
         break;
