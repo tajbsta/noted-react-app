@@ -47,8 +47,10 @@ export default function AddVendorModal({ onHide, show }) {
                 </div>
               ),
             });
+            initForm();
             onHide();
           }
+          setIsSubmitting(false);
         })
         .catch((err) => {
           if (err?.response?.data?.status === 'fail') {
@@ -74,8 +76,8 @@ export default function AddVendorModal({ onHide, show }) {
               ),
             });
           }
+          setIsSubmitting(false);
         });
-      setIsSubmitting(false);
     } catch (error) {
       setIsSubmitting(false);
       showError({
@@ -83,6 +85,12 @@ export default function AddVendorModal({ onHide, show }) {
           'Your request could not be completed because of an error. Please try again later.',
       });
     }
+  };
+
+  const initForm = () => {
+    setFieldValue('image', '');
+    setFieldValue('vendorName', '');
+    setFieldValue('vendorWebsite', '');
   };
 
   const {
@@ -128,32 +136,6 @@ export default function AddVendorModal({ onHide, show }) {
     );
   };
 
-  const ActionButtons = () => {
-    return (
-      <Row className='mt-5 button-container flex justify-center'>
-        <Button
-          variant='primary'
-          size='md'
-          className='px-5'
-          type='submit'
-          disabled={!isValid}
-        >
-          {isSubmitting ? (
-            <Spinner
-              as='span'
-              animation='border'
-              size='sm'
-              role='status'
-              aria-hidden='true'
-            />
-          ) : (
-            'Submit'
-          )}
-        </Button>
-      </Row>
-    );
-  };
-
   const { image, vendorName, vendorWebsite } = values;
 
   const hiddenFileInput = React.useRef(null);
@@ -196,6 +178,7 @@ export default function AddVendorModal({ onHide, show }) {
                         style={{
                           width: '100%',
                           height: '100%',
+                          objectFit: 'cover',
                         }}
                       />
                       <div className='upload-wrapper'>
@@ -223,6 +206,7 @@ export default function AddVendorModal({ onHide, show }) {
                     ref={hiddenFileInput}
                   />
                 </div>
+                <label className='mt-2 optional'>Vendor Logo is optional</label>
               </Form.Group>
               <Form.Group>
                 <Form.Label>Vendor Name</Form.Label>
@@ -250,7 +234,27 @@ export default function AddVendorModal({ onHide, show }) {
               </Form.Group>
             </Col>
           </Row>
-          <ActionButtons />
+          <Row className='mt-5 button-container flex justify-center'>
+            <Button
+              variant='primary'
+              size='md'
+              className='px-5'
+              type='submit'
+              disabled={!isValid}
+            >
+              {isSubmitting ? (
+                <Spinner
+                  as='span'
+                  animation='border'
+                  size='sm'
+                  role='status'
+                  aria-hidden='true'
+                />
+              ) : (
+                'Submit'
+              )}
+            </Button>
+          </Row>
         </form>
       </Modal.Body>
     </Modal>
