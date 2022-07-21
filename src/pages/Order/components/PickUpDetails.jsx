@@ -54,7 +54,7 @@ export default function PickUpDetails({
   const initialCheckoutView = ['/checkout'];
   const [isMyPlanOpen, setIsMyPlanOpen] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const [isCoworkingSpace, setIsCoworkingSpace] = useState(true);
+  const [isCoworkingSpace, setIsCoworkingSpace] = useState(false);
   const [addressOption, setAddressOption] = useState('my-address');
 
   const [coworkingDetails, setCoworkingDetails] = useState({

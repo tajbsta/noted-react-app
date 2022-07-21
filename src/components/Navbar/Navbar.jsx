@@ -181,6 +181,7 @@ export default function Topnav() {
           logout={logout}
           profile={profile}
           settings={settings}
+          vendors={vendors}
           checkclearsearch={checkclearsearch}
           submitsearch={submitsearch}
           backToHome={backToHome}

@@ -9,6 +9,7 @@ export default function MobileNav({
   checkclearsearch,
   profile,
   settings,
+  vendors,
   logout,
   backToHome,
 }) {
@@ -112,6 +113,7 @@ export default function MobileNav({
                 <>
                   <Nav className='mr-auto'>
                     <Nav.Link onClick={profile}>Profile</Nav.Link>
+                    <Nav.Link onClick={vendors}>Vendors</Nav.Link>
                     <Nav.Link onClick={settings}>Settings</Nav.Link>
                     <Nav.Link onClick={logout}>Logout</Nav.Link>
                   </Nav>
