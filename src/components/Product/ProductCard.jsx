@@ -510,7 +510,8 @@ export default function ProductCard({
                 </Row>
               )}
             </div>
-            {!isHover && !selected && isDonate && !inCheckout && userEmail && (
+            {/* {!isHover && !selected && isDonate && !inCheckout && userEmail && ( */}
+            {!isHover && !selected && !inCheckout && userEmail && (
               <div
                 style={{
                   display: 'flex',
