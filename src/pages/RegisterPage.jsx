@@ -31,18 +31,6 @@ export default function RegisterPage() {
   };
 
   useEffect(() => {
-    const unsubscribe = Hub.listen('auth', ({ payload: { event } }) => {
-      console.log('authHub', event);
-      if (event === 'signIn') {
-        dispatch(setIsNewlySignedUp(true));
-        dispatch(setIsInfoAdded(false));
-      }
-    });
-
-    return unsubscribe;
-  }, []);
-
-  useEffect(() => {
     resetAuthorizeNewEmail();
     scrollToTop();
 
