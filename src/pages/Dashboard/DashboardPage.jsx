@@ -130,10 +130,12 @@ export default function DashboardPage({ triggerScanNow }) {
     try {
       setLoading(true);
       const userId = await getUserId();
+      console.log('userId', userId);
 
       setUserId(userId);
       setLoading(false);
       setTimeout(() => {
+        console.log('setShowInitialScanModal');
         setShowInitialScanModal(true);
       }, 5000);
     } catch (error) {
