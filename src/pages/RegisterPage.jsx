@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Mail, Eye, EyeOff } from 'react-feather';
 import { Link, useHistory } from 'react-router-dom';
 import { Form, Spinner } from 'react-bootstrap';
-import { Auth } from 'aws-amplify';
+import { Auth, Hub } from 'aws-amplify';
 import { signUpErrors } from '../library/errors.library';
 import { get } from 'lodash';
 import { useFormik } from 'formik';
@@ -13,7 +13,7 @@ import { resetAuthorizeNewEmail } from '../utils/data';
 import GoogleLogoItem from '../assets/img/google_signup.png';
 import CheckZipcodeModal from '../modals/CheckZipcodeModal';
 import { useDispatch } from 'react-redux';
-import { setIsNewlySignedUp, setIsInfoAdded } from '../actions/auth.action';
+import { setIsInfoAdded } from '../actions/auth.action';
 import { lead } from '../analytics/fbpixels';
 
 export default function RegisterPage() {
@@ -67,7 +67,6 @@ export default function RegisterPage() {
 
       await Auth.signIn(email, password);
 
-      dispatch(setIsNewlySignedUp(true));
       dispatch(setIsInfoAdded(false));
       history.push('/dashboard');
       return;

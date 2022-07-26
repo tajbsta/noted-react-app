@@ -13,7 +13,10 @@ import ZipCodeNotSupportedModal from '../../../modals/ZipCodeNotSupportedModal';
 import { updateUserAttributes, getUser } from '../../../api/auth';
 import { saveUserDataToMailchimp } from '../../../api/userApi';
 import { createUnsupportedUser } from '../../../api/accountsApi';
-import { setIsInfoAdded } from '../../../actions/auth.action';
+import {
+  setIsInfoAdded,
+  setIsNewlySignedUp,
+} from '../../../actions/auth.action';
 
 const NewUserInfoPage = () => {
   const [error, setError] = useState(null);
@@ -83,6 +86,7 @@ const NewUserInfoPage = () => {
 
         if (isZipCodeSupported) {
           setIsSubmitting(false);
+          dispatch(setIsNewlySignedUp(true));
           dispatch(setIsInfoAdded(true));
         } else {
           setShowZipcodeNotSupportedModal(true);
@@ -274,6 +278,7 @@ const NewUserInfoPage = () => {
         onContinue={() => {
           setShowZipcodeNotSupportedModal(false);
           setIsSubmitting(false);
+          dispatch(setIsNewlySignedUp(true));
           dispatch(setIsInfoAdded(true));
         }}
       />
