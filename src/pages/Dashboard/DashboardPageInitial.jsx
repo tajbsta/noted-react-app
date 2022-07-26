@@ -391,6 +391,7 @@ const DashboardPageInitial = () => {
     monthsToScanRef.current = noOfMonthsToScan;
   }, [noOfMonthsToScan]);
 
+  console.log('pz-debug', status, isNewUser, infoAdded);
   return (
     <Fragment>
       <ToastContainer />
