@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Form, Navbar } from 'react-bootstrap';
+import { Button, Container, Form, Nav, Navbar } from 'react-bootstrap';
 import _ from 'lodash';
 import qs from 'qs';
 import ProfileIcon from '../../assets/icons/Profile.svg';
@@ -14,6 +14,7 @@ import BrandLogoSvg from './BrandLogoSvg';
 import MobileNav from './MobileNav';
 import { showError } from '../../library/notifications.library';
 import { clearCart } from '../../actions/cart.action';
+import { Link } from 'react-scroll';
 
 export default function Topnav() {
   const history = useHistory();
@@ -147,6 +148,7 @@ export default function Topnav() {
 
   useEffect(() => {
     function handleResize() {
+      console.log('window.innerWidth', window.innerWidth);
       setIsMobile(window.innerWidth <= 991);
     }
     handleResize();
@@ -161,22 +163,9 @@ export default function Topnav() {
       expand={`lg ${showShadow}`}
       style={{
         border: 'none',
-        backgroundColor: guestViews.includes(pathname) ? '#FAF8FA' : '',
       }}
     >
-      {!isMobile && (
-        <>
-          <Navbar.Brand
-            onClick={backToHome}
-            style={{ cursor: 'pointer' }}
-            className='ml-4 mr-1'
-          >
-            <BrandLogoSvg />
-          </Navbar.Brand>
-        </>
-      )}
-
-      {isMobile && (
+      {isMobile ? (
         <MobileNav
           logout={logout}
           profile={profile}
@@ -186,90 +175,140 @@ export default function Topnav() {
           submitsearch={submitsearch}
           backToHome={backToHome}
         />
-      )}
-
-      {!guestViews.includes(pathname) && (
+      ) : (
         <>
-          <div id='DashboardNav'>
-            <Container className='ml-3'>
-              <Form onSubmit={(e) => e.preventDefault()}>
-                <div className='input-group input-group-lg input-group-merge background-color search-bar-input'>
-                  <Form.Control
-                    type='text'
-                    className='form-control form-control-prepended list-search background-color sofia-pro text-16 color'
-                    placeholder='Search purchases'
-                    value={searchQuery}
-                    disabled={preDataViews.includes(pathname)}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyPress={submitsearch}
-                  />
-                  <div className='input-group-prepend'>
-                    <div className='input-group-text background-color'>
-                      <span className='fe fe-search'>
-                        <img src={Search} />
-                      </span>
+          <Navbar.Brand
+            onClick={backToHome}
+            style={{ cursor: 'pointer' }}
+            className='ml-4 mr-1'
+          >
+            <BrandLogoSvg />
+          </Navbar.Brand>
+          {!guestViews.includes(pathname) ? (
+            <>
+              <div id='DashboardNav'>
+                <Container className='ml-3'>
+                  <Form onSubmit={(e) => e.preventDefault()}>
+                    <div className='input-group input-group-lg input-group-merge background-color search-bar-input'>
+                      <Form.Control
+                        type='text'
+                        className='form-control form-control-prepended list-search background-color sofia-pro text-16 color'
+                        placeholder='Search purchases'
+                        value={searchQuery}
+                        disabled={preDataViews.includes(pathname)}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyPress={submitsearch}
+                      />
+                      <div className='input-group-prepend'>
+                        <div className='input-group-text background-color'>
+                          <span className='fe fe-search'>
+                            <img src={Search} />
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  </Form>
+                </Container>
+                <div className='mr-4' id='nav-toggle'>
+                  <ul className='navbar-nav'>
+                    <li className='nav-item dropdown'>
+                      <a
+                        className='nav-link dropdown-toggle'
+                        id='navbarDropdownMenuLink'
+                        role='button'
+                        data-toggle='dropdown'
+                        aria-haspopup='true'
+                        aria-expanded='false'
+                        onClick={() => setShowDropdown(!showDropdown)}
+                      >
+                        <img
+                          src={ProfileIcon}
+                          width='30'
+                          height='30'
+                          id='navbarDropdownMenuLink'
+                        />
+                      </a>
+                      <div
+                        id='navigation-menu'
+                        className='dropdown-menu'
+                        aria-labelledby='navbarDropdownMenuLink'
+                        style={{
+                          display: showDropdown ? 'block' : 'none',
+                        }}
+                      >
+                        <button
+                          className='dropdown-item sofia-pro'
+                          onClick={profile}
+                        >
+                          Profile
+                        </button>
+                        <button
+                          className='dropdown-item sofia-pro'
+                          onClick={vendors}
+                        >
+                          Vendors
+                        </button>
+                        <button
+                          className='dropdown-item sofia-pro'
+                          onClick={settings}
+                        >
+                          Settings
+                        </button>
+                        <hr className='dropdown-line'></hr>
+                        <button
+                          className='dropdown-item sofia-pro'
+                          onClick={logout}
+                        >
+                          Log Out
+                        </button>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-              </Form>
-            </Container>
-            <div className='mr-4' id='nav-toggle'>
-              <ul className='navbar-nav'>
-                <li className='nav-item dropdown'>
-                  <a
-                    className='nav-link dropdown-toggle'
-                    id='navbarDropdownMenuLink'
-                    role='button'
-                    data-toggle='dropdown'
-                    aria-haspopup='true'
-                    aria-expanded='false'
-                    onClick={() => setShowDropdown(!showDropdown)}
-                  >
-                    <img
-                      src={ProfileIcon}
-                      width='30'
-                      height='30'
-                      id='navbarDropdownMenuLink'
-                    />
-                  </a>
-                  <div
-                    id='navigation-menu'
-                    className='dropdown-menu'
-                    aria-labelledby='navbarDropdownMenuLink'
-                    style={{
-                      display: showDropdown ? 'block' : 'none',
-                    }}
-                  >
-                    <button
-                      className='dropdown-item sofia-pro'
-                      onClick={profile}
+              </div>
+            </>
+          ) : (
+            <div id='GuestNav'>
+              <div className='nav-wrapper'>
+                <ul className='list-unstyled nav-items'>
+                  <li className='nav-item link'>
+                    <a href='javascript:void(0)'>About</a>
+                  </li>
+                  <li className='nav-item link'>
+                    <a href='javascript:void(0)'>Safety</a>
+                  </li>
+                  <li className='nav-item link'>
+                    <a href='javascript:void(0)'>Community</a>
+                  </li>
+                  <li className='nav-item link'>
+                    <a href='javascript:void(0)'>Help</a>
+                  </li>
+                  <li className='nav-item link'>
+                    <a href='javascript:void(0)'>Careers</a>
+                  </li>
+                </ul>
+              </div>
+              <div id='auth-buttons'>
+                <ul className='list-unstyled nav-items'>
+                  <li className='nav-item link auth-link'>
+                    <a
+                      href='javascript:void(0)'
+                      onClick={() => history.push('/login')}
                     >
-                      Profile
-                    </button>
-                    <button
-                      className='dropdown-item sofia-pro'
-                      onClick={vendors}
-                    >
-                      Vendors
-                    </button>
-                    <button
-                      className='dropdown-item sofia-pro'
-                      onClick={settings}
-                    >
-                      Settings
-                    </button>
-                    <hr className='dropdown-line'></hr>
-                    <button
-                      className='dropdown-item sofia-pro'
-                      onClick={logout}
-                    >
-                      Log Out
-                    </button>
-                  </div>
-                </li>
-              </ul>
+                      Login
+                    </a>
+                  </li>
+                </ul>
+                <Button
+                  type='primary'
+                  className='px-5 py-3'
+                  onClick={() => history.push('/join')}
+                >
+                  Sign Up Now
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
         </>
       )}
     </Navbar>

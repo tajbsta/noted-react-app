@@ -130,3 +130,44 @@
     width: 75%;
   }
 }
+
+#GuestNav {
+  display: flex;
+  flex: 1;
+
+  .nav-wrapper {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+  }
+
+  ul {
+    margin: 0;
+    display: flex;
+  }
+
+  .link {
+    padding: 12px 15px;
+
+    a {
+      font-family: 'Sofia Pro';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 15px;
+      line-height: 20px;
+      color: #570097;
+    }
+    :hover {
+      color: rgb(40, 3, 66);
+    }
+  }
+
+  .auth-link {
+    padding: 12px 36px;
+  }
+
+  #auth-buttons {
+    display: flex;
+    margin-right: 104px;
+  }
+}

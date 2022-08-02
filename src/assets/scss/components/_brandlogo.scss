@@ -1,22 +1,19 @@
 .main-brand-logo {
-  position: relative;
-  width: 150px;
-  height: 55.17px;
-  left: 56px;
-  top: 24px;
+  width: 143px;
+  height: 36px;
+  margin-left: 56px;
 
   @media (max-width: 540px) {
     width: 98px;
     height: 36px;
-    left: 16px;
-    top: 14px;
-    position: absolute;
+    margin-left: 16px;
+    margin-top: 14px;
   }
 }
 
 .dashboard-logo {
-  height: 40px;
-  width: 108px;
+  height: 36px;
+  width: 143px;
   top: 12px;
   border-radius: 0px;
   margin-right: 26px;

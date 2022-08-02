@@ -115,9 +115,30 @@
     border: none !important;
   }
 
-  .navbar-toggler-icon {
-    background-image: url(../../icons/ProfileDropdown.svg);
-    width: 48px;
-    height: 32px;
+  button[aria-controls='basic-navbar-nav'] {
+    .navbar-toggler-icon {
+      background-image: url(../../icons/ProfileDropdown.svg);
+      width: 48px;
+      height: 32px;
+    }
+  }
+
+  .unauth-nav {
+    .nav-link {
+      padding: 20px 25px;
+      font-family: 'Sofia Pro';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 15px;
+      line-height: 20px;
+      color: #570097 !important;
+      text-align: center;
+      :hover {
+        color: rgb(40, 3, 66);
+      }
+      &.filled {
+        padding: 0;
+      }
+    }
   }
 }

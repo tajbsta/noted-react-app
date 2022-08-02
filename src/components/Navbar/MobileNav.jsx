@@ -41,18 +41,12 @@ export default function MobileNav({
 
   return (
     <div id='MobileNav-dashboard' style={{ width: '100%' }}>
-      <Navbar
-        style={{
-          backgroundColor:
-            guestViews.indexOf(pageLocation) != -1 ? '#FAF8FA' : '',
-        }}
-        expand='lg'
-      >
+      <Navbar expand='lg'>
         <Navbar.Brand onClick={backToHome} style={{ cursor: 'pointer' }}>
           <BrandLogoSvg />
         </Navbar.Brand>
 
-        {!guestViews.includes(pathname) && (
+        {!guestViews.includes(pathname) ? (
           <>
             <div className='m-search-container'>
               <Navbar.Toggle
@@ -116,6 +110,78 @@ export default function MobileNav({
                     <Nav.Link onClick={vendors}>Vendors</Nav.Link>
                     <Nav.Link onClick={settings}>Settings</Nav.Link>
                     <Nav.Link onClick={logout}>Logout</Nav.Link>
+                  </Nav>
+                </>
+              )}
+            </Navbar.Collapse>
+          </>
+        ) : (
+          <>
+            <Navbar.Toggle
+              aria-controls='unauth-navbar-nav'
+              onClick={() => {
+                setSearchButton(false);
+              }}
+            />
+            <Navbar.Collapse id='basic-navbar-nav'>
+              {searchButton && (
+                <>
+                  <div className='mobile-search-container'>
+                    <Form inline onSubmit={(e) => e.preventDefault()}>
+                      <Form.Control
+                        type='text'
+                        placeholder='Search purchases'
+                        onKeyPress={(e) => {
+                          checkclearsearch(e);
+                          submitsearch(e);
+                        }}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchQuery}
+                      />
+                    </Form>
+                    <Button
+                      variant='outline-primary'
+                      className='ml-3'
+                      onClick={() => {
+                        checkclearsearch({
+                          target: {
+                            value: searchQuery,
+                          },
+                        });
+                        submitsearch({
+                          key: 'Enter',
+                          target: {
+                            value: searchQuery,
+                          },
+                        });
+                      }}
+                    >
+                      Go!
+                    </Button>
+                  </div>
+                </>
+              )}
+
+              {!searchButton && (
+                <>
+                  <Nav className='mr-auto unauth-nav'>
+                    <Nav.Link>About</Nav.Link>
+                    <Nav.Link>Safety</Nav.Link>
+                    <Nav.Link>Community</Nav.Link>
+                    <Nav.Link>Help</Nav.Link>
+                    <Nav.Link>Careers</Nav.Link>
+                    <Nav.Link onClick={() => history.push('/login')}>
+                      Login
+                    </Nav.Link>
+                    <Nav.Link className='filled'>
+                      <Button
+                        type='primary'
+                        className='px-5 py-3 w-100'
+                        onClick={() => history.push('/join')}
+                      >
+                        Sign Up Now
+                      </Button>
+                    </Nav.Link>
                   </Nav>
                 </>
               )}
