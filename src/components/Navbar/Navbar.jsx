@@ -272,19 +272,21 @@ export default function Topnav() {
               <div className='nav-wrapper'>
                 <ul className='list-unstyled nav-items'>
                   <li className='nav-item link'>
-                    <a href='javascript:void(0)'>About</a>
+                    <a href='https://www.notedreturns.com/about'>About</a>
                   </li>
                   <li className='nav-item link'>
-                    <a href='javascript:void(0)'>Safety</a>
+                    <a href='https://www.notedreturns.com/safety'>Safety</a>
                   </li>
                   <li className='nav-item link'>
-                    <a href='javascript:void(0)'>Community</a>
+                    <a href='https://www.notedreturns.com/community'>
+                      Community
+                    </a>
                   </li>
                   <li className='nav-item link'>
-                    <a href='javascript:void(0)'>Help</a>
+                    <a href='https://www.notedreturns.com/help'>Help</a>
                   </li>
                   <li className='nav-item link'>
-                    <a href='javascript:void(0)'>Careers</a>
+                    <a href='https://www.notedreturns.com/careers'>Careers</a>
                   </li>
                 </ul>
               </div>

@@ -61,7 +61,7 @@ export default function LoginPage() {
   return (
     <div id='LoginPage'>
       <div className='row login-container'>
-        <div className='col-md-6'>
+        <div className='col-lg-6'>
           <div className='row justify-content-center'>
             <div className='text-need col-md-10 col-xl-8'>
               <p className='text-center'>Need to return or donate</p>
@@ -216,7 +216,7 @@ export default function LoginPage() {
                 </Link>
               </h3>
 
-              <div className='text-left'>
+              <div className='text-left mb-4'>
                 <small className='text-muted text-left'>
                   By joining noted you agree to our{' '}
                   <a
@@ -252,7 +252,7 @@ export default function LoginPage() {
             </div>
           </div>
         </div>
-        <div className='col-md-6 d-flex flex-column justify-content-center align-items-center'>
+        <div className='col-lg-6 d-none d-lg-flex flex-column justify-content-center align-items-center'>
           <img src={LoginBg} className='login-bg' />
         </div>
       </div>

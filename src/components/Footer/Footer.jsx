@@ -6,11 +6,17 @@ export default function Footer() {
       <div className='row footer-container'>
         <div className='col-lg-4 col-md-12 footer-item'>
           <div className='link-container'>
-            <a href='javascript:void(0)' className='footer-link'>
+            <a
+              href='https://www.notedreturns.com/terms-and-conditions'
+              className='footer-link'
+            >
               Terms &amp; Conditions
             </a>
             <div className='footer-link-divider'>|</div>
-            <a href='javascript:void(0)' className='footer-link'>
+            <a
+              href='https://www.notedreturns.com/privacy-policy'
+              className='footer-link'
+            >
               Privacy Policy
             </a>
           </div>
@@ -18,22 +24,22 @@ export default function Footer() {
         <div className='col-lg-4 col-md-12 footer-item'>
           <ul className='list-unstyled nav-items'>
             <li className='nav-item link'>
-              <a href='javascript:void(0)'>
+              <a href='https://www.facebook.com/notedreturns/'>
                 <Facebook size={20} className='fill-svg' />
               </a>
             </li>
             <li className='nav-item link'>
-              <a href='javascript:void(0)'>
+              <a href='https://www.instagram.com/noted_returns/'>
                 <Instagram size={20} />
               </a>
             </li>
             <li className='nav-item link'>
-              <a href='javascript:void(0)'>
+              <a href='https://www.linkedin.com/mwlite/company/noted-returns'>
                 <Linkedin size={20} className='fill-svg' />
               </a>
             </li>
             <li className='nav-item link'>
-              <a href='javascript:void(0)'>
+              <a href='https://mobile.twitter.com/_noted_returns_'>
                 <Twitter size={20} className='fill-svg' />
               </a>
             </li>

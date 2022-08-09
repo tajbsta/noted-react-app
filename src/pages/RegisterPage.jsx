@@ -104,7 +104,7 @@ export default function RegisterPage() {
   return (
     <div id='RegisterPage'>
       <div className='row register-container'>
-        <div className='col-md-6'>
+        <div className='col-lg-6'>
           <div className='row justify-content-center index-container'>
             <div className='text-need col-md-10 col-xl-8'>
               <p className='text-center'>Need to return or donate</p>
@@ -213,7 +213,7 @@ export default function RegisterPage() {
                   )}
                 </button>
               </Form> */}
-              <div className='text-left'>
+              <div className='text-left mb-4'>
                 <small className='text-muted text-left'>
                   By joining noted you agree to our{' '}
                   <a
@@ -249,7 +249,7 @@ export default function RegisterPage() {
             </div>
           </div>
         </div>
-        <div className='col-md-6'>
+        <div className='col-lg-6 d-none d-lg-flex'>
           <img src={RegisterBg} className='register-bg' />
         </div>
       </div>

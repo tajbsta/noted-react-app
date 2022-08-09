@@ -165,11 +165,21 @@ export default function MobileNav({
               {!searchButton && (
                 <>
                   <Nav className='mr-auto unauth-nav'>
-                    <Nav.Link>About</Nav.Link>
-                    <Nav.Link>Safety</Nav.Link>
-                    <Nav.Link>Community</Nav.Link>
-                    <Nav.Link>Help</Nav.Link>
-                    <Nav.Link>Careers</Nav.Link>
+                    <Nav.Link href='https://www.notedreturns.com/about'>
+                      About
+                    </Nav.Link>
+                    <Nav.Link href='https://www.notedreturns.com/safety'>
+                      Safety
+                    </Nav.Link>
+                    <Nav.Link href='https://www.notedreturns.com/community'>
+                      Community
+                    </Nav.Link>
+                    <Nav.Link href='https://www.notedreturns.com/help'>
+                      Help
+                    </Nav.Link>
+                    <Nav.Link href='https://www.notedreturns.com/careers'>
+                      Careers
+                    </Nav.Link>
                     <Nav.Link onClick={() => history.push('/login')}>
                       Login
                     </Nav.Link>
