@@ -143,7 +143,7 @@ export default function RegisterPage() {
                   <span>or</span>
                 </p>
               </div> */}
-              {/* <Form>
+              <Form>
                 {error && (
                   <div className='alert alert-danger' role='alert'>
                     <h4 className='text-center text-alert'>{error}</h4>
@@ -159,7 +159,9 @@ export default function RegisterPage() {
                     onChange={handleChange}
                   />
                 </div>
-                {email.length > 0 && errors.email && renderEmailValidationError()}
+                {email.length > 0 &&
+                  errors.email &&
+                  renderEmailValidationError()}
 
                 <div className='form-group'>
                   <div className='input-group input-group-merge'>
@@ -212,7 +214,7 @@ export default function RegisterPage() {
                     />
                   )}
                 </button>
-              </Form> */}
+              </Form>
               <div className='text-left mb-4'>
                 <small className='text-muted text-left'>
                   By joining noted you agree to our{' '}

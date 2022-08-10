@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CheckCircle } from 'react-feather';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
-import { getAccounts } from '../../../api/accountsApi';
+import { deleteAccount, getAccounts } from '../../../api/accountsApi';
 import { Spinner } from 'react-bootstrap';
 import DeleteEmailModal from '../../../modals/DeleteEmailModal';
 import Collapsible from 'react-collapsible';
-import { showSuccess } from '../../../library/notifications.library';
+import { showError, showSuccess } from '../../../library/notifications.library';
 
 export default function EmailAddresses({ user }) {
   const [accounts, setAccounts] = useState([]);
@@ -16,6 +16,7 @@ export default function EmailAddresses({ user }) {
   const [isMobile, setIsMobile] = useState(false);
   const [modalDeleteShow, setModalDeleteShow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [deletingEmail, setDeletingEmail] = useState(false);
 
   useEffect(() => {
     function handleResize() {
@@ -52,7 +53,7 @@ export default function EmailAddresses({ user }) {
     }
   }, [user]);
 
-  const deleteSuccess = (id) => {
+  const deleteSuccess = async (id) => {
     const list = accounts;
 
     setAccounts(list.filter((account) => account.id !== id));
@@ -68,6 +69,20 @@ export default function EmailAddresses({ user }) {
         </div>
       ),
     });
+  };
+
+  const deleteAccountRequest = async () => {
+    try {
+      setDeletingEmail(true);
+      await deleteAccount(user.sub, toDeleteAccount.id);
+      deleteSuccess(toDeleteAccount.id);
+      setDeletingEmail(false);
+    } catch (error) {
+      setDeletingEmail(false);
+      showError({
+        message: 'Error encountered when deleting account',
+      });
+    }
   };
 
   const renderMobileView = () => {
@@ -177,11 +192,10 @@ export default function EmailAddresses({ user }) {
                       </>
                     )}
                     <DeleteEmailModal
+                      loading={deletingEmail}
                       show={modalDeleteShow}
                       account={toDeleteAccount}
-                      deletesuccess={() => {
-                        deleteSuccess(toDeleteAccount.id);
-                      }}
+                      deleteAccountRequest={deleteAccountRequest}
                       onHide={() => {
                         setModalDeleteShow(false);
                         setToDeleteAccount(null);
@@ -306,11 +320,10 @@ export default function EmailAddresses({ user }) {
                     </>
                   )}
                   <DeleteEmailModal
+                    loading={deletingEmail}
                     show={modalDeleteShow}
                     account={toDeleteAccount}
-                    deletesuccess={() => {
-                      deleteSuccess(toDeleteAccount.id);
-                    }}
+                    deleteAccountRequest={deleteAccountRequest}
                     onHide={() => {
                       setModalDeleteShow(false);
                       setToDeleteAccount(null);

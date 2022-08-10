@@ -11,6 +11,13 @@ export const getAccounts = async (userId) => {
   return res.data.data;
 };
 
+export const createAccount = async (userId, email) => {
+  const axios = await api();
+
+  const res = await axios.post(`/${userId}/account`, { email });
+  return res.data;
+};
+
 export const deleteAccount = async (userId, accountId) => {
   const axios = await api();
 

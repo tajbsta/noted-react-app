@@ -370,6 +370,7 @@ const DashboardPageInitial = () => {
   //INITIALIZE GOOGLE API
   useEffect(() => {
     window.onGoogleScriptLoad = () => {
+      console.log('load');
       gapi.current = window.gapi;
       gapi.current.load('client:auth2', initClient);
     };
@@ -381,6 +382,7 @@ const DashboardPageInitial = () => {
 
   useEffect(() => {
     gapi.current = window.gapi;
+    console.log('window.gapi', window.gapi);
   });
 
   useEffect(() => {
